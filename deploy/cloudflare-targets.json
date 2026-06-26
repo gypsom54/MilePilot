@@ -1,0 +1,5 @@
+{
+  "frontend": "app.milepilot.uk",
+  "api": "api.milepilot.uk",
+  "email_from": "reports@milepilot.uk"
+}
