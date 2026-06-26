@@ -1,6 +1,6 @@
 {
   "name": "milepilot-rc3-backend",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "type": "module",
   "scripts": {
     "start": "node server.js"
@@ -9,7 +9,7 @@
     "cors": "latest",
     "dotenv": "latest",
     "express": "latest",
-    "nodemailer": "latest",
-    "pdfkit": "latest"
+    "pdfkit": "latest",
+    "resend": "latest"
   }
 }
