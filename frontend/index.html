@@ -79,22 +79,27 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 .knowYou-message.is-question{font-size:clamp(17px,4.6vw,20px);font-weight:600;letter-spacing:-0.02em;color:rgba(255,255,255,.96);line-height:1.25;max-width:none}
 .knowYou-body{flex:1;min-height:0;display:flex;flex-direction:column}
 .knowYou-cards{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:2px 0;margin:0 0 20px}
-.vehicle-grid{display:grid;grid-template-columns:1fr;gap:12px;margin:0}
-.vehicle-card{position:relative;display:flex;flex-direction:row;align-items:center;gap:14px;width:100%;min-height:84px;border:1px solid rgba(110,180,255,.18);border-radius:20px;background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(13,107,255,.03));padding:16px 48px 16px 18px;text-align:left;cursor:pointer;transition:border-color .25s ease,box-shadow .25s ease,transform .18s ease,background .25s ease;-webkit-tap-highlight-color:transparent;color:inherit}
-.vehicle-card .vehicle-icon{flex-shrink:0;width:52px;height:52px;border-radius:50%;border:1px solid rgba(110,180,255,.18);background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(13,107,255,.04));display:flex;align-items:center;justify-content:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.1),inset 0 -8px 16px rgba(13,107,255,.06),0 4px 16px rgba(0,0,0,.1)}
-.vehicle-card .vehicle-icon svg{width:22px;height:22px;stroke:#7EB8FF;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.vehicle-grid{display:grid;grid-template-columns:1fr;gap:14px;margin:0}
+.vehicle-card{position:relative;display:flex;flex-direction:row;align-items:center;gap:14px;width:100%;min-height:86px;border:1px solid rgba(110,180,255,.16);border-radius:20px;background:linear-gradient(180deg,rgba(255,255,255,.085),rgba(13,107,255,.025));padding:16px 48px 16px 18px;text-align:left;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,.05);transition:border-color .25s ease,box-shadow .25s ease,transform .22s ease,background .25s ease;-webkit-tap-highlight-color:transparent;color:inherit}
+.vehicle-card .vehicle-icon{flex-shrink:0;width:48px;height:48px;border-radius:50%;border:1px solid rgba(110,180,255,.18);background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(13,107,255,.04));display:flex;align-items:center;justify-content:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.1),inset 0 -8px 16px rgba(13,107,255,.06),0 4px 18px rgba(0,0,0,.12);transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
+.vehicle-card .vehicle-icon svg{width:20px;height:20px;stroke:#7EB8FF;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;transition:stroke .22s ease}
 .vehicle-copy{display:flex;flex-direction:column;align-items:flex-start;gap:3px;min-width:0}
 .vehicle-copy strong{display:block;font-size:16px;font-weight:600;color:rgba(234,242,255,.96);letter-spacing:-0.02em}
 .vehicle-tag{font-size:12px;font-weight:500;color:rgba(147,168,196,.88);line-height:1.35}
 .vehicle-desc{font-size:12px;font-weight:500;color:rgba(110,180,255,.82);line-height:1.35}
 .vehicle-check{position:absolute;right:16px;top:50%;transform:translateY(-50%) scale(.85);width:22px;height:22px;border-radius:50%;background:linear-gradient(180deg,#1E88FF,#0D6BFF);display:flex;align-items:center;justify-content:center;opacity:0;box-shadow:0 0 16px rgba(13,107,255,.35);transition:opacity .22s ease,transform .22s ease}
 .vehicle-check svg{width:12px;height:12px;stroke:#fff;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-.vehicle-card.selected{border-color:rgba(13,107,255,.58);background:linear-gradient(180deg,rgba(13,107,255,.15),rgba(13,107,255,.06));box-shadow:0 0 0 3px rgba(13,107,255,.14),0 12px 40px rgba(13,107,255,.2),inset 0 1px 0 rgba(255,255,255,.1)}
-.vehicle-card.selected .vehicle-icon{border-color:rgba(13,107,255,.42);box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 0 22px rgba(13,107,255,.26)}
-.vehicle-card.selected .vehicle-icon svg{stroke:#A8D0FF}
-.vehicle-card.selected .vehicle-check{opacity:1;transform:translateY(-50%) scale(1)}
-.vehicle-card:active{transform:scale(.985)}
-@media(hover:hover){.vehicle-card:hover{border-color:rgba(110,180,255,.3);box-shadow:0 6px 24px rgba(13,107,255,.1)}.vehicle-card.selected:hover{box-shadow:0 0 0 3px rgba(13,107,255,.14),0 14px 44px rgba(13,107,255,.24),inset 0 1px 0 rgba(255,255,255,.1)}}
+.vehicle-card.selected{border-color:rgba(13,107,255,.55);background:linear-gradient(180deg,rgba(13,107,255,.14),rgba(13,107,255,.05));box-shadow:0 0 0 3px rgba(13,107,255,.12),0 14px 44px rgba(13,107,255,.18),inset 0 1px 0 rgba(255,255,255,.1)}
+.vehicle-card.selected .vehicle-icon{border-color:rgba(13,107,255,.4);transform:scale(1.02);box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 0 24px rgba(13,107,255,.24),0 4px 18px rgba(0,0,0,.1)}
+.vehicle-card.selected .vehicle-icon svg{stroke:#B4D8FF}
+.vehicle-card.selected .vehicle-check{opacity:1;transform:translateY(-50%) scale(1);animation:vehicleCheckPop .32s cubic-bezier(.34,1.35,.64,1) both}
+@keyframes vehicleCheckPop{from{opacity:0;transform:translateY(-50%) scale(.55)}to{opacity:1;transform:translateY(-50%) scale(1)}}
+.vehicle-card:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(13,107,255,.22),0 4px 20px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,.05)}
+.vehicle-card.selected:focus-visible{box-shadow:0 0 0 3px rgba(13,107,255,.28),0 14px 44px rgba(13,107,255,.2),inset 0 1px 0 rgba(255,255,255,.1)}
+.vehicle-card:active{transform:scale(.976);box-shadow:0 2px 12px rgba(0,0,0,.12),inset 0 1px 0 rgba(255,255,255,.04)}
+.vehicle-card.selected:active{transform:scale(.982);box-shadow:0 0 0 3px rgba(13,107,255,.1),0 8px 28px rgba(13,107,255,.16),inset 0 1px 0 rgba(255,255,255,.08)}
+@media(hover:hover){.vehicle-card:hover{transform:translateY(-2px);border-color:rgba(110,180,255,.3);box-shadow:0 10px 32px rgba(13,107,255,.12),0 4px 20px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,.07)}.vehicle-card:hover .vehicle-icon{border-color:rgba(110,180,255,.32);transform:scale(1.04);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),inset 0 -8px 16px rgba(13,107,255,.08),0 6px 20px rgba(13,107,255,.1)}.vehicle-card.selected:hover{transform:translateY(-1px);box-shadow:0 0 0 3px rgba(13,107,255,.14),0 18px 52px rgba(13,107,255,.24),inset 0 1px 0 rgba(255,255,255,.1)}.vehicle-card.selected:hover .vehicle-icon{transform:scale(1.03)}}
+@media(prefers-reduced-motion:reduce){.vehicle-card,.vehicle-card .vehicle-icon,.vehicle-card .vehicle-check{transition:none!important;animation:none!important}.vehicle-card.selected .vehicle-check{opacity:1;transform:translateY(-50%) scale(1)}}
 .knowYou-foot{margin-top:auto;padding-top:4px;width:100%;flex-shrink:0}
 #knowYou .premium-btn{height:52px;border-radius:var(--button-radius);font-size:17px;font-weight:600;letter-spacing:-0.01em;margin:0;background:linear-gradient(180deg,#1a3a5c 0%,#122a45 100%);color:rgba(255,255,255,.42);box-shadow:none;transition:background .28s ease,box-shadow .28s ease,color .28s ease;cursor:not-allowed}
 #knowYou .premium-btn.is-ready{background:linear-gradient(180deg,#1E88FF 0%,#0D6BFF 50%,#005FE8 100%);color:#fff;box-shadow:0 8px 24px rgba(13,107,255,.28),inset 0 1px 0 rgba(255,255,255,.12);cursor:pointer}
@@ -165,8 +170,8 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 </div>
 <div class="welcome-version" id="appVersion">MP-001 🔒 Locked · v2.8</div>
 </section>
-<!-- MP-002 Getting to Know You — What do you drive? -->
-<section id="knowYou" class="screen" data-mp="MP-002">
+<!-- MP-002 Getting to Know You — 🔒 LOCKED. Do not modify. -->
+<section id="knowYou" class="screen" data-mp="MP-002" data-locked="true">
 <div class="onboard-bg" aria-hidden="true">
 <div class="onboard-glow onboard-glow-1"></div>
 <div class="onboard-glow onboard-glow-2"></div>
@@ -174,7 +179,7 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 <div class="onboard-inner">
 <header class="brand-bar onboard-brand center"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div></header>
 <div class="knowYou-body">
-<h1 class="knowYou-greeting" id="knowYouGreeting">Great to meet you 👋</h1>
+<h1 class="knowYou-greeting" id="knowYouGreeting">Welcome aboard 👋</h1>
 <div class="knowYou-message-wrap"><p class="knowYou-message" id="knowYouMessage"></p></div>
 <div class="knowYou-cards"><div class="vehicle-grid">
 <button type="button" class="vehicle-card" data-vehicle="car" onclick="selectVehicle('car')"><div class="vehicle-icon"><svg viewBox="0 0 24 24"><path d="M4 15h16M5 15l1.5-4.5h11L19 15"/><circle cx="7.5" cy="17.5" r="1.5"/><circle cx="16.5" cy="17.5" r="1.5"/></svg></div><div class="vehicle-copy"><strong>Car</strong><span class="vehicle-tag">Most common</span><span class="vehicle-desc">Perfect for Uber &amp; Taxi</span></div><span class="vehicle-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"/></svg></span></button>
@@ -185,7 +190,7 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 </div>
 <div class="knowYou-foot"><button class="btn premium-btn" id="knowYouContinue" onclick="confirmVehicle()" disabled>Continue →</button></div>
 </div>
-<div class="onboard-version">MP-002 · Getting to Know You · v3.2</div>
+<div class="onboard-version">MP-002 🔒 Locked · v3.4</div>
 </section>
 <section id="ready" class="screen"><header class="brand-bar"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div></header><h1 class="title">You're ready to drive.</h1><p class="sub">MilePilot is set up. You can start a shift now or set up report delivery.</p><button class="btn" onclick="goHome()">Continue to Dashboard →</button><button class="btn outline" onclick="showScreen('emailSetup')">Set up reports</button></section>
 <section id="emailSetup" class="screen"><header class="brand-bar"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div></header><h1 class="title">Where should reports go?</h1><p class="sub">Enter your email once. MilePilot will use it for report delivery.</p><input id="emailInput" placeholder="you@example.com" inputmode="email"><button class="btn" onclick="saveEmailSetup()">Continue to Dashboard →</button><button class="btn outline" onclick="goHome()">Skip for now</button></section>
@@ -197,10 +202,11 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 </div>
 <nav class="nav" id="nav"><button id="navHome" onclick="goHome()"><span>⌂</span>Dashboard</button><button id="navReports" onclick="showReports()"><span>▤</span>Reports</button><button id="navHistory" onclick="showHistory()"><span>◷</span>History</button><button id="navSettings" onclick="showSettings()"><span>⚙</span>Settings</button></nav><div class="toast" id="toast"></div><div id="printReport"></div>
 <script>
-const APP_VERSION='3.2';
+const APP_VERSION='3.4';
 const MP_001_LOCKED=true;
+const MP_002_LOCKED=true;
 const ONBOARD_SCREENS=['welcome','knowYou','ready','emailSetup'];
-const KNOW_YOU_LINES=["Let's personalise MilePilot for your driving business.","What are you driving today?"];
+const KNOW_YOU_QUESTION='What are you driving today?';
 function getApiBase(){const s=localStorage.getItem('mp_api_base');if(s)return s.replace(/\/$/,'');if(location.hostname==='localhost'||location.hostname==='127.0.0.1')return 'http://localhost:8787';return 'https://api.milepilot.uk'}
 const API_BASE=getApiBase();
 const FIRST_IMPRESSION_LINES=['Welcome to MilePilot.',"Let's build your driving business.","What's your first name?"];
@@ -219,8 +225,8 @@ function playBrandPulse(){const pulse=q('welcomePulse');if(!pulse)return;pulse.c
 function initFirstImpression(){replayFirstImpressionIntro();setTimeout(startWelcomeTyping,2050);syncWelcomeContinue();q('name')?.addEventListener('input',syncWelcomeContinue)}
 let knowYouTimers=[];
 function clearKnowYouMessaging(){knowYouTimers.forEach(t=>clearTimeout(t));knowYouTimers=[]}
-function startKnowYouMessaging(){const el=q('knowYouMessage');if(!el)return;clearKnowYouMessaging();let idx=0;const fadeMs=480,pauseMs=1500,revealMs=320;function schedule(fn,ms){knowYouTimers.push(setTimeout(fn,ms))}function showLine(){if(idx>=KNOW_YOU_LINES.length)return;const text=KNOW_YOU_LINES[idx],isLast=idx===KNOW_YOU_LINES.length-1;el.style.transition='opacity '+fadeMs+'ms ease';el.style.opacity='0';schedule(()=>{el.textContent=text;el.classList.toggle('is-question',isLast);el.style.transition='opacity '+revealMs+'ms ease';el.style.opacity='1';if(isLast)return;schedule(()=>{el.style.transition='opacity '+fadeMs+'ms ease';el.style.opacity='0';schedule(()=>{idx++;showLine()},fadeMs)},pauseMs)},idx?fadeMs:0)}showLine()}
-function initKnowYou(){driver=driver||localStorage.getItem('mp_driver')||'';q('knowYouGreeting').textContent=`Great to meet you, ${driver} 👋`;selectedVehicle=localStorage.getItem('mp_vehicle')||null;document.querySelectorAll('.vehicle-card').forEach(c=>c.classList.toggle('selected',c.dataset.vehicle===selectedVehicle));syncKnowYouContinue();clearKnowYouMessaging();const msg=q('knowYouMessage');if(msg){msg.textContent='';msg.classList.remove('is-question');msg.style.opacity='0'}setTimeout(startKnowYouMessaging,750)}
+function startKnowYouMessaging(){const el=q('knowYouMessage');if(!el)return;clearKnowYouMessaging();el.textContent=KNOW_YOU_QUESTION;el.classList.add('is-question');el.style.transition='opacity .32s ease';el.style.opacity='0';knowYouTimers.push(setTimeout(()=>{el.style.opacity='1'},50))}
+function initKnowYou(){driver=driver||localStorage.getItem('mp_driver')||'';q('knowYouGreeting').textContent=`Welcome aboard, ${driver} 👋`;selectedVehicle=localStorage.getItem('mp_vehicle')||null;document.querySelectorAll('.vehicle-card').forEach(c=>c.classList.toggle('selected',c.dataset.vehicle===selectedVehicle));syncKnowYouContinue();clearKnowYouMessaging();const msg=q('knowYouMessage');if(msg){msg.textContent='';msg.classList.remove('is-question');msg.style.opacity='0'}setTimeout(startKnowYouMessaging,900)}
 function selectVehicle(v){selectedVehicle=v;document.querySelectorAll('.vehicle-card').forEach(c=>c.classList.toggle('selected',c.dataset.vehicle===v));syncKnowYouContinue()}
 function syncKnowYouContinue(){const btn=q('knowYouContinue');if(!btn)return;const ready=!!selectedVehicle;btn.disabled=!ready;btn.classList.toggle('is-ready',ready)}
 function confirmVehicle(){if(!selectedVehicle)return;vehicle=selectedVehicle;localStorage.setItem('mp_vehicle',vehicle);showScreen('ready')}
