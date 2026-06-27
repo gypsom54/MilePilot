@@ -1,0 +1,97 @@
+# MilePilot Product Roadmap — Phase 2
+
+**Phase 1 complete:** Design, onboarding, dashboard foundation (~90%)  
+**Phase 2 focus:** Make MilePilot a working product, not a UI project.
+
+---
+
+## Progress snapshot
+
+| Area | Status |
+|------|--------|
+| Design & branding | ~90% 🔒 Locked |
+| Onboarding flow | ~95% 🔒 Locked |
+| Dashboard foundation | ~90% 🔒 Locked |
+| **Core tracking engine** | Sprint 1 → in progress |
+| Reports | ~10% |
+| Business intelligence | 0% |
+
+---
+
+## Sprint 1 — The Tracking Engine ⭐⭐⭐⭐⭐
+
+**Goal:** Start Shift begins a real tracked shift.
+
+When the user presses **Start Shift**:
+
+- [x] GPS tracking
+- [x] Shift timer
+- [x] Route recording
+- [x] Business miles calculation
+- [x] Driving time
+- [x] HMRC mileage estimate
+- [x] Stop detection
+- [x] Persist on background / tab switch
+- [x] End shift → auto-save
+
+*Note: True OS-level background GPS requires native app; PWA uses wake lock + persistence.*
+
+---
+
+## Sprint 2 — Live Command Centre ⭐⭐⭐⭐⭐
+
+Dashboard transforms while shift is active: live miles, time, claim, **End Shift**.
+
+---
+
+## Sprint 3 — Shift Summary ⭐⭐⭐⭐⭐
+
+End Shift → celebration overlay, report ready, share PDF.
+
+---
+
+## Sprint 4 — Reports ⭐⭐⭐⭐⭐
+
+Daily / weekly / monthly, HMRC-ready PDFs, maps, timeline, one-click share.
+
+---
+
+## Sprint 5 — Business Intelligence ⭐⭐⭐⭐⭐
+
+Earning patterns, best hours, year-to-date savings — business coach.
+
+---
+
+## Sprint 6 — Smart Assistant (Pulse) ⭐⭐⭐⭐☆
+
+Contextual companion: weather, earning day, thresholds.
+
+---
+
+## Sprint 7 — Automation ⭐⭐⭐⭐⭐
+
+Automatic reports, email summaries, tax / MOT / service reminders.
+
+---
+
+## Sprint 8 — Premium ⭐⭐⭐⭐⭐
+
+Unlimited reports, AI insights, cloud backup, multi-vehicle, accountant access.
+
+---
+
+## North star feature — Evidence Pack
+
+One button → professional PDF proof for Job Centre, HMRC, accountant:
+
+- Every shift, maps, totals, timestamps, weekly/monthly summaries.
+
+---
+
+## Deploy links (always)
+
+- App: https://app.milepilot.uk  
+- Backup: https://milepilot-app.pages.dev  
+- Version: https://app.milepilot.uk/version.txt  
+
+Upload: Cloudflare Pages → `milepilot-app` → 6 files from `milepilot-upload-v2/`

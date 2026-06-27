@@ -1,4 +1,4 @@
-MilePilot — UPLOAD v5.3.2
+MilePilot — UPLOAD v6.0.0
 =========================
 
 USE THIS FOLDER ONLY — upload to Cloudflare Pages (Direct Upload).
@@ -10,7 +10,7 @@ YOUR APP LINKS (always use these)
   Check:   https://app.milepilot.uk/version.txt
 
 After upload, version.txt MUST show:
-  MilePilot OS v5.3.2 — Dashboard state fix (no default day off)
+  MilePilot OS v6.0.0 — Sprint 1: Tracking Engine
 
 FILES TO UPLOAD (all 6 in this folder)
 ---------------------------------------
@@ -32,12 +32,14 @@ OPEN ON YOUR PHONE
 ------------------
   https://app.milepilot.uk
 
-(NOT milepilot.co.uk — use app. at the start)
+Design language is LOCKED — see docs/DESIGN_LOCKED.md
+Product roadmap — see docs/ROADMAP.md
 
-Hard refresh if needed: private tab or pull to refresh.
-
-WHAT'S IN v5.3.2
-----------------
-- Dashboard no longer assumes day off on weekends / zero miles
-- Default state: Good afternoon + Ready to make every business mile count + Start Shift
-- Day off only when user explicitly selects it (future UI uses mp_day_off)
+WHAT'S IN v6.0.0 — Sprint 1 Tracking Engine
+-------------------------------------------
+- Start Shift → GPS, timer, route, miles, HMRC estimate
+- Stop detection (90s stationary)
+- Auto-save on background / tab switch
+- Wake lock while shift active
+- Full shift record: route, stops, moving time
+- End Shift → saved automatically + summary
