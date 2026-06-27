@@ -100,9 +100,9 @@ See [docs/AUTO_PILOT.md](./AUTO_PILOT.md)
 
 ---
 
+## MP-014 — Tracking QA & Live Shift Experience
+
 **Status:** Complete  
-**Version:** App v7.4.1  
-**Branch:** `cursor/mp-014-tracking-qa-ae00`
 
 ### Delivered
 
