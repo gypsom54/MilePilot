@@ -1,63 +1,43 @@
-MilePilot — UPLOAD v4.6.1 (onboarding flow fix)
-=================================================
+MilePilot — UPLOAD v5.3.1
+=========================
 
-IMPORTANT: Upload ALL 5 files. Replace every file from the previous upload.
+USE THIS FOLDER ONLY — upload to Cloudflare Pages (Direct Upload).
 
-WHY YOU MAY STILL SEE THE OLD FLOW
-----------------------------------
-The server may already have v4.6, but your browser can still open MP-003
-because old onboarding data is saved in localStorage (e.g. name "Jonathan").
+YOUR APP LINKS (always use these)
+---------------------------------
+  App:     https://app.milepilot.uk
+  Backup:  https://milepilot-app.pages.dev
+  Check:   https://app.milepilot.uk/version.txt
 
-This v4.6.1 build automatically clears incomplete onboarding when the app
-version changes, so you start again at MP-001 after upload.
+After upload, version.txt MUST show:
+  MilePilot OS v5.3.1 — GPS permission fix (Chrome + Safari)
 
-ONBOARDING FLOW
----------------
-  MP-001  Welcome (name entry)
-    ↓
-  MP-002  Vehicle selection
-    ↓
-  MP-003  The MilePilot Promise
-    ↓
-  MP-004  Location Permission
-    ↓
-  MP-005  Notification Permission
-    ↓
-  Dashboard
-
-FILES TO UPLOAD (all 5 in this folder)
+FILES TO UPLOAD (all 6 in this folder)
 ---------------------------------------
   index.html
   manifest.json
   icon.svg
   service-worker.js
   version.txt
+  _headers
 
-STEP 1 — Upload to Cloudflare
-------------------------------
-1. Cloudflare Dashboard → Workers & Pages → MilePilot
+HOW TO UPLOAD
+-------------
+1. Cloudflare Dashboard → Workers & Pages → milepilot-app
 2. Create deployment → Upload assets
-3. Select ALL 5 files from THIS folder
+3. Select ALL 6 files from this folder
 4. Deploy
 
-STEP 2 — Confirm upload worked
--------------------------------
-Open:
-  https://app.milepilot.uk/version.txt
-
-You MUST see:
-  MilePilot OS v4.6.1 — Onboarding flow fix + stale state reset
-
-STEP 3 — Open the app
-----------------------
+OPEN ON YOUR PHONE
+------------------
   https://app.milepilot.uk
 
-Use Incognito OR hard refresh: Ctrl+Shift+R
+(NOT milepilot.co.uk — use milepilot.uk with app. at the start)
 
-STEP 4 — Check the welcome screen badge
-----------------------------------------
-Bottom of MP-001 should say:
-  MP-001 🔒 Locked · App v4.6.1
+Hard refresh if needed: pull down to refresh on mobile, or use a private tab.
 
-If you still see MP-003 first:
-  Settings → Reset onboarding
+WHAT'S IN v5.3.1
+----------------
+- Stay Updated — automatic reports prompt (after first shift)
+- Chrome GPS fix — location permission works like Safari
+- Command Centre + premium navigation
