@@ -8,7 +8,26 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors());
+const ALLOWED_ORIGINS = [
+  "https://app.milepilot.uk",
+  "https://milepilot-app.pages.dev",
+  "http://localhost:8000",
+  "http://localhost:8787",
+  "http://127.0.0.1:8000",
+  "http://127.0.0.1:8787",
+];
+
+app.use(
+  cors({
+    origin(origin, callback) {
+      if (!origin || ALLOWED_ORIGINS.includes(origin)) {
+        callback(null, true);
+        return;
+      }
+      callback(null, false);
+    },
+  })
+);
 app.use(express.json({ limit: "2mb" }));
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -66,8 +85,10 @@ function buildPdfBuffer(report) {
 app.get("/health", (req, res) => {
   res.json({
     ok: true,
+    service: "milepilot-api",
     resendConfigured: !!process.env.RESEND_API_KEY,
     from: process.env.EMAIL_FROM || "MilePilot <reports@milepilot.uk>",
+    timestamp: new Date().toISOString(),
   });
 });
 
@@ -90,16 +111,18 @@ app.post("/reports/send", async (req, res) => {
     }
 
     const pdf = await buildPdfBuffer(report);
+    const periodLabel = report.period || "Daily";
 
     const result = await resend.emails.send({
       from: process.env.EMAIL_FROM || "MilePilot <reports@milepilot.uk>",
       to: report.email,
-      subject: `MilePilot ${report.period || "Daily"} Mileage Report`,
-      text: `Your MilePilot ${report.period || "Daily"} report is attached.`,
+      subject: `MilePilot ${periodLabel} Mileage Report`,
+      text: `Your MilePilot ${periodLabel} report is attached as a PDF.`,
+      html: `<p>Your MilePilot ${periodLabel} report is attached as a PDF.</p>`,
       attachments: [
         {
-          filename: `milepilot-${String(report.period || "daily").toLowerCase()}-report.pdf`,
-          content: pdf.toString("base64"),
+          filename: `milepilot-${String(periodLabel).toLowerCase()}-report.pdf`,
+          content: pdf,
         },
       ],
     });
