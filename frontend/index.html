@@ -281,9 +281,10 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 <div class="perm-scroll">
 <div class="perm-section" id="permLocation">
 <h2>Automatic Journey Tracking</h2>
-<p>To automatically calculate your business mileage,</p>
+<p>To automatically record your business journeys,</p>
 <p>MilePilot needs access to your location while you're working.</p>
-<p class="perm-privacy">Your journeys stay private.<br>You're always in control.</p>
+<p>This allows every business mile to be tracked automatically.</p>
+<p class="perm-privacy">Your location is never shared.<br>You're always in control.</p>
 <button type="button" class="btn perm-enable-btn" id="permGpsBtn" onclick="enableGpsPermission()">Enable Location</button>
 </div>
 </div>
@@ -307,9 +308,9 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 <div class="perm-section" id="permNotifications">
 <h2>Notifications</h2>
 <p>Never forget to start tracking.</p>
-<p>MilePilot can remind you when it looks like you've started driving for work.</p>
-<p>A quick reminder means you'll never miss another business journey.</p>
-<p class="perm-privacy">Your notifications are only used to help you stay on top of your driving business.</p>
+<p>MilePilot can remind you when your working day begins.</p>
+<p>You'll never miss another business journey.</p>
+<p class="perm-privacy">Your notifications are only used to help keep your driving business organised.</p>
 <button type="button" class="btn perm-enable-btn" id="permNotifBtn" onclick="enableNotificationPermission()">Enable Notifications</button>
 </div>
 </div>
@@ -329,7 +330,7 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 </div>
 <nav class="nav" id="nav"><button id="navHome" onclick="goHome()"><span>⌂</span>Dashboard</button><button id="navReports" onclick="showReports()"><span>▤</span>Reports</button><button id="navHistory" onclick="showHistory()"><span>◷</span>History</button><button id="navSettings" onclick="showSettings()"><span>⚙</span>Settings</button></nav><div class="toast" id="toast"></div><div id="printReport"></div>
 <script>
-const APP_VERSION='4.8';
+const APP_VERSION='4.8.1';
 const BRAND_MESSAGE='Every business mile matters.';
 const PROMISE_PURPOSE="Now let's make every business mile count.";
 const VALUE_LINE='Never miss another business mile.';

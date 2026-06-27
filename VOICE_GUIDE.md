@@ -62,8 +62,8 @@ Each screen builds momentum. One idea per screen. Conversation, not forms.
 | **MP-001** | Your driving business. On auto pilot. |
 | **MP-002** | Great to meet you. What are you driving today? |
 | **MP-003** | You're all set. Now let's make every business mile count. |
-| **MP-004** | Automatic journey tracking — private, always in your control. |
-| **MP-005** | Never forget to start tracking. Complete setup — then the Command Centre appears. |
+| **MP-004** | Record every business journey automatically. Your location is never shared. |
+| **MP-005** | Never forget to start tracking. Remind when your working day begins. |
 
 When someone finishes onboarding, they should feel like they **joined** something — not that they finished setup. The **Complete Setup →** button never mentions the dashboard; the Command Centre simply appears.
 
