@@ -62,8 +62,10 @@ Each screen builds momentum. One idea per screen. Conversation, not forms.
 | **MP-001** | Your driving business. On auto pilot. |
 | **MP-002** | Great to meet you. What are you driving today? |
 | **MP-003** | You're all set. Now let's make every business mile count. |
+| **MP-004** | Automatic journey tracking — private, always in your control. |
+| **MP-005** | Never forget to start tracking. Complete setup — then the Command Centre appears. |
 
-When someone finishes onboarding, they should feel like they **joined** something — not that they finished setup.
+When someone finishes onboarding, they should feel like they **joined** something — not that they finished setup. The **Complete Setup →** button never mentions the dashboard; the Command Centre simply appears.
 
 ---
 
@@ -112,14 +114,16 @@ If it is only a feature, rewrite until it earns its place.
 
 ---
 
-## Locked onboarding (no further copy changes)
+## Locked onboarding (feature complete)
 
 | ID | Screen | Status |
 |----|--------|--------|
-| MP-001 | First Impression | 🔒 Locked |
-| MP-002 | Vehicle selection | 🔒 Locked |
-| MP-003 | The MilePilot Promise | 🔒 Locked |
+| MP-001 | First Impression | 🔒 Locked · Final |
+| MP-002 | Vehicle selection | 🔒 Locked · Final |
+| MP-003 | The MilePilot Promise | 🔒 Locked · Final |
+| MP-004 | Location Permission | 🔒 Locked · Final |
+| MP-005 | Notification Permission | 🔒 Locked · Final |
 
-No more tweaks. No pixel pushing. No wording changes on these screens.
+**Onboarding is feature complete.** No more tweaks. No pixel pushing. No wording changes.
 
 Next build focus: **MP-006 — The Driver's Command Centre** (the screen people open every working day).

@@ -269,8 +269,8 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 </div>
 <div class="onboard-version">MP-003 🔒 Locked · Final</div>
 </section>
-<!-- MP-004 Location Permission -->
-<section id="permissions" class="screen" data-mp="MP-004">
+<!-- MP-004 Location Permission — 🔒 LOCKED. Copy final. See VOICE_GUIDE.md -->
+<section id="permissions" class="screen" data-mp="MP-004" data-locked="true">
 <div class="onboard-bg" aria-hidden="true">
 <div class="onboard-glow onboard-glow-1"></div>
 <div class="onboard-glow onboard-glow-2"></div>
@@ -292,10 +292,10 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 <button class="btn premium-btn" id="permLocationContinue" onclick="continueToNotifications()">Continue →</button>
 </div>
 </div>
-<div class="onboard-version">MP-004 · Location · v4.6.1</div>
+<div class="onboard-version">MP-004 🔒 Locked · Final</div>
 </section>
-<!-- MP-005 Notification Permission -->
-<section id="notifications" class="screen" data-mp="MP-005">
+<!-- MP-005 Notification Permission — 🔒 LOCKED. Copy final. See VOICE_GUIDE.md -->
+<section id="notifications" class="screen" data-mp="MP-005" data-locked="true">
 <div class="onboard-bg" aria-hidden="true">
 <div class="onboard-glow onboard-glow-1"></div>
 <div class="onboard-glow onboard-glow-2"></div>
@@ -306,17 +306,19 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 <div class="perm-scroll">
 <div class="perm-section" id="permNotifications">
 <h2>Notifications</h2>
-<p>MilePilot can remind you when it looks like you've started work.</p>
-<p>You'll never forget to track another business journey.</p>
+<p>Never forget to start tracking.</p>
+<p>MilePilot can remind you when it looks like you've started driving for work.</p>
+<p>A quick reminder means you'll never miss another business journey.</p>
+<p class="perm-privacy">Your notifications are only used to help you stay on top of your driving business.</p>
 <button type="button" class="btn perm-enable-btn" id="permNotifBtn" onclick="enableNotificationPermission()">Enable Notifications</button>
 </div>
 </div>
 </div>
 <div class="onboard-foot">
-<button class="btn premium-btn" id="permDone" onclick="finishOnboarding()">Continue to Dashboard →</button>
+<button class="btn premium-btn" id="permDone" onclick="finishOnboarding()">Complete Setup →</button>
 </div>
 </div>
-<div class="onboard-version">MP-005 · Notifications · v4.6.1</div>
+<div class="onboard-version">MP-005 🔒 Locked · Final</div>
 </section>
 <section id="emailSetup" class="screen" data-mp="email"><header class="brand-bar"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div></header><h1 class="title">Where should reports go?</h1><p class="sub">Enter your email once. MilePilot will use it for report delivery.</p><input id="emailInput" placeholder="you@example.com" inputmode="email"><button class="btn" onclick="saveEmailSetup()">Continue to Dashboard →</button><button class="btn outline" onclick="goHome()">Skip for now</button></section>
 <section id="home" class="screen"><header class="brand-bar"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div></header><h1 class="title" id="greeting">Good day 👋</h1><p class="sub" id="vehicleLine">Vehicle: Car • Rate: 55p per mile</p><button class="btn" onclick="startShift()">Start Shift</button><div class="card"><div class="row"><span>Today</span><strong id="todaySummary">0.00 mi</strong></div><div class="row"><span>Saved shifts</span><strong id="shiftCount">0</strong></div></div></section>
@@ -327,13 +329,16 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 </div>
 <nav class="nav" id="nav"><button id="navHome" onclick="goHome()"><span>⌂</span>Dashboard</button><button id="navReports" onclick="showReports()"><span>▤</span>Reports</button><button id="navHistory" onclick="showHistory()"><span>◷</span>History</button><button id="navSettings" onclick="showSettings()"><span>⚙</span>Settings</button></nav><div class="toast" id="toast"></div><div id="printReport"></div>
 <script>
-const APP_VERSION='4.7.1';
+const APP_VERSION='4.8';
 const BRAND_MESSAGE='Every business mile matters.';
 const PROMISE_PURPOSE="Now let's make every business mile count.";
 const VALUE_LINE='Never miss another business mile.';
 const MP_001_LOCKED=true;
 const MP_002_LOCKED=true;
 const MP_003_LOCKED=true;
+const MP_004_LOCKED=true;
+const MP_005_LOCKED=true;
+const ONBOARDING_COMPLETE=true;
 const ONBOARD_SCREENS=['welcome','knowYou','promise','permissions','notifications'];
 const KNOW_YOU_QUESTION='What are you driving today?';
 const PROMISE_PROGRESS=PROMISE_PURPOSE;
