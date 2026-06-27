@@ -1,4 +1,4 @@
-MilePilot Welcome Screen v2.4
+MilePilot First Impression v2.5
 Build: 2026-06-27
-Final polish — cycling typing, feature captions, locked layout.
+Final polish — grid, glass icons, smart Continue button.
 If you see this, the NEW files uploaded correctly.
