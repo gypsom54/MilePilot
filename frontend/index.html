@@ -86,7 +86,6 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 .onboard-skip{display:block;width:100%;margin-top:14px;padding:12px;border:0;background:transparent;color:rgba(147,168,196,.82);font-size:15px;font-weight:500;letter-spacing:.01em;cursor:pointer;transition:color .22s ease,opacity .36s ease}
 .onboard-skip:hover{color:rgba(159,180,208,.96)}
 .onboard-skip:active{opacity:.8}
-.promise-hero{display:none}
 #promise .brand-bar.onboard-brand{margin-bottom:36px}
 #promise .onboard-greeting{margin:4px 0 22px}
 #promise .onboard-message-wrap{margin-bottom:16px;min-height:auto}
@@ -94,15 +93,17 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 #promise .onboard-support{margin-bottom:32px;font-size:14px;font-weight:500;color:rgba(159,180,208,.85);letter-spacing:.01em}
 #promise .onboard-body{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 2px 8px}
 .promise-list{list-style:none;margin:0 0 32px;padding:0;display:flex;flex-direction:column;gap:12px;transition:opacity .42s cubic-bezier(.22,1,.36,1);opacity:0}
-.promise-list li{display:flex;align-items:center;gap:14px;font-size:15px;font-weight:500;line-height:1.38;color:rgba(234,242,255,.93);letter-spacing:-0.012em;padding:16px 18px;border:1px solid rgba(110,180,255,.1);border-radius:16px;background:rgba(255,255,255,.035);box-shadow:0 2px 12px rgba(0,0,0,.06);transition:opacity .38s cubic-bezier(.22,1,.36,1),transform .38s cubic-bezier(.22,1,.36,1),border-color .28s ease,box-shadow .28s ease;opacity:0;transform:translateY(5px)}
+.promise-list li{display:flex;align-items:flex-start;gap:14px;padding:17px 18px;border:1px solid rgba(110,180,255,.1);border-radius:16px;background:rgba(255,255,255,.035);box-shadow:0 2px 12px rgba(0,0,0,.06);transition:opacity .38s cubic-bezier(.22,1,.36,1),transform .38s cubic-bezier(.22,1,.36,1),border-color .28s ease,box-shadow .28s ease;opacity:0;transform:translateY(5px)}
 .promise-list.is-visible li{opacity:1;transform:none}
 .promise-list.is-visible li:nth-child(1){transition:opacity .38s cubic-bezier(.22,1,.36,1) .05s,transform .38s cubic-bezier(.22,1,.36,1) .05s,border-color .28s ease,box-shadow .28s ease}
 .promise-list.is-visible li:nth-child(2){transition:opacity .38s cubic-bezier(.22,1,.36,1) .11s,transform .38s cubic-bezier(.22,1,.36,1) .11s,border-color .28s ease,box-shadow .28s ease}
 .promise-list.is-visible li:nth-child(3){transition:opacity .38s cubic-bezier(.22,1,.36,1) .17s,transform .38s cubic-bezier(.22,1,.36,1) .17s,border-color .28s ease,box-shadow .28s ease}
 .promise-list.is-visible li:nth-child(4){transition:opacity .38s cubic-bezier(.22,1,.36,1) .23s,transform .38s cubic-bezier(.22,1,.36,1) .23s,border-color .28s ease,box-shadow .28s ease}
-.promise-check{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:linear-gradient(180deg,#1E88FF,#0D6BFF);display:flex;align-items:center;justify-content:center;box-shadow:0 0 14px rgba(13,107,255,.24)}
+.promise-check{flex-shrink:0;width:22px;height:22px;margin-top:2px;border-radius:50%;background:linear-gradient(180deg,#1E88FF,#0D6BFF);display:flex;align-items:center;justify-content:center;box-shadow:0 0 14px rgba(13,107,255,.24)}
 .promise-check svg{width:11px;height:11px;stroke:#fff;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
-.promise-text{flex:1;min-width:0}
+.promise-copy{display:flex;flex-direction:column;gap:4px;flex:1;min-width:0}
+.promise-title{font-size:15px;font-weight:600;color:rgba(234,242,255,.94);letter-spacing:-0.015em;line-height:1.25}
+.promise-desc{font-size:13px;font-weight:400;color:rgba(147,168,196,.88);line-height:1.35;letter-spacing:.01em}
 #promise .premium-btn{height:52px;border-radius:var(--button-radius);font-size:17px;font-weight:600;letter-spacing:-0.01em;margin:0;background:linear-gradient(180deg,#1a3a5c 0%,#122a45 100%);color:rgba(255,255,255,.38);box-shadow:none;opacity:.72;transition:background .36s cubic-bezier(.22,1,.36,1),box-shadow .36s cubic-bezier(.22,1,.36,1),color .36s ease,opacity .36s ease,transform .24s cubic-bezier(.22,1,.36,1);cursor:not-allowed}
 #promise .premium-btn.is-ready{opacity:1;background:linear-gradient(180deg,#1E88FF 0%,#0D6BFF 50%,#005FE8 100%);color:#fff;box-shadow:0 8px 24px rgba(13,107,255,.26),inset 0 1px 0 rgba(255,255,255,.12);cursor:pointer}
 #promise .premium-btn.is-ready:hover{filter:brightness(1.03);box-shadow:0 10px 28px rgba(13,107,255,.3),inset 0 1px 0 rgba(255,255,255,.12)}
@@ -110,7 +111,7 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 @media(prefers-reduced-motion:reduce){.promise-list li{opacity:1!important;transform:none!important;transition:none!important}}
 .perm-scroll{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:2px 0;margin:0 0 16px}
 .perm-section{border:1px solid rgba(110,180,255,.16);border-radius:20px;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(13,107,255,.02));padding:20px 18px;margin:0 0 14px;box-shadow:0 4px 20px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,.05);transition:opacity .38s cubic-bezier(.22,1,.36,1);opacity:0}
-.perm-section h2{margin:0 0 12px;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(110,180,255,.88)}
+.perm-section h2{margin:0 0 14px;font-size:16px;font-weight:600;letter-spacing:-0.02em;text-transform:none;color:rgba(234,242,255,.94);line-height:1.25}
 .perm-section p{margin:0 0 10px;font-size:15px;font-weight:400;line-height:1.5;color:rgba(159,180,208,.9);letter-spacing:.01em}
 .perm-section p:last-of-type{margin-bottom:0}
 .perm-section .perm-privacy{margin-top:12px;font-size:13px;font-weight:500;color:rgba(110,180,255,.78);line-height:1.45}
@@ -252,21 +253,21 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 <div class="onboard-message-wrap"><p class="onboard-message" id="promiseWelcome">You're ready to start tracking your business.</p></div>
 <p class="onboard-support" id="promiseIntro">Here's what MilePilot will do for you.</p>
 <ul class="promise-list" id="promiseList">
-<li><span class="promise-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"/></svg></span><span class="promise-text">Track every business journey</span></li>
-<li><span class="promise-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"/></svg></span><span class="promise-text">Create professional reports</span></li>
-<li><span class="promise-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"/></svg></span><span class="promise-text">Stay organised for tax time</span></li>
-<li><span class="promise-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"/></svg></span><span class="promise-text">Understand your driving business</span></li>
+<li><span class="promise-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"/></svg></span><div class="promise-copy"><span class="promise-title">Track every business journey</span><span class="promise-desc">Never miss another business mile.</span></div></li>
+<li><span class="promise-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"/></svg></span><div class="promise-copy"><span class="promise-title">Professional reports</span><span class="promise-desc">Ready whenever you need them.</span></div></li>
+<li><span class="promise-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"/></svg></span><div class="promise-copy"><span class="promise-title">Stay organised</span><span class="promise-desc">Everything in one place for tax time.</span></div></li>
+<li><span class="promise-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"/></svg></span><div class="promise-copy"><span class="promise-title">Understand your business</span><span class="promise-desc">See trends, insights and performance.</span></div></li>
 </ul>
 </div>
 <div class="onboard-foot">
-<button class="btn premium-btn" id="promiseContinue" onclick="startDriving()" disabled>Let's Start Driving →</button>
+<button class="btn premium-btn" id="promiseContinue" onclick="startDriving()" disabled>Let's Get Started →</button>
 </div>
 </div>
 <div class="brand-signature" id="promiseSignature" aria-hidden="true">
 <div class="brand-signature-pulse"></div>
 <p class="brand-signature-text">Your business. <span class="blue">On auto pilot.</span></p>
 </div>
-<div class="onboard-version">MP-003 🔒 Locked · v4.4</div>
+<div class="onboard-version">MP-003 🔒 Locked · v4.5</div>
 </section>
 <!-- MP-004 Permissions — Location & Notifications -->
 <section id="permissions" class="screen" data-mp="MP-004">
@@ -279,11 +280,11 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 <div class="onboard-body">
 <div class="perm-scroll">
 <div class="perm-section" id="permLocation">
-<h2>Location</h2>
-<p>To automatically track your business mileage…</p>
-<p>MilePilot needs access to your location.</p>
-<p class="perm-privacy">Your journeys stay private. You're always in control.</p>
-<button type="button" class="btn perm-enable-btn" id="permGpsBtn" onclick="enableGpsPermission()">Enable GPS</button>
+<h2>Automatic Journey Tracking</h2>
+<p>To automatically calculate your business mileage,</p>
+<p>MilePilot needs access to your location while you're working.</p>
+<p class="perm-privacy">Your journeys stay private.<br>You're always in control.</p>
+<button type="button" class="btn perm-enable-btn" id="permGpsBtn" onclick="enableGpsPermission()">Enable Location</button>
 </div>
 <div class="perm-section" id="permNotifications">
 <h2>Notifications</h2>
@@ -297,7 +298,7 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 <button class="btn premium-btn" id="permDone" onclick="finishOnboarding()">Continue to Dashboard →</button>
 </div>
 </div>
-<div class="onboard-version">MP-004 · Permissions · v4.1</div>
+<div class="onboard-version">MP-004 · Permissions · v4.5</div>
 </section>
 <section id="emailSetup" class="screen" data-mp="MP-005"><header class="brand-bar"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div></header><h1 class="title">Where should reports go?</h1><p class="sub">Enter your email once. MilePilot will use it for report delivery.</p><input id="emailInput" placeholder="you@example.com" inputmode="email"><button class="btn" onclick="saveEmailSetup()">Continue to Dashboard →</button><button class="btn outline" onclick="goHome()">Skip for now</button></section>
 <section id="home" class="screen"><header class="brand-bar"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div></header><h1 class="title" id="greeting">Good day 👋</h1><p class="sub" id="vehicleLine">Vehicle: Car • Rate: 55p per mile</p><button class="btn" onclick="startShift()">Start Shift</button><div class="card"><div class="row"><span>Today</span><strong id="todaySummary">0.00 mi</strong></div><div class="row"><span>Saved shifts</span><strong id="shiftCount">0</strong></div></div></section>
