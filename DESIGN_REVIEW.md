@@ -18,7 +18,7 @@ If the answer to all five is **yes**, lock the screen and move on.
 |----|--------|--------|
 | MP-001 | First Impression | 🔒 Locked · v2.8 |
 | MP-002 | Personalising MilePilot | ✅ Complete · v3.5 |
-| MP-003 | The MilePilot Promise | In progress · v4.2 |
+| MP-003 | The MilePilot Promise | 🔒 Locked · v4.4 |
 | MP-004 | Permissions | In progress · v4.1 |
 | MP-005 | Dashboard | Planned |
 | MP-006 | Tracking | Planned |
