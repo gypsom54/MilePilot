@@ -176,9 +176,24 @@ End Shift → celebration overlay, report ready, share PDF.
 
 ---
 
+## Platform vision — beyond mileage tracking
+
+MilePilot stays beautifully simple at launch, with a clear path to a full business platform for self-employed drivers.
+
+| Stage | Focus |
+|-------|--------|
+| **Today** | GPS tracking + automated mileage reports |
+| **Next** | Business Insights — driving trends, busiest days, HMRC estimates (MP-018 ✅) |
+| **Then** | **Business Manager** — expenses, fuel, parking, tolls, maintenance, income, accountant-ready exports |
+| **Eventually** | **AI assistant** — "How much can I claim this month?", fuel spend by quarter, tax set-aside, most profitable week |
+
+Principle: **save the driver time, never add admin.**
+
+---
+
 ## Sprint 5 — Business Intelligence ⭐⭐⭐⭐⭐
 
-Earning patterns, best hours, year-to-date savings — business coach.
+Earning patterns, best hours, year-to-date savings — business coach. **MP-018 v7.7.0** delivers dashboard intelligence; ongoing polish in v7.7.1+ (live route hero, sat-nav expand, end-shift ceremony).
 
 ---
 
