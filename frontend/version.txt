@@ -1,3 +1,4 @@
-MilePilot Welcome Screen v2.0
+MilePilot Welcome Screen v2.1
 Build: 2026-06-27
+Typing animation fix included.
 If you see this, the NEW files uploaded correctly.

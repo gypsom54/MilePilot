@@ -127,7 +127,8 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 </div>
 <nav class="nav" id="nav"><button id="navHome" onclick="goHome()"><span>⌂</span>Dashboard</button><button id="navReports" onclick="showReports()"><span>▤</span>Reports</button><button id="navHistory" onclick="showHistory()"><span>◷</span>History</button><button id="navSettings" onclick="showSettings()"><span>⚙</span>Settings</button></nav><div class="toast" id="toast"></div><div id="printReport"></div>
 <script>
-const APP_VERSION='2.0';const s=localStorage.getItem('mp_api_base');if(s)return s.replace(/\/$/,'');if(location.hostname==='localhost'||location.hostname==='127.0.0.1')return 'http://localhost:8787';return 'https://api.milepilot.uk'}
+const APP_VERSION='2.1';
+function getApiBase(){const s=localStorage.getItem('mp_api_base');if(s)return s.replace(/\/$/,'');if(location.hostname==='localhost'||location.hostname==='127.0.0.1')return 'http://localhost:8787';return 'https://api.milepilot.uk'}
 const API_BASE=getApiBase();
 const vehicles={car:{label:'Car',rate:.55},van:{label:'Van',rate:.55},bicycle:{label:'Bicycle',rate:.20},motorcycle:{label:'Motorcycle',rate:.24}};
 let driver=localStorage.getItem('mp_driver')||'',vehicle=localStorage.getItem('mp_vehicle')||'car',period='day';
