@@ -1,6 +1,6 @@
 /**
- * MilePilot Report Engine — MP-012 Premium Document v9
- * Ship-ready polish · coach intelligence · brand signature footer
+ * MilePilot Report Engine — MP-012 Premium Document v10 (LOCKED)
+ * PDF layout locked — future polish via backlog only
  */
 
 import PDFDocument from "pdfkit";
@@ -39,7 +39,8 @@ export const VEHICLE_LABELS = {
   motorcycle: "Motorcycle",
 };
 
-export const REPORT_VERSION = "MP-012-pdf-v9";
+export const REPORT_VERSION = "MP-012-pdf-v10";
+export const PDF_LAYOUT_LOCKED = true;
 const APP_URL = "https://app.milepilot.uk";
 const API_URL = "https://milepilot-production.up.railway.app";
 const SITE_URL = "www.milepilot.uk";
@@ -588,11 +589,11 @@ export function buildAiSummary(a) {
 
 const PDF = {
   margin: 56,
-  headerH: 52,
+  headerH: 48,
   footerH: 72,
   unit: 8,
-  sectionGap: 28,
-  pagePad: 28,
+  sectionGap: 24,
+  pagePad: 24,
   cardFill: "#EEF4FF",
   cardStroke: "#C8DAF5",
 };
@@ -710,8 +711,8 @@ function drawCompactHeader(doc, margin, contentW, pageW) {
   const wordX = margin + (contentW - wordW) / 2;
   doc.fillColor(BRAND.white).text("Mile ", wordX, 14, { continued: true, lineBreak: false });
   doc.fillColor(BRAND.blue).text("Pilot", { lineBreak: false });
-  drawBrandPulse(doc, wordX + (wordW - 96) / 2, 38, 96);
-  return PDF.headerH + PDF.unit * 2;
+  drawBrandPulse(doc, wordX + (wordW - 96) / 2, 36, 96);
+  return PDF.headerH + PDF.unit;
 }
 
 function drawNavySectionBar(doc, title, margin, y, contentW) {
@@ -776,10 +777,10 @@ function drawDashboardPage(doc, a, margin, contentW, pageW, pageH) {
   let y = drawCompactHeader(doc, margin, contentW, pageW);
 
   doc.fillColor(BRAND.muted).font("Helvetica").fontSize(9).text(a.generatedAt, margin, y, { width: contentW, align: "center" });
-  y += PDF.unit * 2;
+  y += PDF.unit * 1.5;
 
   const miNum = fmtMi(a.totals.mi);
-  const miSize = fitFontSize(doc, miNum, contentW - 20, 80, 44);
+  const miSize = fitFontSize(doc, miNum, contentW - 20, 84, 46);
   doc.fillColor(BRAND.blue).font("Helvetica-Bold").fontSize(miSize).text(miNum, margin, y, { width: contentW, align: "center" });
   y += miSize + PDF.unit + 10;
 
@@ -794,25 +795,25 @@ function drawDashboardPage(doc, a, margin, contentW, pageW, pageH) {
   y += PDF.unit * 1.5 + 4;
   const todayLabel = a.period === "Daily" ? "Today" : a.period === "Weekly" ? "This Week" : a.period;
   doc.fillColor(BRAND.muted).font("Helvetica").fontSize(10).text(todayLabel, margin, y, { width: contentW, align: "center" });
-  y += PDF.unit * 3;
+  y += PDF.unit * 2;
 
   y = drawThinRule(doc, margin, y, contentW, BRAND.blue);
 
   const name = firstName(a.driver);
   doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(12).text(periodPraise(a.period, name), margin, y, { width: contentW, align: "center" });
-  y += PDF.unit * 2.5;
+  y += PDF.unit * 2;
   if (a.totals.journeys > 0) {
     doc.fillColor(BRAND.muted).font("Helvetica").fontSize(10).text(periodMileageLine(a), margin, y, { width: contentW, align: "center", lineGap: 1.2 });
-    y += doc.heightOfString(periodMileageLine(a), { width: contentW }) + PDF.unit * 2;
+    y += doc.heightOfString(periodMileageLine(a), { width: contentW }) + PDF.unit * 1.5;
   } else {
     doc.fillColor(BRAND.muted).font("Helvetica").fontSize(10).text("No business journeys recorded yet.", margin, y, { width: contentW, align: "center" });
-    y += PDF.unit * 3;
+    y += PDF.unit * 2;
   }
 
   doc.fillColor(BRAND.muted).font("Helvetica").fontSize(8).text("Estimated HMRC claim", margin, y, { width: contentW, align: "center" });
   y += PDF.unit * 1.5;
   doc.fillColor(BRAND.greenDark).font("Helvetica-Bold").fontSize(24).text(money(a.totals.hmrc), margin, y, { width: contentW, align: "center" });
-  y += PDF.unit * 4;
+  y += PDF.unit * 3;
 
   if (collectRoutePoints(a.shifts).length >= 2) {
     y = drawMiniRouteSparkline(doc, a.shifts, margin, contentW, y);
@@ -865,15 +866,22 @@ function drawCoachIntelligence(doc, intel, margin, contentW, y) {
   return y + boxH + PDF.sectionGap;
 }
 
-function drawJourneyWalletItem(doc, s, margin, contentW, y) {
-  const cx = margin + PDF.unit * 2;
-  doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(13).text(fmtClock(s.startISO), cx, y);
-  y += 18;
-  doc.fillColor(BRAND.blue).font("Helvetica-Bold").fontSize(13).text(`${fmtMi(s.miles)} miles`, cx, y);
-  y += 16;
-  doc.fillColor(BRAND.muted).font("Helvetica").fontSize(10).text(fmtDurationShort(s.seconds), cx, y);
-  y += 16;
-  return drawThinRule(doc, margin, y, contentW, "#DDE6F2") + PDF.unit;
+function drawJourneyTimelineCard(doc, s, margin, contentW, y) {
+  const cardH = 76;
+  const cx = margin + PDF.unit * 2.5;
+  doc.roundedRect(margin, y, contentW, cardH, 5).fill(PDF.cardFill).strokeColor(PDF.cardStroke).lineWidth(0.5).stroke();
+
+  let iy = y + PDF.unit * 1.5;
+  doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(13).text(fmtClock(s.startISO), cx, iy);
+  iy += 15;
+  doc.fillColor(BRAND.navy).font("Helvetica-Bold").fontSize(7.5).text("JOURNEY", cx, iy, { characterSpacing: 0.9 });
+  iy += 11;
+  doc.fillColor(BRAND.blue).font("Helvetica-Bold").fontSize(13).text(`${fmtMi(s.miles)} miles`, cx, iy);
+  iy += 14;
+  doc.fillColor(BRAND.muted).font("Helvetica").fontSize(10).text(fmtDurationShort(s.seconds), cx, iy);
+
+  y += cardH + PDF.unit;
+  return drawThinRule(doc, margin, y, contentW, "#DDE6F2") + PDF.unit * 0.5;
 }
 
 function drawJourneyTimeline(doc, a, margin, contentW, y, pageW) {
@@ -883,15 +891,15 @@ function drawJourneyTimeline(doc, a, margin, contentW, y, pageW) {
     return y + 56 + PDF.sectionGap;
   }
 
-  a.shifts.forEach((s, idx) => {
-    if (y + 70 > footerTop(doc.page.height) - PDF.footerH) {
+  a.shifts.forEach((s) => {
+    if (y + 90 > footerTop(doc.page.height) - PDF.footerH) {
       drawFooter(doc, a, margin, contentW);
       doc.addPage({ margin: 0 });
       drawPageWatermark(doc, pageW, doc.page.height);
       y = drawCompactHeader(doc, margin, contentW, pageW) + PDF.pagePad;
       y = drawNavySectionBar(doc, "Journeys", margin, y, contentW);
     }
-    y = drawJourneyWalletItem(doc, s, margin, contentW, y);
+    y = drawJourneyTimelineCard(doc, s, margin, contentW, y);
   });
   return y + PDF.sectionGap;
 }
@@ -1038,8 +1046,9 @@ function drawAccountantPage(doc, a, margin, contentW, y, qrBuffer) {
   doc.fillColor(BRAND.muted).font("Helvetica").fontSize(8).text("Professional record suitable for bookkeeping and HMRC submissions.", margin, y, { width: contentW * 0.62 });
   const qrX = margin + contentW - 72;
   doc.image(qrBuffer, qrX, y - 4, { width: 64, height: 64 });
-  doc.fillColor(BRAND.blue).font("Helvetica-Bold").fontSize(7).text("Verify Report", qrX - 4, y + 64, { width: 72, align: "center" });
-  y += PDF.unit * 10;
+  doc.fillColor(BRAND.muted).font("Helvetica-Bold").fontSize(7).text("Verified", qrX - 4, y + 64, { width: 72, align: "center", characterSpacing: 0.6 });
+  doc.fillColor(BRAND.greenDark).font("Helvetica-Bold").fontSize(6.5).text("✓ Authentic MilePilot Report", qrX - 8, y + 74, { width: 80, align: "center" });
+  y += PDF.unit * 11;
 
   const rows = [
     ["Report ID", a.reportId],
@@ -1072,25 +1081,11 @@ function drawAccountantPage(doc, a, margin, contentW, y, qrBuffer) {
     return y + PDF.sectionGap;
   }
 
-  a.shifts.forEach((s, i) => {
-    doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(8.5).text(
-      `${fmtClock(s.startISO)} → ${fmtClock(s.endISO)}`,
-      margin,
-      y
-    );
-    doc.fillColor(BRAND.muted).font("Helvetica").fontSize(8).text(
-      `${fmtMi(s.miles)} mi · ${fmtDurationShort(s.seconds)} · BUSINESS`,
-      margin + contentW * 0.45,
-      y,
-      { width: contentW * 0.55, align: "right" }
-    );
-    y += 16;
-    if (i < a.shifts.length - 1) {
-      doc.moveTo(margin, y - 4).lineTo(margin + contentW, y - 4).strokeColor("#F0F4FA").lineWidth(0.5).stroke();
-    }
+  a.shifts.forEach((s) => {
+    y = drawJourneyTimelineCard(doc, s, margin, contentW, y);
   });
 
-  y += PDF.unit * 2;
+  y += PDF.unit;
   doc.fillColor(BRAND.greenDark).font("Helvetica-Bold").fontSize(9).text("✓ Verified · Authentic MilePilot report", margin, y);
   return y + PDF.sectionGap;
 }
