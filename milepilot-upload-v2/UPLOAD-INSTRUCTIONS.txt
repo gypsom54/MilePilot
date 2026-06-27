@@ -1,30 +1,22 @@
-MilePilot — UPLOAD v6.0.4
+MilePilot — UPLOAD v6.0.5
 =========================
 
-DIRECT ZIP DOWNLOAD
--------------------
-https://github.com/gypsom54/MilePilot/raw/cursor/mp-008-reports-premium-ae00/MilePilot-UPLOAD-v6.0.4.zip
+DOWNLOAD
+--------
+https://github.com/gypsom54/MilePilot/raw/cursor/mp-008-reports-premium-ae00/MilePilot-UPLOAD-v6.0.5.zip
 
-CHECK YOU HAVE THE RIGHT VERSION
---------------------------------
-After upload, open: https://app.milepilot.uk/version.txt
+CHECK VERSION
+-------------
+https://app.milepilot.uk/version.txt
+Must show: MilePilot OS v6.0.5 — email API fix
 
-Must show: MilePilot OS v6.0.4 — promise button fix
+WHAT IS FIXED
+-------------
+- App now connects to Railway email server (not broken api.milepilot.uk)
+- Clearer error if Resend API key needs updating on Railway
 
-If it still shows v6.0.0 or v6.0.1, the new files did not upload.
+EMAIL STILL NEEDS (one-time on Railway)
+---------------------------------------
+Variable: RESEND_API_KEY = your key from resend.com (starts with re_)
 
-WHAT IS FIXED IN v6.0.4
------------------------
-- Faint "Your business. On auto pilot." no longer overlaps the Promise button
-- Hidden MP-00x version badges on onboarding screens
-- Vehicle screen button shows "Select your vehicle" clearly
-- Reports premium polish (MP-008)
-
-UPLOAD STEPS
-------------
-1. Download zip link above
-2. Unzip — 6 files inside
-3. Cloudflare → milepilot-app → Upload assets → all 6 files → Deploy
-4. Open https://app.milepilot.uk/version.txt to confirm v6.0.4
-
-APP LINK: https://app.milepilot.uk
+Test: https://milepilot-production.up.railway.app/health
