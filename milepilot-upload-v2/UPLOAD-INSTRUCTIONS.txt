@@ -1,55 +1,30 @@
-MilePilot — UPLOAD v6.0.3
+MilePilot — UPLOAD v6.0.4
 =========================
 
-USE THIS FOLDER ONLY — upload to Cloudflare Pages (Direct Upload).
+DIRECT ZIP DOWNLOAD
+-------------------
+https://github.com/gypsom54/MilePilot/raw/cursor/mp-008-reports-premium-ae00/MilePilot-UPLOAD-v6.0.4.zip
 
-YOUR APP LINKS (always use these)
----------------------------------
-  App:     https://app.milepilot.uk
-  Backup:  https://milepilot-app.pages.dev
-  Check:   https://app.milepilot.uk/version.txt
+CHECK YOU HAVE THE RIGHT VERSION
+--------------------------------
+After upload, open: https://app.milepilot.uk/version.txt
 
-After upload, version.txt MUST show:
-  MilePilot OS v6.0.3 — MP-008 Reports + email fix
+Must show: MilePilot OS v6.0.4 — promise button fix
 
-DIRECT ZIP DOWNLOAD (use this link)
------------------------------------
-  https://github.com/gypsom54/MilePilot/raw/cursor/mp-008-reports-premium-ae00/MilePilot-UPLOAD-v6.0.3.zip
+If it still shows v6.0.0 or v6.0.1, the new files did not upload.
 
-1. Open the link above on your phone or computer
-2. Download the zip
-3. Unzip it — you get this folder with 6 files inside
-4. Upload all 6 files to Cloudflare (see below)
+WHAT IS FIXED IN v6.0.4
+-----------------------
+- Faint "Your business. On auto pilot." no longer overlaps the Promise button
+- Hidden MP-00x version badges on onboarding screens
+- Vehicle screen button shows "Select your vehicle" clearly
+- Reports premium polish (MP-008)
 
-FILES TO UPLOAD (all 6 in this folder)
----------------------------------------
-  index.html
-  manifest.json
-  icon.svg
-  service-worker.js
-  version.txt
-  _headers
+UPLOAD STEPS
+------------
+1. Download zip link above
+2. Unzip — 6 files inside
+3. Cloudflare → milepilot-app → Upload assets → all 6 files → Deploy
+4. Open https://app.milepilot.uk/version.txt to confirm v6.0.4
 
-HOW TO UPLOAD
--------------
-1. Cloudflare Dashboard → Workers & Pages → milepilot-app
-2. Create deployment → Upload assets
-3. Select ALL 6 files from this folder
-4. Deploy
-
-OPEN ON YOUR PHONE
-------------------
-  https://app.milepilot.uk
-
-WHAT'S IN v6.0.3
-----------------
-- Reports screen premium polish (MP-008)
-- No popup when opening Reports — use Automatic reports card instead
-- Stay Updated screen restyled to match MilePilot branding
-- Clearer message if email server is unavailable
-- Backend: improved PDF email attachment handling
-
-EMAIL NOTE
-----------
-Report emails need the backend running at api.milepilot.uk with
-RESEND_API_KEY set on Railway. If emails fail, use Save / Print PDF.
+APP LINK: https://app.milepilot.uk

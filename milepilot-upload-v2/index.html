@@ -160,8 +160,10 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 #knowYou .premium-btn.is-ready{background:linear-gradient(180deg,#1E88FF 0%,#0D6BFF 50%,#005FE8 100%);color:#fff;box-shadow:0 8px 24px rgba(13,107,255,.26),inset 0 1px 0 rgba(255,255,255,.12);cursor:pointer}
 #knowYou .premium-btn.is-ready:hover{filter:brightness(1.03);box-shadow:0 10px 28px rgba(13,107,255,.3),inset 0 1px 0 rgba(255,255,255,.12)}
 #knowYou .premium-btn.is-ready:active{transform:scale(.985);filter:brightness(.98);box-shadow:0 4px 16px rgba(13,107,255,.22),inset 0 1px 0 rgba(255,255,255,.08)}
-.onboard-version{position:absolute;left:0;right:0;bottom:max(12px,env(safe-area-inset-bottom));text-align:center;font-size:9px;font-weight:500;letter-spacing:.08em;color:rgba(143,168,201,.35);z-index:2}
 .brand-signature{position:absolute;left:0;right:0;bottom:max(34px,calc(env(safe-area-inset-bottom) + 22px));text-align:center;z-index:2;padding:0 28px;opacity:0;transition:opacity .5s cubic-bezier(.22,1,.36,1);pointer-events:none}
+#promise .brand-signature{position:static;bottom:auto;left:auto;right:auto;padding:0;margin:0 0 18px;opacity:0;max-height:0;overflow:hidden;transition:opacity .5s cubic-bezier(.22,1,.36,1),max-height .5s cubic-bezier(.22,1,.36,1),margin .5s cubic-bezier(.22,1,.36,1)}
+#promise .brand-signature.is-visible{opacity:1;max-height:48px;margin:0 0 18px}
+#promise .onboard-foot{padding-bottom:max(8px,env(safe-area-inset-bottom))}
 .brand-signature.is-visible{opacity:1}
 .brand-signature-pulse{width:min(128px,42vw);height:var(--brand-pulse-height);margin:0 auto 9px;border-radius:999px;background:linear-gradient(90deg,transparent 0%,rgba(77,163,255,.28) 20%,rgba(110,180,255,.72) 50%,rgba(77,163,255,.28) 80%,transparent 100%);box-shadow:0 0 22px rgba(13,107,255,.2),0 0 8px rgba(13,107,255,.1);animation:brandPulseGlow var(--brand-pulse-alive) ease-in-out infinite}
 .brand-signature-text{margin:0;font-size:11px;font-weight:500;letter-spacing:.05em;line-height:1.35;color:rgba(143,168,201,.52);-webkit-font-smoothing:antialiased}
@@ -394,7 +396,7 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 <button type="button" class="vehicle-card" data-vehicle="bicycle" onclick="selectVehicle('bicycle')"><div class="vehicle-icon"><svg viewBox="0 0 24 24"><circle cx="6" cy="17" r="2"/><circle cx="18" cy="17" r="2"/><path d="M6 17l4-8 3 3 2-4 3 9"/></svg></div><div class="vehicle-copy"><strong>Bicycle</strong><span class="vehicle-tag">City delivery</span></div><span class="vehicle-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"/></svg></span></button>
 </div></div>
 </div>
-<div class="knowYou-foot"><button class="btn premium-btn" id="knowYouContinue" onclick="confirmVehicle()" disabled>Continue →</button></div>
+<div class="knowYou-foot"><button class="btn premium-btn" id="knowYouContinue" onclick="confirmVehicle()" disabled>Select your vehicle</button></div>
 </div>
 <div class="onboard-version">MP-002 ✅ Complete · v3.5</div>
 </section>
@@ -418,16 +420,14 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 </ul>
 </div>
 <div class="onboard-foot">
-<button class="btn premium-btn" id="promiseContinue" onclick="startDriving()" disabled>Let's Get Started →</button>
-</div>
-</div>
 <div class="brand-signature" id="promiseSignature" aria-hidden="true">
 <div class="brand-signature-pulse"></div>
 <p class="brand-signature-text">Your business. <span class="blue">On auto pilot.</span></p>
 </div>
-<div class="onboard-version">MP-003 🔒 Locked · Final</div>
+<button class="btn premium-btn" id="promiseContinue" onclick="startDriving()" disabled>Let's Get Started →</button>
+</div>
+</div>
 </section>
-<!-- MP-004 Location Permission — 🔒 LOCKED. Copy final. See VOICE_GUIDE.md -->
 <section id="permissions" class="screen" data-mp="MP-004" data-locked="true">
 <div class="onboard-bg" aria-hidden="true">
 <div class="onboard-glow onboard-glow-1"></div>
@@ -545,7 +545,7 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 </div>
 </div>
 </div>
-<div class="cc-version">MP-008 Reports · v6.0.3</div>
+<div class="cc-version">MilePilot v6.0.4</div>
 </section>
 <section id="tracking" class="screen"><div class="brand-row"><header class="brand-bar"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div></header><div class="gps-badge">GPS</div></div><h1 class="title">Tracking Active</h1><p class="sub" id="trackingVehicle">Vehicle: Car • Rate: 55p per mile</p><div class="metricGrid"><div class="metricBox"><strong id="liveMiles">0.00</strong><span>Miles</span></div><div class="metricBox"><strong id="liveTime">0h 00m</strong><span>Time</span></div><div class="metricBox"><strong id="liveClaim">£0.00</strong><span>Claim</span></div></div><div class="mapBox"><div class="gpsActions"><button onclick="requestGpsAgain()">Enable GPS</button><button class="secondary" onclick="centreMap()">Centre</button></div><div id="liveMap"></div><div class="mapHint" id="mapHint">Requesting location…</div></div><button class="btn red" onclick="endShift()">END SHIFT</button></section>
 <section id="reports" class="screen reports-screen"><header class="brand-bar"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div></header><div class="reports-body"><div class="reports-header"><h1 class="reports-title">Reports</h1><p class="reports-sub">Your driving summaries and PDF reports, ready whenever you need them.</p></div><div class="cc-card report-auto-card" id="reportAutoBanner"><h2 class="report-auto-heading">Automatic reports</h2><p class="report-auto-desc" id="reportAutoDesc">Every Sunday at 6:00pm, MilePilot will email your weekly driving summary and PDF report.</p><p class="report-auto-status" id="reportAutoStatus">Automatic reports are off</p></div><div class="report-tabs" role="tablist" aria-label="Report period"><button type="button" class="report-tab" id="pDay" role="tab" onclick="setPeriod('day')">Daily</button><button type="button" class="report-tab" id="pWeek" role="tab" onclick="setPeriod('week')">Weekly</button><button type="button" class="report-tab" id="pMonth" role="tab" onclick="setPeriod('month')">Monthly</button></div><div class="cc-card report-summary-card"><h2 class="report-period-title" id="mainReportTitle">Today</h2><div class="report-empty" id="reportEmpty"><p class="report-empty-title">No saved shifts yet.</p><p class="report-empty-sub">Start a shift and MilePilot will build your report automatically.</p></div><div class="cc-metrics" id="reportMetrics" hidden><div class="cc-metric"><span>Business Miles</span><strong id="reportMiles">0.0</strong></div><div class="cc-metric"><span>Driving Time</span><strong id="reportTime">0h</strong></div><div class="cc-metric"><span>Journeys</span><strong id="reportJourneys">0</strong></div><div class="cc-metric"><span>HMRC Estimate</span><strong id="reportClaim">£0.00</strong></div></div><div class="report-recent" id="reportRecent" hidden><h3 class="report-recent-title">Recent report details</h3><div id="reportRecentList"></div></div></div><div class="cc-card report-send-card"><h2 class="report-send-title">Send report</h2><p class="report-send-sub">Email this report as a professional PDF.</p><input id="reportEmail" placeholder="you@example.com" inputmode="email" aria-label="Email address"><button type="button" class="report-email-btn" onclick="emailReport(event)">Email PDF Report</button><button type="button" class="btn outline report-print-btn" onclick="printReport()">Save / Print PDF</button></div></div></section>
@@ -578,7 +578,7 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 </div>
 <div class="toast" id="toast"></div><div id="printReport"></div>
 <script>
-const APP_VERSION='6.0.3';
+const APP_VERSION='6.0.4';
 const UI_LOCKED=true;
 const TRACKING_ENGINE_V=1;
 const ENGINE={MIN_MOVE_M:6,MAX_JUMP_M:400,MAX_SPEED_MPS:67,STOP_SPEED_MPS:0.9,STOP_AFTER_MS:90000,ROUTE_MAX:500,ACC_MAX:120};

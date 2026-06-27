@@ -1,3 +1,3 @@
-MilePilot OS v6.0.3 — vehicle screen button fix
+MilePilot OS v6.0.4 — promise button fix
 Build: 2026-06-27
 Brand: Every business mile matters.
