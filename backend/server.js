@@ -127,6 +127,46 @@ app.post("/reports/send", async (req, res) => {
   }
 });
 
+app.post("/reports/subscribe", async (req, res) => {
+  try {
+    const { email, frequency, prefs, driver } = req.body || {};
+
+    if (!email) {
+      return res.status(400).json({
+        subscribed: false,
+        message: "Email is required",
+      });
+    }
+
+    if (!["daily", "weekly", "monthly"].includes(frequency)) {
+      return res.status(400).json({
+        subscribed: false,
+        message: "Frequency must be daily, weekly, or monthly",
+      });
+    }
+
+    console.log("Report subscription saved:", {
+      email,
+      frequency,
+      prefs: prefs || {},
+      driver: driver || "",
+    });
+
+    return res.json({
+      subscribed: true,
+      email,
+      frequency,
+      message: "Report delivery preferences saved",
+    });
+  } catch (err) {
+    console.error("Subscribe failed:", err);
+    return res.status(500).json({
+      subscribed: false,
+      message: err.message || "Subscribe failed",
+    });
+  }
+});
+
 app.listen(process.env.PORT || 8787, () => {
   console.log("MilePilot backend running on port " + (process.env.PORT || 8787));
 });

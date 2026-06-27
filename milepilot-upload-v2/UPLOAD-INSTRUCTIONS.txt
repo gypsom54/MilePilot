@@ -1,0 +1,63 @@
+MilePilot — UPLOAD v4.6.1 (onboarding flow fix)
+=================================================
+
+IMPORTANT: Upload ALL 5 files. Replace every file from the previous upload.
+
+WHY YOU MAY STILL SEE THE OLD FLOW
+----------------------------------
+The server may already have v4.6, but your browser can still open MP-003
+because old onboarding data is saved in localStorage (e.g. name "Jonathan").
+
+This v4.6.1 build automatically clears incomplete onboarding when the app
+version changes, so you start again at MP-001 after upload.
+
+ONBOARDING FLOW
+---------------
+  MP-001  Welcome (name entry)
+    ↓
+  MP-002  Vehicle selection
+    ↓
+  MP-003  The MilePilot Promise
+    ↓
+  MP-004  Location Permission
+    ↓
+  MP-005  Notification Permission
+    ↓
+  Dashboard
+
+FILES TO UPLOAD (all 5 in this folder)
+---------------------------------------
+  index.html
+  manifest.json
+  icon.svg
+  service-worker.js
+  version.txt
+
+STEP 1 — Upload to Cloudflare
+------------------------------
+1. Cloudflare Dashboard → Workers & Pages → MilePilot
+2. Create deployment → Upload assets
+3. Select ALL 5 files from THIS folder
+4. Deploy
+
+STEP 2 — Confirm upload worked
+-------------------------------
+Open:
+  https://app.milepilot.uk/version.txt
+
+You MUST see:
+  MilePilot OS v4.6.1 — Onboarding flow fix + stale state reset
+
+STEP 3 — Open the app
+----------------------
+  https://app.milepilot.uk
+
+Use Incognito OR hard refresh: Ctrl+Shift+R
+
+STEP 4 — Check the welcome screen badge
+----------------------------------------
+Bottom of MP-001 should say:
+  MP-001 🔒 Locked · App v4.6.1
+
+If you still see MP-003 first:
+  Settings → Reset onboarding
