@@ -1,3 +1,3 @@
-MilePilot OS v5.3.1 — GPS permission fix (Chrome + Safari)
+MilePilot OS v5.3.2 — Dashboard state fix (no default day off)
 Build: 2026-06-27
 Brand: Every business mile matters.

@@ -1,4 +1,4 @@
-MilePilot — UPLOAD v5.3.1
+MilePilot — UPLOAD v5.3.2
 =========================
 
 USE THIS FOLDER ONLY — upload to Cloudflare Pages (Direct Upload).
@@ -10,7 +10,7 @@ YOUR APP LINKS (always use these)
   Check:   https://app.milepilot.uk/version.txt
 
 After upload, version.txt MUST show:
-  MilePilot OS v5.3.1 — GPS permission fix (Chrome + Safari)
+  MilePilot OS v5.3.2 — Dashboard state fix (no default day off)
 
 FILES TO UPLOAD (all 6 in this folder)
 ---------------------------------------
@@ -32,12 +32,12 @@ OPEN ON YOUR PHONE
 ------------------
   https://app.milepilot.uk
 
-(NOT milepilot.co.uk — use milepilot.uk with app. at the start)
+(NOT milepilot.co.uk — use app. at the start)
 
-Hard refresh if needed: pull down to refresh on mobile, or use a private tab.
+Hard refresh if needed: private tab or pull to refresh.
 
-WHAT'S IN v5.3.1
+WHAT'S IN v5.3.2
 ----------------
-- Stay Updated — automatic reports prompt (after first shift)
-- Chrome GPS fix — location permission works like Safari
-- Command Centre + premium navigation
+- Dashboard no longer assumes day off on weekends / zero miles
+- Default state: Good afternoon + Ready to make every business mile count + Start Shift
+- Day off only when user explicitly selects it (future UI uses mp_day_off)
