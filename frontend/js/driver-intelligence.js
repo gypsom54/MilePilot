@@ -6,7 +6,7 @@
 (function (global) {
   'use strict';
 
-  const VERSION = 1;
+  const VERSION = 2;
 
   const future = {
     expenses: null,
@@ -370,14 +370,147 @@
     return ['Keep tracking — insights improve as you drive more business miles.'];
   }
 
+  function generateFeaturedInsight(ctx, mode) {
+    const { shifts, today, now, fmtShort } = ctx;
+    now = now || new Date();
+    const todayData = today || { mi: 0, sec: 0, hmrc: 0, journeys: 0, list: [] };
+    if (!todayData.mi || todayData.mi < 0.05) return null;
+    if (mode !== 'today_done' && mode !== 'evening') return null;
+
+    const candidates = [];
+    const wd = weekdayLabel(now);
+    const monthList = shiftsInPeriod(shifts, 'month', now);
+    const sameWdDays = groupByDay(monthList).filter((d) => new Date(d.date).getDay() === now.getDay());
+    if (sameWdDays.length >= 2) {
+      const todayKey = now.toDateString();
+      const todayDay = sameWdDays.find((d) => d.date === todayKey);
+      const maxOther = sameWdDays.reduce((a, b) => (b.miles > a.miles ? b : a));
+      if (todayDay && todayDay.miles >= maxOther.miles && todayDay.miles > 0) {
+        candidates.push({
+          text: 'Today was your busiest ' + wd + ' this month.',
+          priority: 12,
+        });
+      }
+    }
+
+    const lastWeek = new Date(now);
+    lastWeek.setDate(lastWeek.getDate() - 7);
+    const lastSame = dayTotals(shifts, lastWeek);
+    if (lastSame.mi > 0 && todayData.mi > 0) {
+      const pct = Math.round((todayData.mi / lastSame.mi - 1) * 100);
+      if (Math.abs(pct) >= 5) {
+        candidates.push({
+          text:
+            'You drove ' +
+            Math.abs(pct) +
+            '% ' +
+            (pct > 0 ? 'more' : 'fewer') +
+            ' than last ' +
+            wd +
+            '.',
+          priority: 11,
+        });
+      }
+    }
+
+    const peak = peakDrivingWindow(todayData.list);
+    if (peak) {
+      candidates.push({ text: 'Most of today\'s mileage came between ' + peak + '.', priority: 10 });
+    }
+
+    const month = buildMonthlyOverview(ctx);
+    if (month.hasData && month.prevMonth.mi > 0 && month.mi > month.prevMonth.mi) {
+      candidates.push({
+        text: 'You\'ve already claimed more business miles this month than last month.',
+        priority: 9,
+      });
+    }
+
+    const week = buildWeeklyHealth(ctx);
+    if (week.compareLastWeek != null && Math.abs(week.compareLastWeek) >= 8) {
+      candidates.push({
+        text:
+          'This week you\'ve driven ' +
+          Math.abs(week.compareLastWeek) +
+          '% ' +
+          (week.compareLastWeek > 0 ? 'more' : 'fewer') +
+          ' miles than last week.',
+        priority: 7,
+      });
+    }
+
+    candidates.sort((a, b) => b.priority - a.priority);
+    return candidates.length ? candidates[0].text : null;
+  }
+
+  function peakDrivingWindow(shiftList) {
+    if (!shiftList || !shiftList.length) return null;
+    const buckets = new Array(24).fill(0);
+    shiftList.forEach((s) => {
+      const start = new Date(s.startISO);
+      const end = new Date(s.endISO || s.startISO);
+      const mi = Number(s.miles) || 0;
+      const startH = start.getHours();
+      buckets[startH] += mi;
+      if (end.getHours() !== startH && mi > 0) {
+        buckets[end.getHours()] += mi * 0.25;
+      }
+    });
+    let bestStart = 0;
+    let bestSum = 0;
+    for (let h = 0; h < 22; h++) {
+      const sum = buckets[h] + buckets[h + 1] + buckets[h + 2];
+      if (sum > bestSum) {
+        bestSum = sum;
+        bestStart = h;
+      }
+    }
+    if (bestSum < 0.05) return null;
+    const fmtH = (h) => {
+      const suffix = h >= 12 ? 'pm' : 'am';
+      const hour12 = h % 12 === 0 ? 12 : h % 12;
+      return hour12 + suffix;
+    };
+    const endH = bestStart + 3;
+    return fmtH(bestStart) + ' and ' + fmtH(endH);
+  }
+
+  function buildDayRecap(ctx) {
+    const today = ctx.today || { mi: 0, sec: 0, hmrc: 0, journeys: 0 };
+    const hasData = today.journeys > 0 && today.mi >= 0.05;
+    return {
+      miles: today.mi,
+      hmrc: today.hmrc,
+      journeys: today.journeys,
+      seconds: today.sec,
+      hasData,
+    };
+  }
+
+  function shouldShowDayRecap(mode, recap) {
+    return mode === 'today_done' && recap.hasData;
+  }
+
   function analyse(ctx, mode) {
     const daily = buildDailyHealth(ctx);
     const weekly = buildWeeklyHealth(ctx);
     const weeklySummary = buildWeeklySummary(ctx);
     const monthly = buildMonthlyOverview(ctx);
+    const dayRecap = buildDayRecap(ctx);
     let insights = generateInsights(ctx, mode);
     if (!insights.length) insights = defaultInsight(mode, (ctx.shifts || []).length > 0);
-    return { daily, weekly, weeklySummary, monthly, insights, mode };
+    const featuredInsight = generateFeaturedInsight(ctx, mode) || insights[0] || null;
+    return {
+      daily,
+      weekly,
+      weeklySummary,
+      monthly,
+      dayRecap,
+      featuredInsight,
+      insights,
+      mode,
+      showDayRecap: shouldShowDayRecap(mode, dayRecap),
+    };
   }
 
   global.MPDriverIntelligence = {
@@ -388,7 +521,10 @@
     buildWeeklyHealth,
     buildWeeklySummary,
     buildMonthlyOverview,
+    buildDayRecap,
     generateInsights,
+    generateFeaturedInsight,
+    peakDrivingWindow,
     computeStreak,
     busiestDay,
     quietestDayThisWeek,
@@ -398,5 +534,6 @@
     dayTotals,
     shiftsInPeriod,
     periodStart,
+    shouldShowDayRecap,
   };
 })(typeof window !== 'undefined' ? window : global);

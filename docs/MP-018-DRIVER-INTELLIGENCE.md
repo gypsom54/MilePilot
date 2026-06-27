@@ -1,7 +1,34 @@
 # MP-018 — Driver Intelligence Dashboard (Phase 2)
 
-**Version:** v7.7.0  
-**Status:** Complete
+**Version:** v7.8.0  
+**Status:** Phase 2 active — Dashboard Intelligence
+
+## v7.8.0 — Day recap dashboard
+
+When the driver has completed shifts today (`today_done` mode):
+
+```
+Good evening, Jonathan 👋
+You drove
+142.6 business miles today
+
+Estimated HMRC claim    Journeys completed    You drove for
+£78.43                  19                    6h 42m
+
+AI Insight
+Today was your busiest Friday this month.
+```
+
+Featured insights (data-backed only):
+
+- Busiest [weekday] this month
+- X% more/fewer than last [weekday]
+- Peak driving window (e.g. 5pm and 8pm)
+- More miles this month than last month
+
+## Tracking policy
+
+Live tracking UI is **frozen** at v7.7.1. See `docs/TRACKING_FROZEN.md`.
 
 ## Objective
 
