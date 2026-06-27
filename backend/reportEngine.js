@@ -1,9 +1,10 @@
 /**
- * MilePilot Report Engine — MP-011 Premium Reports
- * PDF generation, email templates, MilePilot Intelligence
+ * MilePilot Report Engine — MP-012 Premium Experience
+ * PDF generation, email preview, MilePilot Insights, Driving Score
  */
 
 import PDFDocument from "pdfkit";
+import { createHash } from "crypto";
 
 export const BRAND = {
   navy: "#031126",
@@ -14,6 +15,7 @@ export const BRAND = {
   light: "#F8FBFF",
   border: "#DDE6F2",
   text: "#06112A",
+  green: "#10B981",
 };
 
 export const VEHICLE_RATES = {
@@ -30,7 +32,7 @@ export const VEHICLE_LABELS = {
   motorcycle: "Motorcycle",
 };
 
-export const REPORT_VERSION = "MP-011-premium-v2";
+export const REPORT_VERSION = "MP-012-premium-v3";
 
 function money(v) {
   return "£" + Number(v || 0).toFixed(2);
@@ -48,11 +50,17 @@ function fmtShiftTime(sec) {
   return `${h}h ${String(m % 60).padStart(2, "0")}m`;
 }
 
-function fmtHoursCompact(sec) {
+function fmtDurationShort(sec) {
   sec = Number(sec) || 0;
-  const m = Math.floor(sec / 60);
+  const m = Math.round(sec / 60);
+  if (m < 60) return `${m} min`;
   const h = Math.floor(m / 60);
-  return h ? `${h}h ${String(m % 60).padStart(2, "0")}m` : `${m}m`;
+  return `${h}h ${String(m % 60).padStart(2, "0")}m`;
+}
+
+function fmtClock(iso) {
+  if (!iso) return "—";
+  return new Date(iso).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", hour12: false });
 }
 
 function firstName(full) {
@@ -61,9 +69,35 @@ function firstName(full) {
   return n.split(/\s+/)[0];
 }
 
-function getWeekEndingDate(shifts) {
-  const now = new Date();
-  const d = new Date(now);
+function timeGreeting() {
+  const h = new Date().getHours();
+  if (h < 12) return "Good morning";
+  if (h < 17) return "Good afternoon";
+  return "Good evening";
+}
+
+function periodSubtitle(period) {
+  const map = {
+    Daily: "Another day complete.<br>Here's today's driving summary.",
+    Weekly: "Another week in the books.<br>Here's your driving summary.",
+    Monthly: "Another month complete.<br>Here's your business on the road.",
+    Annual: "What a year on the road.<br>Here's your driving story.",
+  };
+  return map[period] || "Here's your driving summary.";
+}
+
+function periodReportTitle(period) {
+  const map = {
+    Daily: "Daily Driving Report",
+    Weekly: "Weekly Driving Report",
+    Monthly: "Monthly Driving Report",
+    Annual: "Annual Driving Report",
+  };
+  return map[period] || `${period} Driving Report`;
+}
+
+function getWeekEndingDate() {
+  const d = new Date();
   const day = d.getDay();
   const daysUntilSunday = day === 0 ? 0 : 7 - day;
   d.setDate(d.getDate() + daysUntilSunday);
@@ -118,8 +152,45 @@ function busiestDay(shifts) {
   return days.reduce((a, b) => (b.miles > a.miles ? b : a));
 }
 
+function generateReportId(report, a) {
+  const raw = `${a.period}|${a.driver}|${new Date().toISOString().slice(0, 10)}|${a.totals.mi}`;
+  const hash = createHash("sha256").update(raw).digest("hex").slice(0, 8).toUpperCase();
+  const prefix = { Daily: "DY", Weekly: "WK", Monthly: "MO", Annual: "YR" }[a.period] || "RP";
+  return `MP-${new Date().toISOString().slice(0, 10).replace(/-/g, "")}-${prefix}-${hash}`;
+}
+
+function weekGoalMiles(a, report) {
+  if (Number(report.weekGoal) > 0) return Number(report.weekGoal);
+  if (a.prevTotals.mi > 0) return Math.ceil(a.prevTotals.mi * 1.15);
+  return Math.max(Math.ceil(a.totals.mi * 1.5), 100);
+}
+
+function computeDrivingScore(a, report) {
+  const { shifts, totals, workingDays, period } = a;
+  const expectedDays = period === "Daily" ? 1 : period === "Weekly" ? 5 : period === "Monthly" ? 20 : 250;
+  const consistency = Math.min(workingDays / expectedDays, 1) * 25;
+  const goal = period === "Weekly" ? weekGoalMiles(a, report) : Math.max(totals.mi * 1.2, 10);
+  const mileage = Math.min(totals.mi / goal, 1) * 25;
+  const withRoute = shifts.filter((s) => (s.route || s.routePoints || []).length > 1).length;
+  const tracking = shifts.length ? (withRoute / shifts.length) * 25 : 0;
+  const complete = shifts.filter((s) => Number(s.miles) > 0 && s.endISO).length;
+  const completion = shifts.length ? (complete / shifts.length) * 25 : 0;
+  const score = Math.round(consistency + mileage + tracking + completion);
+  const label = score >= 90 ? "Excellent" : score >= 75 ? "Great" : score >= 60 ? "Good" : "Building";
+  return {
+    score: Math.min(score, 100),
+    label,
+    factors: [
+      { name: "Consistency", pts: Math.round(consistency) },
+      { name: "Mileage", pts: Math.round(mileage) },
+      { name: "Tracking", pts: Math.round(tracking) },
+      { name: "Shift completion", pts: Math.round(completion) },
+    ],
+  };
+}
+
 export function analyseReport(report) {
-  const shifts = report.shifts || [];
+  const shifts = (report.shifts || []).slice().sort((a, b) => new Date(a.startISO) - new Date(b.startISO));
   const prev = report.previousPeriod || {};
   const totals = sumShifts(shifts);
   const prevTotals = {
@@ -143,10 +214,21 @@ export function analyseReport(report) {
   }
 
   const miDiff = totals.mi - prevTotals.mi;
+  const hmrcDiff = totals.hmrc - prevTotals.hmrc;
   const avgShiftPrev = prevTotals.journeys ? prevTotals.sec / prevTotals.journeys : 0;
   const avgShiftDeltaMin = avgShiftPrev > 0 ? Math.round((avgShiftSec - avgShiftPrev) / 60) : 0;
+  const avgSpeedMph = totals.sec > 0 ? totals.mi / (totals.sec / 3600) : 0;
 
-  return {
+  const now = new Date();
+  const generatedAt = now.toLocaleDateString("en-GB", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+  const generatedAtTime = now.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
+
+  const analysis = {
     totals,
     prevTotals,
     shifts,
@@ -162,114 +244,106 @@ export function analyseReport(report) {
     hmrcRate,
     weekComparePct,
     miDiff,
+    hmrcDiff,
     avgShiftDeltaMin,
-    weekEnding: getWeekEndingDate(shifts),
-    generatedAt: new Date().toLocaleDateString("en-GB", {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    }),
+    avgSpeedMph,
+    weekEnding: getWeekEndingDate(),
+    generatedAt,
+    generatedAtTime,
+    weekGoal: weekGoalMiles({ prevTotals, totals, period: report.period || "Daily" }, report),
   };
+
+  analysis.reportId = generateReportId(report, analysis);
+  analysis.drivingScore = computeDrivingScore(analysis, report);
+
+  return analysis;
 }
 
 export function buildIntelligence(a) {
-  const lines = [];
-  const { totals, shifts, busiest, longest, weekComparePct, miDiff, avgShiftDeltaMin, avgMilesDay, workingDays } = a;
+  const items = [];
+  const { totals, shifts, busiest, longest, weekComparePct, miDiff, hmrcDiff, avgMilesShift, avgSpeedMph, period, prevTotals } = a;
 
-  if (busiest && totals.mi > 0) {
+  if (longest && shifts.length) {
+    const day = new Date(longest.startISO).toLocaleDateString("en-GB", { weekday: "long" });
+    if (period === "Daily") {
+      items.push({ icon: "🏆", text: `Your longest shift today was ${fmtShiftTime(longest.seconds)}.` });
+    } else {
+      items.push({ icon: "🏆", text: `${day} was your longest shift this ${period === "Weekly" ? "week" : "period"} (${fmtShiftTime(longest.seconds)}).` });
+    }
+  }
+
+  if (prevTotals.mi > 0 && Math.abs(miDiff) >= 0.5) {
+    const pct = Math.round((totals.mi / prevTotals.mi - 1) * 100);
+    if (Math.abs(pct) >= 5) {
+      items.push({
+        icon: "📈",
+        text: `You drove ${Math.abs(pct)}% ${pct > 0 ? "further" : "less"} than the previous ${period === "Daily" ? "day" : "period"}.`,
+      });
+    } else {
+      items.push({
+        icon: "📈",
+        text: `You drove ${Math.abs(miDiff).toFixed(1)} ${miDiff > 0 ? "more" : "fewer"} business miles than the previous ${period === "Daily" ? "day" : "period"}.`,
+      });
+    }
+  }
+
+  if (avgMilesShift > 0 && shifts.length >= 2) {
+    items.push({ icon: "🚗", text: `Average journey: ${avgMilesShift.toFixed(1)} miles · ${fmtDurationShort(avgMilesShift > 0 ? a.avgShiftSec : 0)}.` });
+  }
+
+  if (avgSpeedMph > 2 && totals.sec > 300) {
+    items.push({ icon: "🚗", text: `Average speed: ${avgSpeedMph.toFixed(0)} mph across your business journeys.` });
+  }
+
+  if (busiest && totals.mi > 0 && period !== "Daily") {
     const pct = Math.round((busiest.miles / totals.mi) * 100);
-    lines.push(`${busiest.day} was your busiest day, accounting for ${pct}% of your business mileage.`);
+    items.push({ icon: "📅", text: `${busiest.day} was your best driving day (${pct}% of mileage).` });
   }
 
-  if (weekComparePct !== null && Math.abs(weekComparePct) >= 5) {
-    lines.push(
-      weekComparePct > 0
-        ? `You drove ${Math.abs(miDiff).toFixed(1)} more business miles than the previous period (+${weekComparePct}%).`
-        : `You drove ${Math.abs(miDiff).toFixed(1)} fewer business miles than the previous period (${weekComparePct}%).`
-    );
-  } else if (miDiff > 0.5 && a.prevTotals.mi > 0) {
-    lines.push(`You drove ${miDiff.toFixed(1)} more business miles than the previous period.`);
+  if (hmrcDiff > 0.5 && prevTotals.hmrc > 0) {
+    items.push({ icon: "💰", text: `Estimated mileage claim increased by ${money(hmrcDiff)} vs the previous period.` });
+  } else if (weekComparePct !== null && weekComparePct > 10) {
+    items.push({ icon: "💰", text: `Strong ${period.toLowerCase()} — ${weekComparePct}% more business miles recorded.` });
   }
 
-  if (avgShiftDeltaMin !== 0 && shifts.length >= 2 && a.prevTotals.journeys > 0) {
-    lines.push(
-      avgShiftDeltaMin > 0
-        ? `Your average shift length increased by ${avgShiftDeltaMin} minutes.`
-        : `Your average shift length decreased by ${Math.abs(avgShiftDeltaMin)} minutes.`
-    );
+  if (longest && totals.hmrc > 0 && period !== "Daily") {
+    items.push({ icon: "💰", text: `Highest claim shift: ${money(longest.hmrc)} on ${new Date(longest.startISO).toLocaleDateString("en-GB", { weekday: "long" })}.` });
   }
 
-  if (longest && totals.hmrc > 0) {
-    const topDay = new Date(longest.startISO).toLocaleDateString("en-GB", { weekday: "long" });
-    lines.push(`${topDay} produced your highest estimated mileage claim at ${money(longest.hmrc)}.`);
-  }
-
-  if (workingDays > 0 && avgMilesDay > 0) {
-    lines.push(`You averaged ${avgMilesDay.toFixed(1)} business miles per working day across ${workingDays} day${workingDays === 1 ? "" : "s"}.`);
-  }
-
-  if (longest && longest.seconds > 0) {
-    lines.push(`Your longest continuous shift was ${fmtShiftTime(longest.seconds)}.`);
-  }
-
-  return lines.slice(0, 5);
-}
-
-function periodReportTitle(period) {
-  const map = {
-    Daily: "Daily Driving Report",
-    Weekly: "Weekly Driving Report",
-    Monthly: "Monthly Driving Report",
-    Annual: "Annual Driving Report",
-  };
-  return map[period] || `${period} Driving Report`;
-}
-
-function drawRouteMap(doc, shifts, x, y, w, h) {
-  const points = [];
-  shifts.forEach((s) => {
-    (s.route || s.routePoints || []).forEach((p) => {
-      const lat = p.lat ?? p.latitude;
-      const lon = p.lon ?? p.longitude ?? p.lng;
-      if (lat != null && lon != null) points.push({ lat, lon });
-    });
-  });
-  if (points.length < 2) return false;
-
-  const lats = points.map((p) => p.lat);
-  const lons = points.map((p) => p.lon);
-  const minLat = Math.min(...lats);
-  const maxLat = Math.max(...lats);
-  const minLon = Math.min(...lons);
-  const maxLon = Math.max(...lons);
-  const latSpan = maxLat - minLat || 0.001;
-  const lonSpan = maxLon - minLon || 0.001;
-
-  doc.roundedRect(x, y, w, h, 12).fillAndStroke("#EEF4FF", BRAND.border);
-  doc.save();
-  doc.rect(x + 8, y + 8, w - 16, h - 16).clip();
-
-  let started = false;
-  points.forEach((p) => {
-    const px = x + 12 + ((p.lon - minLon) / lonSpan) * (w - 24);
-    const py = y + h - 12 - ((p.lat - minLat) / latSpan) * (h - 24);
-    if (!started) {
-      doc.moveTo(px, py);
-      started = true;
-    } else doc.lineTo(px, py);
-  });
-  doc.strokeColor(BRAND.blue).lineWidth(2.2).stroke();
-  doc.restore();
-  return true;
+  return items.slice(0, 5).map(({ icon, text }) => ({ icon, text }));
 }
 
 function ensureSpace(doc, y, need, margin) {
-  if (y + need > doc.page.height - margin) {
-    doc.addPage();
-    return margin;
+  const foot = 72;
+  if (y + need > doc.page.height - foot) {
+    doc.addPage({ margin: 0 });
+    return margin + 20;
   }
   return y;
+}
+
+function drawFooter(doc, a, margin, contentW) {
+  const footY = doc.page.height - 58;
+  doc.moveTo(margin, footY - 12).lineTo(margin + contentW, footY - 12).strokeColor(BRAND.border).lineWidth(0.5).stroke();
+  doc.fillColor(BRAND.blue).font("Helvetica-Bold").fontSize(9).text("Drive • Track • Claim", margin, footY, { width: contentW, align: "center" });
+  doc.fillColor(BRAND.muted).font("Helvetica").fontSize(7.5).text(
+    `Generated automatically by MilePilot  ·  ${a.generatedAt} at ${a.generatedAtTime}`,
+    margin,
+    footY + 12,
+    { width: contentW, align: "center" }
+  );
+  doc.text(`Report ID ${a.reportId}  ·  ${REPORT_VERSION}`, margin, footY + 24, { width: contentW, align: "center" });
+}
+
+function drawProgressBar(doc, x, y, w, h, pct, fillColor = BRAND.blue) {
+  doc.roundedRect(x, y, w, h, h / 2).fill(BRAND.light);
+  const fillW = Math.max(h, w * Math.min(Math.max(pct, 0), 1));
+  doc.roundedRect(x, y, fillW, h, h / 2).fill(fillColor);
+}
+
+function drawSectionTitle(doc, title, x, y) {
+  doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(13).text(title, x, y);
+  return y + 22;
 }
 
 export function buildPdfBuffer(report) {
@@ -284,166 +358,145 @@ export function buildPdfBuffer(report) {
     doc.on("error", reject);
 
     const pageW = doc.page.width;
-    const margin = 44;
+    const margin = 52;
     const contentW = pageW - margin * 2;
-    let y = 0;
+    let y = 48;
 
-    doc.rect(0, 0, pageW, 136).fill(BRAND.navy);
-    doc.fillColor("#FFFFFF").font("Helvetica-Bold").fontSize(32).text("Mile ", margin, 36, { continued: true });
+    // Minimal header
+    doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(26).text("Mile ", margin, y, { continued: true });
     doc.fillColor(BRAND.blue).text("Pilot");
-    doc.rect(margin, 78, 132, 2.5).fill(BRAND.blue);
-    doc.fillColor(BRAND.soft).font("Helvetica").fontSize(11).text("Drive • Track • Claim", margin, 90);
-
-    doc.fillColor("#FFFFFF").font("Helvetica-Bold").fontSize(13).text(periodReportTitle(a.period), pageW - margin - 220, 40, { width: 220, align: "right" });
-    if (a.period === "Weekly") {
-      doc.fillColor(BRAND.soft).font("Helvetica").fontSize(10).text(`Week ending ${a.weekEnding}`, pageW - margin - 220, 62, { width: 220, align: "right" });
-    }
+    doc.fillColor(BRAND.muted).font("Helvetica").fontSize(10).text(periodReportTitle(a.period), pageW - margin - 200, y + 4, { width: 200, align: "right" });
     if (a.driver) {
-      doc.text(`Prepared for ${a.driver}`, pageW - margin - 220, a.period === "Weekly" ? 78 : 62, { width: 220, align: "right" });
+      doc.fontSize(9).text(`Prepared for ${a.driver}`, pageW - margin - 200, y + 20, { width: 200, align: "right" });
+    }
+    if (a.period === "Weekly") {
+      doc.text(`Week ending ${a.weekEnding}`, pageW - margin - 200, y + 34, { width: 200, align: "right" });
+    } else {
+      doc.text(a.generatedAt, pageW - margin - 200, y + 34, { width: 200, align: "right" });
     }
 
-    y = 158;
-    doc.fillColor(BRAND.muted).font("Helvetica-Bold").fontSize(10).text("BUSINESS MILES", margin, y, { characterSpacing: 1 });
-    y += 18;
-    doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(56).text(a.totals.mi.toFixed(1), margin, y);
-    y += 64;
+    y += 56;
 
-    const secondary = [
+    // Hero — Business Miles dominates
+    doc.fillColor(BRAND.muted).font("Helvetica-Bold").fontSize(9).text("BUSINESS MILES", margin, y, { characterSpacing: 1.2 });
+    y += 20;
+    doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(92).text(a.totals.mi.toFixed(1), margin, y, { lineBreak: false });
+    y += 98;
+
+    // Supporting stats — lighter hierarchy, not equal cards
+    const supportY = y;
+    const colW = contentW / 3;
+    const support = [
       { label: "Driving Time", value: fmtShiftTime(a.totals.sec) },
       { label: "Business Journeys", value: String(a.totals.journeys) },
       { label: "Estimated HMRC Claim", value: money(a.totals.hmrc) },
     ];
-    const secW = (contentW - 20) / 3;
-    secondary.forEach((m, i) => {
-      const x = margin + i * (secW + 10);
-      doc.roundedRect(x, y, secW, 58, 10).fillAndStroke(BRAND.light, BRAND.border);
-      doc.fillColor(BRAND.muted).font("Helvetica").fontSize(8).text(m.label.toUpperCase(), x + 12, y + 12, { width: secW - 24 });
-      doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(16).text(m.value, x + 12, y + 28, { width: secW - 24 });
+    support.forEach((s, i) => {
+      const x = margin + i * colW;
+      doc.fillColor(BRAND.muted).font("Helvetica").fontSize(8).text(s.label.toUpperCase(), x, supportY, { width: colW - 8 });
+      doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(18).text(s.value, x, supportY + 14, { width: colW - 8 });
     });
-    y += 78;
+    y += 52;
 
-    if (a.dailyActivity.length && (a.period === "Weekly" || a.period === "Monthly")) {
-      y = ensureSpace(doc, y, 120, margin);
-      doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(14).text("Driving Activity", margin, y);
-      y += 20;
-      doc.rect(margin, y, contentW, 24).fill(BRAND.navy);
-      const cols = [margin + 10, margin + 120, margin + 220, margin + 320];
-      ["Date", "Miles", "Hours", "Trips"].forEach((h, i) => {
-        doc.fillColor("#FFF").font("Helvetica-Bold").fontSize(8).text(h.toUpperCase(), cols[i], y + 8);
-      });
+    // Driving Score
+    if (a.totals.journeys > 0) {
+      y += 16;
+      doc.roundedRect(margin, y, contentW, 72, 14).fillAndStroke(BRAND.light, BRAND.border);
+      doc.fillColor(BRAND.muted).font("Helvetica-Bold").fontSize(8).text("YOUR DRIVING SCORE", margin + 20, y + 14);
+      doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(36).text(String(a.drivingScore.score), margin + 20, y + 28);
+      doc.fillColor(BRAND.green).font("Helvetica-Bold").fontSize(12).text(a.drivingScore.label, margin + 68, y + 42);
+      doc.fillColor(BRAND.muted).font("Helvetica").fontSize(7.5);
+      const factorText = a.drivingScore.factors.map((f) => `${f.name} ${f.pts}`).join("  ·  ");
+      doc.text(factorText, margin + 20, y + 54, { width: contentW - 40 });
+      y += 88;
+    }
+
+    // Week progress
+    if (a.period === "Weekly" && a.totals.mi > 0) {
+      y = ensureSpace(doc, y, 70, margin);
+      y = drawSectionTitle(doc, "Week Progress", margin, y);
+      const pct = Math.min(a.totals.mi / a.weekGoal, 1);
+      doc.fillColor(BRAND.muted).font("Helvetica").fontSize(9).text(`${a.totals.mi.toFixed(0)} of ${a.weekGoal} miles`, margin, y);
+      y += 16;
+      drawProgressBar(doc, margin, y, contentW, 10, pct);
       y += 24;
-      a.dailyActivity.forEach((row, idx) => {
+
+      if (a.dailyActivity.length) {
+        const maxMi = Math.max(...a.dailyActivity.map((d) => d.miles), 1);
+        a.dailyActivity.forEach((d) => {
+          const barPct = d.miles / maxMi;
+          doc.fillColor(BRAND.muted).font("Helvetica").fontSize(8).text(d.day.slice(0, 3), margin, y + 2, { width: 28 });
+          drawProgressBar(doc, margin + 32, y, contentW - 100, 8, barPct, "#3B82F6");
+          doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(8).text(`${d.miles.toFixed(1)} mi`, margin + contentW - 58, y + 1, { width: 58, align: "right" });
+          y += 16;
+        });
+        y += 8;
+      }
+    }
+
+    // MilePilot Insights
+    if (intelligence.length) {
+      y = ensureSpace(doc, y, 40 + intelligence.length * 28, margin);
+      y += 8;
+      y = drawSectionTitle(doc, "MilePilot Insights", margin, y);
+      intelligence.forEach((ins) => {
+        y = ensureSpace(doc, y, 30, margin);
+        doc.roundedRect(margin, y, contentW, 28, 8).fill("#F8FBFF");
+        doc.fillColor(BRAND.text).font("Helvetica").fontSize(9.5).text(`${ins.icon}  ${ins.text}`, margin + 14, y + 9, { width: contentW - 28 });
+        y += 36;
+      });
+      y += 4;
+    }
+
+    // Journey Breakdown
+    y = ensureSpace(doc, y, 80, margin);
+    y += 8;
+    y = drawSectionTitle(doc, "Journey Breakdown", margin, y);
+    const jCols = [margin + 8, margin + 58, margin + 108, margin + 168, margin + 228, margin + 300];
+    doc.roundedRect(margin, y, contentW, 22, 4).fill(BRAND.navy);
+    ["Start", "Finish", "Miles", "Duration", "Type"].forEach((h, i) => {
+      doc.fillColor("#FFF").font("Helvetica-Bold").fontSize(7).text(h.toUpperCase(), jCols[i], y + 7);
+    });
+    y += 22;
+
+    if (!a.shifts.length) {
+      doc.roundedRect(margin, y, contentW, 36, 8).fillAndStroke(BRAND.light, BRAND.border);
+      doc.fillColor(BRAND.muted).font("Helvetica").fontSize(10).text("No journeys recorded in this period.", margin + 14, y + 13);
+      y += 48;
+    } else {
+      a.shifts.forEach((s, idx) => {
         y = ensureSpace(doc, y, 24, margin);
-        doc.rect(margin, y, contentW, 22).fill(idx % 2 === 0 ? "#FFF" : BRAND.light);
-        doc.fillColor(BRAND.text).font("Helvetica").fontSize(9);
-        doc.text(row.day, cols[0], y + 6);
-        doc.text(row.miles.toFixed(1), cols[1], y + 6);
-        doc.text(fmtHoursCompact(row.seconds), cols[2], y + 6);
-        doc.text(String(row.trips), cols[3], y + 6);
+        doc.rect(margin, y, contentW, 22).fill(idx % 2 === 0 ? "#FFFFFF" : BRAND.light);
+        doc.fillColor(BRAND.text).font("Helvetica").fontSize(8.5);
+        doc.text(fmtClock(s.startISO), jCols[0], y + 7);
+        doc.text(fmtClock(s.endISO), jCols[1], y + 7);
+        doc.text(Number(s.miles || 0).toFixed(1), jCols[2], y + 7);
+        doc.text(fmtDurationShort(s.seconds), jCols[3], y + 7);
+        doc.fillColor(BRAND.blue).font("Helvetica-Bold").text("Business", jCols[4], y + 7);
+        doc.fillColor(BRAND.muted).font("Helvetica").fontSize(7).text(vehicleLabel(s.vehicle), jCols[5], y + 7);
         y += 22;
       });
-      y += 16;
+      y += 12;
     }
 
-    y = ensureSpace(doc, y, 180, margin);
-    doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(14).text("Weekly Journey Map", margin, y);
-    y += 18;
-    const hasMap = drawRouteMap(doc, a.shifts, margin, y, contentW, 120);
-    if (hasMap) y += 132;
-    else {
-      doc.roundedRect(margin, y, contentW, 56, 10).fillAndStroke(BRAND.light, BRAND.border);
-      doc.fillColor(BRAND.muted).font("Helvetica").fontSize(10).text("Route map will appear when GPS route data is saved with your shifts.", margin + 14, y + 22, { width: contentW - 28 });
-      y += 68;
-    }
-
+    // HMRC Summary
     y = ensureSpace(doc, y, 100, margin);
-    doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(14).text("Business Insights", margin, y);
-    y += 18;
-    const insights = [
-      longestShift(a.shifts) ? { icon: "Longest shift", value: fmtShiftTime(longestShift(a.shifts).seconds) } : null,
-      a.avgShiftSec ? { icon: "Average shift", value: fmtShiftTime(a.avgShiftSec) } : null,
-      a.avgMilesDay ? { icon: "Average miles/day", value: a.avgMilesDay.toFixed(1) } : null,
-      a.weekComparePct !== null ? { icon: "Compared to last period", value: `${a.weekComparePct > 0 ? "+" : ""}${a.weekComparePct}%` } : null,
-      a.busiest ? { icon: "Longest day", value: `${a.busiest.day} · ${a.busiest.miles.toFixed(1)} mi` } : null,
-    ].filter(Boolean);
-
-    insights.slice(0, 4).forEach((ins) => {
-      y = ensureSpace(doc, y, 28, margin);
-      doc.roundedRect(margin, y, contentW, 26, 8).fillAndStroke(BRAND.light, BRAND.border);
-      doc.fillColor(BRAND.muted).font("Helvetica-Bold").fontSize(8).text(ins.icon.toUpperCase(), margin + 12, y + 8);
-      doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(11).text(ins.value, margin + 140, y + 7);
-      y += 32;
-    });
     y += 8;
+    doc.roundedRect(margin, y, contentW, 88, 14).fillAndStroke("#EEF4FF", BRAND.blue);
+    doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(13).text("HMRC Summary", margin + 20, y + 16);
+    doc.fillColor(BRAND.muted).font("Helvetica").fontSize(9).text(`Current HMRC rate: ${Math.round(a.hmrcRate * 100)}p per mile`, margin + 20, y + 36);
+    doc.fillColor(BRAND.muted).font("Helvetica").fontSize(9).text(`Business miles: ${a.totals.mi.toFixed(1)}`, margin + 20, y + 50);
+    doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(11).text("Estimated mileage allowance", margin + contentW / 2, y + 36);
+    doc.fontSize(28).text(money(a.totals.hmrc), margin + contentW / 2, y + 50);
+    doc.fillColor(BRAND.muted).font("Helvetica").fontSize(7.5).text(
+      "Estimates for record keeping only. Verify against official HMRC guidance before filing.",
+      margin + 20,
+      y + 72,
+      { width: contentW - 40 }
+    );
+    y += 104;
 
-    y = ensureSpace(doc, y, 80, margin);
-    doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(14).text("Business Summary", margin, y);
-    y += 18;
-    const summaryLines = [
-      ["Business miles", a.totals.mi.toFixed(1)],
-      ["Working days", String(a.workingDays)],
-      ["Total shifts", String(a.totals.journeys)],
-      ["Average shift length", fmtShiftTime(a.avgShiftSec)],
-      ["Average miles per shift", a.avgMilesShift.toFixed(1)],
-    ];
-    summaryLines.forEach(([label, val]) => {
-      doc.fillColor(BRAND.muted).font("Helvetica").fontSize(10).text(label, margin, y, { continued: true });
-      doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(10).text(`  ${val}`, { align: "left" });
-      y += 16;
-    });
-    y += 8;
-
-    y = ensureSpace(doc, y, 90, margin);
-    doc.roundedRect(margin, y, contentW, 78, 12).fillAndStroke("#EEF4FF", BRAND.blue);
-    doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(13).text("HMRC Mileage Estimate", margin + 16, y + 14);
-    doc.fillColor(BRAND.muted).font("Helvetica").fontSize(10).text(`Current HMRC rate: ${Math.round(a.hmrcRate * 100)}p per mile`, margin + 16, y + 34);
-    doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(22).text(money(a.totals.hmrc), margin + 16, y + 50);
-    doc.fillColor(BRAND.muted).font("Helvetica").fontSize(8).text("Estimates for record keeping. Verify against official HMRC guidance.", margin + 16, y + 62, { width: contentW - 32 });
-    y += 94;
-
-    if (intelligence.length) {
-      y = ensureSpace(doc, y, 60 + intelligence.length * 20, margin);
-      doc.fillColor(BRAND.blue).font("Helvetica-Bold").fontSize(13).text("MilePilot Intelligence", margin, y);
-      y += 16;
-      doc.fillColor(BRAND.muted).font("Helvetica").fontSize(9).text("Personalised insights from your driving data", margin, y);
-      y += 14;
-      intelligence.forEach((line) => {
-        y = ensureSpace(doc, y, 22, margin);
-        doc.roundedRect(margin, y, contentW, 22, 6).fill("#F8FBFF");
-        doc.fillColor(BRAND.text).font("Helvetica").fontSize(9).text(`• ${line}`, margin + 10, y + 7, { width: contentW - 20 });
-        y += 28;
-      });
-    }
-
-    if (a.shifts.length) {
-      y = ensureSpace(doc, y, 60, margin);
-      doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(14).text("Shift Breakdown", margin, y);
-      y += 18;
-      doc.rect(margin, y, contentW, 22).fill(BRAND.navy);
-      const cols = [margin + 8, margin + 72, margin + 130, margin + 200, margin + 260];
-      ["Date", "Vehicle", "Miles", "Time", "HMRC"].forEach((h, i) => {
-        doc.fillColor("#FFF").font("Helvetica-Bold").fontSize(7).text(h.toUpperCase(), cols[i], y + 7);
-      });
-      y += 22;
-      a.shifts.forEach((s, idx) => {
-        y = ensureSpace(doc, y, 22, margin);
-        doc.rect(margin, y, contentW, 20).fill(idx % 2 === 0 ? "#FFF" : BRAND.light);
-        doc.fillColor(BRAND.text).font("Helvetica").fontSize(8);
-        doc.text(s.date || "—", cols[0], y + 6);
-        doc.text(vehicleLabel(s.vehicle), cols[1], y + 6);
-        doc.text(Number(s.miles || 0).toFixed(1), cols[2], y + 6);
-        doc.text(fmtShiftTime(s.seconds), cols[3], y + 6);
-        doc.font("Helvetica-Bold").text(money(s.hmrc), cols[4], y + 6);
-        doc.font("Helvetica");
-        y += 20;
-      });
-    }
-
-    const footY = doc.page.height - 52;
-    doc.moveTo(margin, footY - 10).lineTo(margin + contentW, footY - 10).strokeColor(BRAND.border).stroke();
-    doc.fillColor(BRAND.muted).font("Helvetica-Bold").fontSize(9).text("Generated automatically by MilePilot", margin, footY, { width: contentW, align: "center" });
-    doc.font("Helvetica").fontSize(8).text(`Drive • Track • Claim  ·  ${a.generatedAt}  ·  ${REPORT_VERSION}`, margin, footY + 12, { width: contentW, align: "center" });
-
+    drawFooter(doc, a, margin, contentW);
     doc.end();
   });
 }
@@ -451,45 +504,44 @@ export function buildPdfBuffer(report) {
 export function buildReportEmailHtml(report) {
   const a = analyseReport(report);
   const name = firstName(a.driver) || "there";
-  const periodLabel = a.period;
-  const miles = a.totals.mi.toFixed(1);
-  const time = fmtShiftTime(a.totals.sec);
-  const journeys = String(a.totals.journeys);
-  const hmrc = money(a.totals.hmrc);
+  const greeting = timeGreeting();
+  const title = periodReportTitle(a.period);
+  const subtitle = periodSubtitle(a.period);
 
   const metric = (label, value) =>
-    `<td width="50%" style="padding:5px;">
-      <table width="100%" cellpadding="0" cellspacing="0" style="background:rgba(255,255,255,0.06);border:1px solid rgba(110,180,255,0.18);border-radius:14px;">
-        <tr><td style="padding:16px 18px;">
-          <div style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#93A8C4;margin-bottom:8px;">${label}</div>
-          <div style="font-size:24px;font-weight:700;color:#FFFFFF;letter-spacing:-0.02em;">${value}</div>
+    `<tr><td style="padding:0 0 14px;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="background:rgba(255,255,255,0.05);border:1px solid rgba(110,180,255,0.14);border-radius:16px;">
+        <tr><td style="padding:20px 22px;">
+          <div style="font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#93A8C4;margin-bottom:10px;">${label}</div>
+          <div style="font-size:26px;font-weight:700;color:#FFFFFF;letter-spacing:-0.03em;">${value}</div>
         </td></tr>
       </table>
-    </td>`;
+    </td></tr>`;
 
   return `<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
 <body style="margin:0;padding:0;background:#031126;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:linear-gradient(180deg,#0A2854 0%,#031126 100%);padding:36px 16px;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:linear-gradient(180deg,#0A2854 0%,#031126 100%);padding:48px 20px;">
 <tr><td align="center">
-<table width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;">
-<tr><td style="padding:8px 8px 28px;text-align:center;">
-  <div style="font-size:30px;font-weight:700;color:#FFFFFF;letter-spacing:-0.03em;">Mile <span style="color:#0D6BFF;">Pilot</span></div>
-  <div style="height:2px;width:140px;margin:14px auto;background:linear-gradient(90deg,transparent,#6EB4FF,#0D6BFF,#6EB4FF,transparent);border-radius:999px;"></div>
+<table width="520" cellpadding="0" cellspacing="0" style="max-width:520px;width:100%;">
+<tr><td style="padding:0 8px 36px;text-align:center;">
+  <div style="font-size:28px;font-weight:700;color:#FFFFFF;letter-spacing:-0.03em;">Mile <span style="color:#0D6BFF;">Pilot</span></div>
+  <div style="height:2px;width:120px;margin:16px auto;background:linear-gradient(90deg,transparent,#6EB4FF,#0D6BFF,#6EB4FF,transparent);border-radius:999px;"></div>
 </td></tr>
-<tr><td style="padding:0 12px 8px;">
-  <p style="margin:0 0 8px;font-size:16px;color:#EAF2FF;line-height:1.5;">Hi ${name},</p>
-  <p style="margin:0 0 6px;font-size:17px;font-weight:600;color:#FFFFFF;line-height:1.45;">Here&apos;s your driving summary for ${periodLabel === "Daily" ? "today" : periodLabel === "Weekly" ? "this week" : periodLabel === "Monthly" ? "this month" : "this year"}.</p>
-  <p style="margin:0 0 28px;font-size:15px;color:#B9C8DD;line-height:1.55;">We tracked every business mile so you don&apos;t have to.</p>
-  <table width="100%" cellpadding="0" cellspacing="0">
-    <tr>${metric("Business Miles", miles + " miles")}${metric("Driving Time", time)}</tr>
-    <tr>${metric("Business Journeys", journeys)}${metric("Estimated HMRC Claim", hmrc)}</tr>
+<tr><td style="padding:0 16px;">
+  <p style="margin:0 0 20px;font-size:17px;color:#EAF2FF;line-height:1.5;">${greeting} ${name} 👋</p>
+  <p style="margin:0 0 10px;font-size:22px;font-weight:700;color:#FFFFFF;letter-spacing:-0.02em;line-height:1.25;">Your ${a.period} Driving Report</p>
+  <p style="margin:0 0 36px;font-size:15px;color:#B9C8DD;line-height:1.6;">${subtitle.replace(/<br>/g, "<br>")}</p>
+  <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:36px;">
+    ${metric("Business Miles", a.totals.mi.toFixed(1) + " miles")}
+    ${metric("Driving Time", fmtShiftTime(a.totals.sec))}
+    ${metric("Business Journeys", String(a.totals.journeys))}
+    ${metric("Estimated HMRC Claim", money(a.totals.hmrc))}
   </table>
-  <p style="margin:28px 0 8px;font-size:15px;color:#B9C8DD;line-height:1.55;">Attached is your full professional PDF report.</p>
-  <p style="margin:0 0 32px;font-size:15px;color:#EAF2FF;line-height:1.55;">Have a fantastic week,<br><strong style="color:#FFFFFF;">The MilePilot Team</strong></p>
-  <p style="margin:0;font-size:13px;font-weight:600;letter-spacing:0.12em;color:#0D6BFF;text-align:center;">Drive • Track • Claim</p>
+  <p style="margin:0 0 40px;font-size:15px;color:#B9C8DD;line-height:1.6;text-align:center;">Your beautifully formatted PDF report is attached.</p>
+  <p style="margin:0;font-size:12px;font-weight:600;letter-spacing:0.14em;color:#0D6BFF;text-align:center;">Drive • Track • Claim</p>
 </td></tr>
-<tr><td style="padding:24px 12px 8px;font-size:11px;color:#64748B;line-height:1.5;text-align:center;">MilePilot · Every business mile matters.<br>HMRC figures are estimates. Check official guidance before filing.</td></tr>
+<tr><td style="padding:32px 16px 0;font-size:10px;color:#64748B;line-height:1.6;text-align:center;">MilePilot · HMRC figures are estimates for record keeping.</td></tr>
 </table>
 </td></tr>
 </table>
@@ -499,21 +551,18 @@ export function buildReportEmailHtml(report) {
 export function buildReportEmailText(report) {
   const a = analyseReport(report);
   const name = firstName(a.driver) || "there";
-  return `Hi ${name},
+  return `${timeGreeting()} ${name} 👋
 
-Here's your driving summary for this ${(a.period || "Daily").toLowerCase()} period.
+Your ${a.period} Driving Report
 
-We tracked every business mile so you don't have to.
+${periodSubtitle(a.period).replace(/<br>/g, "\n")}
 
 Business Miles: ${a.totals.mi.toFixed(1)} miles
 Driving Time: ${fmtShiftTime(a.totals.sec)}
 Business Journeys: ${a.totals.journeys}
 Estimated HMRC Claim: ${money(a.totals.hmrc)}
 
-Attached is your full professional PDF report.
-
-Have a fantastic week,
-The MilePilot Team
+Your beautifully formatted PDF report is attached.
 
 Drive • Track • Claim
 — MilePilot`;
@@ -521,12 +570,6 @@ Drive • Track • Claim
 
 export function buildReportSubject(report) {
   const period = report.period || "Daily";
-  const emoji = period === "Weekly" ? "📊 " : "";
-  const labels = {
-    Daily: "Daily Driving Report is Ready",
-    Weekly: "Weekly Driving Report is Ready",
-    Monthly: "Monthly Driving Report is Ready",
-    Annual: "Annual Driving Report is Ready",
-  };
-  return `${emoji}Your MilePilot ${labels[period] || "Report is Ready"}`;
+  const emoji = period === "Weekly" ? "📊 " : period === "Daily" ? "🚗 " : "";
+  return `${emoji}Your MilePilot ${periodReportTitle(period)}`;
 }

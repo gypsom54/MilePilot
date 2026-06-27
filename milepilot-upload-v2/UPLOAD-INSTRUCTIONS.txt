@@ -1,22 +1,36 @@
-MilePilot — UPLOAD v6.0.5
+MilePilot — UPLOAD v7.0.1
 =========================
 
 DOWNLOAD
 --------
-https://github.com/gypsom54/MilePilot/raw/cursor/mp-008-reports-premium-ae00/MilePilot-UPLOAD-v6.0.5.zip
+https://github.com/gypsom54/MilePilot/raw/cursor/mp-012-premium-experience-ae00/MilePilot-UPLOAD-v7.0.1.zip
 
-CHECK VERSION
--------------
+CHECK APP VERSION
+-----------------
 https://app.milepilot.uk/version.txt
-Must show: MilePilot OS v6.0.5 — email API fix
+Must show: MilePilot OS v7.0.1 — MP-012 Premium Reports
 
-WHAT IS FIXED
--------------
-- App now connects to Railway email server (not broken api.milepilot.uk)
-- Clearer error if Resend API key needs updating on Railway
+TWO DEPLOYS NEEDED
+------------------
+1. Cloudflare — upload this zip (frontend v7.0.1)
+2. Railway — redeploy backend for MP-012 PDF + email
 
-EMAIL STILL NEEDS (one-time on Railway)
----------------------------------------
-Variable: RESEND_API_KEY = your key from resend.com (starts with re_)
+Check backend:
+https://milepilot-production.up.railway.app/health
+Should show: "reportVersion": "MP-012-premium-v3"
 
-Test: https://milepilot-production.up.railway.app/health
+WHAT'S NEW IN v7.0.1 (MP-012)
+-----------------------------
+- Email: short preview, time-based greeting, personality copy
+- PDF: huge hero miles, driving score, week progress bars
+- MilePilot Insights with smart comparisons
+- Journey breakdown table (Start / Finish / Miles / Duration)
+- Professional footer with Report ID + version
+
+UPLOAD STEPS (Cloudflare)
+-------------------------
+1. Download zip
+2. Unzip all files
+3. Cloudflare → milepilot-app → Upload assets → Deploy
+
+APP: https://app.milepilot.uk
