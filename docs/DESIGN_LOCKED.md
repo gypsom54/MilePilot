@@ -17,7 +17,7 @@
 | Navigation MP-007 | 🔒 | Floating dark bar, 4 tabs |
 | Cards | 🔒 | `cc-card`, `.card`, 22–24px radius |
 | Buttons | 🔒 | `.premium-btn`, `.cc-primary-btn`, `.btn` |
-| Flow | 🔒 | Onboard → Dashboard → Reports / History / Settings |
+| Reports / PDF engine | 🔒 | MP-012 v11 — layout frozen; bug fixes only |
 
 ---
 
