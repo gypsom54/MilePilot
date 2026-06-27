@@ -12,7 +12,7 @@
 | Design & branding | ~90% 🔒 Locked |
 | Onboarding flow | ~95% 🔒 Locked |
 | Dashboard foundation | ~90% 🔒 Locked |
-| **Core tracking engine** | Sprint 1 → in progress |
+| **Core tracking engine** | ✅ **MP-013 v2** — Sprint 1–3 complete |
 | **PDF Reporting System** | ✅ **LOCKED** — MP-012 v11 |
 | Business intelligence | 0% |
 
@@ -65,7 +65,26 @@ When the user presses **Start Shift**:
 - [x] Persist on background / tab switch
 - [x] End shift → auto-save
 
-*Note: True OS-level background GPS requires native app; PWA uses wake lock + persistence.*
+*Note: True OS-level background GPS requires native app; PWA uses wake lock + persistence + auto GPS reconnect.*
+
+---
+
+## ✅ MP-013 — Tracking Engine v2
+
+**Status:** Complete  
+**Version:** Tracking Engine v2 · App v7.4.0  
+**Branch:** `cursor/mp-013-tracking-engine-ae00`
+
+### Delivered
+
+- Reusable `frontend/js/tracking-engine.js` — single source of truth for shifts
+- Start Shift → GPS, timer, live miles, HMRC estimate, route recording
+- Live Command Centre: Shift In Progress, 🟢 Tracking, live timer, current journey
+- Background persist (visibility / pagehide), wake lock, GPS auto-reconnect
+- Rich shift storage: journey count, average speed, GPS points, created date
+- End Shift → completion overlay (Great work today 👏), View Report / Done
+- Smart movement detection architecture (disabled — ready for future sprint)
+- Branded GPS error handling (no browser alerts)
 
 ---
 
@@ -73,11 +92,15 @@ When the user presses **Start Shift**:
 
 Dashboard transforms while shift is active: live miles, time, claim, **End Shift**.
 
+**Status:** ✅ Complete (MP-013)
+
 ---
 
 ## Sprint 3 — Shift Summary ⭐⭐⭐⭐⭐
 
 End Shift → celebration overlay, report ready, share PDF.
+
+**Status:** ✅ Complete (MP-013)
 
 ---
 

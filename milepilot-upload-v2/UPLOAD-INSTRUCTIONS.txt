@@ -1,35 +1,35 @@
-MilePilot — UPLOAD v7.3.0
+MilePilot — UPLOAD v7.4.0
 =========================
 
 DOWNLOAD
 --------
-https://github.com/gypsom54/MilePilot/raw/main/MilePilot-UPLOAD-v7.3.0.zip
+Build from branch cursor/mp-013-tracking-engine-ae00 or zip milepilot-upload-v2/
 
 CHECK APP VERSION
 -----------------
 https://app.milepilot.uk/version.txt
-Must show: MilePilot OS v7.3.0 — PDF document polish & email-first reports
+Must show: MilePilot OS v7.4.0 — MP-013 Tracking Engine v2
 
 TWO DEPLOYS NEEDED
 ------------------
-1. Cloudflare — upload this zip (frontend v7.3.0)
-2. Railway — redeploy backend for MP-014 PDF fixes + /reports/pdf endpoint
+1. Cloudflare — upload milepilot-upload-v2/ (frontend v7.4.0)
+2. Railway — backend unchanged (PDF locked at MP-012 v11)
 
 Check backend:
 https://milepilot-production.up.railway.app/health
-Should show: "reportVersion": "MP-014-document-v1"
+Should show: "reportVersion": "MP-012-pdf-v11"
 
-WHAT'S NEW IN v7.3.0
+WHAT'S NEW IN v7.4.0
 --------------------
-- Report Centre: email box + Send Report Email first
-- Share / Download / Preview moved to Other options below
-- Premium PDF: fixed HMRC overlap, site-matched branding
-- Download & Preview use backend PDF (same as email attachment)
+- MP-013 Tracking Engine v2 (frontend/js/tracking-engine.js)
+- Live Command Centre during shift: Shift In Progress, live timer, current journey
+- Background persist + GPS auto-reconnect
+- End Shift completion screen: Great work today, View Report / Done
+- Rich shift storage for reports and history
 
 UPLOAD STEPS (Cloudflare)
 -------------------------
-1. Download zip
-2. Unzip all files
-3. Cloudflare → milepilot-app → Upload assets → Deploy
+1. Upload all files from milepilot-upload-v2/ including js/tracking-engine.js
+2. Cloudflare → milepilot-app → Upload assets → Deploy
 
 APP: https://app.milepilot.uk
