@@ -1,36 +1,37 @@
-MilePilot — UPLOAD v7.0.1
+MilePilot — UPLOAD v7.1.0
 =========================
 
 DOWNLOAD
 --------
-https://github.com/gypsom54/MilePilot/raw/cursor/mp-012-premium-experience-ae00/MilePilot-UPLOAD-v7.0.1.zip
+https://github.com/gypsom54/MilePilot/raw/main/MilePilot-UPLOAD-v7.1.0.zip
 
 CHECK APP VERSION
 -----------------
 https://app.milepilot.uk/version.txt
-Must show: MilePilot OS v7.0.1 — MP-012 Premium Reports
+Must show: MilePilot OS v7.1.0 — Report Centre & deep links
 
 TWO DEPLOYS NEEDED
 ------------------
-1. Cloudflare — upload this zip (frontend v7.0.1)
-2. Railway — redeploy backend for MP-012 PDF + email
+1. Cloudflare — upload this zip (frontend v7.1.0)
+2. Railway — backend on main (MP-013 report engine + email)
 
 Check backend:
 https://milepilot-production.up.railway.app/health
-Should show: "reportVersion": "MP-012-premium-v3"
+Should show: "reportVersion": "MP-013-magazine-v4"
 
-WHAT'S NEW IN v7.0.1 (MP-012)
+WHAT'S NEW IN v7.1.0 (MP-013)
 -----------------------------
-- Email: short preview, time-based greeting, personality copy
-- PDF: huge hero miles, driving score, week progress bars
-- MilePilot Insights with smart comparisons
-- Journey breakdown table (Start / Finish / Miles / Duration)
-- Professional footer with Report ID + version
+- Report Centre: Daily / Weekly / Monthly / Annual tabs
+- Preview, Download PDF, Share, Email Again actions
+- Email CTAs: Download PDF (deep link) + Open MilePilot
+- Deep links: ?reports=week&download=1 opens Reports + auto PDF
+- Unified brand lockup: Mile Pilot — pulse — Drive • Track • Claim
+- Magazine PDF (3 pages) + MilePilot Intelligence insights
 
 UPLOAD STEPS (Cloudflare)
 -------------------------
 1. Download zip
-2. Unzip all files
+2. Unzip all 6 files + this instructions file
 3. Cloudflare → milepilot-app → Upload assets → Deploy
 
 APP: https://app.milepilot.uk
