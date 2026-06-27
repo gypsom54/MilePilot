@@ -1,6 +1,6 @@
 /**
- * MilePilot Report Engine — MP-012 Premium PDF
- * Email = 30-second preview · PDF = 2–3 page premium experience
+ * MilePilot Report Engine — MP-012 Premium Document v4
+ * PDF = premium business record · Email = concise preview
  */
 
 import PDFDocument from "pdfkit";
@@ -35,7 +35,7 @@ export const VEHICLE_LABELS = {
   motorcycle: "Motorcycle",
 };
 
-export const REPORT_VERSION = "MP-012-pdf-v3";
+export const REPORT_VERSION = "MP-012-pdf-v4";
 const APP_URL = "https://app.milepilot.uk";
 const SITE_URL = "www.milepilot.uk";
 
@@ -132,14 +132,34 @@ function periodReportTitle(period) {
   return map[period] || `${period} Business Mileage Report`;
 }
 
-function periodSummaryLine(period, dateStr) {
+function periodDocTitle(period) {
   const map = {
-    Daily: `Here's your driving summary for ${dateStr}.`,
-    Weekly: `Here's your business mileage summary for the week ending ${dateStr}.`,
-    Monthly: `Here's your business mileage summary for ${dateStr}.`,
-    Annual: `Here's your annual business mileage summary.`,
+    Daily: "Daily Business Summary",
+    Weekly: "Weekly Business Summary",
+    Monthly: "Monthly Business Summary",
+    Annual: "Annual Business Summary",
   };
-  return map[period] || `Here's your driving summary for ${dateStr}.`;
+  return map[period] || "Business Mileage Summary";
+}
+
+function periodEmailHeadline(period) {
+  const map = {
+    Daily: "Your Daily Business Mileage Report is Ready",
+    Weekly: "Your Weekly Business Mileage Report is Ready",
+    Monthly: "Your Monthly Business Mileage Report is Ready",
+    Annual: "Your Annual Business Mileage Report is Ready",
+  };
+  return map[period] || "Your Business Mileage Report is Ready";
+}
+
+function periodEmailBody(period) {
+  const map = {
+    Daily: "We've finished preparing today's mileage report.",
+    Weekly: "We've finished preparing this week's mileage report.",
+    Monthly: "We've finished preparing this month's mileage report.",
+    Annual: "We've finished preparing your annual mileage report.",
+  };
+  return map[period] || "We've finished preparing your mileage report.";
 }
 
 function fmtDateShort(d = new Date()) {
@@ -400,21 +420,31 @@ export function buildIntelligence(a) {
   } = a;
 
   const items = [];
+  const noPeriodJourneys = !shifts.length;
+  const noWeekJourneys = !weekShifts.length;
 
-  if (!shifts.length && !weekShifts.length) {
-    return {
-      empty: true,
-      intro: period === "Daily" ? "Today was a quiet day on the road." : `This ${period.toLowerCase()} was quiet on the road.`,
-      sub: "No business journeys were recorded.",
-      footer: "Start a shift and MilePilot will build this report automatically.",
-      items: [],
-    };
+  if (noPeriodJourneys) {
+    if (period === "Daily") {
+      items.push("No journeys were recorded today.");
+    } else {
+      items.push(`No journeys were recorded this ${period.toLowerCase()}.`);
+    }
+    if (weekTotals.mi > 0) {
+      items.push(`Your weekly mileage stands at ${weekTotals.mi.toFixed(1)} miles — still on track.`);
+    } else if (!noWeekJourneys) {
+      items.push("Your weekly mileage remains on track.");
+    }
+    items.push("When you start driving, MilePilot will automatically record every business mile.");
+    if (monthProgress?.projectedHmrc > 0) {
+      items.push(`On track to claim approximately ${money(monthProgress.projectedHmrc)} this month.`);
+    }
+    return { empty: true, items: items.slice(0, 5) };
   }
 
   if (weekLongest && weekShifts.length) {
-    items.push(`Longest shift this week: ${fmtShiftTime(weekLongest.seconds)}`);
+    items.push(`Longest shift this week: ${fmtShiftTime(weekLongest.seconds)}.`);
   } else if (longest) {
-    items.push(`Longest shift: ${fmtShiftTime(longest.seconds)}`);
+    items.push(`Longest shift: ${fmtShiftTime(longest.seconds)}.`);
   }
 
   if (weekComparePct !== null && Math.abs(weekComparePct) >= 1) {
@@ -430,25 +460,23 @@ export function buildIntelligence(a) {
   }
 
   if (busiest) {
-    items.push(`${busiest.day} was your busiest day with ${busiest.miles.toFixed(1)} business miles.`);
+    items.push(`Your busiest day this week was ${busiest.day} (${busiest.miles.toFixed(1)} miles).`);
   }
 
   if (productiveHour) {
-    items.push(`Busiest hour: ${productiveHour.label} (${productiveHour.miles.toFixed(1)} miles).`);
-  }
-
-  if (weekAvgShiftSec > 0 && weekShifts.length >= 2) {
-    items.push(`Average shift this week: ${fmtShiftTime(weekAvgShiftSec)}.`);
-  } else if (avgShiftSec > 0 && shifts.length >= 2) {
-    items.push(`Average shift: ${fmtShiftTime(avgShiftSec)}.`);
+    items.push(`Busiest hour: ${productiveHour.label} — ${productiveHour.miles.toFixed(1)} business miles.`);
   }
 
   if (journeyLengthChange !== null && Math.abs(journeyLengthChange) >= 0.2) {
     const prev = a.prevAvgJourney.toFixed(1);
     const curr = avgMilesShift.toFixed(1);
     items.push(`Average journey length ${journeyLengthChange > 0 ? "increased" : "decreased"} from ${prev} to ${curr} miles.`);
-  } else if (avgMilesShift > 0) {
+  } else if (avgMilesShift > 0 && shifts.length >= 2) {
     items.push(`Average journey: ${avgMilesShift.toFixed(1)} miles · ${fmtDurationShort(avgShiftSec)}.`);
+  }
+
+  if (weekAvgShiftSec > 0 && weekShifts.length >= 2) {
+    items.push(`Average shift this week: ${fmtShiftTime(weekAvgShiftSec)}.`);
   }
 
   if (longestJ) {
@@ -458,13 +486,9 @@ export function buildIntelligence(a) {
   if (monthProgress && monthProgress.projectedHmrc > 0) {
     items.push(`On track to claim approximately ${money(monthProgress.projectedHmrc)} this month.`);
   } else if (weekTotals.hmrc > 0) {
-    items.push(`This week's estimated HMRC claim: ${money(weekTotals.hmrc)}.`);
+    items.push(`This week's estimated HMRC value: ${money(weekTotals.hmrc)}.`);
   } else if (totals.hmrc > 0) {
     items.push(`Estimated HMRC claim: ${money(totals.hmrc)} (${totals.mi.toFixed(1)} mi at ${Math.round(hmrcRate * 100)}p/mile).`);
-  }
-
-  if (weekTotals.mi > 0 && prevWeekTotals.mi > 0 && weekTotals.hmrc > prevWeekTotals.hmrc && weekTotals.mi < prevWeekTotals.mi) {
-    items.push(`You drove fewer miles but earned ${money(weekTotals.hmrc - prevWeekTotals.hmrc)} more in allowances this week.`);
   }
 
   const yearProjection = weekTotals.mi > 0 ? (weekTotals.mi / 7) * 365 : totals.mi * 30;
@@ -472,21 +496,17 @@ export function buildIntelligence(a) {
     items.push(`At this pace, you're on track for ${Math.round(yearProjection).toLocaleString("en-GB")} business miles this year.`);
   }
 
-  return { empty: false, intro: null, sub: null, footer: null, items: items.slice(0, 6) };
+  return { empty: false, items: items.slice(0, 6) };
 }
 
 const PDF = {
-  margin: 52,
-  headerH: 118,
-  greetH: 38,
-  footerH: 96,
-  cardRadius: 12,
-  sectionGap: 20,
-  cardGap: 12,
-  metricCardH: 62,
-  hmrcBoxH: 128,
-  routeMapH: 100,
-  wowBoxH: 118,
+  margin: 56,
+  headerH: 88,
+  footerH: 88,
+  unit: 8,
+  sectionGap: 24,
+  rowH: 32,
+  panelRadius: 2,
 };
 
 function pageContentW(pageW) {
@@ -497,15 +517,6 @@ function footerTop(pageH) {
   return pageH - PDF.footerH;
 }
 
-function headerBottom(a) {
-  return PDF.headerH + (a.driver ? PDF.greetH : 0);
-}
-
-function drawPageContentBg(doc, pageW, pageH, a) {
-  const top = headerBottom(a);
-  doc.rect(0, top, pageW, footerTop(pageH) - top).fill(BRAND.pageBg);
-}
-
 function fitFontSize(doc, text, maxW, startSize, minSize, font = "Helvetica-Bold") {
   let size = startSize;
   doc.font(font);
@@ -513,439 +524,250 @@ function fitFontSize(doc, text, maxW, startSize, minSize, font = "Helvetica-Bold
   return size;
 }
 
-function ensureSpace(doc, y, needed, margin, contentW, pageW, a) {
-  if (y + needed <= footerTop(doc.page.height) - 8) return y;
-  drawFooter(doc, a, margin, contentW, pageW);
-  doc.addPage({ margin: 0 });
-  const y0 = drawPageHeader(doc, a, margin, contentW, pageW);
-  drawPageContentBg(doc, pageW, doc.page.height, a);
-  return y0 + PDF.sectionGap;
+function drawDivider(doc, margin, y, contentW, accent = true) {
+  doc.moveTo(margin, y).lineTo(margin + contentW, y).strokeColor(accent ? BRAND.blue : BRAND.border).lineWidth(accent ? 0.75 : 0.5).stroke();
+  return y + PDF.unit * 2;
 }
 
 function drawFooter(doc, a, margin, contentW, pageW) {
   const footY = footerTop(doc.page.height);
-  doc.rect(0, footY - 16, pageW, PDF.footerH + 16).fill(BRAND.navy);
-  drawBrandPulse(doc, margin + contentW / 2 - 80, footY - 6, 160);
-  doc.fillColor(BRAND.soft).font("Helvetica").fontSize(7.5).text("Generated automatically by MilePilot", margin, footY + 6, { width: contentW, align: "center" });
-  doc.fillColor(BRAND.blue).font("Helvetica-Bold").fontSize(9).text(BRAND_TAGLINE, margin, footY + 18, { width: contentW, align: "center" });
-  doc.fillColor(BRAND.soft).font("Helvetica").fontSize(7.5).text("Professional mileage reporting for drivers and couriers.", margin, footY + 32, { width: contentW, align: "center" });
-  doc.fillColor("#6EB4FF").font("Helvetica-Bold").fontSize(8).text(SITE_URL, margin, footY + 44, { width: contentW, align: "center", link: `https://${SITE_URL}` });
-  doc.fillColor(BRAND.muted).font("Helvetica").fontSize(6.5).text(`${a.generatedAt} at ${a.generatedAtTime}  ·  Report ID ${a.reportId}`, margin, footY + 58, { width: contentW, align: "center" });
-  doc.text("Estimates are for record keeping only and should be checked against official guidance or an accountant.", margin, footY + 70, { width: contentW, align: "center", lineGap: 0.8 });
-  doc.fillColor("#4A6080").font("Helvetica").fontSize(6).text(REPORT_VERSION, margin, footY + 84, { width: contentW, align: "center" });
+  drawDivider(doc, margin, footY - PDF.unit * 2, contentW, false);
+  doc.fillColor(BRAND.blue).font("Helvetica-Bold").fontSize(8.5).text(BRAND_TAGLINE, margin, footY + 4, { width: contentW, align: "center", characterSpacing: 0.8 });
+  doc.fillColor(BRAND.muted).font("Helvetica").fontSize(7.5).text("Generated automatically by MilePilot", margin, footY + 18, { width: contentW, align: "center" });
+  doc.text("Professional mileage reporting for self-employed drivers and couriers.", margin, footY + 30, { width: contentW, align: "center" });
+  doc.fillColor(BRAND.blue).font("Helvetica-Bold").fontSize(7.5).text(SITE_URL, margin, footY + 42, { width: contentW, align: "center", link: `https://${SITE_URL}` });
+  doc.fillColor(BRAND.muted).font("Helvetica").fontSize(6.5).text(`${a.generatedAt}  ·  Report ID ${a.reportId}`, margin, footY + 56, { width: contentW, align: "center" });
+  doc.text("Estimates are for record keeping only. Verify against official HMRC guidance or an accountant.", margin, footY + 68, { width: contentW, align: "center", lineGap: 0.6 });
 }
 
-/** Solid brand pulse — matches app `.brand-pulse` */
 function drawBrandPulse(doc, x, y, width = BRAND_PULSE_WIDTH) {
-  const h = 2;
-  doc.rect(x, y, width * 0.28, h).fill("#0A52D4");
+  const h = 1.5;
+  doc.rect(x, y, width * 0.28, h).fill(BRAND.blueDark);
   doc.rect(x + width * 0.28, y, width * 0.44, h).fill("#7EC0FF");
-  doc.rect(x + width * 0.72, y, width * 0.28, h).fill("#0A52D4");
+  doc.rect(x + width * 0.72, y, width * 0.28, h).fill(BRAND.blueDark);
 }
 
+function ensureSpace(doc, y, needed, margin, contentW, pageW, a) {
+  if (y + needed <= footerTop(doc.page.height) - PDF.unit * 2) return y;
+  drawFooter(doc, a, margin, contentW, pageW);
+  doc.addPage({ margin: 0 });
+  return drawPageHeader(doc, a, margin, contentW, pageW) + PDF.sectionGap;
+}
+
+/** Compact letterhead — logo only, document feel */
 function drawPageHeader(doc, a, margin, contentW, pageW) {
   doc.rect(0, 0, pageW, PDF.headerH).fill(BRAND.navy);
-  doc.fillColor(BRAND.white).font("Helvetica-Bold").fontSize(BRAND_WORDMARK_SIZE).text("Mile ", margin, 22, { continued: true, lineBreak: false });
+  doc.fillColor(BRAND.white).font("Helvetica-Bold").fontSize(28).text("Mile ", margin, 20, { continued: true, lineBreak: false });
   doc.fillColor(BRAND.blue).text("Pilot", { lineBreak: false });
-  drawBrandPulse(doc, margin, 62, BRAND_PULSE_WIDTH);
-  doc.fillColor("#6EB4FF").font("Helvetica-Bold").fontSize(10).text(BRAND_TAGLINE, margin, 74, { characterSpacing: 1.1 });
-  const rightX = pageW - margin - 220;
-  doc.fillColor(BRAND.white).font("Helvetica-Bold").fontSize(9).text(periodReportTitle(a.period).toUpperCase(), rightX, 24, { width: 220, align: "right", characterSpacing: 0.5 });
-  doc.fillColor(BRAND.soft).font("Helvetica").fontSize(8.5).text(a.generatedAt, rightX, 42, { width: 220, align: "right" });
-
-  let y = PDF.headerH;
+  drawBrandPulse(doc, margin, 54, 160);
+  doc.fillColor("#6EB4FF").font("Helvetica").fontSize(8).text(BRAND_TAGLINE, margin, 64, { characterSpacing: 1 });
+  const rightX = pageW - margin - 200;
+  doc.fillColor(BRAND.soft).font("Helvetica").fontSize(7.5).text(`Report ID ${a.reportId}`, rightX, 24, { width: 200, align: "right" });
   if (a.driver) {
-    doc.rect(0, y, pageW, PDF.greetH).fill(BRAND.panel);
-    const name = firstName(a.driver) || a.driver;
-    doc.fillColor(BRAND.white).font("Helvetica-Bold").fontSize(11).text(`${timeGreeting()} ${name},`, margin, y + 9);
-    doc.fillColor(BRAND.soft).font("Helvetica").fontSize(9).text(periodSummaryLine(a.period, fmtDateShort()), margin, y + 24, { width: contentW });
-    y += PDF.greetH;
+    doc.text(`Prepared for ${a.driver}`, rightX, 38, { width: 200, align: "right" });
   }
-  return y + 12;
+  return PDF.headerH + PDF.unit * 2;
 }
 
-/** Blue accent summary stat card */
-function drawMetricCard(doc, x, y, w, h, label, value, accent = true) {
-  const pad = 14;
-  const labelH = 14;
-  const valueAreaH = h - pad * 2 - labelH;
+function drawDocTitleBlock(doc, a, margin, contentW, y) {
+  y = drawDivider(doc, margin, y, contentW);
+  doc.fillColor(BRAND.blue).font("Helvetica-Bold").fontSize(8).text(periodDocTitle(a.period).toUpperCase(), margin, y, {
+    width: contentW,
+    align: "center",
+    characterSpacing: 1.6,
+  });
+  y += PDF.unit * 2;
+  doc.fillColor(BRAND.text).font("Helvetica").fontSize(11).text(a.generatedAt, margin, y, { width: contentW, align: "center" });
+  y += PDF.unit * 2;
+  return drawDivider(doc, margin, y, contentW);
+}
 
-  if (accent) {
-    doc.roundedRect(x, y, w, h, PDF.cardRadius).fillAndStroke(BRAND.blue, BRAND.blueDark);
-    doc.fillColor("#B9D4FF").font("Helvetica-Bold").fontSize(7).text(label.toUpperCase(), x + pad, y + pad, {
-      width: w - pad * 2,
-      characterSpacing: 0.6,
-      height: labelH,
+/** Financial-statement summary rows — not app cards */
+function drawSummaryStatement(doc, a, margin, contentW, y) {
+  const rows = [
+    { label: "Business Miles", value: a.totals.mi.toFixed(1), emphasis: true },
+    { label: "Driving Time", value: fmtShiftTime(a.totals.sec) },
+    { label: "Journeys", value: String(a.totals.journeys) },
+    { label: "Estimated HMRC Claim", value: money(a.totals.hmrc) },
+  ];
+  const boxH = rows.length * PDF.rowH + PDF.unit * 3;
+  doc.rect(margin, y, contentW, boxH).strokeColor(BRAND.border).lineWidth(0.5).stroke();
+
+  let ry = y + PDF.unit;
+  rows.forEach((row, i) => {
+    if (i > 0) {
+      doc.moveTo(margin + PDF.unit * 2, ry).lineTo(margin + contentW - PDF.unit * 2, ry).strokeColor(BRAND.border).lineWidth(0.25).stroke();
+    }
+    doc.fillColor(BRAND.muted).font("Helvetica").fontSize(8).text(row.label, margin + PDF.unit * 2, ry + 10, { width: contentW / 2 });
+    const valStr = String(row.value);
+    const valSize = row.emphasis ? fitFontSize(doc, valStr, contentW / 2 - 16, 22, 16) : 11;
+    doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(valSize).text(valStr, margin + contentW / 2, ry + (row.emphasis ? 6 : 10), {
+      width: contentW / 2 - PDF.unit * 2,
+      align: "right",
     });
-    const valStr = String(value);
-    const valSize = fitFontSize(doc, valStr, w - pad * 2, 16, 11);
-    doc.fillColor(BRAND.white).font("Helvetica-Bold").fontSize(valSize).text(valStr, x + pad, y + pad + labelH + 4, {
-      width: w - pad * 2,
-      height: valueAreaH,
-      lineBreak: false,
-      ellipsis: true,
-    });
-  } else {
-    doc.roundedRect(x, y, w, h, PDF.cardRadius).fillAndStroke(BRAND.white, BRAND.border);
-    doc.fillColor(BRAND.muted).font("Helvetica-Bold").fontSize(7).text(label.toUpperCase(), x + pad, y + pad, {
-      width: w - pad * 2,
-      characterSpacing: 0.6,
-      height: labelH,
-    });
-    const valStr = String(value);
-    const valSize = fitFontSize(doc, valStr, w - pad * 2, 16, 11);
-    doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(valSize).text(valStr, x + pad, y + pad + labelH + 4, {
-      width: w - pad * 2,
-      height: valueAreaH,
-      lineBreak: false,
-      ellipsis: true,
-    });
+    ry += PDF.rowH;
+  });
+  return y + boxH + PDF.sectionGap;
+}
+
+function drawSectionHeadingSimple(doc, title, margin, y) {
+  doc.fillColor(BRAND.blue).font("Helvetica-Bold").fontSize(8).text(title.toUpperCase(), margin, y, { characterSpacing: 1.2 });
+  return y + PDF.unit * 2;
+}
+
+function drawInsightSection(doc, intel, margin, contentW, y) {
+  y = drawSectionHeadingSimple(doc, "MilePilot Intelligence", margin, y);
+  y += PDF.unit;
+
+  const items = intel.items.length ? intel.items : ["No additional insights for this period."];
+  const boxH = items.length * 28 + PDF.unit * 3;
+  doc.rect(margin, y, contentW, boxH).strokeColor(BRAND.border).lineWidth(0.5).stroke();
+
+  let iy = y + PDF.unit * 1.5;
+  items.forEach((text) => {
+    doc.fillColor(BRAND.blue).font("Helvetica-Bold").fontSize(9).text("✓", margin + PDF.unit * 2, iy + 1);
+    doc.fillColor(BRAND.text).font("Helvetica").fontSize(9).text(text, margin + PDF.unit * 4, iy, { width: contentW - PDF.unit * 6, lineGap: 1.2 });
+    iy += 28;
+  });
+  return y + boxH + PDF.sectionGap;
+}
+
+/** Accountant-style journey log entries */
+function drawJourneyLog(doc, a, margin, contentW, y, pageW) {
+  if (!a.shifts.length) {
+    const boxH = 56;
+    doc.rect(margin, y, contentW, boxH).strokeColor(BRAND.border).lineWidth(0.5).stroke();
+    doc.fillColor(BRAND.muted).font("Helvetica").fontSize(9).text("No journeys recorded in this period.", margin + PDF.unit * 2, y + 16, { width: contentW - 32 });
+    doc.text("Start a shift and MilePilot will record every business mile automatically.", margin + PDF.unit * 2, y + 32, { width: contentW - 32 });
+    return y + boxH + PDF.sectionGap;
   }
+
+  a.shifts.forEach((s) => {
+    const entryH = 64;
+    if (y + entryH > footerTop(doc.page.height) - PDF.footerH) {
+      drawFooter(doc, a, margin, contentW, pageW);
+      doc.addPage({ margin: 0 });
+      y = drawPageHeader(doc, a, margin, contentW, pageW) + PDF.sectionGap;
+      y = drawSectionHeadingSimple(doc, "Journey Log (continued)", margin, y) + PDF.unit;
+    }
+
+    doc.rect(margin, y, contentW, entryH).strokeColor(BRAND.border).lineWidth(0.5).stroke();
+    const d = new Date(s.startISO);
+    const dateStr = d.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" });
+
+    doc.fillColor(BRAND.muted).font("Helvetica").fontSize(7.5).text(dateStr, margin + PDF.unit * 2, y + 10);
+    doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(11).text(fmtClock(s.startISO), margin + PDF.unit * 2, y + 24);
+    doc.fillColor(BRAND.muted).font("Helvetica").fontSize(11).text(fmtClock(s.endISO), margin + PDF.unit * 2, y + 38);
+
+    const midX = margin + contentW * 0.38;
+    doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(12).text(`${Number(s.miles || 0).toFixed(1)} miles`, midX, y + 24);
+    doc.fillColor(BRAND.muted).font("Helvetica").fontSize(9).text(fmtDurationShort(s.seconds), midX, y + 40);
+
+    doc.fillColor(BRAND.blue).font("Helvetica-Bold").fontSize(8).text("BUSINESS", margin + contentW - 72, y + 28, { width: 56, align: "right", characterSpacing: 0.6 });
+
+    y += entryH + PDF.unit;
+  });
+  return y + PDF.unit;
 }
 
-/** White hero card with centred business miles — ~18% smaller than v2 */
-function drawHeroMiles(doc, a, margin, contentW, y) {
-  const heroH = 108;
-  const pad = 20;
-  doc.roundedRect(margin, y, contentW, heroH, PDF.cardRadius).fillAndStroke(BRAND.white, BRAND.border);
-
-  const miStr = a.totals.mi.toFixed(1);
-  const innerY = y + pad;
-
-  doc.fillColor(BRAND.muted).font("Helvetica-Bold").fontSize(8.5).text("BUSINESS MILES", margin + pad, innerY, {
-    width: contentW - pad * 2,
-    align: "center",
-    characterSpacing: 1.3,
-  });
-
-  const miSize = fitFontSize(doc, miStr, contentW - 60, miStr.length > 7 ? 58 : miStr.length > 5 ? 72 : 78, 40);
-  doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(miSize).text(miStr, margin + pad, innerY + 22, {
-    width: contentW - pad * 2,
-    align: "center",
-    lineBreak: false,
-  });
-
-  doc.fillColor(BRAND.muted).font("Helvetica").fontSize(11).text("miles", margin + pad, innerY + 22 + miSize + 4, {
-    width: contentW - pad * 2,
-    align: "center",
-  });
-
-  return y + heroH;
-}
-
-/** Two-column HMRC Summary — value in dedicated right column box */
+/** HMRC summary — document panel, value isolated on right */
 function drawHmrcSummaryBox(doc, a, margin, contentW, y) {
-  const boxH = PDF.hmrcBoxH;
-  const leftW = Math.floor(contentW * 0.52);
-  const rightW = contentW - leftW - 16;
-  const rightX = margin + leftW + 16;
-  const pad = 18;
+  y = drawSectionHeadingSimple(doc, "HMRC Summary", margin, y);
+  y += PDF.unit;
+
+  const boxH = 96;
+  const leftW = Math.floor(contentW * 0.55);
+  const rightW = contentW - leftW - PDF.unit * 2;
+  const rightX = margin + leftW + PDF.unit * 2;
+  const pad = PDF.unit * 2;
   const hmrcVal = money(a.totals.hmrc);
 
-  doc.roundedRect(margin, y, contentW, boxH, 14).fillAndStroke("#EEF4FF", BRAND.blue);
+  doc.rect(margin, y, contentW, boxH).strokeColor(BRAND.border).lineWidth(0.5).stroke();
 
-  // Left column
-  doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(13).text("HMRC Summary", margin + pad, y + pad, {
-    width: leftW - pad * 2,
-    lineGap: 0,
-  });
-  doc.fillColor(BRAND.muted).font("Helvetica").fontSize(9);
-  doc.text(`Current HMRC rate: ${Math.round(a.hmrcRate * 100)}p per mile`, margin + pad, y + pad + 22, { width: leftW - pad * 2 });
-  doc.text(`Business miles: ${a.totals.mi.toFixed(1)}`, margin + pad, y + pad + 36, { width: leftW - pad * 2 });
-  doc.fontSize(7.5).text(
-    "Estimates for record keeping only. Verify against official HMRC guidance before filing.",
-    margin + pad,
-    y + boxH - pad - 22,
-    { width: leftW - pad, lineGap: 1.2 }
-  );
+  doc.fillColor(BRAND.muted).font("Helvetica").fontSize(8.5);
+  doc.text(`Current HMRC rate: ${Math.round(a.hmrcRate * 100)}p per mile`, margin + pad, y + pad);
+  doc.text(`Business miles: ${a.totals.mi.toFixed(1)}`, margin + pad, y + pad + 14);
+  doc.fontSize(7).text("Estimates for record keeping only. Verify before filing.", margin + pad, y + boxH - pad - 12, { width: leftW - pad, lineGap: 1 });
 
-  // Right column — label + dedicated value box (value never overlaps left column)
-  const labelH = 18;
-  const valueBoxY = y + pad + labelH + 4;
-  const valueBoxH = boxH - pad * 2 - labelH - 4;
-  doc.roundedRect(rightX, y + pad, rightW, boxH - pad * 2, 10).fillAndStroke("#FFFFFF", BRAND.border);
-
-  doc.fillColor(BRAND.muted).font("Helvetica-Bold").fontSize(7).text("ESTIMATED MILEAGE ALLOWANCE", rightX + 12, y + pad + 10, {
-    width: rightW - 24,
-    align: "center",
-    characterSpacing: 0.4,
-    lineGap: 0,
-    height: labelH,
-  });
-
-  const valSize = fitFontSize(doc, hmrcVal, rightW - 28, hmrcVal.length > 9 ? 22 : hmrcVal.length > 7 ? 26 : 30, 14);
-  const valueAreaTop = valueBoxY + 6;
-  const valueAreaH = valueBoxH - 12;
-  doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(valSize).text(hmrcVal, rightX + 12, valueAreaTop + (valueAreaH - valSize) / 2, {
-    width: rightW - 24,
-    align: "center",
-    lineBreak: false,
-    height: valueAreaH,
-  });
+  doc.rect(rightX, y + pad, rightW, boxH - pad * 2).strokeColor(BRAND.border).lineWidth(0.5).stroke();
+  doc.fillColor(BRAND.muted).font("Helvetica-Bold").fontSize(6.5).text("ESTIMATED ALLOWANCE", rightX + 8, y + pad + 8, { width: rightW - 16, align: "center", characterSpacing: 0.4 });
+  const valSize = fitFontSize(doc, hmrcVal, rightW - 16, hmrcVal.length > 9 ? 20 : 24, 14);
+  doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(valSize).text(hmrcVal, rightX + 8, y + pad + 28, { width: rightW - 16, align: "center" });
 
   return y + boxH + PDF.sectionGap;
 }
 
-function drawWeekProgress(doc, a, margin, contentW, y) {
-  const boxH = 72;
-  const targetMi = Math.max(a.weekTotals.mi, a.prevWeekTotals.mi, 50);
-  const pct = targetMi > 0 ? a.weekTotals.mi / targetMi : 0;
-
-  doc.roundedRect(margin, y, contentW, boxH, PDF.cardRadius).fillAndStroke(BRAND.white, BRAND.border);
-  doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(12).text("This Week", margin + 16, y + 14);
-  drawProgressBar(doc, margin + 16, y + 34, contentW - 32, 10, pct);
-  doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(11).text(`${a.weekTotals.mi.toFixed(1)} miles`, margin + 16, y + 50);
-  doc.fillColor(BRAND.muted).font("Helvetica").fontSize(9).text(
-    `${a.weekTotals.journeys} shift${a.weekTotals.journeys === 1 ? "" : "s"}  ·  ${fmtShiftTime(a.weekTotals.sec)}`,
-    margin + 16 + doc.widthOfString(`${a.weekTotals.mi.toFixed(1)} miles`) + 12,
-    y + 51
-  );
-  if (a.weekComparePct !== null) {
-    doc.fillColor(a.weekComparePct >= 0 ? BRAND.green : BRAND.muted).font("Helvetica-Bold").fontSize(8).text(
-      `${a.weekComparePct > 0 ? "+" : ""}${a.weekComparePct}% vs last week`,
-      margin + contentW - 16,
-      y + 16,
-      { width: 100, align: "right" }
-    );
-  }
-  return y + boxH;
+function drawProgressBar(doc, x, y, w, h, pct) {
+  doc.rect(x, y, w, h).fill("#EEF2F8");
+  const fillW = Math.max(2, w * Math.min(Math.max(pct, 0), 1));
+  if (fillW > 0) doc.rect(x, y, fillW, h).fill(BRAND.blue);
 }
 
-function drawWowMoment(doc, a, margin, contentW, y) {
-  const boxH = PDF.wowBoxH;
-  const isWeekly = a.period === "Weekly" || a.period === "Monthly";
-  const label = isWeekly ? (a.period === "Monthly" ? "This Month" : "This Week") : "This Week";
-  const mi = isWeekly && a.period === "Monthly" ? a.totals.mi : a.weekTotals.mi;
-  const hmrc = isWeekly && a.period === "Monthly" ? a.totals.hmrc : a.weekTotals.hmrc;
-  const journeys = isWeekly && a.period === "Monthly" ? a.totals.journeys : a.weekTotals.journeys;
-  const adminH = adminHoursSaved(journeys * 4);
-
-  doc.roundedRect(margin, y, contentW, boxH, PDF.cardRadius).fillAndStroke(BRAND.navy, BRAND.blue);
-  drawBrandPulse(doc, margin + 16, y + 14, contentW - 32);
-  doc.fillColor(BRAND.soft).font("Helvetica-Bold").fontSize(9).text(label.toUpperCase(), margin + 20, y + 24, { characterSpacing: 1.2 });
-
-  const colW = (contentW - 48) / 2;
-  doc.fillColor("#8EB8FF").font("Helvetica").fontSize(8).text("Business miles", margin + 20, y + 46);
-  doc.fillColor(BRAND.white).font("Helvetica-Bold").fontSize(22).text(mi.toFixed(1), margin + 20, y + 58);
-
-  doc.fillColor("#8EB8FF").font("Helvetica").fontSize(8).text("Estimated HMRC claim", margin + 20 + colW, y + 46);
-  const hmrcStr = money(hmrc);
-  const hmrcSize = fitFontSize(doc, hmrcStr, colW - 10, 22, 14);
-  doc.fillColor(BRAND.white).font("Helvetica-Bold").fontSize(hmrcSize).text(hmrcStr, margin + 20 + colW, y + 58, { width: colW - 10 });
-
-  if (adminH >= 1) {
-    doc.fillColor(BRAND.soft).font("Helvetica").fontSize(9).text(
-      `You're saving approximately ${adminH} hour${adminH === 1 ? "" : "s"} of admin every month.`,
-      margin + 20,
-      y + 90,
-      { width: contentW - 40, align: "center" }
-    );
-  }
-  return y + boxH;
-}
-
-function drawPlaceholderRoute(doc, x, y, w, h) {
-  const cy = y + h / 2 + 8;
-  const x1 = x + 24;
-  const x2 = x + w / 2;
-  const x3 = x + w - 24;
-  doc.moveTo(x1, cy).lineTo(x2, cy - 12).lineTo(x3, cy).strokeColor(BRAND.blue).lineWidth(2.5).stroke();
-  [x1, x2, x3].forEach((px) => {
-    doc.circle(px, px === x2 ? cy - 12 : cy, 4).fill(BRAND.blue);
-    doc.circle(px, px === x2 ? cy - 12 : cy, 2).fill(BRAND.white);
+function drawStatementRow(doc, label, value, margin, y, contentW, bold = false) {
+  doc.fillColor(BRAND.muted).font("Helvetica").fontSize(8.5).text(label, margin + PDF.unit * 2, y + 6);
+  doc.fillColor(BRAND.text).font(bold ? "Helvetica-Bold" : "Helvetica").fontSize(bold ? 10 : 9).text(value, margin + contentW / 2, y + 6, {
+    width: contentW / 2 - PDF.unit * 2,
+    align: "right",
   });
+  doc.moveTo(margin + PDF.unit * 2, y + PDF.rowH - 2).lineTo(margin + contentW - PDF.unit * 2, y + PDF.rowH - 2).strokeColor(BRAND.border).lineWidth(0.25).stroke();
+  return y + PDF.rowH;
 }
 
-function drawRouteMap(doc, shifts, margin, contentW, y, title = "Today's Route") {
-  const boxH = PDF.routeMapH;
-  doc.roundedRect(margin, y, contentW, boxH, PDF.cardRadius).fillAndStroke(BRAND.panel, BRAND.blue);
-  doc.fillColor(BRAND.white).font("Helvetica-Bold").fontSize(10).text(title, margin + 16, y + 12);
+/** Page 3 — Weekly Overview document, not weekday list */
+function drawWeeklyOverview(doc, a, intel, margin, contentW, y, pageW) {
+  y = drawSectionHeadingSimple(doc, "Weekly Overview", margin, y);
+  y += PDF.unit;
 
-  const points = collectRoutePoints(shifts);
-  const mapPad = 16;
-  const mapX = margin + mapPad;
-  const mapY = y + 30;
-  const mapW = contentW - mapPad * 2;
-  const mapH = boxH - 42;
-
-  if (points.length < 2) {
-    drawPlaceholderRoute(doc, mapX, mapY - 8, mapW, mapH + 16);
-    doc.fillColor(BRAND.soft).font("Helvetica").fontSize(7.5).text("Route map appears when GPS tracking is active.", margin + 16, y + boxH - 14);
-    return y + boxH;
-  }
-
-  const lats = points.map((p) => p.lat);
-  const lons = points.map((p) => p.lon);
-  const minLat = Math.min(...lats);
-  const maxLat = Math.max(...lats);
-  const minLon = Math.min(...lons);
-  const maxLon = Math.max(...lons);
-  const latRange = maxLat - minLat || 0.001;
-  const lonRange = maxLon - minLon || 0.001;
-
-  const toX = (lon) => mapX + ((lon - minLon) / lonRange) * mapW;
-  const toY = (lat) => mapY + mapH - ((lat - minLat) / latRange) * mapH;
-
-  doc.save();
-  doc.roundedRect(mapX, mapY, mapW, mapH, 8).clip();
-  doc.rect(mapX, mapY, mapW, mapH).fill("#061A35");
-
-  doc.moveTo(toX(points[0].lon), toY(points[0].lat));
-  for (let i = 1; i < points.length; i++) {
-    doc.lineTo(toX(points[i].lon), toY(points[i].lat));
-  }
-  doc.strokeColor(BRAND.blue).lineWidth(2.5).lineJoin("round").lineCap("round").stroke();
-
-  doc.circle(toX(points[0].lon), toY(points[0].lat), 4).fill(BRAND.green);
-  doc.circle(toX(points[points.length - 1].lon), toY(points[points.length - 1].lat), 4).fill(BRAND.blue);
-  doc.restore();
-
-  return y + boxH;
-}
-
-function drawInsightChecklist(doc, intel, margin, contentW, y) {
-  if (intel.empty) {
-    return drawIntelligenceEmpty(doc, intel, margin, contentW, y);
-  }
-  const rowH = 22;
-  const boxH = intel.items.length * rowH + 28;
-  doc.roundedRect(margin, y, contentW, boxH, PDF.cardRadius).fillAndStroke(BRAND.white, BRAND.border);
-  let iy = y + 14;
-  intel.items.forEach((text) => {
-    doc.fillColor(BRAND.blue).font("Helvetica-Bold").fontSize(10).text("✓", margin + 16, iy + 1);
-    doc.fillColor(BRAND.text).font("Helvetica").fontSize(9).text(text, margin + 32, iy, { width: contentW - 48, lineGap: 0.8 });
-    iy += rowH;
-  });
-  return y + boxH;
-}
-
-function drawJourneyEmptyState(doc, margin, contentW, y) {
-  const boxH = 72;
-  doc.roundedRect(margin, y, contentW, boxH, 12).fillAndStroke(BRAND.white, BRAND.border);
-  doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(11).text("No journeys recorded in this period.", margin + 20, y + 18, {
-    width: contentW - 40,
-  });
-  doc.fillColor(BRAND.muted).font("Helvetica").fontSize(9.5).text(
-    "Start a shift and MilePilot will build this report automatically.",
-    margin + 20,
-    y + 38,
-    { width: contentW - 40, lineGap: 1.2 }
-  );
-  return y + boxH;
-}
-
-function drawSectionTitle(doc, title, subtitle, margin, y, contentW) {
-  doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(16).text(title, margin, y, { width: contentW });
-  if (subtitle) {
-    doc.fillColor(BRAND.muted).font("Helvetica").fontSize(9).text(subtitle, margin, y + 20, { width: contentW });
-    return y + 40;
-  }
-  return y + 24;
-}
-
-function drawIntelligenceEmpty(doc, intel, margin, contentW, y) {
-  const boxH = 88;
-  doc.roundedRect(margin, y, contentW, boxH, PDF.cardRadius).fillAndStroke(BRAND.white, BRAND.border);
-  doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(12).text(intel.intro, margin + 20, y + 18, { width: contentW - 40 });
-  doc.fillColor(BRAND.muted).font("Helvetica").fontSize(10).text(intel.sub, margin + 20, y + 38, { width: contentW - 40 });
-  doc.text(intel.footer, margin + 20, y + 58, { width: contentW - 40, lineGap: 2 });
-  return y + boxH;
-}
-
-function drawWeeklyDashboard(doc, a, margin, contentW, y, pageW) {
   const stats = [
-    ["Weekly mileage", a.weekTotals.mi > 0 ? `${a.weekTotals.mi.toFixed(1)} mi` : "—"],
-    ["Estimated HMRC", money(a.weekTotals.hmrc)],
-    ["Average journey", a.weekAvgShiftSec > 0 && a.weekTotals.journeys ? `${(a.weekTotals.mi / a.weekTotals.journeys).toFixed(1)} mi` : "—"],
-    ["Longest shift", a.weekLongest ? fmtShiftTime(a.weekLongest.seconds) : "—"],
-    ["Number of journeys", String(a.weekTotals.journeys)],
+    ["Total miles", a.weekTotals.mi > 0 ? `${a.weekTotals.mi.toFixed(1)} mi` : "—"],
+    ["Average shift", a.weekAvgShiftSec > 0 ? fmtShiftTime(a.weekAvgShiftSec) : "—"],
     ["Best day", a.busiest ? `${a.busiest.day} · ${a.busiest.miles.toFixed(1)} mi` : "—"],
-    ["Busiest hour", a.productiveHour ? a.productiveHour.label : "—"],
-    [
-      "Trend vs last week",
-      a.weekComparePct !== null ? `${a.weekComparePct > 0 ? "+" : ""}${a.weekComparePct}% business miles` : "—",
-    ],
-    ["Average miles / day", a.weekAvgMilesDay > 0 ? `${a.weekAvgMilesDay.toFixed(1)} mi` : "—"],
-    ["Total driving time", a.weekTotals.sec > 0 ? fmtShiftTime(a.weekTotals.sec) : "—"],
+    ["Longest shift", a.weekLongest ? fmtShiftTime(a.weekLongest.seconds) : "—"],
+    ["Mileage value", money(a.weekTotals.hmrc)],
+    ["Business journeys", String(a.weekTotals.journeys)],
   ];
 
-  const statsBoxH = stats.length * 26 + 28;
-  y = ensureSpace(doc, y, statsBoxH + PDF.routeMapH + 40, margin, contentW, pageW, a);
-  doc.roundedRect(margin, y, contentW, statsBoxH, PDF.cardRadius).fillAndStroke(BRAND.white, BRAND.border);
-  doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(13).text("Weekly Dashboard", margin + 18, y + 14);
-  let sy = y + 34;
-  stats.forEach(([label, val]) => {
-    doc.fillColor(BRAND.muted).font("Helvetica").fontSize(9).text(label, margin + 18, sy);
-    doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(10).text(val, margin + contentW / 2, sy, { width: contentW / 2 - 24, align: "right" });
-    sy += 26;
+  const boxH = stats.length * PDF.rowH + PDF.unit * 2;
+  y = ensureSpace(doc, y, boxH + 80, margin, contentW, pageW, a);
+  doc.rect(margin, y, contentW, boxH).strokeColor(BRAND.border).lineWidth(0.5).stroke();
+  let sy = y + PDF.unit;
+  stats.forEach(([label, val], i) => {
+    sy = drawStatementRow(doc, label, val, margin, sy, contentW, i === 0 || i === 4);
   });
-  y += statsBoxH + PDF.sectionGap;
+  y = sy + PDF.unit + PDF.sectionGap;
 
-  y = ensureSpace(doc, y, PDF.routeMapH + 20, margin, contentW, pageW, a);
-  y = drawRouteMap(doc, a.weekShifts.length ? a.weekShifts : a.shifts, margin, contentW, y, "Weekly Route");
-  return y + PDF.sectionGap;
-}
+  // Weekly trend
+  y = drawSectionHeadingSimple(doc, "Weekly Trend", margin, y);
+  y += PDF.unit;
+  const targetMi = Math.max(a.prevWeekTotals.mi, a.weekTotals.mi, 1);
+  const pct = a.weekTotals.mi / targetMi;
+  const trendH = 48;
+  doc.rect(margin, y, contentW, trendH).strokeColor(BRAND.border).lineWidth(0.5).stroke();
+  drawProgressBar(doc, margin + PDF.unit * 2, y + 16, contentW - PDF.unit * 4, 8, pct);
+  const trendLabel = a.weekComparePct !== null
+    ? `${a.weekComparePct > 0 ? "+" : ""}${a.weekComparePct}% vs last week`
+    : `${Math.round(pct * 100)}% of weekly target`;
+  doc.fillColor(BRAND.muted).font("Helvetica").fontSize(8).text(trendLabel, margin + PDF.unit * 2, y + 30);
+  doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(9).text(`${a.weekTotals.mi.toFixed(1)} miles`, margin + contentW - PDF.unit * 2, y + 30, { width: 80, align: "right" });
+  y += trendH + PDF.sectionGap;
 
-function drawJourneyTable(doc, a, margin, contentW, y, pageW) {
-  const rowH = 26;
-  const cols = {
-    date: { x: margin + 10, w: 52 },
-    start: { x: margin + 68, w: 44 },
-    finish: { x: margin + 118, w: 44 },
-    miles: { x: margin + 168, w: 48 },
-    duration: { x: margin + 222, w: contentW - 234 },
-  };
-
-  const drawTableHeader = (startY) => {
-    doc.roundedRect(margin, startY, contentW, 26, 6).fill(BRAND.navy);
-    const headers = [
-      { label: "Date", col: cols.date },
-      { label: "Start", col: cols.start },
-      { label: "Finish", col: cols.finish },
-      { label: "Miles", col: cols.miles },
-      { label: "Duration", col: cols.duration },
-    ];
-    headers.forEach(({ label, col }) => {
-      doc.fillColor("#FFFFFF").font("Helvetica-Bold").fontSize(7.5).text(label.toUpperCase(), col.x, startY + 9, {
-        width: col.w,
-        characterSpacing: 0.5,
-      });
+  // Business insights from intelligence
+  if (intel.items.length) {
+    y = ensureSpace(doc, y, 80, margin, contentW, pageW, a);
+    y = drawSectionHeadingSimple(doc, "Business Insights", margin, y);
+    y += PDF.unit;
+    const insightH = Math.min(intel.items.length, 4) * 24 + PDF.unit * 2;
+    doc.rect(margin, y, contentW, insightH).strokeColor(BRAND.border).lineWidth(0.5).stroke();
+    let iy = y + PDF.unit;
+    intel.items.slice(0, 4).forEach((text) => {
+      doc.fillColor(BRAND.blue).font("Helvetica-Bold").fontSize(8).text("✓", margin + PDF.unit * 2, iy + 2);
+      doc.fillColor(BRAND.text).font("Helvetica").fontSize(8.5).text(text, margin + PDF.unit * 4, iy, { width: contentW - PDF.unit * 6, lineGap: 1 });
+      iy += 24;
     });
-    return startY + 26;
-  };
-
-  if (!a.shifts.length) {
-    return drawJourneyEmptyState(doc, margin, contentW, y);
+    y += insightH + PDF.sectionGap;
   }
 
-  y = drawTableHeader(y);
-  a.shifts.forEach((s, idx) => {
-    if (y + rowH > footerTop(doc.page.height) - PDF.footerH) {
-      drawFooter(doc, a, margin, contentW, pageW);
-      doc.addPage({ margin: 0 });
-      y = drawPageHeader(doc, a, margin, contentW, pageW);
-      drawPageContentBg(doc, pageW, doc.page.height, a);
-      y += PDF.sectionGap;
-      y = drawSectionTitle(doc, "Journey Breakdown", "Professional record for your accountant", margin, y, contentW);
-      y = drawTableHeader(y);
-    }
-    doc.rect(margin, y, contentW, rowH).fill(idx % 2 === 0 ? BRAND.white : BRAND.light);
-    const d = new Date(s.startISO);
-    doc.fillColor(BRAND.text).font("Helvetica").fontSize(8.5);
-    doc.text(d.toLocaleDateString("en-GB", { day: "2-digit", month: "short" }), cols.date.x, y + 9, { width: cols.date.w });
-    doc.text(fmtClock(s.startISO), cols.start.x, y + 9, { width: cols.start.w });
-    doc.text(fmtClock(s.endISO), cols.finish.x, y + 9, { width: cols.finish.w });
-    doc.font("Helvetica-Bold").text(Number(s.miles || 0).toFixed(1), cols.miles.x, y + 9, { width: cols.miles.w });
-    doc.font("Helvetica").text(fmtDurationShort(s.seconds), cols.duration.x, y + 9, { width: cols.duration.w, align: "right" });
-    y += rowH;
-  });
-  return y + PDF.sectionGap;
-}
-
-function drawProgressBar(doc, x, y, w, h, pct) {
-  doc.roundedRect(x, y, w, h, h / 2).fill("#EEF2F8");
-  const fillW = Math.max(h, w * Math.min(Math.max(pct, 0), 1));
-  if (fillW > h) doc.roundedRect(x, y, fillW, h, h / 2).fill(BRAND.blue);
+  return y;
 }
 
 export function buildPdfBuffer(report) {
@@ -960,116 +782,47 @@ export function buildPdfBuffer(report) {
     doc.on("error", reject);
 
     const pageW = doc.page.width;
-    const pageH = doc.page.height;
     const margin = PDF.margin;
     const contentW = pageContentW(pageW);
 
-    // ── PAGE 1: Branded hero dashboard ──
+    // ── PAGE 1: Premium business document ──
     let y = drawPageHeader(doc, a, margin, contentW, pageW);
-    drawPageContentBg(doc, pageW, pageH, a);
-
-    y = drawHeroMiles(doc, a, margin, contentW, y);
-    y += PDF.cardGap;
-
-    const cardW = (contentW - PDF.cardGap) / 2;
-    const cardH = PDF.metricCardH;
-    const summaryCards = [
-      { label: "Driving Time", value: fmtShiftTime(a.totals.sec) },
-      { label: "Business Journeys", value: String(a.totals.journeys) },
-      { label: "Estimated HMRC Claim", value: money(a.totals.hmrc) },
-      { label: "Average Miles / Journey", value: a.avgMilesShift > 0 ? `${a.avgMilesShift.toFixed(1)} mi` : "—" },
-    ];
-    summaryCards.forEach((c, i) => {
-      const col = i % 2;
-      const row = Math.floor(i / 2);
-      drawMetricCard(doc, margin + col * (cardW + PDF.cardGap), y + row * (cardH + PDF.cardGap), cardW, cardH, c.label, c.value, true);
-    });
-    y += 2 * (cardH + PDF.cardGap) + PDF.sectionGap;
-
-    y = ensureSpace(doc, y, 80, margin, contentW, pageW, a);
-    y = drawWeekProgress(doc, a, margin, contentW, y);
-    y += PDF.sectionGap;
-
-    y = ensureSpace(doc, y, 80, margin, contentW, pageW, a);
-    y = drawSectionTitle(doc, "MilePilot Insights", "What your driving data tells us", margin, y, contentW);
-    y = drawInsightChecklist(doc, intel, margin, contentW, y);
-    y += PDF.sectionGap;
-
-    y = ensureSpace(doc, y, PDF.wowBoxH, margin, contentW, pageW, a);
-    y = drawWowMoment(doc, a, margin, contentW, y);
-
+    y = drawDocTitleBlock(doc, a, margin, contentW, y);
+    y += PDF.unit;
+    y = drawSummaryStatement(doc, a, margin, contentW, y);
+    y = ensureSpace(doc, y, 120, margin, contentW, pageW, a);
+    y = drawInsightSection(doc, intel, margin, contentW, y);
     drawFooter(doc, a, margin, contentW, pageW);
 
-    // ── PAGE 2: Route map + journey table + HMRC ──
+    // ── PAGE 2: Journey log + HMRC ──
     doc.addPage({ margin: 0 });
     y = drawPageHeader(doc, a, margin, contentW, pageW);
-    drawPageContentBg(doc, pageW, pageH, a);
-
-    const routeTitle = a.period === "Daily" ? "Today's Route" : a.period === "Weekly" ? "This Week's Routes" : "Period Routes";
-    y = drawRouteMap(doc, a.shifts, margin, contentW, y, routeTitle);
-    y += PDF.sectionGap;
-
-    y = drawSectionTitle(doc, "Journey Breakdown", "Professional record for your accountant", margin, y, contentW);
-    y = drawJourneyTable(doc, a, margin, contentW, y, pageW);
-
-    y = ensureSpace(doc, y, PDF.hmrcBoxH + PDF.sectionGap, margin, contentW, pageW, a);
+    y = drawSectionHeadingSimple(doc, "Journey Log", margin, y);
+    doc.fillColor(BRAND.muted).font("Helvetica").fontSize(8).text("Professional record for your accountant", margin, y + PDF.unit, { width: contentW });
+    y += PDF.unit * 3;
+    y = drawJourneyLog(doc, a, margin, contentW, y, pageW);
+    y = ensureSpace(doc, y, 120, margin, contentW, pageW, a);
     y = drawHmrcSummaryBox(doc, a, margin, contentW, y);
-
     drawFooter(doc, a, margin, contentW, pageW);
 
-    // ── PAGE 3: Weekly dashboard ──
+    // ── PAGE 3: Weekly overview ──
     doc.addPage({ margin: 0 });
     y = drawPageHeader(doc, a, margin, contentW, pageW);
-    drawPageContentBg(doc, pageW, pageH, a);
-    y = drawSectionTitle(doc, "Weekly Performance", `Week ending ${a.weekEnding}`, margin, y, contentW);
-
-    const maxDayMi = Math.max(...a.dailyActivity.map((d) => d.miles), 1);
-    doc.roundedRect(margin, y, contentW, 7 * 22 + 20, PDF.cardRadius).fillAndStroke(BRAND.white, BRAND.border);
-    let dy = y + 12;
-    a.dailyActivity.slice(0, 7).forEach((d) => {
-      doc.fillColor(BRAND.text).font("Helvetica").fontSize(9).text(d.day.slice(0, 3), margin + 14, dy + 3, { width: 36 });
-      drawProgressBar(doc, margin + 56, dy + 4, contentW - 110, 8, d.miles / maxDayMi);
-      doc.fillColor(BRAND.muted).font("Helvetica-Bold").fontSize(8).text(d.miles > 0 ? `${d.miles.toFixed(1)} mi` : "—", margin + contentW - 50, dy + 2, { width: 40, align: "right" });
-      dy += 22;
-    });
-    y = dy + 16;
-
-    if (a.period === "Weekly") {
-      y = drawWeeklyDashboard(doc, a, margin, contentW, y, pageW);
-    } else {
-      const stats = [
-        ["Average miles / day", a.weekAvgMilesDay > 0 ? `${a.weekAvgMilesDay.toFixed(1)} mi` : "—"],
-        ["Average shift length", a.weekAvgShiftSec > 0 ? fmtShiftTime(a.weekAvgShiftSec) : "—"],
-        ["Longest day", a.busiest ? `${a.busiest.day} · ${a.busiest.miles.toFixed(1)} mi` : "—"],
-        ["Total mileage allowance", money(a.weekTotals.hmrc)],
-        [
-          "Trend vs last week",
-          a.weekComparePct !== null ? `${a.weekComparePct > 0 ? "+" : ""}${a.weekComparePct}% business miles` : "—",
-        ],
-      ];
-      const statsBoxH = stats.length * 28 + 24;
-      y = ensureSpace(doc, y, statsBoxH, margin, contentW, pageW, a);
-      doc.roundedRect(margin, y, contentW, statsBoxH, PDF.cardRadius).fillAndStroke(BRAND.white, BRAND.border);
-      let sy = y + 16;
-      stats.forEach(([label, val]) => {
-        doc.fillColor(BRAND.muted).font("Helvetica").fontSize(9).text(label, margin + 18, sy);
-        doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(10).text(val, margin + contentW / 2, sy, { width: contentW / 2 - 24, align: "right" });
-        sy += 28;
-      });
-      y += statsBoxH + PDF.sectionGap;
-      y = drawRouteMap(doc, a.weekShifts.length ? a.weekShifts : a.shifts, margin, contentW, y, "Weekly Route");
-    }
-
+    doc.fillColor(BRAND.muted).font("Helvetica").fontSize(8).text(`Week ending ${a.weekEnding}`, margin, y, { width: contentW });
+    y += PDF.unit * 2;
+    y = drawWeeklyOverview(doc, a, intel, margin, contentW, y, pageW);
     drawFooter(doc, a, margin, contentW, pageW);
+
     doc.end();
   });
 }
 
+
 export function buildReportEmailHtml(report) {
   const a = analyseReport(report);
   const name = firstName(a.driver) || "there";
-  const greeting = timeGreeting();
-  const ready = periodReadyLine(a.period);
+  const headline = periodEmailHeadline(a.period);
+  const bodyLine = periodEmailBody(a.period);
 
   const metric = (label, value) =>
     `<tr><td style="padding:0 0 12px;">
@@ -1088,8 +841,10 @@ export function buildReportEmailHtml(report) {
 <table width="480" cellpadding="0" cellspacing="0" style="max-width:480px;width:100%;">
 <tr><td style="padding:0 20px;">
   ${buildBrandEmailHeader()}
-  <p style="margin:0 0 12px;font-size:17px;color:#EAF2FF;line-height:1.5;">${greeting} ${name} 👋</p>
-  <p style="margin:0 0 32px;font-size:16px;color:#B9C8DD;line-height:1.55;">${ready}</p>
+  <p style="margin:0 0 16px;font-size:18px;font-weight:600;color:#FFFFFF;line-height:1.4;letter-spacing:-0.02em;">${headline}</p>
+  <p style="margin:0 0 8px;font-size:16px;color:#EAF2FF;line-height:1.5;">Hi ${name},</p>
+  <p style="margin:0 0 8px;font-size:15px;color:#B9C8DD;line-height:1.55;">${bodyLine}</p>
+  <p style="margin:0 0 28px;font-size:15px;color:#B9C8DD;line-height:1.55;">Everything has already been calculated and organised for your records.</p>
   <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
     ${metric("Business Miles", a.totals.mi.toFixed(1))}
     ${metric("Driving Time", fmtShiftTime(a.totals.sec))}
@@ -1104,7 +859,7 @@ export function buildReportEmailHtml(report) {
       <a href="${appUrl}" style="display:inline-block;color:#93A8C4;font-size:14px;font-weight:600;text-decoration:none;padding:8px 16px;">Open MilePilot</a>
     </td></tr>
   </table>
-  <p style="margin:0 0 36px;font-size:14px;color:#93A8C4;line-height:1.6;text-align:center;">Your professional PDF report is attached to this email.</p>
+  <p style="margin:0 0 36px;font-size:14px;color:#93A8C4;line-height:1.6;text-align:center;">Your PDF is attached.</p>
   <p style="margin:0 0 8px;font-size:12px;font-weight:600;letter-spacing:0.14em;color:#0D6BFF;text-align:center;">${BRAND_TAGLINE}</p>
   <p style="margin:0;font-size:13px;color:#B9C8DD;line-height:1.6;text-align:center;">Thank you for choosing MilePilot.<br><span style="color:#93A8C4;">Every mile matters.</span></p>
 </td></tr>
@@ -1117,18 +872,21 @@ export function buildReportEmailHtml(report) {
 export function buildReportEmailText(report) {
   const a = analyseReport(report);
   const name = firstName(a.driver) || "there";
-  return `${timeGreeting()} ${name} 👋
+  return `${periodEmailHeadline(a.period)}
 
-${periodReadyLine(a.period)}
+Hi ${name},
+
+${periodEmailBody(a.period)}
+Everything has already been calculated and organised for your records.
 
 Business Miles: ${a.totals.mi.toFixed(1)}
 Driving Time: ${fmtShiftTime(a.totals.sec)}
 Journeys: ${a.totals.journeys}
 Estimated HMRC: ${money(a.totals.hmrc)}
 
-View your report in MilePilot: ${buildReportDeepLink(report, true)}
+Your PDF is attached.
 
-Your professional PDF report is attached to this email.
+View your report in MilePilot: ${buildReportDeepLink(report, true)}
 
 Open MilePilot: ${APP_URL}/
 
@@ -1139,6 +897,5 @@ Every mile matters.`;
 
 export function buildReportSubject(report) {
   const period = report.period || "Daily";
-  const emoji = period === "Weekly" ? "📊 " : period === "Daily" ? "🚗 " : "";
-  return `${emoji}Your MilePilot ${periodReportTitle(period)}`;
+  return periodEmailHeadline(period);
 }
