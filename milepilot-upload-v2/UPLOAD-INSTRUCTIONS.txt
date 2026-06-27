@@ -1,4 +1,4 @@
-MilePilot — UPLOAD v2.2 (NEW welcome screen)
+MilePilot — UPLOAD v2.3 (NEW welcome screen)
 =============================================
 
 IMPORTANT: This is version 2. Use ONLY this folder.
@@ -25,7 +25,7 @@ Open in browser:
   https://app.milepilot.uk/version.txt
 
 You MUST see:
-  MilePilot Welcome Screen v2.2
+  MilePilot Welcome Screen v2.3
 
 If you see an error or old text, the upload failed.
 
@@ -38,7 +38,7 @@ Hard refresh: Ctrl+Shift+R (or use Incognito)
 STEP 4 — Check the version badge
 ---------------------------------
 Bottom of welcome screen should say:
-  Welcome v2.2
+  Welcome v2.3
 
 If you see the OLD design (car emoji, "DRIVE • TRACK • CLAIM"):
   → You uploaded the wrong files. Use THIS folder only.
