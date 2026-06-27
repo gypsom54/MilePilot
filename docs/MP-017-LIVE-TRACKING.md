@@ -1,7 +1,16 @@
 # MP-017 — Live Tracking Screen & Map Strategy
 
-**Version:** v7.6.2  
+**Version:** v7.6.4  
 **Status:** Complete
+
+## v7.6.4 polish
+
+- Live map always draws a reassuring route line (green start + blue polyline) even when parked or GPS drift is minimal
+- GPS accuracy colour tiers: Excellent (0–15m), Good (15–40m), Fair (40–80m), Weak (80m+)
+- Merged tracking header: 🟢 Tracking + High Accuracy GPS subtitle
+- **Current Journey** card under map: Started, Elapsed, Distance, Average Speed + live insight
+- Premium **Shift Summary** on End Shift: longest journey, average speed, report saved ✓, weekly schedule
+- Smarter Business Insight copy (longest journey, HMRC saved, driven further than yesterday)
 
 ## Product principle
 
@@ -15,8 +24,8 @@ During an active shift the Command Centre shows:
 2. **● Tracking** status + **GPS connected** line
 3. Large live shift timer
 4. **Business Miles** hero stat
-5. Supporting stats: Driving Time, Journeys, Estimated HMRC Allowance
-6. **Route preview** card (map or branded placeholder)
+5. Supporting stats: Driving Time, Current Speed, Business Miles, GPS Accuracy
+6. **Live Route** card with polyline, markers, GPS status, tap-to-expand
 7. **End Shift** primary action
 
 No full-screen map. The legacy `#tracking` screen remains in the bundle but is not used in the default flow.
@@ -25,7 +34,7 @@ No full-screen map. The legacy `#tracking` screen remains in the bundle but is n
 
 | Location | Size |
 |----------|------|
-| Live tracking | Small preview card |
+| Live tracking | Live Route card + optional full-screen expand |
 | History shift detail | Larger route review |
 | PDF report | Route Map section when route points exist |
 
