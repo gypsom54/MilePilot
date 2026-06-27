@@ -1,30 +1,18 @@
-MilePilot — UPLOAD v7.3.0
+MilePilot — UPLOAD v7.6.3
 =========================
 
 DOWNLOAD
 --------
-https://github.com/gypsom54/MilePilot/raw/main/MilePilot-UPLOAD-v7.3.0.zip
+https://github.com/gypsom54/MilePilot/raw/cursor/mp-017-live-tracking-map-ae00/MilePilot-UPLOAD-v7.6.3.zip
 
 CHECK APP VERSION
 -----------------
 https://app.milepilot.uk/version.txt
-Must show: MilePilot OS v7.3.0 — PDF document polish & email-first reports
+Must show: MilePilot OS v7.6.3 — Centered brand header
 
-TWO DEPLOYS NEEDED
-------------------
-1. Cloudflare — upload this zip (frontend v7.3.0)
-2. Railway — redeploy backend for MP-014 PDF fixes + /reports/pdf endpoint
-
-Check backend:
-https://milepilot-production.up.railway.app/health
-Should show: "reportVersion": "MP-014-document-v1"
-
-WHAT'S NEW IN v7.3.0
+WHAT'S NEW IN v7.6.3
 --------------------
-- Report Centre: email box + Send Report Email first
-- Share / Download / Preview moved to Other options below
-- Premium PDF: fixed HMRC overlap, site-matched branding
-- Download & Preview use backend PDF (same as email attachment)
+- MilePilot logo/wordmark centered consistently on every screen
 
 UPLOAD STEPS (Cloudflare)
 -------------------------
