@@ -1,6 +1,6 @@
 /**
- * MilePilot Report Engine — MP-012 Premium Document v8
- * Brand dashboard · navy cards · wallet journeys · QR verify
+ * MilePilot Report Engine — MP-012 Premium Document v9
+ * Ship-ready polish · coach intelligence · brand signature footer
  */
 
 import PDFDocument from "pdfkit";
@@ -39,7 +39,7 @@ export const VEHICLE_LABELS = {
   motorcycle: "Motorcycle",
 };
 
-export const REPORT_VERSION = "MP-012-pdf-v8";
+export const REPORT_VERSION = "MP-012-pdf-v9";
 const APP_URL = "https://app.milepilot.uk";
 const API_URL = "https://milepilot-production.up.railway.app";
 const SITE_URL = "www.milepilot.uk";
@@ -478,7 +478,7 @@ export function buildIntelligence(a) {
     totals, weekTotals, shifts, prevTotals, miDiff, period, weekComparePct, monthProgress, avgMilesShift, busiest,
   } = a;
   const name = firstName(a.driver);
-  const coach = { headline: "", paragraphs: [], hmrcHighlight: null, closing: "Keep it up." };
+  const coach = { headline: "", paragraphs: [], hmrcLabel: null, hmrcValue: null, closing: "Keep up the great work." };
 
   if (!shifts.length) {
     coach.headline = name ? `Ready when you are, ${name}.` : "Ready when you are.";
@@ -489,7 +489,8 @@ export function buildIntelligence(a) {
       "When you start your next shift, MilePilot will automatically continue tracking every business mile.",
     ];
     if (monthProgress?.projectedHmrc > 0) {
-      coach.hmrcHighlight = `At this pace you're on track to claim approximately ${money(monthProgress.projectedHmrc)} this month.`;
+      coach.hmrcLabel = "Estimated monthly allowance at current pace:";
+      coach.hmrcValue = money(monthProgress.projectedHmrc);
     }
     coach.closing = "We'll have your next report ready when you hit the road.";
     return { coach, empty: true };
@@ -500,15 +501,28 @@ export function buildIntelligence(a) {
     `You completed ${totals.journeys} business ${totals.journeys === 1 ? "journey" : "journeys"} covering ${fmtMi(totals.mi)} miles.`
   );
 
-  if (avgMilesShift > 0 && shifts.length >= 1) {
-    coach.paragraphs.push(`Your average journey was ${fmtMi(avgMilesShift)} miles.`);
+  if (avgMilesShift > 0 && a.prevAvgJourney > 0) {
+    const diff = avgMilesShift - a.prevAvgJourney;
+    if (Math.abs(diff) >= 0.3) {
+      const dir = diff > 0 ? "slightly above" : "slightly below";
+      coach.paragraphs.push(`Your average journey length was ${fmtMi(avgMilesShift)} miles, ${dir} your monthly average.`);
+    } else {
+      coach.paragraphs.push(`Your average journey length was ${fmtMi(avgMilesShift)} miles.`);
+    }
+  } else if (avgMilesShift > 0) {
+    coach.paragraphs.push(`Your average journey length was ${fmtMi(avgMilesShift)} miles.`);
   }
 
-  if (totals.hmrc > 0) {
-    coach.hmrcHighlight = `Your HMRC allowance is approximately ${money(totals.hmrc)}.`;
+  if (monthProgress?.projectedMi > 0 && a.prevTotals.mi > 0) {
+    const monthPct = Math.round((monthProgress.projectedMi / Math.max(a.prevTotals.mi * 4, 1) - 1) * 100);
+    if (monthPct >= 5) {
+      coach.paragraphs.push("Based on your recent activity you're on track to exceed last month's mileage.");
+    } else if (monthPct <= -5) {
+      coach.paragraphs.push("Based on your recent activity you're tracking below last month's mileage.");
+    }
   }
 
-  if (busiest && busiest.miles > 0) {
+  if (busiest && busiest.miles > 0 && period === "Daily") {
     coach.paragraphs.push(`${busiest.day} was your busiest day this week.`);
   }
 
@@ -526,16 +540,12 @@ export function buildIntelligence(a) {
     coach.paragraphs.push(`Compared to last week, your weekly mileage ${dir} by ${Math.abs(weekComparePct)}%.`);
   }
 
-  if (monthProgress?.projectedMi > 0 && a.prevTotals.mi > 0) {
-    const monthPct = Math.round((monthProgress.projectedMi / Math.max(a.prevTotals.mi * 4, 1) - 1) * 100);
-    if (Math.abs(monthPct) >= 5) {
-      const dir = monthPct > 0 ? "exceed" : "fall short of";
-      coach.paragraphs.push(`At your current pace you'll ${dir} last month's mileage by approximately ${Math.abs(monthPct)}%.`);
-    }
-  }
-
-  if (monthProgress?.projectedHmrc > 0 && !coach.hmrcHighlight) {
-    coach.hmrcHighlight = `At this pace you're on track to claim approximately ${money(monthProgress.projectedHmrc)} this month.`;
+  if (totals.hmrc > 0) {
+    coach.hmrcLabel = period === "Daily" ? "Estimated HMRC allowance today:" : "Estimated HMRC allowance:";
+    coach.hmrcValue = money(totals.hmrc);
+  } else if (monthProgress?.projectedHmrc > 0) {
+    coach.hmrcLabel = "Estimated monthly allowance at current pace:";
+    coach.hmrcValue = money(monthProgress.projectedHmrc);
   }
 
   return { coach, empty: false };
@@ -658,6 +668,10 @@ function drawOutlineIcon(doc, type, x, y, size, color) {
     return;
   } else if (type === "trend") {
     doc.moveTo(x + 2, cy + 3).lineTo(x + size / 2, y + 2).lineTo(x + size - 2, cy - 3).stroke();
+  } else if (type === "route") {
+    doc.circle(x + 3, y + 3, 2).fill(color);
+    doc.moveTo(x + 4, y + 4).lineTo(x + size - 3, y + size - 3).stroke();
+    doc.circle(x + size - 3, y + size - 3, 1.5).fill(color);
   } else if (type === "verify") {
     doc.roundedRect(x, y, size, size, 2).stroke();
     doc.moveTo(x + 3, cy).lineTo(x + size / 2, y + size - 3).lineTo(x + size - 3, y + 3).stroke();
@@ -681,17 +695,22 @@ function drawThinRule(doc, margin, y, contentW, color = BRAND.border) {
 function drawFooter(doc, a, margin, contentW) {
   const footY = footerTop(doc.page.height) - 4;
   drawThinRule(doc, margin, footY - 52, contentW, "#DDE6F2");
-  doc.fillColor(BRAND.muted).font("Helvetica").fontSize(7).text("Generated automatically by MilePilot", margin, footY - 42, { width: contentW, align: "center" });
-  doc.fillColor(BRAND.blue).font("Helvetica-Bold").fontSize(8).text(BRAND_TAGLINE, margin, footY - 30, { width: contentW, align: "center", characterSpacing: 0.8 });
+  doc.fillColor(BRAND.blue).font("Helvetica-Bold").fontSize(8).text(BRAND_TAGLINE, margin, footY - 42, { width: contentW, align: "center", characterSpacing: 0.8 });
+  doc.fillColor(BRAND.muted).font("Helvetica").fontSize(7).text("Automatically generated by MilePilot", margin, footY - 30, { width: contentW, align: "center" });
   doc.fillColor(BRAND.blue).font("Helvetica-Bold").fontSize(7.5).text("app.milepilot.uk", margin, footY - 18, { width: contentW, align: "center", link: APP_URL });
   doc.fillColor(BRAND.muted).font("Helvetica").fontSize(6.5).text(`Report ID ${a.reportId}`, margin, footY - 6, { width: contentW, align: "center" });
 }
 
 function drawCompactHeader(doc, margin, contentW, pageW) {
   doc.rect(0, 0, pageW, PDF.headerH).fill(BRAND.navy);
-  doc.fillColor(BRAND.white).font("Helvetica-Bold").fontSize(20).text("Mile ", margin, 14, { continued: true, lineBreak: false });
+  doc.font("Helvetica-Bold").fontSize(20);
+  const mileW = doc.widthOfString("Mile ");
+  const pilotW = doc.widthOfString("Pilot");
+  const wordW = mileW + pilotW;
+  const wordX = margin + (contentW - wordW) / 2;
+  doc.fillColor(BRAND.white).text("Mile ", wordX, 14, { continued: true, lineBreak: false });
   doc.fillColor(BRAND.blue).text("Pilot", { lineBreak: false });
-  drawBrandPulse(doc, margin, 38, 96);
+  drawBrandPulse(doc, wordX + (wordW - 96) / 2, 38, 96);
   return PDF.headerH + PDF.unit * 2;
 }
 
@@ -762,9 +781,17 @@ function drawDashboardPage(doc, a, margin, contentW, pageW, pageH) {
   const miNum = fmtMi(a.totals.mi);
   const miSize = fitFontSize(doc, miNum, contentW - 20, 80, 44);
   doc.fillColor(BRAND.blue).font("Helvetica-Bold").fontSize(miSize).text(miNum, margin, y, { width: contentW, align: "center" });
-  y += miSize + PDF.unit;
-  doc.fillColor(BRAND.navy).font("Helvetica-Bold").fontSize(9).text("BUSINESS MILES", margin, y, { width: contentW, align: "center", characterSpacing: 2.2 });
-  y += PDF.unit * 1.5;
+  y += miSize + PDF.unit + 10;
+
+  const label = "BUSINESS MILES";
+  doc.font("Helvetica-Bold").fontSize(9);
+  const labelW = doc.widthOfString(label);
+  const iconSize = 10;
+  const labelBlockW = iconSize + 6 + labelW;
+  const labelX = margin + (contentW - labelBlockW) / 2;
+  drawOutlineIcon(doc, "route", labelX, y, iconSize, BRAND.blue);
+  doc.fillColor(BRAND.navy).text(label, labelX + iconSize + 6, y + 1, { lineBreak: false });
+  y += PDF.unit * 1.5 + 4;
   const todayLabel = a.period === "Daily" ? "Today" : a.period === "Weekly" ? "This Week" : a.period;
   doc.fillColor(BRAND.muted).font("Helvetica").fontSize(10).text(todayLabel, margin, y, { width: contentW, align: "center" });
   y += PDF.unit * 3;
@@ -784,8 +811,7 @@ function drawDashboardPage(doc, a, margin, contentW, pageW, pageH) {
 
   doc.fillColor(BRAND.muted).font("Helvetica").fontSize(8).text("Estimated HMRC claim", margin, y, { width: contentW, align: "center" });
   y += PDF.unit * 1.5;
-  const hmrcStr = money(a.totals.hmrc);
-  doc.fillColor(BRAND.greenDark).font("Helvetica-Bold").fontSize(22).text(hmrcStr, margin, y, { width: contentW, align: "center" });
+  doc.fillColor(BRAND.greenDark).font("Helvetica-Bold").fontSize(24).text(money(a.totals.hmrc), margin, y, { width: contentW, align: "center" });
   y += PDF.unit * 4;
 
   if (collectRoutePoints(a.shifts).length >= 2) {
@@ -808,9 +834,10 @@ function drawCoachIntelligence(doc, intel, margin, contentW, y) {
   coach.paragraphs.forEach((p) => {
     contentH += doc.heightOfString(p, { width: textW, lineGap: 1.3 }) + PDF.unit * 1.5;
   });
-  if (coach.hmrcHighlight) {
+  if (coach.hmrcLabel) {
     doc.font("Helvetica-Bold").fontSize(10);
-    contentH += doc.heightOfString(coach.hmrcHighlight, { width: textW, lineGap: 1.2 }) + PDF.unit * 2;
+    contentH += doc.heightOfString(coach.hmrcLabel, { width: textW }) + PDF.unit;
+    contentH += 18 + PDF.unit * 2;
   }
   doc.font("Helvetica-Bold").fontSize(10);
   contentH += doc.heightOfString(coach.closing, { width: textW }) + pad;
@@ -827,26 +854,26 @@ function drawCoachIntelligence(doc, intel, margin, contentW, y) {
     ly += doc.heightOfString(p, { width: textW, lineGap: 1.3 }) + PDF.unit * 1.5;
   });
 
-  if (coach.hmrcHighlight) {
-    doc.fillColor(BRAND.greenDark).font("Helvetica-Bold").fontSize(10).text(coach.hmrcHighlight, margin + pad, ly, { width: textW, lineGap: 1.2 });
-    ly += doc.heightOfString(coach.hmrcHighlight, { width: textW, lineGap: 1.2 }) + PDF.unit * 2;
+  if (coach.hmrcLabel && coach.hmrcValue) {
+    doc.fillColor(BRAND.muted).font("Helvetica").fontSize(9).text(coach.hmrcLabel, margin + pad, ly, { width: textW });
+    ly += doc.heightOfString(coach.hmrcLabel, { width: textW }) + PDF.unit;
+    doc.fillColor(BRAND.greenDark).font("Helvetica-Bold").fontSize(16).text(coach.hmrcValue, margin + pad, ly);
+    ly += 22 + PDF.unit * 2;
   }
 
   doc.fillColor(BRAND.blue).font("Helvetica-Bold").fontSize(10).text(coach.closing, margin + pad, ly, { width: textW });
   return y + boxH + PDF.sectionGap;
 }
 
-function drawJourneyWalletItem(doc, s, idx, margin, contentW, y) {
-  doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(12).text(fmtClock(s.startISO), margin + PDF.unit * 2, y);
-  y = drawThinRule(doc, margin, y + 16, contentW, "#DDE6F2");
-  doc.fillColor(BRAND.navy).font("Helvetica-Bold").fontSize(9).text(`Journey ${idx + 1}`, margin + PDF.unit * 2, y + 2, { characterSpacing: 0.6 });
-  drawOutlineIcon(doc, "miles", margin + PDF.unit * 2, y + 16, 12, BRAND.blue);
-  doc.fillColor(BRAND.blue).font("Helvetica-Bold").fontSize(14).text(`${fmtMi(s.miles)} miles`, margin + PDF.unit * 5, y + 14);
-  drawOutlineIcon(doc, "time", margin + contentW * 0.55, y + 16, 12, BRAND.muted);
-  doc.fillColor(BRAND.muted).font("Helvetica").fontSize(10).text(fmtDurationShort(s.seconds), margin + contentW * 0.55 + 16, y + 16);
-  y += 38;
-  y = drawThinRule(doc, margin, y, contentW, "#EEF4FF");
-  return y + PDF.unit;
+function drawJourneyWalletItem(doc, s, margin, contentW, y) {
+  const cx = margin + PDF.unit * 2;
+  doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(13).text(fmtClock(s.startISO), cx, y);
+  y += 18;
+  doc.fillColor(BRAND.blue).font("Helvetica-Bold").fontSize(13).text(`${fmtMi(s.miles)} miles`, cx, y);
+  y += 16;
+  doc.fillColor(BRAND.muted).font("Helvetica").fontSize(10).text(fmtDurationShort(s.seconds), cx, y);
+  y += 16;
+  return drawThinRule(doc, margin, y, contentW, "#DDE6F2") + PDF.unit;
 }
 
 function drawJourneyTimeline(doc, a, margin, contentW, y, pageW) {
@@ -864,7 +891,7 @@ function drawJourneyTimeline(doc, a, margin, contentW, y, pageW) {
       y = drawCompactHeader(doc, margin, contentW, pageW) + PDF.pagePad;
       y = drawNavySectionBar(doc, "Journeys", margin, y, contentW);
     }
-    y = drawJourneyWalletItem(doc, s, idx, margin, contentW, y);
+    y = drawJourneyWalletItem(doc, s, margin, contentW, y);
   });
   return y + PDF.sectionGap;
 }
@@ -872,7 +899,7 @@ function drawJourneyTimeline(doc, a, margin, contentW, y, pageW) {
 function drawWeeklyBarChart(doc, a, margin, contentW, y) {
   const days = a.dailyActivity;
   const maxMi = Math.max(...days.map((d) => d.miles), 1);
-  const chartH = 56;
+  const chartH = 68;
   const barW = (contentW - PDF.unit * 4) / 7 - 4;
   const baseY = y + chartH;
 
