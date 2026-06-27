@@ -14,7 +14,7 @@
 | Dashboard foundation | ~90% 🔒 Locked |
 | **Core tracking engine** | ✅ **MP-013 v2** — Sprint 1–3 complete |
 | **PDF Reporting System** | ✅ **LOCKED** — MP-012 v11 |
-| Business intelligence | 0% |
+| Business intelligence | ✅ **MP-018** — Driver Intelligence Dashboard (v7.7.0) |
 
 ---
 
