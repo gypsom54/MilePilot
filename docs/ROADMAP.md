@@ -157,4 +157,4 @@ One button → professional PDF proof for Job Centre, HMRC, accountant:
 - Backup: https://milepilot-app.pages.dev  
 - Version: https://app.milepilot.uk/version.txt  
 
-Upload: Cloudflare Pages → `milepilot-app` → 6 files from `milepilot-upload-v2/`
+Upload: Cloudflare Pages → `milepilot-app` → 8 files from `MilePilot-UPLOAD-v7.4.0.zip` (includes `js/tracking-engine.js`)
