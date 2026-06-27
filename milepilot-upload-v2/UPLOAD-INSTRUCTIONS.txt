@@ -1,32 +1,22 @@
-MilePilot — UPLOAD v7.4.1
+MilePilot — UPLOAD v7.5.0
 =========================
 
 DOWNLOAD
 --------
-https://github.com/gypsom54/MilePilot/raw/main/MilePilot-UPLOAD-v7.4.1.zip
+https://github.com/gypsom54/MilePilot/raw/main/MilePilot-UPLOAD-v7.5.0.zip
 
 CHECK APP VERSION
 -----------------
 https://app.milepilot.uk/version.txt
-Must show: MilePilot OS v7.4.1 — MP-014 Tracking QA & reliability
+Must show: MilePilot OS v7.5.0 — MP-016 Auto-Pilot flow
 
-TWO DEPLOYS NEEDED
-------------------
-1. Cloudflare — upload this zip (frontend v7.4.1)
-2. Railway — backend unchanged (PDF locked at MP-012 v11)
-
-Check backend:
-https://milepilot-production.up.railway.app/health
-Should show: "reportVersion": "MP-012-pdf-v11"
-
-WHAT'S NEW IN v7.4.1
+WHAT'S NEW IN v7.5.0
 --------------------
-- MP-014 QA: Start/End Shift reliability improvements
-- Branded error messages (location, GPS, save failed)
-- Double-tap guard on Start/End Shift
-- Background resume (pageshow + GPS reconnect)
-- Developer test mode (?dev=1) — simulate miles & test shifts
-- See docs/MP-014-QA.md and docs/TRACKING_BACKGROUND.md
+- MP-016 Auto-Pilot philosophy: End Shift saves everything automatically
+- Simple success screen — Done only (no View/Save Report on driving flow)
+- Document Centre: reports, schedule, View/Download/Share/Email/CSV
+- Dashboard: Start Shift or End Shift only — no paperwork CTAs
+- Background PDF generation + daily auto-email after shift
 
 UPLOAD STEPS (Cloudflare)
 -------------------------

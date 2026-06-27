@@ -83,7 +83,22 @@ See MP-013 deliverables below. **MP-014** adds QA, reliability, dev test mode, a
 
 ---
 
-## MP-014 — Tracking QA & Live Shift Experience
+## MP-016 — Auto-Pilot Product Flow
+
+**Status:** Complete  
+**Version:** App v7.5.0  
+**Philosophy:** You drive. MilePilot handles the paperwork.
+
+See [docs/AUTO_PILOT.md](./AUTO_PILOT.md)
+
+- End Shift → automatic save, PDF, email schedule (no export buttons on driving flow)
+- Success screen: Done only
+- Document Centre: all report management
+- Dashboard: Start Shift / End Shift only
+
+**Deploy:** MilePilot-UPLOAD-v7.5.0.zip
+
+---
 
 **Status:** Complete  
 **Version:** App v7.4.1  
