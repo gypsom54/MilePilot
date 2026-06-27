@@ -16,15 +16,17 @@ If the answer to all five is **yes**, lock the screen and move on.
 
 | ID | Screen | Status |
 |----|--------|--------|
-| MP-001 | First Impression | 🔒 Locked · v2.8 |
-| MP-002 | Personalising MilePilot | ✅ Complete · v3.5 |
-| MP-003 | The MilePilot Promise | 🔒 Locked · v4.5 |
-| MP-004 | Permissions | In progress · v4.5 |
-| MP-004 | Permissions | In progress · v4.1 |
-| MP-005 | Dashboard | Planned |
-| MP-006 | Tracking | Planned |
-| MP-007 | Shift Summary | Planned |
-| MP-008 | Weekly Review | Planned |
+| MP-001 | First Impression | 🔒 Locked · Final |
+| MP-002 | Personalising MilePilot | 🔒 Locked · Final |
+| MP-003 | The MilePilot Promise | 🔒 Locked · Final |
+| MP-004 | Location Permission | ✅ Complete |
+| MP-005 | Notification Permission | ✅ Complete |
+| MP-006 | The Driver's Command Centre | 🚀 Next sprint |
+| MP-007 | Tracking | Planned |
+| MP-008 | Shift Summary | Planned |
+| MP-009 | Weekly Review | Planned |
+
+See **VOICE_GUIDE.md** for protected brand lines and voice rules.
 
 ## Design language (benchmark)
 
