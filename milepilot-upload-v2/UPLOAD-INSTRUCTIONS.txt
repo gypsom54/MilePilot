@@ -1,31 +1,32 @@
-MilePilot — UPLOAD v7.4.0
+MilePilot — UPLOAD v7.4.1
 =========================
 
 DOWNLOAD
 --------
-https://github.com/gypsom54/MilePilot/raw/main/MilePilot-UPLOAD-v7.4.0.zip
+https://github.com/gypsom54/MilePilot/raw/main/MilePilot-UPLOAD-v7.4.1.zip
 
 CHECK APP VERSION
 -----------------
 https://app.milepilot.uk/version.txt
-Must show: MilePilot OS v7.4.0 — MP-013 Tracking Engine v2
+Must show: MilePilot OS v7.4.1 — MP-014 Tracking QA & reliability
 
 TWO DEPLOYS NEEDED
 ------------------
-1. Cloudflare — upload this zip (frontend v7.4.0)
+1. Cloudflare — upload this zip (frontend v7.4.1)
 2. Railway — backend unchanged (PDF locked at MP-012 v11)
 
 Check backend:
 https://milepilot-production.up.railway.app/health
 Should show: "reportVersion": "MP-012-pdf-v11"
 
-WHAT'S NEW IN v7.4.0
+WHAT'S NEW IN v7.4.1
 --------------------
-- MP-013 Tracking Engine v2 (js/tracking-engine.js)
-- Live Command Centre during shift: Shift In Progress, live timer, current journey
-- Background persist + GPS auto-reconnect
-- End Shift completion screen: Great work today, View Report / Done
-- Rich shift storage for reports and history
+- MP-014 QA: Start/End Shift reliability improvements
+- Branded error messages (location, GPS, save failed)
+- Double-tap guard on Start/End Shift
+- Background resume (pageshow + GPS reconnect)
+- Developer test mode (?dev=1) — simulate miles & test shifts
+- See docs/MP-014-QA.md and docs/TRACKING_BACKGROUND.md
 
 UPLOAD STEPS (Cloudflare)
 -------------------------

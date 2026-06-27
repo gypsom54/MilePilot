@@ -71,11 +71,38 @@ When the user presses **Start Shift**:
 
 ## ✅ MP-013 — Tracking Engine v2
 
+**Status:** Complete (deployed v7.4.0)  
+**Version:** Tracking Engine v2 · App v7.4.0+  
+**Branch / PR:** `cursor/mp-013-tracking-engine-ae00` → [#17](https://github.com/gypsom54/MilePilot/pull/17)
+
+---
+
+## Sprint 1–3 — Tracking & Live Shift ✅
+
+See MP-013 deliverables below. **MP-014** adds QA, reliability, dev test mode, and background GPS documentation.
+
+---
+
+## MP-014 — Tracking QA & Live Shift Experience
+
 **Status:** Complete  
-**Version:** Tracking Engine v2 · App v7.4.0  
-**Branch:** `cursor/mp-013-tracking-engine-ae00`
+**Version:** App v7.4.1  
+**Branch:** `cursor/mp-014-tracking-qa-ae00`
 
 ### Delivered
+
+- Start/End Shift reliability (busy guard, save error handling)
+- Branded error messages (location, GPS, tracking paused, save failed)
+- Background resume (`pageshow`, wake lock re-acquire, GPS reconnect)
+- Developer test mode (`?dev=1`) — simulate miles, test shifts, reports
+- QA checklist: [docs/MP-014-QA.md](./MP-014-QA.md)
+- Background limits doc: [docs/TRACKING_BACKGROUND.md](./TRACKING_BACKGROUND.md)
+
+**Deploy:** [MilePilot-UPLOAD-v7.4.1.zip](../MilePilot-UPLOAD-v7.4.1.zip)
+
+---
+
+## ✅ MP-013 deliverables (v2 engine)
 
 - Reusable `frontend/js/tracking-engine.js` — single source of truth for shifts
 - Start Shift → GPS, timer, live miles, HMRC estimate, route recording

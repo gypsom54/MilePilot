@@ -311,13 +311,19 @@
   }
 
   function saveActiveShift() {
-    if (state.ccState !== 'active') return;
+    if (state.ccState !== 'active') return true;
     try {
       localStorage.setItem(STORAGE.ACTIVE, JSON.stringify(getActiveShiftPayload()));
+      return true;
     } catch (e) {
-      const p = getActiveShiftPayload();
-      p.routePoints = downsampleRoute(state.routePoints, 150);
-      localStorage.setItem(STORAGE.ACTIVE, JSON.stringify(p));
+      try {
+        const p = getActiveShiftPayload();
+        p.routePoints = downsampleRoute(state.routePoints, 150);
+        localStorage.setItem(STORAGE.ACTIVE, JSON.stringify(p));
+        return true;
+      } catch (e2) {
+        return false;
+      }
     }
   }
 
@@ -345,7 +351,34 @@
   }
 
   function saveShifts(shifts) {
-    localStorage.setItem(STORAGE.SHIFTS, JSON.stringify(shifts));
+    try {
+      localStorage.setItem(STORAGE.SHIFTS, JSON.stringify(shifts));
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /** Dev/QA only — inject synthetic GPS movement for mileage testing. */
+  function simulateMovement(totalMiles, startLat, startLon) {
+    if (state.ccState !== 'active') return getState();
+    const milesToAdd = Math.max(0, Number(totalMiles) || 0);
+    if (!milesToAdd) return getState();
+    const baseLat = startLat != null ? startLat : (state.lastPoint && state.lastPoint.lat) || 51.5072;
+    const baseLon = startLon != null ? startLon : (state.lastPoint && state.lastPoint.lon) || -0.1276;
+    const stepM = ENGINE.MIN_MOVE_M + 2;
+    const totalM = milesToAdd * 1609.344;
+    const steps = Math.max(1, Math.ceil(totalM / stepM));
+    const latStep = stepM / 111320;
+    let t = Date.now();
+    if (!state.lastPoint) {
+      processGpsPoint({ lat: baseLat, lon: baseLon, acc: 8, t: t - 1000 });
+    }
+    for (let i = 1; i <= steps; i++) {
+      t += 2500;
+      processGpsPoint({ lat: baseLat + latStep * i, lon: baseLon, acc: 8, t: t });
+    }
+    return getState();
   }
 
   function getState() {
@@ -416,5 +449,9 @@
     clearGpsLoss: clearGpsLoss,
     gpsLossMs: gpsLossMs,
     buildCompletedShift: buildCompletedShift,
+    simulateMovement: simulateMovement,
+    isActive: function () {
+      return state.ccState === 'active';
+    },
   };
 })(typeof window !== 'undefined' ? window : global);
