@@ -1,0 +1,40 @@
+---
+description: MilePilot project rules for AI agents — product vision, architecture, and development constraints
+alwaysApply: true
+---
+
+# MilePilot
+
+MilePilot is a UK mileage-tracking PWA for self-employed drivers. It tracks GPS shifts, applies HMRC advisory rates, and generates PDF/email reports.
+
+Read the full docs before making changes:
+
+- [PROJECT_RULES.md](../../PROJECT_RULES.md) — product vision, design system, welcome screen rules, dev principles
+- [ROADMAP.md](../../ROADMAP.md) — phased delivery plan (Phase 2 Premium UI is current focus)
+
+## Repo layout
+
+- `frontend/` — static PWA (`index.html`, `manifest.json`, `service-worker.js`). No build step.
+- `backend/` — Express ESM server (`server.js`). PDF via PDFKit, email via Resend API.
+- `docs/` — deployment and setup guides
+- `deploy/cloudflare-targets.json` — production domain targets
+
+## Do not break
+
+- GPS tracking, shift save/end flow, history, reports (day/week/month)
+- LocalStorage keys: `mp_driver`, `mp_vehicle`, `mp_email`, `mp_shifts`, `mp_api_base`
+- Backend endpoints: `GET /health`, `POST /reports/send`
+- Resend API for email (do not revert to SMTP)
+- HMRC disclaimer on all generated reports
+
+## Design
+
+Premium, modern, trustworthy. Deep navy backgrounds, MilePilot blue (`#0D6BFF`), rounded cards, minimal clutter. Reference: Stripe, Linear, Monzo.
+
+## Backend gotcha
+
+`RESEND_API_KEY` must be set or the Resend client throws at startup. Use a placeholder for local dev without email: `RESEND_API_KEY=re_placeholder_dev_key npm start`.
+
+## Change principle
+
+Every change should improve a driver's working day. Preserve existing saved shift data and core flows unless explicitly refactoring with a clear reason.
