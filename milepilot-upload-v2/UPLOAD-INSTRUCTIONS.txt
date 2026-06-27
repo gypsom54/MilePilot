@@ -1,10 +1,18 @@
-MilePilot — UPLOAD v4.6 (onboarding flow restored)
-====================================================
+MilePilot — UPLOAD v4.6.1 (onboarding flow fix)
+=================================================
 
-IMPORTANT: Use ONLY this folder. Do NOT use old MilePilot_RC3_MASTER files.
+IMPORTANT: Upload ALL 5 files. Replace every file from the previous upload.
 
-ONBOARDING FLOW (v4.6)
-----------------------
+WHY YOU MAY STILL SEE THE OLD FLOW
+----------------------------------
+The server may already have v4.6, but your browser can still open MP-003
+because old onboarding data is saved in localStorage (e.g. name "Jonathan").
+
+This v4.6.1 build automatically clears incomplete onboarding when the app
+version changes, so you start again at MP-001 after upload.
+
+ONBOARDING FLOW
+---------------
   MP-001  Welcome (name entry)
     ↓
   MP-002  Vehicle selection
@@ -17,8 +25,8 @@ ONBOARDING FLOW (v4.6)
     ↓
   Dashboard
 
-FILES TO UPLOAD (all 5 files in this folder)
----------------------------------------------
+FILES TO UPLOAD (all 5 in this folder)
+---------------------------------------
   index.html
   manifest.json
   icon.svg
@@ -32,27 +40,24 @@ STEP 1 — Upload to Cloudflare
 3. Select ALL 5 files from THIS folder
 4. Deploy
 
-STEP 2 — Confirm it worked (before opening the app)
-----------------------------------------------------
-Open in browser:
+STEP 2 — Confirm upload worked
+-------------------------------
+Open:
   https://app.milepilot.uk/version.txt
 
 You MUST see:
-  MilePilot OS v4.6 — Onboarding flow restored (MP-001 → MP-005)
-
-If you see an error or old text, the upload failed.
+  MilePilot OS v4.6.1 — Onboarding flow fix + stale state reset
 
 STEP 3 — Open the app
 ----------------------
   https://app.milepilot.uk
 
-Hard refresh: Ctrl+Shift+R (or use Incognito)
+Use Incognito OR hard refresh: Ctrl+Shift+R
 
-If you still see the wrong screen, use Settings → Reset onboarding
-to clear old browser data and run the full flow from MP-001.
+STEP 4 — Check the welcome screen badge
+----------------------------------------
+Bottom of MP-001 should say:
+  MP-001 🔒 Locked · App v4.6.1
 
-LOCAL TEST
-----------
-  cd this folder
-  python -m http.server 8000
-  open http://localhost:8000
+If you still see MP-003 first:
+  Settings → Reset onboarding

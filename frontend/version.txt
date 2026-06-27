@@ -1,3 +1,3 @@
-MilePilot OS v4.6 — Onboarding flow restored (MP-001 → MP-005)
+MilePilot OS v4.6.1 — Onboarding flow fix + stale state reset
 Build: 2026-06-27
 If you see this, the NEW files uploaded correctly.
