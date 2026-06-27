@@ -1,4 +1,4 @@
-MilePilot Welcome Screen v2.1
+MilePilot Welcome Screen v2.2
 Build: 2026-06-27
-Typing animation fix included.
+Apple-quality polish pass.
 If you see this, the NEW files uploaded correctly.

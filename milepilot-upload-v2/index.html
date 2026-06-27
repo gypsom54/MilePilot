@@ -33,34 +33,40 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 .historyItem{border:1px solid var(--line);background:rgba(255,255,255,.05);border-radius:20px;padding:15px;margin:12px 0}.historyTop{display:flex;justify-content:space-between;font-weight:1000}.historySub{color:#B9C8DD;margin-top:8px;font-size:14px;line-height:1.45}.toast{position:fixed;left:50%;bottom:94px;transform:translateX(-50%);width:min(390px,calc(100vw - 22px));background:#101C31;color:#fff;border:1px solid rgba(255,255,255,.16);border-radius:17px;padding:14px;font-weight:900;font-size:13px;text-align:center;z-index:60;display:none}.toast.show{display:block}
 .onboard-bg{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
 .onboard-glow{position:absolute;border-radius:50%;filter:blur(80px)}
-.onboard-glow-1{width:340px;height:200px;background:#0D6BFF;top:18%;left:50%;right:auto;transform:translateX(-50%);opacity:.14}
-.onboard-glow-2{width:260px;height:260px;background:#1A5FD4;bottom:60px;left:-100px;opacity:.1}
-.onboard-inner{position:relative;z-index:1;width:100%;max-width:360px;margin:0 auto;display:flex;flex-direction:column;min-height:100%}
-.onboard-brand{display:flex;flex-direction:column;align-items:center;margin-bottom:22px}
-.onboard-brand .wordmark{font-size:42px;font-weight:900;letter-spacing:-1px;line-height:1}
-.welcome-underline{width:min(200px,58%);height:4px;margin:16px auto 0;border-radius:999px;background:linear-gradient(90deg,rgba(13,107,255,0),#0D6BFF 25%,#4DA3FF 50%,#0D6BFF 75%,rgba(13,107,255,0));box-shadow:0 0 28px rgba(13,107,255,.55),0 0 8px rgba(13,107,255,.35)}
-.welcome-headline{text-align:center;font-size:clamp(30px,7.5vw,36px);line-height:1.1;font-weight:1000;letter-spacing:-1.2px;margin:0 0 20px}
+.onboard-glow-1{width:320px;height:180px;background:#0D6BFF;top:16%;left:50%;right:auto;transform:translateX(-50%);opacity:.1}
+.onboard-glow-2{width:240px;height:240px;background:#1A5FD4;bottom:80px;left:-100px;opacity:.07}
+.onboard-inner{position:relative;z-index:1;width:100%;max-width:340px;margin:0 auto;display:flex;flex-direction:column;min-height:100%}
+.onboard-brand{display:flex;flex-direction:column;align-items:center;margin-bottom:32px}
+.onboard-brand .wordmark{font-size:40px;font-weight:700;letter-spacing:-0.04em;line-height:1;-webkit-font-smoothing:antialiased}
+.welcome-underline{width:min(152px,42%);height:3px;margin:20px auto 0;border-radius:999px;background:linear-gradient(90deg,rgba(13,107,255,0),#0D6BFF 30%,#4DA3FF 50%,#0D6BFF 70%,rgba(13,107,255,0));box-shadow:0 0 20px rgba(13,107,255,.35)}
+.welcome-headline{text-align:center;font-size:clamp(32px,8vw,38px);line-height:1.08;font-weight:700;letter-spacing:-0.03em;margin:0 0 18px;-webkit-font-smoothing:antialiased}
+.welcome-headline .blue{font-weight:700}
 #welcome,#personal{position:relative;overflow:hidden;background:linear-gradient(180deg,#050F22 0%,#020B1B 55%,#010810 100%)}
-#welcome.active,#personal.active{display:flex;flex-direction:column;min-height:100dvh;padding:max(24px,env(safe-area-inset-top)) 22px max(28px,env(safe-area-inset-bottom))}
+#welcome.active,#personal.active{display:flex;flex-direction:column;min-height:100dvh;padding:max(32px,env(safe-area-inset-top)) 24px max(24px,env(safe-area-inset-bottom))}
 #welcome.active{justify-content:center}
 #personal.active{justify-content:flex-start}
 #welcome .onboard-inner{margin:auto 0}
 #personal .onboard-inner{flex:1;display:flex;flex-direction:column;padding-top:28px}
-.welcome-support{text-align:center;color:#9FB4D0;font-size:15px;line-height:1.55;margin:0 auto 26px;max-width:330px}
-.welcome-features{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 0 28px}
-.welcome-feature{text-align:center}
-.welcome-icon{width:44px;height:44px;margin:0 auto 8px;border-radius:50%;border:1px solid rgba(110,180,255,.35);background:rgba(13,107,255,.08);display:flex;align-items:center;justify-content:center;box-shadow:0 0 24px rgba(13,107,255,.12)}
-.welcome-icon svg{width:20px;height:20px;stroke:#6EB4FF;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
-.welcome-feature span{display:block;font-size:10px;color:#8FA8C9;line-height:1.35}
-.welcome-kicker{text-align:center;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#6EB4FF;margin:0 0 10px}
-.welcome-question-wrap{min-height:34px;height:34px;margin:0 0 14px;display:flex;align-items:flex-end;justify-content:center;overflow:hidden}
-.welcome-question{text-align:center;font-size:22px;font-weight:800;letter-spacing:-.3px;color:#fff;line-height:1.2}
-.welcome-question .cursor{height:20px;width:2px;vertical-align:-3px;margin-left:1px}
-.welcome-input-wrap{position:relative;margin-bottom:12px}
-.welcome-input-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;stroke:#6EB4FF;fill:none;stroke-width:1.75;pointer-events:none}
-#welcome input#name{height:50px;border-radius:14px;border:1px solid rgba(13,107,255,.45);background:rgba(5,18,36,.88);box-shadow:0 0 0 1px rgba(13,107,255,.1),0 8px 28px rgba(13,107,255,.1);font-size:16px;padding:0 14px 0 42px;transition:border-color .2s,box-shadow .2s}
-#welcome input#name:focus{border-color:rgba(13,107,255,.75);box-shadow:0 0 0 3px rgba(13,107,255,.16),0 8px 28px rgba(13,107,255,.14)}
-.welcome-version{position:absolute;left:0;right:0;bottom:max(10px,env(safe-area-inset-bottom));text-align:center;font-size:10px;font-weight:700;letter-spacing:1px;color:rgba(143,168,201,.55);z-index:2}
+.welcome-support{text-align:center;color:rgba(159,180,208,.88);font-size:14px;font-weight:400;line-height:1.65;margin:0 auto 36px;max-width:300px;letter-spacing:.01em}
+.welcome-features{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:0 0 0;padding:0 2px}
+.welcome-feature{text-align:center;display:flex;flex-direction:column;align-items:center}
+.welcome-icon{width:48px;height:48px;margin:0 0 10px;border-radius:50%;border:1px solid rgba(110,180,255,.28);background:rgba(13,107,255,.06);display:flex;align-items:center;justify-content:center;box-shadow:0 0 18px rgba(13,107,255,.08)}
+.welcome-icon svg{width:19px;height:19px;stroke:#7EB8FF;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.welcome-feature span{display:block;font-size:10.5px;font-weight:500;color:rgba(147,168,196,.92);line-height:1.45;letter-spacing:.01em;max-width:72px}
+.welcome-form{margin-top:36px;padding-top:32px;border-top:1px solid rgba(255,255,255,.06)}
+.welcome-kicker{text-align:center;font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(110,180,255,.78);margin:0 0 14px}
+.welcome-question-wrap{min-height:36px;height:36px;margin:0 0 18px;display:flex;align-items:flex-end;justify-content:center;overflow:hidden}
+.welcome-question{text-align:center;font-size:21px;font-weight:600;letter-spacing:-0.02em;color:rgba(255,255,255,.96);line-height:1.25;-webkit-font-smoothing:antialiased}
+.welcome-question .cursor{height:19px;width:2px;vertical-align:-2px;margin-left:2px;border-radius:1px}
+.welcome-input-wrap{position:relative;margin-bottom:16px}
+.welcome-input-icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);width:17px;height:17px;stroke:rgba(110,180,255,.75);fill:none;stroke-width:1.6;pointer-events:none}
+#welcome input#name{height:52px;border-radius:16px;border:1px solid rgba(13,107,255,.32);background:rgba(5,18,36,.72);box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 4px 20px rgba(0,0,0,.12);font-size:17px;font-weight:400;padding:0 16px 0 44px;transition:border-color .2s,box-shadow .2s;-webkit-font-smoothing:antialiased}
+#welcome input#name::placeholder{color:rgba(127,141,165,.72);font-weight:400}
+#welcome input#name:focus{border-color:rgba(13,107,255,.55);box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 0 0 3px rgba(13,107,255,.12)}
+#welcome .premium-btn{height:52px;border-radius:16px;font-size:17px;font-weight:600;letter-spacing:-0.01em;margin-top:0;background:linear-gradient(180deg,#1E88FF 0%,#0D6BFF 50%,#005FE8 100%);box-shadow:0 8px 24px rgba(13,107,255,.28),inset 0 1px 0 rgba(255,255,255,.12)}
+#welcome .premium-btn:hover{filter:brightness(1.04);box-shadow:0 10px 28px rgba(13,107,255,.32),inset 0 1px 0 rgba(255,255,255,.12);transform:translateY(-1px)}
+#welcome .premium-btn:active{transform:translateY(0);box-shadow:0 4px 16px rgba(13,107,255,.24),inset 0 1px 0 rgba(255,255,255,.08)}
+.welcome-version{position:absolute;left:0;right:0;bottom:max(12px,env(safe-area-inset-bottom));text-align:center;font-size:9px;font-weight:500;letter-spacing:.08em;color:rgba(143,168,201,.35);z-index:2}
 .personal-type-wrap{flex:1;min-height:168px;max-height:168px;display:flex;align-items:flex-start;padding-top:8px;margin-bottom:16px;overflow:hidden}
 .personal-type{font-size:clamp(20px,5.5vw,24px);font-weight:800;line-height:1.35;letter-spacing:-.4px;color:#EAF2FF;width:100%}
 .personal-type .cursor{height:22px;width:2px;vertical-align:-3px;margin-left:2px}
@@ -103,7 +109,7 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 <button class="btn premium-btn" onclick="showPersonal()">Continue →</button>
 </div>
 </div>
-<div class="welcome-version" id="appVersion">Welcome v2.0</div>
+<div class="welcome-version" id="appVersion">Welcome v2.1</div>
 </section>
 <section id="personal" class="screen">
 <div class="onboard-bg" aria-hidden="true">
@@ -135,8 +141,8 @@ let driver=localStorage.getItem('mp_driver')||'',vehicle=localStorage.getItem('m
 let miles=0,elapsed=0,timer=null,shiftStartedAt=null,gpsWatchId=null,lastPoint=null,routePoints=[],liveMap=null,livePolyline=null,liveMarker=null;
 let shifts=loadShifts();
 function q(id){return document.getElementById(id)}function toast(msg){q('toast').textContent=msg;q('toast').classList.add('show');setTimeout(()=>q('toast').classList.remove('show'),3000)}
-function typeInto(id,text,speed=38){let e=q(id),i=0;e.innerHTML='';(function f(){if(i<=text.length){e.innerHTML=text.slice(0,i).replace(/\n/g,'<br>')+'<span class="cursor"></span>';i++;setTimeout(f,speed)}else{e.innerHTML=text.replace(/\n/g,'<br>')}})()}
-function startWelcomeTyping(){typeInto('typed',`What's your first name?`,65)}
+function typeInto(id,text,speed=38){let e=q(id);if(!e)return;let i=0;e.innerHTML='';(function f(){if(i<=text.length){e.innerHTML=text.slice(0,i).replace(/\n/g,'<br>')+'<span class="cursor"></span>';i++;setTimeout(f,speed)}else{e.innerHTML=text.replace(/\n/g,'<br>')}})()}
+function startWelcomeTyping(){typeInto('typed',`What's your name?`,70)}
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));q(id).classList.add('active');q('nav').classList.toggle('show',!['welcome','personal','vehicle','ready','emailSetup'].includes(id));window.scrollTo(0,0)}
 function setNav(n){['Home','Reports','History','Settings'].forEach(x=>q('nav'+x).classList.toggle('active',x===n))}
 function fmt(s){s=Number(s)||0;let m=Math.floor(s/60),h=Math.floor(m/60);return h+'h '+String(m%60).padStart(2,'0')+'m'}function money(v){return '£'+(Number(v)||0).toFixed(2)}function claim(mi,v=vehicle){return (Number(mi)||0)*(vehicles[v]?.rate||.55)}
