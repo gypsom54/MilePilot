@@ -1,4 +1,4 @@
-MilePilot — UPLOAD v6.0.2
+MilePilot — UPLOAD v6.0.3
 =========================
 
 USE THIS FOLDER ONLY — upload to Cloudflare Pages (Direct Upload).
@@ -10,11 +10,11 @@ YOUR APP LINKS (always use these)
   Check:   https://app.milepilot.uk/version.txt
 
 After upload, version.txt MUST show:
-  MilePilot OS v6.0.2 — MP-008 Reports + email fix
+  MilePilot OS v6.0.3 — MP-008 Reports + email fix
 
 DIRECT ZIP DOWNLOAD (use this link)
 -----------------------------------
-  https://github.com/gypsom54/MilePilot/raw/cursor/mp-008-reports-premium-ae00/MilePilot-UPLOAD-v6.0.2.zip
+  https://github.com/gypsom54/MilePilot/raw/cursor/mp-008-reports-premium-ae00/MilePilot-UPLOAD-v6.0.3.zip
 
 1. Open the link above on your phone or computer
 2. Download the zip
@@ -41,7 +41,7 @@ OPEN ON YOUR PHONE
 ------------------
   https://app.milepilot.uk
 
-WHAT'S IN v6.0.2
+WHAT'S IN v6.0.3
 ----------------
 - Reports screen premium polish (MP-008)
 - No popup when opening Reports — use Automatic reports card instead
