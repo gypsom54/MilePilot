@@ -78,20 +78,38 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 .onboard-body{flex:1;min-height:0;display:flex;flex-direction:column}
 .onboard-support{text-align:center;font-size:15px;font-weight:500;line-height:1.45;color:rgba(159,180,208,.88);margin:0 auto 24px;max-width:300px;letter-spacing:.01em;transition:opacity .38s cubic-bezier(.22,1,.36,1);opacity:0;-webkit-font-smoothing:antialiased}
 .onboard-foot{margin-top:auto;padding-top:8px;width:100%;flex-shrink:0}
-#promise .premium-btn,#permissions .premium-btn,#permissions .perm-enable-btn{height:52px;border-radius:var(--button-radius);font-size:17px;font-weight:600;letter-spacing:-0.01em;margin:0;background:linear-gradient(180deg,#1E88FF 0%,#0D6BFF 50%,#005FE8 100%);color:#fff;box-shadow:0 8px 24px rgba(13,107,255,.26),inset 0 1px 0 rgba(255,255,255,.12);cursor:pointer;transition:background .36s cubic-bezier(.22,1,.36,1),box-shadow .36s ease,transform .24s cubic-bezier(.22,1,.36,1),opacity .36s ease}
-#promise .premium-btn:hover,#permissions .premium-btn:hover,#permissions .perm-enable-btn:hover{filter:brightness(1.03);box-shadow:0 10px 28px rgba(13,107,255,.3),inset 0 1px 0 rgba(255,255,255,.12)}
-#promise .premium-btn:active,#permissions .premium-btn:active,#permissions .perm-enable-btn:active{transform:scale(.985);filter:brightness(.98);box-shadow:0 4px 16px rgba(13,107,255,.22),inset 0 1px 0 rgba(255,255,255,.08)}
+#permissions .premium-btn,#permissions .perm-enable-btn{height:52px;border-radius:var(--button-radius);font-size:17px;font-weight:600;letter-spacing:-0.01em;margin:0;background:linear-gradient(180deg,#1E88FF 0%,#0D6BFF 50%,#005FE8 100%);color:#fff;box-shadow:0 8px 24px rgba(13,107,255,.26),inset 0 1px 0 rgba(255,255,255,.12);cursor:pointer;transition:background .36s cubic-bezier(.22,1,.36,1),box-shadow .36s ease,transform .24s cubic-bezier(.22,1,.36,1),opacity .36s ease}
+#permissions .premium-btn:hover,#permissions .perm-enable-btn:hover{filter:brightness(1.03);box-shadow:0 10px 28px rgba(13,107,255,.3),inset 0 1px 0 rgba(255,255,255,.12)}
+#permissions .premium-btn:active,#permissions .perm-enable-btn:active{transform:scale(.985);filter:brightness(.98);box-shadow:0 4px 16px rgba(13,107,255,.22),inset 0 1px 0 rgba(255,255,255,.08)}
 #permissions .perm-enable-btn{width:100%;height:46px;font-size:15px;margin-top:14px}
 #permissions .perm-enable-btn.is-done{background:linear-gradient(180deg,#1a3a5c 0%,#122a45 100%);box-shadow:none;color:rgba(255,255,255,.72);cursor:default}
 .onboard-skip{display:block;width:100%;margin-top:14px;padding:12px;border:0;background:transparent;color:rgba(147,168,196,.82);font-size:15px;font-weight:500;letter-spacing:.01em;cursor:pointer;transition:color .22s ease,opacity .36s ease}
 .onboard-skip:hover{color:rgba(159,180,208,.96)}
 .onboard-skip:active{opacity:.8}
-.promise-icon{text-align:center;font-size:44px;line-height:1;margin:0 0 20px;animation:knowYouGreetIn .6s cubic-bezier(.22,1,.36,1) .05s both}
-.promise-list{list-style:none;margin:0 0 28px;padding:0;display:flex;flex-direction:column;gap:12px;transition:opacity .38s cubic-bezier(.22,1,.36,1);opacity:0}
-.promise-list li{display:flex;align-items:flex-start;gap:12px;font-size:15px;font-weight:500;line-height:1.4;color:rgba(234,242,255,.92);letter-spacing:-0.01em;padding:14px 16px;border:1px solid rgba(110,180,255,.14);border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(13,107,255,.02));box-shadow:0 4px 18px rgba(0,0,0,.08),inset 0 1px 0 rgba(255,255,255,.04)}
-.promise-list li::before{content:'✓';flex-shrink:0;width:22px;height:22px;border-radius:50%;background:linear-gradient(180deg,#1E88FF,#0D6BFF);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;box-shadow:0 0 14px rgba(13,107,255,.28);margin-top:1px}
-#promise .premium-btn{opacity:0;transition:opacity .38s cubic-bezier(.22,1,.36,1),background .36s ease,box-shadow .36s ease,transform .24s ease}
-#promise .premium-btn.is-visible{opacity:1}
+.promise-hero{position:relative;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;width:72px;height:72px;animation:knowYouGreetIn .6s cubic-bezier(.22,1,.36,1) .05s both}
+.promise-hero-glow{position:absolute;inset:-8px;border-radius:50%;background:radial-gradient(circle,rgba(13,107,255,.22) 0%,transparent 70%);filter:blur(6px);opacity:.9;animation:promiseHeroGlow 4s ease-in-out infinite}
+@keyframes promiseHeroGlow{0%,100%{opacity:.75;transform:scale(1)}50%{opacity:1;transform:scale(1.06)}}
+.promise-hero-icon{position:relative;z-index:1;width:56px;height:56px;border-radius:50%;border:1px solid rgba(110,180,255,.22);background:linear-gradient(180deg,rgba(255,255,255,.1),rgba(13,107,255,.05));display:flex;align-items:center;justify-content:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.12),inset 0 -10px 20px rgba(13,107,255,.08),0 0 28px rgba(13,107,255,.18),0 6px 22px rgba(0,0,0,.14)}
+.promise-hero-icon svg{display:block;width:24px;height:24px;stroke:#9EC8FF;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+#promise .onboard-greeting{margin-bottom:16px}
+#promise .onboard-message-wrap{margin-bottom:10px}
+#promise .onboard-support{margin-bottom:22px;font-weight:500;color:rgba(159,180,208,.92)}
+#promise .onboard-body{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 2px}
+.promise-list{list-style:none;margin:0 0 24px;padding:0;display:flex;flex-direction:column;gap:11px;transition:opacity .42s cubic-bezier(.22,1,.36,1);opacity:0}
+.promise-list li{display:flex;align-items:center;gap:14px;font-size:15px;font-weight:500;line-height:1.35;color:rgba(234,242,255,.94);letter-spacing:-0.015em;padding:15px 16px;border:1px solid rgba(110,180,255,.15);border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(13,107,255,.025));box-shadow:0 4px 20px rgba(0,0,0,.09),inset 0 1px 0 rgba(255,255,255,.05);transition:border-color .28s ease,box-shadow .28s ease,transform .28s cubic-bezier(.22,1,.36,1);opacity:0;transform:translateY(6px)}
+.promise-list.is-visible li{opacity:1;transform:none}
+.promise-list.is-visible li:nth-child(1){transition:opacity .38s cubic-bezier(.22,1,.36,1) .05s,transform .38s cubic-bezier(.22,1,.36,1) .05s,border-color .28s ease,box-shadow .28s ease}
+.promise-list.is-visible li:nth-child(2){transition:opacity .38s cubic-bezier(.22,1,.36,1) .12s,transform .38s cubic-bezier(.22,1,.36,1) .12s,border-color .28s ease,box-shadow .28s ease}
+.promise-list.is-visible li:nth-child(3){transition:opacity .38s cubic-bezier(.22,1,.36,1) .19s,transform .38s cubic-bezier(.22,1,.36,1) .19s,border-color .28s ease,box-shadow .28s ease}
+.promise-list.is-visible li:nth-child(4){transition:opacity .38s cubic-bezier(.22,1,.36,1) .26s,transform .38s cubic-bezier(.22,1,.36,1) .26s,border-color .28s ease,box-shadow .28s ease}
+.promise-check{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:linear-gradient(180deg,#1E88FF,#0D6BFF);display:flex;align-items:center;justify-content:center;box-shadow:0 0 16px rgba(13,107,255,.3)}
+.promise-check svg{width:11px;height:11px;stroke:#fff;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.promise-text{flex:1;min-width:0}
+#promise .premium-btn{height:52px;border-radius:var(--button-radius);font-size:17px;font-weight:600;letter-spacing:-0.01em;margin:0;opacity:.72;background:linear-gradient(180deg,#1a3a5c 0%,#122a45 100%);color:rgba(255,255,255,.38);box-shadow:none;cursor:not-allowed;transition:background .36s cubic-bezier(.22,1,.36,1),box-shadow .36s cubic-bezier(.22,1,.36,1),color .36s ease,opacity .36s ease,transform .24s cubic-bezier(.22,1,.36,1)}
+#promise .premium-btn.is-ready{opacity:1;background:linear-gradient(180deg,#1E88FF 0%,#0D6BFF 50%,#005FE8 100%);color:#fff;box-shadow:0 8px 24px rgba(13,107,255,.26),inset 0 1px 0 rgba(255,255,255,.12);cursor:pointer}
+#promise .premium-btn.is-ready:hover{filter:brightness(1.03);box-shadow:0 10px 28px rgba(13,107,255,.3),inset 0 1px 0 rgba(255,255,255,.12)}
+#promise .premium-btn.is-ready:active{transform:scale(.985);filter:brightness(.98);box-shadow:0 4px 16px rgba(13,107,255,.22),inset 0 1px 0 rgba(255,255,255,.08)}
+@media(prefers-reduced-motion:reduce){.promise-hero-glow{animation:none}.promise-list li{opacity:1!important;transform:none!important;transition:none!important}}
 .perm-scroll{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:2px 0;margin:0 0 16px}
 .perm-section{border:1px solid rgba(110,180,255,.16);border-radius:20px;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(13,107,255,.02));padding:20px 18px;margin:0 0 14px;box-shadow:0 4px 20px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,.05);transition:opacity .38s cubic-bezier(.22,1,.36,1);opacity:0}
 .perm-section h2{margin:0 0 12px;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(110,180,255,.88)}
@@ -226,22 +244,25 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 <div class="onboard-inner">
 <header class="brand-bar onboard-brand center"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div></header>
 <div class="onboard-body">
-<div class="promise-icon" aria-hidden="true">🚗</div>
+<div class="promise-hero" aria-hidden="true">
+<div class="promise-hero-glow"></div>
+<div class="promise-hero-icon"><svg viewBox="0 0 24 24"><path d="M4 15h16M5 15l1.5-4.5h11L19 15"/><circle cx="7.5" cy="17.5" r="1.5"/><circle cx="16.5" cy="17.5" r="1.5"/></svg></div>
+</div>
 <h1 class="onboard-greeting" id="promiseGreeting">You're all set.</h1>
 <div class="onboard-message-wrap"><p class="onboard-message" id="promiseWelcome">Welcome to MilePilot.</p></div>
-<p class="onboard-support" id="promiseIntro">Here's what I'll help you do.</p>
+<p class="onboard-support" id="promiseIntro">Here's what MilePilot will do for you.</p>
 <ul class="promise-list" id="promiseList">
-<li>Automatically track your business mileage</li>
-<li>Create professional reports</li>
-<li>Estimate your HMRC mileage claim</li>
-<li>Understand your driving business</li>
+<li><span class="promise-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"/></svg></span><span class="promise-text">Track every business journey</span></li>
+<li><span class="promise-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"/></svg></span><span class="promise-text">Create professional reports</span></li>
+<li><span class="promise-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"/></svg></span><span class="promise-text">Stay organised for tax time</span></li>
+<li><span class="promise-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"/></svg></span><span class="promise-text">Understand your driving business</span></li>
 </ul>
 </div>
 <div class="onboard-foot">
-<button class="btn premium-btn" id="promiseContinue" onclick="startDriving()">Let's Start Driving →</button>
+<button class="btn premium-btn" id="promiseContinue" onclick="startDriving()" disabled>Let's Start Driving →</button>
 </div>
 </div>
-<div class="onboard-version">MP-003 · The MilePilot Promise · v4.1</div>
+<div class="onboard-version">MP-003 · The MilePilot Promise · v4.2</div>
 </section>
 <!-- MP-004 Permissions — Location & Notifications -->
 <section id="permissions" class="screen" data-mp="MP-004">
@@ -283,7 +304,7 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 </div>
 <nav class="nav" id="nav"><button id="navHome" onclick="goHome()"><span>⌂</span>Dashboard</button><button id="navReports" onclick="showReports()"><span>▤</span>Reports</button><button id="navHistory" onclick="showHistory()"><span>◷</span>History</button><button id="navSettings" onclick="showSettings()"><span>⚙</span>Settings</button></nav><div class="toast" id="toast"></div><div id="printReport"></div>
 <script>
-const APP_VERSION='4.1';
+const APP_VERSION='4.2';
 const MP_001_LOCKED=true;
 const MP_002_LOCKED=true;
 const ONBOARD_SCREENS=['welcome','knowYou','promise','permissions','emailSetup'];
@@ -314,7 +335,7 @@ function confirmVehicle(){if(!selectedVehicle)return;vehicle=selectedVehicle;loc
 let onboardTimers=[];
 function clearOnboardTimers(){onboardTimers.forEach(t=>clearTimeout(t));onboardTimers=[]}
 function fadeInEl(el,delay=0){if(!el)return;el.style.opacity='0';onboardTimers.push(setTimeout(()=>{el.style.transition='opacity .38s cubic-bezier(.22,1,.36,1)';el.style.opacity='1'},delay))}
-function initPromise(){driver=driver||localStorage.getItem('mp_driver')||'';clearOnboardTimers();q('promiseGreeting').textContent=`You're all set, ${driver}.`;const welcome=q('promiseWelcome'),intro=q('promiseIntro'),list=q('promiseList'),btn=q('promiseContinue');if(welcome){welcome.textContent='Welcome to MilePilot.';welcome.style.opacity='0'}if(intro){intro.style.opacity='0'}if(list){list.style.opacity='0'}if(btn){btn.classList.remove('is-visible');btn.style.opacity='0'}fadeInEl(welcome,600);fadeInEl(intro,1100);fadeInEl(list,1700);onboardTimers.push(setTimeout(()=>{if(btn){btn.classList.add('is-visible');btn.style.opacity='1'}},2300))}
+function initPromise(){driver=driver||localStorage.getItem('mp_driver')||'';clearOnboardTimers();q('promiseGreeting').textContent=`You're all set, ${driver}.`;const welcome=q('promiseWelcome'),intro=q('promiseIntro'),list=q('promiseList'),btn=q('promiseContinue');if(welcome){welcome.textContent='Welcome to MilePilot.';welcome.style.opacity='0'}if(intro){intro.textContent='Here\'s what MilePilot will do for you.';intro.style.opacity='0'}if(list){list.classList.remove('is-visible');list.style.opacity='0'}if(btn){btn.disabled=true;btn.classList.remove('is-ready')}fadeInEl(welcome,550);fadeInEl(intro,1050);onboardTimers.push(setTimeout(()=>{if(list){list.style.opacity='1';list.classList.add('is-visible')}},1650));onboardTimers.push(setTimeout(()=>{if(btn){btn.disabled=false;btn.classList.add('is-ready')}},2400))}
 function startDriving(){localStorage.setItem('mp_onboard_step','permissions');initPermissions();showScreen('permissions')}
 function initPermissions(){clearOnboardTimers();const loc=q('permLocation'),notif=q('permNotifications'),done=q('permDone');if(loc)loc.style.opacity='0';if(notif)notif.style.opacity='0';if(done)done.style.opacity='0';syncPermButtons();fadeInEl(loc,200);fadeInEl(notif,700);fadeInEl(done,1200)}
 function syncPermButtons(){const gps=q('permGpsBtn'),notif=q('permNotifBtn'),locChoice=localStorage.getItem('mp_location_choice'),notifChoice=localStorage.getItem('mp_notifications_choice');if(gps){const done=!!locChoice;gps.textContent=locChoice==='granted'?'GPS Enabled ✓':locChoice==='denied'?'GPS Blocked':locChoice==='skipped'?'Skipped':'Enable GPS';gps.classList.toggle('is-done',done);gps.disabled=done}if(notif){const done=!!notifChoice;notif.textContent=notifChoice==='granted'?'Notifications Enabled ✓':notifChoice==='denied'?'Notifications Blocked':notifChoice==='skipped'?'Skipped':'Enable Notifications';notif.classList.toggle('is-done',done);notif.disabled=done}}
