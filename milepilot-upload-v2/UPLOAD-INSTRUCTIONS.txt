@@ -1,35 +1,27 @@
-MilePilot — UPLOAD v7.3.0
+MilePilot — UPLOAD v7.5.0
 =========================
 
 DOWNLOAD
 --------
-https://github.com/gypsom54/MilePilot/raw/main/MilePilot-UPLOAD-v7.3.0.zip
+https://github.com/gypsom54/MilePilot/raw/main/MilePilot-UPLOAD-v7.5.0.zip
 
 CHECK APP VERSION
 -----------------
 https://app.milepilot.uk/version.txt
-Must show: MilePilot OS v7.3.0 — PDF document polish & email-first reports
+Must show: MilePilot OS v7.5.0 — MP-016 Auto-Pilot flow
 
-TWO DEPLOYS NEEDED
-------------------
-1. Cloudflare — upload this zip (frontend v7.3.0)
-2. Railway — redeploy backend for MP-014 PDF fixes + /reports/pdf endpoint
-
-Check backend:
-https://milepilot-production.up.railway.app/health
-Should show: "reportVersion": "MP-014-document-v1"
-
-WHAT'S NEW IN v7.3.0
+WHAT'S NEW IN v7.5.0
 --------------------
-- Report Centre: email box + Send Report Email first
-- Share / Download / Preview moved to Other options below
-- Premium PDF: fixed HMRC overlap, site-matched branding
-- Download & Preview use backend PDF (same as email attachment)
+- MP-016 Auto-Pilot philosophy: End Shift saves everything automatically
+- Simple success screen — Done only (no View/Save Report on driving flow)
+- Document Centre: reports, schedule, View/Download/Share/Email/CSV
+- Dashboard: Start Shift or End Shift only — no paperwork CTAs
+- Background PDF generation + daily auto-email after shift
 
 UPLOAD STEPS (Cloudflare)
 -------------------------
 1. Download zip
-2. Unzip all files
+2. Unzip all files (includes js/tracking-engine.js)
 3. Cloudflare → milepilot-app → Upload assets → Deploy
 
 APP: https://app.milepilot.uk
