@@ -182,6 +182,61 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 .premium-btn:hover{filter:brightness(1.05);box-shadow:0 16px 36px rgba(13,107,255,.36);transform:translateY(-1px)}
 .premium-btn:active{transform:translateY(1px);box-shadow:0 8px 20px rgba(13,107,255,.26)}
 @media(max-width:360px){.welcome-features{gap:12px}.welcome-feature strong{font-size:10px}.welcome-feature span{font-size:9px;max-width:68px}.welcome-icon{width:48px;height:48px}.vehicle-card{min-height:78px;padding:14px 44px 14px 16px}}
+/* MP-006 Command Centre */
+#home.cc-screen{background:linear-gradient(180deg,#0A2854 0%,#031126 82%);padding:24px 22px 108px;position:relative}
+#home.cc-screen.active{display:block}
+.cc-body{max-width:390px;margin:0 auto}
+.cc-greeting-wrap{margin:8px 0 28px;animation:ccFadeIn .55s cubic-bezier(.22,1,.36,1) both}
+.cc-greeting{font-size:clamp(26px,6.5vw,32px);font-weight:700;letter-spacing:-0.03em;line-height:1.15;margin:0 0 10px;-webkit-font-smoothing:antialiased}
+.cc-status{font-size:16px;font-weight:500;line-height:1.45;color:rgba(159,180,208,.92);margin:0;letter-spacing:.01em}
+.cc-tracking-bar{margin:0 0 20px;padding:16px 18px;border:1px solid rgba(32,215,129,.22);border-radius:20px;background:linear-gradient(180deg,rgba(32,215,129,.08),rgba(32,215,129,.02));animation:ccSlideIn .45s cubic-bezier(.22,1,.36,1) both}
+.cc-tracking-head{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;color:rgba(234,242,255,.94);letter-spacing:-0.01em;margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em;font-size:12px}
+.cc-dot{width:9px;height:9px;border-radius:50%;background:#20D781;box-shadow:0 0 12px rgba(32,215,129,.65);animation:ccPulseDot 2s ease-in-out infinite}
+@keyframes ccPulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.7;transform:scale(.92)}}
+.cc-timer{font-size:clamp(36px,9vw,44px);font-weight:700;letter-spacing:-0.03em;line-height:1;font-variant-numeric:tabular-nums;color:#fff;-webkit-font-smoothing:antialiased}
+.cc-hero{text-align:center;margin:0 0 28px;padding:8px 0 4px;animation:ccFadeIn .55s cubic-bezier(.22,1,.36,1) .08s both}
+.cc-hero-label{display:block;font-size:11px;font-weight:600;letter-spacing:.14em;color:rgba(110,180,255,.78);margin-bottom:10px}
+.cc-hero-value{font-size:clamp(68px,19vw,92px);font-weight:700;letter-spacing:-0.045em;line-height:.95;color:#fff;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums;transition:transform .35s cubic-bezier(.22,1,.36,1)}
+.cc-hero.is-live .cc-hero-value{color:rgba(234,242,255,.98)}
+.cc-hero-unit{display:block;margin-top:10px;font-size:15px;font-weight:500;color:rgba(159,180,208,.9);letter-spacing:.02em}
+.cc-primary-btn{width:100%;height:58px;border:0;border-radius:var(--button-radius);background:linear-gradient(180deg,#1E88FF 0%,#0D6BFF 50%,#005FE8 100%);color:#fff;font-size:18px;font-weight:600;letter-spacing:-0.01em;margin:0 0 28px;box-shadow:0 8px 28px rgba(13,107,255,.28),inset 0 1px 0 rgba(255,255,255,.12);cursor:pointer;transition:transform .24s cubic-bezier(.22,1,.36,1),box-shadow .36s ease,filter .24s ease;animation:ccFadeIn .55s cubic-bezier(.22,1,.36,1) .12s both}
+.cc-primary-btn:hover{filter:brightness(1.04);box-shadow:0 12px 32px rgba(13,107,255,.32),inset 0 1px 0 rgba(255,255,255,.12)}
+.cc-primary-btn:active{transform:scale(.985)}
+.cc-primary-btn.is-end{background:linear-gradient(180deg,#FF4848 0%,#EF3333 48%,#D82323 100%);box-shadow:0 8px 28px rgba(239,51,51,.28),inset 0 1px 0 rgba(255,255,255,.1)}
+.cc-primary-btn.is-end:hover{box-shadow:0 12px 32px rgba(239,51,51,.34),inset 0 1px 0 rgba(255,255,255,.1)}
+.cc-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(110,180,255,.18) 20%,rgba(110,180,255,.18) 80%,transparent);margin:0 0 24px}
+.cc-card{border:1px solid rgba(110,180,255,.14);border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(13,107,255,.02));padding:20px 18px;margin:0 0 16px;box-shadow:0 4px 24px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,.04);animation:ccSlideIn .5s cubic-bezier(.22,1,.36,1) both}
+.cc-card:nth-of-type(1){animation-delay:.16s}
+.cc-card:nth-of-type(2){animation-delay:.22s}
+.cc-card:nth-of-type(3){animation-delay:.28s}
+.cc-card-title{margin:0 0 16px;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(110,180,255,.82)}
+.cc-metrics{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px}
+.cc-metric span{display:block;font-size:12px;font-weight:500;color:rgba(147,168,196,.88);margin-bottom:6px;letter-spacing:.01em}
+.cc-metric strong{display:block;font-size:clamp(22px,5.5vw,26px);font-weight:700;letter-spacing:-0.03em;color:rgba(234,242,255,.96);font-variant-numeric:tabular-nums;line-height:1.1}
+.cc-insight{margin:0;font-size:15px;font-weight:500;line-height:1.5;color:rgba(159,180,208,.92);letter-spacing:.01em}
+.cc-activity{display:flex;flex-direction:column;gap:0}
+.cc-activity-item{padding:14px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.cc-activity-item:first-child{padding-top:0}
+.cc-activity-item:last-child{border-bottom:0;padding-bottom:0}
+.cc-activity-day{font-size:15px;font-weight:600;color:rgba(234,242,255,.94);letter-spacing:-0.01em;margin-bottom:4px}
+.cc-activity-detail{font-size:14px;font-weight:500;color:rgba(147,168,196,.88);line-height:1.4}
+.cc-activity-empty{color:rgba(147,168,196,.72);font-style:normal}
+.cc-future{height:8px;margin-top:4px}
+.cc-summary{position:fixed;inset:0;z-index:50;background:rgba(2,11,27,.92);backdrop-filter:blur(12px);display:flex;align-items:flex-end;justify-content:center;padding:24px 22px max(28px,env(safe-area-inset-bottom));animation:ccFadeIn .4s ease both}
+.cc-summary[hidden]{display:none!important}
+.cc-summary-panel{width:min(390px,100%);border:1px solid rgba(110,180,255,.2);border-radius:28px;background:linear-gradient(180deg,#0B2348 0%,#031126 100%);padding:28px 22px 22px;box-shadow:0 24px 64px rgba(0,0,0,.35);animation:ccSlideUp .45s cubic-bezier(.22,1,.36,1) both}
+.cc-summary-title{text-align:center;font-size:clamp(24px,6vw,28px);font-weight:700;letter-spacing:-0.03em;margin:0 0 8px}
+.cc-summary-sub{text-align:center;font-size:15px;font-weight:500;color:rgba(159,180,208,.9);margin:0 0 24px;line-height:1.45}
+.cc-summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:0 0 24px}
+.cc-summary-stat span{display:block;font-size:12px;color:rgba(147,168,196,.88);margin-bottom:4px}
+.cc-summary-stat strong{font-size:22px;font-weight:700;letter-spacing:-0.02em}
+.cc-summary-actions{display:flex;flex-direction:column;gap:10px}
+.cc-summary-actions .btn{margin-top:0}
+.cc-version{position:absolute;left:0;right:0;bottom:max(88px,env(safe-area-inset-bottom));text-align:center;font-size:9px;font-weight:500;letter-spacing:.08em;color:rgba(143,168,201,.35)}
+@keyframes ccFadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes ccSlideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes ccSlideUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.cc-greeting-wrap,.cc-hero,.cc-primary-btn,.cc-card,.cc-summary,.cc-summary-panel,.cc-dot{animation:none!important;transition:none!important}}
 #printReport{display:none}
 @media print{body{display:block;background:#fff!important}.app,.nav,.toast{display:none!important}#printReport{display:block!important;padding:34px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:#06112A;max-width:760px;margin:0 auto}.pdfBrand{display:flex;align-items:flex-start;justify-content:space-between;padding-bottom:16px;margin-bottom:22px}.pdfLogo{font-size:34px;font-weight:950;letter-spacing:-1.3px;line-height:1}.pdfPulse{height:2px;width:min(100%,200px);margin:12px 0 0;border-radius:999px;background:linear-gradient(90deg,transparent,rgba(13,107,255,.42) 18%,rgba(13,107,255,.78) 50%,rgba(13,107,255,.42) 82%,transparent);box-shadow:0 0 20px rgba(13,107,255,.22)}.pdfTag{color:#64748B;font-weight:800;font-size:13px;margin-top:10px}.pdfDate{color:#64748B;font-size:13px;font-weight:800;text-align:right}.printGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:20px 0 24px}.printMetric{background:#F8FBFF;border:1px solid #DDE6F2;border-radius:16px;padding:16px}.printMetric small{display:block;color:#64748B;font-size:12px;font-weight:850;margin-bottom:10px}.printMetric b{display:block;font-size:24px;line-height:1.15;font-weight:950}.printTable{width:100%;border-collapse:collapse;table-layout:fixed;margin-top:16px;font-size:13px}.printTable th{background:#06112A;color:white;text-align:left;padding:11px 9px;font-size:12px}.printTable td{border-bottom:1px solid #DDE6F2;padding:11px 9px}.printFoot{margin-top:22px;border-top:1px solid #DDE6F2;padding-top:12px;color:#64748B;font-size:11px;line-height:1.45}}
 </style>
@@ -322,7 +377,62 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 <div class="onboard-version">MP-005 🔒 Locked · Final</div>
 </section>
 <section id="emailSetup" class="screen" data-mp="email"><header class="brand-bar"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div></header><h1 class="title">Where should reports go?</h1><p class="sub">Enter your email once. MilePilot will use it for report delivery.</p><input id="emailInput" placeholder="you@example.com" inputmode="email"><button class="btn" onclick="saveEmailSetup()">Continue to Dashboard →</button><button class="btn outline" onclick="goHome()">Skip for now</button></section>
-<section id="home" class="screen"><header class="brand-bar"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div></header><h1 class="title" id="greeting">Good day 👋</h1><p class="sub" id="vehicleLine">Vehicle: Car • Rate: 55p per mile</p><button class="btn" onclick="startShift()">Start Shift</button><div class="card"><div class="row"><span>Today</span><strong id="todaySummary">0.00 mi</strong></div><div class="row"><span>Saved shifts</span><strong id="shiftCount">0</strong></div></div></section>
+<!-- MP-006 The Command Centre -->
+<section id="home" class="screen cc-screen" data-mp="MP-006">
+<header class="brand-bar"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div></header>
+<div class="cc-body" id="ccBody">
+<div class="cc-greeting-wrap">
+<h1 class="cc-greeting" id="ccGreeting">Good afternoon</h1>
+<p class="cc-status" id="ccStatus">Ready to make every business mile count?</p>
+</div>
+<div class="cc-tracking-bar" id="ccTrackingBar" hidden>
+<div class="cc-tracking-head"><span class="cc-dot" aria-hidden="true"></span><span>Shift in progress</span></div>
+<div class="cc-timer" id="ccLiveTimer">00:00:00</div>
+</div>
+<div class="cc-hero" id="ccHero">
+<span class="cc-hero-label">TODAY</span>
+<div class="cc-hero-value" id="ccHeroMiles">0.0</div>
+<span class="cc-hero-unit">Business Miles</span>
+</div>
+<button type="button" class="cc-primary-btn" id="ccPrimaryBtn" onclick="toggleShift()">Start Shift</button>
+<div class="cc-divider" aria-hidden="true"></div>
+<div class="cc-card">
+<h2 class="cc-card-title">Today's Business</h2>
+<div class="cc-metrics">
+<div class="cc-metric"><span>Business Miles</span><strong id="ccMiles">0.0</strong></div>
+<div class="cc-metric"><span>Driving Time</span><strong id="ccTime">0h</strong></div>
+<div class="cc-metric"><span>Today's Journeys</span><strong id="ccJourneys">0</strong></div>
+<div class="cc-metric"><span>HMRC Estimate</span><strong id="ccHmrc">£0.00</strong></div>
+</div>
+</div>
+<div class="cc-card">
+<h2 class="cc-card-title">Business Insight</h2>
+<p class="cc-insight" id="ccInsight">Start your first shift to unlock personalised insights.</p>
+</div>
+<div class="cc-card">
+<h2 class="cc-card-title">Recent Activity</h2>
+<div class="cc-activity" id="ccActivity"></div>
+</div>
+<div class="cc-future" aria-hidden="true"></div>
+</div>
+<div class="cc-summary" id="ccSummary" hidden>
+<div class="cc-summary-panel">
+<h2 class="cc-summary-title">Great work today 🎉</h2>
+<p class="cc-summary-sub" id="ccSummarySub">Today's business is recorded.</p>
+<div class="cc-summary-grid">
+<div class="cc-summary-stat"><span>Business Miles</span><strong id="ccSumMiles">0.0</strong></div>
+<div class="cc-summary-stat"><span>Driving Time</span><strong id="ccSumTime">0h</strong></div>
+<div class="cc-summary-stat"><span>Journeys</span><strong id="ccSumJourneys">0</strong></div>
+<div class="cc-summary-stat"><span>HMRC Estimate</span><strong id="ccSumHmrc">£0.00</strong></div>
+</div>
+<div class="cc-summary-actions">
+<button type="button" class="btn" onclick="saveShiftReport()">Save Report</button>
+<button type="button" class="btn outline" onclick="dismissSummary()">Done</button>
+</div>
+</div>
+</div>
+<div class="cc-version">MP-006 · Command Centre · v5.0</div>
+</section>
 <section id="tracking" class="screen"><div class="brand-row"><header class="brand-bar"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div></header><div class="gps-badge">GPS</div></div><h1 class="title">Tracking Active</h1><p class="sub" id="trackingVehicle">Vehicle: Car • Rate: 55p per mile</p><div class="metricGrid"><div class="metricBox"><strong id="liveMiles">0.00</strong><span>Miles</span></div><div class="metricBox"><strong id="liveTime">0h 00m</strong><span>Time</span></div><div class="metricBox"><strong id="liveClaim">£0.00</strong><span>Claim</span></div></div><div class="mapBox"><div class="gpsActions"><button onclick="requestGpsAgain()">Enable GPS</button><button class="secondary" onclick="centreMap()">Centre</button></div><div id="liveMap"></div><div class="mapHint" id="mapHint">Requesting location…</div></div><button class="btn red" onclick="endShift()">END SHIFT</button></section>
 <section id="reports" class="screen"><header class="brand-bar"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div></header><h1 class="title">Reports</h1><p class="sub">Daily, weekly and monthly reports from saved shifts.</p><div class="periods"><button id="pDay" onclick="setPeriod('day')">Daily</button><button id="pWeek" onclick="setPeriod('week')">Weekly</button><button id="pMonth" onclick="setPeriod('month')">Monthly</button></div><div class="card"><h2 id="mainReportTitle">Today</h2><div class="row"><span>Total Miles</span><strong id="reportMiles">0.00 miles</strong></div><div class="row"><span>Driving Time</span><strong id="reportTime">0h 00m</strong></div><div class="row"><span>Est. HMRC Claim</span><strong id="reportClaim">£0.00</strong></div><div class="row"><span>Vehicle / Rate</span><strong id="reportRate">Car • 55p</strong></div><p class="sub" id="reportLine">0 shifts • 0.00 miles • £0.00</p></div><div class="card"><label>Send report to</label><input id="reportEmail" placeholder="you@example.com" inputmode="email"><button class="btn" onclick="emailReport(event)">📧 Send Report</button><button class="btn outline" onclick="printReport()">💾 Save / Print PDF</button></div></section>
 <section id="history" class="screen"><header class="brand-bar"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div></header><h1 class="title">History</h1><p class="sub">Every ended shift is saved separately here.</p><button class="btn outline small" onclick="createTestShift()">Add Test Shift</button><div id="historyList"></div></section>
@@ -330,7 +440,7 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 </div>
 <nav class="nav" id="nav"><button id="navHome" onclick="goHome()"><span>⌂</span>Dashboard</button><button id="navReports" onclick="showReports()"><span>▤</span>Reports</button><button id="navHistory" onclick="showHistory()"><span>◷</span>History</button><button id="navSettings" onclick="showSettings()"><span>⚙</span>Settings</button></nav><div class="toast" id="toast"></div><div id="printReport"></div>
 <script>
-const APP_VERSION='4.8.1';
+const APP_VERSION='5.0';
 const BRAND_MESSAGE='Every business mile matters.';
 const PROMISE_PURPOSE="Now let's make every business mile count.";
 const VALUE_LINE='Never miss another business mile.';
@@ -349,6 +459,7 @@ const FIRST_IMPRESSION_LINES=['Welcome to MilePilot.',"Let's build your driving 
 const vehicles={car:{label:'Car',rate:.55},van:{label:'Van',rate:.55},bicycle:{label:'Bicycle',rate:.20},motorcycle:{label:'Motorcycle',rate:.24}};
 let driver=localStorage.getItem('mp_driver')||'',vehicle=localStorage.getItem('mp_vehicle')||'car',period='day',selectedVehicle=null;
 let miles=0,elapsed=0,timer=null,shiftStartedAt=null,gpsWatchId=null,lastPoint=null,routePoints=[],liveMap=null,livePolyline=null,liveMarker=null;
+let ccState='idle',summaryShift=null;
 let shifts=loadShifts();
 function q(id){return document.getElementById(id)}function toast(msg){q('toast').textContent=msg;q('toast').classList.add('show');setTimeout(()=>q('toast').classList.remove('show'),3000)}
 function typeInto(id,text,speed=38){let e=q(id);if(!e)return;let i=0;e.innerHTML='';(function f(){if(i<=text.length){e.innerHTML=text.slice(0,i).replace(/\n/g,'<br>')+'<span class="cursor"></span>';i++;setTimeout(f,speed)}else{e.innerHTML=text.replace(/\n/g,'<br>')}})()}
@@ -389,16 +500,36 @@ function normaliseShift(s){let v=s.vehicle||vehicle||'car',mi=Number(s.miles)||0
 function showPersonal(){const n=q('name').value.trim();if(!n)return;driver=n;localStorage.setItem('mp_driver',driver);localStorage.setItem('mp_onboard_step','knowYou');initKnowYou();showScreen('knowYou')}
 function saveEmailSetup(){let e=q('emailInput').value.trim();if(e)localStorage.setItem('mp_email',e);goHome()}
 function resetOnboarding(){localStorage.removeItem('mp_driver');localStorage.removeItem('mp_vehicle');localStorage.removeItem('mp_location_choice');localStorage.removeItem('mp_notifications_choice');localStorage.removeItem('mp_onboard_step');localStorage.removeItem('mp_onboard_complete');driver='';vehicle='car';selectedVehicle=null;q('name').value='';clearWelcomeTyping();clearKnowYouMessaging();clearOnboardTimers();const typed=q('typed');if(typed){typed.innerHTML='';typed.style.opacity='1'}const msg=q('knowYouMessage');if(msg){msg.textContent='';msg.style.opacity='0'}document.querySelectorAll('.vehicle-card').forEach(c=>c.classList.remove('selected'));syncKnowYouContinue();localStorage.setItem('mp_onboard_step','welcome');showScreen('welcome');q('nav').classList.remove('show');initFirstImpression()}
-function clearData(){localStorage.removeItem('mp_shifts');shifts=[];toast('Test shifts cleared');renderHome()}function goHome(){setNav('Home');renderHome();showScreen('home')}
-function renderHome(){driver=localStorage.getItem('mp_driver')||driver||'Jon';vehicle=localStorage.getItem('mp_vehicle')||vehicle||'car';let h=new Date().getHours();q('greeting').textContent=(h<12?'Good morning':h<18?'Good afternoon':'Good evening')+', '+driver+' 👋';q('vehicleLine').textContent='Ready to start today\'s shift?';let today=periodTotals('day');q('todaySummary').textContent=today.mi.toFixed(2)+' mi';q('shiftCount').textContent=shifts.length}
-function updateLive(){q('liveMiles').textContent=miles.toFixed(2);q('liveTime').textContent=fmt(elapsed);q('liveClaim').textContent=money(claim(miles));q('trackingVehicle').textContent=`Vehicle: ${vehicles[vehicle].label} • Rate: ${Math.round(vehicles[vehicle].rate*100)}p per mile`}
-function startShift(){miles=0;elapsed=0;routePoints=[];lastPoint=null;shiftStartedAt=Date.now();showScreen('tracking');updateLive();initBlankMap();timer=setInterval(()=>{elapsed=Math.floor((Date.now()-shiftStartedAt)/1000);updateLive()},1000);requestGpsAgain(true)}
+function clearData(){localStorage.removeItem('mp_shifts');localStorage.removeItem('mp_active_shift');shifts=[];ccState='idle';clearActiveShift();toast('Test shifts cleared');renderCommandCentre()}
+function goHome(){setNav('Home');renderCommandCentre();showScreen('home')}
+function fmtShort(s){s=Number(s)||0;if(s<60)return '0h';let m=Math.floor(s/60),h=Math.floor(m/60);return h?h+'h '+String(m%60).padStart(2,'0')+'m':m+'m'}
+function fmtLong(s){s=Number(s)||0;let h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=s%60;return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0')}
+function sameDay(a,b){return a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate()}
+function dayTotals(date){const list=shifts.filter(s=>sameDay(new Date(s.startISO),date));return{mi:list.reduce((a,b)=>a+b.miles,0),sec:list.reduce((a,b)=>a+b.seconds,0),hmrc:list.reduce((a,b)=>a+b.hmrc,0),list}}
+function getTodayTotals(){const t=dayTotals(new Date());if(ccState==='active'){return{mi:t.mi+miles,sec:t.sec+elapsed,hmrc:t.hmrc+claim(miles),journeys:t.list.length+1,list:t.list}}return{mi:t.mi,sec:t.sec,hmrc:t.hmrc,journeys:t.list.length,list:t.list}}
+function getGreeting(){driver=localStorage.getItem('mp_driver')||driver||'there';const h=new Date().getHours();if(h<12)return 'Good morning '+driver+' ☀️';if(h<18)return 'Good afternoon '+driver+' 👋';return 'Good evening '+driver+' 🌙'}
+function getStatusMessage(){if(ccState==='active')return 'Tracking your business journey.';const today=getTodayTotals();if(today.journeys>0&&ccState!=='active')return 'Great work today.';const h=new Date().getHours();if(h<12)return 'Ready to start today\'s shift?';if(h<18)return 'Ready to make every business mile count?';return 'Welcome back — ready for another journey?'}
+function getPrimaryLabel(){if(ccState==='active')return 'End Shift';const h=new Date().getHours();if(h<12)return 'Start today\'s shift';if(h>=18)return 'Start evening shift';return 'Start Shift'}
+function getBusinessInsight(){const today=getTodayTotals();if(!shifts.length&&ccState!=='active')return 'Start your first shift to unlock personalised insights.';if(ccState==='active'&&miles<0.1)return 'Your business journey is now being tracked.';const y=new Date();y.setDate(y.getDate()-1);const yesterday=dayTotals(y);if(today.mi>yesterday.mi&&yesterday.mi>0)return 'You\'ve already driven further than yesterday.';if(today.journeys>0&&today.mi>0){const avg=today.mi/today.journeys;return 'Your average journey today is '+avg.toFixed(1)+' miles.'}if(today.journeys>=2)return 'You\'ve completed '+today.journeys+' business journeys today.';const week=periodTotals('week');if(week.list.length){const longest=week.list.reduce((a,b)=>b.seconds>a.seconds?b:a);const dayName=new Date(longest.startISO).toLocaleDateString('en-GB',{weekday:'long'});return 'Your longest shift this week was '+dayName+'.'}return 'Keep tracking — insights improve as you drive more business miles.'}
+function renderRecentActivity(){const el=q('ccActivity');if(!el)return;let html='';for(let i=1;i<=3;i++){const d=new Date();d.setDate(d.getDate()-i);const label=i===1?'Yesterday':d.toLocaleDateString('en-GB',{weekday:'long'});const t=dayTotals(d);if(t.list.length)html+='<div class="cc-activity-item"><div class="cc-activity-day">'+label+'</div><div class="cc-activity-detail">'+t.mi.toFixed(1)+' miles · '+fmtShort(t.sec)+'</div></div>';else html+='<div class="cc-activity-item"><div class="cc-activity-day">'+label+'</div><div class="cc-activity-detail cc-activity-empty">No shift</div></div>'}el.innerHTML=html}
+function setText(id,val){const el=q(id);if(el)el.textContent=val}
+function renderCommandCentre(){driver=localStorage.getItem('mp_driver')||driver||'there';vehicle=localStorage.getItem('mp_vehicle')||vehicle||'car';const today=getTodayTotals();setText('ccGreeting',ccState==='active'?'Shift in progress':getGreeting());setText('ccStatus',getStatusMessage());const track=q('ccTrackingBar'),hero=q('ccHero'),btn=q('ccPrimaryBtn');if(track)track.hidden=ccState!=='active';if(hero)hero.classList.toggle('is-live',ccState==='active');if(btn){btn.textContent=getPrimaryLabel();btn.classList.toggle('is-end',ccState==='active')}if(ccState==='active')setText('ccLiveTimer',fmtLong(elapsed));setText('ccHeroMiles',today.mi.toFixed(1));setText('ccMiles',today.mi.toFixed(1));setText('ccTime',today.sec<60?'0h':fmtShort(today.sec));setText('ccJourneys',String(today.journeys));setText('ccHmrc',money(today.hmrc));setText('ccInsight',getBusinessInsight());renderRecentActivity()}
+function saveActiveShift(){if(ccState!=='active')return;localStorage.setItem('mp_active_shift',JSON.stringify({startedAt:shiftStartedAt,miles,elapsed,routePoints,lastPoint}))}
+function clearActiveShift(){localStorage.removeItem('mp_active_shift')}
+function restoreActiveShift(){try{const raw=localStorage.getItem('mp_active_shift');if(!raw)return;const s=JSON.parse(raw);if(!s?.startedAt)return;ccState='active';shiftStartedAt=s.startedAt;miles=Number(s.miles)||0;elapsed=Math.floor((Date.now()-shiftStartedAt)/1000);routePoints=s.routePoints||[];lastPoint=s.lastPoint||null;if(timer)clearInterval(timer);timer=setInterval(()=>{elapsed=Math.floor((Date.now()-shiftStartedAt)/1000);renderCommandCentre();saveActiveShift()},1000);requestGpsAgain(true)}catch(e){clearActiveShift()}}
+function toggleShift(){if(ccState==='active')endShiftCommandCentre();else startShiftCommandCentre()}
+function startShiftCommandCentre(){miles=0;elapsed=0;routePoints=[];lastPoint=null;shiftStartedAt=Date.now();ccState='active';if(timer)clearInterval(timer);timer=setInterval(()=>{elapsed=Math.floor((Date.now()-shiftStartedAt)/1000);renderCommandCentre();saveActiveShift()},1000);renderCommandCentre();saveActiveShift();requestGpsAgain(true);toast('Shift started — tracking your business journey')}
+function endShiftCommandCentre(){if(gpsWatchId!==null){navigator.geolocation.clearWatch(gpsWatchId);gpsWatchId=null}if(timer){clearInterval(timer);timer=null}const shift=normaliseShift({id:'shift_'+Date.now(),miles:Number(miles.toFixed(2)),seconds:elapsed,vehicle,hmrc:Number(claim(miles).toFixed(2)),date:new Date().toLocaleDateString('en-GB'),startISO:new Date(shiftStartedAt).toISOString(),endISO:new Date().toISOString()});shifts.push(shift);saveShifts();summaryShift=shift;ccState='idle';clearActiveShift();miles=0;elapsed=0;routePoints=[];lastPoint=null;const today=getTodayTotals();setText('ccSumMiles',today.mi.toFixed(1));setText('ccSumTime',fmtShort(today.sec));setText('ccSumJourneys',String(today.journeys));setText('ccSumHmrc',money(today.hmrc));setText('ccSummarySub','Today\'s business is recorded.');const sum=q('ccSummary');if(sum)sum.hidden=false;renderCommandCentre()}
+function dismissSummary(){summaryShift=null;const sum=q('ccSummary');if(sum)sum.hidden=true;renderCommandCentre()}
+function saveShiftReport(){dismissSummary();printReport()}
+function updateLive(){if(q('liveMiles')){q('liveMiles').textContent=miles.toFixed(2);q('liveTime').textContent=fmt(elapsed);q('liveClaim').textContent=money(claim(miles));q('trackingVehicle').textContent='Vehicle: '+vehicles[vehicle].label+' • Rate: '+Math.round(vehicles[vehicle].rate*100)+'p per mile'}if(ccState==='active'&&q('home')?.classList.contains('active'))renderCommandCentre()}
+function startShift(){startShiftCommandCentre();showScreen('home')}
 function initBlankMap(){if(typeof L==='undefined'||liveMap)return;liveMap=L.map('liveMap',{zoomControl:false}).setView([51.5072,-0.1276],13);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OSM'}).addTo(liveMap);livePolyline=L.polyline([],{color:'#0D6BFF',weight:6,opacity:.95}).addTo(liveMap);setTimeout(()=>liveMap.invalidateSize(),250)}
 function setMapHint(t){q('mapHint').textContent=t}function requestGpsAgain(watch=false){if(!navigator.geolocation){setMapHint('GPS not available');return}setMapHint('Requesting location permission…');navigator.geolocation.getCurrentPosition(pos=>handlePos(pos),err=>setMapHint(location.protocol!=='https:'&&location.hostname!=='localhost'?'GPS needs HTTPS. Use trycloudflare link.':'Location blocked. Allow location then reload.'),{enableHighAccuracy:true,maximumAge:0,timeout:12000});if(watch){gpsWatchId=navigator.geolocation.watchPosition(handlePos,err=>setMapHint('GPS signal waiting…'),{enableHighAccuracy:true,maximumAge:0,timeout:12000})}}
-function handlePos(pos){let p={lat:pos.coords.latitude,lon:pos.coords.longitude,acc:pos.coords.accuracy||999,t:pos.timestamp||Date.now()};if(p.acc>80){setMapHint('GPS accuracy low — waiting for better signal');return}if(lastPoint){let d=distance(lastPoint,p);let dt=(p.t-lastPoint.t)/1000;if(d>8 && d<250 && (d/dt)<60){miles+=d/1609.344}}lastPoint=p;routePoints.push(p);drawRoute();setMapHint('GPS locked • tracking route');updateLive()}
+function handlePos(pos){let p={lat:pos.coords.latitude,lon:pos.coords.longitude,acc:pos.coords.accuracy||999,t:pos.timestamp||Date.now()};if(p.acc>80){if(q('mapHint'))setMapHint('GPS accuracy low — waiting for better signal');return}if(lastPoint){let d=distance(lastPoint,p);let dt=(p.t-lastPoint.t)/1000;if(d>8 && d<250 && (d/dt)<60){miles+=d/1609.344}}lastPoint=p;routePoints.push(p);drawRoute();if(q('mapHint'))setMapHint('GPS locked • tracking route');updateLive();saveActiveShift()}
 function distance(a,b){let R=6371000,rad=Math.PI/180,dLat=(b.lat-a.lat)*rad,dLon=(b.lon-a.lon)*rad,la1=a.lat*rad,la2=b.lat*rad;let x=Math.sin(dLat/2)**2+Math.cos(la1)*Math.cos(la2)*Math.sin(dLon/2)**2;return R*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x))}
 function drawRoute(){initBlankMap();if(!liveMap||!routePoints.length)return;let latlngs=routePoints.map(p=>[p.lat,p.lon]);livePolyline.setLatLngs(latlngs);let p=routePoints[routePoints.length-1];if(!liveMarker)liveMarker=L.circleMarker([p.lat,p.lon],{radius:7,color:'#fff',weight:3,fillColor:'#10C870',fillOpacity:1}).addTo(liveMap);liveMarker.setLatLng([p.lat,p.lon]);liveMap.setView([p.lat,p.lon],16)}function centreMap(){if(routePoints.length&&liveMap){let p=routePoints[routePoints.length-1];liveMap.setView([p.lat,p.lon],16)}}
-function endShift(){if(gpsWatchId!==null){navigator.geolocation.clearWatch(gpsWatchId);gpsWatchId=null}clearInterval(timer);let shift=normaliseShift({id:'shift_'+Date.now(),miles:Number(miles.toFixed(2)),seconds:elapsed,vehicle,hmrc:Number(claim(miles).toFixed(2)),date:new Date().toLocaleDateString('en-GB'),startISO:new Date(shiftStartedAt).toISOString(),endISO:new Date().toISOString()});shifts.push(shift);saveShifts();toast('Shift saved ✓');showReports()}
+function endShift(){endShiftCommandCentre();showScreen('home')}
 function periodStart(p=period){let now=new Date();if(p==='week'){let d=new Date(now.getFullYear(),now.getMonth(),now.getDate());d.setDate(d.getDate()-((d.getDay()+6)%7));return d}if(p==='month')return new Date(now.getFullYear(),now.getMonth(),1);return new Date(now.getFullYear(),now.getMonth(),now.getDate())}
 function selectedShifts(p=period){let start=periodStart(p);return shifts.filter(s=>new Date(s.startISO)>=start)}function periodTotals(p=period){let list=selectedShifts(p);return{mi:list.reduce((a,b)=>a+b.miles,0),sec:list.reduce((a,b)=>a+b.seconds,0),hmrc:list.reduce((a,b)=>a+b.hmrc,0),list}}
 function setPeriod(p){period=p;renderReports()}function showReports(){setNav('Reports');renderReports();showScreen('reports')}function renderReports(){let t=periodTotals();q('pDay').classList.toggle('active',period==='day');q('pWeek').classList.toggle('active',period==='week');q('pMonth').classList.toggle('active',period==='month');q('mainReportTitle').textContent=period==='day'?'Today':period==='week'?'This Week':'This Month';q('reportMiles').textContent=t.mi.toFixed(2)+' miles';q('reportTime').textContent=fmt(t.sec);q('reportClaim').textContent=money(t.hmrc);q('reportRate').textContent=vehicles[vehicle].label+' • '+Math.round(vehicles[vehicle].rate*100)+'p';q('reportLine').textContent=t.list.length+' shift'+(t.list.length===1?'':'s')+' • '+t.mi.toFixed(2)+' miles • '+money(t.hmrc);q('reportEmail').value=localStorage.getItem('mp_email')||''}
@@ -408,7 +539,7 @@ async function emailReport(ev){let email=q('reportEmail').value.trim();if(!email
 function printReport(){let t=periodTotals();let rows=t.list.length?t.list.map(s=>`<tr><td>${s.date}</td><td>${vehicles[s.vehicle]?.label||s.vehicle}</td><td>${s.miles.toFixed(2)}</td><td>${fmt(s.seconds)}</td><td>${money(s.hmrc)}</td></tr>`).join(''):`<tr><td colspan="5">No shifts saved yet</td></tr>`;q('printReport').innerHTML=`<div class="pdfBrand"><div><div class="pdfLogo">Mile <span class="blue">Pilot</span></div><div class="pdfPulse"></div><div class="pdfTag">Your driving business. On auto pilot.</div></div><div class="pdfDate">${period==='day'?'Daily':period==='week'?'Weekly':'Monthly'} Report<br>${new Date().toLocaleDateString('en-GB')}</div></div><div class="printGrid"><div class="printMetric"><small>Total Miles</small><b>${t.mi.toFixed(2)} miles</b></div><div class="printMetric"><small>Driving Time</small><b>${fmt(t.sec)}</b></div><div class="printMetric"><small>Est. HMRC Claim</small><b>${money(t.hmrc)}</b></div></div><h2>Shift Breakdown</h2><table class="printTable"><thead><tr><th>Date</th><th>Vehicle</th><th>Miles</th><th>Time</th><th>Claim</th></tr></thead><tbody>${rows}</tbody></table><div class="printFoot">Generated by MilePilot. HMRC figures are estimates for record keeping and should be checked against official guidance.</div>`;setTimeout(()=>window.print(),200)}
 function migrateOnboardingVersion(){const stored=localStorage.getItem('mp_app_version');if(stored===APP_VERSION)return false;localStorage.setItem('mp_app_version',APP_VERSION);if(localStorage.getItem('mp_onboard_complete')==='true')return false;const d=localStorage.getItem('mp_driver'),v=localStorage.getItem('mp_vehicle'),step=localStorage.getItem('mp_onboard_step');if(d&&v&&!step)return false;localStorage.removeItem('mp_driver');localStorage.removeItem('mp_vehicle');localStorage.removeItem('mp_onboard_step');localStorage.removeItem('mp_location_choice');localStorage.removeItem('mp_notifications_choice');driver='';vehicle='car';selectedVehicle=null;if(q('name'))q('name').value='';return true}
 function resumeOnboardingStep(step){driver=localStorage.getItem('mp_driver')||'';vehicle=localStorage.getItem('mp_vehicle')||'car';if(step==='notifications'){initNotifications();showScreen('notifications');return true}if(step==='location'||step==='permissions'){initLocationPermission();showScreen('permissions');return true}if(step==='promise'){initPromise();showScreen('promise');return true}if(step==='knowYou'){initKnowYou();showScreen('knowYou');return true}if(step==='welcome'){initFirstImpression();showScreen('welcome');return true}return false}
-function bootApp(){if(migrateOnboardingVersion()){localStorage.setItem('mp_onboard_step','welcome');initFirstImpression();showScreen('welcome');return}const complete=localStorage.getItem('mp_onboard_complete')==='true',d=localStorage.getItem('mp_driver'),v=localStorage.getItem('mp_vehicle'),step=localStorage.getItem('mp_onboard_step');if(complete){driver=d||'';vehicle=v||'car';goHome();return}if(d&&v&&!step&&(localStorage.getItem('mp_location_choice')||localStorage.getItem('mp_notifications_choice'))){localStorage.setItem('mp_onboard_complete','true');if(!localStorage.getItem('mp_location_choice'))localStorage.setItem('mp_location_choice','legacy');driver=d;vehicle=v;goHome();return}if(d&&v&&!step){localStorage.setItem('mp_location_choice','legacy');localStorage.setItem('mp_onboard_complete','true');driver=d;vehicle=v;goHome();return}if(step&&resumeOnboardingStep(step))return;if(d&&!v){driver=d;localStorage.setItem('mp_onboard_step','knowYou');initKnowYou();showScreen('knowYou');return}localStorage.setItem('mp_onboard_step','welcome');initFirstImpression();showScreen('welcome')}
+function bootApp(){if(migrateOnboardingVersion()){localStorage.setItem('mp_onboard_step','welcome');initFirstImpression();showScreen('welcome');return}restoreActiveShift();const complete=localStorage.getItem('mp_onboard_complete')==='true',d=localStorage.getItem('mp_driver'),v=localStorage.getItem('mp_vehicle'),step=localStorage.getItem('mp_onboard_step');if(complete){driver=d||'';vehicle=v||'car';goHome();return}if(d&&v&&!step&&(localStorage.getItem('mp_location_choice')||localStorage.getItem('mp_notifications_choice'))){localStorage.setItem('mp_onboard_complete','true');if(!localStorage.getItem('mp_location_choice'))localStorage.setItem('mp_location_choice','legacy');driver=d;vehicle=v;goHome();return}if(d&&v&&!step){localStorage.setItem('mp_location_choice','legacy');localStorage.setItem('mp_onboard_complete','true');driver=d;vehicle=v;goHome();return}if(step&&resumeOnboardingStep(step))return;if(d&&!v){driver=d;localStorage.setItem('mp_onboard_step','knowYou');initKnowYou();showScreen('knowYou');return}localStorage.setItem('mp_onboard_step','welcome');initFirstImpression();showScreen('welcome')}
 window.addEventListener('load',bootApp);
 if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('./service-worker.js?v='+APP_VERSION).then(r=>r.update()).catch(()=>{})})}
 </script>

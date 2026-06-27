@@ -127,3 +127,15 @@ If it is only a feature, rewrite until it earns its place.
 **Onboarding is feature complete.** No more tweaks. No pixel pushing. No wording changes.
 
 Next build focus: **MP-006 — The Driver's Command Centre** (the screen people open every working day).
+
+### MP-006 voice
+
+| Element | Copy |
+|---------|------|
+| Greeting | Time-aware: Good morning ☀️ / Good afternoon 👋 / Good evening 🌙 |
+| Status (idle) | Ready to make every business mile count? |
+| Status (active) | Tracking your business journey. |
+| Status (after shift) | Great work today. |
+| Hero | TODAY · {miles} · Business Miles |
+| Primary CTA | Start Shift / End Shift (time-aware labels) |
+| Empty insight | Start your first shift to unlock personalised insights. |
