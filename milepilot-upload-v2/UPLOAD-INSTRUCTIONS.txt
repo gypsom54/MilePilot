@@ -1,30 +1,31 @@
-MilePilot — UPLOAD v7.1.1
+MilePilot — UPLOAD v7.2.0
 =========================
 
 DOWNLOAD
 --------
-https://github.com/gypsom54/MilePilot/raw/main/MilePilot-UPLOAD-v7.1.1.zip
+https://github.com/gypsom54/MilePilot/raw/main/MilePilot-UPLOAD-v7.2.0.zip
 
 CHECK APP VERSION
 -----------------
 https://app.milepilot.uk/version.txt
-Must show: MilePilot OS v7.1.1 — Solid brand pulse & premium icons
+Must show: MilePilot OS v7.2.0 — Alive dashboard & Business Snapshot
 
 TWO DEPLOYS NEEDED
 ------------------
-1. Cloudflare — upload this zip (frontend v7.1.1)
+1. Cloudflare — upload this zip (frontend v7.2.0)
 2. Railway — backend on main (no change needed)
 
 Check backend:
 https://milepilot-production.up.railway.app/health
 Should show: "reportVersion": "MP-013-magazine-v4"
 
-WHAT'S NEW IN v7.1.1
+WHAT'S NEW IN v7.2.0
 --------------------
-- Brand pulse bar: fully solid gradient (no fade at edges)
-- Premium vehicle icons with depth, fill and inner ring
-- Premium welcome feature icons matching vehicle style
-- Removed Preview button from Report Centre email area
+- Dynamic greetings that change morning / afternoon / evening
+- Dashboard states: ready → tracking → report ready
+- Business Snapshot celebration after every shift ends
+- Report Centre document cards with preview hero miles
+- Open · Preview · Share · Email Again actions
 
 UPLOAD STEPS (Cloudflare)
 -------------------------
