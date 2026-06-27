@@ -1,21 +1,22 @@
-MilePilot — UPLOAD v7.6.1
+MilePilot — UPLOAD v7.6.2
 =========================
 
 DOWNLOAD
 --------
-https://github.com/gypsom54/MilePilot/raw/cursor/mp-017-live-tracking-map-ae00/MilePilot-UPLOAD-v7.6.1.zip
+https://github.com/gypsom54/MilePilot/raw/cursor/mp-017-live-tracking-map-ae00/MilePilot-UPLOAD-v7.6.2.zip
 
 CHECK APP VERSION
 -----------------
 https://app.milepilot.uk/version.txt
-Must show: MilePilot OS v7.6.1 — MP-017 dashboard state flow fix
+Must show: MilePilot OS v7.6.2 — Live route map polish
 
-WHAT'S NEW IN v7.6.1
+WHAT'S NEW IN v7.6.2
 --------------------
-- Fix: Dashboard no longer stuck on "You're done for today" after End Shift
-- Completion screen is one-time only; Done returns to normal dashboard
-- After a shift today: "Today's driving" + Start New Shift button
-- State driven by active shift, not last screen visited
+- Live Route map: blue polyline, green start marker, pulsing blue live position
+- GPS status row above map (Connected / High accuracy + updated time)
+- Live stats: Driving Time, Current Speed, Business Miles, GPS Accuracy
+- Tap map to expand full-screen live map with timer, miles, End Shift
+- Dashboard-first layout unchanged
 
 UPLOAD STEPS (Cloudflare)
 -------------------------

@@ -1,3 +1,3 @@
-MilePilot OS v7.6.1 — MP-017 dashboard state flow fix
+MilePilot OS v7.6.2 — Live route map polish
 Build: 2026-06-27
 Brand: Every business mile matters.
