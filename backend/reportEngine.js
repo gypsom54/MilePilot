@@ -110,22 +110,22 @@ function timeGreeting() {
 
 function periodReadyLine(period) {
   const map = {
-    Daily: "Your driving summary for today is ready.",
-    Weekly: "Your driving summary for this week is ready.",
-    Monthly: "Your driving summary for this month is ready.",
-    Annual: "Your annual driving summary is ready.",
+    Daily: "Your business mileage summary for today is ready.",
+    Weekly: "Your business mileage summary for this week is ready.",
+    Monthly: "Your business mileage summary for this month is ready.",
+    Annual: "Your annual business mileage summary is ready.",
   };
-  return map[period] || "Your driving summary is ready.";
+  return map[period] || "Your business mileage summary is ready.";
 }
 
 function periodReportTitle(period) {
   const map = {
-    Daily: "Daily Driving Report",
-    Weekly: "Weekly Driving Report",
-    Monthly: "Monthly Driving Report",
-    Annual: "Annual Driving Report",
+    Daily: "Daily Business Mileage Report",
+    Weekly: "Weekly Business Mileage Report",
+    Monthly: "Monthly Business Mileage Report",
+    Annual: "Annual Business Mileage Report",
   };
-  return map[period] || `${period} Driving Report`;
+  return map[period] || `${period} Business Mileage Report`;
 }
 
 function pickAllowanceLabel(report) {
@@ -478,7 +478,7 @@ export function buildPdfBuffer(report) {
     const cardW = (contentW - 14) / 2;
     const cardH = 58;
     const cards = [
-      { label: "Driving Time", value: fmtShiftTime(a.totals.sec) },
+      { label: "Travel Time", value: fmtShiftTime(a.totals.sec) },
       { label: "Business Journeys", value: String(a.totals.journeys) },
       { label: a.allowanceLabel, value: money(a.totals.hmrc) },
       { label: "Average Journey", value: a.avgMilesShift > 0 ? `${a.avgMilesShift.toFixed(1)} mi` : "—" },
@@ -626,8 +626,8 @@ export function buildReportEmailHtml(report) {
   <p style="margin:0 0 32px;font-size:16px;color:#B9C8DD;line-height:1.55;">${ready}</p>
   <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
     ${metric("Business Miles", a.totals.mi.toFixed(1))}
-    ${metric("Driving Time", fmtShiftTime(a.totals.sec))}
-    ${metric("Journeys", String(a.totals.journeys))}
+    ${metric("Travel Time", fmtShiftTime(a.totals.sec))}
+    ${metric("Business Journeys", String(a.totals.journeys))}
     ${metric("Estimated HMRC", money(a.totals.hmrc))}
   </table>
   <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:12px;">
@@ -656,8 +656,8 @@ export function buildReportEmailText(report) {
 ${periodReadyLine(a.period)}
 
 Business Miles: ${a.totals.mi.toFixed(1)}
-Driving Time: ${fmtShiftTime(a.totals.sec)}
-Journeys: ${a.totals.journeys}
+Travel Time: ${fmtShiftTime(a.totals.sec)}
+Business Journeys: ${a.totals.journeys}
 Estimated HMRC: ${money(a.totals.hmrc)}
 
 View your report in MilePilot: ${buildReportDeepLink(report, true)}

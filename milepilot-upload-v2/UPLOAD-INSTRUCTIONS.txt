@@ -1,32 +1,23 @@
-MilePilot — UPLOAD v7.4.0
+MilePilot — UPLOAD v7.5.0
 =========================
 
 DOWNLOAD
 --------
-Use MilePilot-UPLOAD-v7.4.0.zip from this folder or the repo root.
+Use MilePilot-UPLOAD-v7.5.0.zip from this folder or the repo root.
 
 CHECK APP VERSION
 -----------------
 https://app.milepilot.uk/version.txt
-Must show: MilePilot OS v7.4.0 — Intelligence Layer (Business Intelligence Phase 4)
+Must show: MilePilot OS v7.5.0 — MP-018 Self-employed positioning
 
-TWO DEPLOYS NEEDED
-------------------
-1. Cloudflare — upload this zip (frontend v7.4.0)
-2. Railway — backend unchanged for this release (optional health check)
-
-Check backend:
-https://milepilot-production.up.railway.app/health
-Should show: "reportVersion": "MP-014-document-v1"
-
-WHAT'S NEW IN v7.4.0
+WHAT'S NEW IN v7.5.0
 --------------------
-- MilePilot Intelligence Layer (Phase 4)
-- Smart insights — multiple personalised insights on dashboard
-- Monday morning weekly briefing (last week stats)
-- Monthly dashboard with progress bar + daily miles chart
-- Weekly goals (miles + HMRC estimate)
-- Driver Score — record keeping habits score out of 100
+- MP-018: Broader positioning for all self-employed professionals
+- New onboarding step: Tell us about your work (5 work types)
+- Dashboard & insights personalised by work type
+- Reports language: Business Mileage Report, business journeys, mileage allowance
+- Settings: Work Type section (change anytime)
+- Pricing tier structure prepared for future Pro/Business plans
 
 FILES IN THIS ZIP (upload all 7)
 --------------------------------
@@ -40,7 +31,7 @@ UPLOAD-INSTRUCTIONS.txt
 
 UPLOAD STEPS (Cloudflare)
 -------------------------
-1. Download MilePilot-UPLOAD-v7.4.0.zip
+1. Download MilePilot-UPLOAD-v7.5.0.zip
 2. Unzip all files (do not upload the zip itself)
 3. Cloudflare → milepilot-app → Upload assets → select all 7 files → Deploy
 
