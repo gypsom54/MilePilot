@@ -40,6 +40,12 @@ export const BRAND_TAGLINE = "Drive • Track • Claim";
 export const BRAND_WORDMARK_SIZE = 34;
 export const BRAND_PULSE_WIDTH = 200;
 
+export function buildReportDeepLink(report, download = false) {
+  const map = { Daily: "day", Weekly: "week", Monthly: "month", Annual: "year" };
+  const p = map[report.period || "Daily"] || "day";
+  return `${APP_URL}/?reports=${p}${download ? "&download=1" : ""}`;
+}
+
 export function buildBrandEmailHeader() {
   return `<table width="100%" cellpadding="0" cellspacing="0">
 <tr><td style="padding:0 8px 28px;text-align:center;">
@@ -562,6 +568,9 @@ export function buildReportEmailHtml(report) {
       <div style="font-size:28px;font-weight:700;color:#FFFFFF;letter-spacing:-0.03em;line-height:1.1;">${value}</div>
     </td></tr>`;
 
+  const downloadUrl = buildReportDeepLink(report, true);
+  const appUrl = `${APP_URL}/`;
+
   return `<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
 <body style="margin:0;padding:0;background:#031126;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;">
@@ -578,12 +587,15 @@ export function buildReportEmailHtml(report) {
     ${metric("Journeys", String(a.totals.journeys))}
     ${metric("Estimated HMRC", money(a.totals.hmrc))}
   </table>
-  <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:28px;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:12px;">
+    <tr><td align="center" style="padding-bottom:10px;">
+      <a href="${downloadUrl}" style="display:inline-block;width:100%;max-width:320px;background:linear-gradient(180deg,#1E88FF,#0D6BFF);color:#FFFFFF;font-size:16px;font-weight:600;text-decoration:none;padding:16px 24px;border-radius:14px;letter-spacing:-0.01em;box-sizing:border-box;">📄 Download PDF Report</a>
+    </td></tr>
     <tr><td align="center">
-      <a href="${APP_URL}" style="display:inline-block;background:linear-gradient(180deg,#1E88FF,#0D6BFF);color:#FFFFFF;font-size:16px;font-weight:600;text-decoration:none;padding:16px 32px;border-radius:14px;letter-spacing:-0.01em;">View Full Report</a>
+      <a href="${appUrl}" style="display:inline-block;color:#93A8C4;font-size:14px;font-weight:600;text-decoration:none;padding:8px 16px;">Open MilePilot</a>
     </td></tr>
   </table>
-  <p style="margin:0 0 36px;font-size:14px;color:#93A8C4;line-height:1.6;text-align:center;">Your professional PDF report is attached.</p>
+  <p style="margin:0 0 36px;font-size:14px;color:#93A8C4;line-height:1.6;text-align:center;">Your professional PDF report is attached to this email.</p>
   <p style="margin:0 0 8px;font-size:12px;font-weight:600;letter-spacing:0.14em;color:#0D6BFF;text-align:center;">${BRAND_TAGLINE}</p>
   <p style="margin:0;font-size:13px;color:#B9C8DD;line-height:1.6;text-align:center;">Thank you for choosing MilePilot.<br><span style="color:#93A8C4;">Every mile matters.</span></p>
 </td></tr>
@@ -605,9 +617,11 @@ Driving Time: ${fmtShiftTime(a.totals.sec)}
 Journeys: ${a.totals.journeys}
 Estimated HMRC: ${money(a.totals.hmrc)}
 
-View your full report: ${APP_URL}
+View your report in MilePilot: ${buildReportDeepLink(report, true)}
 
-Your professional PDF report is attached.
+Your professional PDF report is attached to this email.
+
+Open MilePilot: ${APP_URL}/
 
 Drive • Track • Claim
 Thank you for choosing MilePilot.
