@@ -7,6 +7,7 @@ import {
   buildReportEmailHtml,
   buildReportEmailText,
   buildReportSubject,
+  buildVerifyPageHtml,
   REPORT_VERSION,
 } from "./reportEngine.js";
 
@@ -47,6 +48,12 @@ app.get("/health", (req, res) => {
     reportVersion: REPORT_VERSION,
     timestamp: new Date().toISOString(),
   });
+});
+
+app.get("/reports/verify/:reportId", (req, res) => {
+  const reportId = req.params.reportId || "";
+  res.setHeader("Content-Type", "text/html; charset=utf-8");
+  res.send(buildVerifyPageHtml(reportId));
 });
 
 app.post("/reports/send", async (req, res) => {
