@@ -14,7 +14,7 @@
 | Dashboard foundation | ~90% 🔒 Locked |
 | **Core tracking engine** | Sprint 1 → in progress |
 | Reports | ~10% |
-| Business intelligence | 0% |
+| Business intelligence | Phase 4 — Intelligence Layer in progress |
 
 ---
 
@@ -57,6 +57,17 @@ Daily / weekly / monthly, HMRC-ready PDFs, maps, timeline, one-click share.
 ---
 
 ## Sprint 5 — Business Intelligence ⭐⭐⭐⭐⭐
+
+**MilePilot Intelligence Layer** — teach the app to understand the numbers.
+
+- [x] Smart insights (rule-based, multiple per dashboard)
+- [x] Monday morning weekly briefing
+- [x] Monthly dashboard with progress bar + daily chart
+- [x] Weekly goals (miles + HMRC estimate)
+- [x] Driver Score (record keeping habits)
+- [ ] Driver health reminders (Phase 9)
+- [ ] Pulse AI companion tab (Phase 6)
+- [ ] Business Hub / Pro tier (Phase 5)
 
 Earning patterns, best hours, year-to-date savings — business coach.
 
