@@ -30,19 +30,20 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 .historyItem{border:1px solid var(--line);background:rgba(255,255,255,.05);border-radius:20px;padding:15px;margin:12px 0}.historyTop{display:flex;justify-content:space-between;font-weight:1000}.historySub{color:#B9C8DD;margin-top:8px;font-size:14px;line-height:1.45}.toast{position:fixed;left:50%;bottom:94px;transform:translateX(-50%);width:min(390px,calc(100vw - 22px));background:#101C31;color:#fff;border:1px solid rgba(255,255,255,.16);border-radius:17px;padding:14px;font-weight:900;font-size:13px;text-align:center;z-index:60;display:none}.toast.show{display:block}
 .onboard-bg{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
 .onboard-glow{position:absolute;border-radius:50%;filter:blur(80px)}
-.onboard-glow-1{width:320px;height:320px;background:#0D6BFF;top:-120px;right:-80px;opacity:.22}
-.onboard-glow-2{width:260px;height:260px;background:#1A5FD4;bottom:60px;left:-100px;opacity:.14}
-.onboard-arc{position:absolute;left:50%;top:38%;width:140%;height:280px;transform:translateX(-50%);opacity:.18}
+.onboard-glow-1{width:340px;height:200px;background:#0D6BFF;top:18%;left:50%;right:auto;transform:translateX(-50%);opacity:.14}
+.onboard-glow-2{width:260px;height:260px;background:#1A5FD4;bottom:60px;left:-100px;opacity:.1}
 .onboard-inner{position:relative;z-index:1;width:100%;max-width:360px;margin:0 auto;display:flex;flex-direction:column;min-height:100%}
-.onboard-brand{display:flex;justify-content:center;margin-bottom:22px}
-.onboard-brand .wordmark{font-size:36px;letter-spacing:-1.8px}
+.onboard-brand{display:flex;justify-content:center;margin-bottom:28px}
+.onboard-brand .wordmark{font-size:42px;font-weight:900;letter-spacing:-2.2px;line-height:1}
+.welcome-headline-block{text-align:center;margin:0 0 20px}
+.welcome-headline{font-size:clamp(30px,7.5vw,36px);line-height:1.1;font-weight:1000;letter-spacing:-1.2px;margin:0}
+.welcome-underline{width:min(180px,52%);height:4px;margin:18px auto 0;border-radius:999px;background:linear-gradient(90deg,rgba(13,107,255,0),#0D6BFF 25%,#4DA3FF 50%,#0D6BFF 75%,rgba(13,107,255,0));box-shadow:0 0 28px rgba(13,107,255,.55),0 0 8px rgba(13,107,255,.35)}
 #welcome,#personal{position:relative;overflow:hidden;background:linear-gradient(180deg,#050F22 0%,#020B1B 55%,#010810 100%)}
 #welcome.active,#personal.active{display:flex;flex-direction:column;min-height:100dvh;padding:max(24px,env(safe-area-inset-top)) 22px max(28px,env(safe-area-inset-bottom))}
 #welcome.active{justify-content:center}
 #personal.active{justify-content:flex-start}
 #welcome .onboard-inner{margin:auto 0}
 #personal .onboard-inner{flex:1;display:flex;flex-direction:column;padding-top:28px}
-.welcome-headline{text-align:center;font-size:clamp(30px,7.5vw,36px);line-height:1.1;font-weight:1000;letter-spacing:-1.2px;margin:0 0 14px}
 .welcome-support{text-align:center;color:#9FB4D0;font-size:15px;line-height:1.55;margin:0 auto 26px;max-width:330px}
 .welcome-features{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 0 28px}
 .welcome-feature{text-align:center}
@@ -75,11 +76,13 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 <div class="onboard-bg" aria-hidden="true">
 <div class="onboard-glow onboard-glow-1"></div>
 <div class="onboard-glow onboard-glow-2"></div>
-<svg class="onboard-arc" viewBox="0 0 800 280"><path d="M-40 220 Q400 20 840 180" fill="none" stroke="#0D6BFF" stroke-width="2"/><path d="M-40 260 Q400 80 840 220" fill="none" stroke="#0D6BFF" stroke-width="1.2" opacity=".6"/></svg>
 </div>
 <div class="onboard-inner">
 <div class="onboard-brand"><div class="wordmark">Mile<span class="blue">Pilot</span></div></div>
+<div class="welcome-headline-block">
 <h1 class="welcome-headline">Your driving business.<br><span class="blue">On auto pilot.</span></h1>
+<div class="welcome-underline"></div>
+</div>
 <p class="welcome-support">MilePilot automatically tracks your miles, creates professional reports and helps you stay HMRC ready.</p>
 <div class="welcome-features">
 <div class="welcome-feature"><div class="welcome-icon"><svg viewBox="0 0 24 24"><path d="M3 12l18-8-8 18-2-8z"/></svg></div><span>Track your miles</span></div>
@@ -103,7 +106,6 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 <div class="onboard-bg" aria-hidden="true">
 <div class="onboard-glow onboard-glow-1"></div>
 <div class="onboard-glow onboard-glow-2"></div>
-<svg class="onboard-arc" viewBox="0 0 800 280"><path d="M-40 220 Q400 20 840 180" fill="none" stroke="#0D6BFF" stroke-width="2"/></svg>
 </div>
 <div class="onboard-inner">
 <div class="onboard-brand"><div class="wordmark">Mile<span class="blue">Pilot</span></div></div>
