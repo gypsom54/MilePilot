@@ -1,23 +1,31 @@
-MilePilot — UPLOAD v7.6.3
+MilePilot — UPLOAD v7.9.0
 =========================
 
 DOWNLOAD
 --------
-https://github.com/gypsom54/MilePilot/raw/cursor/mp-017-live-tracking-map-ae00/MilePilot-UPLOAD-v7.6.3.zip
+https://github.com/gypsom54/MilePilot/raw/cursor/driver-intelligence-phase2-ae00/MilePilot-UPLOAD-v7.9.0.zip
 
 CHECK APP VERSION
 -----------------
 https://app.milepilot.uk/version.txt
-Must show: MilePilot OS v7.6.3 — Centered brand header
+Must show: MilePilot OS v7.9.0 — Phase 3 History calendar
 
-WHAT'S NEW IN v7.6.3
+WHAT'S NEW IN v7.9.0
 --------------------
-- MilePilot logo/wordmark centered consistently on every screen
+- History tab: month calendar with daily miles + HMRC
+- Tap a day: combined route map, shift list, View report
+- Dashboard day recap + AI insights (v7.8.0)
+- Service worker cache: milepilot-v7-9-0 (hard refresh after deploy)
+
+TEST WITHOUT DRIVING
+--------------------
+Open app with ?dev=1 → History → "Seed sample week"
 
 UPLOAD STEPS (Cloudflare)
 -------------------------
 1. Download zip
-2. Unzip all files
+2. Unzip all files (include js/ folder)
 3. Cloudflare → milepilot-app → Upload assets → Deploy
+4. Hard refresh app (or clear site data) to pick up new cache
 
 APP: https://app.milepilot.uk
