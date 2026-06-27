@@ -1,22 +1,23 @@
-MilePilot — UPLOAD v7.5.0
+MilePilot — UPLOAD v7.6.0
 =========================
 
 DOWNLOAD
 --------
-https://github.com/gypsom54/MilePilot/raw/main/MilePilot-UPLOAD-v7.5.0.zip
+https://github.com/gypsom54/MilePilot/raw/main/MilePilot-UPLOAD-v7.6.0.zip
 
 CHECK APP VERSION
 -----------------
 https://app.milepilot.uk/version.txt
-Must show: MilePilot OS v7.5.0 — MP-016 Auto-Pilot flow
+Must show: MilePilot OS v7.6.0 — MP-017 Live tracking & map strategy
 
-WHAT'S NEW IN v7.5.0
+WHAT'S NEW IN v7.6.0
 --------------------
-- MP-016 Auto-Pilot philosophy: End Shift saves everything automatically
-- Simple success screen — Done only (no View/Save Report on driving flow)
-- Document Centre: reports, schedule, View/Download/Share/Email/CSV
-- Dashboard: Start Shift or End Shift only — no paperwork CTAs
-- Background PDF generation + daily auto-email after shift
+- MP-017 Calm live tracking screen: shift status, timer, miles, supporting stats
+- Route preview map card on dashboard (not full-screen)
+- Branded placeholder when GPS route is not ready yet
+- History shift detail with route map and shift stats
+- Branded location-blocked message for app.milepilot.uk
+- PDF route map section + ASCII-safe labels (no broken symbols)
 
 UPLOAD STEPS (Cloudflare)
 -------------------------

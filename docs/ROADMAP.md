@@ -100,6 +100,23 @@ See [docs/AUTO_PILOT.md](./AUTO_PILOT.md)
 
 ---
 
+## MP-017 — Live Tracking Screen & Map Strategy
+
+**Status:** Complete  
+**Version:** App v7.6.0  
+
+See [docs/MP-017-LIVE-TRACKING.md](./MP-017-LIVE-TRACKING.md)
+
+- Calm live tracking on Dashboard (status, timer, miles, supporting stats)
+- Route preview map card — not full-screen
+- History shift detail with route map
+- Branded GPS permission blocked message
+- PDF Route Map section + ASCII-safe labels
+
+**Deploy:** MilePilot-UPLOAD-v7.6.0.zip
+
+---
+
 ## MP-014 — Tracking QA & Live Shift Experience
 
 **Status:** Complete  
@@ -124,7 +141,7 @@ See [docs/AUTO_PILOT.md](./AUTO_PILOT.md)
 - Live Command Centre: Shift In Progress, 🟢 Tracking, live timer, current journey
 - Background persist (visibility / pagehide), wake lock, GPS auto-reconnect
 - Rich shift storage: journey count, average speed, GPS points, created date
-- End Shift → completion overlay (Great work today 👏), View Report / Done
+- End Shift → completion overlay (Great work today 👏) — superseded by MP-016 Auto-Pilot (Done only)
 - Smart movement detection architecture (disabled — ready for future sprint)
 - Branded GPS error handling (no browser alerts)
 

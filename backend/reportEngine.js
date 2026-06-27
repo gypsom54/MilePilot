@@ -49,8 +49,10 @@ export function buildVerifyUrl(reportId) {
   return `${API_URL}/reports/verify/${encodeURIComponent(reportId)}`;
 }
 
-/** Locked brand lockup — must match app `.brand-bar` exactly */
-export const BRAND_TAGLINE = "Drive • Track • Claim";
+/** PDF-safe tagline — ASCII only (Helvetica) */
+export const BRAND_TAGLINE = "Drive - Track - Claim";
+/** App/HTML tagline may use bullet; PDF uses BRAND_TAGLINE */
+export const BRAND_TAGLINE_HTML = "Drive • Track • Claim";
 export const BRAND_WORDMARK_SIZE = 34;
 export const BRAND_PULSE_WIDTH = 200;
 
@@ -97,7 +99,7 @@ function trendLabel(pct) {
 }
 
 function vehicleLabel(v) {
-  return VEHICLE_LABELS[v] || v || "—";
+  return VEHICLE_LABELS[v] || v || "-";
 }
 
 function fmtShiftTime(sec) {
@@ -117,7 +119,7 @@ function fmtDurationShort(sec) {
 }
 
 function fmtClock(iso) {
-  if (!iso) return "—";
+  if (!iso) return "--:--";
   return new Date(iso).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", hour12: false });
 }
 
@@ -282,7 +284,7 @@ function mostProductiveHour(shifts) {
   if (best === null) return null;
   const end = (best + 1) % 24;
   return {
-    label: `${String(best).padStart(2, "0")}:00–${String(end).padStart(2, "0")}:00`,
+    label: `${String(best).padStart(2, "0")}:00-${String(end).padStart(2, "0")}:00`,
     miles: bestMi,
   };
 }
@@ -491,7 +493,7 @@ function periodChartSpec(a) {
   }
   if (period === "Weekly") {
     return {
-      title: "Miles driven Mon–Sun",
+      title: "Miles driven Mon-Sun",
       items: a.dailyActivity.map((d) => ({ label: d.day.slice(0, 3), value: d.miles })),
     };
   }
@@ -512,7 +514,7 @@ function weekPageChartSpec(a) {
     return { title: "Weekly totals this month", items: groupByWeekInMonth(a.shifts.length ? a.shifts : a.weekShifts) };
   }
   return {
-    title: "Miles driven Mon–Sun",
+    title: "Miles driven Mon-Sun",
     items: a.dailyActivity.map((d) => ({ label: d.day.slice(0, 3), value: d.miles })),
   };
 }
@@ -816,9 +818,9 @@ function drawThisWeekKiller(doc, a, margin, contentW, y) {
   doc.fillColor(BRAND.white).font("Helvetica-Bold").fontSize(miSize).text(miStr, margin + PDF.unit * 2, y + 42);
 
   if (a.weekComparePct !== null && Math.abs(a.weekComparePct) >= 1) {
-    const arrow = a.weekComparePct > 0 ? "↑" : "↓";
+    const dir = a.weekComparePct > 0 ? "Up" : "Down";
     const col = trendColor(a.weekComparePct);
-    doc.fillColor(col).font("Helvetica-Bold").fontSize(13).text(`${arrow} ${Math.abs(a.weekComparePct)}%`, margin + PDF.unit * 2, y + 42 + miSize + 4);
+    doc.fillColor(col).font("Helvetica-Bold").fontSize(13).text(`${dir} ${Math.abs(a.weekComparePct)}%`, margin + PDF.unit * 2, y + 42 + miSize + 4);
     doc.fillColor("#93A8C4").font("Helvetica").fontSize(8).text("compared with last week", margin + PDF.unit * 2 + 52, y + 42 + miSize + 7);
   } else {
     doc.fillColor("#93A8C4").font("Helvetica").fontSize(8).text("Your weekly progress", margin + PDF.unit * 2, y + 42 + miSize + 6);
@@ -1004,7 +1006,7 @@ function drawMiniRouteSparkline(doc, shifts, margin, contentW, y) {
   const points = collectRoutePoints(shifts);
   if (points.length < 2) return y;
   const w = contentW - PDF.unit * 4;
-  const h = 36;
+  const h = 48;
   const lats = points.map((p) => p.lat);
   const lons = points.map((p) => p.lon);
   const minLat = Math.min(...lats);
@@ -1014,9 +1016,7 @@ function drawMiniRouteSparkline(doc, shifts, margin, contentW, y) {
   const latR = maxLat - minLat || 0.001;
   const lonR = maxLon - minLon || 0.001;
 
-  doc.fillColor(BRAND.muted).font("Helvetica").fontSize(7).text("Route overview", margin, y);
-  y += PDF.unit * 1.5;
-  doc.roundedRect(margin, y, contentW, h + PDF.unit, 4).fill(PDF.cardFill).strokeColor(PDF.cardStroke).lineWidth(0.4).stroke();
+  doc.roundedRect(margin, y, contentW, h + PDF.unit * 2, 4).fill(PDF.cardFill).strokeColor(PDF.cardStroke).lineWidth(0.4).stroke();
   const ox = margin + PDF.unit * 2;
   const oy = y + PDF.unit;
   doc.moveTo(
@@ -1026,11 +1026,27 @@ function drawMiniRouteSparkline(doc, shifts, margin, contentW, y) {
   points.slice(1).forEach((p) => {
     doc.lineTo(ox + ((p.lon - minLon) / lonR) * w, oy + h - ((p.lat - minLat) / latR) * h);
   });
-  doc.strokeColor(BRAND.blue).lineWidth(1.2).stroke();
-  doc.circle(ox + ((points[0].lon - minLon) / lonR) * w, oy + h - ((points[0].lat - minLat) / latR) * h, 2).fill(BRAND.green);
+  doc.strokeColor(BRAND.blue).lineWidth(1.4).stroke();
+  doc.circle(ox + ((points[0].lon - minLon) / lonR) * w, oy + h - ((points[0].lat - minLat) / latR) * h, 2.5).fill(BRAND.green);
   const last = points[points.length - 1];
-  doc.circle(ox + ((last.lon - minLon) / lonR) * w, oy + h - ((last.lat - minLat) / latR) * h, 2).fill(BRAND.blue);
+  doc.circle(ox + ((last.lon - minLon) / lonR) * w, oy + h - ((last.lat - minLat) / latR) * h, 2.5).fill(BRAND.blue);
   return y + h + PDF.unit * 4;
+}
+
+function drawRouteMapSection(doc, a, margin, contentW, y, pageW) {
+  y = ensureSpace(doc, y, 90, margin, contentW, pageW, a);
+  y = drawSectionHeading(doc, "Route Map", margin, y, contentW);
+  y += PDF.unit * 2;
+  const points = collectRoutePoints(a.shifts);
+  if (points.length < 2) {
+    const msg =
+      a.shifts.length === 1
+        ? "No route map available for this shift."
+        : "No route map available for this period.";
+    doc.fillColor(BRAND.muted).font("Helvetica").fontSize(10).text(msg, margin + PDF.unit * 2, y, { width: contentW - PDF.unit * 4 });
+    return y + PDF.unit * 5;
+  }
+  return drawMiniRouteSparkline(doc, a.shifts, margin, contentW, y);
 }
 
 function drawProgressBar(doc, x, y, w, h, pct, color = BRAND.blue) {
@@ -1056,7 +1072,7 @@ function drawWeeklyDashboard(doc, a, margin, contentW, y) {
   drawProgressBar(doc, margin + PDF.unit * 2, by, contentW - PDF.unit * 4, 10, a.weekTotals.mi / targetMi, BRAND.blue);
   by += PDF.unit * 3;
 
-  const trendStr = a.weekComparePct !== null ? trendLabel(a.weekComparePct) : "—";
+  const trendStr = a.weekComparePct !== null ? trendLabel(a.weekComparePct) : "-";
   doc.fillColor(trendColor(a.weekComparePct)).font("Helvetica-Bold").fontSize(14).text(trendStr, margin + PDF.unit * 2, by);
   doc.fillColor(BRAND.muted).font("Helvetica").fontSize(8).text("vs last week", margin + PDF.unit * 2 + 48, by + 3);
   by += PDF.unit * 4;
@@ -1126,12 +1142,12 @@ function drawAccountantPage(doc, a, margin, contentW, y, qrBuffer) {
   const qrX = margin + contentW - 72;
   doc.image(qrBuffer, qrX, y - 4, { width: 64, height: 64 });
   doc.fillColor(BRAND.muted).font("Helvetica-Bold").fontSize(7).text("Verified", qrX - 4, y + 64, { width: 72, align: "center", characterSpacing: 0.6 });
-  doc.fillColor(BRAND.greenDark).font("Helvetica-Bold").fontSize(6.5).text("✓ Authentic MilePilot Report", qrX - 8, y + 74, { width: 80, align: "center" });
+  doc.fillColor(BRAND.greenDark).font("Helvetica-Bold").fontSize(6.5).text("Verified Authentic MilePilot Report", qrX - 8, y + 74, { width: 80, align: "center" });
   y += PDF.unit * 11;
 
   const rows = [
     ["Report ID", a.reportId],
-    ["Driver", a.driver || "—"],
+    ["Driver", a.driver || "-"],
     ["Vehicle", vehicleLabel(a.vehicle)],
     ["Reporting Period", reportingPeriodLabel(a)],
     ["Generated", `${a.generatedAt} at ${a.generatedAtTime}`],
@@ -1165,7 +1181,7 @@ function drawAccountantPage(doc, a, margin, contentW, y, qrBuffer) {
   });
 
   y += PDF.unit;
-  doc.fillColor(BRAND.greenDark).font("Helvetica-Bold").fontSize(9).text("✓ Verified · Authentic MilePilot report", margin, y);
+  doc.fillColor(BRAND.greenDark).font("Helvetica-Bold").fontSize(9).text("Verified - Authentic MilePilot report", margin, y);
   return y + PDF.sectionGap;
 }
 
@@ -1200,6 +1216,7 @@ export async function buildPdfBuffer(report) {
     y = drawPageHeader(doc, a, margin, contentW, pageW);
     y = drawSectionHeading(doc, "Journeys", margin, y, contentW);
     y = drawJourneyTimeline(doc, a, margin, contentW, y, pageW);
+    y = drawRouteMapSection(doc, a, margin, contentW, y, pageW);
     drawFooter(doc, a, margin, contentW);
 
     // Page 3 — Weekly visuals + AI coach
