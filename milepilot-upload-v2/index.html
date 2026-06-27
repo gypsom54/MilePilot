@@ -63,35 +63,41 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 @keyframes brandHeadlineIn{to{opacity:1}}
 .welcome-headline{text-align:center;font-size:clamp(31px,7.8vw,37px);line-height:1.14;font-weight:700;letter-spacing:-0.03em;margin:0 0 var(--headline-spacing);-webkit-font-smoothing:antialiased}
 .welcome-headline .blue{font-weight:700}
-#welcome,#knowYou,#permissions,#ready{position:relative;overflow:hidden;background:linear-gradient(180deg,#050F22 0%,#020B1B 55%,#010810 100%)}
-#welcome.active,#knowYou.active,#permissions.active,#ready.active{display:flex;flex-direction:column;min-height:100dvh;padding:max(32px,env(safe-area-inset-top)) 24px max(24px,env(safe-area-inset-bottom))}
+#welcome,#knowYou,#promise,#permissions{position:relative;overflow:hidden;background:linear-gradient(180deg,#050F22 0%,#020B1B 55%,#010810 100%)}
+#welcome.active,#knowYou.active,#promise.active,#permissions.active{display:flex;flex-direction:column;min-height:100dvh;padding:max(32px,env(safe-area-inset-top)) 24px max(24px,env(safe-area-inset-bottom))}
 #welcome.active{justify-content:center}
-#knowYou.active{justify-content:flex-start}
-#permissions.active,#ready.active{justify-content:flex-start}
+#knowYou.active,#promise.active,#permissions.active{justify-content:flex-start}
 #welcome .onboard-inner{margin:auto 0}
-#knowYou .onboard-inner,#permissions .onboard-inner,#ready .onboard-inner{flex:1;display:flex;flex-direction:column;padding-top:4px;min-height:0}
-#permissions .brand-bar.onboard-brand,#ready .brand-bar.onboard-brand{margin-bottom:24px}
-#permissions .brand-bar .wordmark,#ready .brand-bar .wordmark{font-size:42px}
-#permissions .brand-bar .brand-pulse,#ready .brand-bar .brand-pulse{width:min(calc(100% + 32px),220px);margin:16px auto 0}
-.onboard-greeting{text-align:center;font-size:clamp(26px,6.5vw,30px);font-weight:700;letter-spacing:-0.03em;line-height:1.2;margin:0 0 20px;-webkit-font-smoothing:antialiased;animation:knowYouGreetIn .6s cubic-bezier(.22,1,.36,1) .15s both}
-.onboard-message-wrap{min-height:40px;margin:0 0 28px;display:flex;align-items:center;justify-content:center;padding:0 4px}
+#knowYou .onboard-inner,#promise .onboard-inner,#permissions .onboard-inner{flex:1;display:flex;flex-direction:column;padding-top:4px;min-height:0}
+#knowYou .brand-bar.onboard-brand,#promise .brand-bar.onboard-brand,#permissions .brand-bar.onboard-brand{margin-bottom:24px}
+#knowYou .brand-bar .wordmark,#promise .brand-bar .wordmark,#permissions .brand-bar .wordmark{font-size:42px}
+#knowYou .brand-bar .brand-pulse,#promise .brand-bar .brand-pulse,#permissions .brand-bar .brand-pulse{width:min(calc(100% + 32px),220px);margin:16px auto 0}
+.onboard-greeting{text-align:center;font-size:clamp(26px,6.5vw,30px);font-weight:700;letter-spacing:-0.03em;line-height:1.2;margin:0 0 12px;-webkit-font-smoothing:antialiased;animation:knowYouGreetIn .6s cubic-bezier(.22,1,.36,1) .15s both}
+.onboard-message-wrap{min-height:36px;margin:0 0 12px;display:flex;align-items:center;justify-content:center;padding:0 4px}
 .onboard-message{text-align:center;font-size:clamp(17px,4.6vw,20px);font-weight:600;letter-spacing:-0.02em;color:rgba(255,255,255,.96);line-height:1.3;margin:0 auto;max-width:320px;width:100%;transition:opacity .38s cubic-bezier(.22,1,.36,1);opacity:0;-webkit-font-smoothing:antialiased}
 .onboard-body{flex:1;min-height:0;display:flex;flex-direction:column}
-.onboard-support{text-align:center;font-size:15px;font-weight:400;line-height:1.55;color:rgba(159,180,208,.88);margin:0 auto 28px;max-width:300px;letter-spacing:.01em;transition:opacity .38s cubic-bezier(.22,1,.36,1);opacity:0;-webkit-font-smoothing:antialiased}
-.onboard-privacy{text-align:center;font-size:13px;font-weight:500;line-height:1.45;color:rgba(110,180,255,.78);margin:0 auto 32px;max-width:280px;letter-spacing:.01em;transition:opacity .38s cubic-bezier(.22,1,.36,1);opacity:0}
-.perm-benefits{display:flex;flex-direction:column;gap:12px;margin:0 0 28px;transition:opacity .38s cubic-bezier(.22,1,.36,1);opacity:0}
-.perm-benefit{display:flex;align-items:center;gap:14px;padding:14px 16px;border:1px solid rgba(110,180,255,.14);border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(13,107,255,.02));box-shadow:0 4px 18px rgba(0,0,0,.08),inset 0 1px 0 rgba(255,255,255,.04)}
-.perm-benefit-icon{flex-shrink:0;width:40px;height:40px;border-radius:50%;border:1px solid rgba(110,180,255,.18);background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(13,107,255,.04));display:flex;align-items:center;justify-content:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 4px 14px rgba(0,0,0,.1)}
-.perm-benefit-icon svg{width:18px;height:18px;stroke:#7EB8FF;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
-.perm-benefit-copy strong{display:block;font-size:14px;font-weight:600;color:rgba(234,242,255,.94);letter-spacing:-0.01em;line-height:1.25;margin-bottom:2px}
-.perm-benefit-copy span{display:block;font-size:12px;font-weight:400;color:rgba(147,168,196,.88);line-height:1.35}
+.onboard-support{text-align:center;font-size:15px;font-weight:500;line-height:1.45;color:rgba(159,180,208,.88);margin:0 auto 24px;max-width:300px;letter-spacing:.01em;transition:opacity .38s cubic-bezier(.22,1,.36,1);opacity:0;-webkit-font-smoothing:antialiased}
 .onboard-foot{margin-top:auto;padding-top:8px;width:100%;flex-shrink:0}
-#permissions .premium-btn,#ready .premium-btn{height:52px;border-radius:var(--button-radius);font-size:17px;font-weight:600;letter-spacing:-0.01em;margin:0;background:linear-gradient(180deg,#1E88FF 0%,#0D6BFF 50%,#005FE8 100%);color:#fff;box-shadow:0 8px 24px rgba(13,107,255,.26),inset 0 1px 0 rgba(255,255,255,.12);cursor:pointer;transition:background .36s cubic-bezier(.22,1,.36,1),box-shadow .36s ease,transform .24s cubic-bezier(.22,1,.36,1),opacity .36s ease}
-#permissions .premium-btn:hover,#ready .premium-btn:hover{filter:brightness(1.03);box-shadow:0 10px 28px rgba(13,107,255,.3),inset 0 1px 0 rgba(255,255,255,.12)}
-#permissions .premium-btn:active,#ready .premium-btn:active{transform:scale(.985);filter:brightness(.98);box-shadow:0 4px 16px rgba(13,107,255,.22),inset 0 1px 0 rgba(255,255,255,.08)}
-.onboard-skip{display:block;width:100%;margin-top:14px;padding:12px;border:0;background:transparent;color:rgba(147,168,196,.82);font-size:15px;font-weight:500;letter-spacing:.01em;cursor:pointer;transition:color .22s ease}
+#promise .premium-btn,#permissions .premium-btn,#permissions .perm-enable-btn{height:52px;border-radius:var(--button-radius);font-size:17px;font-weight:600;letter-spacing:-0.01em;margin:0;background:linear-gradient(180deg,#1E88FF 0%,#0D6BFF 50%,#005FE8 100%);color:#fff;box-shadow:0 8px 24px rgba(13,107,255,.26),inset 0 1px 0 rgba(255,255,255,.12);cursor:pointer;transition:background .36s cubic-bezier(.22,1,.36,1),box-shadow .36s ease,transform .24s cubic-bezier(.22,1,.36,1),opacity .36s ease}
+#promise .premium-btn:hover,#permissions .premium-btn:hover,#permissions .perm-enable-btn:hover{filter:brightness(1.03);box-shadow:0 10px 28px rgba(13,107,255,.3),inset 0 1px 0 rgba(255,255,255,.12)}
+#promise .premium-btn:active,#permissions .premium-btn:active,#permissions .perm-enable-btn:active{transform:scale(.985);filter:brightness(.98);box-shadow:0 4px 16px rgba(13,107,255,.22),inset 0 1px 0 rgba(255,255,255,.08)}
+#permissions .perm-enable-btn{width:100%;height:46px;font-size:15px;margin-top:14px}
+#permissions .perm-enable-btn.is-done{background:linear-gradient(180deg,#1a3a5c 0%,#122a45 100%);box-shadow:none;color:rgba(255,255,255,.72);cursor:default}
+.onboard-skip{display:block;width:100%;margin-top:14px;padding:12px;border:0;background:transparent;color:rgba(147,168,196,.82);font-size:15px;font-weight:500;letter-spacing:.01em;cursor:pointer;transition:color .22s ease,opacity .36s ease}
 .onboard-skip:hover{color:rgba(159,180,208,.96)}
 .onboard-skip:active{opacity:.8}
+.promise-icon{text-align:center;font-size:44px;line-height:1;margin:0 0 20px;animation:knowYouGreetIn .6s cubic-bezier(.22,1,.36,1) .05s both}
+.promise-list{list-style:none;margin:0 0 28px;padding:0;display:flex;flex-direction:column;gap:12px;transition:opacity .38s cubic-bezier(.22,1,.36,1);opacity:0}
+.promise-list li{display:flex;align-items:flex-start;gap:12px;font-size:15px;font-weight:500;line-height:1.4;color:rgba(234,242,255,.92);letter-spacing:-0.01em;padding:14px 16px;border:1px solid rgba(110,180,255,.14);border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(13,107,255,.02));box-shadow:0 4px 18px rgba(0,0,0,.08),inset 0 1px 0 rgba(255,255,255,.04)}
+.promise-list li::before{content:'✓';flex-shrink:0;width:22px;height:22px;border-radius:50%;background:linear-gradient(180deg,#1E88FF,#0D6BFF);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;box-shadow:0 0 14px rgba(13,107,255,.28);margin-top:1px}
+#promise .premium-btn{opacity:0;transition:opacity .38s cubic-bezier(.22,1,.36,1),background .36s ease,box-shadow .36s ease,transform .24s ease}
+#promise .premium-btn.is-visible{opacity:1}
+.perm-scroll{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:2px 0;margin:0 0 16px}
+.perm-section{border:1px solid rgba(110,180,255,.16);border-radius:20px;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(13,107,255,.02));padding:20px 18px;margin:0 0 14px;box-shadow:0 4px 20px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,.05);transition:opacity .38s cubic-bezier(.22,1,.36,1);opacity:0}
+.perm-section h2{margin:0 0 12px;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(110,180,255,.88)}
+.perm-section p{margin:0 0 10px;font-size:15px;font-weight:400;line-height:1.5;color:rgba(159,180,208,.9);letter-spacing:.01em}
+.perm-section p:last-of-type{margin-bottom:0}
+.perm-section .perm-privacy{margin-top:12px;font-size:13px;font-weight:500;color:rgba(110,180,255,.78);line-height:1.45}
 .knowYou-greeting{text-align:center;font-size:clamp(26px,6.5vw,30px);font-weight:700;letter-spacing:-0.03em;line-height:1.2;margin:0 0 20px;-webkit-font-smoothing:antialiased;animation:knowYouGreetIn .6s cubic-bezier(.22,1,.36,1) .15s both}
 @keyframes knowYouGreetIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .knowYou-message-wrap{height:40px;min-height:40px;max-height:40px;margin:0 0 32px;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:0 4px}
@@ -211,8 +217,8 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 </div>
 <div class="onboard-version">MP-002 ✅ Complete · v3.5</div>
 </section>
-<!-- MP-003 Permissions — Location for automatic tracking -->
-<section id="permissions" class="screen" data-mp="MP-003">
+<!-- MP-003 The MilePilot Promise -->
+<section id="promise" class="screen" data-mp="MP-003">
 <div class="onboard-bg" aria-hidden="true">
 <div class="onboard-glow onboard-glow-1"></div>
 <div class="onboard-glow onboard-glow-2"></div>
@@ -220,25 +226,25 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 <div class="onboard-inner">
 <header class="brand-bar onboard-brand center"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div></header>
 <div class="onboard-body">
-<h1 class="onboard-greeting" id="permGreeting">Perfect.</h1>
-<div class="onboard-message-wrap"><p class="onboard-message" id="permMessage"></p></div>
-<p class="onboard-support" id="permSupport"></p>
-<div class="perm-benefits" id="permBenefits">
-<div class="perm-benefit"><div class="perm-benefit-icon"><svg viewBox="0 0 24 24"><path d="M3 12l18-8-8 18-2-8z"/></svg></div><div class="perm-benefit-copy"><strong>Automatic mileage</strong><span>No manual logging while you drive</span></div></div>
-<div class="perm-benefit"><div class="perm-benefit-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></div><div class="perm-benefit-copy"><strong>Accurate routes</strong><span>GPS records every business trip</span></div></div>
-<div class="perm-benefit"><div class="perm-benefit-icon"><svg viewBox="0 0 24 24"><path d="M12 3l7 4v6c0 4-3 7-7 8-4-1-7-4-7-8V7z"/><path d="M9 12l2 2 4-4"/></svg></div><div class="perm-benefit-copy"><strong>Private &amp; secure</strong><span>Your data stays on your device</span></div></div>
-</div>
-<p class="onboard-privacy" id="permPrivacy">Your data stays private. You stay in control.</p>
+<div class="promise-icon" aria-hidden="true">🚗</div>
+<h1 class="onboard-greeting" id="promiseGreeting">You're all set.</h1>
+<div class="onboard-message-wrap"><p class="onboard-message" id="promiseWelcome">Welcome to MilePilot.</p></div>
+<p class="onboard-support" id="promiseIntro">Here's what I'll help you do.</p>
+<ul class="promise-list" id="promiseList">
+<li>Automatically track your business mileage</li>
+<li>Create professional reports</li>
+<li>Estimate your HMRC mileage claim</li>
+<li>Understand your driving business</li>
+</ul>
 </div>
 <div class="onboard-foot">
-<button class="btn premium-btn" id="permEnable" onclick="enableLocation()">Enable Location →</button>
-<button type="button" class="onboard-skip" onclick="skipPermissions()">Not now</button>
+<button class="btn premium-btn" id="promiseContinue" onclick="startDriving()">Let's Start Driving →</button>
 </div>
 </div>
-<div class="onboard-version">MP-003 · Permissions · v4.0</div>
+<div class="onboard-version">MP-003 · The MilePilot Promise · v4.1</div>
 </section>
-<!-- MP-004 Ready — All set -->
-<section id="ready" class="screen" data-mp="MP-004">
+<!-- MP-004 Permissions — Location & Notifications -->
+<section id="permissions" class="screen" data-mp="MP-004">
 <div class="onboard-bg" aria-hidden="true">
 <div class="onboard-glow onboard-glow-1"></div>
 <div class="onboard-glow onboard-glow-2"></div>
@@ -246,18 +252,30 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 <div class="onboard-inner">
 <header class="brand-bar onboard-brand center"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div></header>
 <div class="onboard-body">
-<h1 class="onboard-greeting" id="readyGreeting">You're all set.</h1>
-<div class="onboard-message-wrap"><p class="onboard-message" id="readyMessage" style="opacity:1">Ready to start your first shift?</p></div>
+<div class="perm-scroll">
+<div class="perm-section" id="permLocation">
+<h2>Location</h2>
+<p>To automatically track your business mileage…</p>
+<p>MilePilot needs access to your location.</p>
+<p class="perm-privacy">Your journeys stay private. You're always in control.</p>
+<button type="button" class="btn perm-enable-btn" id="permGpsBtn" onclick="enableGpsPermission()">Enable GPS</button>
+</div>
+<div class="perm-section" id="permNotifications">
+<h2>Notifications</h2>
+<p>MilePilot can remind you when it looks like you've started work.</p>
+<p>You'll never forget to track another business journey.</p>
+<button type="button" class="btn perm-enable-btn" id="permNotifBtn" onclick="enableNotificationPermission()">Enable Notifications</button>
+</div>
+</div>
 </div>
 <div class="onboard-foot">
-<button class="btn premium-btn" onclick="goHome()">Continue to Dashboard →</button>
-<button type="button" class="onboard-skip" onclick="showScreen('emailSetup')">Set up reports</button>
+<button class="btn premium-btn" id="permDone" onclick="finishOnboarding()">Continue to Dashboard →</button>
 </div>
 </div>
-<div class="onboard-version">MP-004 · Ready · v4.0</div>
+<div class="onboard-version">MP-004 · Permissions · v4.1</div>
 </section>
 <section id="emailSetup" class="screen" data-mp="MP-005"><header class="brand-bar"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div></header><h1 class="title">Where should reports go?</h1><p class="sub">Enter your email once. MilePilot will use it for report delivery.</p><input id="emailInput" placeholder="you@example.com" inputmode="email"><button class="btn" onclick="saveEmailSetup()">Continue to Dashboard →</button><button class="btn outline" onclick="goHome()">Skip for now</button></section>
-<section id="home" class="screen"><header class="brand-bar"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div></header><h1 class="title" id="greeting">Good day 👋</h1><p class="sub" id="vehicleLine">Vehicle: Car • Rate: 55p per mile</p><button class="btn" onclick="startShift()">START SHIFT</button><div class="card"><div class="row"><span>Today</span><strong id="todaySummary">0.00 mi</strong></div><div class="row"><span>Saved shifts</span><strong id="shiftCount">0</strong></div></div></section>
+<section id="home" class="screen"><header class="brand-bar"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div></header><h1 class="title" id="greeting">Good day 👋</h1><p class="sub" id="vehicleLine">Vehicle: Car • Rate: 55p per mile</p><button class="btn" onclick="startShift()">Start Shift</button><div class="card"><div class="row"><span>Today</span><strong id="todaySummary">0.00 mi</strong></div><div class="row"><span>Saved shifts</span><strong id="shiftCount">0</strong></div></div></section>
 <section id="tracking" class="screen"><div class="brand-row"><header class="brand-bar"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div></header><div class="gps-badge">GPS</div></div><h1 class="title">Tracking Active</h1><p class="sub" id="trackingVehicle">Vehicle: Car • Rate: 55p per mile</p><div class="metricGrid"><div class="metricBox"><strong id="liveMiles">0.00</strong><span>Miles</span></div><div class="metricBox"><strong id="liveTime">0h 00m</strong><span>Time</span></div><div class="metricBox"><strong id="liveClaim">£0.00</strong><span>Claim</span></div></div><div class="mapBox"><div class="gpsActions"><button onclick="requestGpsAgain()">Enable GPS</button><button class="secondary" onclick="centreMap()">Centre</button></div><div id="liveMap"></div><div class="mapHint" id="mapHint">Requesting location…</div></div><button class="btn red" onclick="endShift()">END SHIFT</button></section>
 <section id="reports" class="screen"><header class="brand-bar"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div></header><h1 class="title">Reports</h1><p class="sub">Daily, weekly and monthly reports from saved shifts.</p><div class="periods"><button id="pDay" onclick="setPeriod('day')">Daily</button><button id="pWeek" onclick="setPeriod('week')">Weekly</button><button id="pMonth" onclick="setPeriod('month')">Monthly</button></div><div class="card"><h2 id="mainReportTitle">Today</h2><div class="row"><span>Total Miles</span><strong id="reportMiles">0.00 miles</strong></div><div class="row"><span>Driving Time</span><strong id="reportTime">0h 00m</strong></div><div class="row"><span>Est. HMRC Claim</span><strong id="reportClaim">£0.00</strong></div><div class="row"><span>Vehicle / Rate</span><strong id="reportRate">Car • 55p</strong></div><p class="sub" id="reportLine">0 shifts • 0.00 miles • £0.00</p></div><div class="card"><label>Send report to</label><input id="reportEmail" placeholder="you@example.com" inputmode="email"><button class="btn" onclick="emailReport(event)">📧 Send Report</button><button class="btn outline" onclick="printReport()">💾 Save / Print PDF</button></div></section>
 <section id="history" class="screen"><header class="brand-bar"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div></header><h1 class="title">History</h1><p class="sub">Every ended shift is saved separately here.</p><button class="btn outline small" onclick="createTestShift()">Add Test Shift</button><div id="historyList"></div></section>
@@ -265,13 +283,11 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 </div>
 <nav class="nav" id="nav"><button id="navHome" onclick="goHome()"><span>⌂</span>Dashboard</button><button id="navReports" onclick="showReports()"><span>▤</span>Reports</button><button id="navHistory" onclick="showHistory()"><span>◷</span>History</button><button id="navSettings" onclick="showSettings()"><span>⚙</span>Settings</button></nav><div class="toast" id="toast"></div><div id="printReport"></div>
 <script>
-const APP_VERSION='4.0';
+const APP_VERSION='4.1';
 const MP_001_LOCKED=true;
 const MP_002_LOCKED=true;
-const ONBOARD_SCREENS=['welcome','knowYou','permissions','ready','emailSetup'];
+const ONBOARD_SCREENS=['welcome','knowYou','promise','permissions','emailSetup'];
 const KNOW_YOU_QUESTION='What are you driving today?';
-const PERM_MESSAGE="Let's automatically track your business trips.";
-const PERM_SUPPORT='MilePilot uses location only while you\'re driving — so every business mile is recorded automatically.';
 function getApiBase(){const s=localStorage.getItem('mp_api_base');if(s)return s.replace(/\/$/,'');if(location.hostname==='localhost'||location.hostname==='127.0.0.1')return 'http://localhost:8787';return 'https://api.milepilot.uk'}
 const API_BASE=getApiBase();
 const FIRST_IMPRESSION_LINES=['Welcome to MilePilot.',"Let's build your driving business.","What's your first name?"];
@@ -294,14 +310,17 @@ function startKnowYouMessaging(){const el=q('knowYouMessage');if(!el)return;clea
 function initKnowYou(){driver=driver||localStorage.getItem('mp_driver')||'';q('knowYouGreeting').textContent=`Great to meet you, ${driver} 👋`;selectedVehicle=localStorage.getItem('mp_vehicle')||null;document.querySelectorAll('.vehicle-card').forEach(c=>c.classList.toggle('selected',c.dataset.vehicle===selectedVehicle));syncKnowYouContinue();clearKnowYouMessaging();const msg=q('knowYouMessage');if(msg){msg.textContent='';msg.style.opacity='0'}setTimeout(startKnowYouMessaging,850)}
 function selectVehicle(v){selectedVehicle=v;document.querySelectorAll('.vehicle-card').forEach(c=>c.classList.toggle('selected',c.dataset.vehicle===v));syncKnowYouContinue()}
 function syncKnowYouContinue(){const btn=q('knowYouContinue');if(!btn)return;const ready=!!selectedVehicle;btn.disabled=!ready;btn.classList.toggle('is-ready',ready)}
-function confirmVehicle(){if(!selectedVehicle)return;vehicle=selectedVehicle;localStorage.setItem('mp_vehicle',vehicle);localStorage.setItem('mp_onboard_step','permissions');initPermissions();showScreen('permissions')}
-let permTimers=[];
-function clearPermMessaging(){permTimers.forEach(t=>clearTimeout(t));permTimers=[]}
-function fadeIn(el,delay=0){if(!el)return;el.style.opacity='0';permTimers.push(setTimeout(()=>{el.style.transition='opacity .38s cubic-bezier(.22,1,.36,1)';el.style.opacity='1'},delay))}
-function initPermissions(){clearPermMessaging();const msg=q('permMessage'),sup=q('permSupport'),ben=q('permBenefits'),priv=q('permPrivacy'),btn=q('permEnable');if(msg){msg.textContent=PERM_MESSAGE;msg.style.opacity='0'}if(sup){sup.textContent=PERM_SUPPORT;sup.style.opacity='0'}if(ben)ben.style.opacity='0';if(priv)priv.style.opacity='0';if(btn){btn.disabled=false;btn.textContent='Enable Location →'}fadeIn(msg,700);fadeIn(sup,1400);fadeIn(ben,2100);fadeIn(priv,2700)}
-function finishPermissions(choice){localStorage.setItem('mp_location_choice',choice);localStorage.removeItem('mp_onboard_step');clearPermMessaging();showScreen('ready')}
-function enableLocation(){const btn=q('permEnable');if(btn){btn.disabled=true;btn.textContent='Requesting…'}if(!navigator.geolocation){finishPermissions('unsupported');return}navigator.geolocation.getCurrentPosition(()=>finishPermissions('granted'),()=>finishPermissions('denied'),{enableHighAccuracy:true,maximumAge:0,timeout:12000})}
-function skipPermissions(){finishPermissions('skipped')}
+function confirmVehicle(){if(!selectedVehicle)return;vehicle=selectedVehicle;localStorage.setItem('mp_vehicle',vehicle);localStorage.setItem('mp_onboard_step','promise');initPromise();showScreen('promise')}
+let onboardTimers=[];
+function clearOnboardTimers(){onboardTimers.forEach(t=>clearTimeout(t));onboardTimers=[]}
+function fadeInEl(el,delay=0){if(!el)return;el.style.opacity='0';onboardTimers.push(setTimeout(()=>{el.style.transition='opacity .38s cubic-bezier(.22,1,.36,1)';el.style.opacity='1'},delay))}
+function initPromise(){driver=driver||localStorage.getItem('mp_driver')||'';clearOnboardTimers();q('promiseGreeting').textContent=`You're all set, ${driver}.`;const welcome=q('promiseWelcome'),intro=q('promiseIntro'),list=q('promiseList'),btn=q('promiseContinue');if(welcome){welcome.textContent='Welcome to MilePilot.';welcome.style.opacity='0'}if(intro){intro.style.opacity='0'}if(list){list.style.opacity='0'}if(btn){btn.classList.remove('is-visible');btn.style.opacity='0'}fadeInEl(welcome,600);fadeInEl(intro,1100);fadeInEl(list,1700);onboardTimers.push(setTimeout(()=>{if(btn){btn.classList.add('is-visible');btn.style.opacity='1'}},2300))}
+function startDriving(){localStorage.setItem('mp_onboard_step','permissions');initPermissions();showScreen('permissions')}
+function initPermissions(){clearOnboardTimers();const loc=q('permLocation'),notif=q('permNotifications'),done=q('permDone');if(loc)loc.style.opacity='0';if(notif)notif.style.opacity='0';if(done)done.style.opacity='0';syncPermButtons();fadeInEl(loc,200);fadeInEl(notif,700);fadeInEl(done,1200)}
+function syncPermButtons(){const gps=q('permGpsBtn'),notif=q('permNotifBtn'),locChoice=localStorage.getItem('mp_location_choice'),notifChoice=localStorage.getItem('mp_notifications_choice');if(gps){const done=!!locChoice;gps.textContent=locChoice==='granted'?'GPS Enabled ✓':locChoice==='denied'?'GPS Blocked':locChoice==='skipped'?'Skipped':'Enable GPS';gps.classList.toggle('is-done',done);gps.disabled=done}if(notif){const done=!!notifChoice;notif.textContent=notifChoice==='granted'?'Notifications Enabled ✓':notifChoice==='denied'?'Notifications Blocked':notifChoice==='skipped'?'Skipped':'Enable Notifications';notif.classList.toggle('is-done',done);notif.disabled=done}}
+function enableGpsPermission(){const btn=q('permGpsBtn');if(btn){btn.disabled=true;btn.textContent='Requesting…'}if(!navigator.geolocation){localStorage.setItem('mp_location_choice','unsupported');syncPermButtons();return}navigator.geolocation.getCurrentPosition(()=>{localStorage.setItem('mp_location_choice','granted');syncPermButtons()},()=>{localStorage.setItem('mp_location_choice','denied');syncPermButtons()},{enableHighAccuracy:true,maximumAge:0,timeout:12000})}
+function enableNotificationPermission(){const btn=q('permNotifBtn');if(!('Notification' in window)){localStorage.setItem('mp_notifications_choice','unsupported');syncPermButtons();return}if(Notification.permission==='granted'){localStorage.setItem('mp_notifications_choice','granted');syncPermButtons();return}if(Notification.permission==='denied'){localStorage.setItem('mp_notifications_choice','denied');syncPermButtons();return}if(btn){btn.disabled=true;btn.textContent='Requesting…'}Notification.requestPermission().then(p=>{localStorage.setItem('mp_notifications_choice',p==='granted'?'granted':p==='denied'?'denied':'skipped');syncPermButtons()}).catch(()=>{localStorage.setItem('mp_notifications_choice','skipped');syncPermButtons()})}
+function finishOnboarding(){if(!localStorage.getItem('mp_location_choice'))localStorage.setItem('mp_location_choice','skipped');if(!localStorage.getItem('mp_notifications_choice'))localStorage.setItem('mp_notifications_choice','skipped');localStorage.setItem('mp_onboard_complete','true');localStorage.removeItem('mp_onboard_step');clearOnboardTimers();goHome()}
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));q(id).classList.add('active');q('nav').classList.toggle('show',!ONBOARD_SCREENS.includes(id));window.scrollTo(0,0)}
 function setNav(n){['Home','Reports','History','Settings'].forEach(x=>q('nav'+x).classList.toggle('active',x===n))}
 function fmt(s){s=Number(s)||0;let m=Math.floor(s/60),h=Math.floor(m/60);return h+'h '+String(m%60).padStart(2,'0')+'m'}function money(v){return '£'+(Number(v)||0).toFixed(2)}function claim(mi,v=vehicle){return (Number(mi)||0)*(vehicles[v]?.rate||.55)}
@@ -309,9 +328,9 @@ function loadShifts(){try{return JSON.parse(localStorage.getItem('mp_shifts')||'
 function normaliseShift(s){let v=s.vehicle||vehicle||'car',mi=Number(s.miles)||0,sec=Number(s.seconds)||0;return{id:s.id||('shift_'+Date.now()+Math.random()),miles:mi,seconds:sec,vehicle:v,hmrc:Number(s.hmrc)||Number(claim(mi,v).toFixed(2)),date:s.date||new Date(s.startISO||Date.now()).toLocaleDateString('en-GB'),startISO:s.startISO||new Date().toISOString(),endISO:s.endISO||s.startISO||new Date().toISOString()}}
 function showPersonal(){const n=q('name').value.trim();if(!n)return;driver=n;localStorage.setItem('mp_driver',driver);initKnowYou();showScreen('knowYou')}
 function saveEmailSetup(){let e=q('emailInput').value.trim();if(e)localStorage.setItem('mp_email',e);goHome()}
-function resetOnboarding(){localStorage.removeItem('mp_driver');localStorage.removeItem('mp_vehicle');localStorage.removeItem('mp_location_choice');localStorage.removeItem('mp_onboard_step');driver='';vehicle='car';selectedVehicle=null;q('name').value='';clearWelcomeTyping();clearKnowYouMessaging();clearPermMessaging();const typed=q('typed');if(typed){typed.innerHTML='';typed.style.opacity='1'}const msg=q('knowYouMessage');if(msg){msg.textContent='';msg.style.opacity='0'}document.querySelectorAll('.vehicle-card').forEach(c=>c.classList.remove('selected'));syncKnowYouContinue();showScreen('welcome');q('nav').classList.remove('show');initFirstImpression()}
-function clearData(){localStorage.removeItem('mp_shifts');shifts=[];toast('Test shifts cleared');renderHome()}function goHome(){setNav('Home');renderHome();showScreen('home')}
-function renderHome(){driver=localStorage.getItem('mp_driver')||driver||'Jon';vehicle=localStorage.getItem('mp_vehicle')||vehicle||'car';let h=new Date().getHours();q('greeting').textContent=(h<12?'Good morning':h<18?'Good afternoon':'Good evening')+', '+driver+' 👋';q('vehicleLine').textContent=`Vehicle: ${vehicles[vehicle].label} • Rate: ${Math.round(vehicles[vehicle].rate*100)}p per mile`;let today=periodTotals('day');q('todaySummary').textContent=today.mi.toFixed(2)+' mi';q('shiftCount').textContent=shifts.length}
+function resetOnboarding(){localStorage.removeItem('mp_driver');localStorage.removeItem('mp_vehicle');localStorage.removeItem('mp_location_choice');localStorage.removeItem('mp_notifications_choice');localStorage.removeItem('mp_onboard_step');localStorage.removeItem('mp_onboard_complete');driver='';vehicle='car';selectedVehicle=null;q('name').value='';clearWelcomeTyping();clearKnowYouMessaging();clearOnboardTimers();const typed=q('typed');if(typed){typed.innerHTML='';typed.style.opacity='1'}const msg=q('knowYouMessage');if(msg){msg.textContent='';msg.style.opacity='0'}document.querySelectorAll('.vehicle-card').forEach(c=>c.classList.remove('selected'));syncKnowYouContinue();showScreen('welcome');q('nav').classList.remove('show');initFirstImpression()}
+function clearData(){localStorage.removeItem('mp_shifts');shifts=[];toast('Test shifts cleared');renderHome()}function goHome(){localStorage.setItem('mp_onboard_complete','true');localStorage.removeItem('mp_onboard_step');setNav('Home');renderHome();showScreen('home')}
+function renderHome(){driver=localStorage.getItem('mp_driver')||driver||'Jon';vehicle=localStorage.getItem('mp_vehicle')||vehicle||'car';let h=new Date().getHours();q('greeting').textContent=(h<12?'Good morning':h<18?'Good afternoon':'Good evening')+', '+driver+' 👋';q('vehicleLine').textContent='Ready to start today\'s shift?';let today=periodTotals('day');q('todaySummary').textContent=today.mi.toFixed(2)+' mi';q('shiftCount').textContent=shifts.length}
 function updateLive(){q('liveMiles').textContent=miles.toFixed(2);q('liveTime').textContent=fmt(elapsed);q('liveClaim').textContent=money(claim(miles));q('trackingVehicle').textContent=`Vehicle: ${vehicles[vehicle].label} • Rate: ${Math.round(vehicles[vehicle].rate*100)}p per mile`}
 function startShift(){miles=0;elapsed=0;routePoints=[];lastPoint=null;shiftStartedAt=Date.now();showScreen('tracking');updateLive();initBlankMap();timer=setInterval(()=>{elapsed=Math.floor((Date.now()-shiftStartedAt)/1000);updateLive()},1000);requestGpsAgain(true)}
 function initBlankMap(){if(typeof L==='undefined'||liveMap)return;liveMap=L.map('liveMap',{zoomControl:false}).setView([51.5072,-0.1276],13);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OSM'}).addTo(liveMap);livePolyline=L.polyline([],{color:'#0D6BFF',weight:6,opacity:.95}).addTo(liveMap);setTimeout(()=>liveMap.invalidateSize(),250)}
@@ -327,7 +346,7 @@ function showHistory(){setNav('History');let list=shifts.slice().reverse();q('hi
 function showSettings(){setNav('Settings');q('settingsEmail').value=localStorage.getItem('mp_email')||'';showScreen('settings')}function saveSettings(){let e=q('settingsEmail').value.trim();if(e)localStorage.setItem('mp_email',e);toast('Settings saved ✓')}function createTestShift(){let s=normaliseShift({miles:.1,seconds:300,vehicle,startISO:new Date().toISOString(),endISO:new Date().toISOString()});shifts.push(s);saveShifts();toast('Test shift added ✓');showHistory()}
 async function emailReport(ev){let email=q('reportEmail').value.trim();if(!email){toast('Add an email address first');return}localStorage.setItem('mp_email',email);let t=periodTotals();let payload={email,period:period==='day'?'Daily':period==='week'?'Weekly':'Monthly',totals:{miles:t.mi,time:fmt(t.sec),hmrc:t.hmrc},shifts:t.list};let btn=ev?.target;if(btn){btn.textContent='Sending…';btn.disabled=true}try{let res=await fetch(API_BASE+'/reports/send',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});let data=await res.json().catch(()=>({}));if(!res.ok||!data.sent)throw new Error(data.message||'Backend email failed');toast('Report sent to '+email+' ✓')}catch(e){let msg=e.message==='Failed to fetch'?'Cannot reach MilePilot API at '+API_BASE+'. Check the backend is running.':e.message;toast('Email failed: '+msg)}finally{if(btn){btn.textContent='📧 Send Report';btn.disabled=false}}}
 function printReport(){let t=periodTotals();let rows=t.list.length?t.list.map(s=>`<tr><td>${s.date}</td><td>${vehicles[s.vehicle]?.label||s.vehicle}</td><td>${s.miles.toFixed(2)}</td><td>${fmt(s.seconds)}</td><td>${money(s.hmrc)}</td></tr>`).join(''):`<tr><td colspan="5">No shifts saved yet</td></tr>`;q('printReport').innerHTML=`<div class="pdfBrand"><div><div class="pdfLogo">Mile <span class="blue">Pilot</span></div><div class="pdfPulse"></div><div class="pdfTag">Your driving business. On auto pilot.</div></div><div class="pdfDate">${period==='day'?'Daily':period==='week'?'Weekly':'Monthly'} Report<br>${new Date().toLocaleDateString('en-GB')}</div></div><div class="printGrid"><div class="printMetric"><small>Total Miles</small><b>${t.mi.toFixed(2)} miles</b></div><div class="printMetric"><small>Driving Time</small><b>${fmt(t.sec)}</b></div><div class="printMetric"><small>Est. HMRC Claim</small><b>${money(t.hmrc)}</b></div></div><h2>Shift Breakdown</h2><table class="printTable"><thead><tr><th>Date</th><th>Vehicle</th><th>Miles</th><th>Time</th><th>Claim</th></tr></thead><tbody>${rows}</tbody></table><div class="printFoot">Generated by MilePilot. HMRC figures are estimates for record keeping and should be checked against official guidance.</div>`;setTimeout(()=>window.print(),200)}
-function resumeOnboarding(){const d=localStorage.getItem('mp_driver'),v=localStorage.getItem('mp_vehicle'),step=localStorage.getItem('mp_onboard_step');if(d&&v&&step==='permissions'){driver=d;vehicle=v;initPermissions();showScreen('permissions');return true}if(d&&!v){driver=d;initKnowYou();showScreen('knowYou');return true}return false}
-window.addEventListener('load',()=>{const d=localStorage.getItem('mp_driver'),v=localStorage.getItem('mp_vehicle'),loc=localStorage.getItem('mp_location_choice'),step=localStorage.getItem('mp_onboard_step');if(d&&v&&loc)goHome();else if(d&&v&&step==='permissions'){driver=d;vehicle=v;initPermissions();showScreen('permissions')}else if(d&&v&&!loc){localStorage.setItem('mp_location_choice','legacy');goHome()}else if(!resumeOnboarding())initFirstImpression()})
+function resumeOnboarding(){const d=localStorage.getItem('mp_driver'),v=localStorage.getItem('mp_vehicle'),step=localStorage.getItem('mp_onboard_step');if(d&&v&&step==='permissions'){driver=d;vehicle=v;initPermissions();showScreen('permissions');return true}if(d&&v&&step==='promise'){driver=d;vehicle=v;initPromise();showScreen('promise');return true}if(d&&!v){driver=d;initKnowYou();showScreen('knowYou');return true}return false}
+window.addEventListener('load',()=>{const d=localStorage.getItem('mp_driver'),v=localStorage.getItem('mp_vehicle'),complete=localStorage.getItem('mp_onboard_complete'),step=localStorage.getItem('mp_onboard_step');if(d&&v&&(complete==='true'||localStorage.getItem('mp_location_choice')))goHome();else if(d&&v&&step==='permissions'){driver=d;vehicle=v;initPermissions();showScreen('permissions')}else if(d&&v&&step==='promise'){driver=d;vehicle=v;initPromise();showScreen('promise')}else if(d&&v&&!step&&!complete){localStorage.setItem('mp_location_choice','legacy');localStorage.setItem('mp_onboard_complete','true');goHome()}else if(!resumeOnboarding())initFirstImpression()})
 </script>
 </body></html>
