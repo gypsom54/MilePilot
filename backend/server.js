@@ -26,8 +26,15 @@ function buildPdfBuffer(report) {
     doc.on("end", () => resolve(Buffer.concat(chunks)));
     doc.on("error", reject);
 
-    doc.fontSize(30).fillColor("#06112A").text("Mile", { continued: true }).fillColor("#0D6BFF").text("Pilot");
-    doc.moveDown(0.2).fontSize(11).fillColor("#64748B").text("We track and send reports on auto pilot.");
+    doc.fontSize(30).fillColor("#06112A").text("Mile ", { continued: true }).fillColor("#0D6BFF").text("Pilot");
+    const pulseY = doc.y + 6;
+    doc.save();
+    const pulseGrad = doc.linearGradient(48, pulseY, 228, pulseY);
+    pulseGrad.stop(0, "#FFFFFF").stop(0.15, "#6EB4FF").stop(0.5, "#0D6BFF").stop(0.85, "#6EB4FF").stop(1, "#FFFFFF");
+    doc.rect(48, pulseY, 180, 2).fill(pulseGrad);
+    doc.restore();
+    doc.y = pulseY + 10;
+    doc.fontSize(11).fillColor("#64748B").text("Your driving business. On auto pilot.");
     doc.moveDown(1);
 
     doc.fontSize(18).fillColor("#06112A").text(`${report.period || "Daily"} Mileage Report`);
@@ -95,7 +102,7 @@ app.post("/reports/send", async (req, res) => {
       from: process.env.EMAIL_FROM || "MilePilot <reports@milepilot.uk>",
       to: report.email,
       subject: `MilePilot ${report.period || "Daily"} Mileage Report`,
-      text: `Your MilePilot ${report.period || "Daily"} report is attached.`,
+      text: `Your MilePilot ${report.period || "Daily"} report is attached.\n\nYour driving business. On auto pilot.`,
       attachments: [
         {
           filename: `milepilot-${String(report.period || "daily").toLowerCase()}-report.pdf`,

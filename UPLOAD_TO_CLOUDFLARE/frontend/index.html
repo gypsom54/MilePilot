@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>MilePilot</title>
+<meta name="theme-color" content="#031126">
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+:root{--bg:#031126;--panel:#0B2348;--blue:#0D6BFF;--muted:#B9C8DD;--line:rgba(255,255,255,.14);--green:#20D781;--red:#EF3333}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;background:#020B1B;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+body{display:flex;justify-content:center}
+.app{width:min(430px,100vw);min-height:100dvh;background:linear-gradient(180deg,#0A2854 0%,#031126 82%);position:relative}
+.screen{display:none;min-height:100dvh;padding:24px 22px 108px}.screen.active{display:block}
+.logoRow{display:flex;align-items:center;gap:12px;margin-bottom:18px}.logoMark{width:42px;height:42px}.wordmark{font-size:40px;line-height:1;font-weight:1000;letter-spacing:-2px}.blue{color:var(--blue)}
+.tag{text-align:center;font-size:14px;letter-spacing:4px;font-weight:900;color:#8ABEFF}
+.title{font-size:34px;line-height:1.05;margin:14px 0 8px;font-weight:1000;letter-spacing:-1px}.sub{color:var(--muted);font-size:16px;line-height:1.45}
+.card{border:1px solid var(--line);background:rgba(255,255,255,.055);border-radius:24px;padding:18px;margin:16px 0;box-shadow:0 18px 48px rgba(0,0,0,.14)}
+.infoCard{border:1px solid var(--line);background:rgba(255,255,255,.045);border-radius:22px;padding:16px;margin:16px 0;color:#EAF2FF;line-height:1.45}
+.type{min-height:70px;font-size:28px;font-weight:1000;line-height:1.2;margin:10px 0 14px}.cursor{display:inline-block;width:3px;height:25px;background:var(--blue);animation:blink .8s infinite}@keyframes blink{50%{opacity:0}}
+input,select{width:100%;height:58px;border-radius:18px;border:1px solid rgba(255,255,255,.16);background:#07182F;color:#fff;font-size:17px;padding:0 16px;outline:none}input::placeholder{color:#7F8DA5}
+button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border:0;background:linear-gradient(180deg,#1882FF,#0057E7);color:white;font-weight:1000;font-size:18px;margin-top:14px;box-shadow:0 18px 40px rgba(13,107,255,.25)}.btn.red{background:linear-gradient(180deg,#FF3838,#D82323)}.btn.outline{background:transparent;border:1px solid var(--blue);color:#6EADFF;box-shadow:none}.btn.small{height:44px;font-size:14px}
+.nav{position:fixed;left:50%;bottom:10px;transform:translateX(-50%);width:min(390px,calc(100vw - 20px));height:74px;background:#fff;border-radius:24px;padding:8px;display:none;grid-template-columns:repeat(4,1fr);box-shadow:0 -12px 34px rgba(0,0,0,.22);z-index:20}.nav.show{display:grid}.nav button{border:0;background:transparent;border-radius:17px;color:#354255;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:3px}.nav button span{font-size:22px}.nav button.active{background:#EAF3FF;color:var(--blue)}
+.metricGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:14px 0}.metricBox{border:1px solid var(--line);background:rgba(255,255,255,.055);border-radius:18px;padding:13px;text-align:center}.metricBox strong{font-size:21px;display:block}.metricBox span{font-size:12px;color:#D1DEEF}
+.mapBox{height:250px;border-radius:24px;overflow:hidden;border:1px solid var(--line);background:#0B1B36;position:relative;margin:14px 0}#liveMap{position:absolute;inset:0;z-index:1}.mapHint{position:absolute;left:12px;right:12px;bottom:12px;z-index:4;background:rgba(2,11,27,.78);border:1px solid rgba(255,255,255,.13);border-radius:14px;padding:10px;color:#D9E6F8;font-size:13px;font-weight:800;text-align:center}.gpsActions{position:absolute;left:12px;right:12px;top:12px;z-index:4;display:flex;gap:8px}.gpsActions button{height:38px;border:0;border-radius:13px;background:rgba(13,107,255,.94);color:#fff;font-size:13px;font-weight:900;padding:0 12px}.gpsActions button.secondary{background:rgba(2,11,27,.78);border:1px solid rgba(255,255,255,.18)}
+.periods{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}.periods button{height:42px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:#C7D6EB;font-weight:900}.periods button.active{background:#0D6BFF;color:#fff}.row{display:flex;justify-content:space-between;gap:16px;border-bottom:1px solid rgba(255,255,255,.11);padding:13px 0;align-items:center}.row span{color:#C4D2E6}.row strong{font-size:20px;text-align:right}
+.historyItem{border:1px solid var(--line);background:rgba(255,255,255,.05);border-radius:20px;padding:15px;margin:12px 0}.historyTop{display:flex;justify-content:space-between;font-weight:1000}.historySub{color:#B9C8DD;margin-top:8px;font-size:14px;line-height:1.45}.toast{position:fixed;left:50%;bottom:94px;transform:translateX(-50%);width:min(390px,calc(100vw - 22px));background:#101C31;color:#fff;border:1px solid rgba(255,255,255,.16);border-radius:17px;padding:14px;font-weight:900;font-size:13px;text-align:center;z-index:60;display:none}.toast.show{display:block}
+.onboard-bg{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.onboard-glow{position:absolute;border-radius:50%;filter:blur(80px)}
+.onboard-glow-1{width:340px;height:200px;background:#0D6BFF;top:18%;left:50%;right:auto;transform:translateX(-50%);opacity:.14}
+.onboard-glow-2{width:260px;height:260px;background:#1A5FD4;bottom:60px;left:-100px;opacity:.1}
+.onboard-inner{position:relative;z-index:1;width:100%;max-width:360px;margin:0 auto;display:flex;flex-direction:column;min-height:100%}
+.onboard-brand{display:flex;flex-direction:column;align-items:center;margin-bottom:22px}
+.onboard-brand .wordmark{font-size:42px;font-weight:900;letter-spacing:-1px;line-height:1}
+.welcome-underline{width:min(200px,58%);height:4px;margin:16px auto 0;border-radius:999px;background:linear-gradient(90deg,rgba(13,107,255,0),#0D6BFF 25%,#4DA3FF 50%,#0D6BFF 75%,rgba(13,107,255,0));box-shadow:0 0 28px rgba(13,107,255,.55),0 0 8px rgba(13,107,255,.35)}
+.welcome-headline{text-align:center;font-size:clamp(30px,7.5vw,36px);line-height:1.1;font-weight:1000;letter-spacing:-1.2px;margin:0 0 20px}
+#welcome,#personal{position:relative;overflow:hidden;background:linear-gradient(180deg,#050F22 0%,#020B1B 55%,#010810 100%)}
+#welcome.active,#personal.active{display:flex;flex-direction:column;min-height:100dvh;padding:max(24px,env(safe-area-inset-top)) 22px max(28px,env(safe-area-inset-bottom))}
+#welcome.active{justify-content:center}
+#personal.active{justify-content:flex-start}
+#welcome .onboard-inner{margin:auto 0}
+#personal .onboard-inner{flex:1;display:flex;flex-direction:column;padding-top:28px}
+.welcome-support{text-align:center;color:#9FB4D0;font-size:15px;line-height:1.55;margin:0 auto 26px;max-width:330px}
+.welcome-features{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 0 28px}
+.welcome-feature{text-align:center}
+.welcome-icon{width:44px;height:44px;margin:0 auto 8px;border-radius:50%;border:1px solid rgba(110,180,255,.35);background:rgba(13,107,255,.08);display:flex;align-items:center;justify-content:center;box-shadow:0 0 24px rgba(13,107,255,.12)}
+.welcome-icon svg{width:20px;height:20px;stroke:#6EB4FF;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.welcome-feature span{display:block;font-size:10px;color:#8FA8C9;line-height:1.35}
+.welcome-kicker{text-align:center;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#6EB4FF;margin:0 0 10px}
+.welcome-question-wrap{min-height:34px;height:34px;margin:0 0 14px;display:flex;align-items:flex-end;justify-content:center;overflow:hidden}
+.welcome-question{text-align:center;font-size:22px;font-weight:800;letter-spacing:-.3px;color:#fff;line-height:1.2}
+.welcome-question .cursor{height:20px;width:2px;vertical-align:-3px;margin-left:1px}
+.welcome-input-wrap{position:relative;margin-bottom:12px}
+.welcome-input-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;stroke:#6EB4FF;fill:none;stroke-width:1.75;pointer-events:none}
+#welcome input#name{height:50px;border-radius:14px;border:1px solid rgba(13,107,255,.45);background:rgba(5,18,36,.88);box-shadow:0 0 0 1px rgba(13,107,255,.1),0 8px 28px rgba(13,107,255,.1);font-size:16px;padding:0 14px 0 42px;transition:border-color .2s,box-shadow .2s}
+#welcome input#name:focus{border-color:rgba(13,107,255,.75);box-shadow:0 0 0 3px rgba(13,107,255,.16),0 8px 28px rgba(13,107,255,.14)}
+.welcome-scroll{position:absolute;right:18px;bottom:max(18px,env(safe-area-inset-bottom));width:36px;height:36px;border-radius:50%;border:1px solid rgba(110,180,255,.3);background:rgba(13,107,255,.1);display:flex;align-items:center;justify-content:center;z-index:2}
+.welcome-scroll svg{width:16px;height:16px;stroke:#6EB4FF;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.personal-type-wrap{flex:1;min-height:168px;max-height:168px;display:flex;align-items:flex-start;padding-top:8px;margin-bottom:16px;overflow:hidden}
+.personal-type{font-size:clamp(20px,5.5vw,24px);font-weight:800;line-height:1.35;letter-spacing:-.4px;color:#EAF2FF;width:100%}
+.personal-type .cursor{height:22px;width:2px;vertical-align:-3px;margin-left:2px}
+.personal-foot{margin-top:auto;padding-top:8px;width:100%}
+.premium-btn{height:50px;border-radius:14px;font-size:16px;margin-top:0;background:linear-gradient(180deg,#1A8AFF 0%,#0D6BFF 48%,#0057E7 100%);box-shadow:0 12px 32px rgba(13,107,255,.3);transition:transform .15s ease,box-shadow .15s ease,filter .15s ease}
+.premium-btn:hover{filter:brightness(1.05);box-shadow:0 16px 36px rgba(13,107,255,.36);transform:translateY(-1px)}
+.premium-btn:active{transform:translateY(1px);box-shadow:0 8px 20px rgba(13,107,255,.26)}
+@media(max-width:360px){.welcome-features{gap:5px}.welcome-feature span{font-size:9px}.welcome-icon{width:40px;height:40px}}
+#printReport{display:none}
+@media print{body{display:block;background:#fff!important}.app,.nav,.toast{display:none!important}#printReport{display:block!important;padding:34px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:#06112A;max-width:760px;margin:0 auto}.pdfBrand{display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid #0D6BFF;padding-bottom:18px;margin-bottom:22px}.pdfLogo{font-size:34px;font-weight:950;letter-spacing:-1.3px;line-height:1}.pdfTag{color:#64748B;font-weight:800;font-size:13px;margin-top:8px}.pdfDate{color:#64748B;font-size:13px;font-weight:800;text-align:right}.printGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:20px 0 24px}.printMetric{background:#F8FBFF;border:1px solid #DDE6F2;border-radius:16px;padding:16px}.printMetric small{display:block;color:#64748B;font-size:12px;font-weight:850;margin-bottom:10px}.printMetric b{display:block;font-size:24px;line-height:1.15;font-weight:950}.printTable{width:100%;border-collapse:collapse;table-layout:fixed;margin-top:16px;font-size:13px}.printTable th{background:#06112A;color:white;text-align:left;padding:11px 9px;font-size:12px}.printTable td{border-bottom:1px solid #DDE6F2;padding:11px 9px}.printFoot{margin-top:22px;border-top:1px solid #DDE6F2;padding-top:12px;color:#64748B;font-size:11px;line-height:1.45}}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+<section id="welcome" class="screen active">
+<div class="onboard-bg" aria-hidden="true">
+<div class="onboard-glow onboard-glow-1"></div>
+<div class="onboard-glow onboard-glow-2"></div>
+</div>
+<div class="onboard-inner">
+<div class="onboard-brand">
+<div class="wordmark">Mile <span class="blue">Pilot</span></div>
+<div class="welcome-underline"></div>
+</div>
+<h1 class="welcome-headline">Your driving business.<br><span class="blue">On auto pilot.</span></h1>
+<p class="welcome-support">MilePilot automatically tracks your miles, creates professional reports and helps you stay HMRC ready.</p>
+<div class="welcome-features">
+<div class="welcome-feature"><div class="welcome-icon"><svg viewBox="0 0 24 24"><path d="M3 12l18-8-8 18-2-8z"/></svg></div><span>Track your miles</span></div>
+<div class="welcome-feature"><div class="welcome-icon"><svg viewBox="0 0 24 24"><path d="M7 4h10v16H7z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></div><span>Get reports</span></div>
+<div class="welcome-feature"><div class="welcome-icon"><svg viewBox="0 0 24 24"><path d="M12 3l7 4v6c0 4-3 7-7 8-4-1-7-4-7-8V7z"/><path d="M9 12l2 2 4-4"/></svg></div><span>Stay HMRC ready</span></div>
+<div class="welcome-feature"><div class="welcome-icon"><svg viewBox="0 0 24 24"><path d="M4 18V6M4 18h16"/><path d="M8 14l3-3 3 2 4-5"/></svg></div><span>Understand your business</span></div>
+</div>
+<div class="welcome-form">
+<p class="welcome-kicker">Let's get started</p>
+<h2 class="welcome-question">What's your first name?</h2>
+<div class="welcome-input-wrap">
+<svg class="welcome-input-icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M5 20c0-4 3-6 7-6s7 2 7 6"/></svg>
+<input id="name" placeholder="Enter your first name" autocomplete="given-name">
+</div>
+<button class="btn premium-btn" onclick="showPersonal()">Continue →</button>
+</div>
+</div>
+<div class="welcome-scroll" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+</section>
+<section id="personal" class="screen">
+<div class="onboard-bg" aria-hidden="true">
+<div class="onboard-glow onboard-glow-1"></div>
+<div class="onboard-glow onboard-glow-2"></div>
+</div>
+<div class="onboard-inner">
+<div class="onboard-brand"><div class="wordmark">Mile<span class="blue">Pilot</span></div></div>
+<div class="personal-type-wrap"><div class="personal-type" id="personalType"></div></div>
+<div class="personal-foot"><button class="btn premium-btn" onclick="showScreen('vehicle')">Continue →</button></div>
+</div>
+</section>
+<section id="vehicle" class="screen"><div class="logoRow"><div class="wordmark">Mile<span class="blue">Pilot</span></div></div><h1 class="title">Choose your vehicle</h1><p class="sub">Please select your vehicle from the dropdown list. MilePilot will automatically apply the correct HMRC rate.</p><select id="vehicleSelect"><option value="car">🚗 Car — 55p / mile</option><option value="van">🚐 Van — 55p / mile</option><option value="bicycle">🚲 Bicycle — 20p / mile</option><option value="motorcycle">🏍 Motorcycle — 24p / mile</option></select><button class="btn" onclick="showReady()">Continue →</button></section>
+<section id="ready" class="screen"><h1 class="title">You're ready to drive.</h1><p class="sub">MilePilot is set up. You can start a shift now or set up report delivery.</p><button class="btn" onclick="goHome()">Continue to Dashboard →</button><button class="btn outline" onclick="showScreen('emailSetup')">Set up reports</button></section>
+<section id="emailSetup" class="screen"><h1 class="title">Where should reports go?</h1><p class="sub">Enter your email once. MilePilot will use it for report delivery.</p><input id="emailInput" placeholder="you@example.com" inputmode="email"><button class="btn" onclick="saveEmailSetup()">Continue to Dashboard →</button><button class="btn outline" onclick="goHome()">Skip for now</button></section>
+<section id="home" class="screen"><div class="logoRow"><div class="wordmark">Mile<span class="blue">Pilot</span></div></div><h1 class="title" id="greeting">Good day 👋</h1><p class="sub" id="vehicleLine">Vehicle: Car • Rate: 55p per mile</p><button class="btn" onclick="startShift()">START SHIFT</button><div class="card"><div class="row"><span>Today</span><strong id="todaySummary">0.00 mi</strong></div><div class="row"><span>Saved shifts</span><strong id="shiftCount">0</strong></div></div></section>
+<section id="tracking" class="screen"><div class="logoRow"><div class="wordmark">Mile<span class="blue">Pilot</span></div><div style="margin-left:auto;border:1px solid rgba(255,255,255,.28);border-radius:18px;padding:9px 14px;font-weight:1000">GPS</div></div><h1 class="title">Tracking Active</h1><p class="sub" id="trackingVehicle">Vehicle: Car • Rate: 55p per mile</p><div class="metricGrid"><div class="metricBox"><strong id="liveMiles">0.00</strong><span>Miles</span></div><div class="metricBox"><strong id="liveTime">0h 00m</strong><span>Time</span></div><div class="metricBox"><strong id="liveClaim">£0.00</strong><span>Claim</span></div></div><div class="mapBox"><div class="gpsActions"><button onclick="requestGpsAgain()">Enable GPS</button><button class="secondary" onclick="centreMap()">Centre</button></div><div id="liveMap"></div><div class="mapHint" id="mapHint">Requesting location…</div></div><button class="btn red" onclick="endShift()">END SHIFT</button></section>
+<section id="reports" class="screen"><h1 class="title">Reports</h1><p class="sub">Daily, weekly and monthly reports from saved shifts.</p><div class="periods"><button id="pDay" onclick="setPeriod('day')">Daily</button><button id="pWeek" onclick="setPeriod('week')">Weekly</button><button id="pMonth" onclick="setPeriod('month')">Monthly</button></div><div class="card"><h2 id="mainReportTitle">Today</h2><div class="row"><span>Total Miles</span><strong id="reportMiles">0.00 miles</strong></div><div class="row"><span>Driving Time</span><strong id="reportTime">0h 00m</strong></div><div class="row"><span>Est. HMRC Claim</span><strong id="reportClaim">£0.00</strong></div><div class="row"><span>Vehicle / Rate</span><strong id="reportRate">Car • 55p</strong></div><p class="sub" id="reportLine">0 shifts • 0.00 miles • £0.00</p></div><div class="card"><label>Send report to</label><input id="reportEmail" placeholder="you@example.com" inputmode="email"><button class="btn" onclick="emailReport(event)">📧 Send Report</button><button class="btn outline" onclick="printReport()">💾 Save / Print PDF</button></div></section>
+<section id="history" class="screen"><h1 class="title">History</h1><p class="sub">Every ended shift is saved separately here.</p><button class="btn outline small" onclick="createTestShift()">Add Test Shift</button><div id="historyList"></div></section>
+<section id="settings" class="screen"><h1 class="title">Settings</h1><div class="card"><label>Email</label><input id="settingsEmail" placeholder="you@example.com"><button class="btn small" onclick="saveSettings()">Save Settings</button></div><div class="card"><button class="btn outline" onclick="resetOnboarding()">Reset onboarding</button><button class="btn outline" onclick="clearData()">Clear test shifts</button></div></section>
+</div>
+<nav class="nav" id="nav"><button id="navHome" onclick="goHome()"><span>⌂</span>Dashboard</button><button id="navReports" onclick="showReports()"><span>▤</span>Reports</button><button id="navHistory" onclick="showHistory()"><span>◷</span>History</button><button id="navSettings" onclick="showSettings()"><span>⚙</span>Settings</button></nav><div class="toast" id="toast"></div><div id="printReport"></div>
+<script>
+function getApiBase(){const s=localStorage.getItem('mp_api_base');if(s)return s.replace(/\/$/,'');if(location.hostname==='localhost'||location.hostname==='127.0.0.1')return 'http://localhost:8787';return 'https://api.milepilot.uk'}
+const API_BASE=getApiBase();
+const vehicles={car:{label:'Car',rate:.55},van:{label:'Van',rate:.55},bicycle:{label:'Bicycle',rate:.20},motorcycle:{label:'Motorcycle',rate:.24}};
+let driver=localStorage.getItem('mp_driver')||'',vehicle=localStorage.getItem('mp_vehicle')||'car',period='day';
+let miles=0,elapsed=0,timer=null,shiftStartedAt=null,gpsWatchId=null,lastPoint=null,routePoints=[],liveMap=null,livePolyline=null,liveMarker=null;
+let shifts=loadShifts();
+function q(id){return document.getElementById(id)}function toast(msg){q('toast').textContent=msg;q('toast').classList.add('show');setTimeout(()=>q('toast').classList.remove('show'),3000)}
+function typeInto(id,text){let e=q(id),i=0;e.innerHTML='';(function f(){if(i<=text.length){e.innerHTML=text.slice(0,i).replace(/\n/g,'<br>')+'<span class="cursor"></span>';i++;setTimeout(f,38)}else{e.innerHTML=text.replace(/\n/g,'<br>')}})()}
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));q(id).classList.add('active');q('nav').classList.toggle('show',!['welcome','personal','vehicle','ready','emailSetup'].includes(id));window.scrollTo(0,0)}
+function setNav(n){['Home','Reports','History','Settings'].forEach(x=>q('nav'+x).classList.toggle('active',x===n))}
+function fmt(s){s=Number(s)||0;let m=Math.floor(s/60),h=Math.floor(m/60);return h+'h '+String(m%60).padStart(2,'0')+'m'}function money(v){return '£'+(Number(v)||0).toFixed(2)}function claim(mi,v=vehicle){return (Number(mi)||0)*(vehicles[v]?.rate||.55)}
+function loadShifts(){try{return JSON.parse(localStorage.getItem('mp_shifts')||'[]').map(normaliseShift)}catch(e){return[]}}function saveShifts(){localStorage.setItem('mp_shifts',JSON.stringify(shifts))}
+function normaliseShift(s){let v=s.vehicle||vehicle||'car',mi=Number(s.miles)||0,sec=Number(s.seconds)||0;return{id:s.id||('shift_'+Date.now()+Math.random()),miles:mi,seconds:sec,vehicle:v,hmrc:Number(s.hmrc)||Number(claim(mi,v).toFixed(2)),date:s.date||new Date(s.startISO||Date.now()).toLocaleDateString('en-GB'),startISO:s.startISO||new Date().toISOString(),endISO:s.endISO||s.startISO||new Date().toISOString()}}
+function showPersonal(){driver=q('name').value.trim()||'Jon';localStorage.setItem('mp_driver',driver);showScreen('personal');typeInto('personalType',`Great to meet you, ${driver}.\n\nFirstly, choose your vehicle.\n\nMilePilot will automatically apply the correct HMRC rate.`)}
+function showReady(){vehicle=q('vehicleSelect').value;localStorage.setItem('mp_vehicle',vehicle);showScreen('ready')}function saveEmailSetup(){let e=q('emailInput').value.trim();if(e)localStorage.setItem('mp_email',e);goHome()}
+function resetOnboarding(){localStorage.removeItem('mp_driver');driver='';showScreen('welcome');q('nav').classList.remove('show')}
+function clearData(){localStorage.removeItem('mp_shifts');shifts=[];toast('Test shifts cleared');renderHome()}function goHome(){setNav('Home');renderHome();showScreen('home')}
+function renderHome(){driver=localStorage.getItem('mp_driver')||driver||'Jon';vehicle=localStorage.getItem('mp_vehicle')||vehicle||'car';let h=new Date().getHours();q('greeting').textContent=(h<12?'Good morning':h<18?'Good afternoon':'Good evening')+', '+driver+' 👋';q('vehicleLine').textContent=`Vehicle: ${vehicles[vehicle].label} • Rate: ${Math.round(vehicles[vehicle].rate*100)}p per mile`;let today=periodTotals('day');q('todaySummary').textContent=today.mi.toFixed(2)+' mi';q('shiftCount').textContent=shifts.length}
+function updateLive(){q('liveMiles').textContent=miles.toFixed(2);q('liveTime').textContent=fmt(elapsed);q('liveClaim').textContent=money(claim(miles));q('trackingVehicle').textContent=`Vehicle: ${vehicles[vehicle].label} • Rate: ${Math.round(vehicles[vehicle].rate*100)}p per mile`}
+function startShift(){miles=0;elapsed=0;routePoints=[];lastPoint=null;shiftStartedAt=Date.now();showScreen('tracking');updateLive();initBlankMap();timer=setInterval(()=>{elapsed=Math.floor((Date.now()-shiftStartedAt)/1000);updateLive()},1000);requestGpsAgain(true)}
+function initBlankMap(){if(typeof L==='undefined'||liveMap)return;liveMap=L.map('liveMap',{zoomControl:false}).setView([51.5072,-0.1276],13);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OSM'}).addTo(liveMap);livePolyline=L.polyline([],{color:'#0D6BFF',weight:6,opacity:.95}).addTo(liveMap);setTimeout(()=>liveMap.invalidateSize(),250)}
+function setMapHint(t){q('mapHint').textContent=t}function requestGpsAgain(watch=false){if(!navigator.geolocation){setMapHint('GPS not available');return}setMapHint('Requesting location permission…');navigator.geolocation.getCurrentPosition(pos=>handlePos(pos),err=>setMapHint(location.protocol!=='https:'&&location.hostname!=='localhost'?'GPS needs HTTPS. Use trycloudflare link.':'Location blocked. Allow location then reload.'),{enableHighAccuracy:true,maximumAge:0,timeout:12000});if(watch){gpsWatchId=navigator.geolocation.watchPosition(handlePos,err=>setMapHint('GPS signal waiting…'),{enableHighAccuracy:true,maximumAge:0,timeout:12000})}}
+function handlePos(pos){let p={lat:pos.coords.latitude,lon:pos.coords.longitude,acc:pos.coords.accuracy||999,t:pos.timestamp||Date.now()};if(p.acc>80){setMapHint('GPS accuracy low — waiting for better signal');return}if(lastPoint){let d=distance(lastPoint,p);let dt=(p.t-lastPoint.t)/1000;if(d>8 && d<250 && (d/dt)<60){miles+=d/1609.344}}lastPoint=p;routePoints.push(p);drawRoute();setMapHint('GPS locked • tracking route');updateLive()}
+function distance(a,b){let R=6371000,rad=Math.PI/180,dLat=(b.lat-a.lat)*rad,dLon=(b.lon-a.lon)*rad,la1=a.lat*rad,la2=b.lat*rad;let x=Math.sin(dLat/2)**2+Math.cos(la1)*Math.cos(la2)*Math.sin(dLon/2)**2;return R*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x))}
+function drawRoute(){initBlankMap();if(!liveMap||!routePoints.length)return;let latlngs=routePoints.map(p=>[p.lat,p.lon]);livePolyline.setLatLngs(latlngs);let p=routePoints[routePoints.length-1];if(!liveMarker)liveMarker=L.circleMarker([p.lat,p.lon],{radius:7,color:'#fff',weight:3,fillColor:'#10C870',fillOpacity:1}).addTo(liveMap);liveMarker.setLatLng([p.lat,p.lon]);liveMap.setView([p.lat,p.lon],16)}function centreMap(){if(routePoints.length&&liveMap){let p=routePoints[routePoints.length-1];liveMap.setView([p.lat,p.lon],16)}}
+function endShift(){if(gpsWatchId!==null){navigator.geolocation.clearWatch(gpsWatchId);gpsWatchId=null}clearInterval(timer);let shift=normaliseShift({id:'shift_'+Date.now(),miles:Number(miles.toFixed(2)),seconds:elapsed,vehicle,hmrc:Number(claim(miles).toFixed(2)),date:new Date().toLocaleDateString('en-GB'),startISO:new Date(shiftStartedAt).toISOString(),endISO:new Date().toISOString()});shifts.push(shift);saveShifts();toast('Shift saved ✓');showReports()}
+function periodStart(p=period){let now=new Date();if(p==='week'){let d=new Date(now.getFullYear(),now.getMonth(),now.getDate());d.setDate(d.getDate()-((d.getDay()+6)%7));return d}if(p==='month')return new Date(now.getFullYear(),now.getMonth(),1);return new Date(now.getFullYear(),now.getMonth(),now.getDate())}
+function selectedShifts(p=period){let start=periodStart(p);return shifts.filter(s=>new Date(s.startISO)>=start)}function periodTotals(p=period){let list=selectedShifts(p);return{mi:list.reduce((a,b)=>a+b.miles,0),sec:list.reduce((a,b)=>a+b.seconds,0),hmrc:list.reduce((a,b)=>a+b.hmrc,0),list}}
+function setPeriod(p){period=p;renderReports()}function showReports(){setNav('Reports');renderReports();showScreen('reports')}function renderReports(){let t=periodTotals();q('pDay').classList.toggle('active',period==='day');q('pWeek').classList.toggle('active',period==='week');q('pMonth').classList.toggle('active',period==='month');q('mainReportTitle').textContent=period==='day'?'Today':period==='week'?'This Week':'This Month';q('reportMiles').textContent=t.mi.toFixed(2)+' miles';q('reportTime').textContent=fmt(t.sec);q('reportClaim').textContent=money(t.hmrc);q('reportRate').textContent=vehicles[vehicle].label+' • '+Math.round(vehicles[vehicle].rate*100)+'p';q('reportLine').textContent=t.list.length+' shift'+(t.list.length===1?'':'s')+' • '+t.mi.toFixed(2)+' miles • '+money(t.hmrc);q('reportEmail').value=localStorage.getItem('mp_email')||''}
+function showHistory(){setNav('History');let list=shifts.slice().reverse();q('historyList').innerHTML=list.length?list.map(s=>`<div class="historyItem"><div class="historyTop"><span>${s.date}</span><span>${s.miles.toFixed(2)} mi</span></div><div class="historySub">${vehicles[s.vehicle]?.label||s.vehicle} • ${fmt(s.seconds)} • ${money(s.hmrc)}</div></div>`).join(''):'<div class="card"><p class="sub">No saved shifts yet. End a shift and it will appear here.</p></div>';showScreen('history')}
+function showSettings(){setNav('Settings');q('settingsEmail').value=localStorage.getItem('mp_email')||'';showScreen('settings')}function saveSettings(){let e=q('settingsEmail').value.trim();if(e)localStorage.setItem('mp_email',e);toast('Settings saved ✓')}function createTestShift(){let s=normaliseShift({miles:.1,seconds:300,vehicle,startISO:new Date().toISOString(),endISO:new Date().toISOString()});shifts.push(s);saveShifts();toast('Test shift added ✓');showHistory()}
+async function emailReport(ev){let email=q('reportEmail').value.trim();if(!email){toast('Add an email address first');return}localStorage.setItem('mp_email',email);let t=periodTotals();let payload={email,period:period==='day'?'Daily':period==='week'?'Weekly':'Monthly',totals:{miles:t.mi,time:fmt(t.sec),hmrc:t.hmrc},shifts:t.list};let btn=ev?.target;if(btn){btn.textContent='Sending…';btn.disabled=true}try{let res=await fetch(API_BASE+'/reports/send',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});let data=await res.json().catch(()=>({}));if(!res.ok||!data.sent)throw new Error(data.message||'Backend email failed');toast('Report sent to '+email+' ✓')}catch(e){let msg=e.message==='Failed to fetch'?'Cannot reach MilePilot API at '+API_BASE+'. Check the backend is running.':e.message;toast('Email failed: '+msg)}finally{if(btn){btn.textContent='📧 Send Report';btn.disabled=false}}}
+function printReport(){let t=periodTotals();let rows=t.list.length?t.list.map(s=>`<tr><td>${s.date}</td><td>${vehicles[s.vehicle]?.label||s.vehicle}</td><td>${s.miles.toFixed(2)}</td><td>${fmt(s.seconds)}</td><td>${money(s.hmrc)}</td></tr>`).join(''):`<tr><td colspan="5">No shifts saved yet</td></tr>`;q('printReport').innerHTML=`<div class="pdfBrand"><div><div class="pdfLogo">Mile<span class="blue">Pilot</span></div><div class="pdfTag">We track and send reports on auto pilot.</div></div><div class="pdfDate">${period==='day'?'Daily':period==='week'?'Weekly':'Monthly'} Report<br>${new Date().toLocaleDateString('en-GB')}</div></div><div class="printGrid"><div class="printMetric"><small>Total Miles</small><b>${t.mi.toFixed(2)} miles</b></div><div class="printMetric"><small>Driving Time</small><b>${fmt(t.sec)}</b></div><div class="printMetric"><small>Est. HMRC Claim</small><b>${money(t.hmrc)}</b></div></div><h2>Shift Breakdown</h2><table class="printTable"><thead><tr><th>Date</th><th>Vehicle</th><th>Miles</th><th>Time</th><th>Claim</th></tr></thead><tbody>${rows}</tbody></table><div class="printFoot">Generated by MilePilot. HMRC figures are estimates for record keeping and should be checked against official guidance.</div>`;setTimeout(()=>window.print(),200)}
+window.addEventListener('load',()=>{if(localStorage.getItem('mp_driver'))goHome()})
+</script>
+</body></html>
