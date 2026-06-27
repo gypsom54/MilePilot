@@ -29,9 +29,18 @@ No full-screen map. The legacy `#tracking` screen remains in the bundle but is n
 | History shift detail | Larger route review |
 | PDF report | Route Map section when route points exist |
 
-## End shift
+## State flow (v7.6.1 fix)
 
-Auto-save flow from MP-016 is unchanged: stop GPS, save shift + route, generate reports in background, **Done** only on completion screen.
+Dashboard is **state-driven**, not screen-driven:
+
+| State | When | Dashboard |
+|-------|------|-----------|
+| Default | No shift today | Greeting + Start Shift |
+| Active | Shift running | Live tracking |
+| Complete | Immediately after End Shift | One-time overlay → Done |
+| Today done | Shift ended, no active shift | Today's driving + Start New Shift |
+
+The completion screen never becomes the permanent dashboard. `mp_work_done` removed.
 
 ## PWA GPS limits
 

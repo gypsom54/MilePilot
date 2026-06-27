@@ -1,3 +1,3 @@
-MilePilot OS v7.6.0 — MP-017 Live tracking & map strategy
+MilePilot OS v7.6.1 — MP-017 dashboard state flow fix
 Build: 2026-06-27
 Brand: Every business mile matters.
