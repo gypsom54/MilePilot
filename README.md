@@ -2,6 +2,8 @@
 
 Clean rebuild for the new computer. Use this as the single source of truth.
 
+Before changing anything, read [MILEPILOT_MANIFESTO.md](./MILEPILOT_MANIFESTO.md).
+
 ## Frontend local
 
 ```powershell
