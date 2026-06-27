@@ -1,8 +1,21 @@
-MilePilot — UPLOAD v2.4 (NEW welcome screen)
-=============================================
+MilePilot — UPLOAD v4.6 (onboarding flow restored)
+====================================================
 
-IMPORTANT: This is version 2. Use ONLY this folder.
-Do NOT use old MilePilot_RC3_MASTER files.
+IMPORTANT: Use ONLY this folder. Do NOT use old MilePilot_RC3_MASTER files.
+
+ONBOARDING FLOW (v4.6)
+----------------------
+  MP-001  Welcome (name entry)
+    ↓
+  MP-002  Vehicle selection
+    ↓
+  MP-003  The MilePilot Promise
+    ↓
+  MP-004  Location Permission
+    ↓
+  MP-005  Notification Permission
+    ↓
+  Dashboard
 
 FILES TO UPLOAD (all 5 files in this folder)
 ---------------------------------------------
@@ -25,7 +38,7 @@ Open in browser:
   https://app.milepilot.uk/version.txt
 
 You MUST see:
-  MilePilot Welcome Screen v2.4
+  MilePilot OS v4.6 — Onboarding flow restored (MP-001 → MP-005)
 
 If you see an error or old text, the upload failed.
 
@@ -35,21 +48,8 @@ STEP 3 — Open the app
 
 Hard refresh: Ctrl+Shift+R (or use Incognito)
 
-STEP 4 — Check the version badge
----------------------------------
-Bottom of welcome screen should say:
-  Welcome v2.4
-
-If you see the OLD design (car emoji, "DRIVE • TRACK • CLAIM"):
-  → You uploaded the wrong files. Use THIS folder only.
-
-WHAT THE NEW SCREEN LOOKS LIKE
--------------------------------
-  Mile Pilot          (with space, blue underline below logo)
-  Your driving business. On auto pilot.
-  What's your first name?  (types slowly)
-  NO car emoji
-  NO "DRIVE • TRACK • CLAIM"
+If you still see the wrong screen, use Settings → Reset onboarding
+to clear old browser data and run the full flow from MP-001.
 
 LOCAL TEST
 ----------
