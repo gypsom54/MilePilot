@@ -747,7 +747,7 @@ const FIRST_IMPRESSION_LINES=['Welcome to MilePilot.',"Let's build your driving 
 const vehicles={car:{label:'Car',rate:.55},van:{label:'Van',rate:.55},bicycle:{label:'Bicycle',rate:.20},motorcycle:{label:'Motorcycle',rate:.24}};
 let driver=localStorage.getItem('mp_driver')||'',vehicle=localStorage.getItem('mp_vehicle')||'car',period='day',selectedVehicle=null,pendingReportDownload=false;
 let miles=0,elapsed=0,timer=null,shiftStartedAt=null,gpsWatchId=null,lastPoint=null,routePoints=[],liveMap=null,livePolyline=null,liveMarker=null;
-let previewMap=null,previewPolyline=null,previewStartMarker=null,previewEndMarker=null,historyMap=null,historyPolyline=null,historyStartMarker=null,historyEndMarker=null,historyDetailShiftId=null;
+let historyMap=null,historyPolyline=null,historyStartMarker=null,historyEndMarker=null,historyDetailShiftId=null;
 let previewMapBundle=null,expandMapBundle=null,mapExpandOpen=false,lastGpsAccuracy=null,lastSpeedMph=0,lastGpsAt=null;
 const MAP_TILE_URL='https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
 let ccState='idle',summaryShift=null,ccWeather=null,gpsLocked=false;
