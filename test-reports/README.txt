@@ -1,24 +1,17 @@
-MilePilot PDF Test Pack — MP-012-pdf-v10 (LOCKED)
-=================================================
+MilePilot PDF Test Pack — MP-012-pdf-v11 (LOCKED — FINAL)
+============================================================
 
-PDF layout is LOCKED at v10. No further PDF redesigns planned.
+PDF layout LOCKED. No further redesigns.
 
-DOWNLOAD ZIP
-------------
-https://github.com/gypsom54/MilePilot/raw/cursor/mp-012-pdf-layout-fix-ae00/MilePilot-PDF-TEST-MP012-v10.zip
+DOWNLOAD
+--------
+https://github.com/gypsom54/MilePilot/raw/cursor/mp-012-pdf-layout-fix-ae00/MilePilot-PDF-TEST-MP012-v11.zip
 
-v10 final micro-polish
-----------------------
-- Page 1 tightened ~5% (logo → hero → boxes)
-- Hero number +5% larger
-- Permanent footer signature (Drive • Track • Claim)
-- QR page: Verified ✓ Authentic MilePilot Report
-- Journey timeline cards (time → Journey → miles → duration)
+v11 micro-polish
+----------------
+- Period-aware insight chart (daily journeys / Mon–Sun / monthly weeks)
+- Coach intelligence with name + % vs monthly average
+- Footer: Prepared for {name} · Report {id} · signature
+- QR: Verified ✓ Authentic MilePilot Report
 
-Report engine: MP-012-pdf-v10
-
-SAMPLE FILES
-------------
-sample-v10.pdf
-empty-v10.pdf
-large-v10.pdf
+Report engine: MP-012-pdf-v11

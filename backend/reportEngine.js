@@ -1,6 +1,6 @@
 /**
- * MilePilot Report Engine — MP-012 Premium Document v10 (LOCKED)
- * PDF layout locked — future polish via backlog only
+ * MilePilot Report Engine — MP-012 Premium Document v11 (LOCKED)
+ * PDF layout locked — informational charts · coach intelligence · official footer
  */
 
 import PDFDocument from "pdfkit";
@@ -39,7 +39,7 @@ export const VEHICLE_LABELS = {
   motorcycle: "Motorcycle",
 };
 
-export const REPORT_VERSION = "MP-012-pdf-v10";
+export const REPORT_VERSION = "MP-012-pdf-v11";
 export const PDF_LAYOUT_LOCKED = true;
 const APP_URL = "https://app.milepilot.uk";
 const API_URL = "https://milepilot-production.up.railway.app";
@@ -468,6 +468,55 @@ function periodMileageLine(a) {
   return `You completed ${totals.journeys} business ${totals.journeys === 1 ? "journey" : "journeys"} covering ${fmtMi(totals.mi)} miles ${when}.`;
 }
 
+function groupByWeekInMonth(shifts) {
+  if (!shifts.length) return [];
+  const map = {};
+  shifts.forEach((s) => {
+    const d = new Date(s.startISO);
+    const weekStart = new Date(d);
+    weekStart.setDate(d.getDate() - ((d.getDay() + 6) % 7));
+    const key = `W/c ${weekStart.toLocaleDateString("en-GB", { day: "numeric", month: "short" })}`;
+    map[key] = (map[key] || 0) + Number(s.miles || 0);
+  });
+  return Object.keys(map).map((label) => ({ label, value: map[label] }));
+}
+
+function periodChartSpec(a) {
+  const period = a.period || "Daily";
+  if (period === "Daily") {
+    return {
+      title: "Today's journey timeline",
+      items: a.shifts.map((s) => ({ label: fmtClock(s.startISO), value: Number(s.miles || 0) })),
+    };
+  }
+  if (period === "Weekly") {
+    return {
+      title: "Miles driven Mon–Sun",
+      items: a.dailyActivity.map((d) => ({ label: d.day.slice(0, 3), value: d.miles })),
+    };
+  }
+  if (period === "Monthly") {
+    return {
+      title: "Weekly totals this month",
+      items: groupByWeekInMonth(a.shifts),
+    };
+  }
+  return {
+    title: "Activity overview",
+    items: a.dailyActivity.map((d) => ({ label: d.day.slice(0, 3), value: d.miles })),
+  };
+}
+
+function weekPageChartSpec(a) {
+  if (a.period === "Monthly") {
+    return { title: "Weekly totals this month", items: groupByWeekInMonth(a.shifts.length ? a.shifts : a.weekShifts) };
+  }
+  return {
+    title: "Miles driven Mon–Sun",
+    items: a.dailyActivity.map((d) => ({ label: d.day.slice(0, 3), value: d.miles })),
+  };
+}
+
 function reportingPeriodLabel(a) {
   if (a.period === "Daily") return a.generatedAt.split(",").slice(0, 2).join(",");
   if (a.period === "Weekly") return `Week ending ${a.weekEnding}`;
@@ -479,7 +528,7 @@ export function buildIntelligence(a) {
     totals, weekTotals, shifts, prevTotals, miDiff, period, weekComparePct, monthProgress, avgMilesShift, busiest,
   } = a;
   const name = firstName(a.driver);
-  const coach = { headline: "", paragraphs: [], hmrcLabel: null, hmrcValue: null, closing: "Keep up the great work." };
+  const coach = { headline: "", paragraphs: [], hmrcLabel: null, hmrcValue: null, closing: "Keep it up." };
 
   if (!shifts.length) {
     coach.headline = name ? `Ready when you are, ${name}.` : "Ready when you are.";
@@ -497,21 +546,25 @@ export function buildIntelligence(a) {
     return { coach, empty: true };
   }
 
-  coach.headline = period === "Daily" ? "Excellent day." : period === "Weekly" ? "Excellent week." : "Strong period on the road.";
+  coach.headline = period === "Daily"
+    ? (name ? `Excellent day, ${name}.` : "Excellent day.")
+    : period === "Weekly"
+      ? (name ? `Excellent week, ${name}.` : "Excellent week.")
+      : (name ? `Strong period, ${name}.` : "Strong period on the road.");
   coach.paragraphs.push(
-    `You completed ${totals.journeys} business ${totals.journeys === 1 ? "journey" : "journeys"} covering ${fmtMi(totals.mi)} miles.`
+    `You completed ${totals.journeys} ${totals.journeys === 1 ? "journey" : "journeys"} covering ${fmtMi(totals.mi)} miles.`
   );
 
   if (avgMilesShift > 0 && a.prevAvgJourney > 0) {
-    const diff = avgMilesShift - a.prevAvgJourney;
-    if (Math.abs(diff) >= 0.3) {
-      const dir = diff > 0 ? "slightly above" : "slightly below";
-      coach.paragraphs.push(`Your average journey length was ${fmtMi(avgMilesShift)} miles, ${dir} your monthly average.`);
+    const pct = Math.round((avgMilesShift / a.prevAvgJourney - 1) * 100);
+    if (Math.abs(pct) >= 1) {
+      const dir = pct > 0 ? "above" : "below";
+      coach.paragraphs.push(`Your average journey was ${fmtMi(avgMilesShift)} miles, which is ${Math.abs(pct)}% ${dir} your monthly average.`);
     } else {
-      coach.paragraphs.push(`Your average journey length was ${fmtMi(avgMilesShift)} miles.`);
+      coach.paragraphs.push(`Your average journey was ${fmtMi(avgMilesShift)} miles.`);
     }
   } else if (avgMilesShift > 0) {
-    coach.paragraphs.push(`Your average journey length was ${fmtMi(avgMilesShift)} miles.`);
+    coach.paragraphs.push(`Your average journey was ${fmtMi(avgMilesShift)} miles.`);
   }
 
   if (monthProgress?.projectedMi > 0 && a.prevTotals.mi > 0) {
@@ -542,13 +595,14 @@ export function buildIntelligence(a) {
   }
 
   if (totals.hmrc > 0) {
-    coach.hmrcLabel = period === "Daily" ? "Estimated HMRC allowance today:" : "Estimated HMRC allowance:";
+    coach.hmrcLabel = period === "Daily" ? "Estimated HMRC value today:" : "Estimated HMRC value:";
     coach.hmrcValue = money(totals.hmrc);
   } else if (monthProgress?.projectedHmrc > 0) {
     coach.hmrcLabel = "Estimated monthly allowance at current pace:";
     coach.hmrcValue = money(monthProgress.projectedHmrc);
   }
 
+  coach.closing = "Keep it up.";
   return { coach, empty: false };
 }
 
@@ -590,7 +644,7 @@ export function buildAiSummary(a) {
 const PDF = {
   margin: 56,
   headerH: 48,
-  footerH: 72,
+  footerH: 84,
   unit: 8,
   sectionGap: 24,
   pagePad: 24,
@@ -695,11 +749,15 @@ function drawThinRule(doc, margin, y, contentW, color = BRAND.border) {
 
 function drawFooter(doc, a, margin, contentW) {
   const footY = footerTop(doc.page.height) - 4;
-  drawThinRule(doc, margin, footY - 52, contentW, "#DDE6F2");
-  doc.fillColor(BRAND.blue).font("Helvetica-Bold").fontSize(8).text(BRAND_TAGLINE, margin, footY - 42, { width: contentW, align: "center", characterSpacing: 0.8 });
-  doc.fillColor(BRAND.muted).font("Helvetica").fontSize(7).text("Automatically generated by MilePilot", margin, footY - 30, { width: contentW, align: "center" });
-  doc.fillColor(BRAND.blue).font("Helvetica-Bold").fontSize(7.5).text("app.milepilot.uk", margin, footY - 18, { width: contentW, align: "center", link: APP_URL });
-  doc.fillColor(BRAND.muted).font("Helvetica").fontSize(6.5).text(`Report ID ${a.reportId}`, margin, footY - 6, { width: contentW, align: "center" });
+  const name = firstName(a.driver);
+  drawThinRule(doc, margin, footY - 64, contentW, "#DDE6F2");
+  if (name) {
+    doc.fillColor(BRAND.muted).font("Helvetica").fontSize(6.5).text(`Prepared for ${name}`, margin, footY - 54, { width: contentW, align: "center" });
+  }
+  doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(6.5).text(`Report ${a.reportId}`, margin, footY - (name ? 44 : 54), { width: contentW, align: "center" });
+  doc.fillColor(BRAND.blue).font("Helvetica-Bold").fontSize(8).text(BRAND_TAGLINE, margin, footY - 32, { width: contentW, align: "center", characterSpacing: 0.8 });
+  doc.fillColor(BRAND.muted).font("Helvetica").fontSize(7).text("Automatically generated by MilePilot", margin, footY - 20, { width: contentW, align: "center" });
+  doc.fillColor(BRAND.blue).font("Helvetica-Bold").fontSize(7.5).text("app.milepilot.uk", margin, footY - 8, { width: contentW, align: "center", link: APP_URL });
 }
 
 function drawCompactHeader(doc, margin, contentW, pageW) {
@@ -815,8 +873,9 @@ function drawDashboardPage(doc, a, margin, contentW, pageW, pageH) {
   doc.fillColor(BRAND.greenDark).font("Helvetica-Bold").fontSize(24).text(money(a.totals.hmrc), margin, y, { width: contentW, align: "center" });
   y += PDF.unit * 3;
 
-  if (collectRoutePoints(a.shifts).length >= 2) {
-    y = drawMiniRouteSparkline(doc, a.shifts, margin, contentW, y);
+  const chart = periodChartSpec(a);
+  if (chart.items.some((i) => i.value > 0)) {
+    y = drawInsightBarChart(doc, chart, margin, contentW, y);
   }
   return drawThisWeekKiller(doc, a, margin, contentW, y);
 }
@@ -904,21 +963,41 @@ function drawJourneyTimeline(doc, a, margin, contentW, y, pageW) {
   return y + PDF.sectionGap;
 }
 
-function drawWeeklyBarChart(doc, a, margin, contentW, y) {
-  const days = a.dailyActivity;
-  const maxMi = Math.max(...days.map((d) => d.miles), 1);
-  const chartH = 68;
-  const barW = (contentW - PDF.unit * 4) / 7 - 4;
-  const baseY = y + chartH;
+function drawInsightBarChart(doc, spec, margin, contentW, y, chartH = 68) {
+  const items = spec.items.filter((i) => i.value >= 0);
+  if (!items.length) return y;
 
-  doc.fillColor(BRAND.muted).font("Helvetica").fontSize(7).text("Miles over seven days", margin, y - 2);
-  days.forEach((d, i) => {
+  const maxVal = Math.max(...items.map((i) => i.value), 1);
+  const n = items.length;
+  const barW = Math.max(12, Math.min(44, (contentW - PDF.unit * 4) / n - 4));
+  const baseY = y + chartH + PDF.unit * 2;
+
+  doc.fillColor(BRAND.muted).font("Helvetica").fontSize(7).text(spec.title, margin, y);
+  y += PDF.unit * 1.5;
+  doc.roundedRect(margin, y, contentW, chartH + PDF.unit * 2, 4).fill(PDF.cardFill).strokeColor(PDF.cardStroke).lineWidth(0.4).stroke();
+
+  const innerY = y + PDF.unit;
+  const points = [];
+  items.forEach((item, i) => {
     const bx = margin + PDF.unit * 2 + i * (barW + 4);
-    const h = d.miles > 0 ? Math.max(4, (d.miles / maxMi) * chartH) : 2;
-    doc.roundedRect(bx, baseY - h, barW, h, 2).fill(d.miles > 0 ? BRAND.blue : "#EEF2F8");
-    doc.fillColor(BRAND.muted).font("Helvetica").fontSize(6).text(d.day.slice(0, 3), bx, baseY + 4, { width: barW, align: "center" });
+    const h = item.value > 0 ? Math.max(4, (item.value / maxVal) * chartH) : 2;
+    doc.roundedRect(bx, innerY + chartH - h, barW, h, 2).fill(item.value > 0 ? BRAND.blue : "#EEF2F8");
+    doc.fillColor(BRAND.muted).font("Helvetica").fontSize(6).text(item.label, bx, innerY + chartH + 4, { width: barW, align: "center" });
+    if (item.value > 0) points.push({ x: bx + barW / 2, y: innerY + chartH - h });
   });
-  return baseY + PDF.unit * 3;
+
+  if (points.length >= 2) {
+    doc.moveTo(points[0].x, points[0].y).strokeColor(BRAND.blueDark).lineWidth(1.1);
+    points.slice(1).forEach((p) => doc.lineTo(p.x, p.y));
+    doc.stroke();
+    points.forEach((p) => doc.circle(p.x, p.y, 2).fill(BRAND.blue));
+  }
+
+  return baseY + PDF.unit * 2;
+}
+
+function drawWeeklyBarChart(doc, a, margin, contentW, y) {
+  return drawInsightBarChart(doc, weekPageChartSpec(a), margin, contentW, y);
 }
 
 function drawMiniRouteSparkline(doc, shifts, margin, contentW, y) {
