@@ -36,10 +36,10 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 .onboard-glow-1{width:320px;height:180px;background:#0D6BFF;top:16%;left:50%;right:auto;transform:translateX(-50%);opacity:.1}
 .onboard-glow-2{width:240px;height:240px;background:#1A5FD4;bottom:80px;left:-100px;opacity:.07}
 .onboard-inner{position:relative;z-index:1;width:100%;max-width:340px;margin:0 auto;display:flex;flex-direction:column;min-height:100%}
-.onboard-brand{display:flex;flex-direction:column;align-items:center;margin-bottom:32px}
-.onboard-brand .wordmark{font-size:40px;font-weight:700;letter-spacing:-0.04em;line-height:1;-webkit-font-smoothing:antialiased}
-.welcome-underline{width:min(152px,42%);height:3px;margin:20px auto 0;border-radius:999px;background:linear-gradient(90deg,rgba(13,107,255,0),#0D6BFF 30%,#4DA3FF 50%,#0D6BFF 70%,rgba(13,107,255,0));box-shadow:0 0 20px rgba(13,107,255,.35)}
-.welcome-headline{text-align:center;font-size:clamp(32px,8vw,38px);line-height:1.08;font-weight:700;letter-spacing:-0.03em;margin:0 0 18px;-webkit-font-smoothing:antialiased}
+.onboard-brand{display:flex;flex-direction:column;align-items:center;margin-bottom:28px;padding-top:4px}
+.onboard-brand .wordmark{font-size:42px;font-weight:700;letter-spacing:-0.04em;line-height:1;-webkit-font-smoothing:antialiased}
+.welcome-underline{width:min(128px,38%);height:2px;margin:18px auto 0;border-radius:999px;background:linear-gradient(90deg,transparent,rgba(77,163,255,.4),transparent);box-shadow:0 0 36px rgba(13,107,255,.16),0 0 14px rgba(13,107,255,.1);opacity:.65}
+.welcome-headline{text-align:center;font-size:clamp(31px,7.8vw,37px);line-height:1.08;font-weight:700;letter-spacing:-0.03em;margin:0 0 14px;-webkit-font-smoothing:antialiased}
 .welcome-headline .blue{font-weight:700}
 #welcome,#personal{position:relative;overflow:hidden;background:linear-gradient(180deg,#050F22 0%,#020B1B 55%,#010810 100%)}
 #welcome.active,#personal.active{display:flex;flex-direction:column;min-height:100dvh;padding:max(32px,env(safe-area-inset-top)) 24px max(24px,env(safe-area-inset-bottom))}
@@ -47,25 +47,25 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 #personal.active{justify-content:flex-start}
 #welcome .onboard-inner{margin:auto 0}
 #personal .onboard-inner{flex:1;display:flex;flex-direction:column;padding-top:28px}
-.welcome-support{text-align:center;color:rgba(159,180,208,.88);font-size:14px;font-weight:400;line-height:1.65;margin:0 auto 36px;max-width:300px;letter-spacing:.01em}
-.welcome-features{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:0 0 0;padding:0 2px}
+.welcome-support{text-align:center;color:rgba(159,180,208,.85);font-size:14px;font-weight:400;line-height:1.6;margin:0 auto 28px;max-width:296px;letter-spacing:.01em}
+.welcome-features{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:0;padding:0 4px}
 .welcome-feature{text-align:center;display:flex;flex-direction:column;align-items:center}
-.welcome-icon{width:48px;height:48px;margin:0 0 10px;border-radius:50%;border:1px solid rgba(110,180,255,.28);background:rgba(13,107,255,.06);display:flex;align-items:center;justify-content:center;box-shadow:0 0 18px rgba(13,107,255,.08)}
-.welcome-icon svg{width:19px;height:19px;stroke:#7EB8FF;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
-.welcome-feature span{display:block;font-size:10.5px;font-weight:500;color:rgba(147,168,196,.92);line-height:1.45;letter-spacing:.01em;max-width:72px}
-.welcome-form{margin-top:36px;padding-top:32px;border-top:1px solid rgba(255,255,255,.06)}
-.welcome-kicker{text-align:center;font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(110,180,255,.78);margin:0 0 14px}
-.welcome-question-wrap{min-height:36px;height:36px;margin:0 0 18px;display:flex;align-items:flex-end;justify-content:center;overflow:hidden}
-.welcome-question{text-align:center;font-size:21px;font-weight:600;letter-spacing:-0.02em;color:rgba(255,255,255,.96);line-height:1.25;-webkit-font-smoothing:antialiased}
+.welcome-icon{width:46px;height:46px;margin:0 0 9px;border-radius:50%;border:1px solid rgba(110,180,255,.22);background:rgba(13,107,255,.05);display:flex;align-items:center;justify-content:center;box-shadow:0 0 14px rgba(13,107,255,.06)}
+.welcome-icon svg{width:18px;height:18px;stroke:#7EB8FF;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.welcome-feature strong{display:block;font-size:11px;font-weight:600;color:rgba(234,242,255,.94);line-height:1.25;margin-bottom:2px}
+.welcome-feature span{display:block;font-size:10px;font-weight:400;color:rgba(147,168,196,.82);line-height:1.35;letter-spacing:.01em;max-width:76px}
+.welcome-form{margin-top:28px;padding-top:24px;border-top:1px solid rgba(255,255,255,.05)}
+.welcome-question-wrap{height:40px;min-height:40px;max-height:40px;margin:0 0 16px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.welcome-question{text-align:center;font-size:20px;font-weight:600;letter-spacing:-0.02em;color:rgba(255,255,255,.96);line-height:1.25;-webkit-font-smoothing:antialiased;transition:opacity .45s ease;opacity:1;width:100%}
 .welcome-question .cursor{height:19px;width:2px;vertical-align:-2px;margin-left:2px;border-radius:1px}
 .welcome-input-wrap{position:relative;margin-bottom:16px}
 .welcome-input-icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);width:17px;height:17px;stroke:rgba(110,180,255,.75);fill:none;stroke-width:1.6;pointer-events:none}
 #welcome input#name{height:52px;border-radius:16px;border:1px solid rgba(13,107,255,.32);background:rgba(5,18,36,.72);box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 4px 20px rgba(0,0,0,.12);font-size:17px;font-weight:400;padding:0 16px 0 44px;transition:border-color .2s,box-shadow .2s;-webkit-font-smoothing:antialiased}
 #welcome input#name::placeholder{color:rgba(127,141,165,.72);font-weight:400}
 #welcome input#name:focus{border-color:rgba(13,107,255,.55);box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 0 0 3px rgba(13,107,255,.12)}
-#welcome .premium-btn{height:52px;border-radius:16px;font-size:17px;font-weight:600;letter-spacing:-0.01em;margin-top:0;background:linear-gradient(180deg,#1E88FF 0%,#0D6BFF 50%,#005FE8 100%);box-shadow:0 8px 24px rgba(13,107,255,.28),inset 0 1px 0 rgba(255,255,255,.12)}
-#welcome .premium-btn:hover{filter:brightness(1.04);box-shadow:0 10px 28px rgba(13,107,255,.32),inset 0 1px 0 rgba(255,255,255,.12);transform:translateY(-1px)}
-#welcome .premium-btn:active{transform:translateY(0);box-shadow:0 4px 16px rgba(13,107,255,.24),inset 0 1px 0 rgba(255,255,255,.08)}
+#welcome .premium-btn{height:52px;border-radius:16px;font-size:17px;font-weight:600;letter-spacing:-0.01em;margin-top:0;background:linear-gradient(180deg,#1E88FF 0%,#0D6BFF 50%,#005FE8 100%);box-shadow:0 8px 24px rgba(13,107,255,.28),inset 0 1px 0 rgba(255,255,255,.12);transition:filter .15s ease,box-shadow .15s ease}
+#welcome .premium-btn:hover{filter:brightness(1.04);box-shadow:0 10px 28px rgba(13,107,255,.32),inset 0 1px 0 rgba(255,255,255,.12)}
+#welcome .premium-btn:active{filter:brightness(.98);box-shadow:0 4px 16px rgba(13,107,255,.24),inset 0 1px 0 rgba(255,255,255,.08)}
 .welcome-version{position:absolute;left:0;right:0;bottom:max(12px,env(safe-area-inset-bottom));text-align:center;font-size:9px;font-weight:500;letter-spacing:.08em;color:rgba(143,168,201,.35);z-index:2}
 .personal-type-wrap{flex:1;min-height:168px;max-height:168px;display:flex;align-items:flex-start;padding-top:8px;margin-bottom:16px;overflow:hidden}
 .personal-type{font-size:clamp(20px,5.5vw,24px);font-weight:800;line-height:1.35;letter-spacing:-.4px;color:#EAF2FF;width:100%}
@@ -74,7 +74,7 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 .premium-btn{height:50px;border-radius:14px;font-size:16px;margin-top:0;background:linear-gradient(180deg,#1A8AFF 0%,#0D6BFF 48%,#0057E7 100%);box-shadow:0 12px 32px rgba(13,107,255,.3);transition:transform .15s ease,box-shadow .15s ease,filter .15s ease}
 .premium-btn:hover{filter:brightness(1.05);box-shadow:0 16px 36px rgba(13,107,255,.36);transform:translateY(-1px)}
 .premium-btn:active{transform:translateY(1px);box-shadow:0 8px 20px rgba(13,107,255,.26)}
-@media(max-width:360px){.welcome-features{gap:8px}.welcome-feature span{font-size:10px;max-width:68px}.welcome-icon{width:44px;height:44px}}
+@media(max-width:360px){.welcome-features{gap:10px}.welcome-feature strong{font-size:10px}.welcome-feature span{font-size:9px;max-width:68px}.welcome-icon{width:42px;height:42px}}
 #printReport{display:none}
 @media print{body{display:block;background:#fff!important}.app,.nav,.toast{display:none!important}#printReport{display:block!important;padding:34px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:#06112A;max-width:760px;margin:0 auto}.pdfBrand{display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid #0D6BFF;padding-bottom:18px;margin-bottom:22px}.pdfLogo{font-size:34px;font-weight:950;letter-spacing:-1.3px;line-height:1}.pdfTag{color:#64748B;font-weight:800;font-size:13px;margin-top:8px}.pdfDate{color:#64748B;font-size:13px;font-weight:800;text-align:right}.printGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:20px 0 24px}.printMetric{background:#F8FBFF;border:1px solid #DDE6F2;border-radius:16px;padding:16px}.printMetric small{display:block;color:#64748B;font-size:12px;font-weight:850;margin-bottom:10px}.printMetric b{display:block;font-size:24px;line-height:1.15;font-weight:950}.printTable{width:100%;border-collapse:collapse;table-layout:fixed;margin-top:16px;font-size:13px}.printTable th{background:#06112A;color:white;text-align:left;padding:11px 9px;font-size:12px}.printTable td{border-bottom:1px solid #DDE6F2;padding:11px 9px}.printFoot{margin-top:22px;border-top:1px solid #DDE6F2;padding-top:12px;color:#64748B;font-size:11px;line-height:1.45}}
 </style>
@@ -94,13 +94,12 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 <h1 class="welcome-headline">Your driving business.<br><span class="blue">On auto pilot.</span></h1>
 <p class="welcome-support">MilePilot automatically tracks your miles, creates professional reports and helps you stay HMRC ready.</p>
 <div class="welcome-features">
-<div class="welcome-feature"><div class="welcome-icon"><svg viewBox="0 0 24 24"><path d="M3 12l18-8-8 18-2-8z"/></svg></div><span>Track your miles</span></div>
-<div class="welcome-feature"><div class="welcome-icon"><svg viewBox="0 0 24 24"><path d="M7 4h10v16H7z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></div><span>Get reports</span></div>
-<div class="welcome-feature"><div class="welcome-icon"><svg viewBox="0 0 24 24"><path d="M12 3l7 4v6c0 4-3 7-7 8-4-1-7-4-7-8V7z"/><path d="M9 12l2 2 4-4"/></svg></div><span>Stay HMRC ready</span></div>
-<div class="welcome-feature"><div class="welcome-icon"><svg viewBox="0 0 24 24"><path d="M4 18V6M4 18h16"/><path d="M8 14l3-3 3 2 4-5"/></svg></div><span>Understand your business</span></div>
+<div class="welcome-feature"><div class="welcome-icon"><svg viewBox="0 0 24 24"><path d="M3 12l18-8-8 18-2-8z"/></svg></div><strong>Track</strong><span>Business mileage</span></div>
+<div class="welcome-feature"><div class="welcome-icon"><svg viewBox="0 0 24 24"><path d="M7 4h10v16H7z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></div><strong>Reports</strong><span>Professional PDFs</span></div>
+<div class="welcome-feature"><div class="welcome-icon"><svg viewBox="0 0 24 24"><path d="M12 3l7 4v6c0 4-3 7-7 8-4-1-7-4-7-8V7z"/><path d="M9 12l2 2 4-4"/></svg></div><strong>HMRC Ready</strong><span>Organised records</span></div>
+<div class="welcome-feature"><div class="welcome-icon"><svg viewBox="0 0 24 24"><path d="M4 18V6M4 18h16"/><path d="M8 14l3-3 3 2 4-5"/></svg></div><strong>Insights</strong><span>Understand your business</span></div>
 </div>
 <div class="welcome-form">
-<p class="welcome-kicker">Let's get started</p>
 <div class="welcome-question-wrap"><div class="welcome-question" id="typed"></div></div>
 <div class="welcome-input-wrap">
 <svg class="welcome-input-icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M5 20c0-4 3-6 7-6s7 2 7 6"/></svg>
@@ -109,7 +108,7 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 <button class="btn premium-btn" onclick="showPersonal()">Continue →</button>
 </div>
 </div>
-<div class="welcome-version" id="appVersion">Welcome v2.3</div>
+<div class="welcome-version" id="appVersion">Welcome v2.4</div>
 </section>
 <section id="personal" class="screen">
 <div class="onboard-bg" aria-hidden="true">
@@ -133,16 +132,19 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 </div>
 <nav class="nav" id="nav"><button id="navHome" onclick="goHome()"><span>⌂</span>Dashboard</button><button id="navReports" onclick="showReports()"><span>▤</span>Reports</button><button id="navHistory" onclick="showHistory()"><span>◷</span>History</button><button id="navSettings" onclick="showSettings()"><span>⚙</span>Settings</button></nav><div class="toast" id="toast"></div><div id="printReport"></div>
 <script>
-const APP_VERSION='2.3';
+const APP_VERSION='2.4';
 function getApiBase(){const s=localStorage.getItem('mp_api_base');if(s)return s.replace(/\/$/,'');if(location.hostname==='localhost'||location.hostname==='127.0.0.1')return 'http://localhost:8787';return 'https://api.milepilot.uk'}
 const API_BASE=getApiBase();
+const WELCOME_LINES=['Welcome to MilePilot.',"Let's get started.","What's your first name?"];
 const vehicles={car:{label:'Car',rate:.55},van:{label:'Van',rate:.55},bicycle:{label:'Bicycle',rate:.20},motorcycle:{label:'Motorcycle',rate:.24}};
 let driver=localStorage.getItem('mp_driver')||'',vehicle=localStorage.getItem('mp_vehicle')||'car',period='day';
 let miles=0,elapsed=0,timer=null,shiftStartedAt=null,gpsWatchId=null,lastPoint=null,routePoints=[],liveMap=null,livePolyline=null,liveMarker=null;
 let shifts=loadShifts();
 function q(id){return document.getElementById(id)}function toast(msg){q('toast').textContent=msg;q('toast').classList.add('show');setTimeout(()=>q('toast').classList.remove('show'),3000)}
 function typeInto(id,text,speed=38){let e=q(id);if(!e)return;let i=0;e.innerHTML='';(function f(){if(i<=text.length){e.innerHTML=text.slice(0,i).replace(/\n/g,'<br>')+'<span class="cursor"></span>';i++;setTimeout(f,speed)}else{e.innerHTML=text.replace(/\n/g,'<br>')}})()}
-function startWelcomeTyping(){typeInto('typed',`What's your name?`,70)}
+let welcomeTypingTimers=[];
+function clearWelcomeTyping(){welcomeTypingTimers.forEach(t=>clearTimeout(t));welcomeTypingTimers=[]}
+function startWelcomeTyping(){const el=q('typed');if(!el)return;clearWelcomeTyping();let idx=0;el.style.transition='opacity .45s ease';function schedule(fn,ms){const t=setTimeout(fn,ms);welcomeTypingTimers.push(t)}function typeLine(text,cb){let i=0;el.style.opacity='1';el.innerHTML='';(function tick(){if(i<=text.length){el.innerHTML=text.slice(0,i)+'<span class="cursor"></span>';i++;schedule(tick,65)}else{el.innerHTML=text;schedule(cb,1000)}})()}function step(){if(idx>=WELCOME_LINES.length)return;typeLine(WELCOME_LINES[idx],()=>{if(idx<WELCOME_LINES.length-1){el.style.opacity='0';idx++;schedule(step,500)}})}step()}
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));q(id).classList.add('active');q('nav').classList.toggle('show',!['welcome','personal','vehicle','ready','emailSetup'].includes(id));window.scrollTo(0,0)}
 function setNav(n){['Home','Reports','History','Settings'].forEach(x=>q('nav'+x).classList.toggle('active',x===n))}
 function fmt(s){s=Number(s)||0;let m=Math.floor(s/60),h=Math.floor(m/60);return h+'h '+String(m%60).padStart(2,'0')+'m'}function money(v){return '£'+(Number(v)||0).toFixed(2)}function claim(mi,v=vehicle){return (Number(mi)||0)*(vehicles[v]?.rate||.55)}

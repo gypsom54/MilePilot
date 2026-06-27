@@ -1,8 +1,10 @@
 #!/bin/bash
-# Keeps upload folder in sync with frontend source
-cp frontend/index.html frontend/version.txt frontend/service-worker.js \
-   frontend/manifest.json frontend/icon.svg milepilot-upload-v2/
-cd milepilot-upload-v2 && zip -r ../MilePilot-WELCOME-LATEST.zip .
-echo "Built MilePilot-WELCOME-LATEST.zip"
+set -e
+ROOT="$(cd "$(dirname "$0")" && pwd)"
+cp "$ROOT/frontend/index.html" "$ROOT/frontend/version.txt" "$ROOT/frontend/service-worker.js" \
+   "$ROOT/frontend/manifest.json" "$ROOT/frontend/icon.svg" "$ROOT/milepilot-upload-v2/"
+cd "$ROOT/milepilot-upload-v2"
+zip -r "$ROOT/MilePilot-WELCOME-LATEST.zip" .
+echo "Built $ROOT/MilePilot-WELCOME-LATEST.zip"
 grep "Welcome v" index.html
 grep "Welcome Screen v" version.txt

@@ -1,4 +1,4 @@
-MilePilot Welcome Screen v2.3
+MilePilot Welcome Screen v2.4
 Build: 2026-06-27
-Polish pass — index.html and version.txt matched.
+Final polish — cycling typing, feature captions, locked layout.
 If you see this, the NEW files uploaded correctly.
