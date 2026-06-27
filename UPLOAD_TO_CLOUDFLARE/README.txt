@@ -33,8 +33,8 @@ OPTION 2 — Test on your computer first
 HOW TO CHECK IT WORKED
 ----------------------
 You should see:
-- "Your driving business. On auto pilot."
-- Glowing blue line under the headline
+- "Mile Pilot" logo with blue underline beneath it
+- "Your driving business. On auto pilot." heading below the underline
 - "Let's get started" and "What's your first name?"
 - NO car emoji, NO "DRIVE • TRACK • CLAIM"
 
