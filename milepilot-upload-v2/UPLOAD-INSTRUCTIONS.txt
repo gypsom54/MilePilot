@@ -1,37 +1,35 @@
-MilePilot — UPLOAD v7.1.0
+MilePilot — UPLOAD v7.1.1
 =========================
 
 DOWNLOAD
 --------
-https://github.com/gypsom54/MilePilot/raw/main/MilePilot-UPLOAD-v7.1.0.zip
+https://github.com/gypsom54/MilePilot/raw/main/MilePilot-UPLOAD-v7.1.1.zip
 
 CHECK APP VERSION
 -----------------
 https://app.milepilot.uk/version.txt
-Must show: MilePilot OS v7.1.0 — Report Centre & deep links
+Must show: MilePilot OS v7.1.1 — Solid brand pulse & premium icons
 
 TWO DEPLOYS NEEDED
 ------------------
-1. Cloudflare — upload this zip (frontend v7.1.0)
-2. Railway — backend on main (MP-013 report engine + email)
+1. Cloudflare — upload this zip (frontend v7.1.1)
+2. Railway — backend on main (no change needed)
 
 Check backend:
 https://milepilot-production.up.railway.app/health
 Should show: "reportVersion": "MP-013-magazine-v4"
 
-WHAT'S NEW IN v7.1.0 (MP-013)
------------------------------
-- Report Centre: Daily / Weekly / Monthly / Annual tabs
-- Preview, Download PDF, Share, Email Again actions
-- Email CTAs: Download PDF (deep link) + Open MilePilot
-- Deep links: ?reports=week&download=1 opens Reports + auto PDF
-- Unified brand lockup: Mile Pilot — pulse — Drive • Track • Claim
-- Magazine PDF (3 pages) + MilePilot Intelligence insights
+WHAT'S NEW IN v7.1.1
+--------------------
+- Brand pulse bar: fully solid gradient (no fade at edges)
+- Premium vehicle icons with depth, fill and inner ring
+- Premium welcome feature icons matching vehicle style
+- Removed Preview button from Report Centre email area
 
 UPLOAD STEPS (Cloudflare)
 -------------------------
 1. Download zip
-2. Unzip all 6 files + this instructions file
+2. Unzip all files
 3. Cloudflare → milepilot-app → Upload assets → Deploy
 
 APP: https://app.milepilot.uk
