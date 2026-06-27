@@ -1,3 +1,3 @@
-MilePilot OS v3.4 — MP-002 locked
+MilePilot OS v3.5 — MP-002 final polish
 Build: 2026-06-27
 If you see this, the NEW files uploaded correctly.
