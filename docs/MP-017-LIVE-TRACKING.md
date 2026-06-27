@@ -1,6 +1,6 @@
 # MP-017 — Live Tracking Screen & Map Strategy
 
-**Version:** v7.6.0  
+**Version:** v7.6.2  
 **Status:** Complete
 
 ## Product principle
