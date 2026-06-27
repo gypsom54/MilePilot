@@ -1,4 +1,4 @@
-MilePilot — UPLOAD v6.0.0
+MilePilot — UPLOAD v6.0.1
 =========================
 
 USE THIS FOLDER ONLY — upload to Cloudflare Pages (Direct Upload).
@@ -10,7 +10,16 @@ YOUR APP LINKS (always use these)
   Check:   https://app.milepilot.uk/version.txt
 
 After upload, version.txt MUST show:
-  MilePilot OS v6.0.0 — Sprint 1: Tracking Engine
+  MilePilot OS v6.0.1 — MP-008 Reports Premium
+
+DIRECT ZIP DOWNLOAD (use this link)
+-----------------------------------
+  https://github.com/gypsom54/MilePilot/raw/cursor/mp-008-reports-premium-ae00/MilePilot-UPLOAD-v6.0.1.zip
+
+1. Open the link above on your phone or computer
+2. Download the zip
+3. Unzip it — you get this folder with 6 files inside
+4. Upload all 6 files to Cloudflare (see below)
 
 FILES TO UPLOAD (all 6 in this folder)
 ---------------------------------------
@@ -32,14 +41,9 @@ OPEN ON YOUR PHONE
 ------------------
   https://app.milepilot.uk
 
-Design language is LOCKED — see docs/DESIGN_LOCKED.md
-Product roadmap — see docs/ROADMAP.md
-
-WHAT'S IN v6.0.0 — Sprint 1 Tracking Engine
--------------------------------------------
-- Start Shift → GPS, timer, route, miles, HMRC estimate
-- Stop detection (90s stationary)
-- Auto-save on background / tab switch
-- Wake lock while shift active
-- Full shift record: route, stops, moving time
-- End Shift → saved automatically + summary
+WHAT'S IN v6.0.1 — MP-008 Reports Premium
+-----------------------------------------
+- Reports screen polished to match Command Centre premium style
+- Automatic reports card, pill tabs, metrics grid, empty state
+- Email PDF Report button styling
+- No changes to tracking, API calls, or email logic
