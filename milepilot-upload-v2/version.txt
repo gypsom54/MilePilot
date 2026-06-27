@@ -1,4 +1,4 @@
-MilePilot First Impression v2.5
+MilePilot First Impression v2.6
 Build: 2026-06-27
-Final polish — grid, glass icons, smart Continue button.
+Brand pulse underline — signature identity element across all screens.
 If you see this, the NEW files uploaded correctly.
