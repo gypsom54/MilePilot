@@ -1,27 +1,23 @@
-MilePilot — UPLOAD v7.6.2
+MilePilot — UPLOAD v7.6.3
 =========================
 
 DOWNLOAD
 --------
-https://github.com/gypsom54/MilePilot/raw/cursor/mp-017-live-tracking-map-ae00/MilePilot-UPLOAD-v7.6.2.zip
+https://github.com/gypsom54/MilePilot/raw/cursor/mp-017-live-tracking-map-ae00/MilePilot-UPLOAD-v7.6.3.zip
 
 CHECK APP VERSION
 -----------------
 https://app.milepilot.uk/version.txt
-Must show: MilePilot OS v7.6.2 — Live route map polish
+Must show: MilePilot OS v7.6.3 — Centered brand header
 
-WHAT'S NEW IN v7.6.2
+WHAT'S NEW IN v7.6.3
 --------------------
-- Live Route map: blue polyline, green start marker, pulsing blue live position
-- GPS status row above map (Connected / High accuracy + updated time)
-- Live stats: Driving Time, Current Speed, Business Miles, GPS Accuracy
-- Tap map to expand full-screen live map with timer, miles, End Shift
-- Dashboard-first layout unchanged
+- MilePilot logo/wordmark centered consistently on every screen
 
 UPLOAD STEPS (Cloudflare)
 -------------------------
 1. Download zip
-2. Unzip all files (includes js/tracking-engine.js)
+2. Unzip all files
 3. Cloudflare → milepilot-app → Upload assets → Deploy
 
 APP: https://app.milepilot.uk
