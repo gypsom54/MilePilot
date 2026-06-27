@@ -1,3 +1,3 @@
-MilePilot OS v6.0.5 — email API fix
+MilePilot OS v6.0.6 — premium PDF reports
 Build: 2026-06-27
 Brand: Every business mile matters.
