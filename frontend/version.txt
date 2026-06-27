@@ -1,3 +1,3 @@
-MilePilot OS v7.9.0 — Phase 3 History calendar
+MilePilot OS v7.9.1 — Welcome pulse fix + History calendar
 Build: 2026-06-27
 Brand: Every business mile matters.
