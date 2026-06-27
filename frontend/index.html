@@ -250,8 +250,8 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 <header class="brand-bar onboard-brand center"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div></header>
 <div class="onboard-body">
 <h1 class="onboard-greeting" id="promiseGreeting">You're all set.</h1>
-<div class="onboard-message-wrap"><p class="onboard-message" id="promiseWelcome">You're ready to start tracking your business.</p></div>
-<p class="onboard-support" id="promiseIntro">Here's what MilePilot will do for you.</p>
+<div class="onboard-message-wrap"><p class="onboard-message" id="promiseWelcome">Now let's make every business mile count.</p></div>
+<p class="onboard-support" id="promiseIntro" hidden aria-hidden="true"></p>
 <ul class="promise-list" id="promiseList">
 <li><span class="promise-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"/></svg></span><div class="promise-copy"><span class="promise-title">Track every business journey</span><span class="promise-desc">Never miss another business mile.</span></div></li>
 <li><span class="promise-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"/></svg></span><div class="promise-copy"><span class="promise-title">Professional reports</span><span class="promise-desc">Ready whenever you need them.</span></div></li>
@@ -267,7 +267,7 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 <div class="brand-signature-pulse"></div>
 <p class="brand-signature-text">Your business. <span class="blue">On auto pilot.</span></p>
 </div>
-<div class="onboard-version">MP-003 🔒 Locked · Flow v4.6</div>
+<div class="onboard-version">MP-003 🔒 Locked · Brand v4.7</div>
 </section>
 <!-- MP-004 Location Permission -->
 <section id="permissions" class="screen" data-mp="MP-004">
@@ -327,14 +327,15 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 </div>
 <nav class="nav" id="nav"><button id="navHome" onclick="goHome()"><span>⌂</span>Dashboard</button><button id="navReports" onclick="showReports()"><span>▤</span>Reports</button><button id="navHistory" onclick="showHistory()"><span>◷</span>History</button><button id="navSettings" onclick="showSettings()"><span>⚙</span>Settings</button></nav><div class="toast" id="toast"></div><div id="printReport"></div>
 <script>
-const APP_VERSION='4.6.1';
+const APP_VERSION='4.7';
+const BRAND_MESSAGE='Every business mile matters.';
+const PROMISE_PURPOSE="Now let's make every business mile count.";
 const MP_001_LOCKED=true;
 const MP_002_LOCKED=true;
 const MP_003_LOCKED=true;
 const ONBOARD_SCREENS=['welcome','knowYou','promise','permissions','notifications'];
 const KNOW_YOU_QUESTION='What are you driving today?';
-const PROMISE_PROGRESS='You\'re ready to start tracking your business.';
-const PROMISE_INTRO='Here\'s what MilePilot will do for you.';
+const PROMISE_PROGRESS=PROMISE_PURPOSE;
 function getApiBase(){const s=localStorage.getItem('mp_api_base');if(s)return s.replace(/\/$/,'');if(location.hostname==='localhost'||location.hostname==='127.0.0.1')return 'http://localhost:8787';return 'https://api.milepilot.uk'}
 const API_BASE=getApiBase();
 const FIRST_IMPRESSION_LINES=['Welcome to MilePilot.',"Let's build your driving business.","What's your first name?"];
@@ -362,7 +363,7 @@ function confirmVehicle(){if(!selectedVehicle)return;vehicle=selectedVehicle;loc
 let onboardTimers=[];
 function clearOnboardTimers(){onboardTimers.forEach(t=>clearTimeout(t));onboardTimers=[]}
 function fadeInEl(el,delay=0){if(!el)return;el.style.opacity='0';onboardTimers.push(setTimeout(()=>{el.style.transition='opacity .38s cubic-bezier(.22,1,.36,1)';el.style.opacity='1'},delay))}
-function initPromise(){driver=driver||localStorage.getItem('mp_driver')||'';clearOnboardTimers();q('promiseGreeting').textContent=`You're all set, ${driver}.`;const welcome=q('promiseWelcome'),intro=q('promiseIntro'),list=q('promiseList'),btn=q('promiseContinue'),sig=q('promiseSignature');if(welcome){welcome.textContent=PROMISE_PROGRESS;welcome.style.opacity='0'}if(intro){intro.textContent=PROMISE_INTRO;intro.style.opacity='0'}if(list){list.classList.remove('is-visible');list.style.opacity='0'}if(btn){btn.disabled=true;btn.classList.remove('is-ready')}if(sig)sig.classList.remove('is-visible');fadeInEl(welcome,500);fadeInEl(intro,1000);onboardTimers.push(setTimeout(()=>{if(list){list.style.opacity='1';list.classList.add('is-visible')}},1600));onboardTimers.push(setTimeout(()=>{if(btn){btn.disabled=false;btn.classList.add('is-ready')}if(sig)sig.classList.add('is-visible')},2350))}
+function initPromise(){driver=driver||localStorage.getItem('mp_driver')||'';clearOnboardTimers();q('promiseGreeting').textContent=`You're all set, ${driver}.`;const welcome=q('promiseWelcome'),intro=q('promiseIntro'),list=q('promiseList'),btn=q('promiseContinue'),sig=q('promiseSignature');if(welcome){welcome.textContent=PROMISE_PURPOSE;welcome.style.opacity='0'}if(intro){intro.textContent='';intro.hidden=true}if(list){list.classList.remove('is-visible');list.style.opacity='0'}if(btn){btn.disabled=true;btn.classList.remove('is-ready')}if(sig)sig.classList.remove('is-visible');fadeInEl(welcome,500);onboardTimers.push(setTimeout(()=>{if(list){list.style.opacity='1';list.classList.add('is-visible')}},1100));onboardTimers.push(setTimeout(()=>{if(btn){btn.disabled=false;btn.classList.add('is-ready')}if(sig)sig.classList.add('is-visible')},2350))}
 function startDriving(){localStorage.setItem('mp_onboard_step','location');initLocationPermission();showScreen('permissions')}
 function initLocationPermission(){clearOnboardTimers();const loc=q('permLocation'),cont=q('permLocationContinue');if(loc)loc.style.opacity='0';if(cont)cont.style.opacity='0';syncLocationButton();fadeInEl(loc,200);fadeInEl(cont,700)}
 function continueToNotifications(){if(!localStorage.getItem('mp_location_choice'))localStorage.setItem('mp_location_choice','skipped');localStorage.setItem('mp_onboard_step','notifications');initNotifications();showScreen('notifications')}
