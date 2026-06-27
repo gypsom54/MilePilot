@@ -21,7 +21,7 @@ If the answer to all five is **yes**, lock the screen and move on.
 | MP-003 | The MilePilot Promise | 🔒 Locked · Final |
 | MP-004 | Location Permission | 🔒 Locked · Final |
 | MP-005 | Notification Permission | 🔒 Locked · Final |
-| MP-006 | The Driver's Command Centre | 🚀 In progress · v5.0 |
+| MP-006 | The Driver's Command Centre | 🚀 Phase 2 · v5.2 |
 | MP-007 | Premium Navigation | ✅ Complete · v5.1 |
 | MP-007 | Tracking | Planned |
 | MP-008 | Shift Summary | Planned |
