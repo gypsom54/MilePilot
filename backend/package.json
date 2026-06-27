@@ -10,6 +10,7 @@
     "dotenv": "latest",
     "express": "latest",
     "pdfkit": "latest",
+    "qrcode": "^1.5.4",
     "resend": "latest"
   }
 }
