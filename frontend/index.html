@@ -28,18 +28,60 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 .mapBox{height:250px;border-radius:24px;overflow:hidden;border:1px solid var(--line);background:#0B1B36;position:relative;margin:14px 0}#liveMap{position:absolute;inset:0;z-index:1}.mapHint{position:absolute;left:12px;right:12px;bottom:12px;z-index:4;background:rgba(2,11,27,.78);border:1px solid rgba(255,255,255,.13);border-radius:14px;padding:10px;color:#D9E6F8;font-size:13px;font-weight:800;text-align:center}.gpsActions{position:absolute;left:12px;right:12px;top:12px;z-index:4;display:flex;gap:8px}.gpsActions button{height:38px;border:0;border-radius:13px;background:rgba(13,107,255,.94);color:#fff;font-size:13px;font-weight:900;padding:0 12px}.gpsActions button.secondary{background:rgba(2,11,27,.78);border:1px solid rgba(255,255,255,.18)}
 .periods{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}.periods button{height:42px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:#C7D6EB;font-weight:900}.periods button.active{background:#0D6BFF;color:#fff}.row{display:flex;justify-content:space-between;gap:16px;border-bottom:1px solid rgba(255,255,255,.11);padding:13px 0;align-items:center}.row span{color:#C4D2E6}.row strong{font-size:20px;text-align:right}
 .historyItem{border:1px solid var(--line);background:rgba(255,255,255,.05);border-radius:20px;padding:15px;margin:12px 0}.historyTop{display:flex;justify-content:space-between;font-weight:1000}.historySub{color:#B9C8DD;margin-top:8px;font-size:14px;line-height:1.45}.toast{position:fixed;left:50%;bottom:94px;transform:translateX(-50%);width:min(390px,calc(100vw - 22px));background:#101C31;color:#fff;border:1px solid rgba(255,255,255,.16);border-radius:17px;padding:14px;font-weight:900;font-size:13px;text-align:center;z-index:60;display:none}.toast.show{display:block}
-.routeMini{height:58px;margin:8px 0 16px}.routeMini svg{width:100%;height:100%}#printReport{display:none}
+#welcome{position:relative;overflow:hidden;background:linear-gradient(165deg,#0C2F5E 0%,#061528 42%,#020B1B 100%)}
+#welcome.active{display:flex;flex-direction:column;justify-content:center;padding:max(28px,env(safe-area-inset-top)) 22px max(32px,env(safe-area-inset-bottom))}
+.welcome-bg{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.welcome-glow{position:absolute;border-radius:50%;filter:blur(72px)}
+.welcome-glow-1{width:300px;height:300px;background:#0D6BFF;top:-100px;right:-70px;opacity:.2}
+.welcome-glow-2{width:240px;height:240px;background:#1A5FD4;bottom:80px;left:-90px;opacity:.16}
+.welcome-curve{position:absolute;bottom:-2px;left:0;width:100%;height:140px;opacity:.14}
+.welcome-inner{position:relative;z-index:1;width:100%;max-width:360px;margin:0 auto}
+.welcome-brand{display:flex;justify-content:center;margin-bottom:24px}
+#welcome .wordmark{font-size:36px;letter-spacing:-1.8px}
+.welcome-headline{text-align:center;font-size:clamp(28px,7vw,34px);line-height:1.12;font-weight:1000;letter-spacing:-1.1px;margin:0 0 16px}
+.welcome-support{text-align:center;color:var(--muted);font-size:15px;line-height:1.55;margin:0 auto 28px;max-width:320px}
+.welcome-features{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:0 0 32px}
+.welcome-feature{text-align:center}
+.welcome-feature svg{width:22px;height:22px;margin:0 auto 8px;display:block;stroke:#6EB4FF;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.welcome-feature strong{display:block;font-size:11px;font-weight:800;line-height:1.25;color:#EAF2FF;margin-bottom:2px}
+.welcome-feature span{display:block;font-size:10px;color:#8FA8C9;line-height:1.3}
+.welcome-form{margin-top:4px}
+.welcome-type{min-height:42px;height:42px;font-size:15px;font-weight:600;color:#A8C4E8;line-height:1.4;margin:0 0 12px;display:flex;align-items:flex-end;overflow:hidden}
+.welcome-type .cursor{height:16px;width:2px;vertical-align:-2px;margin-left:1px}
+#welcome input#name{height:48px;border-radius:14px;border:1px solid rgba(13,107,255,.42);background:rgba(7,24,47,.82);box-shadow:0 0 0 1px rgba(13,107,255,.1),0 8px 24px rgba(13,107,255,.1);font-size:16px;padding:0 14px;transition:border-color .2s,box-shadow .2s}
+#welcome input#name:focus{border-color:rgba(13,107,255,.72);box-shadow:0 0 0 3px rgba(13,107,255,.16),0 8px 28px rgba(13,107,255,.14)}
+.welcome-btn{height:50px;border-radius:14px;font-size:16px;margin-top:12px;background:linear-gradient(180deg,#1A8AFF 0%,#0D6BFF 48%,#0057E7 100%);box-shadow:0 12px 32px rgba(13,107,255,.3);transition:transform .15s ease,box-shadow .15s ease,filter .15s ease}
+.welcome-btn:hover{filter:brightness(1.05);box-shadow:0 16px 36px rgba(13,107,255,.36);transform:translateY(-1px)}
+.welcome-btn:active{transform:translateY(1px);box-shadow:0 8px 20px rgba(13,107,255,.26)}
+@media(max-width:360px){.welcome-features{gap:6px}.welcome-feature strong{font-size:10px}.welcome-feature span{font-size:9px}}
+#printReport{display:none}
 @media print{body{display:block;background:#fff!important}.app,.nav,.toast{display:none!important}#printReport{display:block!important;padding:34px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:#06112A;max-width:760px;margin:0 auto}.pdfBrand{display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid #0D6BFF;padding-bottom:18px;margin-bottom:22px}.pdfLogo{font-size:34px;font-weight:950;letter-spacing:-1.3px;line-height:1}.pdfTag{color:#64748B;font-weight:800;font-size:13px;margin-top:8px}.pdfDate{color:#64748B;font-size:13px;font-weight:800;text-align:right}.printGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:20px 0 24px}.printMetric{background:#F8FBFF;border:1px solid #DDE6F2;border-radius:16px;padding:16px}.printMetric small{display:block;color:#64748B;font-size:12px;font-weight:850;margin-bottom:10px}.printMetric b{display:block;font-size:24px;line-height:1.15;font-weight:950}.printTable{width:100%;border-collapse:collapse;table-layout:fixed;margin-top:16px;font-size:13px}.printTable th{background:#06112A;color:white;text-align:left;padding:11px 9px;font-size:12px}.printTable td{border-bottom:1px solid #DDE6F2;padding:11px 9px}.printFoot{margin-top:22px;border-top:1px solid #DDE6F2;padding-top:12px;color:#64748B;font-size:11px;line-height:1.45}}
 </style>
 </head>
 <body>
 <div class="app" id="app">
 <section id="welcome" class="screen active">
-<div class="logoRow" style="justify-content:center;margin-top:12px"><svg class="logoMark" viewBox="0 0 64 64"><path d="M8 45V20l23 21 25-24v28" fill="none" stroke="#0D6BFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><path d="M23 46C31 30 42 20 56 12" fill="none" stroke="#56A9FF" stroke-width="5" stroke-linecap="round"/></svg><div class="wordmark">Mile<span class="blue">Pilot</span></div></div>
-<div class="tag">DRIVE • TRACK • CLAIM</div><h1 class="title" style="text-align:center;font-size:24px">We track and send reports<br>on <span class="blue">auto pilot.</span></h1>
-<div class="routeMini"><svg viewBox="0 0 320 60"><path d="M45 30 C100 48 130 12 170 30 S245 49 280 18" fill="none" stroke="#0D6BFF" stroke-width="4" stroke-dasharray="7 8" stroke-linecap="round"/><circle cx="45" cy="30" r="9" fill="#0D6BFF"/><circle cx="280" cy="18" r="9" fill="#27D981"/><text x="142" y="38" font-size="24">🚗</text></svg></div>
-<div class="infoCard"><b>You drive. We handle the rest.</b><br>MilePilot tracks your miles automatically, applies HMRC estimates and builds your reports.</div>
-<div class="card"><div class="type" id="typed"></div><input id="name" placeholder="Enter your first name"><button class="btn" onclick="showPersonal()">Get Started →</button></div>
+<div class="welcome-bg" aria-hidden="true">
+<div class="welcome-glow welcome-glow-1"></div>
+<div class="welcome-glow welcome-glow-2"></div>
+<svg class="welcome-curve" viewBox="0 0 430 140" preserveAspectRatio="none"><path d="M0 90 Q215 20 430 70 L430 140 L0 140 Z" fill="#0D6BFF"/></svg>
+</div>
+<div class="welcome-inner">
+<div class="welcome-brand"><div class="wordmark">Mile<span class="blue">Pilot</span></div></div>
+<h1 class="welcome-headline">Your driving business.<br><span class="blue">On auto pilot.</span></h1>
+<p class="welcome-support">MilePilot automatically tracks your business mileage, creates professional reports and helps you understand your driving business.</p>
+<div class="welcome-features">
+<div class="welcome-feature"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg><strong>Track</strong><span>Business mileage</span></div>
+<div class="welcome-feature"><svg viewBox="0 0 24 24"><path d="M7 4h10v16H7z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg><strong>Reports</strong><span>Professional PDFs</span></div>
+<div class="welcome-feature"><svg viewBox="0 0 24 24"><path d="M12 3l7 4v6c0 4-3 7-7 8-4-1-7-4-7-8V7z"/><path d="M9 12l2 2 4-4"/></svg><strong>HMRC Ready</strong><span>Organised records</span></div>
+<div class="welcome-feature"><svg viewBox="0 0 24 24"><path d="M4 18V6M4 18h16"/><path d="M8 14l3-3 3 2 4-5"/></svg><strong>Insights</strong><span>Understand your business</span></div>
+</div>
+<div class="welcome-form">
+<div class="welcome-type" id="typed"></div>
+<input id="name" placeholder="Enter your first name">
+<button class="btn welcome-btn" onclick="showPersonal()">Continue →</button>
+</div>
+</div>
 </section>
 <section id="personal" class="screen"><div class="logoRow"><div class="wordmark">Mile<span class="blue">Pilot</span></div></div><div class="card"><div class="type" id="personalType"></div><button class="btn" onclick="showScreen('vehicle')">Continue →</button></div></section>
 <section id="vehicle" class="screen"><div class="logoRow"><div class="wordmark">Mile<span class="blue">Pilot</span></div></div><h1 class="title">Choose your vehicle</h1><p class="sub">Please select your vehicle from the dropdown list. MilePilot will automatically apply the correct HMRC rate.</p><select id="vehicleSelect"><option value="car">🚗 Car — 55p / mile</option><option value="van">🚐 Van — 55p / mile</option><option value="bicycle">🚲 Bicycle — 20p / mile</option><option value="motorcycle">🏍 Motorcycle — 24p / mile</option></select><button class="btn" onclick="showReady()">Continue →</button></section>
