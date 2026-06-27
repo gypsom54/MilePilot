@@ -1,3 +1,3 @@
-MilePilot OS v3.5 — MP-002 final polish
+MilePilot OS v4.0 — MP-003 Permissions
 Build: 2026-06-27
 If you see this, the NEW files uploaded correctly.
