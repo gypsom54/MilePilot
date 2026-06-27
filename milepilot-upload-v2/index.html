@@ -15,7 +15,7 @@
 :root{
   --bg:#031126;--panel:#0B2348;--blue:#0D6BFF;--muted:#B9C8DD;--line:rgba(255,255,255,.14);--green:#20D781;--red:#EF3333;
   --brand-blue:#0D6BFF;--brand-glow:rgba(13,107,255,.28);--brand-glow-soft:rgba(13,107,255,.18);
-  --brand-pulse-opacity:.88;--brand-pulse-height:2px;
+  --brand-pulse-opacity:.88;--brand-pulse-height:2px;--brand-pulse-alive:4s;
   --headline-spacing:16px;--card-radius:24px;--button-radius:16px;
   --animation-speed:1s;--transition-duration:.5s
 }
@@ -47,7 +47,9 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 .brand-stack{display:flex;flex-direction:column;align-items:flex-start}
 .brand-header{display:flex;flex-direction:column;align-items:flex-start;margin-bottom:18px}
 .brand-header.center{align-items:center;text-align:center;width:100%}
-.brand-pulse{height:var(--brand-pulse-height);border-radius:999px;background:linear-gradient(90deg,transparent 0%,rgba(77,163,255,.58) 14%,rgba(120,190,255,.96) 50%,rgba(77,163,255,.58) 86%,transparent 100%);box-shadow:0 0 36px var(--brand-glow),0 0 14px var(--brand-glow-soft);opacity:var(--brand-pulse-opacity);transform-origin:left center;transform:scaleX(1)}
+.brand-pulse{height:var(--brand-pulse-height);border-radius:999px;background:linear-gradient(90deg,transparent 0%,rgba(77,163,255,.32) 20%,rgba(110,180,255,.78) 50%,rgba(77,163,255,.32) 80%,transparent 100%);box-shadow:0 0 34px var(--brand-glow),0 0 12px var(--brand-glow-soft);opacity:var(--brand-pulse-opacity);transform-origin:left center;transform:scaleX(1)}
+.brand-pulse.alive,.brand-header .brand-pulse:not(#welcomePulse),.brand-stack .brand-pulse,.onboard-brand .brand-pulse:not(#welcomePulse){animation:brandPulseGlow var(--brand-pulse-alive) ease-in-out infinite}
+@keyframes brandPulseGlow{0%,100%{opacity:var(--brand-pulse-opacity);box-shadow:0 0 34px var(--brand-glow),0 0 12px var(--brand-glow-soft)}50%{opacity:calc(var(--brand-pulse-opacity) + .04);box-shadow:0 0 40px rgba(13,107,255,.26),0 0 18px rgba(13,107,255,.12)}}
 .onboard-brand .brand-pulse{width:min(calc(100% + 32px),220px);margin:16px auto 0}
 .brand-stack .brand-pulse,.brand-header .brand-pulse{width:min(calc(100% + 24px),200px);margin-top:12px}
 .brand-header.compact{margin-bottom:14px}
@@ -56,7 +58,7 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 #welcome #welcomePulse{opacity:0;transform:scaleX(0)}
 #welcome .brand-pulse.sweep{animation:brandPulseSweep var(--animation-speed) cubic-bezier(.4,0,.2,1) .15s forwards}
 #welcome .welcome-headline{animation:brandHeadlineIn .55s ease 1.2s forwards;opacity:0}
-@keyframes brandPulseSweep{0%{transform:scaleX(0);opacity:0;filter:brightness(1)}45%{transform:scaleX(1);opacity:1;filter:brightness(1.12)}100%{transform:scaleX(1);opacity:var(--brand-pulse-opacity);filter:brightness(1)}}
+@keyframes brandPulseSweep{0%{transform:scaleX(0);opacity:0}50%{transform:scaleX(1);opacity:var(--brand-pulse-opacity)}100%{transform:scaleX(1);opacity:var(--brand-pulse-opacity)}}
 @keyframes brandHeadlineIn{to{opacity:1}}
 .welcome-headline{text-align:center;font-size:clamp(31px,7.8vw,37px);line-height:1.14;font-weight:700;letter-spacing:-0.03em;margin:0 0 var(--headline-spacing);-webkit-font-smoothing:antialiased}
 .welcome-headline .blue{font-weight:700}
@@ -132,7 +134,7 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 <button class="btn premium-btn" id="welcomeContinue" onclick="showPersonal()" disabled>Continue →</button>
 </div>
 </div>
-<div class="welcome-version" id="appVersion">First Impression v2.7 · MP-001</div>
+<div class="welcome-version" id="appVersion">MP-001 ✅ Complete · v2.8</div>
 </section>
 <section id="personal" class="screen">
 <div class="onboard-bg" aria-hidden="true">
@@ -156,7 +158,7 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 </div>
 <nav class="nav" id="nav"><button id="navHome" onclick="goHome()"><span>⌂</span>Dashboard</button><button id="navReports" onclick="showReports()"><span>▤</span>Reports</button><button id="navHistory" onclick="showHistory()"><span>◷</span>History</button><button id="navSettings" onclick="showSettings()"><span>⚙</span>Settings</button></nav><div class="toast" id="toast"></div><div id="printReport"></div>
 <script>
-const APP_VERSION='2.7';
+const APP_VERSION='2.8';
 function getApiBase(){const s=localStorage.getItem('mp_api_base');if(s)return s.replace(/\/$/,'');if(location.hostname==='localhost'||location.hostname==='127.0.0.1')return 'http://localhost:8787';return 'https://api.milepilot.uk'}
 const API_BASE=getApiBase();
 const FIRST_IMPRESSION_LINES=['Welcome to MilePilot.',"Let's build your driving business.","What's your first name?"];
@@ -168,10 +170,10 @@ function q(id){return document.getElementById(id)}function toast(msg){q('toast')
 function typeInto(id,text,speed=38){let e=q(id);if(!e)return;let i=0;e.innerHTML='';(function f(){if(i<=text.length){e.innerHTML=text.slice(0,i).replace(/\n/g,'<br>')+'<span class="cursor"></span>';i++;setTimeout(f,speed)}else{e.innerHTML=text.replace(/\n/g,'<br>')}})()}
 let welcomeTypingTimers=[];
 function clearWelcomeTyping(){welcomeTypingTimers.forEach(t=>clearTimeout(t));welcomeTypingTimers=[]}
-function startWelcomeTyping(){const el=q('typed');if(!el)return;clearWelcomeTyping();let idx=0;el.style.transition='opacity '+getComputedStyle(document.documentElement).getPropertyValue('--transition-duration')+' ease';function schedule(fn,ms){const t=setTimeout(fn,ms);welcomeTypingTimers.push(t)}function typeLine(text,isLast,cb){let i=0;el.style.opacity='1';el.innerHTML='';(function tick(){if(i<=text.length){el.innerHTML=text.slice(0,i)+'<span class="cursor"></span>';i++;schedule(tick,62)}else{el.innerHTML=isLast?text+'<span class="cursor"></span>':text;schedule(cb,isLast?0:1100)}})()}function step(){if(idx>=FIRST_IMPRESSION_LINES.length)return;const isLast=idx===FIRST_IMPRESSION_LINES.length-1;typeLine(FIRST_IMPRESSION_LINES[idx],isLast,()=>{if(!isLast){el.style.opacity='0';idx++;schedule(step,520)}})}step()}
+function startWelcomeTyping(){const el=q('typed');if(!el)return;clearWelcomeTyping();let idx=0;const fadeMs=480,pauseMs=1300,revealMs=320;function schedule(fn,ms){welcomeTypingTimers.push(setTimeout(fn,ms))}function showLine(){if(idx>=FIRST_IMPRESSION_LINES.length)return;const text=FIRST_IMPRESSION_LINES[idx],isLast=idx===FIRST_IMPRESSION_LINES.length-1;el.style.transition='opacity '+fadeMs+'ms ease';el.style.opacity='0';schedule(()=>{el.innerHTML=isLast?text+'<span class="cursor"></span>':text;el.style.transition='opacity '+revealMs+'ms ease';el.style.opacity='1';if(isLast)return;schedule(()=>{el.style.transition='opacity '+fadeMs+'ms ease';el.style.opacity='0';schedule(()=>{idx++;showLine()},fadeMs)},pauseMs)},idx?fadeMs:0)}showLine()}
 function syncWelcomeContinue(){const btn=q('welcomeContinue'),name=q('name');if(!btn||!name)return;const ready=name.value.trim().length>0;btn.disabled=!ready;btn.classList.toggle('is-ready',ready)}
 function replayFirstImpressionIntro(){playBrandPulse();const headline=document.querySelector('#welcome .welcome-headline');if(headline){headline.style.animation='none';headline.style.opacity='0';void headline.offsetWidth;headline.style.animation=''}}
-function playBrandPulse(){const pulse=q('welcomePulse');if(!pulse)return;pulse.classList.remove('sweep');void pulse.offsetWidth;pulse.classList.add('sweep')}
+function playBrandPulse(){const pulse=q('welcomePulse');if(!pulse)return;pulse.classList.remove('sweep','alive');pulse.onanimationend=null;void pulse.offsetWidth;pulse.classList.add('sweep');pulse.onanimationend=()=>{pulse.classList.remove('sweep');pulse.classList.add('alive')}}
 function initFirstImpression(){replayFirstImpressionIntro();setTimeout(startWelcomeTyping,2050);syncWelcomeContinue();q('name')?.addEventListener('input',syncWelcomeContinue)}
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));q(id).classList.add('active');q('nav').classList.toggle('show',!['welcome','personal','vehicle','ready','emailSetup'].includes(id));window.scrollTo(0,0)}
 function setNav(n){['Home','Reports','History','Settings'].forEach(x=>q('nav'+x).classList.toggle('active',x===n))}
