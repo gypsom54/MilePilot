@@ -262,7 +262,11 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 <button class="btn premium-btn" id="promiseContinue" onclick="startDriving()" disabled>Let's Start Driving →</button>
 </div>
 </div>
-<div class="onboard-version">MP-003 · The MilePilot Promise · v4.2</div>
+<div class="brand-signature" id="promiseSignature" aria-hidden="true">
+<div class="brand-signature-pulse"></div>
+<p class="brand-signature-text">Your business. <span class="blue">On auto pilot.</span></p>
+</div>
+<div class="onboard-version">MP-003 · The MilePilot Promise · v4.3</div>
 </section>
 <!-- MP-004 Permissions — Location & Notifications -->
 <section id="permissions" class="screen" data-mp="MP-004">
@@ -304,7 +308,7 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 </div>
 <nav class="nav" id="nav"><button id="navHome" onclick="goHome()"><span>⌂</span>Dashboard</button><button id="navReports" onclick="showReports()"><span>▤</span>Reports</button><button id="navHistory" onclick="showHistory()"><span>◷</span>History</button><button id="navSettings" onclick="showSettings()"><span>⚙</span>Settings</button></nav><div class="toast" id="toast"></div><div id="printReport"></div>
 <script>
-const APP_VERSION='4.2';
+const APP_VERSION='4.3';
 const MP_001_LOCKED=true;
 const MP_002_LOCKED=true;
 const ONBOARD_SCREENS=['welcome','knowYou','promise','permissions','emailSetup'];
@@ -335,7 +339,7 @@ function confirmVehicle(){if(!selectedVehicle)return;vehicle=selectedVehicle;loc
 let onboardTimers=[];
 function clearOnboardTimers(){onboardTimers.forEach(t=>clearTimeout(t));onboardTimers=[]}
 function fadeInEl(el,delay=0){if(!el)return;el.style.opacity='0';onboardTimers.push(setTimeout(()=>{el.style.transition='opacity .38s cubic-bezier(.22,1,.36,1)';el.style.opacity='1'},delay))}
-function initPromise(){driver=driver||localStorage.getItem('mp_driver')||'';clearOnboardTimers();q('promiseGreeting').textContent=`You're all set, ${driver}.`;const welcome=q('promiseWelcome'),intro=q('promiseIntro'),list=q('promiseList'),btn=q('promiseContinue');if(welcome){welcome.textContent='Welcome to MilePilot.';welcome.style.opacity='0'}if(intro){intro.textContent='Here\'s what MilePilot will do for you.';intro.style.opacity='0'}if(list){list.classList.remove('is-visible');list.style.opacity='0'}if(btn){btn.disabled=true;btn.classList.remove('is-ready')}fadeInEl(welcome,550);fadeInEl(intro,1050);onboardTimers.push(setTimeout(()=>{if(list){list.style.opacity='1';list.classList.add('is-visible')}},1650));onboardTimers.push(setTimeout(()=>{if(btn){btn.disabled=false;btn.classList.add('is-ready')}},2400))}
+function initPromise(){driver=driver||localStorage.getItem('mp_driver')||'';clearOnboardTimers();q('promiseGreeting').textContent=`You're all set, ${driver}.`;const welcome=q('promiseWelcome'),intro=q('promiseIntro'),list=q('promiseList'),btn=q('promiseContinue'),sig=q('promiseSignature');if(welcome){welcome.textContent='Welcome to MilePilot.';welcome.style.opacity='0'}if(intro){intro.textContent='Here\'s what MilePilot will do for you.';intro.style.opacity='0'}if(list){list.classList.remove('is-visible');list.style.opacity='0'}if(btn){btn.disabled=true;btn.classList.remove('is-ready')}if(sig)sig.classList.remove('is-visible');fadeInEl(welcome,550);fadeInEl(intro,1050);onboardTimers.push(setTimeout(()=>{if(list){list.style.opacity='1';list.classList.add('is-visible')}},1650));onboardTimers.push(setTimeout(()=>{if(btn){btn.disabled=false;btn.classList.add('is-ready')}if(sig)sig.classList.add('is-visible')},2400))}
 function startDriving(){localStorage.setItem('mp_onboard_step','permissions');initPermissions();showScreen('permissions')}
 function initPermissions(){clearOnboardTimers();const loc=q('permLocation'),notif=q('permNotifications'),done=q('permDone');if(loc)loc.style.opacity='0';if(notif)notif.style.opacity='0';if(done)done.style.opacity='0';syncPermButtons();fadeInEl(loc,200);fadeInEl(notif,700);fadeInEl(done,1200)}
 function syncPermButtons(){const gps=q('permGpsBtn'),notif=q('permNotifBtn'),locChoice=localStorage.getItem('mp_location_choice'),notifChoice=localStorage.getItem('mp_notifications_choice');if(gps){const done=!!locChoice;gps.textContent=locChoice==='granted'?'GPS Enabled ✓':locChoice==='denied'?'GPS Blocked':locChoice==='skipped'?'Skipped':'Enable GPS';gps.classList.toggle('is-done',done);gps.disabled=done}if(notif){const done=!!notifChoice;notif.textContent=notifChoice==='granted'?'Notifications Enabled ✓':notifChoice==='denied'?'Notifications Blocked':notifChoice==='skipped'?'Skipped':'Enable Notifications';notif.classList.toggle('is-done',done);notif.disabled=done}}

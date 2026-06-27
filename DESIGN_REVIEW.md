@@ -29,6 +29,7 @@ If the answer to all five is **yes**, lock the screen and move on.
 
 - Dark onboard gradient with soft blue glow
 - Brand bar: wordmark + living pulse underline
+- Brand signature: *Your business. On auto pilot.* — glowing line + tagline
 - Conversation over forms — one screen, one idea
 - Premium blue CTAs with calm hover/tap feedback
 - Generous spacing — nothing shouting
