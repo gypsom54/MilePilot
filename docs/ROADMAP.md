@@ -13,8 +13,39 @@
 | Onboarding flow | ~95% 🔒 Locked |
 | Dashboard foundation | ~90% 🔒 Locked |
 | **Core tracking engine** | Sprint 1 → in progress |
-| Reports | ~10% |
+| **PDF Reporting System** | ✅ **LOCKED** — MP-012 v11 |
 | Business intelligence | 0% |
+
+---
+
+## ✅ PDF Reporting System — LOCKED
+
+**Status:** LOCKED  
+**Version:** MP-012 v11 (`MP-012-pdf-v11`)  
+**Branch / PR:** `cursor/mp-012-pdf-layout-fix-ae00` → [#16](https://github.com/gypsom54/MilePilot/pull/16)
+
+### Approved
+
+- Branding approved
+- Layout approved
+- Typography approved
+- Intelligence approved
+- Accountant pages approved
+- Large-number stress testing passed
+- Empty state approved
+- Weekly report approved
+- QR verification approved
+- **Ready for production**
+
+### Policy
+
+**No further work unless a genuine bug is found.**
+
+Every extra tweak now carries risk — spacing regressions, layout bugs, large-number handling breaks, inconsistencies between report types. Treat the PDF engine as a finished feature.
+
+**Health check after deploy:** `"reportVersion": "MP-012-pdf-v11"`
+
+**Test pack:** [MilePilot-PDF-TEST-MP012-v11.zip](https://github.com/gypsom54/MilePilot/raw/cursor/mp-012-pdf-layout-fix-ae00/MilePilot-PDF-TEST-MP012-v11.zip)
 
 ---
 
@@ -52,7 +83,14 @@ End Shift → celebration overlay, report ready, share PDF.
 
 ## Sprint 4 — Reports ⭐⭐⭐⭐⭐
 
-Daily / weekly / monthly, HMRC-ready PDFs, maps, timeline, one-click share.
+**PDF engine: ✅ DONE (locked at MP-012 v11).** Remaining sprint scope:
+
+- [ ] One-click share from app (wire existing PDF endpoint)
+- [ ] Sunday / weekly email automation (Resend)
+- [ ] In-app report preview flow polish (no PDF layout changes)
+- [ ] Monthly / annual report triggers from live shift data
+
+*Do not redesign PDF layout, typography, or page structure.*
 
 ---
 
@@ -85,6 +123,8 @@ Unlimited reports, AI insights, cloud backup, multi-vehicle, accountant access.
 One button → professional PDF proof for Job Centre, HMRC, accountant:
 
 - Every shift, maps, totals, timestamps, weekly/monthly summaries.
+
+**PDF generation is production-ready.** Focus next on live data feeding reports and delivery automation (email, share).
 
 ---
 
