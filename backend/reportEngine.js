@@ -372,7 +372,7 @@ function drawPageHeader(doc, a, margin, contentW, pageW) {
   doc.rect(0, 0, pageW, 108).fill(BRAND.navy);
   doc.fillColor("#FFFFFF").font("Helvetica-Bold").fontSize(28).text("Mile ", margin, 32, { continued: true });
   doc.fillColor(BRAND.blue).text("Pilot");
-  doc.rect(margin, 68, 120, 2).fill(BRAND.blue);
+  doc.rect(margin, 68, 140, 2.5).fill(BRAND.blue);
   doc.fillColor(BRAND.soft).font("Helvetica").fontSize(8).text("Drive • Track • Claim", margin, 78);
   doc.fillColor("#FFFFFF").font("Helvetica-Bold").fontSize(10).text(periodReportTitle(a.period).toUpperCase(), pageW - margin - 220, 36, { width: 220, align: "right", characterSpacing: 0.8 });
   doc.fillColor(BRAND.soft).font("Helvetica").fontSize(9).text(a.generatedAt, pageW - margin - 220, 56, { width: 220, align: "right" });
@@ -556,6 +556,7 @@ export function buildReportEmailHtml(report) {
 <table width="480" cellpadding="0" cellspacing="0" style="max-width:480px;width:100%;">
 <tr><td style="padding:0 8px 32px;text-align:center;">
   <div style="font-size:26px;font-weight:700;color:#FFFFFF;letter-spacing:-0.03em;">Mile <span style="color:#0D6BFF;">Pilot</span></div>
+  <div style="height:2px;width:140px;margin:16px auto 0;border-radius:999px;background:linear-gradient(90deg,rgba(13,107,255,.55),rgba(110,180,255,.95) 50%,rgba(13,107,255,.55);box-shadow:0 0 20px rgba(13,107,255,.35);"></div>
 </td></tr>
 <tr><td style="padding:0 20px;">
   <p style="margin:0 0 12px;font-size:17px;color:#EAF2FF;line-height:1.5;">${greeting} ${name} 👋</p>
