@@ -1,0 +1,15 @@
+{
+  "name": "MilePilot RC3",
+  "short_name": "MilePilot",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#031126",
+  "theme_color": "#031126",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
