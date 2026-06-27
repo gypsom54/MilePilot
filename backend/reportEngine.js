@@ -32,7 +32,7 @@ export const VEHICLE_LABELS = {
   motorcycle: "Motorcycle",
 };
 
-export const REPORT_VERSION = "MP-013-magazine-v4";
+export const REPORT_VERSION = "MP-014-document-v1";
 const APP_URL = "https://app.milepilot.uk";
 
 /** Locked brand lockup — must match app `.brand-bar` exactly */
@@ -388,24 +388,60 @@ function drawFooter(doc, a, margin, contentW) {
   doc.text(`${a.generatedAt} at ${a.generatedAtTime}  ·  Report ID ${a.reportId}  ·  ${REPORT_VERSION}`, margin, footY + 26, { width: contentW, align: "center" });
 }
 
+/** Solid brand pulse — matches app `.brand-pulse` (opaque blue gradient) */
+function drawBrandPulse(doc, x, y, width = BRAND_PULSE_WIDTH) {
+  const h = 2;
+  doc.rect(x, y, width * 0.28, h).fill("#0A52D4");
+  doc.rect(x + width * 0.28, y, width * 0.44, h).fill("#7EC0FF");
+  doc.rect(x + width * 0.72, y, width * 0.28, h).fill("#0A52D4");
+}
+
 function drawPageHeader(doc, a, margin, contentW, pageW) {
-  doc.rect(0, 0, pageW, 118).fill(BRAND.navy);
-  doc.fillColor("#FFFFFF").font("Helvetica-Bold").fontSize(34).text("Mile ", margin, 28, { continued: true });
-  doc.fillColor(BRAND.blue).text("Pilot");
-  doc.rect(margin, 68, 200, 2).fill(BRAND.blue);
-  doc.fillColor(BRAND.soft).font("Helvetica-Bold").fontSize(11).text(BRAND_TAGLINE, margin, 80, { characterSpacing: 0.8 });
-  doc.fillColor("#FFFFFF").font("Helvetica-Bold").fontSize(10).text(periodReportTitle(a.period).toUpperCase(), pageW - margin - 220, 32, { width: 220, align: "right", characterSpacing: 0.8 });
-  doc.fillColor(BRAND.soft).font("Helvetica").fontSize(9).text(a.generatedAt, pageW - margin - 220, 52, { width: 220, align: "right" });
+  doc.rect(0, 0, pageW, 124).fill(BRAND.navy);
+  doc.fillColor("#FFFFFF").font("Helvetica-Bold").fontSize(BRAND_WORDMARK_SIZE).text("Mile ", margin, 26, { continued: true, lineBreak: false });
+  doc.fillColor(BRAND.blue).text("Pilot", { lineBreak: false });
+  drawBrandPulse(doc, margin, 68, BRAND_PULSE_WIDTH);
+  doc.fillColor("#6EB4FF").font("Helvetica-Bold").fontSize(11).text(BRAND_TAGLINE, margin, 80, { characterSpacing: 1.2 });
+  const rightX = pageW - margin - 200;
+  doc.fillColor("#FFFFFF").font("Helvetica-Bold").fontSize(10).text(periodReportTitle(a.period).toUpperCase(), rightX, 30, { width: 200, align: "right", characterSpacing: 0.6 });
+  doc.fillColor(BRAND.soft).font("Helvetica").fontSize(9).text(a.generatedAt, rightX, 48, { width: 200, align: "right" });
   if (a.driver) {
-    doc.text(`Prepared for ${a.driver}`, pageW - margin - 220, 68, { width: 220, align: "right" });
+    doc.text(`Prepared for ${a.driver}`, rightX, 64, { width: 200, align: "right" });
   }
-  return 132;
+  return 138;
 }
 
 function drawMetricCard(doc, x, y, w, h, label, value) {
   doc.roundedRect(x, y, w, h, 12).fillAndStroke(BRAND.light, BRAND.border);
-  doc.fillColor(BRAND.muted).font("Helvetica").fontSize(7.5).text(label.toUpperCase(), x + 14, y + 12, { width: w - 28, characterSpacing: 0.6 });
-  doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(16).text(value, x + 14, y + 28, { width: w - 28 });
+  doc.fillColor(BRAND.muted).font("Helvetica").fontSize(7.5).text(label.toUpperCase(), x + 14, y + 12, { width: w - 28, characterSpacing: 0.6, lineGap: 0 });
+  doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(15).text(String(value), x + 14, y + 30, { width: w - 28, lineBreak: false });
+}
+
+/** Accountant-ready HMRC block — label and value stacked (no overlap) */
+function drawHmrcSummaryBox(doc, a, margin, contentW, y) {
+  const boxH = 98;
+  const rightX = margin + Math.round(contentW * 0.54);
+  const rightW = contentW - Math.round(contentW * 0.54) - 18;
+
+  doc.roundedRect(margin, y, contentW, boxH, 14).fillAndStroke("#EEF4FF", BRAND.blue);
+
+  doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(13).text("HMRC Summary", margin + 18, y + 16);
+
+  doc.fillColor(BRAND.muted).font("Helvetica").fontSize(9);
+  doc.text(`Current HMRC rate: ${Math.round(a.hmrcRate * 100)}p per mile`, margin + 18, y + 38, { width: contentW * 0.48 });
+  doc.text(`Business miles: ${a.totals.mi.toFixed(1)}`, margin + 18, y + 52, { width: contentW * 0.48 });
+
+  doc.fillColor(BRAND.muted).font("Helvetica-Bold").fontSize(7.5).text("ESTIMATED MILEAGE ALLOWANCE", rightX, y + 20, { width: rightW, align: "right", characterSpacing: 0.5 });
+  doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(28).text(money(a.totals.hmrc), rightX, y + 36, { width: rightW, align: "right", lineBreak: false });
+
+  doc.fillColor(BRAND.muted).font("Helvetica").fontSize(7.5).text(
+    "Estimates for record keeping only. Verify against official HMRC guidance before filing.",
+    margin + 18,
+    y + boxH - 20,
+    { width: contentW - 36, lineGap: 1 }
+  );
+
+  return y + boxH + 18;
 }
 
 function drawProgressBar(doc, x, y, w, h, pct) {
@@ -497,7 +533,7 @@ export function buildPdfBuffer(report) {
     } else {
       a.shifts.forEach((s, idx) => {
         const rowH = 24;
-        if (y + rowH > doc.page.height - 80) {
+        if (y + rowH > doc.page.height - 180) {
           drawFooter(doc, a, margin, contentW);
           doc.addPage({ margin: 0 });
           y = drawPageHeader(doc, a, margin, contentW, pageW) + 20;
@@ -513,6 +549,13 @@ export function buildPdfBuffer(report) {
         y += rowH;
       });
     }
+
+    if (y + 120 > doc.page.height - 80) {
+      drawFooter(doc, a, margin, contentW);
+      doc.addPage({ margin: 0 });
+      y = drawPageHeader(doc, a, margin, contentW, pageW) + 20;
+    }
+    y = drawHmrcSummaryBox(doc, a, margin, contentW, y);
 
     drawFooter(doc, a, margin, contentW);
 

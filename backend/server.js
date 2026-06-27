@@ -109,6 +109,24 @@ app.post("/reports/send", async (req, res) => {
   }
 });
 
+app.post("/reports/pdf", async (req, res) => {
+  try {
+    const pdf = await buildPdfBuffer(req.body);
+    const periodLabel = req.body.period || "Daily";
+    const dateSlug = new Date().toISOString().slice(0, 10);
+    const filename = `MilePilot-${String(periodLabel).toLowerCase()}-report-${dateSlug}.pdf`;
+
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", `inline; filename="${filename}"`);
+    res.send(pdf);
+  } catch (err) {
+    console.error("PDF generation failed:", err);
+    return res.status(500).json({
+      message: err.message || "PDF generation failed",
+    });
+  }
+});
+
 app.post("/reports/subscribe", async (req, res) => {
   try {
     const { email, frequency, prefs, driver } = req.body || {};
