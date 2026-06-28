@@ -3,14 +3,6 @@ www/
 assets/web/
 .expo/
 dist/
-.capacitor/
-android/.gradle/
-android/app/build/
-android/build/
-android/local.properties
-ios/App/Pods/
-ios/App/build/
-ios/DerivedData/
 *.apk
 *.aab
 *.ipa

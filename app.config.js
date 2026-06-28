@@ -27,10 +27,6 @@ module.exports = {
         UIBackgroundModes: ['location', 'fetch'],
         ITSAppUsesNonExemptEncryption: false,
       },
-      config: {
-        // react-native-maps uses Apple Maps on iOS by default (no Google key required)
-        googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
-      },
     },
     android: {
       package: 'com.milepilot.app',
@@ -50,7 +46,6 @@ module.exports = {
     },
     plugins: [
       'expo-dev-client',
-      'expo-asset',
       [
         'expo-location',
         {
@@ -73,11 +68,6 @@ module.exports = {
       eas: {
         projectId: process.env.EAS_PROJECT_ID || 'REPLACE_WITH_EAS_PROJECT_ID',
       },
-      /**
-       * MilePilot UI loads from this URL inside the Expo WebView.
-       * Deploy frontend/ to Cloudflare, or set WEB_APP_URL to a local dev server.
-       * Bundled assets/web/ is synced for future offline use.
-       */
       webAppUrl:
         process.env.WEB_APP_URL ||
         'https://app.milepilot.uk/?runtime=expo&v=8.11.0',

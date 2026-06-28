@@ -1,0 +1,15 @@
+# Capacitor native projects — EAS Build uses Expo Prebuild instead (app.config.js).
+# These folders are kept for optional local Capacitor workflows only.
+android/
+ios/
+www/
+node_modules/
+.expo/
+dist/
+assets/web/
+*.apk
+*.aab
+*.ipa
+.git/
+milepilot-upload-v2/
+MilePilot-*.zip

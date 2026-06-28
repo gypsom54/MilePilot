@@ -2,30 +2,22 @@
   "name": "milepilot",
   "version": "8.11.0",
   "private": true,
-  "description": "MilePilot — business mileage tracking (web PWA + Expo native shell)",
+  "description": "MilePilot — business mileage tracking (Expo native shell + web PWA)",
   "main": "index.js",
   "scripts": {
     "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "sync:expo-web": "bash scripts/sync-expo-web.sh",
-    "sync:www": "bash scripts/sync-www.sh",
-    "prestart": "npm run sync:expo-web",
-    "prebuild": "npm run sync:expo-web",
-    "cap:sync": "npm run sync:www && npx cap sync && node scripts/patch-android-permissions.js && node scripts/patch-ios-permissions.js",
-    "android:open": "npm run cap:sync && npx cap open android",
-    "ios:open": "npm run cap:sync && npx cap open ios",
-    "android:assemble": "npm run cap:sync && cd android && ./gradlew assembleDebug",
-    "postinstall": "node scripts/patch-android-permissions.js 2>/dev/null || true; node scripts/patch-ios-permissions.js 2>/dev/null || true"
+    "start:dev-client": "expo start --dev-client",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "doctor": "npx expo-doctor",
+    "sync:expo-web": "node scripts/sync-expo-web.js",
+    "prestart": "node scripts/sync-expo-web.js",
+    "prebuild": "node scripts/sync-expo-web.js",
+    "build:ios:preview": "eas build --platform ios --profile preview",
+    "build:ios:production": "eas build --platform ios --profile production",
+    "submit:ios": "eas submit --platform ios --latest"
   },
   "dependencies": {
-    "@capacitor/android": "^6.2.0",
-    "@capacitor/app": "^6.0.2",
-    "@capacitor/core": "^6.2.0",
-    "@capacitor/geolocation": "^6.1.0",
-    "@capacitor/ios": "^6.2.0",
-    "@capacitor/splash-screen": "^6.0.3",
-    "babel-preset-expo": "~56.0.0",
     "expo": "~56.0.12",
     "expo-asset": "~56.0.17",
     "expo-constants": "~56.0.18",
@@ -41,8 +33,7 @@
     "react-native-webview": "13.16.1"
   },
   "devDependencies": {
-    "@capacitor/cli": "^6.2.0",
-    "eas-cli": "^16.0.0"
+    "babel-preset-expo": "~56.0.0"
   },
   "engines": {
     "node": ">=18"
