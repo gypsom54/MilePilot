@@ -1,18 +1,19 @@
-MilePilot — UPLOAD v8.9.6
+MilePilot — UPLOAD v8.9.7
 =========================
 
 Download:
-https://github.com/gypsom54/MilePilot/raw/cursor/mp-042-email-pdf-deeplink-ae00/MilePilot-UPLOAD-v8.9.6.zip
+https://github.com/gypsom54/MilePilot/raw/cursor/mp-043-input-design-unify-ae00/MilePilot-UPLOAD-v8.9.7.zip
 
 After upload, verify:
 https://app.milepilot.uk/version.txt
-Must show: MilePilot OS v8.9.6 — MP-042 email PDF download + deep-link routing
+Must show: MilePilot OS v8.9.7 — MP-043 unified input design + email screen layout
 
-WHAT'S IN v8.9.6
+WHAT'S IN v8.9.7
 ----------------
-• Email PDF download opens report directly (not welcome/sign-on screen)
-• App deep links skip welcome and open Document Centre
-• MP-041 GPS background mileage fix + shift complete Done button layout
+• Unified bright input boxes (mp-field) on welcome, email onboarding, settings, reports, modals
+• Email screen headline fits on all phone sizes — clearer copy
+• Fixed browser autofill yellow flash on name/email fields
+• ftueEmail registered as proper onboard screen (layout + background)
 
 FILES IN ZIP (upload all to Cloudflare Pages root)
 --------------------------------------------------
@@ -27,5 +28,3 @@ js/driver-intelligence.js
 js/plan-ux.js
 js/pioneer.js
 js/pwa-device.js
-
-NOTE: Backend (Railway) must also be deployed for email PDF download links to work.

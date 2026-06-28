@@ -311,9 +311,9 @@
     getCompletedShiftCount,
     getReleaseNotes: function () {
       return [
-        'v8.9.6 — Email PDF download opens report directly (MP-042)',
-        '• Download PDF button in emails hits API — not onboarding screen',
-        '• App deep links skip welcome and open Document Centre',
+        'v8.9.7 — Unified input design across all screens (MP-043)',
+        '• Same bright input boxes on welcome, email, settings, reports',
+        '• Email onboarding headline fits properly; no browser autofill yellow flash',
       ].join('\n');
     },
   };
