@@ -271,6 +271,12 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 #welcome .premium-btn:disabled{pointer-events:none;opacity:.72}
 .welcome-form-minimal{margin-top:8px}
 .welcome-form-minimal .premium-btn{margin-top:0}
+#welcome.is-returning .welcome-headline-fresh,#welcome.is-returning .welcome-support-fresh,#welcome.is-returning #welcomeFreshBlock{display:none!important}
+#welcome.is-returning .welcome-headline-returning,#welcome.is-returning .welcome-support-returning{display:block}
+#welcome.is-returning #welcomeReturningBlock{display:block}
+#welcome.is-fresh .welcome-headline-returning,#welcome.is-fresh .welcome-support-returning,#welcome.is-fresh #welcomeReturningBlock{display:none!important}
+#welcome.is-fresh #welcomeFreshBlock{display:block}
+#welcome.is-fresh .welcome-headline-fresh,#welcome.is-fresh .welcome-support-fresh{display:block}
 .cc-ap-calm-lines{display:none;margin:0;padding:0}
 .cc-ap-health.is-calm .cc-ap-health-head{display:none}
 .cc-ap-health.is-calm{padding-top:18px}
@@ -689,45 +695,120 @@ body.map-expand-open{overflow:hidden}
 <div class="wordmark">Mile <span class="blue">Pilot</span></div>
 <div class="brand-pulse alive" id="welcomePulse"></div><p class="brand-tagline">Drive • Track • Claim</p>
 </div>
-<h1 class="welcome-headline">Your business.<br><span class="blue">On AutoPilot.</span></h1>
-<p class="welcome-support">Drive. Track. Claim. Everything else runs automatically.</p>
-<div class="welcome-form welcome-form-minimal">
+<h1 class="welcome-headline welcome-headline-returning">Your business.<br><span class="blue">On AutoPilot.</span></h1>
+<p class="welcome-support welcome-support-returning">Drive. Track. Claim. Everything else runs automatically.</p>
+<div id="welcomeReturningBlock" class="welcome-form welcome-form-minimal" hidden>
 <button type="button" class="btn premium-btn is-ready" id="welcomeContinue" onclick="if(window.__welcomeContinue)window.__welcomeContinue()">Continue →</button>
+</div>
+<div id="welcomeFreshBlock" class="welcome-form">
+<h1 class="welcome-headline welcome-headline-fresh">Every business mile.<br><span class="blue">On AutoPilot.</span></h1>
+<p class="welcome-support welcome-support-fresh">Set it up once. MilePilot quietly records your business travel, prepares your records and delivers reports — without you lifting a finger.</p>
+<div class="welcome-features">
+<div class="welcome-feature"><div class="welcome-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M12 3v2.2M12 18.8V21M3 12h2.2M18.8 12H21M5.6 5.6l1.6 1.6M16.8 16.8l1.6 1.6M5.6 18.4l1.6-1.6M16.8 7.2l1.6-1.6"/><path d="M12 8.8v3.2l2.2 1.2"/></svg></div><strong>Auto-detect</strong><span>Never forget another business mile</span></div>
+<div class="welcome-feature"><div class="welcome-icon"><svg viewBox="0 0 24 24"><path d="M7 4h10a1 1 0 011 1v14a1 1 0 01-1 1H7a1 1 0 01-1-1V5a1 1 0 011-1z"/><path d="M9 8h6M9 12h6M9 16h4"/><path d="M15.5 15.5l2 2 3.5-4.5"/></svg></div><strong>Reports</strong><span>Ready when you need them</span></div>
+<div class="welcome-feature"><div class="welcome-icon"><svg viewBox="0 0 24 24"><path d="M12 3.2l6.2 3.6v5.2c0 3.8-2.6 6.8-6.2 7.8-3.6-1-6.2-4-6.2-7.8V6.8L12 3.2z"/><path d="M9.2 12.2l1.8 1.8 3.8-3.8"/></svg></div><strong>Records</strong><span>Already prepared for you</span></div>
+<div class="welcome-feature"><div class="welcome-icon"><svg viewBox="0 0 24 24"><path d="M4 18V6M4 18h16"/><path d="M8 15l2.5-3 2.5 2 3-5 2.5 3.5"/></svg></div><strong>AutoPilot</strong><span>Everything saved automatically</span></div>
+</div>
+<div class="welcome-question-wrap"><div class="welcome-question" id="typed">Welcome to MilePilot.</div></div>
+<div class="welcome-input-wrap">
+<svg class="welcome-input-icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M5 20c0-4 3-6 7-6s7 2 7 6"/></svg>
+<input id="name" placeholder="Enter your first name" autocomplete="given-name">
+</div>
+<button type="button" class="btn premium-btn" id="welcomeNameContinue" disabled>Continue →</button>
 </div>
 </div>
 <div class="welcome-version" id="appVersion">MP-001 🔒 Locked · v2.8</div>
 </section>
 <script>
-/* MP-030 welcome — Continue straight into FTUE */
+/* MP-039 — Returning welcome (short) vs fresh signup welcome (animated + name) */
 (function(){
+  var LINES=['Welcome to MilePilot.','Set it up once.','Then MilePilot works automatically.','What\'s your first name?'];
   var ONBOARD=['bootSplash','welcome','permissions','reportSetup','ftueEmail','autoPilotReady','planPick','workType','autoPilotSetup','knowYou','promise','notifications'];
+  var timers=[],freshWired=false,returnWired=false;
   function q(id){return document.getElementById(id)}
+  function clearTimers(){timers.forEach(function(t){clearTimeout(t)});timers=[]}
+  function playPulse(){
+    var pulse=q('welcomePulse');if(!pulse)return;
+    var finish=function(){pulse.classList.remove('sweep');pulse.classList.add('alive');pulse.onanimationend=null};
+    pulse.classList.remove('sweep','alive');pulse.onanimationend=null;void pulse.offsetWidth;
+    pulse.classList.add('sweep');pulse.onanimationend=function(e){if(e.target===pulse)finish()};
+    timers.push(setTimeout(finish,1300));
+  }
+  function startTyping(){
+    var el=q('typed');if(!el)return;clearTimers();
+    var idx=0,fadeMs=480,pauseMs=1300,revealMs=320;
+    function schedule(fn,ms){timers.push(setTimeout(fn,ms))}
+    function showLine(){
+      if(idx>=LINES.length)return;
+      var text=LINES[idx],isLast=idx===LINES.length-1;
+      if(idx===0){el.innerHTML=text;el.style.transition='opacity '+revealMs+'ms ease';el.style.opacity='1';if(isLast)return;schedule(function(){el.style.transition='opacity '+fadeMs+'ms ease';el.style.opacity='0';schedule(function(){idx++;showLine()},fadeMs)},pauseMs);return}
+      el.style.transition='opacity '+fadeMs+'ms ease';el.style.opacity='0';
+      schedule(function(){el.innerHTML=text;el.style.transition='opacity '+revealMs+'ms ease';el.style.opacity='1';if(isLast)return;schedule(function(){el.style.transition='opacity '+fadeMs+'ms ease';el.style.opacity='0';schedule(function(){idx++;showLine()},fadeMs)},pauseMs)},fadeMs);
+    }
+    showLine();
+  }
+  function syncFreshContinue(){
+    var name=q('name'),btn=q('welcomeNameContinue');if(!name||!btn)return;
+    var ready=name.value.trim().length>0;btn.disabled=!ready;btn.classList.toggle('is-ready',ready);
+  }
   function welcomeShowScreen(id){
     document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active')});
     var el=q(id);if(el)el.classList.add('active');
     var nav=q('nav');if(nav)nav.classList.toggle('show',ONBOARD.indexOf(id)<0);
     window.scrollTo(0,0);
   }
-  function welcomeContinue(){
+  function welcomeSubmitFresh(){
+    var nameEl=q('name');if(!nameEl)return;
+    var n=nameEl.value.trim();if(!n)return;
+    try{localStorage.setItem('mp_driver',n);localStorage.setItem('mp_onboard_step','planPick')}catch(e){}
+    if(typeof window.goToOnboardingStep==='function'){window.goToOnboardingStep('planPick');var greet=q('planPickGreeting');if(greet)greet.textContent='Great to meet you, '+n+' 👋';return}
+    welcomeShowScreen('planPick');
+    var greet=q('planPickGreeting');if(greet)greet.textContent='Great to meet you, '+n+' 👋';
+  }
+  function welcomeContinueReturning(){
     if(typeof window.continueFromWelcome==='function'){window.continueFromWelcome();return}
-    try{localStorage.setItem('mp_onboard_step','reportSetup')}catch(e){}
-    if(typeof window.goToOnboardingStep==='function'){window.goToOnboardingStep('reportSetup');return}
-    welcomeShowScreen('reportSetup');
+    welcomeShowScreen('planPick');
   }
-  function wireWelcomeForm(){
+  function wireFreshWelcome(){
+    if(freshWired)return;freshWired=true;
+    var name=q('name'),btn=q('welcomeNameContinue');
+    if(name){name.addEventListener('input',syncFreshContinue);name.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();if(!btn||btn.disabled)return;welcomeSubmitFresh()}})}
+    if(btn)btn.addEventListener('click',welcomeSubmitFresh);
+    syncFreshContinue();
+  }
+  function wireReturningWelcome(){
+    if(returnWired)return;returnWired=true;
     var btn=q('welcomeContinue');
-    if(btn&&!btn.dataset.wired){btn.dataset.wired='1';btn.addEventListener('click',welcomeContinue)}
+    if(btn&&!btn.dataset.wired){btn.dataset.wired='1';btn.addEventListener('click',welcomeContinueReturning)}
   }
-  function bootWelcomeCeremony(){
-    wireWelcomeForm();
+  function setWelcomeMode(mode){
+    var screen=q('welcome');if(!screen)return;
+    screen.classList.remove('is-returning','is-fresh');
+    screen.classList.add(mode==='returning'?'is-returning':'is-fresh');
+    var ret=q('welcomeReturningBlock'),fresh=q('welcomeFreshBlock');
+    if(ret)ret.hidden=mode!=='returning';
+    if(fresh)fresh.hidden=mode!=='fresh';
+  }
+  function bootWelcomeCeremony(mode){
     if(!q('welcome')||!q('welcome').classList.contains('active'))return;
-    var pulse=q('welcomePulse');if(pulse){pulse.classList.add('alive')}
+    setWelcomeMode(mode||'fresh');
+    playPulse();
+    if(mode==='returning'){
+      wireReturningWelcome();
+      var pulse=q('welcomePulse');if(pulse)pulse.classList.add('alive');
+      return;
+    }
+    wireFreshWelcome();
+    var name=q('name');if(name&&!name.value.trim()){name.value=''}
+    timers.push(setTimeout(startTyping,900));
   }
-  window.__wireWelcomeForm=wireWelcomeForm;
+  window.__setWelcomeMode=setWelcomeMode;
   window.__bootWelcomeCeremony=bootWelcomeCeremony;
-  window.__welcomeContinue=welcomeContinue;
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bootWelcomeCeremony);
-  else bootWelcomeCeremony();
+  window.__resetWelcomeCeremony=function(){freshWired=false;returnWired=false;clearTimers();var btn=q('welcomeContinue');if(btn)delete btn.dataset.wired};
+  window.__welcomeSubmitFresh=welcomeSubmitFresh;
+  window.__welcomeContinue=welcomeContinueReturning;
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){bootWelcomeCeremony('fresh')});
+  else bootWelcomeCeremony('fresh');
 })();
 </script>
 <!-- MP-020 Plan selection -->
@@ -1302,7 +1383,7 @@ body.map-expand-open{overflow:hidden}
 </div>
 <script>
 (function(){
-  var v='8.9.1',files=['plan-ux.js','tracking-engine.js','driver-intelligence.js','pioneer.js','pwa-device.js'],i=0;
+  var v='8.9.2',files=['plan-ux.js','tracking-engine.js','driver-intelligence.js','pioneer.js','pwa-device.js'],i=0;
   window.__mpScriptVersion=v;
   window.__mpScriptsReady=false;
   function next(){
@@ -1316,8 +1397,8 @@ body.map-expand-open{overflow:hidden}
 })();
 </script>
 <script>
-const APP_VERSION='8.9.1';
-const BUILD_NUMBER='MP-038';
+const APP_VERSION='8.9.2';
+const BUILD_NUMBER='MP-039';
 const ONBOARD_COMPLETE_KEY='mp_onboard_complete';
 const ONBOARD_FLAG_ACCOUNT='mp_has_account';
 const ONBOARD_FLAG_REPORT='mp_has_report_schedule';
@@ -1382,7 +1463,8 @@ function markInitialSetupComplete(){localStorage.setItem(ONBOARD_FLAG_SETUP,'tru
 function markOnboardingComplete(){localStorage.setItem(ONBOARD_COMPLETE_KEY,'true');localStorage.removeItem('mp_onboard_step');localStorage.removeItem('mp_onboarding_reset');if(typeof MPPioneer!=='undefined')MPPioneer.recordSetupComplete()}
 function reconcileOnboardingState(){syncOnboardingFlagsFromData();if(!hasCompletedInitialSetup())return false;if(localStorage.getItem(ONBOARD_COMPLETE_KEY)!=='true')markOnboardingComplete();else localStorage.setItem(ONBOARD_FLAG_SETUP,'true');localStorage.removeItem('mp_onboard_step');return true}
 function routeReturningUserToDashboard(){showStatus('Loading MilePilot…');driver=localStorage.getItem('mp_driver')||driver||'';vehicle=localStorage.getItem('mp_vehicle')||vehicle||'car';if(parseDeepLink()){hideStatus();showReports();return}goHome();setTimeout(hideStatus,120)}
-function showWelcomeBrandMoment(){localStorage.removeItem('mp_onboard_step');showScreen('welcome');initFirstImpression()}
+function isReturningWelcomeUser(){if(localStorage.getItem('mp_onboarding_reset')==='true')return false;return hasCompletedInitialSetup()}
+function showWelcomeBrandMoment(){localStorage.removeItem('mp_onboard_step');showScreen('welcome');initFirstImpression(isReturningWelcomeUser()?'returning':'fresh')}
 function getApiBase(){const s=localStorage.getItem('mp_api_base');if(s)return s.replace(/\/$/,'');if(location.hostname==='localhost'||location.hostname==='127.0.0.1')return 'http://localhost:8787';return 'https://milepilot-production.up.railway.app'}
 const API_BASE=getApiBase();
 async function apiPost(path,payload){if(isNetworkOffline())throw new Error(trackingErrorMessage('offline'));const bases=[getApiBase()];if(!bases.includes('https://api.milepilot.uk'))bases.push('https://api.milepilot.uk');if(!bases.includes('https://milepilot-production.up.railway.app'))bases.push('https://milepilot-production.up.railway.app');let lastErr=null;for(const base of bases){try{const res=await fetch(base+path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});const data=await res.json().catch(()=>({}));if(res.ok||res.status<500||data.message)return{res,data,base};lastErr=new Error(data.message||'Request failed')}catch(e){lastErr=e}}throw lastErr||new Error('Failed to fetch')}
@@ -1437,7 +1519,7 @@ function syncWelcomeContinue(){const btn=q('welcomeContinue');if(btn){btn.disabl
 function replayFirstImpressionIntro(){playBrandPulse()}
 function playBrandPulse(){const pulse=q('welcomePulse');if(!pulse)return;pulse.classList.add('alive')}
 let welcomeIntroBound=false;
-function initFirstImpression(){updateAppVersionBadge();if(typeof window.__wireWelcomeForm==='function')window.__wireWelcomeForm();if(typeof window.__bootWelcomeCeremony==='function')window.__bootWelcomeCeremony()}
+function initFirstImpression(mode){updateAppVersionBadge();if(typeof window.__bootWelcomeCeremony==='function')window.__bootWelcomeCeremony(mode||(isReturningWelcomeUser()?'returning':'fresh'))}
 function updateAppVersionBadge(){const el=q('appVersion');if(el)el.textContent='MP-001 🔒 Locked · App v'+APP_VERSION;setText('ccVersion','MilePilot v'+APP_VERSION)}
 let knowYouTimers=[];
 function clearKnowYouMessaging(){knowYouTimers.forEach(t=>clearTimeout(t));knowYouTimers=[]}
@@ -1517,7 +1599,7 @@ function saveSettingsPicker(){if(!settingsPickerKind||!settingsPickerValue)retur
 function renderTrackerDashboard(mode){if(mode==='today_done'){const recap=q('ccDayRecap');if(recap)recap.hidden=true}}
 function applyPlanDashboardClasses(body,mode){if(!body)return;body.classList.toggle('is-tracker',MPPlanUX.isTracker());body.classList.toggle('is-tracker-active',MPPlanUX.isTracker()&&isShiftLiveDashboard());const healthCard=q('ccApHealth');if(healthCard)healthCard.hidden=false}
 function saveEmailSetup(){let e=q('emailInput').value.trim();if(e)localStorage.setItem('mp_email',e);goHome()}
-function resetOnboarding(){try{stopGpsWatch();releaseWakeLock();gpsLocked=false;if(timer){clearInterval(timer);timer=null}if(gpsReconnectTimer){clearTimeout(gpsReconnectTimer);gpsReconnectTimer=null}if(typeof MPTracking!=='undefined'){MPTracking.clearActiveShift();MPTracking.forceIdle();syncEngineState()}localStorage.setItem('mp_onboarding_reset','true');FRESH_START_KEYS.forEach(k=>localStorage.removeItem(k));shifts=[];driver='';vehicle='car';selectedVehicle=null;selectedPlan=null;selectedWorkType=null;pendingStayUpdatedAfterShift=false;welcomeIntroBound=false;clearWelcomeTyping();clearKnowYouMessaging();clearOnboardTimers();document.querySelectorAll('.vehicle-card').forEach(c=>c.classList.remove('selected'));const welcomeBtn=q('welcomeContinue');if(welcomeBtn){welcomeBtn.disabled=false;welcomeBtn.classList.add('is-ready');delete welcomeBtn.dataset.wired}goToOnboardingStep('planPick');if(typeof window.__wireWelcomeForm==='function')window.__wireWelcomeForm();toast('Starting fresh — full setup from the beginning')}catch(err){console.error('MilePilot reset onboarding',err);toast('Reset failed — refresh and try again')}}
+function resetOnboarding(){try{stopGpsWatch();releaseWakeLock();gpsLocked=false;if(timer){clearInterval(timer);timer=null}if(gpsReconnectTimer){clearTimeout(gpsReconnectTimer);gpsReconnectTimer=null}if(typeof MPTracking!=='undefined'){MPTracking.clearActiveShift();MPTracking.forceIdle();syncEngineState()}localStorage.setItem('mp_onboarding_reset','true');FRESH_START_KEYS.forEach(k=>localStorage.removeItem(k));shifts=[];driver='';vehicle='car';selectedVehicle=null;selectedPlan=null;selectedWorkType=null;pendingStayUpdatedAfterShift=false;welcomeIntroBound=false;if(typeof window.__resetWelcomeCeremony==='function')window.__resetWelcomeCeremony();clearWelcomeTyping();clearKnowYouMessaging();clearOnboardTimers();document.querySelectorAll('.vehicle-card').forEach(c=>c.classList.remove('selected'));const nameEl=q('name');if(nameEl)nameEl.value='';const freshBtn=q('welcomeNameContinue');if(freshBtn){freshBtn.disabled=true;freshBtn.classList.remove('is-ready')}const retBtn=q('welcomeContinue');if(retBtn){retBtn.disabled=false;retBtn.classList.add('is-ready');delete retBtn.dataset.wired}showWelcomeBrandMoment();toast('Starting fresh — enter your name to begin')}catch(err){console.error('MilePilot reset onboarding',err);toast('Reset failed — refresh and try again')}}
 function clearData(){stopGpsWatch();releaseWakeLock();gpsLocked=false;if(timer){clearInterval(timer);timer=null}if(gpsReconnectTimer){clearTimeout(gpsReconnectTimer);gpsReconnectTimer=null}localStorage.removeItem('mp_shifts');MPTracking.clearActiveShift();shifts=[];MPTracking.forceIdle();syncEngineState();toast('Test shifts cleared');renderCommandCentre()}
 function goHome(){setNav('Home');try{renderCommandCentre()}catch(err){console.error('MilePilot dashboard render',err)}showScreen('home');if(typeof MPPwaDevice!=='undefined')MPPwaDevice.onDashboardReady()}
 function fmtShort(s){s=Number(s)||0;if(s<60)return '0h';let m=Math.floor(s/60),h=Math.floor(m/60);return h?h+'h '+String(m%60).padStart(2,'0')+'m':m+'m'}

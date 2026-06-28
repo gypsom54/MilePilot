@@ -1,1 +1,1 @@
-MilePilot OS v8.9.0 — MP-036 Real device testing build
+MilePilot OS v8.9.2 — MP-039 Dual welcome fresh vs returning
