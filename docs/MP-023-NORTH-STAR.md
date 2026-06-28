@@ -32,6 +32,20 @@ This is the foundation of every product decision.
 
 ---
 
+## The Product Rule
+
+If adding a feature **increases user effort**, stop.
+
+Find a way for **AutoPilot** to do it instead.
+
+The goal is not more features.
+
+The goal is **fewer decisions**.
+
+**Every screen should feel calmer than the last.**
+
+---
+
 ## AutoPilot
 
 AutoPilot is a **core product feature**.
@@ -118,6 +132,8 @@ Every future feature must answer:
 Reduce taps. Reduce decisions. Reduce admin.
 
 If a feature creates unnecessary work → remove it, hide it, or automate it.
+
+**The Product Rule:** If a feature increases user effort, stop — find a way for AutoPilot to do it instead. Every screen should feel calmer than the last.
 
 ---
 

@@ -81,6 +81,8 @@ If copy talks about features instead of benefits — rewrite it.
 
 We are selling **peace of mind**, not software.
 
+**The Product Rule (MP-023):** If a feature increases user effort, stop. AutoPilot should do it instead. Every screen calmer than the last.
+
 ---
 
 ## Related docs

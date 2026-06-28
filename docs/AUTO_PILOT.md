@@ -15,6 +15,8 @@ Every feature must pass:
 If **yes** — automate it.  
 If **no** — ask the user only when absolutely necessary.
 
+**The Product Rule:** If a feature increases user effort, stop. Find a way for AutoPilot to do it instead. The goal is fewer decisions — every screen calmer than the last.
+
 ---
 
 ## Driving flow

@@ -522,6 +522,7 @@ body.map-expand-open{overflow:hidden}
 .cc-body.is-tracker .cc-pro-only{display:none!important}
 .cc-body.is-tracker-active .cc-tracker-hide-active{display:none!important}
 .cc-body.is-tracker:not(.is-active):not(.is-today-done) .cc-idle-detail{display:none!important}
+.cc-body:not(.is-active):not(.is-today-done) .cc-layer2-idle{display:none!important}
 .autopilot-status-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
 .autopilot-status-list li{display:flex;align-items:flex-start;gap:10px;font-size:14px;font-weight:500;line-height:1.45;color:rgba(159,180,208,.92);letter-spacing:.01em}
 .autopilot-status-list li.is-ok{color:rgba(32,215,129,.92)}
@@ -910,7 +911,7 @@ body.map-expand-open{overflow:hidden}
 <p class="cc-status" id="ccStatus">AutoPilot has your records covered.</p>
 <p class="cc-gps-status" id="ccGpsStatus" hidden></p>
 </div>
-<div class="cc-context-row cc-pro-only" id="ccContextRow" hidden>
+<div class="cc-context-row cc-pro-only cc-layer2-idle" id="ccContextRow" hidden>
 <div class="cc-context-chip"><span class="cc-context-chip-label">Today's goal</span><span class="cc-context-chip-value" id="ccGoalValue">0 miles</span></div>
 <div class="cc-context-chip"><span class="cc-context-chip-label">Weather</span><span class="cc-context-chip-value" id="ccWeatherValue">—</span></div>
 </div>
@@ -974,7 +975,7 @@ body.map-expand-open{overflow:hidden}
 <p class="cc-insight" id="ccReportStatusText" hidden style="margin:0"></p>
 </div>
 <div class="cc-divider" aria-hidden="true"></div>
-<div class="cc-card cc-day-recap cc-pro-only" id="ccDayRecap" hidden>
+<div class="cc-card cc-day-recap cc-pro-only cc-layer2-idle" id="ccDayRecap" hidden>
 <div class="cc-metrics">
 <div class="cc-metric"><span>Estimated HMRC claim</span><strong id="ccRecapHmrc">£0.00</strong></div>
 <div class="cc-metric"><span>Journeys completed</span><strong id="ccRecapJourneys">0</strong></div>
@@ -990,7 +991,7 @@ body.map-expand-open{overflow:hidden}
 <div class="cc-metric"><span>HMRC Estimate</span><strong id="ccHmrc">£0.00</strong></div>
 </div>
 </div>
-<div class="cc-card cc-pro-only" id="ccBusinessHealth" hidden>
+<div class="cc-card cc-pro-only cc-layer2-idle" id="ccBusinessHealth" hidden>
 <h2 class="cc-card-title">Business Health</h2>
 <div class="cc-metrics">
 <div class="cc-metric"><span>Business Miles</span><strong id="ccHealthMiles">0.0</strong></div>
@@ -1002,7 +1003,7 @@ body.map-expand-open{overflow:hidden}
 <div class="cc-metric"><span>Current Streak</span><strong id="ccHealthStreak">0 days</strong></div>
 </div>
 </div>
-<div class="cc-card is-empty-week cc-pro-only" id="ccWeeklyCard" hidden>
+<div class="cc-card is-empty-week cc-pro-only cc-layer2-idle" id="ccWeeklyCard" hidden>
 <h2 class="cc-card-title">This Week</h2>
 <div class="cc-metrics">
 <div class="cc-metric"><span>Business Miles</span><strong id="ccWeekMiles">0.0</strong></div>
@@ -1014,7 +1015,7 @@ body.map-expand-open{overflow:hidden}
 </div>
 <p class="cc-insight" id="ccWeekCompare" style="margin-top:14px" hidden></p>
 </div>
-<div class="cc-card cc-pro-only" id="ccInsightCard">
+<div class="cc-card cc-pro-only cc-layer2-idle" id="ccInsightCard">
 <h2 class="cc-card-title" id="ccInsightTitle">Business Insight</h2>
 <p class="cc-ai-insight-text" id="ccAiInsight" hidden></p>
 <ul class="cc-insight-list" id="ccInsightList"><li>Set up once — MilePilot handles the rest automatically.</li></ul>
@@ -1332,7 +1333,7 @@ function getSummaryScheduleText(){const freq=getReportFrequency()||'weekly';if(f
 function renderJourneyCard(){const started=q('ccJourneyStarted'),elapsed=q('ccJourneyElapsed'),dist=q('ccJourneyDistance'),speed=q('ccJourneySpeed'),insight=q('ccJourneyInsight');if(!started)return;const journeySec=Math.max(0,Math.floor((Date.now()-getCurrentJourneyStartMs())/1000));started.textContent=fmtClock(new Date(getCurrentJourneyStartMs()).toISOString());elapsed.textContent=fmtJourneyElapsed(journeySec);dist.textContent=(currentJourneyMiles>=0.05?currentJourneyMiles.toFixed(1):miles.toFixed(1))+' mi';const avg=getCurrentJourneyAvgSpeed();speed.textContent=avg?avg+' mph':(lastSpeedMph?lastSpeedMph+' mph':'0 mph');if(insight){const text=getLiveInsight();insight.textContent=text;insight.hidden=!text}}
 function renderRecentActivity(){const el=q('ccActivity');if(!el)return;let html='';for(let i=1;i<=3;i++){const d=new Date();d.setDate(d.getDate()-i);const label=i===1?'Yesterday':d.toLocaleDateString('en-GB',{weekday:'long'});const t=dayTotals(d);if(t.list.length)html+='<div class="cc-activity-item"><div class="cc-activity-day">'+label+'</div><div class="cc-activity-detail">'+t.mi.toFixed(1)+' miles · '+fmtShort(t.sec)+'</div></div>';else html+='<div class="cc-activity-item"><div class="cc-activity-day">'+label+'</div><div class="cc-activity-detail cc-activity-empty">No shift</div></div>'}el.innerHTML=html}
 function setText(id,val){const el=q(id);if(el)el.textContent=val}
-function renderCommandCentre(){driver=localStorage.getItem('mp_driver')||driver||'there';vehicle=localStorage.getItem('mp_vehicle')||vehicle||'car';syncEngineState();const today=getTodayTotals(),mode=getCommandMode(),copy=getContextCopy(mode,today),body=q('ccBody'),hero=q('ccHero'),track=q('ccTrackingBar'),btn=q('ccPrimaryBtn'),ctxRow=q('ccContextRow'),livePanel=q('ccLivePanel');if(typeof MPPlanUX!=='undefined')applyPlanDashboardClasses(body,mode);if(body){body.classList.toggle('is-weekend',mode==='day_off');body.classList.toggle('is-today-done',mode==='today_done');body.classList.toggle('is-active',mode==='active')}setText('ccGreeting',copy.greeting);if(mode==='active')renderActiveTrackingHeader(gpsLocked?null:'Enable location so AutoPilot can record your business miles.');else{setText('ccStatus',copy.status);const gpsLine=q('ccGpsStatus');if(gpsLine)gpsLine.hidden=true}setText('ccTrackingLabel',mode==='active'?'Tracking':'Tracking');const jl=q('ccJourneysLabel');if(jl)jl.textContent=mode==='active'?(shiftStops.length?'Journeys':'Current Journey'):"Today's Journeys";if(track)track.hidden=mode!=='active';if(livePanel)livePanel.hidden=mode!=='active';if(hero){hero.classList.toggle('is-live',mode==='active');hero.classList.toggle('is-goal',mode==='monday_morning'&&typeof MPPlanUX!=='undefined'&&MPPlanUX.isPro())}const heroLabel=hero?.querySelector('.cc-hero-label');if(heroLabel)heroLabel.textContent=copy.heroLabel;const heroUnit=hero?.querySelector('.cc-hero-unit');if(heroUnit)heroUnit.textContent=copy.heroUnit;const heroVal=mode==='day_off'?periodTotals('week').mi:mode==='active'?miles:today.mi;setText('ccHeroMiles',heroVal.toFixed(1));if(mode==='active'&&typeof MPTracking!=='undefined'){const jc=MPTracking.journeyCount(shiftStops,miles);setText('ccMiles',miles.toFixed(1));setText('ccTime',elapsed<60?'0h':fmtShort(elapsed));setText('ccJourneys',shiftStops.length?String(jc):(currentJourneyMiles>=0.05?currentJourneyMiles.toFixed(1)+' mi':'-'));setText('ccHmrc',money(claim(miles)));setText('ccLiveTime',elapsed<60?'0h':fmtShort(elapsed));renderLiveSpeedDisplay();setText('ccLiveMilesStat',miles.toFixed(1));renderLiveGpsDisplay();setText('ccLiveTimer',fmtLong(elapsed));renderJourneyCard();renderLiveMaps()}else{setText('ccMiles',today.mi.toFixed(1));setText('ccTime',today.sec<60?'0h':fmtShort(today.sec));setText('ccJourneys',String(today.journeys));setText('ccHmrc',money(today.hmrc));try{renderDriverIntelligence(mode,copy)}catch(e){console.warn('MilePilot intelligence render skipped',e)}}if(btn){btn.textContent=copy.primary||'Start Shift';btn.classList.toggle('is-end',mode==='active');btn.hidden=!copy.primary&&mode!=='active'}if(ctxRow){const showCtx=mode==='monday_morning'&&typeof MPPlanUX!=='undefined'&&MPPlanUX.isPro();ctxRow.hidden=!showCtx;if(showCtx){setText('ccGoalValue',today.mi.toFixed(1)+' miles');fetchWeather().then(t=>{if(t!==null)setText('ccWeatherValue',t+'°C')})}}renderAutoPilotStatus();renderRecentActivity();if(mode==='active')updateGpsUi(gpsLocked?null:'Enable location so AutoPilot can record your business miles.');else{const gpsLine=q('ccGpsStatus');if(gpsLine)gpsLine.hidden=true}}
+function renderCommandCentre(){driver=localStorage.getItem('mp_driver')||driver||'there';vehicle=localStorage.getItem('mp_vehicle')||vehicle||'car';syncEngineState();const today=getTodayTotals(),mode=getCommandMode(),copy=getContextCopy(mode,today),body=q('ccBody'),hero=q('ccHero'),track=q('ccTrackingBar'),btn=q('ccPrimaryBtn'),ctxRow=q('ccContextRow'),livePanel=q('ccLivePanel');if(typeof MPPlanUX!=='undefined')applyPlanDashboardClasses(body,mode);if(body){body.classList.toggle('is-weekend',mode==='day_off');body.classList.toggle('is-today-done',mode==='today_done');body.classList.toggle('is-active',mode==='active')}setText('ccGreeting',copy.greeting);if(mode==='active')renderActiveTrackingHeader(gpsLocked?null:'Enable location so AutoPilot can record your business miles.');else{setText('ccStatus',copy.status);const gpsLine=q('ccGpsStatus');if(gpsLine)gpsLine.hidden=true}setText('ccTrackingLabel',mode==='active'?'Tracking':'Tracking');const jl=q('ccJourneysLabel');if(jl)jl.textContent=mode==='active'?(shiftStops.length?'Journeys':'Current Journey'):"Today's Journeys";if(track)track.hidden=mode!=='active';if(livePanel)livePanel.hidden=mode!=='active';if(hero){hero.classList.toggle('is-live',mode==='active');hero.classList.toggle('is-goal',mode==='monday_morning'&&typeof MPPlanUX!=='undefined'&&MPPlanUX.isPro())}const heroLabel=hero?.querySelector('.cc-hero-label');if(heroLabel)heroLabel.textContent=copy.heroLabel;const heroUnit=hero?.querySelector('.cc-hero-unit');if(heroUnit)heroUnit.textContent=copy.heroUnit;const heroVal=mode==='day_off'?periodTotals('week').mi:mode==='active'?miles:today.mi;setText('ccHeroMiles',heroVal.toFixed(1));if(mode==='active'&&typeof MPTracking!=='undefined'){const jc=MPTracking.journeyCount(shiftStops,miles);setText('ccMiles',miles.toFixed(1));setText('ccTime',elapsed<60?'0h':fmtShort(elapsed));setText('ccJourneys',shiftStops.length?String(jc):(currentJourneyMiles>=0.05?currentJourneyMiles.toFixed(1)+' mi':'-'));setText('ccHmrc',money(claim(miles)));setText('ccLiveTime',elapsed<60?'0h':fmtShort(elapsed));renderLiveSpeedDisplay();setText('ccLiveMilesStat',miles.toFixed(1));renderLiveGpsDisplay();setText('ccLiveTimer',fmtLong(elapsed));renderJourneyCard();renderLiveMaps()}else{setText('ccMiles',today.mi.toFixed(1));setText('ccTime',today.sec<60?'0h':fmtShort(today.sec));setText('ccJourneys',String(today.journeys));setText('ccHmrc',money(today.hmrc));try{renderDriverIntelligence(mode,copy)}catch(e){console.warn('MilePilot intelligence render skipped',e)}}if(btn){btn.textContent=copy.primary||'Start Shift';btn.classList.toggle('is-end',mode==='active');btn.hidden=!copy.primary&&mode!=='active'}if(ctxRow){ctxRow.hidden=true}renderAutoPilotStatus();renderRecentActivity();if(mode==='active')updateGpsUi(gpsLocked?null:'Enable location so AutoPilot can record your business miles.');else{const gpsLine=q('ccGpsStatus');if(gpsLine)gpsLine.hidden=true}}
 function viewTodayReport(){period='day';historyReportDate=null;showReports()}
 function generateTodayReport(){period='day';downloadReport()}
 function downsampleRoute(pts,max){return MPTracking.downsampleRoute(pts,max||MPTracking.ENGINE.ROUTE_MAX)}
