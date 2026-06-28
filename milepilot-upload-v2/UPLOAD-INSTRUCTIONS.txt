@@ -1,20 +1,17 @@
-MilePilot — UPLOAD v8.9.0
+MilePilot — UPLOAD v8.9.1
 =========================
 
 Download:
-https://github.com/gypsom54/MilePilot/raw/cursor/mp-036-real-device-test-ae00/MilePilot-UPLOAD-v8.9.0.zip
+https://github.com/gypsom54/MilePilot/raw/cursor/mp-038-fresh-onboarding-reset-ae00/MilePilot-UPLOAD-v8.9.1.zip
 
 After upload, verify:
 https://app.milepilot.uk/version.txt
-Must show: MilePilot OS v8.9.0 — MP-036 Real device testing build
+Must show: MilePilot OS v8.9.1 — MP-038 Start fresh onboarding reset
 
-WHAT'S NEW IN v8.9.0
+WHAT'S NEW IN v8.9.1
 --------------------
-• PWA install prompt — Add MilePilot to home screen
-• Standalone app manifest (MilePilot name, navy theme, portrait)
-• Mobile layout polish for real phone testing
-• Permission copy and PWA background limitations guidance
-• Real drive test mode debug panel (?testmode=1)
-• docs/MP-036-REAL-DEVICE-TESTING.md checklist
+• Start fresh — clears all data and opens full setup (plan → work type → reports…)
+• New users begin at plan selection, not returning-user dashboard shortcut
+• Fixed legacy plan migration re-applying after reset
 
-Service worker cache: milepilot-v8-9-0
+Service worker cache: milepilot-v8-9-1

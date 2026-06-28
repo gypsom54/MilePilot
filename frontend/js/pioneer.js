@@ -311,11 +311,10 @@
     getCompletedShiftCount,
     getReleaseNotes: function () {
       return [
-        'v8.9.0 — Real device testing build (MP-036)',
-        '• PWA install prompt and standalone app experience',
-        '• Mobile layout polish for phone testing',
-        '• Permission copy and PWA background guidance',
-        '• Test mode debug panel (?testmode=1)',
+        'v8.9.1 — Start fresh reset fix (MP-038)',
+        '• Start fresh clears all data and opens full setup (plan → work type → reports…)',
+        '• New users now begin at plan selection, not returning-user shortcut',
+        '• Fixed legacy migration re-applying plan after reset',
       ].join('\n');
     },
   };

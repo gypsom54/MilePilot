@@ -104,6 +104,7 @@
   }
 
   function migrateLegacyUser() {
+    if (localStorage.getItem('mp_onboarding_reset') === 'true') return;
     if (localStorage.getItem(STORAGE_PLAN)) return;
     const onboarded =
       localStorage.getItem('mp_onboard_complete') === 'true' ||
