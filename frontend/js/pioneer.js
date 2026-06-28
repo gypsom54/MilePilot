@@ -311,9 +311,10 @@
     getCompletedShiftCount,
     getReleaseNotes: function () {
       return [
-        'v8.8.3 — Beta QA ready (MP-034)',
-        '• Returning user flow verified — dashboard on relaunch',
-        '• Beta testing checklist for Pioneer testers',
+        'v8.8.4 — Returning welcome flow fix (MP-035)',
+        '• Welcome Continue routes to dashboard for returning users',
+        '• Only missing setup steps shown — never repeat email/reports',
+        '• Explicit onboarding state flags for routing',
       ].join('\n');
     },
   };

@@ -1,1 +1,1 @@
-MilePilot OS v8.8.3 — MP-034 Beta QA ready
+MilePilot OS v8.8.4 — MP-035 Returning welcome flow fix

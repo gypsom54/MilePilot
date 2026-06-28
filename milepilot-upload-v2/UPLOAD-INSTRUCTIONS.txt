@@ -1,18 +1,18 @@
-MilePilot — UPLOAD v8.8.1
+MilePilot — UPLOAD v8.8.4
 =========================
 
 Download:
-https://github.com/gypsom54/MilePilot/raw/cursor/mp-033-returning-user-onboarding-ae00/MilePilot-UPLOAD-v8.8.1.zip
+https://github.com/gypsom54/MilePilot/raw/cursor/mp-035-returning-welcome-flow-ae00/MilePilot-UPLOAD-v8.8.4.zip
 
 After upload, verify:
 https://app.milepilot.uk/version.txt
-Must show: MilePilot OS v8.8.1 — MP-033 Returning user onboarding fix
+Must show: MilePilot OS v8.8.4 — MP-035 Returning welcome flow fix
 
-WHAT'S NEW IN v8.8.1
+WHAT'S NEW IN v8.8.4
 --------------------
-• Welcome screen is FTUE-only — returning users go straight to dashboard
-• Legacy account detection (email, shifts, profile, reports)
-• Boot splash instead of welcome flash on launch
-• Version upgrade no longer traps existing users in onboarding
+• Returning users: Welcome → Continue → Dashboard (no setup repeat)
+• Partial setup: only missing steps shown
+• First-time order: Reports → Email → Location → AutoPilot Ready
+• Stale onboarding step no longer traps returning users
 
-Service worker cache: milepilot-v8-8-1
+Service worker cache: milepilot-v8-8-4
