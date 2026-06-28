@@ -24,7 +24,7 @@ module.exports = {
           'MilePilot uses background location so your mileage can continue recording when your phone is locked.',
         NSLocationAlwaysUsageDescription:
           'MilePilot uses background location so your mileage can continue recording when your phone is locked.',
-        UIBackgroundModes: ['location', 'fetch'],
+        UIBackgroundModes: ['location', 'fetch', 'remote-notification'],
         ITSAppUsesNonExemptEncryption: false,
       },
     },
@@ -61,6 +61,8 @@ module.exports = {
         'expo-notifications',
         {
           color: '#0D6BFF',
+          defaultChannel: 'milepilot',
+          enableBackgroundRemoteNotifications: true,
         },
       ],
     ],

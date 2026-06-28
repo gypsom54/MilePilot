@@ -10,8 +10,11 @@
       "ios": {
         "simulator": false
       },
+      "android": {
+        "buildType": "apk"
+      },
       "env": {
-        "WEB_APP_URL": "https://app.milepilot.uk/?runtime=expo&build=development"
+        "WEB_APP_URL": "https://app.milepilot.uk/?runtime=expo&build=development&v=8.11.0"
       }
     },
     "preview": {
@@ -19,8 +22,11 @@
       "ios": {
         "simulator": false
       },
+      "android": {
+        "buildType": "apk"
+      },
       "env": {
-        "WEB_APP_URL": "https://app.milepilot.uk/?runtime=expo&build=preview"
+        "WEB_APP_URL": "https://app.milepilot.uk/?runtime=expo&build=preview&v=8.11.0"
       }
     },
     "production": {
@@ -28,8 +34,11 @@
       "ios": {
         "resourceClass": "m-medium"
       },
+      "android": {
+        "buildType": "app-bundle"
+      },
       "env": {
-        "WEB_APP_URL": "https://app.milepilot.uk/?runtime=expo&build=production"
+        "WEB_APP_URL": "https://app.milepilot.uk/?runtime=expo&build=production&v=8.11.0"
       }
     }
   },

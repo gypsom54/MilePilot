@@ -5,10 +5,19 @@
  * Foreground watch + background task foundation for device testing.
  */
 import * as Location from 'expo-location';
+import * as Notifications from 'expo-notifications';
 import {
   startBackgroundLocationUpdates,
   stopBackgroundLocationUpdates,
 } from './locationTask';
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 let foregroundSubscription = null;
 
@@ -132,8 +141,19 @@ export async function handleWebViewMessage(raw, sendToWebView) {
       break;
     }
     case 'expo:notification:request': {
-      // Notification permission — prepared for future report alerts
-      reply({ type: 'expo:notification:result', status: 'not_implemented' });
+      const existing = await Notifications.getPermissionsAsync();
+      let status = existing.status;
+      if (status !== 'granted') {
+        const requested = await Notifications.requestPermissionsAsync({
+          ios: {
+            allowAlert: true,
+            allowBadge: true,
+            allowSound: true,
+          },
+        });
+        status = requested.status;
+      }
+      reply({ type: 'expo:notification:result', status });
       break;
     }
     default:
