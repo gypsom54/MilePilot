@@ -365,9 +365,9 @@
   }
 
   function defaultInsight(mode, hasShifts) {
-    if (!hasShifts) return ['Start your first shift — MilePilot handles the rest.'];
-    if (mode === 'day_off') return ['Take a well-earned break — your business data will be here when you\'re ready.'];
-    return ['Keep tracking — insights improve as you drive more business miles.'];
+    if (!hasShifts) return ['Set up once — MilePilot handles the rest automatically.'];
+    if (mode === 'day_off') return ['Take a well-earned break — your records will be here when you\'re ready.'];
+    return ['AutoPilot is learning your patterns — insights improve as you work.'];
   }
 
   function generateFeaturedInsight(ctx, mode) {

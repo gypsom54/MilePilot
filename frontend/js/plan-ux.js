@@ -14,13 +14,13 @@
     tracker: {
       id: 'tracker',
       label: 'MilePilot Tracker',
-      tagline: 'Simple mileage tracking and automatic reports.',
-      summary: 'Track business miles · Automatic reports · HMRC estimate · History',
+      tagline: 'Business mileage and reports on AutoPilot.',
+      summary: 'Never forget a mile · Reports ready · HMRC estimate · History saved',
     },
     pro: {
       id: 'pro',
       label: 'MilePilot Pro',
-      tagline: 'Organise your driving business.',
+      tagline: 'Run your business on AutoPilot.',
       summary: 'Everything in Tracker · Business insights · Goals · Expenses soon · Tax tools soon',
     },
   };
@@ -30,14 +30,14 @@
       id: 'professional_driver',
       label: 'Professional Driver',
       examples: 'Taxi · Private Hire · Courier · Delivery',
-      status: 'Ready to start today\'s shift?',
+      status: 'Ready for today\'s business travel?',
       vehicle: 'car',
     },
     tradesperson: {
       id: 'tradesperson',
       label: 'Tradesperson',
       examples: 'Plumber · Electrician · Builder · Joiner',
-      status: 'Ready to track today\'s work journeys?',
+      status: 'Ready for today\'s work journeys?',
       vehicle: 'van',
     },
     mobile_business: {
@@ -51,14 +51,14 @@
       id: 'self_employed_professional',
       label: 'Self-employed Professional',
       examples: 'Consultant · Estate Agent · Surveyor · Sales',
-      status: 'Ready to track your client visits?',
+      status: 'Ready for today\'s client visits?',
       vehicle: 'car',
     },
     other: {
       id: 'other',
       label: 'Other Business Use',
       examples: 'Any business mileage',
-      status: 'Ready to track your business miles?',
+      status: 'Business travel. On AutoPilot.',
       vehicle: 'car',
     },
   };

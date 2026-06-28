@@ -120,6 +120,21 @@ See [docs/MP-021-AUTOPILOT-PHILOSOPHY.md](./MP-021-AUTOPILOT-PHILOSOPHY.md)
 
 ---
 
+## MP-022 — Brand Messaging
+
+**Status:** Active  
+**Version:** App v8.2.0+  
+**Branch:** `cursor/mp-022-brand-messaging-ae00`
+
+See [docs/MP-022-BRAND-MESSAGING.md](./MP-022-BRAND-MESSAGING.md)
+
+- Outcome-led copy throughout app (not feature-led)
+- Universal self-employed language (not driver-only)
+- AutoPilot as core product concept in user-facing text
+- Tagline locked: **Drive • Track • Claim**
+
+---
+
 ## MP-017 — Live Tracking Screen & Map Strategy
 
 **Status:** Complete  

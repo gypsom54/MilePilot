@@ -1,28 +1,27 @@
-MilePilot — UPLOAD v8.1.0
+MilePilot — UPLOAD v8.2.0
 =========================
 
 DOWNLOAD
 --------
-https://github.com/gypsom54/MilePilot/raw/cursor/mp-021-autopilot-ae00/MilePilot-UPLOAD-v8.1.0.zip
+https://github.com/gypsom54/MilePilot/raw/cursor/mp-022-brand-messaging-ae00/MilePilot-UPLOAD-v8.2.0.zip
 
 CHECK APP VERSION
 -----------------
 https://app.milepilot.uk/version.txt
-Must show: MilePilot OS v8.1.0 — AutoPilot First onboarding (MP-021)
+Must show: MilePilot OS v8.2.0 — Brand messaging & AutoPilot copy (MP-022)
 
-WHAT'S NEW IN v8.1.0
+WHAT'S NEW IN v8.2.0
 --------------------
-- MP-021: AutoPilot First product philosophy
-- Benefit-led onboarding copy (set it up once)
-- Unified Enable AutoPilot step (replaces separate permission screens)
-- Email capture during report setup
-- Includes all previous v8.0.x fixes
+- MP-022: Outcome-led brand messaging throughout the app
+- Universal self-employed language (not driver-only)
+- AutoPilot reinforced as core product concept
+- Includes MP-021 AutoPilot First onboarding (v8.1.0)
 
 UPLOAD STEPS (Cloudflare)
 -------------------------
 1. Download zip
 2. Unzip ALL files — must include js/ folder
 3. Cloudflare → milepilot-app → Upload assets → Deploy
-4. Hard refresh after deploy (cache: milepilot-v8-1-0)
+4. Hard refresh after deploy (cache: milepilot-v8-2-0)
 
 APP: https://app.milepilot.uk
