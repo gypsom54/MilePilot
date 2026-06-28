@@ -1,3 +1,3 @@
-MilePilot OS v8.4.1 — MP-026 shift state single source of truth
-Build: 2026-06-27
+MilePilot OS v8.4.2 — MP-026 shift button sync fix
+Build: 2026-06-28
 Brand: Set it up once. MilePilot does the rest.
