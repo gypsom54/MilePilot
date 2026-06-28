@@ -19,6 +19,11 @@ WHAT'S NEW IN v8.5.0
 - History empty state + single-shift drill-down
 - Lighter tracking timer (less dashboard flicker)
 
+LIVE QA CHECKLIST
+-----------------
+Before phone testing, run: docs/MP-028-LIVE-DEPLOYMENT-QA.md
+(or see MP-028 in repo docs/)
+
 UPLOAD STEPS (Cloudflare)
 -------------------------
 1. Download zip
