@@ -795,11 +795,42 @@ body.map-expand-open{overflow:hidden}
 </div>
 </div>
 <div class="onboard-foot">
-<button class="btn premium-btn" id="permDone" onclick="finishOnboarding()">Complete Setup →</button>
+<button type="button" class="btn premium-btn" id="permDone">Complete Setup →</button>
 </div>
 </div>
 <div class="onboard-version">MP-005 🔒 Locked · Final</div>
 </section>
+<script>
+/* MP-005 Complete Setup — works even if dashboard render fails */
+(function(){
+  function bootFinishOnboarding(){
+    try{
+      if(!localStorage.getItem('mp_location_choice'))localStorage.setItem('mp_location_choice','skipped');
+      if(!localStorage.getItem('mp_notifications_choice'))localStorage.setItem('mp_notifications_choice','skipped');
+      localStorage.setItem('mp_onboard_complete','true');
+      localStorage.removeItem('mp_onboard_step');
+    }catch(e){}
+    document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active')});
+    var home=document.getElementById('home');
+    if(home)home.classList.add('active');
+    var nav=document.getElementById('nav');
+    if(nav)nav.classList.add('show');
+    window.scrollTo(0,0);
+  }
+  function wirePermDone(){
+    var btn=document.getElementById('permDone');
+    if(!btn||btn.dataset.wired)return;
+    btn.dataset.wired='1';
+    btn.addEventListener('click',function(){
+      if(typeof window.finishOnboarding==='function'){window.finishOnboarding();return}
+      bootFinishOnboarding();
+    });
+  }
+  window.__bootFinishOnboarding=bootFinishOnboarding;
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',wirePermDone);
+  else wirePermDone();
+})();
+</script>
 <section id="emailSetup" class="screen" data-mp="email"><header class="brand-bar"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div><p class="brand-tagline">Drive • Track • Claim</p></header><h1 class="title">Where should reports go?</h1><p class="sub">Enter your email once. MilePilot will use it for report delivery.</p><input id="emailInput" placeholder="you@example.com" inputmode="email"><button class="btn" onclick="saveEmailSetup()">Continue to Dashboard →</button><button class="btn outline" onclick="goHome()">Skip for now</button></section>
 <!-- MP-006 The Command Centre -->
 <section id="home" class="screen cc-screen" data-mp="MP-006">
@@ -1025,7 +1056,7 @@ body.map-expand-open{overflow:hidden}
 </div>
 <script>
 (function(){
-  var v='8.0.5',files=['plan-ux.js','tracking-engine.js','driver-intelligence.js'],i=0;
+  var v='8.0.6',files=['plan-ux.js','tracking-engine.js','driver-intelligence.js'],i=0;
   window.__mpScriptVersion=v;
   window.__mpScriptsReady=false;
   function next(){
@@ -1039,10 +1070,10 @@ body.map-expand-open{overflow:hidden}
 })();
 </script>
 <script>
-const APP_VERSION='8.0.5';
+const APP_VERSION='8.0.6';
 const UI_LOCKED=true;
 const TRACKING_ENGINE_V=(typeof MPTracking!=='undefined'&&MPTracking.ENGINE_VERSION)||0;
-function syncEngineState(){const s=MPTracking.getState();ccState=s.ccState;miles=s.miles;elapsed=s.elapsed;shiftStartedAt=s.shiftStartedAt;shiftId=s.shiftId;routePoints=s.routePoints;lastPoint=s.lastPoint;shiftStops=s.shiftStops;movingSeconds=s.movingSeconds;currentJourneyMiles=s.currentJourneyMiles;lastGpsAt=s.lastGpsAt||lastGpsAt;}
+function syncEngineState(){if(typeof MPTracking==='undefined')return;const s=MPTracking.getState();ccState=s.ccState;miles=s.miles;elapsed=s.elapsed;shiftStartedAt=s.shiftStartedAt;shiftId=s.shiftId;routePoints=s.routePoints;lastPoint=s.lastPoint;shiftStops=s.shiftStops;movingSeconds=s.movingSeconds;currentJourneyMiles=s.currentJourneyMiles;lastGpsAt=s.lastGpsAt||lastGpsAt;}
 function isDevMode(){return localStorage.getItem('mp_dev_mode')==='1'||new URLSearchParams(location.search).get('dev')==='1'}
 function initDevMode(){if(new URLSearchParams(location.search).get('dev')==='1')localStorage.setItem('mp_dev_mode','1');renderDevPanel()}
 function renderDevPanel(){const card=q('devToolsCard'),hist=q('historyTestBtn'),seed=q('historySeedBtn');if(card)card.hidden=!isDevMode();if(hist)hist.hidden=!isDevMode();if(seed)seed.hidden=!isDevMode()}
@@ -1150,7 +1181,7 @@ function updateGpsUi(message){if(q('mapHint'))setMapHint(message||'GPS locked');
 function onGpsWatchError(err){if(ccState!=='active')return;if(err?.code===1){updateGpsUi(geoErrorMessage(err));return}updateGpsUi(trackingErrorMessage('failed'));scheduleGpsReconnect()}
 async function enableTrackingGps(fromUserGesture=false){if(!navigator.geolocation){updateGpsUi(trackingErrorMessage('unavailable'));return}if(!isSecureGeoContext()){updateGpsUi('Location needs HTTPS. Use https://app.milepilot.uk');return}if(!fromUserGesture){const perm=await queryGeoPermission();if(perm!=='granted'){updateGpsUi(perm==='denied'?trackingErrorMessage('denied'):'Tap Enable Location to start tracking.');return}}stopGpsWatch();if(gpsReconnectTimer){clearTimeout(gpsReconnectTimer);gpsReconnectTimer=null}updateGpsUi('Requesting location permission…');try{const pos=await requestGeolocation(GEO_OPTS_ACCURATE,GEO_OPTS_RELAXED);handlePos(pos);gpsLocked=true;localStorage.setItem('mp_location_choice','granted');gpsWatchId=navigator.geolocation.watchPosition(handlePos,onGpsWatchError,GEO_OPTS_RELAXED);updateGpsUi(null)}catch(err){gpsLocked=false;if(err?.code===1)localStorage.setItem('mp_location_choice','denied');updateGpsUi(geoErrorMessage(err));renderCommandCentre()}}
 function enableNotificationPermission(){const btn=q('permNotifBtn');if(!('Notification' in window)){localStorage.setItem('mp_notifications_choice','unsupported');syncNotificationButton();return}if(Notification.permission==='granted'){localStorage.setItem('mp_notifications_choice','granted');syncNotificationButton();return}if(Notification.permission==='denied'){localStorage.setItem('mp_notifications_choice','denied');syncNotificationButton();return}if(btn){btn.disabled=true;btn.textContent='Requesting…'}Notification.requestPermission().then(p=>{localStorage.setItem('mp_notifications_choice',p==='granted'?'granted':p==='denied'?'denied':'skipped');syncNotificationButton()}).catch(()=>{localStorage.setItem('mp_notifications_choice','skipped');syncNotificationButton()})}
-function finishOnboarding(){if(!localStorage.getItem('mp_location_choice'))localStorage.setItem('mp_location_choice','skipped');if(!localStorage.getItem('mp_notifications_choice'))localStorage.setItem('mp_notifications_choice','skipped');localStorage.setItem('mp_onboard_complete','true');localStorage.removeItem('mp_onboard_step');clearOnboardTimers();goHome()}
+function finishOnboarding(){if(!localStorage.getItem('mp_location_choice'))localStorage.setItem('mp_location_choice','skipped');if(!localStorage.getItem('mp_notifications_choice'))localStorage.setItem('mp_notifications_choice','skipped');localStorage.setItem('mp_onboard_complete','true');localStorage.removeItem('mp_onboard_step');clearOnboardTimers();try{goHome()}catch(err){console.error('MilePilot finish onboarding',err);if(typeof window.__bootFinishOnboarding==='function')window.__bootFinishOnboarding();else{showScreen('home');q('nav')?.classList.add('show')}}}
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));q(id).classList.add('active');q('nav').classList.toggle('show',!ONBOARD_SCREENS.includes(id));window.scrollTo(0,0)}
 function setNav(n){['Home','Reports','History','Settings'].forEach(x=>{const btn=q('nav'+x);if(!btn)return;btn.classList.toggle('active',x===n);btn.setAttribute('aria-current',x===n?'page':'false')})}
 function fmt(s){s=Number(s)||0;let m=Math.floor(s/60),h=Math.floor(m/60);return h+'h '+String(m%60).padStart(2,'0')+'m'}function money(v){return '£'+(Number(v)||0).toFixed(2)}function claim(mi,v=vehicle){return (Number(mi)||0)*(vehicles[v]?.rate||.55)}
@@ -1180,7 +1211,7 @@ function applyPlanDashboardClasses(body,mode){if(!body)return;body.classList.tog
 function saveEmailSetup(){let e=q('emailInput').value.trim();if(e)localStorage.setItem('mp_email',e);goHome()}
 function resetOnboarding(){localStorage.removeItem('mp_driver');localStorage.removeItem('mp_vehicle');localStorage.removeItem('mp_user_plan');localStorage.removeItem('mp_user_work_type');localStorage.removeItem('mp_location_choice');localStorage.removeItem('mp_notifications_choice');localStorage.removeItem('mp_onboard_step');localStorage.removeItem('mp_onboard_complete');localStorage.removeItem('mp_report_frequency');localStorage.removeItem('mp_report_prefs');localStorage.removeItem('mp_stay_updated_prompted');driver='';vehicle='car';selectedVehicle=null;selectedPlan=null;selectedWorkType=null;pendingStayUpdatedAfterShift=false;welcomeIntroBound=false;q('name').value='';clearWelcomeTyping();clearKnowYouMessaging();clearOnboardTimers();const typed=q('typed');if(typed){typed.textContent='Welcome to MilePilot.';typed.style.opacity='1'}const msg=q('knowYouMessage');if(msg){msg.textContent='';msg.style.opacity='0'}document.querySelectorAll('.vehicle-card').forEach(c=>c.classList.remove('selected'));syncKnowYouContinue();localStorage.setItem('mp_onboard_step','welcome');q('nav').classList.remove('show');showScreen('welcome');initFirstImpression()}
 function clearData(){stopGpsWatch();releaseWakeLock();gpsLocked=false;if(timer){clearInterval(timer);timer=null}if(gpsReconnectTimer){clearTimeout(gpsReconnectTimer);gpsReconnectTimer=null}localStorage.removeItem('mp_shifts');MPTracking.clearActiveShift();shifts=[];MPTracking.applyExternal({ccState:'idle',miles:0,elapsed:0,shiftStartedAt:null,shiftId:null,routePoints:[],lastPoint:null});MPTracking.resetEngine();syncEngineState();toast('Test shifts cleared');renderCommandCentre()}
-function goHome(){setNav('Home');renderCommandCentre();showScreen('home')}
+function goHome(){setNav('Home');try{renderCommandCentre()}catch(err){console.error('MilePilot dashboard render',err)}showScreen('home')}
 function fmtShort(s){s=Number(s)||0;if(s<60)return '0h';let m=Math.floor(s/60),h=Math.floor(m/60);return h?h+'h '+String(m%60).padStart(2,'0')+'m':m+'m'}
 function fmtLong(s){s=Number(s)||0;let h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=s%60;return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0')}
 function sameDay(a,b){return a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate()}
@@ -1219,7 +1250,7 @@ function getSummaryScheduleText(){const freq=getReportFrequency()||'weekly';if(f
 function renderJourneyCard(){const started=q('ccJourneyStarted'),elapsed=q('ccJourneyElapsed'),dist=q('ccJourneyDistance'),speed=q('ccJourneySpeed'),insight=q('ccJourneyInsight');if(!started)return;const journeySec=Math.max(0,Math.floor((Date.now()-getCurrentJourneyStartMs())/1000));started.textContent=fmtClock(new Date(getCurrentJourneyStartMs()).toISOString());elapsed.textContent=fmtJourneyElapsed(journeySec);dist.textContent=(currentJourneyMiles>=0.05?currentJourneyMiles.toFixed(1):miles.toFixed(1))+' mi';const avg=getCurrentJourneyAvgSpeed();speed.textContent=avg?avg+' mph':(lastSpeedMph?lastSpeedMph+' mph':'0 mph');if(insight){const text=getLiveInsight();insight.textContent=text;insight.hidden=!text}}
 function renderRecentActivity(){const el=q('ccActivity');if(!el)return;let html='';for(let i=1;i<=3;i++){const d=new Date();d.setDate(d.getDate()-i);const label=i===1?'Yesterday':d.toLocaleDateString('en-GB',{weekday:'long'});const t=dayTotals(d);if(t.list.length)html+='<div class="cc-activity-item"><div class="cc-activity-day">'+label+'</div><div class="cc-activity-detail">'+t.mi.toFixed(1)+' miles · '+fmtShort(t.sec)+'</div></div>';else html+='<div class="cc-activity-item"><div class="cc-activity-day">'+label+'</div><div class="cc-activity-detail cc-activity-empty">No shift</div></div>'}el.innerHTML=html}
 function setText(id,val){const el=q(id);if(el)el.textContent=val}
-function renderCommandCentre(){driver=localStorage.getItem('mp_driver')||driver||'there';vehicle=localStorage.getItem('mp_vehicle')||vehicle||'car';syncEngineState();const today=getTodayTotals(),mode=getCommandMode(),copy=getContextCopy(mode,today),body=q('ccBody'),hero=q('ccHero'),track=q('ccTrackingBar'),btn=q('ccPrimaryBtn'),ctxRow=q('ccContextRow'),livePanel=q('ccLivePanel');applyPlanDashboardClasses(body,mode);if(body){body.classList.toggle('is-weekend',mode==='day_off');body.classList.toggle('is-today-done',mode==='today_done');body.classList.toggle('is-active',mode==='active')}setText('ccGreeting',copy.greeting);if(mode==='active')renderActiveTrackingHeader(gpsLocked?null:'Tap Enable Location to track your business miles.');else{setText('ccStatus',copy.status);const gpsLine=q('ccGpsStatus');if(gpsLine)gpsLine.hidden=true}setText('ccTrackingLabel',mode==='active'?'Tracking':'Tracking');const jl=q('ccJourneysLabel');if(jl)jl.textContent=mode==='active'?(shiftStops.length?'Journeys':'Current Journey'):"Today's Journeys";if(track)track.hidden=mode!=='active';if(livePanel)livePanel.hidden=mode!=='active';if(hero){hero.classList.toggle('is-live',mode==='active');hero.classList.toggle('is-goal',mode==='monday_morning'&&MPPlanUX.isPro())}const heroLabel=hero?.querySelector('.cc-hero-label');if(heroLabel)heroLabel.textContent=copy.heroLabel;const heroUnit=hero?.querySelector('.cc-hero-unit');if(heroUnit)heroUnit.textContent=copy.heroUnit;const heroVal=mode==='day_off'?periodTotals('week').mi:mode==='active'?miles:today.mi;setText('ccHeroMiles',heroVal.toFixed(1));if(mode==='active'){const jc=MPTracking.journeyCount(shiftStops,miles);setText('ccMiles',miles.toFixed(1));setText('ccTime',elapsed<60?'0h':fmtShort(elapsed));setText('ccJourneys',shiftStops.length?String(jc):(currentJourneyMiles>=0.05?currentJourneyMiles.toFixed(1)+' mi':'-'));setText('ccHmrc',money(claim(miles)));setText('ccLiveTime',elapsed<60?'0h':fmtShort(elapsed));renderLiveSpeedDisplay();setText('ccLiveMilesStat',miles.toFixed(1));renderLiveGpsDisplay();setText('ccLiveTimer',fmtLong(elapsed));renderJourneyCard();renderLiveMaps()}else{setText('ccMiles',today.mi.toFixed(1));setText('ccTime',today.sec<60?'0h':fmtShort(today.sec));setText('ccJourneys',String(today.journeys));setText('ccHmrc',money(today.hmrc));renderDriverIntelligence(mode,copy)}if(btn){btn.textContent=copy.primary||'Start Shift';btn.classList.toggle('is-end',mode==='active');btn.hidden=!copy.primary&&mode!=='active'}if(ctxRow){const showCtx=mode==='monday_morning'&&MPPlanUX.isPro();ctxRow.hidden=!showCtx;if(showCtx){setText('ccGoalValue',today.mi.toFixed(1)+' miles');fetchWeather().then(t=>{if(t!==null)setText('ccWeatherValue',t+'°C')})}}renderRecentActivity();if(mode==='active')updateGpsUi(gpsLocked?null:'Tap Enable Location to track your business miles.');else{const gpsLine=q('ccGpsStatus');if(gpsLine)gpsLine.hidden=true}}
+function renderCommandCentre(){driver=localStorage.getItem('mp_driver')||driver||'there';vehicle=localStorage.getItem('mp_vehicle')||vehicle||'car';syncEngineState();const today=getTodayTotals(),mode=getCommandMode(),copy=getContextCopy(mode,today),body=q('ccBody'),hero=q('ccHero'),track=q('ccTrackingBar'),btn=q('ccPrimaryBtn'),ctxRow=q('ccContextRow'),livePanel=q('ccLivePanel');if(typeof MPPlanUX!=='undefined')applyPlanDashboardClasses(body,mode);if(body){body.classList.toggle('is-weekend',mode==='day_off');body.classList.toggle('is-today-done',mode==='today_done');body.classList.toggle('is-active',mode==='active')}setText('ccGreeting',copy.greeting);if(mode==='active')renderActiveTrackingHeader(gpsLocked?null:'Tap Enable Location to track your business miles.');else{setText('ccStatus',copy.status);const gpsLine=q('ccGpsStatus');if(gpsLine)gpsLine.hidden=true}setText('ccTrackingLabel',mode==='active'?'Tracking':'Tracking');const jl=q('ccJourneysLabel');if(jl)jl.textContent=mode==='active'?(shiftStops.length?'Journeys':'Current Journey'):"Today's Journeys";if(track)track.hidden=mode!=='active';if(livePanel)livePanel.hidden=mode!=='active';if(hero){hero.classList.toggle('is-live',mode==='active');hero.classList.toggle('is-goal',mode==='monday_morning'&&typeof MPPlanUX!=='undefined'&&MPPlanUX.isPro())}const heroLabel=hero?.querySelector('.cc-hero-label');if(heroLabel)heroLabel.textContent=copy.heroLabel;const heroUnit=hero?.querySelector('.cc-hero-unit');if(heroUnit)heroUnit.textContent=copy.heroUnit;const heroVal=mode==='day_off'?periodTotals('week').mi:mode==='active'?miles:today.mi;setText('ccHeroMiles',heroVal.toFixed(1));if(mode==='active'&&typeof MPTracking!=='undefined'){const jc=MPTracking.journeyCount(shiftStops,miles);setText('ccMiles',miles.toFixed(1));setText('ccTime',elapsed<60?'0h':fmtShort(elapsed));setText('ccJourneys',shiftStops.length?String(jc):(currentJourneyMiles>=0.05?currentJourneyMiles.toFixed(1)+' mi':'-'));setText('ccHmrc',money(claim(miles)));setText('ccLiveTime',elapsed<60?'0h':fmtShort(elapsed));renderLiveSpeedDisplay();setText('ccLiveMilesStat',miles.toFixed(1));renderLiveGpsDisplay();setText('ccLiveTimer',fmtLong(elapsed));renderJourneyCard();renderLiveMaps()}else{setText('ccMiles',today.mi.toFixed(1));setText('ccTime',today.sec<60?'0h':fmtShort(today.sec));setText('ccJourneys',String(today.journeys));setText('ccHmrc',money(today.hmrc));try{renderDriverIntelligence(mode,copy)}catch(e){console.warn('MilePilot intelligence render skipped',e)}}if(btn){btn.textContent=copy.primary||'Start Shift';btn.classList.toggle('is-end',mode==='active');btn.hidden=!copy.primary&&mode!=='active'}if(ctxRow){const showCtx=mode==='monday_morning'&&typeof MPPlanUX!=='undefined'&&MPPlanUX.isPro();ctxRow.hidden=!showCtx;if(showCtx){setText('ccGoalValue',today.mi.toFixed(1)+' miles');fetchWeather().then(t=>{if(t!==null)setText('ccWeatherValue',t+'°C')})}}renderRecentActivity();if(mode==='active')updateGpsUi(gpsLocked?null:'Tap Enable Location to track your business miles.');else{const gpsLine=q('ccGpsStatus');if(gpsLine)gpsLine.hidden=true}}
 function viewTodayReport(){period='day';historyReportDate=null;showReports()}
 function generateTodayReport(){period='day';downloadReport()}
 function downsampleRoute(pts,max){return MPTracking.downsampleRoute(pts,max||MPTracking.ENGINE.ROUTE_MAX)}
