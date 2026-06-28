@@ -14,14 +14,14 @@
     tracker: {
       id: 'tracker',
       label: 'MilePilot Tracker',
-      tagline: 'Business mileage and reports on AutoPilot.',
-      summary: 'Never forget a mile · Reports ready · HMRC estimate · History saved',
+      tagline: 'Business mileage on AutoPilot — no clutter.',
+      summary: 'Layer 1 · Auto-detect · Reports · HMRC · History',
     },
     pro: {
       id: 'pro',
       label: 'MilePilot Pro',
       tagline: 'Run your business on AutoPilot.',
-      summary: 'Everything in Tracker · Business insights · Goals · Expenses soon · Tax tools soon',
+      summary: 'Layer 2 · Everything in Tracker · Insights · Goals · Expenses soon',
     },
   };
 

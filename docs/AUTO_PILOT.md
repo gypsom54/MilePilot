@@ -1,8 +1,8 @@
-# MilePilot Auto-Pilot Philosophy (MP-016 + MP-021)
+# MilePilot Auto-Pilot Philosophy (MP-016 + MP-021 + MP-023)
+
+**North Star:** See **`docs/MP-023-NORTH-STAR.md`** — all product decisions align here first.
 
 **Promise:** Set it up once. MilePilot does the rest.
-
-See **`docs/MP-021-AUTOPILOT-PHILOSOPHY.md`** for the full product philosophy (onboarding, UX principle, design rule).
 
 ---
 

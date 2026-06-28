@@ -135,6 +135,22 @@ See [docs/MP-022-BRAND-MESSAGING.md](./MP-022-BRAND-MESSAGING.md)
 
 ---
 
+## MP-023 — North Star (AutoPilot Product Philosophy)
+
+**Status:** Active — **master product philosophy**  
+**Version:** App v8.3.0+  
+**Branch:** `cursor/mp-023-north-star-ae00`
+
+See [docs/MP-023-NORTH-STAR.md](./MP-023-NORTH-STAR.md)
+
+- Mission: remove mileage administration from users' lives
+- Dashboard = reassurance ("Is everything working?")
+- Reports simply exist — no manual admin
+- Product hierarchy: Layer 1 Tracker (no clutter) / Layer 2 Business (Pro)
+- Golden question: Does this make the user's life easier?
+
+---
+
 ## MP-017 — Live Tracking Screen & Map Strategy
 
 **Status:** Complete  

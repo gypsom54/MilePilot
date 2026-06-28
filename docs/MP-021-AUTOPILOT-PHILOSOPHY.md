@@ -1,6 +1,8 @@
 # MP-021 — AutoPilot First Philosophy
 
-**Status:** Active product philosophy  
+**Status:** Active (implementation guide)  
+**North Star:** See **`docs/MP-023-NORTH-STAR.md`** for the master product philosophy.
+
 **Promise:** Set it up once. MilePilot does the rest.
 
 ---

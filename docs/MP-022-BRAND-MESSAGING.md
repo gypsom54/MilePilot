@@ -1,6 +1,8 @@
 # MP-022 — Brand Messaging & AutoPilot Philosophy
 
-**Status:** Active  
+**Status:** Active (copy guide)  
+**North Star:** See **`docs/MP-023-NORTH-STAR.md`** for the master product philosophy.
+
 **Type:** Copy refinement (not a UI redesign)
 
 ---

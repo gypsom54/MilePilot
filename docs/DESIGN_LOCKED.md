@@ -34,12 +34,11 @@
 
 ---
 
-## Brand lines (see VOICE_GUIDE.md)
+## Brand lines (see MP-022 / MP-023)
 
-- Every business mile matters.
-- Now let's make every business mile count.
-- Never miss another business mile.
-- Your driving business. On auto pilot.
+- Every business mile. On AutoPilot.
+- Set it up once. MilePilot does the rest.
+- Drive • Track • Claim (permanent tagline)
 
 ---
 
