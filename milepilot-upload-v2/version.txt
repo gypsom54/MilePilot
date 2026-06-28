@@ -1,3 +1,3 @@
-MilePilot OS v8.6.0 — MP-029 AutoPilot Confidence Layer
+MilePilot OS v8.7.0 — MP-030 Perfect FTUE
 Build: 2026-06-28
 Brand: Set it up once. MilePilot does the rest.
