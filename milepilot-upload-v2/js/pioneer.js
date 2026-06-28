@@ -311,10 +311,11 @@
     getCompletedShiftCount,
     getReleaseNotes: function () {
       return [
-        'v8.9.3 — Brighter inputs + All set screen polish (MP-040)',
-        '• Name and email fields share the same clear, bright styling',
-        '• "You\'re all set" screen fills the layout — no dead space',
-        '• AutoPilot checklist with descriptions and closing summary card',
+        'v8.9.4 — Background GPS mileage fix (MP-041)',
+        '• High-accuracy GPS watch during active shifts',
+        '• Auto-reconnect when app returns or GPS goes stale',
+        '• Background GPS polling + motion nudge while screen locked',
+        '• Relaxed accuracy gate so miles accumulate with weaker signal',
       ].join('\n');
     },
   };

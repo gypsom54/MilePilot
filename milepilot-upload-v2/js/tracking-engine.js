@@ -17,7 +17,10 @@
     STOP_AFTER_MS: 90000,
     ROUTE_MAX: 500,
     ACC_MAX: 120,
+    ACC_SOFT_MAX: 220,
     GPS_RECONNECT_MS: 15000,
+    GPS_STALE_MS: 35000,
+    BG_GPS_POLL_MS: 12000,
   };
 
   /** Smart movement detection — architecture only (disabled by default). */
