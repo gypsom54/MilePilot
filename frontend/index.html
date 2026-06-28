@@ -667,7 +667,7 @@ body.map-expand-open{overflow:hidden}
 <h1 class="welcome-headline">Your business.<br><span class="blue">On AutoPilot.</span></h1>
 <p class="welcome-support">Drive. Track. Claim. Everything else runs automatically.</p>
 <div class="welcome-form welcome-form-minimal">
-<button type="button" class="btn premium-btn is-ready" id="welcomeContinue">Continue →</button>
+<button type="button" class="btn premium-btn is-ready" id="welcomeContinue" onclick="if(window.__welcomeContinue)window.__welcomeContinue()">Continue →</button>
 </div>
 </div>
 <div class="welcome-version" id="appVersion">MP-001 🔒 Locked · v2.8</div>
@@ -687,16 +687,18 @@ body.map-expand-open{overflow:hidden}
     try{localStorage.setItem('mp_onboard_step','permissions')}catch(e){}
     if(typeof window.startFtueLocation==='function'){window.startFtueLocation();return}
     welcomeShowScreen('permissions');
+    if(typeof window.initLocationPermission==='function')window.initLocationPermission();
   }
   function wireWelcomeForm(){
     var btn=q('welcomeContinue');
     if(btn&&!btn.dataset.wired){btn.dataset.wired='1';btn.addEventListener('click',welcomeContinue)}
   }
   function bootWelcomeCeremony(){
+    wireWelcomeForm();
     if(!q('welcome')||!q('welcome').classList.contains('active'))return;
     var pulse=q('welcomePulse');if(pulse){pulse.classList.add('alive')}
-    wireWelcomeForm();
   }
+  window.__wireWelcomeForm=wireWelcomeForm;
   window.__bootWelcomeCeremony=bootWelcomeCeremony;
   window.__welcomeContinue=welcomeContinue;
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bootWelcomeCeremony);
@@ -1374,7 +1376,7 @@ function syncWelcomeContinue(){const btn=q('welcomeContinue');if(btn){btn.disabl
 function replayFirstImpressionIntro(){playBrandPulse()}
 function playBrandPulse(){const pulse=q('welcomePulse');if(!pulse)return;pulse.classList.add('alive')}
 let welcomeIntroBound=false;
-function initFirstImpression(){updateAppVersionBadge();if(typeof window.__bootWelcomeCeremony==='function')window.__bootWelcomeCeremony()}
+function initFirstImpression(){updateAppVersionBadge();if(typeof window.__wireWelcomeForm==='function')window.__wireWelcomeForm();if(typeof window.__bootWelcomeCeremony==='function')window.__bootWelcomeCeremony()}
 function updateAppVersionBadge(){const el=q('appVersion');if(el)el.textContent='MP-001 🔒 Locked · App v'+APP_VERSION;setText('ccVersion','MilePilot v'+APP_VERSION)}
 let knowYouTimers=[];
 function clearKnowYouMessaging(){knowYouTimers.forEach(t=>clearTimeout(t));knowYouTimers=[]}
@@ -1628,8 +1630,8 @@ function showAbout(){if(typeof MPPioneer!=='undefined'){MPPioneer.renderAboutScr
 function openAboutDoc(kind){const title=q('aboutDocTitle'),body=q('aboutDocBody'),overlay=q('aboutDocOverlay');if(!overlay)return;const privacy='MilePilot respects your privacy.\n\nLocation data is used only to record business miles during active shifts. Shift data is stored on your device and used to generate reports you request.\n\nWe do not sell personal data. Feedback you submit may include optional notes and app version for support.\n\nContact: hello@milepilot.uk';const terms='MilePilot is provided for business mileage record keeping.\n\nHMRC figures shown are estimates — confirm allowances with your accountant or HMRC guidance.\n\nUse MilePilot responsibly while driving. You are responsible for accurate records.\n\nQuestions: hello@milepilot.uk';if(title)title.textContent=kind==='terms'?'Terms of Use':'Privacy Policy';if(body)body.textContent=kind==='terms'?terms:privacy;overlay.hidden=false}
 function closeAboutDoc(){const overlay=q('aboutDocOverlay');if(overlay)overlay.hidden=true}
 function migrateOnboardingVersion(){const stored=localStorage.getItem('mp_app_version');if(stored===APP_VERSION)return false;localStorage.setItem('mp_app_version',APP_VERSION);if(hasCompletedOnboarding())return false;localStorage.removeItem('mp_onboard_step');localStorage.removeItem('mp_location_choice');localStorage.removeItem('mp_notifications_choice');return true}
-function resumeOnboardingStep(step){if(hasCompletedOnboarding())return false;driver=localStorage.getItem('mp_driver')||'';vehicle=localStorage.getItem('mp_vehicle')||'car';if(step==='autoPilotReady'){initAutoPilotReady();showScreen('autoPilotReady');return true}if(step==='ftueEmail'){initFtueEmail();showScreen('ftueEmail');return true}if(step==='autoPilot'||step==='autoPilotSetup'){initLocationPermission();showScreen('permissions');return true}if(step==='notifications'){initNotifications();showScreen('notifications');return true}if(step==='location'||step==='permissions'){initLocationPermission();showScreen('permissions');return true}if(step==='reportSetup'){initReportSetup();showScreen('reportSetup');return true}if(step==='workType'||step==='planPick'||step==='promise'||step==='knowYou'){localStorage.setItem('mp_onboard_step','welcome');initFirstImpression();showScreen('welcome');return true}if(step==='welcome'){initFirstImpression();showScreen('welcome');return true}return false}
-function bootApp(){try{if(typeof MPPlanUX!=='undefined')MPPlanUX.migrateLegacyUser();updateAppVersionBadge();initDevMode();initNetworkStatus();if(typeof MPTracking!=='undefined'){shifts=loadShifts();initTrackingEngine()}else shifts=[];localStorage.removeItem('mp_work_done');reconcileOnboardingState();if(typeof MPPioneer!=='undefined')MPPioneer.init();if(migrateOnboardingVersion()){localStorage.setItem('mp_onboard_step','welcome');initFirstImpression();showScreen('welcome');return}restoreActiveShift();queryGeoPermission().then(perm=>{if(perm==='granted'){gpsLocked=true;localStorage.setItem('mp_location_choice','granted');if(typeof MPPioneer!=='undefined')MPPioneer.recordGpsOutcome(true)}else if(perm==='denied'&&typeof MPPioneer!=='undefined')MPPioneer.recordGpsOutcome(false)});if(hasCompletedOnboarding()){routeReturningUserToDashboard();return}const step=localStorage.getItem('mp_onboard_step');if(step&&resumeOnboardingStep(step))return;localStorage.setItem('mp_onboard_step','welcome');initFirstImpression();showScreen('welcome')}catch(err){console.error('MilePilot boot error',err);if(typeof MPPioneer!=='undefined')MPPioneer.logError(err.message||'Boot failed',{fn:'bootApp'});if(hasCompletedOnboarding())routeReturningUserToDashboard();else if(q('welcome')&&typeof window.__bootWelcomeCeremony==='function')window.__bootWelcomeCeremony()}}
+function resumeOnboardingStep(step){if(hasCompletedOnboarding())return false;driver=localStorage.getItem('mp_driver')||'';vehicle=localStorage.getItem('mp_vehicle')||'car';if(step==='autoPilotReady'){initAutoPilotReady();showScreen('autoPilotReady');return true}if(step==='ftueEmail'){initFtueEmail();showScreen('ftueEmail');return true}if(step==='autoPilot'||step==='autoPilotSetup'){initLocationPermission();showScreen('permissions');return true}if(step==='notifications'){initNotifications();showScreen('notifications');return true}if(step==='location'||step==='permissions'){initLocationPermission();showScreen('permissions');return true}if(step==='reportSetup'){initReportSetup();showScreen('reportSetup');return true}if(step==='workType'||step==='planPick'||step==='promise'||step==='knowYou'){localStorage.setItem('mp_onboard_step','welcome');showScreen('welcome');initFirstImpression();return true}if(step==='welcome'){showScreen('welcome');initFirstImpression();return true}return false}
+function bootApp(){try{if(typeof MPPlanUX!=='undefined')MPPlanUX.migrateLegacyUser();updateAppVersionBadge();initDevMode();initNetworkStatus();if(typeof MPTracking!=='undefined'){shifts=loadShifts();initTrackingEngine()}else shifts=[];localStorage.removeItem('mp_work_done');reconcileOnboardingState();if(typeof MPPioneer!=='undefined')MPPioneer.init();if(migrateOnboardingVersion()){localStorage.setItem('mp_onboard_step','welcome');showScreen('welcome');initFirstImpression();return}restoreActiveShift();queryGeoPermission().then(perm=>{if(perm==='granted'){gpsLocked=true;localStorage.setItem('mp_location_choice','granted');if(typeof MPPioneer!=='undefined')MPPioneer.recordGpsOutcome(true)}else if(perm==='denied'&&typeof MPPioneer!=='undefined')MPPioneer.recordGpsOutcome(false)});if(hasCompletedOnboarding()){routeReturningUserToDashboard();return}const step=localStorage.getItem('mp_onboard_step');if(step&&resumeOnboardingStep(step))return;localStorage.setItem('mp_onboard_step','welcome');showScreen('welcome');initFirstImpression()}catch(err){console.error('MilePilot boot error',err);if(typeof MPPioneer!=='undefined')MPPioneer.logError(err.message||'Boot failed',{fn:'bootApp'});if(hasCompletedOnboarding())routeReturningUserToDashboard();else if(q('welcome')&&typeof window.__bootWelcomeCeremony==='function')window.__bootWelcomeCeremony()}}
 function startBoot(){if(window.__mpBootDone)return;window.__mpBootDone=true;bootApp()}
 if(window.__mpScriptsReady)startBoot();
 else document.addEventListener('mp:scripts-ready',startBoot);

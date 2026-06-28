@@ -1,1 +1,1 @@
-MilePilot OS v8.8.1 — MP-033 Returning user onboarding fix
+MilePilot OS v8.8.2 — MP-033 Welcome Continue hotfix
