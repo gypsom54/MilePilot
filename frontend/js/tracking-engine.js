@@ -314,6 +314,15 @@
     return true;
   }
 
+  /** Roll back ENDING → TRACKING when save fails before shift is finalised. */
+  function cancelEndShift() {
+    if (state.shiftStatus !== SHIFT_STATUS.ENDING) return false;
+    state.shiftStatus = SHIFT_STATUS.TRACKING;
+    syncLegacyCcState();
+    emit();
+    return true;
+  }
+
   function completeShift(claimFn) {
     if (
       state.shiftStatus !== SHIFT_STATUS.TRACKING &&
@@ -514,6 +523,7 @@
     applyExternal: applyExternal,
     startShift: startShift,
     requestEndShift: requestEndShift,
+    cancelEndShift: cancelEndShift,
     completeShift: completeShift,
     acknowledgeShiftComplete: acknowledgeShiftComplete,
     forceIdle: forceIdle,
