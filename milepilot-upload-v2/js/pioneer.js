@@ -311,11 +311,9 @@
     getCompletedShiftCount,
     getReleaseNotes: function () {
       return [
-        'v8.9.4 — Background GPS mileage fix (MP-041)',
-        '• High-accuracy GPS watch during active shifts',
-        '• Auto-reconnect when app returns or GPS goes stale',
-        '• Background GPS polling + motion nudge while screen locked',
-        '• Relaxed accuracy gate so miles accumulate with weaker signal',
+        'v8.9.5 — GPS mileage fix + shift complete screen layout (MP-041)',
+        '• High-accuracy GPS, background polling, motion nudge, stale reconnect',
+        '• Shift complete Done button pinned above nav — no overlap',
       ].join('\n');
     },
   };

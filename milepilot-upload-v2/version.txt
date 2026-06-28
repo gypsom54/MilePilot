@@ -1,1 +1,1 @@
-MilePilot OS v8.9.4 — MP-041 Background GPS mileage fix
+MilePilot OS v8.9.5 — MP-041 GPS fix + shift summary layout
