@@ -1,31 +1,23 @@
-MilePilot — UPLOAD v8.7.0
+MilePilot — UPLOAD v8.8.0
+=========================
 
-DOWNLOAD
---------
-https://github.com/gypsom54/MilePilot/raw/cursor/mp-030-ftue-ae00/MilePilot-UPLOAD-v8.7.0.zip
+Download:
+https://github.com/gypsom54/MilePilot/raw/cursor/mp-032-pioneer-prep-ae00/MilePilot-UPLOAD-v8.8.0.zip
 
-CHECK APP VERSION
------------------
+After upload, verify:
 https://app.milepilot.uk/version.txt
-Must show: MilePilot OS v8.7.0 — MP-030 Perfect FTUE
+Must show: MilePilot OS v8.8.0 — MP-032 Pioneer Program preparation
 
-WHAT'S NEW IN v8.7.0
+WHAT'S NEW IN v8.8.0
 --------------------
-- 5-step FTUE: Welcome → Location → Reports → Email → AutoPilot Ready
-- Almost no decisions — defaults applied automatically
-- Start First Shift ends onboarding
-- Calm idle dashboard: reassurance, not clutter
-- Full health warnings still appear when something needs attention
+• In-app feedback in Settings (ease 1–10 + optional notes)
+• About screen — version, build, release notes, support, privacy, terms
+• Quiet client error logging (plain English for users)
+• Pioneer Program banner (?pioneer=1)
+• Feedback reminder after five completed shifts
+• Internal Pioneer metrics dashboard (dev / ?metrics=1)
 
-PREREQUISITE
-------------
-Deploy v8.6.0 (MP-029) first if not already live.
+Pioneer cohort link:
+https://app.milepilot.uk/?pioneer=1
 
-UPLOAD STEPS (Cloudflare)
--------------------------
-1. Download zip
-2. Unzip ALL files — must include js/ folder
-3. Cloudflare → milepilot-app → Upload assets → Deploy
-4. Hard refresh after deploy (cache: milepilot-v8-7-0)
-
-APP: https://app.milepilot.uk
+Service worker cache: milepilot-v8-8-0

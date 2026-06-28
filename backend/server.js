@@ -39,6 +39,107 @@ app.use(express.json({ limit: "2mb" }));
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+const pioneerStore = {
+  feedback: [],
+  errors: [],
+  telemetry: [],
+};
+
+function pioneerAdminOk(req) {
+  const key = process.env.PIONEER_ADMIN_KEY;
+  if (!key) return process.env.NODE_ENV !== "production";
+  return req.query.key === key || req.headers["x-pioneer-key"] === key;
+}
+
+app.get("/pioneer/metrics", (req, res) => {
+  if (!pioneerAdminOk(req)) {
+    return res.status(403).json({ ok: false, message: "Forbidden" });
+  }
+  const totals = pioneerStore.telemetry.reduce(
+    (acc, t) => {
+      const m = t.metrics || {};
+      acc.completedShifts += m.completedShifts || 0;
+      acc.reportsGenerated += m.reportsGenerated || 0;
+      acc.reportsEmailed += m.reportsEmailed || 0;
+      acc.totalShiftSeconds += m.totalShiftSeconds || 0;
+      if (m.setupCompleted) acc.setupCompleted += 1;
+      if (m.gpsGranted === true) acc.gpsGranted += 1;
+      if (m.gpsGranted === false) acc.gpsDenied += 1;
+      acc.sessions += 1;
+      return acc;
+    },
+    {
+      completedShifts: 0,
+      reportsGenerated: 0,
+      reportsEmailed: 0,
+      totalShiftSeconds: 0,
+      setupCompleted: 0,
+      gpsGranted: 0,
+      gpsDenied: 0,
+      sessions: 0,
+    }
+  );
+  return res.json({
+    ok: true,
+    totals,
+    averageShiftSeconds: totals.completedShifts
+      ? Math.round(totals.totalShiftSeconds / totals.completedShifts)
+      : 0,
+    setupCompletionRate: totals.sessions
+      ? Math.round((totals.setupCompleted / totals.sessions) * 100)
+      : 0,
+    gpsSuccessRate:
+      totals.gpsGranted + totals.gpsDenied
+        ? Math.round((totals.gpsGranted / (totals.gpsGranted + totals.gpsDenied)) * 100)
+        : null,
+    feedbackCount: pioneerStore.feedback.length,
+    errorCount: pioneerStore.errors.length,
+    recentFeedback: pioneerStore.feedback.slice(0, 10),
+    recentErrors: pioneerStore.errors.slice(0, 10),
+    reportVersion: REPORT_VERSION,
+    timestamp: new Date().toISOString(),
+  });
+});
+
+app.post("/pioneer/feedback", (req, res) => {
+  try {
+    const entry = {
+      ...req.body,
+      receivedAt: new Date().toISOString(),
+    };
+    pioneerStore.feedback.unshift(entry);
+    if (pioneerStore.feedback.length > 200) pioneerStore.feedback.pop();
+    console.log("Pioneer feedback:", entry.ease, entry.confused?.slice(0, 40));
+    return res.json({ ok: true, saved: true });
+  } catch (err) {
+    console.error("Pioneer feedback failed:", err);
+    return res.status(500).json({ ok: false, message: "Could not save feedback" });
+  }
+});
+
+app.post("/pioneer/errors", (req, res) => {
+  try {
+    const entry = { ...req.body, receivedAt: new Date().toISOString() };
+    pioneerStore.errors.unshift(entry);
+    if (pioneerStore.errors.length > 500) pioneerStore.errors.pop();
+    console.error("Pioneer client error:", entry.message);
+    return res.json({ ok: true });
+  } catch (err) {
+    return res.status(500).json({ ok: false });
+  }
+});
+
+app.post("/pioneer/telemetry", (req, res) => {
+  try {
+    const entry = { ...req.body, receivedAt: new Date().toISOString() };
+    pioneerStore.telemetry.unshift(entry);
+    if (pioneerStore.telemetry.length > 500) pioneerStore.telemetry.pop();
+    return res.json({ ok: true });
+  } catch (err) {
+    return res.status(500).json({ ok: false });
+  }
+});
+
 app.get("/health", (req, res) => {
   res.json({
     ok: true,
