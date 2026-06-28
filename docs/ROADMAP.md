@@ -101,6 +101,25 @@ See [docs/AUTO_PILOT.md](./AUTO_PILOT.md)
 
 ---
 
+## MP-021 — AutoPilot First Philosophy
+
+**Status:** Active  
+**Version:** App v8.1.0+  
+**Branch:** `cursor/mp-021-autopilot-ae00`
+
+**Promise:** Set it up once. MilePilot does the rest.
+
+See [docs/MP-021-AUTOPILOT-PHILOSOPHY.md](./MP-021-AUTOPILOT-PHILOSOPHY.md)
+
+- Benefit-led onboarding copy (automation over manual tracking)
+- Unified **Enable AutoPilot** step (replaces separate permission screens for new users)
+- Email capture during report setup
+- UX rule: every feature must pass "Can AutoPilot do this automatically?"
+
+**Onboarding flow:** welcome → planPick → workType → reportSetup → autoPilotSetup → home
+
+---
+
 ## MP-017 — Live Tracking Screen & Map Strategy
 
 **Status:** Complete  

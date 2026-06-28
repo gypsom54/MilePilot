@@ -1,6 +1,8 @@
-# MilePilot Auto-Pilot Philosophy (MP-016)
+# MilePilot Auto-Pilot Philosophy (MP-016 + MP-021)
 
-**Promise:** You drive. MilePilot handles the paperwork.
+**Promise:** Set it up once. MilePilot does the rest.
+
+See **`docs/MP-021-AUTOPILOT-PHILOSOPHY.md`** for the full product philosophy (onboarding, UX principle, design rule).
 
 ---
 
@@ -8,10 +10,10 @@
 
 Every feature must pass:
 
-> Can MilePilot do this automatically?
+> Can AutoPilot do this automatically?
 
-If **yes** — remove the button and automate it.  
-If **no** — make the action effortless.
+If **yes** — automate it.  
+If **no** — ask the user only when absolutely necessary.
 
 ---
 
