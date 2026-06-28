@@ -1,3 +1,3 @@
-MilePilot OS v7.6.0 — Business Profile integration
+MilePilot OS v7.7.0 — Vision Lock platform architecture
 Build: 2026-06-27
 Brand: Every business mile matters.

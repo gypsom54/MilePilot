@@ -1,5 +1,7 @@
 # MilePilot Product Roadmap — Phase 2
 
+**Vision locked:** See [VISION_LOCK.md](./VISION_LOCK.md) — Tracker vs Business platform direction.
+
 **Phase 1 complete:** Design, onboarding, dashboard foundation (~90%)  
 **Phase 2 focus:** Make MilePilot a working product, not a UI project.
 
@@ -10,7 +12,7 @@
 | Area | Status |
 |------|--------|
 | Design & branding | ~90% 🔒 Locked |
-| Onboarding flow | ~95% 🔒 Locked |
+| Onboarding flow | ~95% 🔒 Locked (MP-020 experience choice added) |
 | Dashboard foundation | ~90% 🔒 Locked |
 | **Core tracking engine** | Sprint 1 → in progress |
 | Reports | ~10% |
@@ -96,6 +98,22 @@ Unlimited reports, AI insights, cloud backup, multi-vehicle, accountant access.
 One button → professional PDF proof for Job Centre, HMRC, accountant:
 
 - Every shift, maps, totals, timestamps, weekly/monthly summaries.
+
+---
+
+## Platform (vision lock — architecture only)
+
+| Milestone | Status |
+|-----------|--------|
+| Business Profile (`mp_business_profile`) | ✅ In app |
+| Profession personalisation | ✅ In app |
+| Experience tier definitions (Tracker / Business) | ✅ Architecture |
+| Feature gating helpers | ✅ Architecture |
+| Experience onboarding step | 🔜 Future |
+| Tracker vs Business billing | 🔜 Future |
+| Business-tier features (expenses, receipts, etc.) | 🔜 Future |
+
+Target pricing: Tracker £5.99/mo · Business £9.99/mo (not shown in app yet).
 
 ---
 
