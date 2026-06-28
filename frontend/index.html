@@ -918,7 +918,7 @@ body.map-expand-open{overflow:hidden}
 </div>
 </div>
 <div class="onboard-foot">
-<button type="button" class="btn premium-btn" id="permDone">Complete Setup →</button>
+<button type="button" class="btn premium-btn" id="permDone" onclick="completeNotificationsSetup()">Complete Setup →</button>
 </div>
 </div>
 <div class="onboard-version">MP-005 🔒 Locked · Final</div>
@@ -930,9 +930,11 @@ body.map-expand-open{overflow:hidden}
     try{
       if(!localStorage.getItem('mp_location_choice'))localStorage.setItem('mp_location_choice','skipped');
       if(!localStorage.getItem('mp_notifications_choice'))localStorage.setItem('mp_notifications_choice','skipped');
+      if(typeof window.applyFtueDefaults==='function')window.applyFtueDefaults();
       localStorage.setItem('mp_onboard_complete','true');
       localStorage.removeItem('mp_onboard_step');
-    }catch(e){}
+    }catch(e){console.error('MilePilot bootFinishOnboarding',e)}
+    if(typeof window.goHome==='function'){try{window.goHome();return}catch(e){console.error('MilePilot goHome fallback',e)}}
     document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active')});
     var home=document.getElementById('home');
     if(home)home.classList.add('active');
@@ -940,16 +942,20 @@ body.map-expand-open{overflow:hidden}
     if(nav)nav.classList.add('show');
     window.scrollTo(0,0);
   }
+  function completeNotificationsSetup(){
+    try{
+      if(typeof window.finishOnboarding==='function'){window.finishOnboarding();return}
+    }catch(e){console.error('MilePilot complete setup',e)}
+    bootFinishOnboarding();
+  }
   function wirePermDone(){
     var btn=document.getElementById('permDone');
     if(!btn||btn.dataset.wired)return;
     btn.dataset.wired='1';
-    btn.addEventListener('click',function(){
-      if(typeof window.finishOnboarding==='function'){window.finishOnboarding();return}
-      bootFinishOnboarding();
-    });
+    btn.addEventListener('click',completeNotificationsSetup);
   }
   window.__bootFinishOnboarding=bootFinishOnboarding;
+  window.completeNotificationsSetup=completeNotificationsSetup;
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',wirePermDone);
   else wirePermDone();
 })();
@@ -1206,7 +1212,7 @@ body.map-expand-open{overflow:hidden}
 })();
 </script>
 <script>
-const APP_VERSION='8.7.0';
+const APP_VERSION='8.7.1';
 const UI_LOCKED=true;
 const TRACKING_ENGINE_V=(typeof MPTracking!=='undefined'&&MPTracking.ENGINE_VERSION)||0;
 function syncEngineState(){if(typeof MPTracking==='undefined')return;const s=MPTracking.getState();shiftStatus=s.shiftStatus||(s.ccState==='active'?'tracking':'idle');ccState=s.ccState;miles=s.miles;elapsed=s.elapsed;shiftStartedAt=s.shiftStartedAt;shiftId=s.shiftId;routePoints=s.routePoints;lastPoint=s.lastPoint;shiftStops=s.shiftStops;movingSeconds=s.movingSeconds;currentJourneyMiles=s.currentJourneyMiles;lastGpsAt=s.lastGpsAt||lastGpsAt;}
@@ -1339,7 +1345,7 @@ function updateGpsUi(message){if(q('mapHint'))setMapHint(message||'GPS locked');
 function onGpsWatchError(err){if(!isShiftTracking())return;if(err?.code===1){updateGpsUi(geoErrorMessage(err));return}updateGpsUi(trackingErrorMessage('failed'));scheduleGpsReconnect()}
 async function enableTrackingGps(fromUserGesture=false){if(!navigator.geolocation){updateGpsUi(trackingErrorMessage('unavailable'));hideStatus();return}if(!isSecureGeoContext()){updateGpsUi('Location needs HTTPS. Use https://app.milepilot.uk');hideStatus();return}if(!fromUserGesture){const perm=await queryGeoPermission();if(perm!=='granted'){updateGpsUi(perm==='denied'?trackingErrorMessage('denied'):'Enable location so AutoPilot can start recording.');hideStatus();return}}stopGpsWatch();if(gpsReconnectTimer){clearTimeout(gpsReconnectTimer);gpsReconnectTimer=null}updateGpsUi('Finding GPS…');showStatus('Finding GPS…');try{const pos=await requestGeolocation(GEO_OPTS_ACCURATE,GEO_OPTS_RELAXED);handlePos(pos);gpsLocked=true;localStorage.setItem('mp_location_choice','granted');gpsWatchId=navigator.geolocation.watchPosition(handlePos,onGpsWatchError,GEO_OPTS_RELAXED);updateGpsUi(null);hideStatus()}catch(err){gpsLocked=false;if(err?.code===1)localStorage.setItem('mp_location_choice','denied');updateGpsUi(geoErrorMessage(err));hideStatus();renderCommandCentre()}}
 function enableNotificationPermission(){const btn=q('permNotifBtn');if(!('Notification' in window)){localStorage.setItem('mp_notifications_choice','unsupported');syncNotificationButton();return}if(Notification.permission==='granted'){localStorage.setItem('mp_notifications_choice','granted');syncNotificationButton();return}if(Notification.permission==='denied'){localStorage.setItem('mp_notifications_choice','denied');syncNotificationButton();return}if(btn){btn.disabled=true;btn.textContent='Requesting…'}Notification.requestPermission().then(p=>{localStorage.setItem('mp_notifications_choice',p==='granted'?'granted':p==='denied'?'denied':'skipped');syncNotificationButton()}).catch(()=>{localStorage.setItem('mp_notifications_choice','skipped');syncNotificationButton()})}
-function finishOnboarding(){applyFtueDefaults();if(!localStorage.getItem('mp_location_choice'))localStorage.setItem('mp_location_choice','skipped');if(!localStorage.getItem('mp_notifications_choice'))localStorage.setItem('mp_notifications_choice','skipped');localStorage.setItem('mp_onboard_complete','true');localStorage.removeItem('mp_onboard_step');markStayUpdatedPromptSeen();clearOnboardTimers();try{goHome()}catch(err){console.error('MilePilot finish onboarding',err);if(typeof window.__bootFinishOnboarding==='function')window.__bootFinishOnboarding();else{showScreen('home');q('nav')?.classList.add('show')}}}
+function finishOnboarding(){try{if(typeof applyFtueDefaults==='function')applyFtueDefaults();if(!localStorage.getItem('mp_location_choice'))localStorage.setItem('mp_location_choice','skipped');if(!localStorage.getItem('mp_notifications_choice'))localStorage.setItem('mp_notifications_choice','skipped');localStorage.setItem('mp_onboard_complete','true');localStorage.removeItem('mp_onboard_step');markStayUpdatedPromptSeen();clearOnboardTimers();try{goHome()}catch(err){console.error('MilePilot finish onboarding goHome',err);if(typeof window.__bootFinishOnboarding==='function')window.__bootFinishOnboarding();else{showScreen('home');q('nav')?.classList.add('show')}}}catch(err){console.error('MilePilot finish onboarding',err);if(typeof window.__bootFinishOnboarding==='function')window.__bootFinishOnboarding();else{try{localStorage.setItem('mp_onboard_complete','true');localStorage.removeItem('mp_onboard_step')}catch(e){}showScreen('home');q('nav')?.classList.add('show')}}}
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));const screen=q(id);if(screen)screen.classList.add('active');const nav=q('nav');if(nav)nav.classList.toggle('show',!ONBOARD_SCREENS.includes(id));window.scrollTo(0,0)}
 function setNav(n){['Home','Reports','History','Settings'].forEach(x=>{const btn=q('nav'+x);if(!btn)return;btn.classList.toggle('active',x===n);btn.setAttribute('aria-current',x===n?'page':'false')})}
 function fmt(s){s=Number(s)||0;let m=Math.floor(s/60),h=Math.floor(m/60);return h+'h '+String(m%60).padStart(2,'0')+'m'}function money(v){return '£'+(Number(v)||0).toFixed(2)}function claim(mi,v=vehicle){return (Number(mi)||0)*(vehicles[v]?.rate||.55)}
@@ -1355,6 +1361,7 @@ function selectWorkType(type){selectedWorkType=type;document.querySelectorAll('[
 function syncWorkTypeContinue(){const btn=q('workTypeContinue');if(!btn)return;const ready=!!selectedWorkType;btn.disabled=!ready;btn.classList.toggle('is-ready',ready);btn.textContent=ready?'Continue →':'Select your work type'}
 function confirmWorkType(){if(!selectedWorkType)return;MPPlanUX.setUserWorkType(selectedWorkType);vehicle=MPPlanUX.defaultVehicleForWorkType(selectedWorkType);localStorage.setItem('mp_vehicle',vehicle);selectedVehicle=vehicle;localStorage.setItem('mp_onboard_step','reportSetup');initReportSetup();showScreen('reportSetup')}
 function applyFtueDefaults(){if(typeof MPPlanUX!=='undefined'){if(!localStorage.getItem('mp_user_plan'))MPPlanUX.setUserPlan('tracker');if(!localStorage.getItem('mp_user_work_type'))MPPlanUX.setUserWorkType('other')}if(!localStorage.getItem('mp_vehicle')){vehicle='car';localStorage.setItem('mp_vehicle','car')}localStorage.setItem('mp_autopilot_enabled','true');localStorage.setItem('mp_motion_choice','enabled');if(!localStorage.getItem('mp_notifications_choice'))localStorage.setItem('mp_notifications_choice','skipped')}
+window.applyFtueDefaults=applyFtueDefaults;
 function startFtueLocation(){localStorage.setItem('mp_onboard_step','permissions');initLocationPermission();showScreen('permissions')}
 function continueFromLocation(){if(!localStorage.getItem('mp_location_choice'))localStorage.setItem('mp_location_choice','skipped');localStorage.setItem('mp_onboard_step','reportSetup');initReportSetup();showScreen('reportSetup')}
 function initReportSetup(){onboardReportFrequency=getReportFrequency()||'weekly';document.querySelectorAll('#reportSetup .su-freq-tab').forEach(el=>el.classList.toggle('active',el.dataset.freq===onboardReportFrequency))}
@@ -1539,7 +1546,7 @@ async function emailReport(ev){if(reportBusy)return;let email=q('reportEmail').v
 function printReportFallback(autoPrint=true){let t=periodTotals(),driver=localStorage.getItem('mp_driver')||'',meta=periodMeta(),rate=Math.round((vehicles[vehicle]?.rate||0.55)*100),rows=t.list.length?t.list.slice().sort((a,b)=>new Date(a.startISO)-new Date(b.startISO)).map(s=>`<tr><td>${fmtClock(s.startISO)}</td><td>${fmtClock(s.endISO)}</td><td>${s.miles.toFixed(1)}</td><td>${fmtShort(s.seconds)}</td><td>Business</td></tr>`).join(''):`<tr><td colspan="5">No journeys recorded in this period.</td></tr>`;q('printReport').innerHTML=`<div class="pdfHeaderBand"><div class="pdfLogo">Mile <span class="blue">Pilot</span></div><div class="pdfPulse"></div><p class="pdfTag">Drive • Track • Claim</p></div><div class="pdfBody"><p class="pdfPeriod">${meta.sub}</p><p class="pdfMeta">${driver?'Prepared for '+driver+' · ':''}${new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}</p><p class="pdfHeroLabel">Business Miles</p><p class="pdfHeroMiles">${t.mi.toFixed(1)}</p><div class="pdfSupportRow"><div class="pdfSupportItem"><small>Driving Time</small><b>${t.sec<60?'0h 00m':fmtShort(t.sec)}</b></div><div class="pdfSupportItem"><small>Business Journeys</small><b>${t.list.length}</b></div><div class="pdfSupportItem"><small>Estimated Allowance</small><b>${money(t.hmrc)}</b></div></div><h2 class="printSection">Journey Breakdown</h2><table class="printTable"><thead><tr><th>Start</th><th>Finish</th><th>Miles</th><th>Duration</th><th>Type</th></tr></thead><tbody>${rows}</tbody></table><div class="pdfHmrcBox"><div class="pdfHmrcLeft"><strong>HMRC Summary</strong><p>Current HMRC rate: ${rate}p per mile</p><p>Business miles: ${t.mi.toFixed(1)}</p></div><div class="pdfHmrcRight"><small>Estimated mileage allowance</small><b>${money(t.hmrc)}</b></div></div><div class="printFoot"><strong>Drive • Track • Claim</strong>Generated automatically by MilePilot · HMRC figures are estimates for record keeping.</div></div>`;if(!autoPrint)return;if(isMobileReportViewer())openHtmlReportPreview();else setTimeout(()=>window.print(),200)}
 function printReport(){printReportFallback()}
 function migrateOnboardingVersion(){const stored=localStorage.getItem('mp_app_version');if(stored===APP_VERSION)return false;localStorage.setItem('mp_app_version',APP_VERSION);if(localStorage.getItem('mp_onboard_complete')==='true')return false;localStorage.removeItem('mp_onboard_step');localStorage.removeItem('mp_location_choice');localStorage.removeItem('mp_notifications_choice');return true}
-function resumeOnboardingStep(step){driver=localStorage.getItem('mp_driver')||'';vehicle=localStorage.getItem('mp_vehicle')||'car';if(step==='autoPilotReady'){initAutoPilotReady();showScreen('autoPilotReady');return true}if(step==='ftueEmail'){initFtueEmail();showScreen('ftueEmail');return true}if(step==='autoPilot'||step==='autoPilotSetup'){initLocationPermission();showScreen('permissions');return true}if(step==='notifications'){initLocationPermission();showScreen('permissions');return true}if(step==='location'||step==='permissions'){initLocationPermission();showScreen('permissions');return true}if(step==='reportSetup'){initReportSetup();showScreen('reportSetup');return true}if(step==='workType'||step==='planPick'||step==='promise'||step==='knowYou'){localStorage.setItem('mp_onboard_step','welcome');initFirstImpression();showScreen('welcome');return true}if(step==='welcome'){initFirstImpression();showScreen('welcome');return true}return false}
+function resumeOnboardingStep(step){driver=localStorage.getItem('mp_driver')||'';vehicle=localStorage.getItem('mp_vehicle')||'car';if(step==='autoPilotReady'){initAutoPilotReady();showScreen('autoPilotReady');return true}if(step==='ftueEmail'){initFtueEmail();showScreen('ftueEmail');return true}if(step==='autoPilot'||step==='autoPilotSetup'){initLocationPermission();showScreen('permissions');return true}if(step==='notifications'){initNotifications();showScreen('notifications');return true}if(step==='location'||step==='permissions'){initLocationPermission();showScreen('permissions');return true}if(step==='reportSetup'){initReportSetup();showScreen('reportSetup');return true}if(step==='workType'||step==='planPick'||step==='promise'||step==='knowYou'){localStorage.setItem('mp_onboard_step','welcome');initFirstImpression();showScreen('welcome');return true}if(step==='welcome'){initFirstImpression();showScreen('welcome');return true}return false}
 function bootApp(){try{if(typeof MPPlanUX!=='undefined')MPPlanUX.migrateLegacyUser();updateAppVersionBadge();initDevMode();initNetworkStatus();if(typeof MPTracking!=='undefined'){shifts=loadShifts();initTrackingEngine()}localStorage.removeItem('mp_work_done');if(migrateOnboardingVersion()){localStorage.setItem('mp_onboard_step','welcome');initFirstImpression();showScreen('welcome');return}restoreActiveShift();queryGeoPermission().then(perm=>{if(perm==='granted'){gpsLocked=true;localStorage.setItem('mp_location_choice','granted')}});const complete=localStorage.getItem('mp_onboard_complete')==='true',v=localStorage.getItem('mp_vehicle'),step=localStorage.getItem('mp_onboard_step');if(complete){driver=localStorage.getItem('mp_driver')||'';vehicle=v||'car';if(parseDeepLink()){showReports();return}goHome();return}if(step&&resumeOnboardingStep(step))return;localStorage.setItem('mp_onboard_step','welcome');initFirstImpression();showScreen('welcome')}catch(err){console.error('MilePilot boot error',err);if(q('welcome')?.classList.contains('active')&&typeof window.__bootWelcomeCeremony==='function')window.__bootWelcomeCeremony()}}
 function startBoot(){if(window.__mpBootDone)return;window.__mpBootDone=true;bootApp()}
 if(window.__mpScriptsReady)startBoot();
