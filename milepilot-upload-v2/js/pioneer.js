@@ -311,9 +311,9 @@
     getCompletedShiftCount,
     getReleaseNotes: function () {
       return [
-        'v8.9.7 — Unified input design across all screens (MP-043)',
-        '• Same bright input boxes on welcome, email, settings, reports',
-        '• Email onboarding headline fits properly; no browser autofill yellow flash',
+        'v8.9.8 — You\'re all set screen shows list + summary (MP-044)',
+        '• Fixed invisible checklist (promise-list opacity bug)',
+        '• Green summary + Start First Shift button fully visible',
       ].join('\n');
     },
   };
