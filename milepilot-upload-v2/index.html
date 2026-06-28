@@ -75,6 +75,7 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 .onboard-inner{position:relative;z-index:1;width:100%;max-width:340px;margin:0 auto;display:flex;flex-direction:column;min-height:100%}
 @keyframes brandPulseGlow{0%,100%{opacity:1;box-shadow:0 0 22px rgba(13,107,255,.28),0 0 10px rgba(13,107,255,.16);filter:brightness(1)}50%{opacity:1;box-shadow:0 0 36px rgba(13,107,255,.42),0 0 16px rgba(13,107,255,.28);filter:brightness(1.15)}}
 #welcome #welcomePulse{opacity:0;transform:scaleX(0);min-height:var(--brand-pulse-height)}
+#welcome.active #welcomePulse.brand-pulse{opacity:1;transform:scaleX(1);animation:brandPulseGlow var(--brand-pulse-alive) ease-in-out infinite}
 #welcome .welcome-headline{animation:brandHeadlineIn .55s ease 1.2s forwards;opacity:0}
 @keyframes brandPulseSweep{0%{transform:scaleX(0);opacity:0}50%{transform:scaleX(1);opacity:1}100%{transform:scaleX(1);opacity:1}}
 @keyframes brandHeadlineIn{to{opacity:1}}
@@ -530,7 +531,7 @@ body.map-expand-open{overflow:hidden}
 <div class="onboard-inner">
 <div class="onboard-brand brand-bar center">
 <div class="wordmark">Mile <span class="blue">Pilot</span></div>
-<div class="brand-pulse" id="welcomePulse"></div><p class="brand-tagline">Drive • Track • Claim</p>
+<div class="brand-pulse alive" id="welcomePulse"></div><p class="brand-tagline">Drive • Track • Claim</p>
 </div>
 <h1 class="welcome-headline">Your driving business.<br><span class="blue">On auto pilot.</span></h1>
 <p class="welcome-support">MilePilot automatically tracks your business mileage, prepares professional reports and helps you understand your driving business.</p>
@@ -541,7 +542,7 @@ body.map-expand-open{overflow:hidden}
 <div class="welcome-feature"><div class="welcome-icon"><svg viewBox="0 0 24 24"><path d="M4 18V6M4 18h16"/><path d="M8 15l2.5-3 2.5 2 3-5 2.5 3.5"/></svg></div><strong>Insights</strong><span>Understand your business</span></div>
 </div>
 <div class="welcome-form">
-<div class="welcome-question-wrap"><div class="welcome-question" id="typed"></div></div>
+<div class="welcome-question-wrap"><div class="welcome-question" id="typed">Welcome to MilePilot.</div></div>
 <div class="welcome-input-wrap">
 <svg class="welcome-input-icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M5 20c0-4 3-6 7-6s7 2 7 6"/></svg>
 <input id="name" placeholder="Enter your first name" autocomplete="given-name">
@@ -551,6 +552,45 @@ body.map-expand-open{overflow:hidden}
 </div>
 <div class="welcome-version" id="appVersion">MP-001 🔒 Locked · v2.8</div>
 </section>
+<script>
+/* MP-001 welcome ceremony — self-contained; runs before app bundle */
+(function(){
+  var LINES=['Welcome to MilePilot.',"Let's build your driving business.","What's your first name?"];
+  var timers=[];
+  function q(id){return document.getElementById(id)}
+  function clearTimers(){timers.forEach(function(t){clearTimeout(t)});timers=[]}
+  function playPulse(){
+    var pulse=q('welcomePulse');if(!pulse)return;
+    var finish=function(){pulse.classList.remove('sweep');pulse.classList.add('alive');pulse.onanimationend=null};
+    pulse.classList.remove('sweep','alive');pulse.onanimationend=null;void pulse.offsetWidth;
+    pulse.classList.add('sweep');pulse.onanimationend=function(e){if(e.target===pulse)finish()};
+    timers.push(setTimeout(finish,1300));
+  }
+  function startTyping(){
+    var el=q('typed');if(!el)return;clearTimers();
+    var idx=0,fadeMs=480,pauseMs=1300,revealMs=320;
+    function schedule(fn,ms){timers.push(setTimeout(fn,ms))}
+    function showLine(){
+      if(idx>=LINES.length)return;
+      var text=LINES[idx],isLast=idx===LINES.length-1;
+      if(idx===0){el.innerHTML=isLast?text+'<span class="cursor"></span>':text;el.style.transition='opacity '+revealMs+'ms ease';el.style.opacity='1';if(isLast)return;schedule(function(){el.style.transition='opacity '+fadeMs+'ms ease';el.style.opacity='0';schedule(function(){idx++;showLine()},fadeMs)},pauseMs);return}
+      el.style.transition='opacity '+fadeMs+'ms ease';el.style.opacity='0';
+      schedule(function(){el.innerHTML=isLast?text+'<span class="cursor"></span>':text;el.style.transition='opacity '+revealMs+'ms ease';el.style.opacity='1';if(isLast)return;schedule(function(){el.style.transition='opacity '+fadeMs+'ms ease';el.style.opacity='0';schedule(function(){idx++;showLine()},fadeMs)},pauseMs)},fadeMs);
+    }
+    showLine();
+  }
+  function bootWelcomeCeremony(){
+    if(!q('welcome')||!q('welcome').classList.contains('active'))return;
+    playPulse();
+    timers.push(setTimeout(startTyping,900));
+    var name=q('name'),btn=q('welcomeContinue');
+    if(name&&btn){var sync=function(){var ready=name.value.trim().length>0;btn.disabled=!ready;btn.classList.toggle('is-ready',ready)};name.addEventListener('input',sync);sync()}
+  }
+  window.__bootWelcomeCeremony=bootWelcomeCeremony;
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bootWelcomeCeremony);
+  else bootWelcomeCeremony();
+})();
+</script>
 <!-- MP-020 Plan selection -->
 <section id="planPick" class="screen" data-mp="MP-020">
 <div class="onboard-bg" aria-hidden="true"><div class="onboard-glow onboard-glow-1"></div><div class="onboard-glow onboard-glow-2"></div></div>
@@ -839,7 +879,7 @@ body.map-expand-open{overflow:hidden}
 </div>
 </div>
 </div>
-<div class="cc-version" id="ccVersion">MilePilot v8.0.0</div>
+<div class="cc-version" id="ccVersion">MilePilot v8.0.1</div>
 </section>
 <section id="tracking" class="screen"><div class="brand-row"><header class="brand-bar"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div><p class="brand-tagline">Drive • Track • Claim</p></header><div class="gps-badge">GPS</div></div><h1 class="title">Tracking Active</h1><p class="sub" id="trackingVehicle">Vehicle: Car • Rate: 55p per mile</p><div class="metricGrid"><div class="metricBox"><strong id="liveMiles">0.00</strong><span>Miles</span></div><div class="metricBox"><strong id="liveTime">0h 00m</strong><span>Time</span></div><div class="metricBox"><strong id="liveClaim">£0.00</strong><span>Claim</span></div></div><div class="mapBox"><div class="gpsActions"><button onclick="requestGpsAgain()">Enable GPS</button><button class="secondary" onclick="centreMap()">Centre</button></div><div id="liveMap"></div><div class="mapHint" id="mapHint">Requesting location…</div></div><button class="btn red" onclick="endShift()">END SHIFT</button></section>
 <section id="reports" class="screen reports-screen"><header class="brand-bar"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div><p class="brand-tagline">Drive • Track • Claim</p></header><div class="reports-body"><div class="reports-header"><h1 class="reports-title">Document Centre</h1><p class="reports-sub">Your reports are generated automatically. View or download anytime.</p></div><div class="cc-card report-auto-card" id="reportAutoBanner"><h2 class="report-auto-heading">Automatic Reports</h2><p class="report-auto-desc" id="reportAutoDesc">Every Sunday at 6:00 PM we'll send your weekly report.</p><p class="report-auto-status" id="reportAutoStatus">Weekly (Recommended)</p><button type="button" class="report-auto-turn-on" id="reportAutoTurnOn" onclick="openStayUpdatedModal('reports')">Turn on automatic reports</button><button type="button" class="report-auto-manage" id="reportAutoManage" hidden onclick="openStayUpdatedModal('reports')">Change Schedule</button></div><div class="report-tabs" role="tablist" aria-label="Report period"><button type="button" class="report-tab" id="pDay" role="tab" onclick="setPeriod('day')">Daily</button><button type="button" class="report-tab" id="pWeek" role="tab" onclick="setPeriod('week')">Weekly</button><button type="button" class="report-tab" id="pMonth" role="tab" onclick="setPeriod('month')">Monthly</button></div><div class="cc-card report-doc-card"><div class="report-doc-preview" id="reportDocPreview" hidden><span class="report-doc-preview-label" id="reportPreviewLabel">Business Miles</span><p class="report-doc-preview-miles" id="reportPreviewMiles">0.0</p><p class="report-doc-preview-sub" id="reportPreviewSub">Daily Driving Report</p></div><div class="report-doc-body"><div class="report-doc-head"><span class="report-doc-badge is-empty" id="reportDocBadge">Available</span><h2 class="report-period-title" id="mainReportTitle">Today's Report</h2><p class="report-doc-sub" id="reportDocSub">Daily Driving Report</p></div><div class="report-email-primary" id="reportEmailPrimary" hidden><label for="reportEmail">Email address</label><input id="reportEmail" placeholder="you@example.com" inputmode="email" aria-label="Email address"></div><div class="report-empty" id="reportEmpty"><p class="report-empty-title">No saved shifts yet.</p><p class="report-empty-sub">Start a shift — MilePilot builds your report automatically.</p></div><div class="cc-metrics" id="reportMetrics" hidden><div class="cc-metric"><span>Business Miles</span><strong id="reportMiles">0.0</strong></div><div class="cc-metric"><span>Driving Time</span><strong id="reportTime">0h</strong></div><div class="cc-metric"><span>Journeys</span><strong id="reportJourneys">0</strong></div><div class="cc-metric"><span>HMRC Estimate</span><strong id="reportClaim">£0.00</strong></div></div><div class="report-doc-secondary" id="reportSecondary" hidden><p class="report-doc-secondary-label">Report actions</p><div class="report-doc-actions" id="reportActions"><button type="button" class="report-action-btn" onclick="openReport()">View PDF</button><button type="button" class="report-action-btn" onclick="downloadReport()">Download PDF</button><button type="button" class="report-action-btn" onclick="shareReport()">Share PDF</button><button type="button" class="report-action-btn" onclick="emailReportAgain()">Email Again</button><button type="button" class="report-action-btn" onclick="exportReportCsv()">Export CSV</button></div></div></div></div><div class="cc-card" id="reportArchiveCard" hidden><h2 class="cc-card-title">Report history</h2><div id="reportArchiveList"></div></div></div></section>
@@ -911,13 +951,13 @@ body.map-expand-open{overflow:hidden}
 </div>
 </div>
 </div>
-<script src="./js/tracking-engine.js?v=8.0.0"></script>
-<script src="./js/driver-intelligence.js?v=8.0.0"></script>
-<script src="./js/plan-ux.js?v=8.0.0"></script>
+<script src="./js/tracking-engine.js?v=8.0.1"></script>
+<script src="./js/driver-intelligence.js?v=8.0.1"></script>
+<script src="./js/plan-ux.js?v=8.0.1"></script>
 <script>
-const APP_VERSION='8.0.0';
+const APP_VERSION='8.0.1';
 const UI_LOCKED=true;
-const TRACKING_ENGINE_V=MPTracking.ENGINE_VERSION;
+const TRACKING_ENGINE_V=(typeof MPTracking!=='undefined'&&MPTracking.ENGINE_VERSION)||0;
 function syncEngineState(){const s=MPTracking.getState();ccState=s.ccState;miles=s.miles;elapsed=s.elapsed;shiftStartedAt=s.shiftStartedAt;shiftId=s.shiftId;routePoints=s.routePoints;lastPoint=s.lastPoint;shiftStops=s.shiftStops;movingSeconds=s.movingSeconds;currentJourneyMiles=s.currentJourneyMiles;lastGpsAt=s.lastGpsAt||lastGpsAt;}
 function isDevMode(){return localStorage.getItem('mp_dev_mode')==='1'||new URLSearchParams(location.search).get('dev')==='1'}
 function initDevMode(){if(new URLSearchParams(location.search).get('dev')==='1')localStorage.setItem('mp_dev_mode','1');renderDevPanel()}
@@ -986,7 +1026,8 @@ function startWelcomeTyping(){const el=q('typed');if(!el)return;clearWelcomeTypi
 function syncWelcomeContinue(){const btn=q('welcomeContinue'),name=q('name');if(!btn||!name)return;const ready=name.value.trim().length>0;btn.disabled=!ready;btn.classList.toggle('is-ready',ready)}
 function replayFirstImpressionIntro(){playBrandPulse();const headline=document.querySelector('#welcome .welcome-headline');if(headline){headline.style.animation='none';headline.style.opacity='0';void headline.offsetWidth;headline.style.animation=''}}
 function playBrandPulse(){const pulse=q('welcomePulse');if(!pulse)return;const finish=()=>{pulse.classList.remove('sweep');pulse.classList.add('alive');pulse.onanimationend=null};pulse.classList.remove('sweep','alive');pulse.onanimationend=null;void pulse.offsetWidth;pulse.classList.add('sweep');pulse.onanimationend=(e)=>{if(e.target===pulse)finish()};setTimeout(finish,1300)}
-function initFirstImpression(){updateAppVersionBadge();replayFirstImpressionIntro();setTimeout(startWelcomeTyping,2050);syncWelcomeContinue();q('name')?.addEventListener('input',syncWelcomeContinue)}
+let welcomeIntroBound=false;
+function initFirstImpression(){updateAppVersionBadge();if(!welcomeIntroBound){welcomeIntroBound=true;q('name')?.addEventListener('input',syncWelcomeContinue)}syncWelcomeContinue();if(typeof window.__bootWelcomeCeremony==='function')window.__bootWelcomeCeremony();else{replayFirstImpressionIntro();setTimeout(startWelcomeTyping,900)}}
 function updateAppVersionBadge(){const el=q('appVersion');if(el)el.textContent='MP-001 🔒 Locked · App v'+APP_VERSION}
 let knowYouTimers=[];
 function clearKnowYouMessaging(){knowYouTimers.forEach(t=>clearTimeout(t));knowYouTimers=[]}
@@ -1053,7 +1094,7 @@ function saveSettingsPicker(){if(!settingsPickerKind||!settingsPickerValue)retur
 function renderTrackerDashboard(mode){if(mode==='today_done'){const recap=q('ccDayRecap');if(recap)recap.hidden=true}const reportCard=q('ccReportStatus'),reportText=q('ccReportStatusText');if(reportCard)reportCard.hidden=false;if(reportText)reportText.textContent=getDashboardReportInsight()}
 function applyPlanDashboardClasses(body,mode){if(!body)return;body.classList.toggle('is-tracker',MPPlanUX.isTracker());body.classList.toggle('is-tracker-active',MPPlanUX.isTracker()&&mode==='active');const reportCard=q('ccReportStatus');if(reportCard)reportCard.hidden=MPPlanUX.isPro()}
 function saveEmailSetup(){let e=q('emailInput').value.trim();if(e)localStorage.setItem('mp_email',e);goHome()}
-function resetOnboarding(){localStorage.removeItem('mp_driver');localStorage.removeItem('mp_vehicle');localStorage.removeItem('mp_user_plan');localStorage.removeItem('mp_user_work_type');localStorage.removeItem('mp_location_choice');localStorage.removeItem('mp_notifications_choice');localStorage.removeItem('mp_onboard_step');localStorage.removeItem('mp_onboard_complete');localStorage.removeItem('mp_report_frequency');localStorage.removeItem('mp_report_prefs');localStorage.removeItem('mp_stay_updated_prompted');driver='';vehicle='car';selectedVehicle=null;selectedPlan=null;selectedWorkType=null;pendingStayUpdatedAfterShift=false;q('name').value='';clearWelcomeTyping();clearKnowYouMessaging();clearOnboardTimers();const typed=q('typed');if(typed){typed.innerHTML='';typed.style.opacity='1'}const msg=q('knowYouMessage');if(msg){msg.textContent='';msg.style.opacity='0'}document.querySelectorAll('.vehicle-card').forEach(c=>c.classList.remove('selected'));syncKnowYouContinue();localStorage.setItem('mp_onboard_step','welcome');q('nav').classList.remove('show');initFirstImpression();showScreen('welcome')}
+function resetOnboarding(){localStorage.removeItem('mp_driver');localStorage.removeItem('mp_vehicle');localStorage.removeItem('mp_user_plan');localStorage.removeItem('mp_user_work_type');localStorage.removeItem('mp_location_choice');localStorage.removeItem('mp_notifications_choice');localStorage.removeItem('mp_onboard_step');localStorage.removeItem('mp_onboard_complete');localStorage.removeItem('mp_report_frequency');localStorage.removeItem('mp_report_prefs');localStorage.removeItem('mp_stay_updated_prompted');driver='';vehicle='car';selectedVehicle=null;selectedPlan=null;selectedWorkType=null;pendingStayUpdatedAfterShift=false;welcomeIntroBound=false;q('name').value='';clearWelcomeTyping();clearKnowYouMessaging();clearOnboardTimers();const typed=q('typed');if(typed){typed.textContent='Welcome to MilePilot.';typed.style.opacity='1'}const msg=q('knowYouMessage');if(msg){msg.textContent='';msg.style.opacity='0'}document.querySelectorAll('.vehicle-card').forEach(c=>c.classList.remove('selected'));syncKnowYouContinue();localStorage.setItem('mp_onboard_step','welcome');q('nav').classList.remove('show');showScreen('welcome');initFirstImpression()}
 function clearData(){stopGpsWatch();releaseWakeLock();gpsLocked=false;if(timer){clearInterval(timer);timer=null}if(gpsReconnectTimer){clearTimeout(gpsReconnectTimer);gpsReconnectTimer=null}localStorage.removeItem('mp_shifts');MPTracking.clearActiveShift();shifts=[];MPTracking.applyExternal({ccState:'idle',miles:0,elapsed:0,shiftStartedAt:null,shiftId:null,routePoints:[],lastPoint:null});MPTracking.resetEngine();syncEngineState();toast('Test shifts cleared');renderCommandCentre()}
 function goHome(){setNav('Home');renderCommandCentre();showScreen('home')}
 function fmtShort(s){s=Number(s)||0;if(s<60)return '0h';let m=Math.floor(s/60),h=Math.floor(m/60);return h?h+'h '+String(m%60).padStart(2,'0')+'m':m+'m'}
@@ -1194,7 +1235,7 @@ function printReportFallback(){let t=periodTotals(),driver=localStorage.getItem(
 function printReport(){printReportFallback()}
 function migrateOnboardingVersion(){const stored=localStorage.getItem('mp_app_version');if(stored===APP_VERSION)return false;localStorage.setItem('mp_app_version',APP_VERSION);if(localStorage.getItem('mp_onboard_complete')==='true')return false;const d=localStorage.getItem('mp_driver'),v=localStorage.getItem('mp_vehicle'),step=localStorage.getItem('mp_onboard_step');if(d&&v&&!step)return false;localStorage.removeItem('mp_driver');localStorage.removeItem('mp_vehicle');localStorage.removeItem('mp_onboard_step');localStorage.removeItem('mp_location_choice');localStorage.removeItem('mp_notifications_choice');driver='';vehicle='car';selectedVehicle=null;if(q('name'))q('name').value='';return true}
 function resumeOnboardingStep(step){driver=localStorage.getItem('mp_driver')||'';vehicle=localStorage.getItem('mp_vehicle')||'car';if(step==='notifications'){initNotifications();showScreen('notifications');return true}if(step==='location'||step==='permissions'){initLocationPermission();showScreen('permissions');return true}if(step==='reportSetup'){initReportSetup();showScreen('reportSetup');return true}if(step==='workType'){initWorkType();showScreen('workType');return true}if(step==='planPick'){initPlanPick();showScreen('planPick');return true}if(step==='promise'){initPromise();showScreen('promise');return true}if(step==='knowYou'){initKnowYou();showScreen('knowYou');return true}if(step==='welcome'){initFirstImpression();showScreen('welcome');return true}return false}
-function bootApp(){MPPlanUX.migrateLegacyUser();initDevMode();initTrackingEngine();localStorage.removeItem('mp_work_done');if(migrateOnboardingVersion()){localStorage.setItem('mp_onboard_step','welcome');initFirstImpression();showScreen('welcome');return}restoreActiveShift();queryGeoPermission().then(perm=>{if(perm==='granted'){gpsLocked=true;localStorage.setItem('mp_location_choice','granted')}});const complete=localStorage.getItem('mp_onboard_complete')==='true',d=localStorage.getItem('mp_driver'),v=localStorage.getItem('mp_vehicle'),step=localStorage.getItem('mp_onboard_step');if(complete){driver=d||'';vehicle=v||'car';if(parseDeepLink()){showReports();return}goHome();return}if(d&&v&&!step&&(localStorage.getItem('mp_location_choice')||localStorage.getItem('mp_notifications_choice'))){localStorage.setItem('mp_onboard_complete','true');if(!localStorage.getItem('mp_location_choice'))localStorage.setItem('mp_location_choice','legacy');driver=d;vehicle=v;goHome();return}if(d&&v&&!step){localStorage.setItem('mp_location_choice','legacy');localStorage.setItem('mp_onboard_complete','true');driver=d;vehicle=v;goHome();return}if(step&&resumeOnboardingStep(step))return;if(d&&!v){driver=d;localStorage.setItem('mp_onboard_step','planPick');initPlanPick();showScreen('planPick');return}localStorage.setItem('mp_onboard_step','welcome');initFirstImpression();showScreen('welcome')}
+function bootApp(){try{if(typeof MPPlanUX!=='undefined')MPPlanUX.migrateLegacyUser();initDevMode();initTrackingEngine();localStorage.removeItem('mp_work_done');if(migrateOnboardingVersion()){localStorage.setItem('mp_onboard_step','welcome');initFirstImpression();showScreen('welcome');return}restoreActiveShift();queryGeoPermission().then(perm=>{if(perm==='granted'){gpsLocked=true;localStorage.setItem('mp_location_choice','granted')}});const complete=localStorage.getItem('mp_onboard_complete')==='true',d=localStorage.getItem('mp_driver'),v=localStorage.getItem('mp_vehicle'),step=localStorage.getItem('mp_onboard_step');if(complete){driver=d||'';vehicle=v||'car';if(parseDeepLink()){showReports();return}goHome();return}if(d&&v&&!step&&(localStorage.getItem('mp_location_choice')||localStorage.getItem('mp_notifications_choice'))){localStorage.setItem('mp_onboard_complete','true');if(!localStorage.getItem('mp_location_choice'))localStorage.setItem('mp_location_choice','legacy');driver=d;vehicle=v;goHome();return}if(d&&v&&!step){localStorage.setItem('mp_location_choice','legacy');localStorage.setItem('mp_onboard_complete','true');driver=d;vehicle=v;goHome();return}if(step&&resumeOnboardingStep(step))return;if(d&&!v){driver=d;localStorage.setItem('mp_onboard_step','planPick');initPlanPick();showScreen('planPick');return}localStorage.setItem('mp_onboard_step','welcome');initFirstImpression();showScreen('welcome')}catch(err){console.error('MilePilot boot error',err);if(q('welcome')?.classList.contains('active')&&typeof window.__bootWelcomeCeremony==='function')window.__bootWelcomeCeremony()}}
 window.addEventListener('load',bootApp);
 if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('./service-worker.js?v='+APP_VERSION).then(r=>r.update()).catch(()=>{})})}
 </script>

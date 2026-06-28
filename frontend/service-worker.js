@@ -1,4 +1,4 @@
-const CACHE = 'milepilot-v8-0-0';
+const CACHE = 'milepilot-v8-0-1';
 self.addEventListener('install', (e) => self.skipWaiting());
 self.addEventListener('activate', (e) => {
   e.waitUntil(
