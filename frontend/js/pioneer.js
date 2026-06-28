@@ -311,10 +311,10 @@
     getCompletedShiftCount,
     getReleaseNotes: function () {
       return [
-        'v8.9.1 — Start fresh reset fix (MP-038)',
-        '• Start fresh clears all data and opens full setup (plan → work type → reports…)',
-        '• New users now begin at plan selection, not returning-user shortcut',
-        '• Fixed legacy migration re-applying plan after reset',
+        'v8.9.2 — Dual welcome: full signup vs returning (MP-039)',
+        '• Fresh users: animated welcome, name entry, plan → full setup',
+        '• Returning users: short welcome → Continue → Dashboard',
+        '• Start fresh restores full signup experience',
       ].join('\n');
     },
   };
