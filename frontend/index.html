@@ -136,7 +136,8 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 .perm-section .perm-privacy{margin-top:12px;font-size:13px;font-weight:500;color:rgba(110,180,255,.78);line-height:1.45}
 .knowYou-greeting{text-align:center;font-size:clamp(26px,6.5vw,30px);font-weight:700;letter-spacing:-0.03em;line-height:1.2;margin:0 0 20px;-webkit-font-smoothing:antialiased;animation:knowYouGreetIn .6s cubic-bezier(.22,1,.36,1) .15s both}
 @keyframes knowYouGreetIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-.knowYou-message-wrap{height:40px;min-height:40px;max-height:40px;margin:0 0 32px;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:0 4px}
+.knowYou-message-wrap{min-height:40px;margin:0 0 32px;display:flex;align-items:center;justify-content:center;padding:0 4px}
+#knowYou .knowYou-message-wrap{height:40px;max-height:40px;overflow:hidden}
 .knowYou-message{text-align:center;font-size:clamp(17px,4.6vw,20px);font-weight:600;letter-spacing:-0.02em;color:rgba(255,255,255,.96);line-height:1.25;margin:0 auto;max-width:none;width:100%;transition:opacity .38s cubic-bezier(.22,1,.36,1);opacity:0;-webkit-font-smoothing:antialiased}
 .knowYou-body{flex:1;min-height:0;display:flex;flex-direction:column}
 .knowYou-cards{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:2px 0;margin:0 0 20px}
@@ -674,7 +675,7 @@ body.map-expand-open{overflow:hidden}
 <header class="brand-bar onboard-brand center"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div><p class="brand-tagline">Drive • Track • Claim</p></header>
 <div class="knowYou-body">
 <h1 class="knowYou-greeting">What do you use MilePilot for?</h1>
-<div class="knowYou-message-wrap"><p class="knowYou-message" style="opacity:1">We'll personalise your dashboard copy.</p></div>
+<div class="knowYou-message-wrap"><p class="knowYou-message" style="opacity:1">We'll personalise your dashboard.</p></div>
 <div class="knowYou-cards"><div class="vehicle-grid" id="workTypeGrid"></div></div>
 </div>
 <div class="knowYou-foot"><button class="btn premium-btn" id="workTypeContinue" onclick="confirmWorkType()" disabled>Select your work type</button></div>
@@ -1024,7 +1025,7 @@ body.map-expand-open{overflow:hidden}
 </div>
 <script>
 (function(){
-  var v='8.0.4',files=['plan-ux.js','tracking-engine.js','driver-intelligence.js'],i=0;
+  var v='8.0.5',files=['plan-ux.js','tracking-engine.js','driver-intelligence.js'],i=0;
   window.__mpScriptVersion=v;
   window.__mpScriptsReady=false;
   function next(){
@@ -1038,7 +1039,7 @@ body.map-expand-open{overflow:hidden}
 })();
 </script>
 <script>
-const APP_VERSION='8.0.4';
+const APP_VERSION='8.0.5';
 const UI_LOCKED=true;
 const TRACKING_ENGINE_V=(typeof MPTracking!=='undefined'&&MPTracking.ENGINE_VERSION)||0;
 function syncEngineState(){const s=MPTracking.getState();ccState=s.ccState;miles=s.miles;elapsed=s.elapsed;shiftStartedAt=s.shiftStartedAt;shiftId=s.shiftId;routePoints=s.routePoints;lastPoint=s.lastPoint;shiftStops=s.shiftStops;movingSeconds=s.movingSeconds;currentJourneyMiles=s.currentJourneyMiles;lastGpsAt=s.lastGpsAt||lastGpsAt;}
