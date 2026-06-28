@@ -705,6 +705,12 @@ function drawPageWatermark(doc, pageW, pageH) {
   doc.restore();
 }
 
+function drawPageBackground(doc, pageW, pageH) {
+  doc.save();
+  doc.fillColor(BRAND.white).rect(0, 0, pageW, pageH).fill();
+  doc.restore();
+}
+
 function drawOutlineIcon(doc, type, x, y, size, color) {
   doc.save().lineWidth(0.9).strokeColor(color);
   const cx = x + size / 2;
@@ -790,9 +796,10 @@ function drawBrandPulse(doc, x, y, width = 120) {
 }
 
 function ensureSpace(doc, y, needed, margin, contentW, pageW, a) {
-  if (y + needed <= footerTop(doc.page.height) - PDF.unit * 2) return y;
+    if (y + needed <= footerTop(doc.page.height) - PDF.unit * 2) return y;
   drawFooter(doc, a, margin, contentW);
   doc.addPage({ margin: 0 });
+  drawPageBackground(doc, pageW, doc.page.height);
   drawPageWatermark(doc, pageW, doc.page.height);
   return drawCompactHeader(doc, margin, contentW, pageW) + PDF.pagePad;
 }
@@ -833,6 +840,7 @@ function drawThisWeekKiller(doc, a, margin, contentW, y) {
 }
 
 function drawDashboardPage(doc, a, margin, contentW, pageW, pageH) {
+  drawPageBackground(doc, pageW, pageH);
   drawPageWatermark(doc, pageW, pageH);
   let y = drawCompactHeader(doc, margin, contentW, pageW);
 
@@ -956,6 +964,7 @@ function drawJourneyTimeline(doc, a, margin, contentW, y, pageW) {
     if (y + 90 > footerTop(doc.page.height) - PDF.footerH) {
       drawFooter(doc, a, margin, contentW);
       doc.addPage({ margin: 0 });
+      drawPageBackground(doc, pageW, doc.page.height);
       drawPageWatermark(doc, pageW, doc.page.height);
       y = drawCompactHeader(doc, margin, contentW, pageW) + PDF.pagePad;
       y = drawNavySectionBar(doc, "Journeys", margin, y, contentW);
@@ -1204,6 +1213,8 @@ export async function buildPdfBuffer(report) {
     const margin = PDF.margin;
     const contentW = pageContentW(pageW);
 
+    drawPageBackground(doc, pageW, pageH);
+
     // Page 1 — Instagram-worthy dashboard
     let y = drawDashboardPage(doc, a, margin, contentW, pageW, pageH);
     y = ensureSpace(doc, y, 120, margin, contentW, pageW, a);
@@ -1212,6 +1223,7 @@ export async function buildPdfBuffer(report) {
 
     // Page 2 — Apple Wallet journeys
     doc.addPage({ margin: 0 });
+    drawPageBackground(doc, pageW, pageH);
     drawPageWatermark(doc, pageW, pageH);
     y = drawPageHeader(doc, a, margin, contentW, pageW);
     y = drawSectionHeading(doc, "Journeys", margin, y, contentW);
@@ -1221,6 +1233,7 @@ export async function buildPdfBuffer(report) {
 
     // Page 3 — Weekly visuals + AI coach
     doc.addPage({ margin: 0 });
+    drawPageBackground(doc, pageW, pageH);
     drawPageWatermark(doc, pageW, pageH);
     y = drawPageHeader(doc, a, margin, contentW, pageW);
     doc.fillColor(BRAND.muted).font("Helvetica").fontSize(8).text(`Week ending ${a.weekEnding}`, margin, y, { width: contentW });
@@ -1232,6 +1245,7 @@ export async function buildPdfBuffer(report) {
 
     // Page 4 — Accountant copy + QR verify
     doc.addPage({ margin: 0 });
+    drawPageBackground(doc, pageW, pageH);
     drawPageWatermark(doc, pageW, pageH);
     y = drawPageHeader(doc, a, margin, contentW, pageW);
     y = drawAccountantPage(doc, a, margin, contentW, y, qrBuffer);
