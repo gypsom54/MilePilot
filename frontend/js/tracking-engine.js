@@ -1,6 +1,7 @@
 /**
- * MilePilot Tracking Engine v2 (MP-013)
+ * MilePilot Tracking Engine v2 (MP-013 / MP-026)
  * Single source of truth for shift lifecycle, GPS mileage, and persistence.
+ * shift.status: idle | tracking | ending | saving | completed
  */
 (function (global) {
   'use strict';
@@ -56,8 +57,16 @@
 
   let hooks = { onUpdate: null, claimRate: () => 0.55 };
 
+  const SHIFT_STATUS = {
+    IDLE: 'idle',
+    TRACKING: 'tracking',
+    ENDING: 'ending',
+    SAVING: 'saving',
+    COMPLETED: 'completed',
+  };
+
   let state = {
-    ccState: 'idle',
+    shiftStatus: SHIFT_STATUS.IDLE,
     miles: 0,
     elapsed: 0,
     shiftStartedAt: null,
@@ -156,6 +165,7 @@
   }
 
   function processGpsPoint(p) {
+    if (state.shiftStatus !== SHIFT_STATUS.TRACKING) return getState();
     state.routePoints.push(p);
     state.lastGpsAt = p.t;
     state.gpsLossAt = null;
@@ -198,9 +208,40 @@
     movementDetection.reset();
   }
 
+  function syncLegacyCcState() {
+    state.ccState = state.shiftStatus === SHIFT_STATUS.TRACKING ? 'active' : 'idle';
+  }
+
+  function getShiftStatus() {
+    return state.shiftStatus;
+  }
+
+  function isTracking() {
+    return state.shiftStatus === SHIFT_STATUS.TRACKING;
+  }
+
+  function isShiftLive() {
+    return (
+      state.shiftStatus === SHIFT_STATUS.TRACKING ||
+      state.shiftStatus === SHIFT_STATUS.ENDING ||
+      state.shiftStatus === SHIFT_STATUS.SAVING
+    );
+  }
+
+  function clearShiftRuntime() {
+    state.miles = 0;
+    state.elapsed = 0;
+    state.routePoints = [];
+    state.lastPoint = null;
+    resetEngine();
+    state.shiftId = null;
+    state.shiftStartedAt = null;
+  }
+
   function getActiveShiftPayload() {
     return {
       engineVersion: ENGINE_VERSION,
+      shiftStatus: state.shiftStatus,
       shiftId: state.shiftId || 'shift_' + state.shiftStartedAt,
       startedAt: state.shiftStartedAt,
       miles: state.miles,
@@ -250,6 +291,8 @@
   }
 
   function startShift(vehicle) {
+    state.shiftStatus = SHIFT_STATUS.TRACKING;
+    syncLegacyCcState();
     state.miles = 0;
     state.elapsed = 0;
     state.routePoints = [];
@@ -258,28 +301,65 @@
     state.shiftId = 'shift_' + Date.now();
     state.shiftStartedAt = Date.now();
     state.vehicle = vehicle || state.vehicle || 'car';
-    state.ccState = 'active';
+    saveActiveShift();
     emit();
     return getState();
   }
 
-  function endShift(claimFn) {
+  function requestEndShift() {
+    if (state.shiftStatus !== SHIFT_STATUS.TRACKING) return false;
+    state.shiftStatus = SHIFT_STATUS.ENDING;
+    syncLegacyCcState();
+    emit();
+    return true;
+  }
+
+  function completeShift(claimFn) {
+    if (
+      state.shiftStatus !== SHIFT_STATUS.TRACKING &&
+      state.shiftStatus !== SHIFT_STATUS.ENDING &&
+      state.shiftStatus !== SHIFT_STATUS.SAVING
+    ) {
+      return null;
+    }
+    state.shiftStatus = SHIFT_STATUS.SAVING;
+    syncLegacyCcState();
+    emit();
     const shift = buildCompletedShift(claimFn);
-    state.ccState = 'idle';
-    state.miles = 0;
-    state.elapsed = 0;
-    state.routePoints = [];
-    state.lastPoint = null;
-    resetEngine();
-    state.shiftId = null;
-    state.shiftStartedAt = null;
+    clearShiftRuntime();
+    state.shiftStatus = SHIFT_STATUS.COMPLETED;
+    syncLegacyCcState();
     emit();
     return shift;
   }
 
+  function acknowledgeShiftComplete() {
+    if (state.shiftStatus !== SHIFT_STATUS.COMPLETED) return false;
+    clearShiftRuntime();
+    state.shiftStatus = SHIFT_STATUS.IDLE;
+    syncLegacyCcState();
+    emit();
+    return true;
+  }
+
+  function forceIdle() {
+    clearShiftRuntime();
+    state.shiftStatus = SHIFT_STATUS.IDLE;
+    syncLegacyCcState();
+    emit();
+    return true;
+  }
+
+  /** @deprecated Use requestEndShift + completeShift */
+  function endShift(claimFn) {
+    if (state.shiftStatus === SHIFT_STATUS.TRACKING) requestEndShift();
+    return completeShift(claimFn);
+  }
+
   function restoreActive(s) {
     if (!s || !s.startedAt) return false;
-    state.ccState = 'active';
+    state.shiftStatus = SHIFT_STATUS.TRACKING;
+    syncLegacyCcState();
     state.shiftStartedAt = s.startedAt;
     state.miles = Number(s.miles) || 0;
     state.elapsed = Math.floor((Date.now() - state.shiftStartedAt) / 1000);
@@ -292,7 +372,7 @@
   }
 
   function tickElapsed() {
-    if (state.ccState !== 'active' || !state.shiftStartedAt) return state.elapsed;
+    if (state.shiftStatus !== SHIFT_STATUS.TRACKING || !state.shiftStartedAt) return state.elapsed;
     state.elapsed = Math.floor((Date.now() - state.shiftStartedAt) / 1000);
     return state.elapsed;
   }
@@ -311,7 +391,7 @@
   }
 
   function saveActiveShift() {
-    if (state.ccState !== 'active') return true;
+    if (state.shiftStatus !== SHIFT_STATUS.TRACKING) return true;
     try {
       localStorage.setItem(STORAGE.ACTIVE, JSON.stringify(getActiveShiftPayload()));
       return true;
@@ -361,7 +441,7 @@
 
   /** Dev/QA only — inject synthetic GPS movement for mileage testing. */
   function simulateMovement(totalMiles, startLat, startLon) {
-    if (state.ccState !== 'active') return getState();
+    if (state.shiftStatus !== SHIFT_STATUS.TRACKING) return getState();
     const milesToAdd = Math.max(0, Number(totalMiles) || 0);
     if (!milesToAdd) return getState();
     const baseLat = startLat != null ? startLat : (state.lastPoint && state.lastPoint.lat) || 51.5072;
@@ -382,7 +462,9 @@
   }
 
   function getState() {
+    syncLegacyCcState();
     return {
+      shiftStatus: state.shiftStatus,
       ccState: state.ccState,
       miles: state.miles,
       elapsed: state.elapsed,
@@ -411,10 +493,10 @@
     if (opts && opts.claimRate) hooks.claimRate = opts.claimRate;
     if (opts && opts.movementDetection) movementDetection.configure(opts.movementDetection);
     document.addEventListener('visibilitychange', function () {
-      if (state.ccState === 'active') saveActiveShift();
+      if (state.shiftStatus === SHIFT_STATUS.TRACKING) saveActiveShift();
     });
     window.addEventListener('pagehide', function () {
-      if (state.ccState === 'active') saveActiveShift();
+      if (state.shiftStatus === SHIFT_STATUS.TRACKING) saveActiveShift();
     });
   }
 
@@ -422,11 +504,19 @@
     ENGINE_VERSION: ENGINE_VERSION,
     ENGINE: ENGINE,
     STORAGE: STORAGE,
+    SHIFT_STATUS: SHIFT_STATUS,
     movementDetection: movementDetection,
     init: init,
     getState: getState,
+    getShiftStatus: getShiftStatus,
+    isTracking: isTracking,
+    isShiftLive: isShiftLive,
     applyExternal: applyExternal,
     startShift: startShift,
+    requestEndShift: requestEndShift,
+    completeShift: completeShift,
+    acknowledgeShiftComplete: acknowledgeShiftComplete,
+    forceIdle: forceIdle,
     endShift: endShift,
     restoreActive: restoreActive,
     tickElapsed: tickElapsed,
@@ -451,7 +541,7 @@
     buildCompletedShift: buildCompletedShift,
     simulateMovement: simulateMovement,
     isActive: function () {
-      return state.ccState === 'active';
+      return isTracking();
     },
   };
 })(typeof window !== 'undefined' ? window : global);

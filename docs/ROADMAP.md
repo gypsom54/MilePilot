@@ -17,10 +17,20 @@
 | **Live tracking** | ✅ **FROZEN** v7.7.1 — see `docs/TRACKING_FROZEN.md` |
 | Business intelligence | 🔄 **Phase 2 active** — Dashboard Intelligence (v7.8.0+) |
 | **Tracker MVP production readiness** | ✅ **MP-025** — v8.4.0 |
+| **Shift state SSOT (beta blocker)** | ✅ **MP-026** — v8.4.1 |
 
 ---
 
-## ✅ MP-025 — Production Readiness Sprint (Tracker MVP)
+## ✅ MP-026 — Shift State Single Source of Truth
+
+**Status:** Complete — beta blocker fix  
+**Version:** v8.4.1  
+**Branch / PR:** `cursor/mp-026-shift-state-ae00`  
+**Doc:** `docs/MP-026-SHIFT-STATE.md`
+
+Fixes dashboard/engine desync where Start Shift could open End Shift confirmation. Unified `shift.status` lifecycle in tracking engine.
+
+---
 
 **Status:** Complete — ready for real-world phone testing  
 **Version:** v8.4.0  
