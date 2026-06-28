@@ -16,6 +16,26 @@
 | **PDF Reporting System** | ✅ **LOCKED** — MP-012 v11 |
 | **Live tracking** | ✅ **FROZEN** v7.7.1 — see `docs/TRACKING_FROZEN.md` |
 | Business intelligence | 🔄 **Phase 2 active** — Dashboard Intelligence (v7.8.0+) |
+| **Tracker MVP production readiness** | ✅ **MP-025** — v8.4.0 |
+
+---
+
+## ✅ MP-025 — Production Readiness Sprint (Tracker MVP)
+
+**Status:** Complete — ready for real-world phone testing  
+**Version:** v8.4.0  
+**Branch / PR:** `cursor/mp-025-production-readiness-ae00`  
+**Doc:** `docs/MP-025-PRODUCTION-READINESS.md`
+
+### Focus
+
+No new features. Perfect the Tracker experience: onboarding confirmation, simplified dashboard, automatic shift completion, focused settings, history polish, reliability handling.
+
+### Deploy
+
+- Cache key: `milepilot-v8-4-0`
+- Verify: https://app.milepilot.uk/version.txt
+- Upload zip: `MilePilot-UPLOAD-v8.4.0.zip`
 
 ---
 

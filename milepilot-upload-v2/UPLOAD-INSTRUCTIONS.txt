@@ -1,16 +1,16 @@
-MilePilot — UPLOAD v8.3.1
+MilePilot — UPLOAD v8.4.0
 =========================
 
 DOWNLOAD
 --------
-https://github.com/gypsom54/MilePilot/raw/cursor/mp-023-north-star-ae00/MilePilot-UPLOAD-v8.3.1.zip
+https://github.com/gypsom54/MilePilot/raw/cursor/mp-023-north-star-ae00/MilePilot-UPLOAD-v8.4.0.zip
 
 CHECK APP VERSION
 -----------------
 https://app.milepilot.uk/version.txt
-Must show: MilePilot OS v8.3.1 — Product Rule: fewer decisions, calmer screens
+Must show: MilePilot OS v8.4.0 — Product Rule: fewer decisions, calmer screens
 
-WHAT'S NEW IN v8.3.1
+WHAT'S NEW IN v8.4.0
 --------------------
 - Product Rule codified: if a feature increases effort, stop — AutoPilot does it
 - Pro idle dashboard calmer: Layer 2 cards hidden until today has activity
