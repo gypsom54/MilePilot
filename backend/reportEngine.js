@@ -32,7 +32,7 @@ export const VEHICLE_LABELS = {
   motorcycle: "Motorcycle",
 };
 
-export const REPORT_VERSION = "MP-014-document-v1";
+export const REPORT_VERSION = "MP-015-document-v2";
 const APP_URL = "https://app.milepilot.uk";
 
 /** Locked brand lockup — must match app `.brand-bar` exactly */
@@ -110,22 +110,22 @@ function timeGreeting() {
 
 function periodReadyLine(period) {
   const map = {
-    Daily: "Your driving summary for today is ready.",
-    Weekly: "Your driving summary for this week is ready.",
-    Monthly: "Your driving summary for this month is ready.",
-    Annual: "Your annual driving summary is ready.",
+    Daily: "Your business mileage summary for today is ready.",
+    Weekly: "Your business mileage summary for this week is ready.",
+    Monthly: "Your business mileage summary for this month is ready.",
+    Annual: "Your annual business mileage summary is ready.",
   };
-  return map[period] || "Your driving summary is ready.";
+  return map[period] || "Your business mileage summary is ready.";
 }
 
 function periodReportTitle(period) {
   const map = {
-    Daily: "Daily Driving Report",
-    Weekly: "Weekly Driving Report",
-    Monthly: "Monthly Driving Report",
-    Annual: "Annual Driving Report",
+    Daily: "Daily Business Mileage Report",
+    Weekly: "Weekly Business Mileage Report",
+    Monthly: "Monthly Business Mileage Report",
+    Annual: "Annual Business Mileage Report",
   };
-  return map[period] || `${period} Driving Report`;
+  return map[period] || `${period} Business Mileage Report`;
 }
 
 function pickAllowanceLabel(report) {
@@ -333,7 +333,7 @@ export function buildIntelligence(a) {
     const pct = Math.round((totals.mi / prevTotals.mi - 1) * 100);
     if (Math.abs(pct) >= 1) {
       cards.push({
-        icon: "📈",
+        accent: "trend",
         label: "Compared to yesterday",
         value: `You drove ${Math.abs(pct)}% ${pct > 0 ? "more" : "less"}`,
         detail: `${Math.abs(miDiff).toFixed(1)} miles ${pct > 0 ? "further" : "less"} than the previous ${period === "Daily" ? "day" : "period"}.`,
@@ -343,7 +343,7 @@ export function buildIntelligence(a) {
 
   if (longestJ) {
     cards.push({
-      icon: "🏆",
+      accent: "journey",
       label: "Longest journey",
       value: `${Number(longestJ.miles).toFixed(1)} miles`,
       detail: `${fmtClock(longestJ.startISO)} – ${fmtClock(longestJ.endISO)}`,
@@ -352,7 +352,7 @@ export function buildIntelligence(a) {
 
   if (productiveHour) {
     cards.push({
-      icon: "⏰",
+      accent: "time",
       label: "Most productive hour",
       value: productiveHour.label,
       detail: `${productiveHour.miles.toFixed(1)} business miles recorded.`,
@@ -361,7 +361,7 @@ export function buildIntelligence(a) {
 
   if (totals.hmrc > 0) {
     cards.push({
-      icon: "💰",
+      accent: "allowance",
       label: period === "Daily" ? "Today's mileage allowance" : "Period mileage allowance",
       value: money(totals.hmrc),
       detail: `${totals.mi.toFixed(1)} business miles at ${Math.round(a.hmrcRate * 100)}p per mile.`,
@@ -370,7 +370,7 @@ export function buildIntelligence(a) {
 
   if (a.avgMilesShift > 0 && shifts.length >= 2) {
     cards.push({
-      icon: "🚗",
+      accent: "average",
       label: "Average journey",
       value: `${a.avgMilesShift.toFixed(1)} miles`,
       detail: `Typical duration ${fmtDurationShort(a.avgShiftSec)}.`,
@@ -397,24 +397,58 @@ function drawBrandPulse(doc, x, y, width = BRAND_PULSE_WIDTH) {
 }
 
 function drawPageHeader(doc, a, margin, contentW, pageW) {
-  doc.rect(0, 0, pageW, 124).fill(BRAND.navy);
-  doc.fillColor("#FFFFFF").font("Helvetica-Bold").fontSize(BRAND_WORDMARK_SIZE).text("Mile ", margin, 26, { continued: true, lineBreak: false });
+  const headerH = 128;
+  doc.rect(0, 0, pageW, headerH).fill(BRAND.navy);
+  doc.rect(0, headerH - 3, pageW, 3).fill(BRAND.blue);
+  doc.fillColor("#FFFFFF").font("Helvetica-Bold").fontSize(BRAND_WORDMARK_SIZE).text("Mile ", margin, 28, { continued: true, lineBreak: false });
   doc.fillColor(BRAND.blue).text("Pilot", { lineBreak: false });
-  drawBrandPulse(doc, margin, 68, BRAND_PULSE_WIDTH);
-  doc.fillColor("#6EB4FF").font("Helvetica-Bold").fontSize(11).text(BRAND_TAGLINE, margin, 80, { characterSpacing: 1.2 });
-  const rightX = pageW - margin - 200;
-  doc.fillColor("#FFFFFF").font("Helvetica-Bold").fontSize(10).text(periodReportTitle(a.period).toUpperCase(), rightX, 30, { width: 200, align: "right", characterSpacing: 0.6 });
-  doc.fillColor(BRAND.soft).font("Helvetica").fontSize(9).text(a.generatedAt, rightX, 48, { width: 200, align: "right" });
+  drawBrandPulse(doc, margin, 70, BRAND_PULSE_WIDTH);
+  doc.fillColor("#6EB4FF").font("Helvetica-Bold").fontSize(10.5).text(BRAND_TAGLINE, margin, 82, { characterSpacing: 1.4 });
+  const rightX = pageW - margin - 210;
+  doc.fillColor("#FFFFFF").font("Helvetica-Bold").fontSize(9.5).text(periodReportTitle(a.period).toUpperCase(), rightX, 32, { width: 210, align: "right", characterSpacing: 0.8 });
+  doc.fillColor(BRAND.soft).font("Helvetica").fontSize(9).text(a.generatedAt, rightX, 50, { width: 210, align: "right" });
   if (a.driver) {
-    doc.text(`Prepared for ${a.driver}`, rightX, 64, { width: 200, align: "right" });
+    doc.text(`Prepared for ${a.driver}`, rightX, 66, { width: 210, align: "right" });
   }
-  return 138;
+  return 148;
 }
 
+function drawSectionTitle(doc, margin, y, overline, title, subtitle = null) {
+  doc.fillColor(BRAND.blue).font("Helvetica-Bold").fontSize(7.5).text(overline.toUpperCase(), margin, y, { characterSpacing: 1.6 });
+  doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(15).text(title, margin, y + 14);
+  if (subtitle) {
+    doc.fillColor(BRAND.muted).font("Helvetica").fontSize(9).text(subtitle, margin, y + 34);
+    return y + 54;
+  }
+  return y + 40;
+}
+
+const INTEL_ACCENT = {
+  trend: BRAND.blue,
+  journey: "#1E88FF",
+  time: "#3B82F6",
+  allowance: BRAND.green,
+  average: "#2563EB",
+};
+
 function drawMetricCard(doc, x, y, w, h, label, value) {
-  doc.roundedRect(x, y, w, h, 12).fillAndStroke(BRAND.light, BRAND.border);
-  doc.fillColor(BRAND.muted).font("Helvetica").fontSize(7.5).text(label.toUpperCase(), x + 14, y + 12, { width: w - 28, characterSpacing: 0.6, lineGap: 0 });
-  doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(15).text(String(value), x + 14, y + 30, { width: w - 28, lineBreak: false });
+  doc.roundedRect(x, y, w, h, 12).fillAndStroke("#FFFFFF", BRAND.border);
+  doc.roundedRect(x + 1, y + 1, w - 2, 4, 2).fill(BRAND.blue);
+  doc.fillColor(BRAND.muted).font("Helvetica").fontSize(7.5).text(label.toUpperCase(), x + 16, y + 18, { width: w - 32, characterSpacing: 0.7, lineGap: 0 });
+  doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(16).text(String(value), x + 16, y + 34, { width: w - 32, lineBreak: false });
+}
+
+function drawIntelligenceCard(doc, margin, y, contentW, card) {
+  const cardH = 56;
+  const accent = INTEL_ACCENT[card.accent] || BRAND.blue;
+  doc.roundedRect(margin, y, contentW, cardH, 12).fillAndStroke("#FFFFFF", BRAND.border);
+  doc.roundedRect(margin + 1, y + 12, 4, cardH - 24, 2).fill(accent);
+  doc.fillColor(BRAND.muted).font("Helvetica-Bold").fontSize(7.5).text(card.label.toUpperCase(), margin + 18, y + 14, { width: contentW - 36, characterSpacing: 0.6 });
+  doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(13.5).text(card.value, margin + 18, y + 30, { width: contentW / 2 - 24, lineBreak: false });
+  if (card.detail) {
+    doc.fillColor(BRAND.muted).font("Helvetica").fontSize(8.5).text(card.detail, margin + contentW / 2, y + 22, { width: contentW / 2 - 22, align: "right", lineGap: 1.2 });
+  }
+  return y + cardH + 10;
 }
 
 /** Accountant-ready HMRC block — label and value stacked (no overlap) */
@@ -468,17 +502,18 @@ export function buildPdfBuffer(report) {
     // ── PAGE 1: Hero + Intelligence ──
     let y = drawPageHeader(doc, a, margin, contentW, pageW);
 
-    doc.fillColor(BRAND.muted).font("Helvetica-Bold").fontSize(9).text("BUSINESS MILES", margin, y, { characterSpacing: 1.4 });
-    y += 22;
-    doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(100).text(a.totals.mi.toFixed(1), margin, y, { lineBreak: false });
-    y += 108;
-    doc.fillColor(BRAND.muted).font("Helvetica").fontSize(11).text("Business Miles", margin, y);
-    y += 36;
+    doc.fillColor(BRAND.blue).font("Helvetica-Bold").fontSize(8).text("TODAY'S TOTAL", margin, y, { characterSpacing: 1.8 });
+    y += 18;
+    doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(96).text(a.totals.mi.toFixed(1), margin, y, { lineBreak: false });
+    y += 102;
+    doc.fillColor(BRAND.muted).font("Helvetica-Bold").fontSize(11).text("Business Miles", margin, y, { characterSpacing: 0.3 });
+    doc.moveTo(margin, y + 18).lineTo(margin + 120, y + 18).strokeColor(BRAND.border).lineWidth(1).stroke();
+    y += 34;
 
     const cardW = (contentW - 14) / 2;
-    const cardH = 58;
+    const cardH = 62;
     const cards = [
-      { label: "Driving Time", value: fmtShiftTime(a.totals.sec) },
+      { label: "Travel Time", value: fmtShiftTime(a.totals.sec) },
       { label: "Business Journeys", value: String(a.totals.journeys) },
       { label: a.allowanceLabel, value: money(a.totals.hmrc) },
       { label: "Average Journey", value: a.avgMilesShift > 0 ? `${a.avgMilesShift.toFixed(1)} mi` : "—" },
@@ -490,24 +525,18 @@ export function buildPdfBuffer(report) {
     });
     y += 2 * (cardH + 14) + 28;
 
-    doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(14).text("MilePilot Intelligence", margin, y);
-    y += 24;
+    y = drawSectionTitle(doc, margin, y, "Insights", "MilePilot Intelligence");
 
     if (intel.empty) {
-      doc.roundedRect(margin, y, contentW, 88, 14).fillAndStroke(BRAND.light, BRAND.border);
-      doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(12).text(intel.intro, margin + 20, y + 18, { width: contentW - 40 });
-      doc.fillColor(BRAND.muted).font("Helvetica").fontSize(10).text(intel.sub, margin + 20, y + 38, { width: contentW - 40 });
-      doc.text(intel.footer, margin + 20, y + 58, { width: contentW - 40, lineGap: 2 });
-      y += 104;
+      doc.roundedRect(margin, y, contentW, 92, 14).fillAndStroke(BRAND.light, BRAND.border);
+      doc.roundedRect(margin + 1, y + 1, contentW - 2, 4, 2).fill(BRAND.blue);
+      doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(12).text(intel.intro, margin + 22, y + 22, { width: contentW - 44 });
+      doc.fillColor(BRAND.muted).font("Helvetica").fontSize(10).text(intel.sub, margin + 22, y + 42, { width: contentW - 44 });
+      doc.text(intel.footer, margin + 22, y + 60, { width: contentW - 44, lineGap: 2 });
+      y += 108;
     } else {
       intel.cards.forEach((card) => {
-        doc.roundedRect(margin, y, contentW, 52, 10).fillAndStroke("#F8FBFF", BRAND.border);
-        doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(10).text(`${card.icon}  ${card.label}`, margin + 16, y + 12);
-        doc.fontSize(14).text(card.value, margin + 16, y + 28);
-        if (card.detail) {
-          doc.fillColor(BRAND.muted).font("Helvetica").fontSize(8.5).text(card.detail, margin + contentW / 2, y + 20, { width: contentW / 2 - 20, align: "right" });
-        }
-        y += 60;
+        y = drawIntelligenceCard(doc, margin, y, contentW, card);
       });
     }
 
@@ -516,9 +545,7 @@ export function buildPdfBuffer(report) {
     // ── PAGE 2: Journey table ──
     doc.addPage({ margin: 0 });
     y = drawPageHeader(doc, a, margin, contentW, pageW);
-    doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(16).text("Journey Breakdown", margin, y);
-    doc.fillColor(BRAND.muted).font("Helvetica").fontSize(9).text("Professional record for your accountant", margin, y + 20);
-    y += 44;
+    y = drawSectionTitle(doc, margin, y, "Journeys", "Journey Breakdown", "Professional record for your accountant");
 
     const tCols = [margin + 8, margin + 52, margin + 102, margin + 162, margin + 222, margin + 292];
     doc.roundedRect(margin, y, contentW, 24, 4).fill(BRAND.navy);
@@ -562,9 +589,7 @@ export function buildPdfBuffer(report) {
     // ── PAGE 3: Weekly performance ──
     doc.addPage({ margin: 0 });
     y = drawPageHeader(doc, a, margin, contentW, pageW);
-    doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(16).text("Weekly Performance", margin, y);
-    doc.fillColor(BRAND.muted).font("Helvetica").fontSize(9).text(`Week ending ${a.weekEnding}`, margin, y + 20);
-    y += 44;
+    y = drawSectionTitle(doc, margin, y, "Performance", "Weekly Performance", `Week ending ${a.weekEnding}`);
 
     const maxDayMi = Math.max(...a.dailyActivity.map((d) => d.miles), 1);
     a.dailyActivity.slice(0, 7).forEach((d) => {
@@ -586,7 +611,8 @@ export function buildPdfBuffer(report) {
       ],
     ];
 
-    doc.roundedRect(margin, y, contentW, stats.length * 28 + 24, 14).fillAndStroke(BRAND.light, BRAND.border);
+    doc.roundedRect(margin, y, contentW, stats.length * 28 + 24, 14).fillAndStroke("#FFFFFF", BRAND.border);
+    doc.roundedRect(margin + 1, y + 1, contentW - 2, 4, 2).fill(BRAND.blue);
     let sy = y + 16;
     stats.forEach(([label, val]) => {
       doc.fillColor(BRAND.muted).font("Helvetica").fontSize(9).text(label, margin + 18, sy);
@@ -626,8 +652,8 @@ export function buildReportEmailHtml(report) {
   <p style="margin:0 0 32px;font-size:16px;color:#B9C8DD;line-height:1.55;">${ready}</p>
   <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
     ${metric("Business Miles", a.totals.mi.toFixed(1))}
-    ${metric("Driving Time", fmtShiftTime(a.totals.sec))}
-    ${metric("Journeys", String(a.totals.journeys))}
+    ${metric("Travel Time", fmtShiftTime(a.totals.sec))}
+    ${metric("Business Journeys", String(a.totals.journeys))}
     ${metric("Estimated HMRC", money(a.totals.hmrc))}
   </table>
   <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:12px;">
@@ -656,8 +682,8 @@ export function buildReportEmailText(report) {
 ${periodReadyLine(a.period)}
 
 Business Miles: ${a.totals.mi.toFixed(1)}
-Driving Time: ${fmtShiftTime(a.totals.sec)}
-Journeys: ${a.totals.journeys}
+Travel Time: ${fmtShiftTime(a.totals.sec)}
+Business Journeys: ${a.totals.journeys}
 Estimated HMRC: ${money(a.totals.hmrc)}
 
 View your report in MilePilot: ${buildReportDeepLink(report, true)}

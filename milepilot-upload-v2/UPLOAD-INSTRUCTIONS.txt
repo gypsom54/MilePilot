@@ -1,35 +1,37 @@
-MilePilot — UPLOAD v7.3.0
+MilePilot — UPLOAD v7.6.0
 =========================
 
 DOWNLOAD
 --------
-https://github.com/gypsom54/MilePilot/raw/main/MilePilot-UPLOAD-v7.3.0.zip
+Use MilePilot-UPLOAD-v7.6.0.zip from this folder or the repo root.
 
 CHECK APP VERSION
 -----------------
 https://app.milepilot.uk/version.txt
-Must show: MilePilot OS v7.3.0 — PDF document polish & email-first reports
+Must show: MilePilot OS v7.6.0 — Business Profile integration
 
-TWO DEPLOYS NEEDED
-------------------
-1. Cloudflare — upload this zip (frontend v7.3.0)
-2. Railway — redeploy backend for MP-014 PDF fixes + /reports/pdf endpoint
-
-Check backend:
-https://milepilot-production.up.railway.app/health
-Should show: "reportVersion": "MP-014-document-v1"
-
-WHAT'S NEW IN v7.3.0
+WHAT'S NEW IN v7.6.0
 --------------------
-- Report Centre: email box + Send Report Email first
-- Share / Download / Preview moved to Other options below
-- Premium PDF: fixed HMRC overlap, site-matched branding
-- Download & Preview use backend PDF (same as email attachment)
+- Business Profile architecture (mp_business_profile)
+- Profession selector after onboarding with confirmation animation
+- Settings: elegant Business Profile row with Change →
+- Terminology adapts by profession across dashboard & reports
+- Prepared for future profile fields (accountant, VAT, tax year, etc.)
+
+FILES IN THIS ZIP (upload all 7)
+--------------------------------
+index.html
+manifest.json
+service-worker.js
+version.txt
+icon.svg
+_headers
+UPLOAD-INSTRUCTIONS.txt
 
 UPLOAD STEPS (Cloudflare)
 -------------------------
-1. Download zip
-2. Unzip all files
-3. Cloudflare → milepilot-app → Upload assets → Deploy
+1. Download MilePilot-UPLOAD-v7.6.0.zip
+2. Unzip all files (do not upload the zip itself)
+3. Cloudflare → milepilot-app → Upload assets → select all 7 files → Deploy
 
 APP: https://app.milepilot.uk

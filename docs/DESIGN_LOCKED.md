@@ -68,3 +68,16 @@ Every new screen must use:
 4. Voice from VOICE_GUIDE.md  
 
 This is how products mature.
+
+---
+
+## Vision & platform
+
+Product direction is locked in [VISION_LOCK.md](./VISION_LOCK.md):
+
+- **MilePilot Tracker** — simple mileage + reports (£5.99/mo target)
+- **MilePilot Business** — full business companion (£9.99/mo target)
+- Business Profile architecture for experience + profession + future fields
+- Golden rule for every future feature
+
+All new work must align with the vision lock before implementation.

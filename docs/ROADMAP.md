@@ -1,5 +1,7 @@
 # MilePilot Product Roadmap — Phase 2
 
+**Vision locked:** See [VISION_LOCK.md](./VISION_LOCK.md) — Tracker vs Business platform direction.
+
 **Phase 1 complete:** Design, onboarding, dashboard foundation (~90%)  
 **Phase 2 focus:** Make MilePilot a working product, not a UI project.
 
@@ -10,11 +12,11 @@
 | Area | Status |
 |------|--------|
 | Design & branding | ~90% 🔒 Locked |
-| Onboarding flow | ~95% 🔒 Locked |
+| Onboarding flow | ~95% 🔒 Locked (MP-020 experience choice added) |
 | Dashboard foundation | ~90% 🔒 Locked |
 | **Core tracking engine** | Sprint 1 → in progress |
 | Reports | ~10% |
-| Business intelligence | 0% |
+| Business intelligence | Phase 4 — Intelligence Layer in progress |
 
 ---
 
@@ -58,6 +60,17 @@ Daily / weekly / monthly, HMRC-ready PDFs, maps, timeline, one-click share.
 
 ## Sprint 5 — Business Intelligence ⭐⭐⭐⭐⭐
 
+**MilePilot Intelligence Layer** — teach the app to understand the numbers.
+
+- [x] Smart insights (rule-based, multiple per dashboard)
+- [x] Monday morning weekly briefing
+- [x] Monthly dashboard with progress bar + daily chart
+- [x] Weekly goals (miles + HMRC estimate)
+- [x] Driver Score (record keeping habits)
+- [ ] Driver health reminders (Phase 9)
+- [ ] Pulse AI companion tab (Phase 6)
+- [ ] Business Hub / Pro tier (Phase 5)
+
 Earning patterns, best hours, year-to-date savings — business coach.
 
 ---
@@ -85,6 +98,22 @@ Unlimited reports, AI insights, cloud backup, multi-vehicle, accountant access.
 One button → professional PDF proof for Job Centre, HMRC, accountant:
 
 - Every shift, maps, totals, timestamps, weekly/monthly summaries.
+
+---
+
+## Platform (vision lock — architecture only)
+
+| Milestone | Status |
+|-----------|--------|
+| Business Profile (`mp_business_profile`) | ✅ In app |
+| Profession personalisation | ✅ In app |
+| Experience tier definitions (Tracker / Business) | ✅ Architecture |
+| Feature gating helpers | ✅ Architecture |
+| Experience onboarding step | 🔜 Future |
+| Tracker vs Business billing | 🔜 Future |
+| Business-tier features (expenses, receipts, etc.) | 🔜 Future |
+
+Target pricing: Tracker £5.99/mo · Business £9.99/mo (not shown in app yet).
 
 ---
 
