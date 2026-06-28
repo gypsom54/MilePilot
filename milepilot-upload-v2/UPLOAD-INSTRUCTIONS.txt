@@ -1,29 +1,30 @@
-MilePilot — UPLOAD v8.5.0
-=========================
+MilePilot — UPLOAD v8.6.0
 
 DOWNLOAD
 --------
-https://github.com/gypsom54/MilePilot/raw/cursor/mp-027-production-hardening-ae00/MilePilot-UPLOAD-v8.5.0.zip
+https://github.com/gypsom54/MilePilot/raw/cursor/mp-029-autopilot-confidence-ae00/MilePilot-UPLOAD-v8.6.0.zip
 
 CHECK APP VERSION
 -----------------
 https://app.milepilot.uk/version.txt
-Must show: MilePilot OS v8.5.0 — MP-027 production hardening
+Must show: MilePilot OS v8.6.0 — MP-029 AutoPilot Confidence Layer
 
-WHAT'S NEW IN v8.5.0
+WHAT'S NEW IN v8.6.0
 --------------------
-- Production hardening sprint — reliability, no new features
-- Atomic shift save with rollback if storage fails
-- Loading states for GPS, save, reports
-- Double-tap protection on all primary actions
-- History empty state + single-shift drill-down
-- Lighter tracking timer (less dashboard flicker)
+- AutoPilot Status health check on the dashboard
+- Seven plain-English status cards (GPS, Auto Save, Reports, History, Email, Background Tracking, Permissions)
+- Green ✓ when working; amber ⚠ with helpful hints when something needs attention
+- Confidence dashboard — not another Settings page
+
+PREREQUISITE
+------------
+Deploy v8.5.0 first and run docs/MP-028-LIVE-DEPLOYMENT-QA.md if not already done.
 
 UPLOAD STEPS (Cloudflare)
 -------------------------
 1. Download zip
 2. Unzip ALL files — must include js/ folder
 3. Cloudflare → milepilot-app → Upload assets → Deploy
-4. Hard refresh after deploy (cache: milepilot-v8-5-0)
+4. Hard refresh after deploy (cache: milepilot-v8-6-0)
 
 APP: https://app.milepilot.uk
