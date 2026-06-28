@@ -1,1 +1,1 @@
-MilePilot OS v8.9.8 — MP-044 You're all set screen layout fix
+MilePilot OS v8.9.9 — MP-045 email attachment + GPS permission help

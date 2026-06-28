@@ -311,9 +311,9 @@
     getCompletedShiftCount,
     getReleaseNotes: function () {
       return [
-        'v8.9.8 — You\'re all set screen shows list + summary (MP-044)',
-        '• Fixed invisible checklist (promise-list opacity bug)',
-        '• Green summary + Start First Shift button fully visible',
+        'v8.9.9 — Email PDF attached in message + GPS enable help (MP-045)',
+        '• Report emails: PDF attachment callout — no dashboard redirect button',
+        '• Dashboard amber items have Enable Location / fix buttons + phone help guide',
       ].join('\n');
     },
   };

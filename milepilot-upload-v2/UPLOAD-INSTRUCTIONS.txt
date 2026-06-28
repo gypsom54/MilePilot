@@ -1,30 +1,17 @@
-MilePilot — UPLOAD v8.9.7
+MilePilot — UPLOAD v8.9.9
 =========================
 
 Download:
-https://github.com/gypsom54/MilePilot/raw/cursor/mp-043-input-design-unify-ae00/MilePilot-UPLOAD-v8.9.7.zip
+https://github.com/gypsom54/MilePilot/raw/cursor/mp-045-email-gps-permissions-ae00/MilePilot-UPLOAD-v8.9.9.zip
 
 After upload, verify:
 https://app.milepilot.uk/version.txt
-Must show: MilePilot OS v8.9.7 — MP-043 unified input design + email screen layout
+Must show: MilePilot OS v8.9.9
 
-WHAT'S IN v8.9.7
+WHAT'S IN v8.9.9
 ----------------
-• Unified bright input boxes (mp-field) on welcome, email onboarding, settings, reports, modals
-• Email screen headline fits on all phone sizes — clearer copy
-• Fixed browser autofill yellow flash on name/email fields
-• ftueEmail registered as proper onboard screen (layout + background)
+• Report emails: PDF is part of the message (attachment callout, no dashboard link)
+• Amber AutoPilot items have Enable Location / fix buttons
+• Settings → Location & AutoPilot with phone-specific help guide
 
-FILES IN ZIP (upload all to Cloudflare Pages root)
---------------------------------------------------
-index.html
-version.txt
-service-worker.js
-manifest.json
-icon.svg
-_headers
-js/tracking-engine.js
-js/driver-intelligence.js
-js/plan-ux.js
-js/pioneer.js
-js/pwa-device.js
+Deploy Railway backend too for latest email template.
