@@ -1,7 +1,8 @@
 # MP-022 — Brand Messaging & AutoPilot Philosophy
 
 **Status:** Active (copy guide)  
-**North Star:** See **`docs/MP-023-NORTH-STAR.md`** for the master product philosophy.
+**Principles gate:** See **`docs/MP-031-PRODUCT-PRINCIPLES.md`** before any new copy or screen  
+**North Star:** See **`docs/MP-023-NORTH-STAR.md`** for extended product vision
 
 **Type:** Copy refinement (not a UI redesign)
 
@@ -87,5 +88,6 @@ We are selling **peace of mind**, not software.
 
 ## Related docs
 
+- **`docs/MP-031-PRODUCT-PRINCIPLES.md`** — permanent principles and copy rules
 - `docs/MP-021-AUTOPILOT-PHILOSOPHY.md` — onboarding and UX principles
 - `docs/AUTO_PILOT.md` — driving flow automation

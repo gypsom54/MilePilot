@@ -1,10 +1,10 @@
 # MP-023 — AutoPilot Product Philosophy (The North Star)
 
-**Status:** Active — supersedes all prior philosophy docs for product decisions  
-**Promise:** Set it up once. MilePilot does the rest.
+**Status:** Active — extended vision (see **`docs/MP-031-PRODUCT-PRINCIPLES.md`** for the permanent decision gate)  
+**Promise:** Drive. Track. Claim. Your business. On AutoPilot.
 
-> Before building another feature, align with this document.  
-> It is more important than any individual screen.
+> Before building another feature, read **`docs/MP-031-PRODUCT-PRINCIPLES.md`** first.  
+> This document expands the why; MP-031 is the how-we-decide checklist.
 
 ---
 
@@ -220,6 +220,7 @@ That is the future of MilePilot.
 
 ## Related docs
 
+- **`docs/MP-031-PRODUCT-PRINCIPLES.md`** — permanent principles gate (read first)
 - `docs/MP-021-AUTOPILOT-PHILOSOPHY.md` — onboarding implementation
 - `docs/MP-022-BRAND-MESSAGING.md` — copy and voice
 - `docs/AUTO_PILOT.md` — driving flow automation (MP-016)

@@ -1,7 +1,8 @@
 # MP-021 — AutoPilot First Philosophy
 
 **Status:** Active (implementation guide)  
-**North Star:** See **`docs/MP-023-NORTH-STAR.md`** for the master product philosophy.
+**Principles gate:** See **`docs/MP-031-PRODUCT-PRINCIPLES.md`** before any new feature  
+**North Star:** See **`docs/MP-023-NORTH-STAR.md`** for extended product vision
 
 **Promise:** Set it up once. MilePilot does the rest.
 
@@ -114,5 +115,6 @@ Legacy screens (`knowYou`, `promise`, `permissions`, `notifications`) remain in 
 
 ## Related docs
 
+- **`docs/MP-031-PRODUCT-PRINCIPLES.md`** — permanent principles gate
 - `docs/AUTO_PILOT.md` — MP-016 driving flow and end-shift automation
 - `docs/DESIGN_LOCKED.md` — MP-001 welcome layout locked; copy tweaks allowed per MP-021

@@ -1,7 +1,23 @@
 # MilePilot Product Roadmap — Phase 2
 
+**Product principles:** 🔒 See [`docs/MP-031-PRODUCT-PRINCIPLES.md`](./MP-031-PRODUCT-PRINCIPLES.md) — required before any new feature  
+**Vision locked:** See [VISION_LOCK.md](./VISION_LOCK.md) — Tracker vs Business platform direction.
+
 **Phase 1 complete:** Design, onboarding, dashboard foundation (~90%)  
 **Phase 2 focus:** Make MilePilot a working product, not a UI project.
+
+---
+
+## 🔒 MP-031 — Product Principles (Permanent)
+
+**Status:** Locked — decision gate for all future work  
+**Doc:** `docs/MP-031-PRODUCT-PRINCIPLES.md`
+
+Every screen, feature, and interaction must follow the ten UX principles, dashboard rules, copy rules, and design rules in MP-031.
+
+**Promise:** Drive. Track. Claim. Your business. On AutoPilot.
+
+If a feature adds complexity without reducing work → do not build it.
 
 ---
 
