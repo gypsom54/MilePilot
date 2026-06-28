@@ -1,18 +1,20 @@
-MilePilot — UPLOAD v8.8.4
+MilePilot — UPLOAD v8.9.0
 =========================
 
 Download:
-https://github.com/gypsom54/MilePilot/raw/cursor/mp-035-returning-welcome-flow-ae00/MilePilot-UPLOAD-v8.8.4.zip
+https://github.com/gypsom54/MilePilot/raw/cursor/mp-036-real-device-test-ae00/MilePilot-UPLOAD-v8.9.0.zip
 
 After upload, verify:
 https://app.milepilot.uk/version.txt
-Must show: MilePilot OS v8.8.4 — MP-035 Returning welcome flow fix
+Must show: MilePilot OS v8.9.0 — MP-036 Real device testing build
 
-WHAT'S NEW IN v8.8.4
+WHAT'S NEW IN v8.9.0
 --------------------
-• Returning users: Welcome → Continue → Dashboard (no setup repeat)
-• Partial setup: only missing steps shown
-• First-time order: Reports → Email → Location → AutoPilot Ready
-• Stale onboarding step no longer traps returning users
+• PWA install prompt — Add MilePilot to home screen
+• Standalone app manifest (MilePilot name, navy theme, portrait)
+• Mobile layout polish for real phone testing
+• Permission copy and PWA background limitations guidance
+• Real drive test mode debug panel (?testmode=1)
+• docs/MP-036-REAL-DEVICE-TESTING.md checklist
 
-Service worker cache: milepilot-v8-8-4
+Service worker cache: milepilot-v8-9-0

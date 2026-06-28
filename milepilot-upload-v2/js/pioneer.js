@@ -311,10 +311,11 @@
     getCompletedShiftCount,
     getReleaseNotes: function () {
       return [
-        'v8.8.4 — Returning welcome flow fix (MP-035)',
-        '• Welcome Continue routes to dashboard for returning users',
-        '• Only missing setup steps shown — never repeat email/reports',
-        '• Explicit onboarding state flags for routing',
+        'v8.9.0 — Real device testing build (MP-036)',
+        '• PWA install prompt and standalone app experience',
+        '• Mobile layout polish for phone testing',
+        '• Permission copy and PWA background guidance',
+        '• Test mode debug panel (?testmode=1)',
       ].join('\n');
     },
   };
