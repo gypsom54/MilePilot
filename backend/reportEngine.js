@@ -49,6 +49,10 @@ export function buildVerifyUrl(reportId) {
   return `${API_URL}/reports/verify/${encodeURIComponent(reportId)}`;
 }
 
+export function buildReportDownloadUrl(reportId) {
+  return `${API_URL}/reports/download/${encodeURIComponent(reportId)}`;
+}
+
 /** PDF-safe tagline — ASCII only (Helvetica) */
 export const BRAND_TAGLINE = "Drive - Track - Claim";
 /** App/HTML tagline may use bullet; PDF uses BRAND_TAGLINE */
@@ -1321,8 +1325,8 @@ export function buildReportEmailHtml(report) {
       <div style="font-size:28px;font-weight:700;color:#FFFFFF;letter-spacing:-0.03em;line-height:1.1;">${value}</div>
     </td></tr>`;
 
-  const downloadUrl = buildReportDeepLink(report, true);
-  const appUrl = `${APP_URL}/`;
+  const downloadUrl = buildReportDownloadUrl(a.reportId);
+  const appUrl = buildReportDeepLink(report, false);
 
   return `<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
@@ -1377,9 +1381,9 @@ Estimated HMRC: ${money(a.totals.hmrc)}
 
 Your PDF is attached.
 
-View your report in MilePilot: ${buildReportDeepLink(report, true)}
+Download PDF: ${buildReportDownloadUrl(a.reportId)}
 
-Open MilePilot: ${APP_URL}/
+Open in MilePilot: ${buildReportDeepLink(report, false)}
 
 Drive • Track • Claim
 Thank you for choosing MilePilot.

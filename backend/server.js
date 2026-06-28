@@ -3,11 +3,13 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { Resend } from "resend";
 import {
+  analyseReport,
   buildPdfBuffer,
   buildReportEmailHtml,
   buildReportEmailText,
   buildReportSubject,
   buildVerifyPageHtml,
+  parseReportId,
   REPORT_VERSION,
 } from "./reportEngine.js";
 
@@ -38,6 +40,33 @@ app.use(
 app.use(express.json({ limit: "2mb" }));
 
 const resend = new Resend(process.env.RESEND_API_KEY);
+
+const REPORT_STORE_TTL_MS = 30 * 24 * 60 * 60 * 1000;
+const REPORT_STORE_MAX = 500;
+const reportStore = new Map();
+
+function pruneReportStore() {
+  const now = Date.now();
+  for (const [id, entry] of reportStore) {
+    if (now - entry.createdAt > REPORT_STORE_TTL_MS) reportStore.delete(id);
+  }
+  while (reportStore.size > REPORT_STORE_MAX) {
+    const oldest = reportStore.keys().next().value;
+    if (oldest) reportStore.delete(oldest);
+  }
+}
+
+function saveReportDownload(reportId, pdf, report) {
+  pruneReportStore();
+  const periodLabel = report.period || "Daily";
+  const dateSlug = new Date().toISOString().slice(0, 10);
+  reportStore.set(reportId, {
+    pdf,
+    report,
+    createdAt: Date.now(),
+    filename: `MilePilot-${String(periodLabel).toLowerCase()}-report-${dateSlug}.pdf`,
+  });
+}
 
 const pioneerStore = {
   feedback: [],
@@ -157,6 +186,39 @@ app.get("/reports/verify/:reportId", (req, res) => {
   res.send(buildVerifyPageHtml(reportId));
 });
 
+app.get("/reports/download/:reportId", async (req, res) => {
+  try {
+    const reportId = req.params.reportId || "";
+    const parsed = parseReportId(reportId);
+    if (!parsed.valid) {
+      return res.status(400).json({ message: "Invalid report ID" });
+    }
+
+    let entry = reportStore.get(reportId);
+    if (!entry?.pdf && entry?.report) {
+      entry.pdf = await buildPdfBuffer(entry.report);
+      reportStore.set(reportId, entry);
+    }
+    if (!entry?.pdf) {
+      return res.status(404).json({
+        message: "Report not found or expired — use the PDF attached to your email",
+      });
+    }
+
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="${entry.filename || "MilePilot-report.pdf"}"`
+    );
+    return res.send(entry.pdf);
+  } catch (err) {
+    console.error("Report download failed:", err);
+    return res.status(500).json({
+      message: err.message || "Report download failed",
+    });
+  }
+});
+
 app.post("/reports/send", async (req, res) => {
   try {
     const report = req.body;
@@ -175,7 +237,10 @@ app.post("/reports/send", async (req, res) => {
       });
     }
 
+    const analysis = analyseReport(report);
+    const reportId = analysis.reportId;
     const pdf = await buildPdfBuffer(report);
+    saveReportDownload(reportId, pdf, report);
     const periodLabel = report.period || "Daily";
     const dateSlug = new Date().toISOString().slice(0, 10);
 
@@ -206,6 +271,8 @@ app.post("/reports/send", async (req, res) => {
     return res.json({
       sent: true,
       messageId: result.data?.id || null,
+      reportId,
+      downloadUrl: `/reports/download/${encodeURIComponent(reportId)}`,
       reportVersion: REPORT_VERSION,
     });
   } catch (err) {

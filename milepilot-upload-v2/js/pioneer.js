@@ -311,9 +311,9 @@
     getCompletedShiftCount,
     getReleaseNotes: function () {
       return [
-        'v8.9.5 — GPS mileage fix + shift complete screen layout (MP-041)',
-        '• High-accuracy GPS, background polling, motion nudge, stale reconnect',
-        '• Shift complete Done button pinned above nav — no overlap',
+        'v8.9.6 — Email PDF download opens report directly (MP-042)',
+        '• Download PDF button in emails hits API — not onboarding screen',
+        '• App deep links skip welcome and open Document Centre',
       ].join('\n');
     },
   };

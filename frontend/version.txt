@@ -1,1 +1,1 @@
-MilePilot OS v8.9.5 — MP-041 GPS fix + shift summary layout
+MilePilot OS v8.9.6 — MP-042 email PDF download + deep-link routing
