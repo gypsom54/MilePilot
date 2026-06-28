@@ -1,7 +1,7 @@
 /**
- * MP-039 — Tracking provider abstraction: web | native
+ * MP-039 / Expo — Tracking provider abstraction: web | native (Capacitor or Expo)
  * Web: existing navigator.geolocation (wired from index.html)
- * Native: Capacitor Geolocation (+ background foundation for device testing)
+ * Native: Capacitor Geolocation OR Expo bridge (expo-location via WebView postMessage)
  */
 (function (global) {
   'use strict';
@@ -23,6 +23,10 @@
     try {
       console.log('[MPTrackingProvider]', msg, data || '');
     } catch (e) {}
+  }
+
+  function isExpoNative() {
+    return global.MPPlatform && global.MPPlatform.isExpoNative && global.MPPlatform.isExpoNative();
   }
 
   function getMode() {
@@ -49,6 +53,22 @@
     return null;
   }
 
+  function expoMsgToBrowserPosition(msg) {
+    if (!msg || !msg.coords) return null;
+    return {
+      coords: {
+        latitude: msg.coords.latitude,
+        longitude: msg.coords.longitude,
+        accuracy: msg.coords.accuracy,
+        altitude: msg.coords.altitude,
+        altitudeAccuracy: msg.coords.altitudeAccuracy,
+        heading: msg.coords.heading,
+        speed: msg.coords.speed,
+      },
+      timestamp: msg.timestamp || Date.now(),
+    };
+  }
+
   function capToBrowserPosition(capPos) {
     if (!capPos || !capPos.coords) return null;
     return {
@@ -67,13 +87,30 @@
 
   function init(hookDeps) {
     deps = hookDeps || {};
-    log('init', { mode: getMode() });
+    log('init', { mode: getMode(), provider: isExpoNative() ? 'expo' : isNative() ? 'capacitor' : 'web' });
+  }
+
+  async function expoBridgeRequest(type, payload) {
+    if (!global.MPExpoBridge || !global.MPExpoBridge.request) {
+      log('MPExpoBridge unavailable');
+      return null;
+    }
+    return global.MPExpoBridge.request(type, payload || {});
   }
 
   async function queryPermissionStatus() {
     if (!isNative()) {
       if (typeof deps.queryGeoPermission === 'function') return deps.queryGeoPermission();
       return 'unknown';
+    }
+    if (isExpoNative()) {
+      try {
+        const res = await expoBridgeRequest('expo:permission:query');
+        return (res && res.status) || 'unknown';
+      } catch (e) {
+        log('expo permission query failed', e.message);
+        return 'unknown';
+      }
     }
     const Geo = getGeolocationPlugin();
     if (!Geo || !Geo.checkPermissions) return 'unknown';
@@ -91,6 +128,17 @@
 
   async function requestPermissions() {
     if (!isNative()) return queryPermissionStatus();
+    if (isExpoNative()) {
+      try {
+        const res = await expoBridgeRequest('expo:permission:request', { background: true });
+        const status = (res && res.status) || 'denied';
+        log('expo requestPermissions', status);
+        return status === 'granted' ? 'granted' : status;
+      } catch (e) {
+        log('expo requestPermissions error', e.message);
+        return 'denied';
+      }
+    }
     const Geo = getGeolocationPlugin();
     if (!Geo || !Geo.requestPermissions) return 'unavailable';
     try {
@@ -107,7 +155,12 @@
   async function startBackgroundFoundation() {
     if (!isNative() || !isShiftActive()) return false;
     if (backgroundActive) return true;
-    // Foundation for @capacitor-community/background-geolocation — enable on device after plugin install
+    if (isExpoNative()) {
+      // BACKGROUND GPS TEST POINT — Expo task-manager updates start via expo:tracking:start
+      log('expo background foundation: shift active — verify on locked-phone drive');
+      backgroundActive = true;
+      return true;
+    }
     log('background foundation: native shift active — use device logs to verify when plugin added');
     backgroundActive = true;
     return true;
@@ -123,7 +176,42 @@
     return false;
   }
 
+  async function startExpoWatch() {
+    if (!global.MPExpoBridge) {
+      log('MPExpoBridge unavailable');
+      return false;
+    }
+    global.__onExpoNativeLocation = function (msg) {
+      if (deps.handlePos && msg) {
+        const p = expoMsgToBrowserPosition(msg);
+        if (p) deps.handlePos(p);
+      }
+    };
+    try {
+      const res = await expoBridgeRequest('expo:tracking:start', {
+        background: isShiftActive(),
+      });
+      if (res && res.ok !== false) {
+        log('expo watch started');
+        await startBackgroundFoundation();
+        return true;
+      }
+    } catch (e) {
+      log('startExpoWatch failed', e.message);
+    }
+    return false;
+  }
+
+  function stopExpoWatch() {
+    if (global.MPExpoBridge && global.MPExpoBridge.request) {
+      global.MPExpoBridge.request('expo:tracking:stop').catch(function () {});
+    }
+    global.__onExpoNativeLocation = null;
+    stopBackgroundFoundation();
+  }
+
   async function startNativeWatch() {
+    if (isExpoNative()) return startExpoWatch();
     const Geo = getGeolocationPlugin();
     if (!Geo || !Geo.watchPosition) {
       log('Geolocation plugin unavailable');
@@ -159,6 +247,10 @@
   }
 
   function stopNativeWatch() {
+    if (isExpoNative()) {
+      stopExpoWatch();
+      return;
+    }
     const Geo = getGeolocationPlugin();
     if (Geo && Geo.clearWatch && nativeWatchId !== null) {
       try {
@@ -171,9 +263,6 @@
     stopBackgroundFoundation();
   }
 
-  /**
-   * Native replacement for enableTrackingGps — called from index.html when isNative()
-   */
   async function enableTracking(fromUserGesture) {
     if (!deps) return false;
     if (!isNative()) return false;
@@ -185,7 +274,10 @@
     if (perm !== 'granted' && fromUserGesture) {
       const retry = await requestPermissions();
       if (retry !== 'granted') {
-        if (deps.updateGpsUi) deps.updateGpsUi(global.trackingErrorMessage ? global.trackingErrorMessage('denied') : 'Location denied');
+        if (deps.updateGpsUi)
+          deps.updateGpsUi(
+            global.trackingErrorMessage ? global.trackingErrorMessage('denied') : 'Location denied'
+          );
         if (deps.hideStatus) deps.hideStatus();
         return false;
       }
@@ -231,7 +323,7 @@
       return {
         state: 'ok',
         status: getMode() === 'pwa' ? 'PWA mode' : 'Browser mode',
-        hint: MPPlatform.getBackgroundTrackingNote(),
+        hint: global.MPPlatform.getBackgroundTrackingNote(),
         action: '',
       };
     }
@@ -259,6 +351,7 @@
     getMode: getMode,
     isNative: isNative,
     isWebShell: isWebShell,
+    isExpoNative: isExpoNative,
     enableTracking: enableTracking,
     stopTracking: stopTracking,
     queryPermissionStatus: queryPermissionStatus,

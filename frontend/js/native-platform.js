@@ -1,8 +1,12 @@
 /**
- * MP-039 — Runtime platform detection: browser | pwa | native
+ * MP-039 / Expo — Runtime platform detection: browser | pwa | native (Capacitor or Expo)
  */
 (function (global) {
   'use strict';
+
+  function isExpoNative() {
+    return global.__MILEPILOT_EXPO__ === true || global.__MILEPILOT_RUNTIME__ === 'expo';
+  }
 
   function isCapacitorNative() {
     try {
@@ -21,7 +25,7 @@
   }
 
   function getRuntimeMode() {
-    if (isCapacitorNative()) return 'native';
+    if (isExpoNative() || isCapacitorNative()) return 'native';
     if (isStandalonePwa()) return 'pwa';
     return 'browser';
   }
@@ -32,24 +36,37 @@
   }
 
   function getRuntimeLabel() {
+    if (isExpoNative()) return 'Expo native app';
+    if (isCapacitorNative()) return 'Native app';
     const map = { native: 'Native app', pwa: 'Installed PWA', browser: 'Browser' };
     return map[getRuntimeMode()] || 'Unknown';
+  }
+
+  function getNativeProvider() {
+    if (isExpoNative()) return 'expo';
+    if (isCapacitorNative()) return 'capacitor';
+    return 'web';
   }
 
   /** User-facing note — background GPS is native-test only */
   function getBackgroundTrackingNote() {
     if (getRuntimeMode() === 'native') {
+      if (isExpoNative()) {
+        return 'Expo native background location is enabled for testing. Confirm mileage on a real drive before release.';
+      }
       return 'Native background location is enabled for testing. Confirm mileage on a real drive before release.';
     }
     return 'Background tracking is tested in the native MilePilot app — not in the browser or PWA.';
   }
 
   global.MPPlatform = {
+    isExpoNative: isExpoNative,
     isCapacitorNative: isCapacitorNative,
     isStandalonePwa: isStandalonePwa,
     isWebShell: isWebShell,
     getRuntimeMode: getRuntimeMode,
     getRuntimeLabel: getRuntimeLabel,
+    getNativeProvider: getNativeProvider,
     getBackgroundTrackingNote: getBackgroundTrackingNote,
   };
 })(typeof window !== 'undefined' ? window : global);

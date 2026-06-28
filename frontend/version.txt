@@ -1,1 +1,1 @@
-MilePilot OS v8.10.0 — MP-039 native app testing shell (Capacitor)
+MilePilot OS v8.11.0 — MP-EXPO-EAS native iOS testing shell

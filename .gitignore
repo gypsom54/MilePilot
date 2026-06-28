@@ -1,5 +1,8 @@
 node_modules/
 www/
+assets/web/
+.expo/
+dist/
 .capacitor/
 android/.gradle/
 android/app/build/
