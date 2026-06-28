@@ -1,8 +1,16 @@
 # MP-026 — Fix Shift State Logic (Single Source of Truth)
 
-**Version:** v8.4.1  
+**Version:** v8.4.3  
 **Branch:** `cursor/mp-026-shift-state-ae00`  
 **Type:** Production bug fix — required before beta
+
+## v8.4.3 — UI lockstep fix
+
+- `syncShiftLiveChrome()` and `syncPrimaryShiftButton()` always run (including after render errors)
+- Primary button label comes **only** from `shift.status`, never dashboard copy/mode
+- Live Route panel hidden unless `tracking` or `ending`
+- Engine `onUpdate` hook keeps button and live chrome in sync
+- Idle route placeholder no longer says "AutoPilot is recording"
 
 ---
 
