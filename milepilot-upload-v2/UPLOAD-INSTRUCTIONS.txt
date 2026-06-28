@@ -1,26 +1,26 @@
-MilePilot — UPLOAD v8.4.0
+MilePilot — UPLOAD v8.4.2
 =========================
 
 DOWNLOAD
 --------
-https://github.com/gypsom54/MilePilot/raw/cursor/mp-023-north-star-ae00/MilePilot-UPLOAD-v8.4.0.zip
+https://github.com/gypsom54/MilePilot/raw/cursor/mp-026-shift-state-ae00/MilePilot-UPLOAD-v8.4.2.zip
 
 CHECK APP VERSION
 -----------------
 https://app.milepilot.uk/version.txt
-Must show: MilePilot OS v8.4.0 — Product Rule: fewer decisions, calmer screens
+Must show: MilePilot OS v8.4.2 — MP-026 shift button sync fix
 
-WHAT'S NEW IN v8.4.0
+WHAT'S NEW IN v8.4.2
 --------------------
-- Product Rule codified: if a feature increases effort, stop — AutoPilot does it
-- Pro idle dashboard calmer: Layer 2 cards hidden until today has activity
-- Includes v8.3.0 North Star philosophy + dashboard reassurance
+- Fix: Start Shift no longer shows when shift is already active
+- Button label driven directly from shift.status (End Shift when tracking)
+- Auto-reconcile engine with mp_active_shift on dashboard render
 
 UPLOAD STEPS (Cloudflare)
 -------------------------
 1. Download zip
 2. Unzip ALL files — must include js/ folder
 3. Cloudflare → milepilot-app → Upload assets → Deploy
-4. Hard refresh after deploy (cache: milepilot-v8-3-1)
+4. Hard refresh after deploy (cache: milepilot-v8-4-2)
 
 APP: https://app.milepilot.uk
