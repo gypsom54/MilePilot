@@ -1,23 +1,18 @@
-MilePilot — UPLOAD v8.8.0
+MilePilot — UPLOAD v8.8.1
 =========================
 
 Download:
-https://github.com/gypsom54/MilePilot/raw/cursor/mp-032-pioneer-prep-ae00/MilePilot-UPLOAD-v8.8.0.zip
+https://github.com/gypsom54/MilePilot/raw/cursor/mp-033-returning-user-onboarding-ae00/MilePilot-UPLOAD-v8.8.1.zip
 
 After upload, verify:
 https://app.milepilot.uk/version.txt
-Must show: MilePilot OS v8.8.0 — MP-032 Pioneer Program preparation
+Must show: MilePilot OS v8.8.1 — MP-033 Returning user onboarding fix
 
-WHAT'S NEW IN v8.8.0
+WHAT'S NEW IN v8.8.1
 --------------------
-• In-app feedback in Settings (ease 1–10 + optional notes)
-• About screen — version, build, release notes, support, privacy, terms
-• Quiet client error logging (plain English for users)
-• Pioneer Program banner (?pioneer=1)
-• Feedback reminder after five completed shifts
-• Internal Pioneer metrics dashboard (dev / ?metrics=1)
+• Welcome screen is FTUE-only — returning users go straight to dashboard
+• Legacy account detection (email, shifts, profile, reports)
+• Boot splash instead of welcome flash on launch
+• Version upgrade no longer traps existing users in onboarding
 
-Pioneer cohort link:
-https://app.milepilot.uk/?pioneer=1
-
-Service worker cache: milepilot-v8-8-0
+Service worker cache: milepilot-v8-8-1

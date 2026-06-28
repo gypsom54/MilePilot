@@ -1,1 +1,1 @@
-MilePilot OS v8.8.0 — MP-032 Pioneer Program preparation
+MilePilot OS v8.8.1 — MP-033 Returning user onboarding fix

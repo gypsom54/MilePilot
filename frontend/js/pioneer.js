@@ -273,7 +273,7 @@
   function init() {
     installErrorHandlers();
     try {
-      if (localStorage.getItem('mp_onboard_complete') === 'true') {
+      if (localStorage.getItem('mp_onboard_complete') === 'true' || localStorage.getItem('mp_email') || localStorage.getItem('mp_report_frequency') || localStorage.getItem('mp_shifts')) {
         const m = loadMetrics();
         if (!m.setupCompleted) updateMetrics({ setupCompleted: true });
       }
@@ -311,12 +311,10 @@
     getCompletedShiftCount,
     getReleaseNotes: function () {
       return [
-        'v8.8.0 — Pioneer Program preparation',
-        '• In-app feedback in Settings',
-        '• About screen with version and support',
-        '• Quiet error logging for reliability',
-        '• Pioneer banner for closed beta builds',
-        '• Feedback reminder after five shifts',
+        'v8.8.1 — Returning user onboarding fix',
+        '• Welcome screen is FTUE-only — returning users go straight to dashboard',
+        '• Existing email, shifts, or profile auto-detect as onboarded',
+        '• Brief loading splash on launch instead of welcome flash',
       ].join('\n');
     },
   };

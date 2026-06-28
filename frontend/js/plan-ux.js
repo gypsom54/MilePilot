@@ -105,7 +105,12 @@
 
   function migrateLegacyUser() {
     if (localStorage.getItem(STORAGE_PLAN)) return;
-    if (localStorage.getItem('mp_onboard_complete') === 'true') {
+    const onboarded =
+      localStorage.getItem('mp_onboard_complete') === 'true' ||
+      localStorage.getItem('mp_email') ||
+      localStorage.getItem('mp_report_frequency') ||
+      localStorage.getItem('mp_shifts');
+    if (onboarded) {
       setUserPlan('pro');
       if (!localStorage.getItem(STORAGE_WORK)) setUserWorkType('other');
     }
