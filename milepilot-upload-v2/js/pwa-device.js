@@ -112,7 +112,13 @@
         return;
       }
     } catch (e) {}
-    note.hidden = isStandalone() ? true : false;
+    var mode =
+      global.MPPlatform && global.MPPlatform.getRuntimeMode
+        ? global.MPPlatform.getRuntimeMode()
+        : isStandalone()
+          ? 'pwa'
+          : 'browser';
+    note.hidden = mode === 'native';
   }
 
   function fmtTime(iso) {
@@ -227,8 +233,20 @@
         : Promise.resolve('unknown');
 
     permPromise.then(function (perm) {
+      var runtime =
+        global.MPPlatform && global.MPPlatform.getRuntimeLabel
+          ? global.MPPlatform.getRuntimeLabel()
+          : isStandalone()
+            ? 'Installed PWA'
+            : 'Browser';
+      var trackingMode =
+        global.MPTrackingProvider && global.MPTrackingProvider.getMode
+          ? global.MPTrackingProvider.getMode()
+          : 'web';
       body.innerHTML =
         renderTestPanelRow('App version', getAppVersionText()) +
+        renderTestPanelRow('Runtime', runtime) +
+        renderTestPanelRow('Tracking provider', trackingMode) +
         renderTestPanelRow('Display mode', isStandalone() ? 'standalone' : 'browser') +
         renderTestPanelRow('Location permission', perm || 'unknown') +
         renderTestPanelRow('GPS accuracy', getGpsAccuracyText()) +

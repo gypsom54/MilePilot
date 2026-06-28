@@ -1,0 +1,29 @@
+{
+  "name": "milepilot",
+  "version": "8.10.0",
+  "private": true,
+  "description": "MilePilot — business mileage tracking (web + Capacitor native shell)",
+  "scripts": {
+    "sync:www": "bash scripts/sync-www.sh",
+    "cap:sync": "npm run sync:www && npx cap sync && node scripts/patch-android-permissions.js && node scripts/patch-ios-permissions.js",
+    "cap:copy": "npm run sync:www && npx cap copy",
+    "android:open": "npm run cap:sync && npx cap open android",
+    "ios:open": "npm run cap:sync && npx cap open ios",
+    "android:assemble": "npm run cap:sync && cd android && ./gradlew assembleDebug",
+    "postinstall": "node scripts/patch-android-permissions.js 2>/dev/null || true; node scripts/patch-ios-permissions.js 2>/dev/null || true"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.2.0",
+    "@capacitor/app": "^6.0.2",
+    "@capacitor/core": "^6.2.0",
+    "@capacitor/geolocation": "^6.1.0",
+    "@capacitor/ios": "^6.2.0",
+    "@capacitor/splash-screen": "^6.0.3"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.2.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

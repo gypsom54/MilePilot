@@ -1,1 +1,1 @@
-MilePilot OS v8.9.9 — MP-045 email attachment + GPS permission help
+MilePilot OS v8.10.0 — MP-039 native app testing shell (Capacitor)
