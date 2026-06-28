@@ -86,6 +86,8 @@ Testing/debug only. Clears onboarding flags and account prefs, sets `mp_onboardi
 
 ## Deploy
 
-Upload `MilePilot-UPLOAD-v8.8.1.zip` — verify `https://app.milepilot.uk/version.txt` shows **v8.8.1**
+Upload `MilePilot-UPLOAD-v8.8.2.zip` — verify `https://app.milepilot.uk/version.txt` shows **v8.8.2**
 
-Service worker cache: `milepilot-v8-8-1`
+Service worker cache: `milepilot-v8-8-2`
+
+See also: `docs/MP-034-BETA-TESTING-CHECKLIST.md` for full beta QA sign-off.

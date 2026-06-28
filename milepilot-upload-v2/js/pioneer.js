@@ -311,10 +311,9 @@
     getCompletedShiftCount,
     getReleaseNotes: function () {
       return [
-        'v8.8.1 — Returning user onboarding fix',
-        '• Welcome screen is FTUE-only — returning users go straight to dashboard',
-        '• Existing email, shifts, or profile auto-detect as onboarded',
-        '• Brief loading splash on launch instead of welcome flash',
+        'v8.8.3 — Beta QA ready (MP-034)',
+        '• Returning user flow verified — dashboard on relaunch',
+        '• Beta testing checklist for Pioneer testers',
       ].join('\n');
     },
   };
