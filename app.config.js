@@ -67,9 +67,10 @@ module.exports = {
       ],
     ],
     extra: {
-      ...(process.env.EAS_PROJECT_ID
-        ? { eas: { projectId: process.env.EAS_PROJECT_ID } }
-        : {}),
+      eas: {
+        projectId:
+          process.env.EAS_PROJECT_ID || 'ecc05803-756a-44d8-a12e-d99cbc9b24b6',
+      },
       webAppUrl:
         process.env.WEB_APP_URL ||
         'https://app.milepilot.uk/?runtime=expo&v=8.11.0',
