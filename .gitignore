@@ -7,3 +7,5 @@ dist/
 *.aab
 *.ipa
 .DS_Store
+android/
+ios/
