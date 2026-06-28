@@ -311,10 +311,10 @@
     getCompletedShiftCount,
     getReleaseNotes: function () {
       return [
-        'v8.9.2 — Dual welcome: full signup vs returning (MP-039)',
-        '• Fresh users: animated welcome, name entry, plan → full setup',
-        '• Returning users: short welcome → Continue → Dashboard',
-        '• Start fresh restores full signup experience',
+        'v8.9.3 — Brighter inputs + All set screen polish (MP-040)',
+        '• Name and email fields share the same clear, bright styling',
+        '• "You\'re all set" screen fills the layout — no dead space',
+        '• AutoPilot checklist with descriptions and closing summary card',
       ].join('\n');
     },
   };

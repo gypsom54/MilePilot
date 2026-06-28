@@ -311,10 +311,10 @@
     getCompletedShiftCount,
     getReleaseNotes: function () {
       return [
-        'v8.9.1 — Start fresh reset fix (MP-038)',
-        '• Start fresh clears all data and opens full setup (plan → work type → reports…)',
-        '• New users now begin at plan selection, not returning-user shortcut',
-        '• Fixed legacy migration re-applying plan after reset',
+        'v8.9.3 — Brighter inputs + All set screen polish (MP-040)',
+        '• Name and email fields share the same clear, bright styling',
+        '• "You\'re all set" screen fills the layout — no dead space',
+        '• AutoPilot checklist with descriptions and closing summary card',
       ].join('\n');
     },
   };
