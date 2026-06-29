@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pulse_app/core/motion/pulse_motion.dart';
 import 'package:pulse_app/core/theme/pulse_colors.dart';
 
 /// Soft electric cyan glow — buttons, accents, and ambient light.
@@ -101,10 +102,10 @@ class _AnimatedGlowState extends State<_AnimatedGlow>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 2800),
+      duration: PulseMotion.glowCycle,
     )..repeat(reverse: true);
-    _breath = Tween<double>(begin: 0.65, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    _breath = Tween<double>(begin: 0.6, end: 1.0).animate(
+      CurvedAnimation(parent: _controller, curve: PulseMotion.breathe),
     );
   }
 

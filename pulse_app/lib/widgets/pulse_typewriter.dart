@@ -1,40 +1,71 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:pulse_app/core/motion/pulse_motion.dart';
 import 'package:pulse_app/core/theme/pulse_colors.dart';
 import 'package:pulse_app/core/theme/pulse_typography.dart';
 
-/// Calm typing animation — characters glide in, never bounce.
+/// A single conversation line with optional per-line pause metadata.
+class TypewriterLine {
+  const TypewriterLine({required this.text, this.pauseAfter = const Duration(milliseconds: 680)});
+
+  final String text;
+  final Duration pauseAfter;
+}
+
+/// Calm typing animation — variable speed, natural pauses, never robotic.
 class PulseTypewriter extends StatefulWidget {
   const PulseTypewriter({
     super.key,
     required this.lines,
     this.onComplete,
     this.style,
-    this.lineGap = 12,
-    this.charDelay = const Duration(milliseconds: 38),
-    this.lineDelay = const Duration(milliseconds: 520),
+    this.lineGap = PulseMotion.lineGap,
+    this.baseCharDelay = const Duration(milliseconds: 42),
+    this.charDelayVariance = 0.15,
     this.startDelay = Duration.zero,
     this.align = TextAlign.center,
+    this.skipAnimation = false,
   });
 
-  final List<String> lines;
+  final List<TypewriterLine> lines;
   final VoidCallback? onComplete;
   final TextStyle? style;
   final double lineGap;
-  final Duration charDelay;
-  final Duration lineDelay;
+  final Duration baseCharDelay;
+  final double charDelayVariance;
   final Duration startDelay;
   final TextAlign align;
+  final bool skipAnimation;
+
+  /// Convenience constructor from plain strings with default pauses.
+  factory PulseTypewriter.fromStrings(
+    List<String> lines, {
+    VoidCallback? onComplete,
+    TextStyle? style,
+    Duration baseCharDelay = const Duration(milliseconds: 42),
+    Duration defaultPause = const Duration(milliseconds: 680),
+    bool skipAnimation = false,
+  }) {
+    return PulseTypewriter(
+      lines: lines.map((t) => TypewriterLine(text: t, pauseAfter: defaultPause)).toList(),
+      onComplete: onComplete,
+      style: style,
+      baseCharDelay: baseCharDelay,
+      skipAnimation: skipAnimation,
+    );
+  }
 
   @override
   State<PulseTypewriter> createState() => _PulseTypewriterState();
 }
 
 class _PulseTypewriterState extends State<PulseTypewriter> {
+  final _rng = math.Random();
+  final List<String> _visibleLines = [];
   int _lineIndex = 0;
   int _charIndex = 0;
-  final List<String> _visibleLines = [];
   Timer? _timer;
   bool _complete = false;
 
@@ -45,32 +76,49 @@ class _PulseTypewriterState extends State<PulseTypewriter> {
   void initState() {
     super.initState();
     if (widget.lines.isEmpty) {
-      _complete = true;
-      WidgetsBinding.instance.addPostFrameCallback((_) => widget.onComplete?.call());
+      _finish();
       return;
     }
+
+    if (widget.skipAnimation) {
+      setState(() {
+        _visibleLines.addAll(widget.lines.map((l) => l.text));
+      });
+      _finish();
+      return;
+    }
+
     _visibleLines.add('');
     Future<void>.delayed(widget.startDelay, _scheduleNext);
+  }
+
+  Duration _charDelay() {
+    final variance = widget.charDelayVariance;
+    final factor = 1.0 + (_rng.nextDouble() * 2 - 1) * variance;
+    return Duration(
+      milliseconds: (widget.baseCharDelay.inMilliseconds * factor).round().clamp(24, 90),
+    );
   }
 
   void _scheduleNext() {
     if (!mounted || _complete) return;
 
-    _timer = Timer(widget.charDelay, () {
+    _timer = Timer(_charDelay(), () {
       if (!mounted) return;
 
-      final currentLine = widget.lines[_lineIndex];
-      if (_charIndex < currentLine.length) {
+      final current = widget.lines[_lineIndex];
+      if (_charIndex < current.text.length) {
         _charIndex++;
         setState(() {
-          _visibleLines[_lineIndex] = currentLine.substring(0, _charIndex);
+          _visibleLines[_lineIndex] = current.text.substring(0, _charIndex);
         });
         _scheduleNext();
         return;
       }
 
       if (_lineIndex < widget.lines.length - 1) {
-        _timer = Timer(widget.lineDelay, () {
+        final pause = widget.lines[_lineIndex].pauseAfter;
+        _timer = Timer(pause, () {
           if (!mounted) return;
           setState(() {
             _lineIndex++;
@@ -82,9 +130,13 @@ class _PulseTypewriterState extends State<PulseTypewriter> {
         return;
       }
 
-      _complete = true;
-      widget.onComplete?.call();
+      _finish();
     });
+  }
+
+  void _finish() {
+    _complete = true;
+    widget.onComplete?.call();
   }
 
   @override
@@ -103,9 +155,12 @@ class _PulseTypewriterState extends State<PulseTypewriter> {
       children: [
         for (var i = 0; i < _visibleLines.length; i++)
           Padding(
-            padding: EdgeInsets.only(bottom: i < _visibleLines.length - 1 ? widget.lineGap : 0),
+            padding: EdgeInsets.only(
+              bottom: i < _visibleLines.length - 1 ? widget.lineGap : 0,
+            ),
             child: AnimatedOpacity(
-              duration: const Duration(milliseconds: 280),
+              duration: PulseMotion.fast,
+              curve: PulseMotion.fade,
               opacity: _visibleLines[i].isEmpty ? 0 : 1,
               child: Text(
                 _visibleLines[i],
