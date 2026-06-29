@@ -1,8 +1,8 @@
-MilePilot — CLOUDFLARE UPLOAD v8.18.0
+MilePilot — CLOUDFLARE UPLOAD v8.18.1
 ==========================================
 
 DOWNLOAD ZIP (same naming every time):
-MilePilot-v8.18.0-CLOUDFLARE-UPLOAD.zip
+MilePilot-v8.18.1-CLOUDFLARE-UPLOAD.zip
 
 Or use the latest alias:
 MilePilot-CLOUDFLARE-UPLOAD-LATEST.zip
@@ -17,7 +17,7 @@ UPLOAD STEPS
 VERIFY DEPLOY
 -------------
 https://app.milepilot.uk/version.txt
-Must show: MilePilot OS v8.18.0
+Must show: MilePilot OS v8.18.1
 
 APP URL
 -------
