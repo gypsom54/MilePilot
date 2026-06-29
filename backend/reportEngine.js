@@ -247,13 +247,31 @@ function groupByDay(shifts) {
   shifts.forEach((s) => {
     const d = new Date(s.startISO || Date.now());
     const key = d.toLocaleDateString("en-GB", { weekday: "long" });
-    if (!map[key]) map[key] = { miles: 0, seconds: 0, trips: 0 };
+    if (!map[key]) map[key] = { day: key, miles: 0, seconds: 0, trips: 0 };
     map[key].miles += Number(s.miles || 0);
     map[key].seconds += Number(s.seconds || 0);
     map[key].trips += 1;
   });
   const order = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
   return order.map((k) => ({ day: k, miles: map[k]?.miles || 0, seconds: map[k]?.seconds || 0, trips: map[k]?.trips || 0 }));
+}
+
+function groupByWeek(shifts) {
+  const map = {};
+  shifts.forEach((s) => {
+    const d = new Date(s.startISO || Date.now());
+    const ws = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    ws.setDate(ws.getDate() - ((ws.getDay() + 6) % 7));
+    const key = ws.toISOString().slice(0, 10);
+    const label = "Week of " + ws.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+    if (!map[key]) map[key] = { week: label, miles: 0, seconds: 0, trips: 0 };
+    map[key].miles += Number(s.miles || 0);
+    map[key].seconds += Number(s.seconds || 0);
+    map[key].trips += 1;
+  });
+  return Object.keys(map)
+    .sort()
+    .map((k) => map[k]);
 }
 
 function longestShift(shifts) {
@@ -427,6 +445,8 @@ export function analyseReport(report) {
     generatedAt,
     generatedAtTime,
     vehicle: primaryVehicle(shifts.length ? shifts : weekShifts),
+    pendingCount: Number(report.pendingCount) || 0,
+    reviewTripsUrl: report.reviewTripsUrl || `${APP_URL}/?pending=1`,
   };
 
   analysis.reportId = generateReportId(report, analysis);
@@ -941,7 +961,7 @@ function drawCoachIntelligence(doc, intel, margin, contentW, y) {
 }
 
 function drawJourneyTimelineCard(doc, s, margin, contentW, y) {
-  const cardH = 96;
+  const cardH = 108;
   const thumbW = 88;
   const thumbH = 52;
   const cx = margin + PDF.unit * 2.5;
@@ -958,8 +978,12 @@ function drawJourneyTimelineCard(doc, s, margin, contentW, y) {
   doc.fillColor(BRAND.navy).font("Helvetica-Bold").fontSize(7).text("BUSINESS TRIP", cx, iy, { characterSpacing: 0.8 });
   iy += 10;
   doc.fillColor(BRAND.blue).font("Helvetica-Bold").fontSize(12).text(`${fmtMi(s.miles)} mi · ${fmtDurationShort(s.seconds)}`, cx, iy, { width: textW });
-  iy += 13;
-  doc.fillColor(BRAND.muted).font("Helvetica").fontSize(8).text(`HMRC est. ${money(s.hmrc || 0)}`, cx, iy, { width: textW });
+  iy += 12;
+  doc.fillColor(BRAND.muted).font("Helvetica").fontSize(8).text(`HMRC est. ${money(s.hmrc || 0)} · Business`, cx, iy, { width: textW });
+  iy += 10;
+  doc.fillColor(BRAND.muted).font("Helvetica").fontSize(8).text(`Start: ${formatTripLocation(s, "start")}`, cx, iy, { width: textW });
+  iy += 10;
+  doc.fillColor(BRAND.muted).font("Helvetica").fontSize(8).text(`Finish: ${formatTripLocation(s, "end")}`, cx, iy, { width: textW });
 
   const thumbX = margin + contentW - thumbW - PDF.unit * 2;
   const thumbY = y + (cardH - thumbH) / 2;
@@ -1056,6 +1080,44 @@ function drawMiniRouteSparkline(doc, shifts, margin, contentW, y) {
   const last = points[points.length - 1];
   doc.circle(ox + ((last.lon - minLon) / lonR) * w, oy + h - ((last.lat - minLat) / latR) * h, 2.5).fill(BRAND.blue);
   return y + h + PDF.unit * 4;
+}
+
+function drawPendingReviewNotice(doc, a, margin, contentW, y) {
+  if (!a.pendingCount || a.pendingCount < 1) return y;
+  const boxH = 52;
+  doc.roundedRect(margin, y, contentW, boxH, 6).fill("#FFF8E8").strokeColor("#F59E0B").lineWidth(0.6).stroke();
+  const msg = `${a.pendingCount} trip${a.pendingCount === 1 ? " is" : "s are"} awaiting review and have not been included in this report.`;
+  doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(9.5).text(msg, margin + PDF.unit * 2, y + PDF.unit * 2, { width: contentW - PDF.unit * 4 });
+  doc.fillColor(BRAND.blue).font("Helvetica-Bold").fontSize(9).text("Review trips in MilePilot", margin + PDF.unit * 2, y + PDF.unit * 2 + 22, { link: a.reviewTripsUrl });
+  return y + boxH + PDF.sectionGap;
+}
+
+function drawPeriodBreakdown(doc, a, margin, contentW, y, pageW) {
+  if (a.period === "Weekly" && a.shifts.length) {
+    y = ensureSpace(doc, y, 80, margin, contentW, pageW, a);
+    y = drawSectionHeading(doc, "Daily Breakdown", margin, y, contentW);
+    y += PDF.unit;
+    groupByDay(a.shifts)
+      .filter((d) => d.trips > 0)
+      .forEach((d) => {
+        doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(9).text(d.day, margin + PDF.unit * 2, y, { continued: true });
+        doc.fillColor(BRAND.muted).font("Helvetica").fontSize(9).text(` — ${fmtMi(d.miles)} mi · ${fmtDurationShort(d.seconds)} · ${d.trips} trip${d.trips === 1 ? "" : "s"}`);
+        y += 14;
+      });
+    return y + PDF.unit * 2;
+  }
+  if (a.period === "Monthly" && a.shifts.length) {
+    y = ensureSpace(doc, y, 80, margin, contentW, pageW, a);
+    y = drawSectionHeading(doc, "Weekly Breakdown", margin, y, contentW);
+    y += PDF.unit;
+    groupByWeek(a.shifts).forEach((w) => {
+      doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(9).text(w.week, margin + PDF.unit * 2, y, { continued: true });
+      doc.fillColor(BRAND.muted).font("Helvetica").fontSize(9).text(` — ${fmtMi(w.miles)} mi · ${fmtDurationShort(w.seconds)} · ${w.trips} trip${w.trips === 1 ? "" : "s"}`);
+      y += 14;
+    });
+    return y + PDF.unit * 2;
+  }
+  return y;
 }
 
 function drawRouteMapSection(doc, a, margin, contentW, y, pageW) {
@@ -1235,6 +1297,7 @@ export async function buildPdfBuffer(report) {
     let y = drawDashboardPage(doc, a, margin, contentW, pageW, pageH);
     y = ensureSpace(doc, y, 120, margin, contentW, pageW, a);
     y = drawCoachIntelligence(doc, intel, margin, contentW, y);
+    y = drawPendingReviewNotice(doc, a, margin, contentW, y);
     drawFooter(doc, a, margin, contentW);
 
     // Page 2 — Apple Wallet journeys
@@ -1244,6 +1307,7 @@ export async function buildPdfBuffer(report) {
     y = drawPageHeader(doc, a, margin, contentW, pageW);
     y = drawSectionHeading(doc, "Journeys", margin, y, contentW);
     y = drawJourneyTimeline(doc, a, margin, contentW, y, pageW);
+    y = drawPeriodBreakdown(doc, a, margin, contentW, y, pageW);
     y = drawRouteMapSection(doc, a, margin, contentW, y, pageW);
     drawFooter(doc, a, margin, contentW);
 
@@ -1338,6 +1402,15 @@ export function buildReportEmailHtml(report) {
     </td></tr>`;
 
   const appUrl = buildReportDeepLink(report, false);
+  const pendingNotice =
+    a.pendingCount > 0
+      ? `<table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 24px;border:1px solid rgba(245,158,11,.35);border-radius:14px;background:rgba(245,158,11,.12);">
+    <tr><td style="padding:18px 20px;">
+      <p style="margin:0 0 14px;font-size:15px;color:#FDE68A;line-height:1.55;">${a.pendingCount} trip${a.pendingCount === 1 ? " is" : "s are"} awaiting review and have not been included in this report.</p>
+      <a href="${a.reviewTripsUrl}" style="display:inline-block;background:#0D6BFF;color:#FFFFFF;font-size:14px;font-weight:600;text-decoration:none;padding:12px 20px;border-radius:12px;">Review trips</a>
+    </td></tr>
+  </table>`
+      : "";
   const attachmentBox = `<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:28px;border:1px solid rgba(110,180,255,.28);border-radius:16px;background:rgba(13,107,255,.1);">
     <tr><td style="padding:22px 20px;text-align:center;">
       <div style="font-size:36px;line-height:1;margin-bottom:10px;">📎</div>
@@ -1358,6 +1431,7 @@ export function buildReportEmailHtml(report) {
   <p style="margin:0 0 8px;font-size:16px;color:#EAF2FF;line-height:1.5;">Hi ${name},</p>
   <p style="margin:0 0 8px;font-size:15px;color:#B9C8DD;line-height:1.55;">${bodyLine}</p>
   <p style="margin:0 0 28px;font-size:15px;color:#B9C8DD;line-height:1.55;">Business trips only — pending and personal journeys are excluded from this report.</p>
+  ${pendingNotice}
   <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
     ${metric("Business Miles", fmtMi(a.totals.mi))}
     ${metric("Driving Time", fmtShiftTime(a.totals.sec))}
@@ -1388,7 +1462,8 @@ export function buildReportEmailText(report) {
 Hi ${name},
 
 ${periodEmailBody(a.period)}
-Everything has already been calculated and organised for your records.
+Business trips only — pending and personal journeys are excluded from this report.
+${a.pendingCount > 0 ? `\n${a.pendingCount} trip${a.pendingCount === 1 ? " is" : "s are"} awaiting review and have not been included in this report.\nReview trips: ${a.reviewTripsUrl}\n` : ""}
 
 Business Miles: ${fmtMi(a.totals.mi)}
 Driving Time: ${fmtShiftTime(a.totals.sec)}
