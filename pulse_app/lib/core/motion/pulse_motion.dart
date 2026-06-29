@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
 /// Central motion system — fade, glide, breathe. Never bounce, snap, or spin.
+///
+/// Pulse development principles:
+/// Optimise for delight, not speed.
+/// Choose the calmer, simpler, more elegant solution.
+/// Technology should disappear. The experience should feel human.
 abstract final class PulseMotion {
   // Durations
   static const Duration instant = Duration(milliseconds: 120);
