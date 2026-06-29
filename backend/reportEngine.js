@@ -48,10 +48,12 @@ export function buildReportDeepLink(report, download = false) {
 
 export function buildBrandEmailHeader() {
   return `<table width="100%" cellpadding="0" cellspacing="0">
-<tr><td style="padding:0 8px 28px;text-align:center;">
-  <div style="font-size:34px;font-weight:700;color:#FFFFFF;letter-spacing:-0.04em;line-height:1;-webkit-font-smoothing:antialiased;">Mile <span style="color:#0D6BFF;">Pilot</span></div>
-  <div style="height:2px;width:200px;max-width:100%;margin:12px auto 0;border-radius:999px;background:linear-gradient(90deg,rgba(13,107,255,.5) 0%,rgba(110,180,255,.92) 50%,rgba(13,107,255,.5) 100%);box-shadow:0 0 22px rgba(13,107,255,.28),0 0 10px rgba(13,107,255,.16);"></div>
-  <p style="margin:10px 0 0;font-size:11px;font-weight:600;letter-spacing:0.12em;color:rgba(110,180,255,.82);">${BRAND_TAGLINE}</p>
+<tr><td style="padding:0 8px 24px;text-align:center;background:#031126;border-radius:16px 16px 0 0;">
+  <div style="padding:28px 16px 24px;">
+    <div style="font-size:34px;font-weight:700;color:#FFFFFF;letter-spacing:-0.04em;line-height:1;-webkit-font-smoothing:antialiased;">Mile <span style="color:#0D6BFF;">Pilot</span></div>
+    <div style="height:2px;width:200px;max-width:100%;margin:12px auto 0;border-radius:999px;background:linear-gradient(90deg,rgba(13,107,255,.5) 0%,rgba(110,180,255,.92) 50%,rgba(13,107,255,.5) 100%);"></div>
+    <p style="margin:10px 0 0;font-size:11px;font-weight:600;letter-spacing:0.12em;color:rgba(110,180,255,.82);">${BRAND_TAGLINE}</p>
+  </div>
 </td></tr></table>`;
 }
 
@@ -397,20 +399,21 @@ function drawBrandPulse(doc, x, y, width = BRAND_PULSE_WIDTH) {
 }
 
 function drawPageHeader(doc, a, margin, contentW, pageW) {
-  const headerH = 128;
-  doc.rect(0, 0, pageW, headerH).fill(BRAND.navy);
-  doc.rect(0, headerH - 3, pageW, 3).fill(BRAND.blue);
-  doc.fillColor("#FFFFFF").font("Helvetica-Bold").fontSize(BRAND_WORDMARK_SIZE).text("Mile ", margin, 28, { continued: true, lineBreak: false });
+  const headerH = 108;
+  doc.rect(0, 0, pageW, doc.page.height).fill("#FFFFFF");
+  doc.rect(0, 0, pageW, headerH).fill("#FFFFFF");
+  doc.moveTo(margin, headerH).lineTo(pageW - margin, headerH).strokeColor(BRAND.border).lineWidth(1).stroke();
+  doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(BRAND_WORDMARK_SIZE).text("Mile ", margin, 28, { continued: true, lineBreak: false });
   doc.fillColor(BRAND.blue).text("Pilot", { lineBreak: false });
   drawBrandPulse(doc, margin, 70, BRAND_PULSE_WIDTH);
-  doc.fillColor("#6EB4FF").font("Helvetica-Bold").fontSize(10.5).text(BRAND_TAGLINE, margin, 82, { characterSpacing: 1.4 });
+  doc.fillColor(BRAND.muted).font("Helvetica-Bold").fontSize(10.5).text(BRAND_TAGLINE, margin, 82, { characterSpacing: 1.4 });
   const rightX = pageW - margin - 210;
-  doc.fillColor("#FFFFFF").font("Helvetica-Bold").fontSize(9.5).text(periodReportTitle(a.period).toUpperCase(), rightX, 32, { width: 210, align: "right", characterSpacing: 0.8 });
-  doc.fillColor(BRAND.soft).font("Helvetica").fontSize(9).text(a.generatedAt, rightX, 50, { width: 210, align: "right" });
+  doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(9.5).text(periodReportTitle(a.period).toUpperCase(), rightX, 32, { width: 210, align: "right", characterSpacing: 0.8 });
+  doc.fillColor(BRAND.muted).font("Helvetica").fontSize(9).text(a.generatedAt, rightX, 50, { width: 210, align: "right" });
   if (a.driver) {
     doc.text(`Prepared for ${a.driver}`, rightX, 66, { width: 210, align: "right" });
   }
-  return 148;
+  return 128;
 }
 
 function drawSectionTitle(doc, margin, y, overline, title, subtitle = null) {
@@ -548,9 +551,9 @@ export function buildPdfBuffer(report) {
     y = drawSectionTitle(doc, margin, y, "Journeys", "Journey Breakdown", "Professional record for your accountant");
 
     const tCols = [margin + 8, margin + 52, margin + 102, margin + 162, margin + 222, margin + 292];
-    doc.roundedRect(margin, y, contentW, 24, 4).fill(BRAND.navy);
+    doc.roundedRect(margin, y, contentW, 24, 4).fill("#EEF4FF");
     ["Time", "Start", "Finish", "Miles", "Duration"].forEach((h, i) => {
-      doc.fillColor("#FFF").font("Helvetica-Bold").fontSize(7.5).text(h.toUpperCase(), tCols[i], y + 8);
+      doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(7.5).text(h.toUpperCase(), tCols[i], y + 8);
     });
     y += 24;
 
@@ -633,23 +636,25 @@ export function buildReportEmailHtml(report) {
 
   const metric = (label, value) =>
     `<tr><td style="padding:0 0 12px;">
-      <div style="font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#93A8C4;margin-bottom:6px;">${label}</div>
-      <div style="font-size:28px;font-weight:700;color:#FFFFFF;letter-spacing:-0.03em;line-height:1.1;">${value}</div>
+      <div style="font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#64748B;margin-bottom:6px;">${label}</div>
+      <div style="font-size:28px;font-weight:700;color:#06112A;letter-spacing:-0.03em;line-height:1.1;">${value}</div>
     </td></tr>`;
 
   const downloadUrl = buildReportDeepLink(report, true);
   const appUrl = `${APP_URL}/`;
 
   return `<!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
-<body style="margin:0;padding:0;background:#031126;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:linear-gradient(180deg,#0A2854 0%,#031126 100%);padding:44px 20px 52px;">
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light only"><meta name="supported-color-schemes" content="light"></head>
+<body style="margin:0;padding:0;background:#F8FBFF;color:#06112A;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;-webkit-text-size-adjust:100%;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#F8FBFF;padding:44px 20px 52px;">
 <tr><td align="center">
-<table width="480" cellpadding="0" cellspacing="0" style="max-width:480px;width:100%;">
-<tr><td style="padding:0 20px;">
+<table width="480" cellpadding="0" cellspacing="0" style="max-width:480px;width:100%;background:#FFFFFF;border:1px solid #DDE6F2;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(3,17,38,.08);">
+<tr><td style="padding:0;">
   ${buildBrandEmailHeader()}
-  <p style="margin:0 0 12px;font-size:17px;color:#EAF2FF;line-height:1.5;">${greeting} ${name} 👋</p>
-  <p style="margin:0 0 32px;font-size:16px;color:#B9C8DD;line-height:1.55;">${ready}</p>
+</td></tr>
+<tr><td style="padding:28px 28px 32px;">
+  <p style="margin:0 0 12px;font-size:17px;color:#06112A;line-height:1.5;">${greeting} ${name} 👋</p>
+  <p style="margin:0 0 32px;font-size:16px;color:#64748B;line-height:1.55;">${ready}</p>
   <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
     ${metric("Business Miles", a.totals.mi.toFixed(1))}
     ${metric("Travel Time", fmtShiftTime(a.totals.sec))}
@@ -661,12 +666,12 @@ export function buildReportEmailHtml(report) {
       <a href="${downloadUrl}" style="display:inline-block;width:100%;max-width:320px;background:linear-gradient(180deg,#1E88FF,#0D6BFF);color:#FFFFFF;font-size:16px;font-weight:600;text-decoration:none;padding:16px 24px;border-radius:14px;letter-spacing:-0.01em;box-sizing:border-box;">📄 Download PDF Report</a>
     </td></tr>
     <tr><td align="center">
-      <a href="${appUrl}" style="display:inline-block;color:#93A8C4;font-size:14px;font-weight:600;text-decoration:none;padding:8px 16px;">Open MilePilot</a>
+      <a href="${appUrl}" style="display:inline-block;color:#64748B;font-size:14px;font-weight:600;text-decoration:none;padding:8px 16px;">Open MilePilot</a>
     </td></tr>
   </table>
-  <p style="margin:0 0 36px;font-size:14px;color:#93A8C4;line-height:1.6;text-align:center;">Your professional PDF report is attached to this email.</p>
+  <p style="margin:0 0 36px;font-size:14px;color:#64748B;line-height:1.6;text-align:center;">Your professional PDF report is attached to this email.</p>
   <p style="margin:0 0 8px;font-size:12px;font-weight:600;letter-spacing:0.14em;color:#0D6BFF;text-align:center;">${BRAND_TAGLINE}</p>
-  <p style="margin:0;font-size:13px;color:#B9C8DD;line-height:1.6;text-align:center;">Thank you for choosing MilePilot.<br><span style="color:#93A8C4;">Every mile matters.</span></p>
+  <p style="margin:0;font-size:13px;color:#64748B;line-height:1.6;text-align:center;">Thank you for choosing MilePilot.<br><span style="color:#94A3B8;">Every mile matters.</span></p>
 </td></tr>
 </table>
 </td></tr>
