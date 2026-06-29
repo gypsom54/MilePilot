@@ -129,7 +129,7 @@
   }
 
   function syncMilesFromBusiness() {
-    state.miles = state.businessMiles;
+    state.miles = state.businessMiles + getRecordingMiles();
   }
 
   function normaliseShift(raw, vehicleDefault, claimFn) {
@@ -397,7 +397,13 @@
   }
 
   function buildCompletedShift(claimFn) {
-    if (state.activeTrip && state.lastPoint) finalizeActiveTrip(state.lastPoint);
+    if (state.activeTrip && state.activeTrip.miles >= 0.05) {
+      addBusinessMiles(state.activeTrip.miles);
+      state.activeTrip = null;
+      state.currentJourneyMiles = 0;
+    } else if (state.activeTrip && state.lastPoint) {
+      finalizeActiveTrip(state.lastPoint);
+    }
     if (state.stopCandidateAt && state.lastPoint) recordStop(state.lastPoint);
     const route = downsampleRoute(state.routePoints);
     const mi = Number(state.businessMiles.toFixed(2));
@@ -435,6 +441,7 @@
     state.shiftId = 'shift_' + Date.now();
     state.shiftStartedAt = Date.now();
     state.vehicle = vehicle || state.vehicle || 'car';
+    beginActiveTrip(state.shiftStartedAt);
     saveActiveShift();
     emit();
     return getState();
