@@ -1,21 +1,20 @@
-MilePilot — UPLOAD v7.8.2
+MilePilot — UPLOAD v7.8.3
 =========================
 
 DOWNLOAD
 --------
-Use MilePilot-UPLOAD-v7.8.2.zip from the repo root.
+Use MilePilot-UPLOAD-v7.8.3.zip from the repo root.
 
 CHECK APP VERSION
 -----------------
 https://app.milepilot.uk/version.txt
-Must show: MilePilot OS v7.8.2 — Welcome alignment, GPS deferral, report readability
+Must show: MilePilot OS v7.8.3 — Uniform input fields, autofill fix
 
-WHAT'S NEW IN v7.8.2
+WHAT'S NEW IN v7.8.3
 --------------------
-- Welcome page: name input and Continue button aligned on mobile
-- Onboarding: GPS permission deferred until first shift (no popup on first page)
-- Report emails: light theme for readable text in dark-mode mail clients
-- PDF reports: light headers/tables to avoid unreadable dark text on phones
+- Name input matches email signup field styling across all pages
+- Fixed yellow autofill highlight on iOS when entering your name
+- All form fields now use the same size, border, and focus style
 
 FILES IN THIS ZIP (upload all 7)
 --------------------------------
@@ -29,7 +28,7 @@ UPLOAD-INSTRUCTIONS.txt
 
 UPLOAD STEPS (Cloudflare)
 -------------------------
-1. Download MilePilot-UPLOAD-v7.8.2.zip
+1. Download MilePilot-UPLOAD-v7.8.3.zip
 2. Unzip all files (do not upload the zip itself)
 3. Cloudflare → milepilot-app → Upload assets → select all 7 files → Deploy
 

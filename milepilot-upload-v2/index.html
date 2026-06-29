@@ -46,7 +46,7 @@ body{display:flex;justify-content:center}
 .card{border:1px solid var(--line);background:rgba(255,255,255,.055);border-radius:24px;padding:18px;margin:16px 0;box-shadow:0 18px 48px rgba(0,0,0,.14)}
 .infoCard{border:1px solid var(--line);background:rgba(255,255,255,.045);border-radius:22px;padding:16px;margin:16px 0;color:#EAF2FF;line-height:1.45}
 .type{min-height:70px;font-size:28px;font-weight:1000;line-height:1.2;margin:10px 0 14px}.cursor{display:inline-block;width:3px;height:25px;background:var(--blue);animation:blink .8s infinite}@keyframes blink{50%{opacity:0}}
-input,select{width:100%;height:58px;border-radius:18px;border:1px solid rgba(255,255,255,.16);background:#07182F;color:#fff;font-size:17px;padding:0 16px;outline:none}input::placeholder{color:#7F8DA5}
+input,select{width:100%;height:58px;border-radius:18px;border:1px solid rgba(255,255,255,.16);background:#07182F;color:#fff;font-size:17px;padding:0 16px;outline:none;box-sizing:border-box;font-family:inherit;-webkit-appearance:none}input::placeholder{color:#7F8DA5}input:focus{border-color:rgba(13,107,255,.45);box-shadow:0 0 0 3px rgba(13,107,255,.12)}input:-webkit-autofill,input:-webkit-autofill:hover,input:-webkit-autofill:focus,input:-webkit-autofill:active{-webkit-box-shadow:0 0 0 1000px #07182F inset!important;box-shadow:0 0 0 1000px #07182F inset!important;-webkit-text-fill-color:#fff!important;caret-color:#fff;transition:background-color 99999s ease-out 0s}
 button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border:0;background:linear-gradient(180deg,#1882FF,#0057E7);color:white;font-weight:1000;font-size:18px;margin-top:14px;box-shadow:0 18px 40px rgba(13,107,255,.25)}.btn.red{background:linear-gradient(180deg,#FF3838,#D82323)}.btn.outline{background:transparent;border:1px solid var(--blue);color:#6EADFF;box-shadow:none}.btn.small{height:44px;font-size:14px}
 /* MP-007 Premium Navigation */
 .nav{position:fixed;left:50%;bottom:max(16px,env(safe-area-inset-bottom));transform:translateX(-50%);width:min(398px,calc(100vw - 32px));height:72px;padding:8px 10px;display:none;grid-template-columns:repeat(4,1fr);gap:6px;z-index:20;background:rgba(17,28,46,.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(110,180,255,.12);border-radius:20px;box-shadow:0 8px 32px rgba(0,0,0,.38),0 2px 8px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.05)}.nav.show{display:grid}
@@ -231,14 +231,12 @@ body.map-expand-open{overflow:hidden}
 .welcome-question .cursor{height:19px;width:2px;vertical-align:-2px;margin-left:2px;border-radius:1px}
 .welcome-input-wrap{position:relative;margin:0;width:100%}
 .welcome-input-icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);width:17px;height:17px;stroke:rgba(110,180,255,.75);fill:none;stroke-width:1.6;pointer-events:none;transition:stroke .25s ease}
-#welcome input#name::placeholder{color:rgba(127,141,165,.72);font-weight:400}
+#welcome input#name{padding-left:44px}
+#welcome .welcome-input-wrap:focus-within .welcome-input-icon{stroke:rgba(110,180,255,.95)}
+#welcome .premium-btn{width:100%;height:58px;border-radius:18px;font-size:17px;font-weight:600;letter-spacing:-0.01em;margin:0;box-sizing:border-box;background:linear-gradient(180deg,#1a3a5c 0%,#122a45 100%);color:rgba(255,255,255,.42);box-shadow:none;transition:background .28s ease,box-shadow .28s ease,color .28s ease;cursor:not-allowed}
+#welcome .premium-btn.is-ready{background:linear-gradient(180deg,#1E88FF 0%,#0D6BFF 50%,#005FE8 100%);color:#fff;box-shadow:0 8px 24px rgba(13,107,255,.28),inset 0 1px 0 rgba(255,255,255,.12);cursor:pointer}
 @media(hover:hover){.welcome-icon:hover{transform:scale(1.05);border-color:rgba(110,180,255,.36);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),inset 0 -10px 22px rgba(13,107,255,.14),0 8px 26px rgba(13,107,255,.14)}.welcome-icon:hover svg{stroke:#C8E6FF;fill:rgba(13,107,255,.22)}}
 .welcome-icon:active{transform:scale(.96)}
-#welcome input#name{width:100%;height:52px;border-radius:var(--button-radius);border:1px solid rgba(13,107,255,.28);background:rgba(5,18,36,.72);box-shadow:inset 0 1px 0 rgba(255,255,255,.04);font-size:17px;font-weight:400;padding:0 16px 0 44px;transition:border-color .28s ease,box-shadow .28s ease;-webkit-font-smoothing:antialiased;box-sizing:border-box;display:block}
-#welcome input#name:focus{border-color:rgba(13,107,255,.62);box-shadow:0 0 0 3px rgba(13,107,255,.14),inset 0 0 14px rgba(13,107,255,.07);outline:none}
-#welcome .welcome-input-wrap:focus-within .welcome-input-icon{stroke:rgba(110,180,255,.95)}
-#welcome .premium-btn{width:100%;height:52px;border-radius:var(--button-radius);font-size:17px;font-weight:600;letter-spacing:-0.01em;margin:0;box-sizing:border-box;background:linear-gradient(180deg,#1a3a5c 0%,#122a45 100%);color:rgba(255,255,255,.42);box-shadow:none;transition:background .28s ease,box-shadow .28s ease,color .28s ease;cursor:not-allowed}
-#welcome .premium-btn.is-ready{background:linear-gradient(180deg,#1E88FF 0%,#0D6BFF 50%,#005FE8 100%);color:#fff;box-shadow:0 8px 24px rgba(13,107,255,.28),inset 0 1px 0 rgba(255,255,255,.12);cursor:pointer}
 #welcome .premium-btn.is-ready:hover{filter:brightness(1.04);box-shadow:0 10px 28px rgba(13,107,255,.32),inset 0 1px 0 rgba(255,255,255,.12)}
 #welcome .premium-btn.is-ready:active{filter:brightness(.98);box-shadow:0 4px 16px rgba(13,107,255,.24),inset 0 1px 0 rgba(255,255,255,.08)}
 .welcome-version,.onboard-version{display:none}
@@ -396,7 +394,7 @@ body.map-expand-open{overflow:hidden}
 .report-send-card{margin:0 0 8px}
 .report-send-title{margin:0 0 8px;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(110,180,255,.82)}
 .report-send-sub{margin:0 0 16px;font-size:15px;font-weight:500;line-height:1.45;color:rgba(159,180,208,.92)}
-.report-send-card input{height:52px;border-radius:16px;margin:0 0 14px;font-size:16px;border:1px solid rgba(255,255,255,.14);background:rgba(5,18,36,.72)}
+.report-send-card input{margin:0 0 14px}
 .report-email-btn{width:100%;height:52px;border:0;border-radius:var(--button-radius);background:linear-gradient(180deg,#1E88FF 0%,#0D6BFF 50%,#005FE8 100%);color:#fff;font-size:17px;font-weight:600;letter-spacing:-0.01em;margin:0 0 10px;box-shadow:0 8px 24px rgba(13,107,255,.26),inset 0 1px 0 rgba(255,255,255,.12);cursor:pointer;font-family:inherit;transition:transform .24s cubic-bezier(.22,1,.36,1),filter .24s ease,opacity .24s ease}
 .report-email-btn:hover{filter:brightness(1.04)}
 .report-email-btn:active{transform:scale(.985)}
@@ -411,7 +409,7 @@ body.map-expand-open{overflow:hidden}
 .report-doc-head{margin-bottom:0}
 .report-email-primary{margin:0 0 22px;padding-bottom:22px;border-bottom:1px solid rgba(255,255,255,.08)}
 .report-email-primary label{display:block;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(110,180,255,.82);margin-bottom:10px}
-.report-email-primary input{height:52px;border-radius:16px;margin:0 0 12px;font-size:16px;border:1px solid rgba(255,255,255,.14);background:rgba(5,18,36,.72);width:100%;color:#fff;padding:0 16px;font-family:inherit}
+.report-email-primary input{margin:0 0 12px}
 .report-email-primary .report-email-btn{margin:0}
 .report-doc-secondary{margin-top:24px;padding-top:22px;border-top:1px solid rgba(255,255,255,.08)}
 .report-doc-secondary-label{margin:0 0 14px;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(147,168,196,.78)}
@@ -443,7 +441,7 @@ body.map-expand-open{overflow:hidden}
 .su-schedule-copy{margin:0;font-size:15px;font-weight:500;line-height:1.5;color:rgba(159,180,208,.92);letter-spacing:.01em}
 .su-email{margin:0 0 20px}
 .su-email label{display:block;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(110,180,255,.82);margin-bottom:10px}
-.su-email input{height:52px;border-radius:16px;font-size:16px;border:1px solid rgba(255,255,255,.14);background:rgba(5,18,36,.72)}
+.su-email input{margin:0}
 .su-actions{display:flex;flex-direction:column;gap:10px;margin-top:auto;padding-top:8px}
 .su-skip{display:block;width:100%;margin-top:6px;padding:12px;border:0;background:transparent;color:rgba(147,168,196,.82);font-size:15px;font-weight:500;cursor:pointer;font-family:inherit;transition:color .22s ease}
 .su-skip:hover{color:rgba(159,180,208,.96)}
