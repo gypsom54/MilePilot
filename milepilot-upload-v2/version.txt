@@ -1,1 +1,1 @@
-MilePilot OS v8.13.0 — Email flow + trip prompt fixes
+MilePilot OS v8.14.0 — Never Miss A Trip: auto-record, pending review, post-trip classify

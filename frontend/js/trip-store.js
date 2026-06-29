@@ -1,0 +1,236 @@
+/**
+ * MilePilot Trip Store — Never Miss A Trip
+ * Trips: pending | business | personal
+ * Pending trips are excluded from HMRC, reports, and business mileage totals.
+ */
+(function (global) {
+  'use strict';
+
+  const TRIP_STATUS = {
+    PENDING: 'pending',
+    BUSINESS: 'business',
+    PERSONAL: 'personal',
+  };
+
+  const STORAGE = {
+    TRIPS: 'mp_trips',
+    ACTIVE: 'mp_active_trip',
+  };
+
+  function normaliseTrip(raw, vehicleDefault, claimFn) {
+    const v = raw.vehicle || vehicleDefault || 'car';
+    const mi = Number(raw.miles) || 0;
+    const sec = Number(raw.seconds) || 0;
+    const mov = Number(raw.movingSeconds) || 0;
+    const route = raw.route || raw.routePoints || [];
+    const startISO = raw.startISO || new Date().toISOString();
+    const endISO = raw.endISO || startISO;
+    const status = raw.status || TRIP_STATUS.PENDING;
+    const rate = typeof claimFn === 'function' ? claimFn(1, v) : 0.55;
+    const hmrc = status === TRIP_STATUS.BUSINESS ? Number((mi * rate).toFixed(2)) : 0;
+    return {
+      id: raw.id || 'trip_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
+      status: status,
+      miles: mi,
+      seconds: sec,
+      movingSeconds: mov,
+      vehicle: v,
+      hmrc: hmrc,
+      date: raw.date || new Date(startISO).toLocaleDateString('en-GB'),
+      startISO: startISO,
+      endISO: endISO,
+      route: route,
+      routePoints: route,
+      startLat: raw.startLat != null ? raw.startLat : route[0] && route[0].lat,
+      startLon: raw.startLon != null ? raw.startLon : route[0] && route[0].lon,
+      endLat: raw.endLat != null ? raw.endLat : route.length && route[route.length - 1].lat,
+      endLon: raw.endLon != null ? raw.endLon : route.length && route[route.length - 1].lon,
+      notes: raw.notes || '',
+      shiftId: raw.shiftId || null,
+      aiSuggestion: raw.aiSuggestion || null,
+      createdAt: raw.createdAt || endISO,
+      classifiedAt: raw.classifiedAt || null,
+    };
+  }
+
+  function loadTrips(vehicleDefault, claimFn) {
+    try {
+      return JSON.parse(localStorage.getItem(STORAGE.TRIPS) || '[]').map(function (t) {
+        return normaliseTrip(t, vehicleDefault, claimFn);
+      });
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveTrips(trips) {
+    try {
+      localStorage.setItem(STORAGE.TRIPS, JSON.stringify(trips));
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function loadActiveTripRaw() {
+    try {
+      const raw = localStorage.getItem(STORAGE.ACTIVE);
+      return raw ? JSON.parse(raw) : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function saveActiveTrip(trip) {
+    try {
+      if (!trip) {
+        localStorage.removeItem(STORAGE.ACTIVE);
+        return true;
+      }
+      localStorage.setItem(STORAGE.ACTIVE, JSON.stringify(trip));
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function clearActiveTrip() {
+    localStorage.removeItem(STORAGE.ACTIVE);
+  }
+
+  function isBusiness(trip) {
+    return trip && trip.status === TRIP_STATUS.BUSINESS;
+  }
+
+  function isPending(trip) {
+    return trip && trip.status === TRIP_STATUS.PENDING;
+  }
+
+  function isPersonal(trip) {
+    return trip && trip.status === TRIP_STATUS.PERSONAL;
+  }
+
+  function getPendingTrips(trips) {
+    return (trips || []).filter(isPending);
+  }
+
+  function getBusinessTrips(trips) {
+    return (trips || []).filter(isBusiness);
+  }
+
+  function classifyTrip(trips, tripId, status, claimFn, vehicle) {
+    const idx = trips.findIndex(function (t) {
+      return t.id === tripId;
+    });
+    if (idx < 0) return null;
+    const trip = trips[idx];
+    const next = normaliseTrip(
+      Object.assign({}, trip, {
+        status: status,
+        classifiedAt: new Date().toISOString(),
+        hmrc: status === TRIP_STATUS.BUSINESS ? trip.miles : 0,
+      }),
+      vehicle || trip.vehicle,
+      claimFn
+    );
+    if (status === TRIP_STATUS.BUSINESS) {
+      next.hmrc = Number((claimFn ? claimFn(next.miles, next.vehicle) : next.miles * 0.55).toFixed(2));
+    } else {
+      next.hmrc = 0;
+    }
+    trips[idx] = next;
+    saveTrips(trips);
+    return next;
+  }
+
+  function tripsForDate(trips, date) {
+    const key = new Date(date).toDateString();
+    return trips.filter(function (t) {
+      return new Date(t.startISO).toDateString() === key;
+    });
+  }
+
+  function tripsInRange(trips, startMs, endMs) {
+    return trips.filter(function (t) {
+      const d = new Date(t.startISO).getTime();
+      return d >= startMs && d < endMs;
+    });
+  }
+
+  function sumBusinessTrips(trips) {
+    const list = getBusinessTrips(trips);
+    return {
+      mi: list.reduce(function (a, t) {
+        return a + t.miles;
+      }, 0),
+      sec: list.reduce(function (a, t) {
+        return a + t.seconds;
+      }, 0),
+      hmrc: list.reduce(function (a, t) {
+        return a + t.hmrc;
+      }, 0),
+      list: list,
+      journeys: list.length,
+    };
+  }
+
+  function sumPendingTrips(trips) {
+    const list = getPendingTrips(trips);
+    return {
+      count: list.length,
+      mi: list.reduce(function (a, t) {
+        return a + t.miles;
+      }, 0),
+      list: list,
+    };
+  }
+
+  function migrateShiftToTrips(shift, claimFn) {
+    if (!shift) return [];
+    if (shift.trips && shift.trips.length) return shift.trips.map(function (t) {
+      return normaliseTrip(t, shift.vehicle, claimFn);
+    });
+    if ((Number(shift.miles) || 0) < 0.01) return [];
+    return [
+      normaliseTrip(
+        {
+          id: 'trip_legacy_' + shift.id,
+          status: TRIP_STATUS.BUSINESS,
+          miles: shift.miles,
+          seconds: shift.seconds,
+          movingSeconds: shift.movingSeconds,
+          vehicle: shift.vehicle,
+          startISO: shift.startISO,
+          endISO: shift.endISO,
+          route: shift.route || shift.routePoints || [],
+          shiftId: shift.id,
+          classifiedAt: shift.endISO,
+        },
+        shift.vehicle,
+        claimFn
+      ),
+    ];
+  }
+
+  global.MPTrips = {
+    TRIP_STATUS: TRIP_STATUS,
+    STORAGE: STORAGE,
+    normaliseTrip: normaliseTrip,
+    loadTrips: loadTrips,
+    saveTrips: saveTrips,
+    loadActiveTripRaw: loadActiveTripRaw,
+    saveActiveTrip: saveActiveTrip,
+    clearActiveTrip: clearActiveTrip,
+    classifyTrip: classifyTrip,
+    getPendingTrips: getPendingTrips,
+    getBusinessTrips: getBusinessTrips,
+    isBusiness: isBusiness,
+    isPending: isPending,
+    isPersonal: isPersonal,
+    tripsForDate: tripsForDate,
+    tripsInRange: tripsInRange,
+    sumBusinessTrips: sumBusinessTrips,
+    sumPendingTrips: sumPendingTrips,
+    migrateShiftToTrips: migrateShiftToTrips,
+  };
+})(typeof window !== 'undefined' ? window : global);

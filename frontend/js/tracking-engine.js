@@ -1,12 +1,11 @@
 /**
- * MilePilot Tracking Engine v2 (MP-013 / MP-026)
- * Single source of truth for shift lifecycle, GPS mileage, and persistence.
- * shift.status: idle | tracking | ending | saving | completed
+ * MilePilot Tracking Engine v3 — Never Miss A Trip
+ * Auto-records journeys; classifies after motion stops (pending → business | personal).
  */
 (function (global) {
   'use strict';
 
-  const ENGINE_VERSION = 2;
+  const ENGINE_VERSION = 3;
   const STORAGE = { SHIFTS: 'mp_shifts', ACTIVE: 'mp_active_shift' };
 
   const ENGINE = {
@@ -21,85 +20,53 @@
     GPS_RECONNECT_MS: 15000,
     GPS_STALE_MS: 35000,
     BG_GPS_POLL_MS: 12000,
+    AUTO_START_SPEED_MPS: 4.47,
+    AUTO_START_MS: 20000,
+    MOTION_MIN_DURATION_MS: 18000,
+    MOTION_MAGNITUDE_MIN: 11,
   };
 
-  /** Motion / speed detection — prompts business vs personal before counting miles. */
-  const movementDetection = {
-    enabled: false,
-    minSpeedMps: 4.47,
-    minDurationMs: 30000,
-    motionMinDurationMs: 25000,
-    motionMagnitudeMin: 11,
+  /** Auto-start recording on sustained motion — no pre-classification prompt. */
+  const autoMotion = {
+    enabled: true,
     candidateSince: null,
     motionCandidateSince: null,
-    promptVisible: false,
-    personalSuppressUntil: 0,
-    onPrompt: null,
+    configure(opts) {
+      if (opts && typeof opts.enabled === 'boolean') this.enabled = opts.enabled;
+    },
     reset() {
       this.candidateSince = null;
       this.motionCandidateSince = null;
     },
-    configure(opts) {
-      if (opts && typeof opts.enabled === 'boolean') this.enabled = opts.enabled;
-      if (opts && typeof opts.onPrompt === 'function') this.onPrompt = opts.onPrompt;
-      if (opts && typeof opts.minDurationMs === 'number') this.minDurationMs = opts.minDurationMs;
-      if (opts && typeof opts.motionMinDurationMs === 'number') this.motionMinDurationMs = opts.motionMinDurationMs;
-    },
-    isSuppressed(now) {
-      return (now || Date.now()) < this.personalSuppressUntil;
-    },
-    shouldPrompt(now) {
-      now = now || Date.now();
-      if (!this.enabled || typeof this.onPrompt !== 'function' || this.promptVisible || this.isSuppressed(now)) {
-        return false;
-      }
-      if (typeof hooks.canPromptTrip === 'function' && !hooks.canPromptTrip()) return false;
-      return true;
-    },
-    firePrompt(source) {
-      if (!this.shouldPrompt()) return false;
-      this.promptVisible = true;
-      this.candidateSince = null;
-      this.motionCandidateSince = null;
-      this.onPrompt({
-        source: source || 'gps',
-        message: 'Are you driving for work?',
-        actions: ['business', 'personal'],
-      });
-      return true;
-    },
     check(speedMps, now) {
-      if (!this.shouldPrompt(now)) return;
-      if (speedMps >= this.minSpeedMps) {
+      if (!this.enabled || state.activeTrip) return;
+      now = now || Date.now();
+      if (speedMps >= ENGINE.AUTO_START_SPEED_MPS) {
         if (!this.candidateSince) this.candidateSince = now;
-        else if (now - this.candidateSince >= this.minDurationMs) this.firePrompt('gps');
+        else if (now - this.candidateSince >= ENGINE.AUTO_START_MS) {
+          this.candidateSince = null;
+          ensureAutoTripStarted(now);
+        }
       } else {
         this.candidateSince = null;
       }
     },
     checkDeviceMotion(magnitude, now) {
-      if (!this.shouldPrompt(now)) return;
+      if (!this.enabled || state.activeTrip) return;
       now = now || Date.now();
-      if (magnitude >= this.motionMagnitudeMin) {
+      if (magnitude >= ENGINE.MOTION_MAGNITUDE_MIN) {
         if (!this.motionCandidateSince) this.motionCandidateSince = now;
-        else if (now - this.motionCandidateSince >= this.motionMinDurationMs) this.firePrompt('motion');
+        else if (now - this.motionCandidateSince >= ENGINE.MOTION_MIN_DURATION_MS) {
+          this.motionCandidateSince = null;
+          ensureAutoTripStarted(now);
+        }
       } else {
         this.motionCandidateSince = null;
       }
     },
-    dismissPrompt() {
-      this.promptVisible = false;
-      this.reset();
-    },
-    respond(action) {
-      this.promptVisible = false;
-      this.reset();
-      if (action === 'personal') this.personalSuppressUntil = Date.now() + 20 * 60 * 1000;
-      return action;
-    },
   };
 
-  let hooks = { onUpdate: null, claimRate: () => 0.55, canPromptTrip: () => true };
+  let hooks = { onUpdate: null, onTripRecorded: null, claimRate: () => 0.55 };
 
   const SHIFT_STATUS = {
     IDLE: 'idle',
@@ -111,6 +78,7 @@
 
   let state = {
     shiftStatus: SHIFT_STATUS.IDLE,
+    businessMiles: 0,
     miles: 0,
     elapsed: 0,
     shiftStartedAt: null,
@@ -125,8 +93,7 @@
     currentJourneyMiles: 0,
     gpsLossAt: null,
     lastGpsAt: null,
-    /** true = count miles, false = personal (skip miles), null = awaiting trip type */
-    mileageRecording: null,
+    activeTrip: null,
   };
 
   function haversineM(a, b) {
@@ -161,6 +128,10 @@
     return Number(((miles / (movingSeconds / 3600)) || 0).toFixed(1));
   }
 
+  function syncMilesFromBusiness() {
+    state.miles = state.businessMiles;
+  }
+
   function normaliseShift(raw, vehicleDefault, claimFn) {
     const v = raw.vehicle || vehicleDefault || 'car';
     const mi = Number(raw.miles) || 0;
@@ -190,11 +161,151 @@
       averageSpeed: Number(raw.averageSpeed) || averageSpeedMph(mi, mov),
       createdAt: raw.createdAt || endISO,
       engineVersion: raw.engineVersion || ENGINE_VERSION,
+      trips: raw.trips || [],
     };
   }
 
   function emit() {
     if (typeof hooks.onUpdate === 'function') hooks.onUpdate(getState());
+  }
+
+  function beginActiveTrip(now) {
+    if (state.activeTrip) return state.activeTrip;
+    now = now || Date.now();
+    state.activeTrip = {
+      id: 'trip_' + now,
+      status: 'recording',
+      miles: 0,
+      movingSeconds: 0,
+      routePoints: [],
+      startedAt: now,
+      startISO: new Date(now).toISOString(),
+      startPoint: null,
+    };
+    state.currentJourneyMiles = 0;
+    autoMotion.reset();
+    emit();
+    return state.activeTrip;
+  }
+
+  function ensureAutoTripStarted(now) {
+    if (state.activeTrip) return true;
+    if (state.shiftStatus !== SHIFT_STATUS.TRACKING) {
+      startShift(state.vehicle);
+    }
+    beginActiveTrip(now);
+    return true;
+  }
+
+  function buildPendingTripPayload(endP) {
+    const trip = state.activeTrip;
+    if (!trip) return null;
+    const endMs = endP.t || Date.now();
+    const route = downsampleRoute(trip.routePoints);
+    const mi = Number(trip.miles.toFixed(2));
+    const sec = Math.max(0, Math.round((endMs - trip.startedAt) / 1000));
+    const startPt = trip.startPoint || (route[0] ? { lat: route[0].lat, lon: route[0].lon } : { lat: endP.lat, lon: endP.lon });
+    return {
+      id: trip.id,
+      status: 'pending',
+      miles: mi,
+      seconds: sec,
+      movingSeconds: Math.round(trip.movingSeconds),
+      vehicle: state.vehicle,
+      hmrc: 0,
+      date: new Date(trip.startISO).toLocaleDateString('en-GB'),
+      startISO: trip.startISO,
+      endISO: new Date(endMs).toISOString(),
+      route: route,
+      routePoints: route,
+      startLat: startPt.lat,
+      startLon: startPt.lon,
+      endLat: endP.lat,
+      endLon: endP.lon,
+      notes: '',
+      shiftId: state.shiftId,
+      aiSuggestion: null,
+      createdAt: new Date().toISOString(),
+      classifiedAt: null,
+    };
+  }
+
+  function finalizeActiveTrip(endP) {
+    if (!state.activeTrip) return null;
+    const mi = state.activeTrip.miles;
+    if (mi < 0.05) {
+      state.activeTrip = null;
+      state.currentJourneyMiles = 0;
+      emit();
+      return null;
+    }
+    const pendingTrip = buildPendingTripPayload(endP);
+    state.activeTrip = null;
+    state.currentJourneyMiles = 0;
+    state.stopCandidateAt = null;
+    state.stopCandidatePoint = null;
+    autoMotion.reset();
+    if (typeof hooks.onTripRecorded === 'function') hooks.onTripRecorded(pendingTrip);
+    emit();
+    return pendingTrip;
+  }
+
+  function addBusinessMiles(mi) {
+    state.businessMiles += mi;
+    syncMilesFromBusiness();
+  }
+
+  function processGpsPoint(p) {
+    if (state.shiftStatus !== SHIFT_STATUS.TRACKING) return getState();
+    state.routePoints.push(p);
+    state.lastGpsAt = p.t;
+    state.gpsLossAt = null;
+    const prev = state.lastPoint;
+    if (prev) {
+      const d = haversineM(prev, p);
+      const dt = Math.max(0.001, (p.t - prev.t) / 1000);
+      const speed = d / dt;
+
+      if (!state.activeTrip) {
+        autoMotion.check(speed, p.t);
+      }
+
+      const recording = !!state.activeTrip;
+      const validMove =
+        d >= ENGINE.MIN_MOVE_M && d < ENGINE.MAX_JUMP_M && speed < ENGINE.MAX_SPEED_MPS;
+
+      if (recording && validMove) {
+        if (!state.activeTrip.startPoint) state.activeTrip.startPoint = { lat: prev.lat, lon: prev.lon };
+        const mi = d / 1609.344;
+        state.activeTrip.miles += mi;
+        state.activeTrip.movingSeconds += Math.min(dt, 120);
+        state.activeTrip.routePoints.push(p);
+        state.currentJourneyMiles = state.activeTrip.miles;
+        state.movingSeconds += Math.min(dt, 120);
+        if (state.stopCandidateAt) {
+          state.stopCandidateAt = null;
+          state.stopCandidatePoint = null;
+        }
+      } else if (speed < ENGINE.STOP_SPEED_MPS && d < ENGINE.MIN_MOVE_M * 2) {
+        if (!state.stopCandidateAt) {
+          state.stopCandidateAt = p.t;
+          state.stopCandidatePoint = p;
+        } else if (p.t - state.stopCandidateAt >= ENGINE.STOP_AFTER_MS) {
+          if (state.activeTrip) finalizeActiveTrip(p);
+          else recordStop(p);
+        }
+      } else if (d >= ENGINE.MAX_JUMP_M) {
+        state.stopCandidateAt = null;
+        state.stopCandidatePoint = null;
+      }
+    } else if (!state.activeTrip) {
+      autoMotion.check(0, p.t);
+    }
+    state.lastPoint = p;
+    if (state.activeTrip && !state.activeTrip.routePoints.length) {
+      state.activeTrip.routePoints.push(p);
+    }
+    return getState();
   }
 
   function recordStop(endP) {
@@ -208,47 +319,7 @@
     state.stopCandidateAt = null;
     state.stopCandidatePoint = null;
     state.currentJourneyMiles = 0;
-    state.mileageRecording = null;
-    movementDetection.personalSuppressUntil = 0;
-    movementDetection.reset();
-  }
-
-  function processGpsPoint(p) {
-    if (state.shiftStatus !== SHIFT_STATUS.TRACKING) return getState();
-    state.routePoints.push(p);
-    state.lastGpsAt = p.t;
-    state.gpsLossAt = null;
-    const prev = state.lastPoint;
-    if (prev) {
-      const d = haversineM(prev, p);
-      const dt = Math.max(0.001, (p.t - prev.t) / 1000);
-      const speed = d / dt;
-      if (state.mileageRecording === null) movementDetection.check(speed, p.t);
-      if (
-        state.mileageRecording === true &&
-        d >= ENGINE.MIN_MOVE_M &&
-        d < ENGINE.MAX_JUMP_M &&
-        speed < ENGINE.MAX_SPEED_MPS
-      ) {
-        if (state.stopCandidateAt) recordStop(p);
-        const mi = d / 1609.344;
-        state.miles += mi;
-        state.currentJourneyMiles += mi;
-        state.movingSeconds += Math.min(dt, 120);
-      } else if (speed < ENGINE.STOP_SPEED_MPS && d < ENGINE.MIN_MOVE_M * 2) {
-        if (!state.stopCandidateAt) {
-          state.stopCandidateAt = p.t;
-          state.stopCandidatePoint = p;
-        } else if (p.t - state.stopCandidateAt >= ENGINE.STOP_AFTER_MS) {
-          recordStop(p);
-        }
-      } else if (d >= ENGINE.MAX_JUMP_M) {
-        state.stopCandidateAt = null;
-        state.stopCandidatePoint = null;
-      }
-    }
-    state.lastPoint = p;
-    return getState();
+    autoMotion.reset();
   }
 
   function resetEngine() {
@@ -259,7 +330,8 @@
     state.currentJourneyMiles = 0;
     state.gpsLossAt = null;
     state.lastGpsAt = null;
-    movementDetection.reset();
+    state.activeTrip = null;
+    autoMotion.reset();
   }
 
   function syncLegacyCcState() {
@@ -283,6 +355,7 @@
   }
 
   function clearShiftRuntime() {
+    state.businessMiles = 0;
     state.miles = 0;
     state.elapsed = 0;
     state.routePoints = [];
@@ -299,6 +372,7 @@
       shiftId: state.shiftId || 'shift_' + state.shiftStartedAt,
       startedAt: state.shiftStartedAt,
       miles: state.miles,
+      businessMiles: state.businessMiles,
       elapsed: state.elapsed,
       movingSeconds: state.movingSeconds,
       currentJourneyMiles: state.currentJourneyMiles,
@@ -306,7 +380,7 @@
       stops: state.shiftStops,
       lastPoint: state.lastPoint,
       vehicle: state.vehicle,
-      mileageRecording: state.mileageRecording,
+      activeTrip: state.activeTrip,
     };
   }
 
@@ -314,15 +388,19 @@
     state.shiftStops = s.stops || [];
     state.movingSeconds = Number(s.movingSeconds) || 0;
     state.currentJourneyMiles = Number(s.currentJourneyMiles) || 0;
+    state.businessMiles = Number(s.businessMiles) || Number(s.miles) || 0;
+    state.miles = state.businessMiles;
     state.shiftId = s.shiftId || null;
+    state.activeTrip = s.activeTrip || null;
     state.stopCandidateAt = null;
     state.stopCandidatePoint = null;
   }
 
   function buildCompletedShift(claimFn) {
+    if (state.activeTrip && state.lastPoint) finalizeActiveTrip(state.lastPoint);
     if (state.stopCandidateAt && state.lastPoint) recordStop(state.lastPoint);
     const route = downsampleRoute(state.routePoints);
-    const mi = Number(state.miles.toFixed(2));
+    const mi = Number(state.businessMiles.toFixed(2));
     const mov = Math.round(state.movingSeconds);
     return normaliseShift(
       {
@@ -348,6 +426,7 @@
   function startShift(vehicle) {
     state.shiftStatus = SHIFT_STATUS.TRACKING;
     syncLegacyCcState();
+    state.businessMiles = 0;
     state.miles = 0;
     state.elapsed = 0;
     state.routePoints = [];
@@ -356,25 +435,18 @@
     state.shiftId = 'shift_' + Date.now();
     state.shiftStartedAt = Date.now();
     state.vehicle = vehicle || state.vehicle || 'car';
-    state.mileageRecording = null;
-    movementDetection.personalSuppressUntil = 0;
     saveActiveShift();
     emit();
     return getState();
   }
 
-  function setMileageRecording(recording) {
-    state.mileageRecording = recording === true ? true : recording === false ? false : null;
+  function applyClassifiedTripMiles(mi, status) {
+    if (status === 'business' && mi > 0) addBusinessMiles(mi);
     emit();
-    return state.mileageRecording;
   }
 
-  function isMileageRecording() {
-    return state.mileageRecording === true;
-  }
-
-  function needsTripClassification() {
-    return state.shiftStatus === SHIFT_STATUS.TRACKING && state.mileageRecording !== true;
+  function getRecordingMiles() {
+    return state.activeTrip ? state.activeTrip.miles : 0;
   }
 
   function requestEndShift() {
@@ -385,7 +457,6 @@
     return true;
   }
 
-  /** Roll back ENDING → TRACKING when save fails before shift is finalised. */
   function cancelEndShift() {
     if (state.shiftStatus !== SHIFT_STATUS.ENDING) return false;
     state.shiftStatus = SHIFT_STATUS.TRACKING;
@@ -430,7 +501,6 @@
     return true;
   }
 
-  /** @deprecated Use requestEndShift + completeShift */
   function endShift(claimFn) {
     if (state.shiftStatus === SHIFT_STATUS.TRACKING) requestEndShift();
     return completeShift(claimFn);
@@ -441,12 +511,12 @@
     state.shiftStatus = SHIFT_STATUS.TRACKING;
     syncLegacyCcState();
     state.shiftStartedAt = s.startedAt;
-    state.miles = Number(s.miles) || 0;
+    state.businessMiles = Number(s.businessMiles) || Number(s.miles) || 0;
+    state.miles = state.businessMiles;
     state.elapsed = Math.floor((Date.now() - state.shiftStartedAt) / 1000);
     state.routePoints = s.routePoints || [];
     state.lastPoint = s.lastPoint || null;
     state.vehicle = s.vehicle || state.vehicle;
-    state.mileageRecording = s.mileageRecording === false ? false : s.mileageRecording === true ? true : true;
     restoreEngineFromPayload(s);
     emit();
     return true;
@@ -480,6 +550,9 @@
       try {
         const p = getActiveShiftPayload();
         p.routePoints = downsampleRoute(state.routePoints, 150);
+        if (p.activeTrip && p.activeTrip.routePoints) {
+          p.activeTrip.routePoints = downsampleRoute(p.activeTrip.routePoints, 80);
+        }
         localStorage.setItem(STORAGE.ACTIVE, JSON.stringify(p));
         return true;
       } catch (e2) {
@@ -520,9 +593,9 @@
     }
   }
 
-  /** Dev/QA only — inject synthetic GPS movement for mileage testing. */
   function simulateMovement(totalMiles, startLat, startLon) {
     if (state.shiftStatus !== SHIFT_STATUS.TRACKING) return getState();
+    ensureAutoTripStarted(Date.now());
     const milesToAdd = Math.max(0, Number(totalMiles) || 0);
     if (!milesToAdd) return getState();
     const baseLat = startLat != null ? startLat : (state.lastPoint && state.lastPoint.lat) || 51.5072;
@@ -544,10 +617,13 @@
 
   function getState() {
     syncLegacyCcState();
+    syncMilesFromBusiness();
     return {
       shiftStatus: state.shiftStatus,
       ccState: state.ccState,
       miles: state.miles,
+      businessMiles: state.businessMiles,
+      recordingMiles: getRecordingMiles(),
       elapsed: state.elapsed,
       shiftStartedAt: state.shiftStartedAt,
       shiftId: state.shiftId,
@@ -560,7 +636,8 @@
       journeyCount: journeyCount(state.shiftStops, state.miles),
       gpsLossAt: state.gpsLossAt,
       lastGpsAt: state.lastGpsAt,
-      mileageRecording: state.mileageRecording,
+      activeTrip: state.activeTrip,
+      isRecordingTrip: !!state.activeTrip,
     };
   }
 
@@ -572,18 +649,9 @@
 
   function init(opts) {
     hooks.onUpdate = opts && opts.onUpdate;
+    hooks.onTripRecorded = opts && opts.onTripRecorded;
     if (opts && opts.claimRate) hooks.claimRate = opts.claimRate;
-    if (opts && opts.movementDetection) movementDetection.configure(opts.movementDetection);
-    hooks.canPromptTrip = function () {
-      if (state.shiftStatus !== SHIFT_STATUS.TRACKING) return true;
-      return state.mileageRecording === null;
-    };
-    document.addEventListener('visibilitychange', function () {
-      if (state.shiftStatus === SHIFT_STATUS.TRACKING) saveActiveShift();
-    });
-    window.addEventListener('pagehide', function () {
-      if (state.shiftStatus === SHIFT_STATUS.TRACKING) saveActiveShift();
-    });
+    if (opts && opts.autoMotion) autoMotion.configure(opts.autoMotion);
   }
 
   global.MPTracking = {
@@ -591,7 +659,7 @@
     ENGINE: ENGINE,
     STORAGE: STORAGE,
     SHIFT_STATUS: SHIFT_STATUS,
-    movementDetection: movementDetection,
+    autoMotion: autoMotion,
     init: init,
     getState: getState,
     getShiftStatus: getShiftStatus,
@@ -599,6 +667,9 @@
     isShiftLive: isShiftLive,
     applyExternal: applyExternal,
     startShift: startShift,
+    ensureAutoTripStarted: ensureAutoTripStarted,
+    finalizeActiveTrip: finalizeActiveTrip,
+    applyClassifiedTripMiles: applyClassifiedTripMiles,
     requestEndShift: requestEndShift,
     cancelEndShift: cancelEndShift,
     completeShift: completeShift,
@@ -609,14 +680,11 @@
     tickElapsed: tickElapsed,
     processGpsPoint: processGpsPoint,
     processPoint: processGpsPoint,
-    setMileageRecording: setMileageRecording,
-    isMileageRecording: isMileageRecording,
-    needsTripClassification: needsTripClassification,
     checkMovement: function (speedMps, now) {
-      movementDetection.check(speedMps, now || Date.now());
+      autoMotion.check(speedMps, now || Date.now());
     },
     checkDeviceMotion: function (magnitude, now) {
-      movementDetection.checkDeviceMotion(magnitude, now || Date.now());
+      autoMotion.checkDeviceMotion(magnitude, now || Date.now());
     },
     recordStop: recordStop,
     resetEngine: resetEngine,
