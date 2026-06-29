@@ -1,0 +1,46 @@
+MilePilot — EASIEST SETUP (Windows, no coding)
+==============================================
+
+STEP 1 — DOWNLOAD
+-----------------
+Download this ZIP in your browser:
+https://github.com/gypsom54/MilePilot/archive/refs/heads/cursor/native-ios-testflight-f1c0.zip
+
+STEP 2 — EXTRACT
+----------------
+Right-click the ZIP → Extract All → choose:
+C:\Users\annec\Documents
+
+You will get a folder named:
+MilePilot-cursor-native-ios-testflight-f1c0
+
+STEP 3 — OPEN POWERSHELL IN THAT FOLDER
+---------------------------------------
+1. Press Windows key, type: PowerShell, press Enter
+2. Copy and paste these lines ONE AT A TIME (press Enter after each):
+
+cd C:\Users\annec\Documents\MilePilot-cursor-native-ios-testflight-f1c0
+
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+
+npm install
+
+eas login
+
+eas build --platform ios --profile preview
+
+STEP 4 — WHEN BUILD FINISHES
+----------------------------
+Copy and paste:
+
+eas submit --platform ios --latest --profile production
+
+Then install TestFlight on your iPhone and open the app from there.
+
+IMPORTANT
+---------
+- Use ONLY the folder MilePilot-cursor-native-ios-testflight-f1c0
+- Do NOT use the old "MilePilot" folder
+- Bundle ID is already set: com.zipcab.milepilot
+
+If anything fails, send a screenshot to your assistant.

@@ -16,7 +16,7 @@ module.exports = {
     assetBundlePatterns: ['assets/web/**/*'],
     ios: {
       supportsTablet: false,
-      bundleIdentifier: 'com.milepilot.app',
+      bundleIdentifier: 'com.zipcab.milepilot',
       buildNumber: '1',
       infoPlist: {
         NSLocationWhenInUseUsageDescription:
@@ -32,7 +32,7 @@ module.exports = {
       },
     },
     android: {
-      package: 'com.milepilot.app',
+      package: 'com.zipcab.milepilot',
       versionCode: 1,
       adaptiveIcon: {
         foregroundImage: './assets/adaptive-icon.png',
