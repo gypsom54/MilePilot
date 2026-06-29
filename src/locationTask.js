@@ -16,6 +16,12 @@ export const BACKGROUND_LOCATION_TASK = 'MILEPILOT_BACKGROUND_LOCATION';
 
 /** Set from MilePilotWebView to forward coords into the WebView JS layer */
 let forwardLocationToWebView = null;
+const pendingBackgroundLocations = [];
+
+export function takePendingBackgroundLocations() {
+  if (!pendingBackgroundLocations.length) return [];
+  return pendingBackgroundLocations.splice(0, pendingBackgroundLocations.length);
+}
 
 export function setBackgroundLocationForwarder(fn) {
   forwardLocationToWebView = fn;
@@ -49,6 +55,11 @@ TaskManager.defineTask(BACKGROUND_LOCATION_TASK, ({ data, error }) => {
   const latest = locations[locations.length - 1];
   const payload = locationToPayload(latest);
   if (!payload) return;
+
+  pendingBackgroundLocations.push(payload);
+  if (pendingBackgroundLocations.length > 500) {
+    pendingBackgroundLocations.splice(0, pendingBackgroundLocations.length - 500);
+  }
 
   // BACKGROUND GPS TEST POINT — log to Metro / Xcode console during device tests
   console.log('[MilePilot BG GPS] location', payload.coords.latitude, payload.coords.longitude);

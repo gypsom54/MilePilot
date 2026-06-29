@@ -20,6 +20,7 @@
     GPS_RECONNECT_MS: 15000,
     GPS_STALE_MS: 35000,
     BG_GPS_POLL_MS: 12000,
+    NATIVE_SPEED_GATE_DT: 2,
     AUTO_START_SPEED_MPS: 4.47,
     AUTO_START_MS: 20000,
     MOTION_MIN_DURATION_MS: 18000,
@@ -255,6 +256,16 @@
     syncMilesFromBusiness();
   }
 
+  /** Native GPS can burst faster than 1 Hz — avoid false speed spikes when gating miles. */
+  function movementSpeedMps(d, p, prev) {
+    const dtSec = Math.max(0.001, (p.t - prev.t) / 1000);
+    if (p.speedMps != null && p.speedMps >= 0 && isFinite(p.speedMps)) {
+      return p.speedMps;
+    }
+    const gateDt = p.nativeGps ? Math.max(dtSec, ENGINE.NATIVE_SPEED_GATE_DT || 2) : dtSec;
+    return d / gateDt;
+  }
+
   function processGpsPoint(p) {
     if (state.shiftStatus !== SHIFT_STATUS.TRACKING) return getState();
     state.routePoints.push(p);
@@ -264,7 +275,7 @@
     if (prev) {
       const d = haversineM(prev, p);
       const dt = Math.max(0.001, (p.t - prev.t) / 1000);
-      const speed = d / dt;
+      const speed = movementSpeedMps(d, p, prev);
 
       if (!state.activeTrip) {
         autoMotion.check(speed, p.t);

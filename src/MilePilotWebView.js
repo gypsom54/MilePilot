@@ -5,10 +5,10 @@
  * UI, onboarding, dashboard, reports, AutoPilot logic: unchanged (served from web).
  */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Platform, SafeAreaView, StatusBar, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, AppState, Platform, SafeAreaView, StatusBar, StyleSheet, View } from 'react-native';
 import { WebView } from 'react-native-webview';
 import Constants from 'expo-constants';
-import { setBackgroundLocationForwarder } from './locationTask';
+import { setBackgroundLocationForwarder, takePendingBackgroundLocations } from './locationTask';
 import { handleWebViewMessage, injectLocationIntoWebView } from './expoLocationBridge';
 
 const WEB_APP_URL = Constants.expoConfig?.extra?.webAppUrl || 'https://app.milepilot.uk/?runtime=expo';
@@ -64,6 +64,20 @@ export default function MilePilotWebView() {
       sendToWebView(payload);
     });
     return () => setBackgroundLocationForwarder(null);
+  }, [sendToWebView]);
+
+  useEffect(() => {
+    const flushBufferedLocations = () => {
+      takePendingBackgroundLocations().forEach((payload) => {
+        sendToWebView(payload);
+      });
+    };
+    const sub = AppState.addEventListener('change', (nextState) => {
+      if (nextState === 'active') {
+        flushBufferedLocations();
+      }
+    });
+    return () => sub.remove();
   }, [sendToWebView]);
 
   const onMessage = useCallback(
