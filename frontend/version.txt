@@ -1,1 +1,1 @@
-MilePilot OS v8.11.0 — MP-EXPO-EAS native iOS testing shell
+MilePilot OS v8.12.0 — Business vs personal trip prompt
