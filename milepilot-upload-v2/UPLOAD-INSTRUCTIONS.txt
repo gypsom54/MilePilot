@@ -1,17 +1,24 @@
-MilePilot — UPLOAD v8.9.9
-=========================
+MilePilot — CLOUDFLARE UPLOAD v8.14.2
+==========================================
 
-Download:
-https://github.com/gypsom54/MilePilot/raw/cursor/mp-045-email-gps-permissions-ae00/MilePilot-UPLOAD-v8.9.9.zip
+DOWNLOAD ZIP (same naming every time):
+MilePilot-v8.14.2-CLOUDFLARE-UPLOAD.zip
 
-After upload, verify:
+Or use the latest alias:
+MilePilot-CLOUDFLARE-UPLOAD-LATEST.zip
+
+UPLOAD STEPS
+------------
+1. Download the zip above
+2. Unzip all files (do NOT upload the zip itself)
+3. Cloudflare → milepilot-app → Upload assets → select ALL files and folders → Deploy
+   Must include: index.html, version.txt, service-worker.js, manifest.json, icon.svg, _headers, js/
+
+VERIFY DEPLOY
+-------------
 https://app.milepilot.uk/version.txt
-Must show: MilePilot OS v8.9.9
+Must show: MilePilot OS v8.14.2
 
-WHAT'S IN v8.9.9
-----------------
-• Report emails: PDF is part of the message (attachment callout, no dashboard link)
-• Amber AutoPilot items have Enable Location / fix buttons
-• Settings → Location & AutoPilot with phone-specific help guide
-
-Deploy Railway backend too for latest email template.
+APP URL
+-------
+https://app.milepilot.uk
