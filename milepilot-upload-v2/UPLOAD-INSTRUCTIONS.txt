@@ -1,22 +1,21 @@
-MilePilot — UPLOAD v7.6.0
+MilePilot — UPLOAD v7.8.2
 =========================
 
 DOWNLOAD
 --------
-Use MilePilot-UPLOAD-v7.6.0.zip from this folder or the repo root.
+Use MilePilot-UPLOAD-v7.8.2.zip from the repo root.
 
 CHECK APP VERSION
 -----------------
 https://app.milepilot.uk/version.txt
-Must show: MilePilot OS v7.6.0 — Business Profile integration
+Must show: MilePilot OS v7.8.2 — Welcome alignment, GPS deferral, report readability
 
-WHAT'S NEW IN v7.6.0
+WHAT'S NEW IN v7.8.2
 --------------------
-- Business Profile architecture (mp_business_profile)
-- Profession selector after onboarding with confirmation animation
-- Settings: elegant Business Profile row with Change →
-- Terminology adapts by profession across dashboard & reports
-- Prepared for future profile fields (accountant, VAT, tax year, etc.)
+- Welcome page: name input and Continue button aligned on mobile
+- Onboarding: GPS permission deferred until first shift (no popup on first page)
+- Report emails: light theme for readable text in dark-mode mail clients
+- PDF reports: light headers/tables to avoid unreadable dark text on phones
 
 FILES IN THIS ZIP (upload all 7)
 --------------------------------
@@ -30,7 +29,7 @@ UPLOAD-INSTRUCTIONS.txt
 
 UPLOAD STEPS (Cloudflare)
 -------------------------
-1. Download MilePilot-UPLOAD-v7.6.0.zip
+1. Download MilePilot-UPLOAD-v7.8.2.zip
 2. Unzip all files (do not upload the zip itself)
 3. Cloudflare → milepilot-app → Upload assets → select all 7 files → Deploy
 
