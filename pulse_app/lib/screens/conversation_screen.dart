@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pulse_app/core/conversation/conversation_loader.dart';
 import 'package:pulse_app/core/conversation/conversation_models.dart';
 import 'package:pulse_app/core/motion/pulse_motion.dart';
-import 'package:pulse_app/core/session/pulse_session.dart';
+import 'package:pulse_app/core/brain/pulse_brain.dart';
 import 'package:pulse_app/screens/shell/pulse_shell.dart';
 import 'package:pulse_app/widgets/pulse_background.dart';
 import 'package:pulse_app/widgets/pulse_conversation.dart';
@@ -54,10 +54,25 @@ class _ConversationScreenState extends State<ConversationScreen> {
           ),
         );
       case 'complete:onboarding':
-        final name = variables['firstName'] ?? 'friend';
-        PulseSession.completeOnboarding(name);
-        Navigator.of(context).pushReplacement(PulseShell.route());
+        _completeOnboarding(variables);
     }
+  }
+
+  Future<void> _completeOnboarding(Map<String, String> variables) async {
+    final name = variables['firstName'] ?? '';
+    if (name.isNotEmpty) {
+      await PulseBrain.instance.setFirstName(name);
+    }
+    for (final entry in variables.entries) {
+      if (entry.key != 'firstName') {
+        await PulseBrain.instance.recordOnboardingChoice(entry.key, entry.value);
+      }
+    }
+    await PulseBrain.instance.completeOnboarding(
+      firstName: name.isNotEmpty ? name : null,
+    );
+    if (!mounted) return;
+    Navigator.of(context).pushReplacement(PulseShell.route());
   }
 
   @override

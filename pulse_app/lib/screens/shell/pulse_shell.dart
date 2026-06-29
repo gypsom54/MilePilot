@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pulse_app/core/brain/pulse_brain.dart';
 import 'package:pulse_app/core/motion/pulse_motion.dart';
 import 'package:pulse_app/screens/home/home_screen.dart';
 import 'package:pulse_app/screens/placeholders/calm_placeholder_screen.dart';
@@ -27,28 +28,6 @@ class _PulseShellState extends State<PulseShell> {
   void initState() {
     super.initState();
     _tab = widget.initialTab;
-  }
-
-  Widget _bodyFor(PulseNavTab tab) {
-    return switch (tab) {
-      PulseNavTab.home => const HomeScreen(),
-      PulseNavTab.cabinet => const CalmPlaceholderScreen(
-          title: 'Research Cabinet',
-          subtitle: 'Ready whenever you are.',
-        ),
-      PulseNavTab.learn => const CalmPlaceholderScreen(
-          title: "Today's Discovery",
-          subtitle: "I've found something interesting for you.",
-        ),
-      PulseNavTab.journal => const CalmPlaceholderScreen(
-          title: 'Research Journal',
-          subtitle: 'Continue your journey.',
-        ),
-      PulseNavTab.pulse => const CalmPlaceholderScreen(
-          title: 'Pulse',
-          subtitle: 'How can I help today?',
-        ),
-    };
   }
 
   @override
@@ -86,6 +65,18 @@ class _PulseShellState extends State<PulseShell> {
         current: _tab,
         onChanged: (tab) => setState(() => _tab = tab),
       ),
+    );
+  }
+
+  Widget _bodyFor(PulseNavTab tab) {
+    if (tab == PulseNavTab.home) return const HomeScreen();
+
+    return FutureBuilder(
+      future: PulseBrain.instance.placeholderRecommendations(tab),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return const SizedBox.shrink();
+        return CalmPlaceholderScreen(recommendations: snapshot.data!);
+      },
     );
   }
 }

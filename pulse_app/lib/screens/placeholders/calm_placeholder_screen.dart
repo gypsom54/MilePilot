@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:pulse_app/core/brain/models/pulse_recommendations.dart';
 import 'package:pulse_app/core/motion/pulse_motion.dart';
 import 'package:pulse_app/core/theme/pulse_colors.dart';
 import 'package:pulse_app/core/theme/pulse_typography.dart';
 
-/// Quiet space for areas not yet built — human copy, no clutter.
+/// Quiet space — copy supplied by the Brain.
 class CalmPlaceholderScreen extends StatelessWidget {
   const CalmPlaceholderScreen({
     super.key,
-    required this.title,
-    required this.subtitle,
+    required this.recommendations,
   });
 
-  final String title;
-  final String subtitle;
+  final PulsePlaceholderRecommendations recommendations;
 
   @override
   Widget build(BuildContext context) {
@@ -23,13 +22,13 @@ class CalmPlaceholderScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              title,
+              recommendations.title,
               textAlign: TextAlign.center,
               style: PulseTypography.heading(size: 26, color: PulseColors.white),
             ),
             const SizedBox(height: 20),
             Text(
-              subtitle,
+              recommendations.subtitle,
               textAlign: TextAlign.center,
               style: PulseTypography.body(color: PulseColors.whiteMuted),
             ),
