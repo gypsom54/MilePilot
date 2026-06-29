@@ -1,22 +1,20 @@
-MilePilot — UPLOAD v7.6.0
+MilePilot — UPLOAD v7.8.3
 =========================
 
 DOWNLOAD
 --------
-Use MilePilot-UPLOAD-v7.6.0.zip from this folder or the repo root.
+Use MilePilot-UPLOAD-v7.8.3.zip from the repo root.
 
 CHECK APP VERSION
 -----------------
 https://app.milepilot.uk/version.txt
-Must show: MilePilot OS v7.6.0 — Business Profile integration
+Must show: MilePilot OS v7.8.3 — Uniform input fields, autofill fix
 
-WHAT'S NEW IN v7.6.0
+WHAT'S NEW IN v7.8.3
 --------------------
-- Business Profile architecture (mp_business_profile)
-- Profession selector after onboarding with confirmation animation
-- Settings: elegant Business Profile row with Change →
-- Terminology adapts by profession across dashboard & reports
-- Prepared for future profile fields (accountant, VAT, tax year, etc.)
+- Name input matches email signup field styling across all pages
+- Fixed yellow autofill highlight on iOS when entering your name
+- All form fields now use the same size, border, and focus style
 
 FILES IN THIS ZIP (upload all 7)
 --------------------------------
@@ -30,7 +28,7 @@ UPLOAD-INSTRUCTIONS.txt
 
 UPLOAD STEPS (Cloudflare)
 -------------------------
-1. Download MilePilot-UPLOAD-v7.6.0.zip
+1. Download MilePilot-UPLOAD-v7.8.3.zip
 2. Unzip all files (do not upload the zip itself)
 3. Cloudflare → milepilot-app → Upload assets → select all 7 files → Deploy
 
