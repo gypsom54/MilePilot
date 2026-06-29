@@ -408,12 +408,10 @@
   }
 
   function buildCompletedShift(claimFn) {
-    if (state.activeTrip && state.activeTrip.miles >= 0.05) {
-      addBusinessMiles(state.activeTrip.miles);
-      state.activeTrip = null;
-      state.currentJourneyMiles = 0;
-    } else if (state.activeTrip && state.lastPoint) {
+    if (state.activeTrip && state.lastPoint) {
       finalizeActiveTrip(state.lastPoint);
+    } else if (state.activeTrip && state.activeTrip.miles >= 0.05) {
+      finalizeActiveTrip(state.lastPoint || { lat: 0, lon: 0, t: Date.now() });
     }
     if (state.stopCandidateAt && state.lastPoint) recordStop(state.lastPoint);
     const route = downsampleRoute(state.routePoints);
