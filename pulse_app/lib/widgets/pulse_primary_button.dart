@@ -24,12 +24,15 @@ class PulsePrimaryButton extends StatefulWidget {
 }
 
 class _PulsePrimaryButtonState extends State<PulsePrimaryButton>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   bool _pressed = false;
   bool _hovered = false;
   bool _focused = false;
+  bool _wasEnabled = false;
   late final AnimationController _readyPulse;
   late final Animation<double> _readyBreath;
+  late final AnimationController _arrivalGlow;
+  late final Animation<double> _arrivalGlowValue;
 
   bool get _isEnabled => widget.enabled && widget.onPressed != null;
 
@@ -43,12 +46,24 @@ class _PulsePrimaryButtonState extends State<PulsePrimaryButton>
     _readyBreath = Tween<double>(begin: 0.72, end: 1.0).animate(
       CurvedAnimation(parent: _readyPulse, curve: PulseMotion.breathe),
     );
+    _arrivalGlow = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 480),
+    );
+    _arrivalGlowValue = CurvedAnimation(
+      parent: _arrivalGlow,
+      curve: PulseMotion.fade,
+    );
     _syncPulse();
   }
 
   @override
   void didUpdateWidget(covariant PulsePrimaryButton oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (_isEnabled && !_wasEnabled) {
+      _arrivalGlow.forward(from: 0);
+    }
+    _wasEnabled = _isEnabled;
     _syncPulse();
   }
 
@@ -65,6 +80,7 @@ class _PulsePrimaryButtonState extends State<PulsePrimaryButton>
   @override
   void dispose() {
     _readyPulse.dispose();
+    _arrivalGlow.dispose();
     super.dispose();
   }
 
@@ -82,10 +98,11 @@ class _PulsePrimaryButtonState extends State<PulsePrimaryButton>
           onEnter: (_) => setState(() => _hovered = true),
           onExit: (_) => setState(() => _hovered = false),
           child: AnimatedBuilder(
-            animation: _readyBreath,
+            animation: Listenable.merge([_readyBreath, _arrivalGlowValue]),
             builder: (context, child) {
+              final arrivalBoost = _isEnabled ? _arrivalGlowValue.value * 0.22 : 0.0;
               final glowIntensity = _isEnabled
-                  ? (0.55 + (_hovered ? 0.15 : 0) + (_focused ? 0.1 : 0)) *
+                  ? (0.55 + arrivalBoost + (_hovered ? 0.15 : 0) + (_focused ? 0.1 : 0)) *
                       (widget.pulseWhenEnabled && !reduced ? _readyBreath.value : 1.0)
                   : 0.12;
 

@@ -43,7 +43,13 @@ Wordmark with heartbeat-to-P animation. Used in launch and welcome.
 Human typing animation with per-line pauses and variable speed.
 
 ### `PulseConversation`
-Renders a full conversation script from JSON. Handles typing, input, buttons.
+Renders a full conversation script from JSON. Steps execute sequentially — typing, logo, input, button, fade.
+
+### `PulseConversationalWait`
+Wraps async work with human conversation copy. Pulse never shows loading screens.
+
+### `PulseConversationLogo`
+Compact in-conversation heartbeat for departure and milestone moments.
 
 ### `PulseTextField`
 Premium text input — pulsing cursor, focus glow, fading placeholder.
@@ -59,7 +65,7 @@ Primary CTA. Soft glow, press scale, hover (web), focus ring.
 PulsePrimaryButton(
   label: 'Continue',
   enabled: canContinue,
-  pulseWhenEnabled: true,  // gentle breathe when active
+  pulseWhenEnabled: true,  // glow first, then gentle breathe when active
   onPressed: () {},
 )
 ```

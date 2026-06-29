@@ -20,7 +20,7 @@ class ConversationScript {
   }
 }
 
-enum ConversationStepType { typing, pause, fade, input, button }
+enum ConversationStepType { typing, pause, fade, input, button, logo }
 
 class ConversationStep {
   const ConversationStep({

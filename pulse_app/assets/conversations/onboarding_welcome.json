@@ -17,7 +17,7 @@
     {
       "type": "button",
       "label": "Let's Begin",
-      "action": "complete:onboarding"
+      "action": "navigate:departure"
     }
   ]
 }

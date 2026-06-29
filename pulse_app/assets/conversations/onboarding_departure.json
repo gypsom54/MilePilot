@@ -1,0 +1,28 @@
+{
+  "id": "onboarding_departure",
+  "steps": [
+    {
+      "type": "logo"
+    },
+    {
+      "type": "typing",
+      "charDelayMs": 42,
+      "charDelayVariance": 0.14,
+      "lines": [
+        { "text": "Perfect...", "pauseAfterMs": 900 }
+      ]
+    },
+    {
+      "type": "typing",
+      "charDelayMs": 40,
+      "charDelayVariance": 0.12,
+      "lines": [
+        { "text": "Let's build your experience.", "pauseAfterMs": 700 }
+      ]
+    },
+    {
+      "type": "fade",
+      "durationMs": 1200
+    }
+  ]
+}

@@ -8,11 +8,13 @@ Pulse is a **Flutter** app (iOS, Android, Web) built as a premium, calm experien
 
 ```
 LaunchScreen
-    ↓  (~5.2s cinematic animation)
+    ↓  (~5.2s cinematic animation — heartbeat morphs into PULSE)
 ConversationScreen (onboarding_name.json)
     ↓  (name capture)
 ConversationScreen (onboarding_welcome.json)
     ↓  (Let's Begin)
+ConversationScreen (onboarding_departure.json)
+    ↓  (heartbeat → Perfect... → fade)
 PulseShell
     ├── HomeScreen          ← Brain-driven
     ├── Cabinet placeholder
@@ -95,16 +97,26 @@ final rec = await PulseBrain.instance.homeRecommendations();
 
 ## Conversation engine
 
-Onboarding is driven by JSON in `assets/conversations/`.
+Every conversation in Pulse flows through `PulseConversation` — onboarding, departure, loading, and (future) Research Co-Pilot.
+
+Scripts live in `assets/conversations/`.
 
 | File | Purpose |
 |------|---------|
-| `onboarding_name.json` | Intro + name input |
+| `onboarding_name.json` | Emotional welcome + name input |
 | `onboarding_welcome.json` | Personalised welcome |
+| `onboarding_departure.json` | Heartbeat → Perfect... → fade to home |
+| `loading_ready.json` | Just getting everything ready... |
+| `loading_fetch.json` | Looking after your latest progress... |
+| `loading_save.json` | Your research has been safely saved. |
 
-Steps: `typing` → `input` → `button`
+**Step types:** `typing` · `pause` · `logo` · `input` · `button` · `fade`
 
-Variables use `{{firstName}}` interpolation. Actions like `navigate:welcome` and `complete:onboarding` are handled in `ConversationScreen`.
+Steps execute **sequentially** — one at a time, in order.
+
+Variables use `{{firstName}}` interpolation. Actions like `navigate:welcome`, `navigate:departure` are handled in `ConversationScreen`.
+
+**Conversational loading:** wrap async work with `PulseConversationalWait` — never show "Loading…".
 
 ---
 

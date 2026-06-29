@@ -34,12 +34,13 @@ Tagline under logo:
 ```
 Hello...
 Welcome to Pulse.
-It's lovely to meet you.
+I'm really pleased you're here.
+Let's build something that's completely yours.
 Who are we talking to today?
 ```
 
 **Input placeholder:** `Your first name`  
-**Button:** `Continue`
+**Button:** `Continue` — glows first, then gently breathes when the name is entered.
 
 ---
 
@@ -55,6 +56,29 @@ Let's build your experience together.
 ```
 
 **Button:** `Let's Begin`
+
+---
+
+## Onboarding — Departure (after Let's Begin)
+
+```
+[heartbeat]
+Perfect...
+Let's build your experience.
+[fade → home]
+```
+
+---
+
+## Conversational loading (never "Loading…")
+
+| Moment | Copy |
+|--------|------|
+| App ready | Just getting everything ready... |
+| Fetching data | Looking after your latest progress... |
+| Saving | Your research has been safely saved. |
+
+Pulse never shows loading screens. Every technical process becomes human.
 
 ---
 

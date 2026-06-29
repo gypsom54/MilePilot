@@ -12,7 +12,7 @@ Optimise for delight, not speed.
 |--------|-----------|--------|
 | ✅ Sprint 1 | Brand Identity | Complete |
 | ✅ Sprint 2 | Architecture & Foundation | Complete |
-| 🔨 Sprint 3 | Perfect First Impression | **Next** |
+| 🔨 Sprint 3 | Perfect First Impression | **In progress** |
 | ⏳ Sprint 4 | Welcome Home Experience | Next |
 | ⏳ Sprint 5 | Research Cabinet | Planned |
 | ⏳ Sprint 6 | Knowledge Hub | Planned |
@@ -20,6 +20,23 @@ Optimise for delight, not speed.
 | ⏳ Sprint 8 | Pulse Brain | Planned |
 | ⏳ Sprint 9 | Smart Inventory Engine | Planned |
 | ⏳ Sprint 10 | Pulse Pro & Store Integration | Planned |
+
+---
+
+## Milestones (product structure)
+
+Milestones group sprints. Each milestone can contain several sprints.
+
+| Milestone | Name | Status |
+|-----------|------|--------|
+| **M1** | Launch Experience | Complete |
+| **M2** | Conversation System | **In progress** |
+| **M3** | Research Cabinet | Planned |
+| **M4** | Knowledge Hub | Planned |
+| **M5** | Research Co-Pilot | Planned |
+
+**Milestone 2 — Pulse Conversation Engine**  
+One reusable framework for every conversation in Pulse: onboarding, departure, loading moments, milestone celebrations, Research Co-Pilot. Copy lives in JSON — never hardcoded in widgets.
 
 ---
 
@@ -64,9 +81,9 @@ Premium tier and store billing.
 
 ## Current focus
 
-**Sprint 3 — Perfect First Impression**
+**Milestone 2 — Conversation System** (Sprint 3 polish + engine)
 
-Make the first 90 seconds feel unforgettable. Polish only — no new features, no inventory, no settings.
+Make the first 90 seconds feel unforgettable. Polish only — no new features, no inventory, no settings. Build the conversation engine so every wait and transition feels human.
 
 ---
 
@@ -76,7 +93,7 @@ Some work exists in the codebase **ahead of the locked sprint schedule**. This i
 
 | Locked sprint | Codebase status |
 |---------------|-----------------|
-| Sprint 3 | Partial — launch polish, typewriter, motion in progress |
+| Sprint 3 | In progress — unified logo morph, departure flow, conversational loading |
 | Sprint 4 | Early build exists — `HomeScreen`, `PulseShell`, glass cards |
 | Sprint 8 | Early build exists — `PulseBrain`, engines, persistence |
 

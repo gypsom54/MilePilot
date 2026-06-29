@@ -1,10 +1,11 @@
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:pulse_app/core/conversation/pulse_logo_phases.dart';
 import 'package:pulse_app/core/theme/pulse_colors.dart';
 import 'package:pulse_app/core/theme/pulse_typography.dart';
 
-/// Pulse wordmark with integrated heartbeat line forming the letter P.
+/// Pulse wordmark — heartbeat morphs into P as one continuous animation.
 class PulseLogo extends StatelessWidget {
   const PulseLogo({
     super.key,
@@ -19,6 +20,7 @@ class PulseLogo extends StatelessWidget {
     this.compact = false,
     this.logoBreathe = 0.0,
     this.heartbeatHold = 1.0,
+    this.sequenceProgress,
   });
 
   final bool showTagline;
@@ -32,11 +34,23 @@ class PulseLogo extends StatelessWidget {
   final bool compact;
   final double logoBreathe;
   final double heartbeatHold;
+  /// When set, drives the unified heartbeat → P → ULSE → glow timeline.
+  final double? sequenceProgress;
 
   @override
   Widget build(BuildContext context) {
     final logoSize = compact ? 36.0 : 48.0;
     final spacing = compact ? 3.0 : 5.0;
+
+    final seq = sequenceProgress;
+    final draw = seq != null ? PulseLogoPhases.heartbeatDraw(seq) : heartbeatProgress;
+    final morph = seq != null ? PulseLogoPhases.morphToP(seq) : pRevealProgress;
+    final letters = seq != null ? PulseLogoPhases.letters(seq) : letterOpacity;
+    final breathe = seq != null
+        ? PulseLogoPhases.glow(seq) * (0.4 + logoBreathe * 0.6)
+        : logoBreathe;
+    final tagline = seq != null ? PulseLogoPhases.tagline(seq) : taglineOpacity;
+    final lineFade = seq != null ? PulseLogoPhases.lineOpacity(seq) : 1.0;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -52,17 +66,17 @@ class PulseLogo extends StatelessWidget {
         SizedBox(
           height: logoSize + 8,
           child: Transform.scale(
-            scale: 1.0 + (logoBreathe * 0.018),
+            scale: 1.0 + (breathe * 0.022),
             child: CustomPaint(
               painter: _PulseLogoPainter(
-                heartbeatProgress: heartbeatProgress,
-                heartbeatHold: heartbeatHold,
-                pRevealProgress: pRevealProgress,
-                letterOpacity: letterOpacity,
-                showRemainingLetters: showRemainingLetters,
+                heartbeatProgress: draw,
+                morphProgress: morph,
+                lineOpacity: lineFade,
+                letterOpacity: letters,
+                showRemainingLetters: showRemainingLetters && letters > 0.04,
                 logoSize: logoSize,
                 letterSpacing: spacing,
-                logoBreathe: logoBreathe,
+                logoBreathe: breathe,
               ),
               size: Size(
                 _PulseLogoPainter.estimatedWidth(
@@ -79,7 +93,7 @@ class PulseLogo extends StatelessWidget {
           const SizedBox(height: 22),
           AnimatedOpacity(
             duration: const Duration(milliseconds: 600),
-            opacity: taglineOpacity,
+            opacity: tagline,
             child: Text(
               'Keep your finger on the Pulse.',
               textAlign: TextAlign.center,
@@ -126,8 +140,8 @@ class _PulseDot extends StatelessWidget {
 class _PulseLogoPainter extends CustomPainter {
   _PulseLogoPainter({
     required this.heartbeatProgress,
-    required this.heartbeatHold,
-    required this.pRevealProgress,
+    required this.morphProgress,
+    required this.lineOpacity,
     required this.letterOpacity,
     required this.showRemainingLetters,
     required this.logoSize,
@@ -136,8 +150,8 @@ class _PulseLogoPainter extends CustomPainter {
   });
 
   final double heartbeatProgress;
-  final double heartbeatHold;
-  final double pRevealProgress;
+  final double morphProgress;
+  final double lineOpacity;
   final double letterOpacity;
   final bool showRemainingLetters;
   final double logoSize;
@@ -161,14 +175,17 @@ class _PulseLogoPainter extends CustomPainter {
     final totalWidth = estimatedWidth(
       logoSize: logoSize,
       letterSpacing: letterSpacing,
-      showRemainingLetters: showRemainingLetters,
+      showRemainingLetters: true,
     );
     final startX = (size.width - totalWidth) / 2;
+    final pStartX = startX;
 
-    _paintHeartbeat(canvas, size, centerY, startX, totalWidth);
+    if (heartbeatProgress > 0 && lineOpacity > 0.02) {
+      _paintHeartbeat(canvas, centerY, pStartX, totalWidth);
+    }
 
-    if (pRevealProgress > 0) {
-      _paintLetterP(canvas, startX, centerY);
+    if (morphProgress > 0) {
+      _paintLetterP(canvas, pStartX, centerY);
     }
 
     if (showRemainingLetters && letterOpacity > 0) {
@@ -176,14 +193,12 @@ class _PulseLogoPainter extends CustomPainter {
     }
   }
 
-  void _paintHeartbeat(Canvas canvas, Size size, double centerY, double startX, double totalWidth) {
-    if (heartbeatProgress <= 0) return;
-
+  void _paintHeartbeat(Canvas canvas, double centerY, double startX, double totalWidth) {
     final path = _heartbeatPath(
-      startX: startX - 12,
-      endX: startX + totalWidth * 0.72,
+      startX: startX - 8,
+      endX: startX + logoSize * 0.58,
       centerY: centerY,
-      amplitude: logoSize * 0.22,
+      amplitude: logoSize * 0.20,
     );
 
     final metrics = path.computeMetrics().first;
@@ -191,35 +206,33 @@ class _PulseLogoPainter extends CustomPainter {
     final drawLength = metrics.length * eased;
     final drawn = metrics.extractPath(0, drawLength);
 
-    final glowAlpha = 0.35 + (logoBreathe * 0.25);
+    final alpha = lineOpacity.clamp(0.0, 1.0);
+    final glowAlpha = (0.35 + logoBreathe * 0.25) * alpha;
 
-    final paint = Paint()
+    final stroke = Paint()
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 2.0
+      ..strokeWidth = 2.0 + morphProgress * 0.5
       ..strokeCap = StrokeCap.round
       ..strokeJoin = StrokeJoin.round
       ..shader = ui.Gradient.linear(
-        Offset(startX - 12, centerY),
-        Offset(startX + totalWidth, centerY),
+        Offset(startX, centerY),
+        Offset(startX + totalWidth * 0.5, centerY),
         [
-          PulseColors.cyan.withValues(alpha: 0.12),
-          PulseColors.cyan.withValues(alpha: 0.85 + logoBreathe * 0.15),
-          PulseColors.cyanSoft,
+          PulseColors.cyan.withValues(alpha: 0.1 * alpha),
+          PulseColors.cyan.withValues(alpha: 0.9 * alpha),
         ],
-        [0.0, 0.5, 1.0],
       );
 
     canvas.drawPath(
       drawn,
       Paint()
         ..style = PaintingStyle.stroke
-        ..strokeWidth = 2.0
+        ..strokeWidth = 2.2
         ..strokeCap = StrokeCap.round
         ..color = PulseColors.cyan.withValues(alpha: glowAlpha)
         ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 2.5),
     );
-
-    canvas.drawPath(drawn, paint);
+    canvas.drawPath(drawn, stroke);
   }
 
   Path _heartbeatPath({
@@ -232,26 +245,23 @@ class _PulseLogoPainter extends CustomPainter {
     final path = Path()..moveTo(startX, centerY);
 
     void smooth(double t1, double y1, double t2, double y2, double t3, double y3) {
-      final x1 = startX + width * t1;
-      final x2 = startX + width * t2;
-      final x3 = startX + width * t3;
-      path.cubicTo(x1, centerY - y1, x2, centerY - y2, x3, centerY - y3);
+      path.cubicTo(
+        startX + width * t1, centerY - y1,
+        startX + width * t2, centerY - y2,
+        startX + width * t3, centerY - y3,
+      );
     }
 
-    path.lineTo(startX + width * 0.08, centerY);
-    smooth(0.09, amplitude * 0.2, 0.10, amplitude * 0.4, 0.11, amplitude * 0.05);
-    path.lineTo(startX + width * 0.12, centerY);
-    smooth(0.13, amplitude * 0.3, 0.14, amplitude * 1.0, 0.155, -amplitude * 0.5);
-    smooth(0.16, amplitude * 0.9, 0.17, amplitude * 0.7, 0.20, amplitude * 0.05);
-    path.lineTo(startX + width * 0.24, centerY);
-    smooth(0.25, amplitude * 0.25, 0.27, amplitude * 0.45, 0.29, amplitude * 0.1);
-    path.lineTo(startX + width * 0.38, centerY);
-    smooth(0.39, amplitude * 0.2, 0.42, amplitude * 0.95, 0.455, -amplitude * 0.45);
-    smooth(0.46, amplitude * 0.85, 0.48, amplitude * 0.65, 0.55, amplitude * 0.05);
-    path.lineTo(startX + width * 0.58, centerY);
-    smooth(0.59, amplitude * 0.2, 0.62, amplitude * 0.5, 0.65, amplitude * 0.15);
-    path.lineTo(startX + width * 0.78, centerY);
-    path.lineTo(endX, centerY);
+    path.lineTo(startX + width * 0.10, centerY);
+    smooth(0.11, amplitude * 0.25, 0.13, amplitude * 0.45, 0.15, amplitude * 0.05);
+    path.lineTo(startX + width * 0.18, centerY);
+    smooth(0.19, amplitude * 0.35, 0.21, amplitude * 1.0, 0.23, -amplitude * 0.45);
+    smooth(0.24, amplitude * 0.85, 0.26, amplitude * 0.65, 0.32, amplitude * 0.08);
+    path.lineTo(startX + width * 0.40, centerY);
+    smooth(0.42, amplitude * 0.3, 0.46, amplitude * 0.9, 0.50, -amplitude * 0.35);
+    // Final bend upward into P bowl
+    smooth(0.52, amplitude * 0.7, 0.58, amplitude * 1.1, 0.62, -amplitude * 1.4);
+    path.lineTo(startX + width * 0.68, centerY - amplitude * 1.35);
 
     return path;
   }
@@ -261,11 +271,11 @@ class _PulseLogoPainter extends CustomPainter {
     final stemWidth = logoSize * 0.11;
     final bowlRadius = logoSize * 0.28;
     final top = centerY - letterHeight / 2;
-    final opacity = (pRevealProgress * heartbeatHold).clamp(0.0, 1.0);
+    final opacity = morphProgress.clamp(0.0, 1.0);
 
     final glowPaint = Paint()
-      ..color = PulseColors.cyan.withValues(alpha: (0.35 + logoBreathe * 0.2) * opacity)
-      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 8);
+      ..color = PulseColors.cyan.withValues(alpha: (0.4 + logoBreathe * 0.2) * opacity)
+      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 10);
 
     final fillPaint = Paint()
       ..shader = ui.Gradient.linear(
@@ -273,7 +283,7 @@ class _PulseLogoPainter extends CustomPainter {
         Offset(startX + logoSize * 0.5, top + letterHeight),
         [
           PulseColors.cyan.withValues(alpha: opacity),
-          PulseColors.cyanSoft.withValues(alpha: opacity * 0.85),
+          PulseColors.cyanSoft.withValues(alpha: opacity * 0.88),
         ],
       );
 
@@ -306,7 +316,7 @@ class _PulseLogoPainter extends CustomPainter {
     var x = startX + pWidth + letterSpacing;
 
     for (var i = 0; i < letters.length; i++) {
-      final stagger = (i + 1) * 0.18;
+      final stagger = (i + 1) * 0.16;
       final opacity = (letterOpacity - stagger).clamp(0.0, 1.0);
       if (opacity <= 0) continue;
 
@@ -322,10 +332,7 @@ class _PulseLogoPainter extends CustomPainter {
         textDirection: TextDirection.ltr,
       )..layout();
 
-      textPainter.paint(
-        canvas,
-        Offset(x, centerY - logoSize / 2 - 2),
-      );
+      textPainter.paint(canvas, Offset(x, centerY - logoSize / 2 - 2));
       x += letterWidth + letterSpacing;
     }
   }
@@ -333,8 +340,8 @@ class _PulseLogoPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant _PulseLogoPainter oldDelegate) {
     return oldDelegate.heartbeatProgress != heartbeatProgress ||
-        oldDelegate.heartbeatHold != heartbeatHold ||
-        oldDelegate.pRevealProgress != pRevealProgress ||
+        oldDelegate.morphProgress != morphProgress ||
+        oldDelegate.lineOpacity != lineOpacity ||
         oldDelegate.letterOpacity != letterOpacity ||
         oldDelegate.logoBreathe != logoBreathe ||
         oldDelegate.showRemainingLetters != showRemainingLetters;
