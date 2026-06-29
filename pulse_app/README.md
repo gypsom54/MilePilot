@@ -1,16 +1,68 @@
-# pulse
+# Pulse
 
-A new Flutter project.
+**Keep your finger on the Pulse.**
 
-## Getting Started
+Premium Flutter app — calm, personal, intelligent.
 
-This project is a starting point for a Flutter application.
+---
 
-A few resources to get you started if this is your first Flutter project:
+## Documentation
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+**New developer?** Start here → **[docs/README.md](docs/README.md)** (60-minute onboarding)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+| Doc | Purpose |
+|-----|---------|
+| [Architecture](docs/Architecture.md) | How the app is built |
+| [Design System](docs/Design-System.md) | Colors, type, spacing |
+| [Components](docs/Components.md) | Widget catalogue |
+| [Copy Bible](docs/Copy-Bible.md) | Voice and approved copy |
+| [Roadmap](docs/Roadmap.md) | Sprint plan |
+
+---
+
+## Run locally
+
+```bash
+flutter pub get
+flutter run -d chrome
+```
+
+```bash
+flutter analyze
+flutter test
+```
+
+---
+
+## What's shipped
+
+| Sprint | Feature |
+|--------|---------|
+| 1 | Launch animation + onboarding |
+| 3 | Conversation polish + motion system |
+| 4 | Welcome Home experience |
+| — | Pulse Brain decision engine |
+
+---
+
+## Project structure
+
+```
+lib/
+  core/brain/       Decision engine
+  core/conversation/ JSON onboarding
+  core/motion/      Animation tokens
+  core/theme/       Design tokens
+  screens/          App surfaces
+  widgets/          Reusable components
+assets/conversations/ Onboarding scripts
+docs/               Product documentation
+```
+
+---
+
+## Principles
+
+**Optimise for delight, not speed.**
+
+Documentation is part of the product. Every sprint updates `docs/`.
