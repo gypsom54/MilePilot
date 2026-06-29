@@ -1208,7 +1208,7 @@ body.map-expand-open{overflow:hidden}
 <button type="button" class="cc-gps-btn" onclick="enableTrackingGps(true)">Enable Location</button>
 </div>
 <button type="button" class="cc-pending-banner" id="ccPendingBanner" hidden onclick="openPendingQueue()">
-<div><strong id="ccPendingBannerTitle">🟡 0 trips awaiting review</strong><span>Classify trips as Business or Personal</span></div>
+<div><strong id="ccPendingBannerTitle">🟡 0 Trips Awaiting Review</strong><span>Tap to open Pending Inbox</span></div>
 <span class="cc-pending-review-btn">Review trips</span>
 </button>
 <div class="pwa-background-note" id="pwaBackgroundNote" hidden>
@@ -1499,8 +1499,8 @@ body.map-expand-open{overflow:hidden}
 </div>
 <div class="su-overlay" id="pendingQueueOverlay" hidden role="dialog" aria-labelledby="pendingQueueTitle">
 <div class="su-inner pending-queue-inner">
-<h2 class="su-title" id="pendingQueueTitle">🟡 Trips Awaiting Review</h2>
-<p class="su-sub">Swipe right for Business, left for Personal. Tap a trip for map, distance, and notes.</p>
+<h2 class="su-title" id="pendingQueueTitle">Pending Inbox</h2>
+<p class="su-sub">Swipe right for Business, left for Personal — like processing email. Tap a trip for map and details.</p>
 <div class="pending-queue-list" id="pendingQueueList"></div>
 <div class="su-actions"><button type="button" class="report-email-btn" onclick="closePendingQueue()">Done</button></div>
 </div>
@@ -1528,7 +1528,7 @@ body.map-expand-open{overflow:hidden}
 </div>
 <script>
 (function(){
-  var v='8.17.0',files=['plan-ux.js','trip-store.js','trip-classifier.js','trip-map.js','report-scheduler.js','tracking-engine.js','native-platform.js','tracking-provider.js','driver-intelligence.js','pioneer.js','pwa-device.js'],i=0;
+  var v='8.18.0',files=['plan-ux.js','trip-store.js','trip-classifier.js','trip-map.js','report-scheduler.js','tracking-engine.js','native-platform.js','tracking-provider.js','driver-intelligence.js','pioneer.js','pwa-device.js'],i=0;
   window.__mpScriptVersion=v;
   window.__mpScriptsReady=false;
   function next(){
@@ -1542,7 +1542,7 @@ body.map-expand-open{overflow:hidden}
 })();
 </script>
 <script>
-const APP_VERSION='8.17.0';
+const APP_VERSION='8.18.0';
 const BUILD_NUMBER='MP-EXPO-EAS';
 const ONBOARD_COMPLETE_KEY='mp_onboard_complete';
 const ONBOARD_FLAG_ACCOUNT='mp_has_account';
@@ -1641,7 +1641,7 @@ function getPendingTripsList(){return typeof MPTrips!=='undefined'?MPTrips.getPe
 function getBusinessTripsList(){return typeof MPTrips!=='undefined'?MPTrips.getBusinessTrips(trips):trips.filter(function(t){return t.status==='business'})}
 function businessTripsForDate(date){return typeof MPTrips!=='undefined'?MPTrips.tripsForDate(getBusinessTripsList(),date):getBusinessTripsList().filter(function(t){return sameDay(new Date(t.startISO),date)})}
 function businessTripsInPeriod(p){const start=periodStart(p);let end;if(p==='week'){end=new Date(start);end.setDate(end.getDate()+7)}else if(p==='month'){end=new Date(start.getFullYear(),start.getMonth()+1,1)}else if(p==='year'){end=new Date(start.getFullYear()+1,0,1)}else{end=new Date(start);end.setDate(end.getDate()+1)}return getBusinessTripsList().filter(function(t){const d=new Date(t.startISO);return d>=start&&d<end})}
-function tripToReportRow(trip){const mapImg=typeof MPTripMap!=='undefined'?MPTripMap.generateTripMapImage(trip):null;return{id:trip.id,date:trip.date,startISO:trip.startISO,endISO:trip.endISO,startTime:trip.startISO,endTime:trip.endISO,miles:trip.miles,seconds:trip.seconds,vehicle:trip.vehicle,hmrc:trip.hmrc,route:trip.route||trip.routePoints||[],journeyCount:1,classification:'Business',status:'business',startLat:trip.startLat,startLon:trip.startLon,endLat:trip.endLat,endLon:trip.endLon,startLocation:typeof MPTripMap!=='undefined'?MPTripMap.formatTripLocation(trip,'start'):'',endLocation:typeof MPTripMap!=='undefined'?MPTripMap.formatTripLocation(trip,'end'):'',routeMapUrl:mapImg&&mapImg.dataUrl?mapImg.dataUrl:''}}
+function tripToReportRow(trip){return{id:trip.id,date:trip.date,startISO:trip.startISO,endISO:trip.endISO,startTime:trip.startISO,endTime:trip.endISO,miles:trip.miles,seconds:trip.seconds,vehicle:trip.vehicle,hmrc:trip.hmrc,route:trip.route||trip.routePoints||[],journeyCount:1,classification:'Business',status:'business',startLat:trip.startLat,startLon:trip.startLon,endLat:trip.endLat,endLon:trip.endLon,startLocation:typeof MPTripMap!=='undefined'?MPTripMap.formatTripLocation(trip,'start'):'',endLocation:typeof MPTripMap!=='undefined'?MPTripMap.formatTripLocation(trip,'end'):''}}
 function sumTripList(list){return{mi:list.reduce(function(a,t){return a+t.miles},0),sec:list.reduce(function(a,t){return a+t.seconds},0),hmrc:list.reduce(function(a,t){return a+t.hmrc},0),journeys:list.length,list:list}}
 function ensureAutoPilotGps(){if(!isAutoMotionEnabled())return;if(localStorage.getItem('mp_location_choice')!=='granted')return;if(!gpsWatchId&&!isShiftTracking())enableTrackingGps(false)}
 function showTripClassifyModal(trip){if(!trip)return;pendingClassifyTrip=trip;const meta=q('tripClassifyMeta');if(meta)meta.textContent=trip.miles.toFixed(1)+' mi · '+fmtClock(trip.startISO)+' – '+fmtClock(trip.endISO);const aiEl=q('tripClassifyAi');if(aiEl){if(trip.aiSuggestion){aiEl.textContent='💡 '+trip.aiSuggestion;aiEl.hidden=false}else{aiEl.textContent='';aiEl.hidden=true}}const ov=q('tripClassifyOverlay');if(ov)ov.hidden=false}
@@ -1650,7 +1650,7 @@ function maybeNotifyTripRecorded(trip){if(!trip||!('Notification'in window)||Not
 function onTripRecorded(trip){if(!trip||typeof MPTrips==='undefined')return;let normalised=MPTrips.normaliseTrip(trip,vehicle,claim);if(typeof MPTripClassifier!=='undefined'){const suggestion=MPTripClassifier.suggestTripClassification(normalised,{shiftActive:isShiftTracking(),workType:typeof MPPlanUX!=='undefined'?MPPlanUX.getUserWorkType():null});if(suggestion)normalised=MPTripClassifier.applySuggestionToTrip(normalised,suggestion)}trips.push(normalised);persistTrips();pendingClassifyTrip=normalised;showTripClassifyModal(normalised);renderPendingBanner();renderCommandCentre();maybeNotifyTripRecorded(normalised)}
 function respondTripClassify(status){if(!pendingClassifyTrip||typeof MPTrips==='undefined'){closeTripClassifyModal();return}const tripId=pendingClassifyTrip.id;const trip=MPTrips.classifyTrip(trips,tripId,status,claim,vehicle);if(!trip){closeTripClassifyModal();return}if(status===MPTrips.TRIP_STATUS.BUSINESS){MPTracking.applyClassifiedTripMiles(trip.miles,'business');syncEngineState()}closeTripClassifyModal();renderPendingBanner();renderCommandCentre();const labels={business:'Business trip saved ✓',personal:'Personal trip saved',pending:'Saved for later — review in Pending Queue'};toast(labels[status]||'Trip saved')}
 function classifyTripById(tripId,status){if(typeof MPTrips==='undefined')return null;const trip=MPTrips.classifyTrip(trips,tripId,status,claim,vehicle);if(!trip)return null;if(status===MPTrips.TRIP_STATUS.BUSINESS){MPTracking.applyClassifiedTripMiles(trip.miles,'business');syncEngineState()}renderPendingBanner();renderCommandCentre();if(q('pendingQueueOverlay')&&!q('pendingQueueOverlay').hidden)renderPendingQueue();return trip}
-function renderPendingBanner(){const banner=q('ccPendingBanner'),title=q('ccPendingBannerTitle');if(!banner)return;const count=getPendingTripsList().length;if(!count){banner.hidden=true;return}banner.hidden=false;if(title)title.textContent='🟡 '+count+' trip'+(count===1?'':'s')+' awaiting review'}
+function renderPendingBanner(){const banner=q('ccPendingBanner'),title=q('ccPendingBannerTitle');if(!banner)return;const count=getPendingTripsList().length;if(!count){banner.hidden=true;return}banner.hidden=false;if(title)title.textContent='🟡 '+count+' Trip'+(count===1?'':'s')+' Awaiting Review'}
 function openPendingQueue(){renderPendingQueue();const ov=q('pendingQueueOverlay');if(ov)ov.hidden=false}
 function closePendingQueue(){const ov=q('pendingQueueOverlay');if(ov)ov.hidden=true}
 function renderPendingQueue(){const list=q('pendingQueueList');if(!list)return;const pending=getPendingTripsList().slice().sort(function(a,b){return new Date(b.endISO)-new Date(a.endISO)});if(!pending.length){list.innerHTML='<p class="su-sub" style="margin:0">No trips waiting for review.</p>';return}list.innerHTML=pending.map(function(t){const ai=t.aiSuggestion?'<p class="pending-trip-ai">💡 '+t.aiSuggestion+'</p>':'';const thumb=typeof MPTripMap!=='undefined'?MPTripMap.renderTripMapThumbHtml(t):'';const startLoc=typeof MPTripMap!=='undefined'?MPTripMap.formatTripLocation(t,'start'):'—';const endLoc=typeof MPTripMap!=='undefined'?MPTripMap.formatTripLocation(t,'end'):'—';return '<div class="pending-trip-card" data-trip-id="'+t.id+'" ontouchstart="pendingSwipeStart(event,\''+t.id+'\')" ontouchmove="pendingSwipeMove(event,\''+t.id+'\')" ontouchend="pendingSwipeEnd(event,\''+t.id+'\')"><div class="pending-trip-swipe-hint"><span class="is-personal">← Personal</span><span class="is-business">Business →</span></div><div class="pending-trip-card-body"><div class="pending-trip-card-layout"><div class="pending-trip-card-main"><div class="pending-trip-card-top"><strong>'+t.date+'</strong><span>'+t.miles.toFixed(1)+' mi</span></div><div class="pending-trip-card-sub">'+fmtClock(t.startISO)+' – '+fmtClock(t.endISO)+' · '+fmtShort(t.seconds)+'</div><p class="pending-trip-locations">Start: '+startLoc+'<br>Finish: '+endLoc+'</p>'+ai+'<div class="pending-trip-actions"><button type="button" class="cc-primary-btn" onclick="event.stopPropagation();classifyTripById(\''+t.id+'\',\'business\');toast(\'Marked as Business ✓\')">Business</button><button type="button" class="btn outline" onclick="event.stopPropagation();classifyTripById(\''+t.id+'\',\'personal\');toast(\'Marked as Personal\')">Personal</button></div><button type="button" class="btn outline pending-trip-view-btn" onclick="openTripDetail(\''+t.id+'\')">View trip</button></div>'+thumb+'</div></div></div>'}).join('')}

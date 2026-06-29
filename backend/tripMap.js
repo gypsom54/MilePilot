@@ -1,5 +1,6 @@
 /**
- * Server-side trip route map evidence — placeholder for static map providers.
+ * Server-side trip route map evidence — on-demand generation only.
+ * Store GPS polylines + coordinates; generate thumbnails when building PDFs/emails.
  * Swap generateTripMapImage() for Google Static Maps / Mapbox Static Images later.
  */
 

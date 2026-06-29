@@ -1,6 +1,8 @@
 /**
- * MilePilot Trip Map — route evidence layer (placeholder for static map providers)
- * Replace generateTripMapImage() later with Google Static Maps, Mapbox, or OSM renderer.
+ * MilePilot Trip Map — route evidence (on-demand generation only)
+ * Store GPS polylines + coordinates on trips — never persist rendered map images.
+ * generateTripMapImage() is called when viewing trips, building PDFs, or sending reports.
+ * Replace later with Google Static Maps, Mapbox, or OSM renderer.
  */
 (function (global) {
   'use strict';

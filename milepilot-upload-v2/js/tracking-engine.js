@@ -1,5 +1,6 @@
 /**
- * MilePilot Tracking Engine v3 — Never Miss A Trip
+ * MilePilot Tracking Engine v3 — FEATURE FREEZE (Phase 3)
+ * Core recording logic is stable. Changes should be reliability fixes only.
  * Auto-records journeys; classifies after motion stops (pending → business | personal).
  */
 (function (global) {
