@@ -1,153 +1,197 @@
 # Product Specs
 
-Formal specifications for Pulse features. Reference these in PRs and sprint work.
+Formal specifications aligned with the **[locked Roadmap](./Roadmap.md)**. Reference these in PRs.
 
 ---
 
-## PS-001 — Launch Experience
+## PS-001 — Brand Identity
 
-**Status:** ✅ Shipped  
+**Status:** ✅ Complete  
 **Sprint:** 1
 
 ### Objective
-Perfect the first 60 seconds. Launch animation + onboarding.
+Establish the Pulse identity — premium, calm, unmistakable.
 
 ### Delivered
-- Cinematic launch (~5.2s): black → dot → heartbeat → PULSE → tagline → fade
-- Onboarding name capture
-- Personalised welcome conversation
-- Reusable widgets: Logo, Typewriter, Button, Background, Glow, Transition
+- Launch animation (heartbeat → PULSE)
+- `PulseLogo`, `PulseBackground`, `PulseGlow`
+- Design tokens: `PulseColors`, `PulseTypography`, `PulseTheme`
+- Tagline: *Keep your finger on the Pulse.*
 
 ### Out of scope
-Dashboard, inventory, settings, calculators
+Dashboard, inventory, settings
 
 ---
 
-## PS-002 — Conversation Polish
+## PS-002 — Architecture & Foundation
 
-**Status:** ✅ Shipped  
-**Sprint:** 3
+**Status:** ✅ Complete  
+**Sprint:** 2
 
 ### Objective
-Polish the first 90 seconds. Human typewriter, cinematic launch refinements.
+Build the foundation every future sprint depends on.
 
 ### Delivered
-- JSON conversation engine
-- Variable typing speed + natural pauses
-- Slower launch timing (+500ms heartbeat hold, logo breathe)
-- `PulseTextField` premium input
-- Motion system (`PulseMotion`)
+- Flutter project structure (`lib/core`, `lib/widgets`, `lib/screens`)
+- JSON conversation engine + onboarding scripts
+- `PulseMotion` animation system
+- Reusable component library
+- Documentation folder (`/docs`)
+- Test infrastructure
+
+### Out of scope
+Feature screens beyond onboarding shell
 
 ---
 
-## PS-003 — Pulse Brain
+## PS-003 — Perfect First Impression
 
-**Status:** ✅ Shipped  
-**Sprint:** Brain
+**Status:** 🔨 In progress  
+**Sprint:** 3 — **Next**
 
 ### Objective
-Decision engine — remembers context, recommends UI copy. Not AI.
+Make the first 90 seconds unforgettable. Polish only.
 
-### Delivered
-- `PulseBrain` with memory persistence
-- `GreetingEngine`, `HomeRecommendationEngine`
-- No hardcoded greetings in widgets
-- `PulseAdvisoryLayer` hook for future AI
+### Requirements
+- Cinematic launch timing (+500ms heartbeat hold, logo breathe)
+- Human typewriter (variable speed, natural pauses)
+- Premium input (`PulseTextField`)
+- Micro-interactions on buttons and focus
+- Slower, flowing transitions
+- Copy polish per [Copy Bible](./Copy-Bible.md)
 
-### Memory
-Name, onboarding choices, learning type, reminders, milestones, streaks, favourite compounds, birthday, join date
+### Out of scope
+New features, inventory, settings, calculators, home dashboard
+
+### Success criteria
+Users pause before pressing Continue. They smile. They feel welcomed.
 
 ---
 
 ## PS-004 — Welcome Home Experience
 
-**Status:** ✅ Shipped  
+**Status:** ⏳ Next  
 **Sprint:** 4
 
 ### Objective
 Arriving home — not a dashboard.
 
-### Delivered
-- Personalised headline from Brain
-- Four glass cards (Cabinet, Discovery, Journal, Pulse)
-- Primary CTA: "Add your first research item"
-- Five-tab bottom navigation
+### Requirements
+- Brain-driven personalised greeting
+- Four glass cards: Cabinet, Discovery, Journal, Pulse
+- Primary CTA: *Add your first research item*
+- Five-tab navigation: Home · Cabinet · Learn · Journal · Pulse
 - No statistics, charts, or clutter
 
----
+### Out of scope
+Real cabinet data, learning content, journal entries
 
-## PS-005 — Welcome Conversation (planned)
-
-**Status:** ⏳ Planned  
-**Sprint:** 2
-
-Extended onboarding conversation flow beyond name capture.
+### Success criteria
+Users feel they have arrived somewhere calm and personal.
 
 ---
 
-## PS-006 — Personalisation Journey (planned)
-
-**Status:** ⏳ Planned  
-**Sprint:** 3 (roadmap)
-
-Learning preferences, reminder setup, favourite compounds seed.
-
----
-
-## PS-007 — Research Cabinet (planned)
+## PS-005 — Research Cabinet
 
 **Status:** ⏳ Planned  
 **Sprint:** 5
 
-Smart inventory — first real data feature.
+### Objective
+First real data feature — organise research items.
+
+### Requirements
+- Add, view, edit research items
+- Cabinet tab becomes functional
+- Brain remembers favourite compounds
 
 ---
 
-## PS-008 — Knowledge Hub (planned)
+## PS-006 — Knowledge Hub
 
 **Status:** ⏳ Planned  
 **Sprint:** 6
 
+### Objective
 Learning and discovery surface.
+
+### Requirements
+- Learn tab becomes functional
+- Brain-driven learning recommendations
+- Favourite learning type personalisation
 
 ---
 
-## PS-009 — Journal Timeline (planned)
+## PS-007 — Journal Timeline
 
 **Status:** ⏳ Planned  
 **Sprint:** 7
 
-Research journal experience.
+### Objective
+Research journal — continue the journey.
+
+### Requirements
+- Journal tab becomes functional
+- Timeline of research activity
+- Streak and milestone integration
 
 ---
 
-## PS-010 — Research Co-Pilot (planned)
+## PS-008 — Pulse Brain
 
-**Status:** ⏳ Planned  
+**Status:** ⏳ Planned (early build in codebase)  
 **Sprint:** 8
 
-Pulse assistant — future AI integration via `PulseAdvisoryLayer`.
+### Objective
+Decision engine — remembers context, recommends UI copy. **Not AI.**
+
+### Requirements
+- Remember: name, onboarding, learning type, reminders, milestones, streaks, compounds
+- Context-aware greetings (morning, evening, birthday, anniversary)
+- Recommendations to UI — never hardcoded widgets
+- `PulseAdvisoryLayer` hook for future AI
+
+### Note
+Foundation code exists ahead of schedule. Sprint 8 completes, tests, and officially ships Brain.
 
 ---
 
-## PS-011 — Pulse Pro (planned)
+## PS-009 — Smart Inventory Engine
+
+**Status:** ⏳ Planned  
+**Sprint:** 9
+
+### Objective
+Intelligent inventory predictions and management.
+
+### Requirements
+- Inventory prediction logic in Brain
+- Low-stock awareness
+- Notification timing integration
+
+---
+
+## PS-010 — Pulse Pro & Store Integration
 
 **Status:** ⏳ Planned  
 **Sprint:** 10
 
-Premium tier.
+### Objective
+Premium tier and app store billing.
+
+### Requirements
+- Pulse Pro feature gating
+- App Store / Play Store subscription integration
+- Pro onboarding and upgrade flow
 
 ---
 
 ## Spec template
 
-When adding a new spec, include:
-
 ```markdown
 ## PS-XXX — Title
 
-**Status:** ⏳ Planned | 🔨 In progress | ✅ Shipped
-**Sprint:** N
+**Status:** ⏳ Planned | 🔨 In progress | ✅ Complete
+**Sprint:** N (from locked Roadmap)
 
 ### Objective
 One sentence.

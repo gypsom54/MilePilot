@@ -34,14 +34,15 @@ flutter test
 
 ---
 
-## What's shipped
+## What's shipped (locked roadmap)
 
-| Sprint | Feature |
-|--------|---------|
-| 1 | Launch animation + onboarding |
-| 3 | Conversation polish + motion system |
-| 4 | Welcome Home experience |
-| — | Pulse Brain decision engine |
+| Sprint | Objective | Status |
+|--------|-----------|--------|
+| 1 | Brand Identity | ✅ Complete |
+| 2 | Architecture & Foundation | ✅ Complete |
+| 3 | Perfect First Impression | 🔨 Next |
+
+See **[docs/Roadmap.md](docs/Roadmap.md)** for the full locked plan.
 
 ---
 

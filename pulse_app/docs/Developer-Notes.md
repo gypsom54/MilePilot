@@ -112,7 +112,7 @@ Before opening a PR:
 - [ ] Copy in Copy Bible or Brain (not hardcoded)
 - [ ] Motion uses `PulseMotion` tokens
 - [ ] [Product Specs](./Product-Specs.md) updated
-- [ ] [Roadmap](./Roadmap.md) updated
+- [ ] [Roadmap](./Roadmap.md) updated — **do not reorder the locked sprint table**
 - [ ] Relevant doc updated (Components, Architecture, etc.)
 - [ ] Reduced motion tested
 
