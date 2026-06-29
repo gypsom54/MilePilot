@@ -625,7 +625,8 @@ export function buildPdfBuffer(report) {
   });
 }
 
-export function buildReportEmailHtml(report) {
+export function buildReportEmailHtml(report, opts = {}) {
+  const attachPdf = opts.attachPdf !== false;
   const a = analyseReport(report);
   const name = firstName(a.driver) || "there";
   const greeting = timeGreeting();
@@ -637,8 +638,10 @@ export function buildReportEmailHtml(report) {
       <div style="font-size:28px;font-weight:700;color:#FFFFFF;letter-spacing:-0.03em;line-height:1.1;">${value}</div>
     </td></tr>`;
 
-  const downloadUrl = buildReportDeepLink(report, true);
-  const appUrl = `${APP_URL}/`;
+  const appUrl = `${APP_URL}/?reports=${({ Daily: "day", Weekly: "week", Monthly: "month", Annual: "year" }[a.period] || "day")}`;
+  const attachmentNote = attachPdf
+    ? `<p style="margin:0 0 28px;padding:16px 18px;border-radius:14px;background:rgba(13,107,255,.14);border:1px solid rgba(13,107,255,.28);font-size:15px;font-weight:600;color:#EAF2FF;line-height:1.5;text-align:center;">📎 Your professional PDF report is attached to this email.</p>`
+    : `<p style="margin:0 0 28px;font-size:14px;color:#93A8C4;line-height:1.6;text-align:center;">Open MilePilot below to download your PDF report.</p>`;
 
   return `<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
@@ -649,7 +652,8 @@ export function buildReportEmailHtml(report) {
 <tr><td style="padding:0 20px;">
   ${buildBrandEmailHeader()}
   <p style="margin:0 0 12px;font-size:17px;color:#EAF2FF;line-height:1.5;">${greeting} ${name} 👋</p>
-  <p style="margin:0 0 32px;font-size:16px;color:#B9C8DD;line-height:1.55;">${ready}</p>
+  <p style="margin:0 0 24px;font-size:16px;color:#B9C8DD;line-height:1.55;">${ready}</p>
+  ${attachmentNote}
   <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
     ${metric("Business Miles", a.totals.mi.toFixed(1))}
     ${metric("Travel Time", fmtShiftTime(a.totals.sec))}
@@ -657,14 +661,11 @@ export function buildReportEmailHtml(report) {
     ${metric("Estimated HMRC", money(a.totals.hmrc))}
   </table>
   <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:12px;">
-    <tr><td align="center" style="padding-bottom:10px;">
-      <a href="${downloadUrl}" style="display:inline-block;width:100%;max-width:320px;background:linear-gradient(180deg,#1E88FF,#0D6BFF);color:#FFFFFF;font-size:16px;font-weight:600;text-decoration:none;padding:16px 24px;border-radius:14px;letter-spacing:-0.01em;box-sizing:border-box;">📄 Download PDF Report</a>
-    </td></tr>
     <tr><td align="center">
-      <a href="${appUrl}" style="display:inline-block;color:#93A8C4;font-size:14px;font-weight:600;text-decoration:none;padding:8px 16px;">Open MilePilot</a>
+      <a href="${appUrl}" style="display:inline-block;width:100%;max-width:320px;background:linear-gradient(180deg,#1E88FF,#0D6BFF);color:#FFFFFF;font-size:16px;font-weight:600;text-decoration:none;padding:16px 24px;border-radius:14px;letter-spacing:-0.01em;box-sizing:border-box;">Open Report Centre</a>
     </td></tr>
   </table>
-  <p style="margin:0 0 36px;font-size:14px;color:#93A8C4;line-height:1.6;text-align:center;">Your professional PDF report is attached to this email.</p>
+  <p style="margin:0 0 36px;font-size:14px;color:#93A8C4;line-height:1.6;text-align:center;">${attachPdf ? "Save the attached PDF for your records, or view the full report in MilePilot." : "View and download your report any time in MilePilot."}</p>
   <p style="margin:0 0 8px;font-size:12px;font-weight:600;letter-spacing:0.14em;color:#0D6BFF;text-align:center;">${BRAND_TAGLINE}</p>
   <p style="margin:0;font-size:13px;color:#B9C8DD;line-height:1.6;text-align:center;">Thank you for choosing MilePilot.<br><span style="color:#93A8C4;">Every mile matters.</span></p>
 </td></tr>
@@ -674,23 +675,22 @@ export function buildReportEmailHtml(report) {
 </body></html>`;
 }
 
-export function buildReportEmailText(report) {
+export function buildReportEmailText(report, opts = {}) {
+  const attachPdf = opts.attachPdf !== false;
   const a = analyseReport(report);
   const name = firstName(a.driver) || "there";
+  const periodSlug = ({ Daily: "day", Weekly: "week", Monthly: "month", Annual: "year" }[a.period] || "day");
   return `${timeGreeting()} ${name} 👋
 
 ${periodReadyLine(a.period)}
 
+${attachPdf ? "Your professional PDF report is attached to this email.\n" : ""}
 Business Miles: ${a.totals.mi.toFixed(1)}
 Travel Time: ${fmtShiftTime(a.totals.sec)}
 Business Journeys: ${a.totals.journeys}
 Estimated HMRC: ${money(a.totals.hmrc)}
 
-View your report in MilePilot: ${buildReportDeepLink(report, true)}
-
-Your professional PDF report is attached to this email.
-
-Open MilePilot: ${APP_URL}/
+Open your report in MilePilot: ${APP_URL}/?reports=${periodSlug}
 
 Drive • Track • Claim
 Thank you for choosing MilePilot.

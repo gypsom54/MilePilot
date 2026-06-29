@@ -70,20 +70,24 @@ app.post("/reports/send", async (req, res) => {
     const pdf = await buildPdfBuffer(report);
     const periodLabel = report.period || "Daily";
     const dateSlug = new Date().toISOString().slice(0, 10);
-
-    const result = await resend.emails.send({
+    const attachPdf = report.prefs?.pdfAttachment !== false;
+    const emailPayload = {
       from: process.env.EMAIL_FROM || "MilePilot <reports@milepilot.uk>",
       to: report.email,
       subject: buildReportSubject(report),
-      text: buildReportEmailText(report),
-      html: buildReportEmailHtml(report),
-      attachments: [
+      text: buildReportEmailText(report, { attachPdf }),
+      html: buildReportEmailHtml(report, { attachPdf }),
+    };
+    if (attachPdf) {
+      emailPayload.attachments = [
         {
           filename: `MilePilot-${String(periodLabel).toLowerCase()}-report-${dateSlug}.pdf`,
           content: pdf,
         },
-      ],
-    });
+      ];
+    }
+
+    const result = await resend.emails.send(emailPayload);
 
     if (result.error) {
       console.error("Resend error:", result.error);
