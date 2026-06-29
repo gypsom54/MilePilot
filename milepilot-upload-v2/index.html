@@ -787,7 +787,7 @@ body.map-expand-open{overflow:hidden}
 </div>
 <div class="toast" id="toast"></div><div id="printReport"></div>
 <script>
-const APP_VERSION='7.8.0';
+const APP_VERSION='7.8.1';
 const DEFAULT_WEEKLY_GOAL_MILES=400;
 const BUSINESS_PROFILE_KEY='mp_business_profile';
 const PRODUCT_VISION_LOCK='2026-06-vision-v1';
@@ -982,7 +982,7 @@ function recordStop(endP){if(!stopCandidateAt)return;shiftStops.push({lat:stopCa
 function processGpsPoint(p,opts={}){const minMove=opts.minMove??ENGINE.MIN_MOVE_M;routePoints.push(p);const prev=lastPoint;if(prev){const d=distance(prev,p),dt=Math.max(0.001,(p.t-prev.t)/1000),speed=d/dt;if(d>=minMove&&d<ENGINE.MAX_JUMP_M&&speed<ENGINE.MAX_SPEED_MPS){if(stopCandidateAt)recordStop(p);miles+=d/1609.344;movingSeconds+=Math.min(dt,120)}else if(speed<ENGINE.STOP_SPEED_MPS&&d<minMove*2){if(!stopCandidateAt){stopCandidateAt=p.t;stopCandidatePoint=p}else if(p.t-stopCandidateAt>=ENGINE.STOP_AFTER_MS)recordStop(p)}else if(d>=ENGINE.MAX_JUMP_M){stopCandidateAt=null;stopCandidatePoint=null}}lastPoint=p;if(ccState==='active')renderLiveMaps()}
 function getActiveShiftPayload(){return{engineVersion:TRACKING_ENGINE_V,shiftId:shiftId||('shift_'+shiftStartedAt),startedAt:shiftStartedAt,miles,elapsed,movingSeconds,routePoints:downsampleRoute(routePoints),stops:shiftStops,lastPoint,vehicle}}
 function restoreShiftEngine(s){shiftStops=s.stops||[];movingSeconds=Number(s.movingSeconds)||0;shiftId=s.shiftId||null;stopCandidateAt=null;stopCandidatePoint=null}
-function initTrackingEngine(){document.addEventListener('visibilitychange',()=>{if(ccState==='active')saveActiveShift()});window.addEventListener('pagehide',()=>{if(ccState==='active')saveActiveShift()});document.addEventListener('visibilitychange',async()=>{if(ccState==='active'&&document.visibilityState==='visible')await acquireWakeLock()})}
+function initTrackingEngine(){document.addEventListener('visibilitychange',async()=>{if(ccState!=='active')return;saveActiveShift();if(document.visibilityState==='visible'){await acquireWakeLock();if(gpsWatchId===null){const perm=await queryGeoPermission();if(perm==='granted')enableTrackingGps(false)}}});window.addEventListener('pagehide',()=>{if(ccState==='active')saveActiveShift()})}
 function saveActiveShift(){if(ccState!=='active')return;try{localStorage.setItem('mp_active_shift',JSON.stringify(getActiveShiftPayload()))}catch(e){const p=getActiveShiftPayload();p.routePoints=downsampleRoute(routePoints,150);localStorage.setItem('mp_active_shift',JSON.stringify(p))}}
 function clearActiveShift(){localStorage.removeItem('mp_active_shift')}
 function restoreActiveShift(){try{const raw=localStorage.getItem('mp_active_shift');if(!raw)return;const s=JSON.parse(raw);if(!s?.startedAt)return;ccState='active';shiftStartedAt=s.startedAt;miles=Number(s.miles)||0;elapsed=Math.floor((Date.now()-shiftStartedAt)/1000);routePoints=s.routePoints||[];lastPoint=s.lastPoint||null;vehicle=s.vehicle||vehicle;restoreShiftEngine(s);if(routePoints.length){const last=routePoints[routePoints.length-1];lastGpsAccuracy=last.acc||null;lastGpsAt=last.t||null}if(timer)clearInterval(timer);timer=setInterval(()=>{elapsed=Math.floor((Date.now()-shiftStartedAt)/1000);renderTrackingScreen();saveActiveShift()},1000);acquireWakeLock();queryGeoPermission().then(perm=>{if(perm==='granted')enableTrackingGps(false);else updateGpsUi(perm==='denied'?geoErrorMessage({code:1}):'Tap Enable Location to resume tracking your shift.')});showScreen('tracking');renderTrackingScreen()}catch(e){clearActiveShift()}}
