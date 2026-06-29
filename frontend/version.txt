@@ -1,1 +1,1 @@
-MilePilot OS v8.14.0 — Never Miss A Trip: auto-record, pending review, post-trip classify
+MilePilot OS v8.14.1 — Welcome screen alignment fix (TestFlight)

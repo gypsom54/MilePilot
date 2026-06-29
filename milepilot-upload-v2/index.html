@@ -288,6 +288,10 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 .welcome-feature strong{display:block;font-size:11px;font-weight:600;color:rgba(234,242,255,.94);line-height:1.25;margin-bottom:2px}
 .welcome-feature span{display:block;font-size:10px;font-weight:400;color:rgba(147,168,196,.82);line-height:1.35;letter-spacing:.01em;max-width:76px}
 .welcome-form{margin:0;padding:0;border:0;display:flex;flex-direction:column;align-items:stretch;width:100%}
+.welcome-action-stack{width:100%;max-width:320px;align-self:center;display:flex;flex-direction:column;gap:12px}
+.welcome-action-stack .welcome-input-wrap{margin:0;max-width:none;width:100%}
+#welcome .welcome-action-stack .btn.premium-btn,#welcome .welcome-form-minimal .btn.premium-btn{width:100%;height:var(--mp-input-height);min-height:var(--mp-input-height);border-radius:var(--button-radius);font-size:17px;font-weight:600;letter-spacing:-0.01em;margin:0;line-height:1.2;-webkit-appearance:none;appearance:none}
+#welcome .welcome-input-wrap .mp-field-input{width:100%;display:block}
 .welcome-question-wrap{height:40px;min-height:40px;max-height:40px;margin:0 0 20px;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .welcome-question{text-align:center;font-size:clamp(17px,4.6vw,20px);font-weight:600;letter-spacing:-0.02em;color:rgba(255,255,255,.96);line-height:1.25;-webkit-font-smoothing:antialiased;transition:opacity var(--transition-duration) ease;opacity:1;width:100%}
 .welcome-question .cursor{height:19px;width:2px;vertical-align:-2px;margin-left:2px;border-radius:1px}
@@ -320,6 +324,7 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 .cc-body.is-calm-idle .cc-layer2-idle{display:none!important}
 .cc-body.is-calm-idle #ccActivity,.cc-body.is-calm-idle .cc-divider{display:none!important}
 .welcome-version,.onboard-version{display:none}
+html.mp-expo .welcome-version{display:block;margin:18px auto 0;text-align:center;font-size:11px;font-weight:600;letter-spacing:.04em;color:rgba(147,168,196,.65)}
 .premium-btn{height:50px;border-radius:14px;font-size:16px;margin-top:0;background:linear-gradient(180deg,#1A8AFF 0%,#0D6BFF 48%,#0057E7 100%);box-shadow:0 12px 32px rgba(13,107,255,.3);transition:transform .15s ease,box-shadow .15s ease,filter .15s ease}
 .premium-btn:not(:disabled):hover{filter:brightness(1.05);box-shadow:0 16px 36px rgba(13,107,255,.36);transform:translateY(-1px)}
 .premium-btn:not(:disabled):active{transform:translateY(1px);box-shadow:0 8px 20px rgba(13,107,255,.26)}
@@ -762,7 +767,9 @@ body.map-expand-open{overflow:hidden}
 <h1 class="welcome-headline welcome-headline-returning">Your business.<br><span class="blue">On AutoPilot.</span></h1>
 <p class="welcome-support welcome-support-returning">Drive. Track. Claim. Everything else runs automatically.</p>
 <div id="welcomeReturningBlock" class="welcome-form welcome-form-minimal" hidden>
+<div class="welcome-action-stack">
 <button type="button" class="btn premium-btn is-ready" id="welcomeContinue" onclick="if(window.__welcomeContinue)window.__welcomeContinue()">Continue →</button>
+</div>
 </div>
 <div id="welcomeFreshBlock" class="welcome-form">
 <h1 class="welcome-headline welcome-headline-fresh">Every business mile.<br><span class="blue">On AutoPilot.</span></h1>
@@ -774,6 +781,7 @@ body.map-expand-open{overflow:hidden}
 <div class="welcome-feature"><div class="welcome-icon"><svg viewBox="0 0 24 24"><path d="M4 18V6M4 18h16"/><path d="M8 15l2.5-3 2.5 2 3-5 2.5 3.5"/></svg></div><strong>AutoPilot</strong><span>Everything saved automatically</span></div>
 </div>
 <div class="welcome-question-wrap"><div class="welcome-question" id="typed">Welcome to MilePilot.</div></div>
+<div class="welcome-action-stack">
 <div class="mp-field welcome-input-wrap">
 <div class="mp-field-icon-wrap">
 <svg class="mp-field-icon welcome-input-icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M5 20c0-4 3-6 7-6s7 2 7 6"/></svg>
@@ -781,6 +789,7 @@ body.map-expand-open{overflow:hidden}
 </div>
 </div>
 <button type="button" class="btn premium-btn" id="welcomeNameContinue" disabled>Continue →</button>
+</div>
 </div>
 </div>
 <div class="welcome-version" id="appVersion">MP-001 🔒 Locked · v2.8</div>
@@ -1508,7 +1517,7 @@ body.map-expand-open{overflow:hidden}
 </div>
 <script>
 (function(){
-  var v='8.14.0',files=['plan-ux.js','trip-store.js','tracking-engine.js','native-platform.js','tracking-provider.js','driver-intelligence.js','pioneer.js','pwa-device.js'],i=0;
+  var v='8.14.1',files=['plan-ux.js','trip-store.js','tracking-engine.js','native-platform.js','tracking-provider.js','driver-intelligence.js','pioneer.js','pwa-device.js'],i=0;
   window.__mpScriptVersion=v;
   window.__mpScriptsReady=false;
   function next(){
@@ -1522,7 +1531,7 @@ body.map-expand-open{overflow:hidden}
 })();
 </script>
 <script>
-const APP_VERSION='8.14.0';
+const APP_VERSION='8.14.1';
 const BUILD_NUMBER='MP-EXPO-EAS';
 const ONBOARD_COMPLETE_KEY='mp_onboard_complete';
 const ONBOARD_FLAG_ACCOUNT='mp_has_account';
@@ -1726,7 +1735,7 @@ function updateGpsUi(message){if(q('mapHint'))setMapHint(message||'GPS locked');
 function onGpsWatchError(err){if(!isShiftTracking())return;if(err?.code===1){updateGpsUi(geoErrorMessage(err));return}updateGpsUi(trackingErrorMessage('failed'));scheduleGpsReconnect()}
 async function enableTrackingGps(fromUserGesture=false){if(typeof MPTrackingProvider!=='undefined'&&MPTrackingProvider.isNative()){const ok=await MPTrackingProvider.enableTracking(fromUserGesture);if(ok){gpsLocked=true;if(typeof MPPioneer!=='undefined')MPPioneer.recordGpsOutcome(true)}else if(typeof MPPioneer!=='undefined')MPPioneer.recordGpsOutcome(false);return}if(!navigator.geolocation){updateGpsUi(trackingErrorMessage('unavailable'));if(typeof MPPioneer!=='undefined')MPPioneer.recordGpsOutcome(false);hideStatus();return}if(!isSecureGeoContext()){updateGpsUi('Location needs HTTPS. Use https://app.milepilot.uk');hideStatus();return}if(!fromUserGesture){const perm=await queryGeoPermission();if(perm!=='granted'){updateGpsUi(perm==='denied'?trackingErrorMessage('denied'):'Enable location so AutoPilot can start recording.');if(perm==='denied'&&typeof MPPioneer!=='undefined')MPPioneer.recordGpsOutcome(false);hideStatus();return}}stopGpsWatch();if(gpsReconnectTimer){clearTimeout(gpsReconnectTimer);gpsReconnectTimer=null}updateGpsUi('Finding GPS…');showStatus('Finding GPS…');try{const pos=await requestGeolocation(GEO_OPTS_ACCURATE,GEO_OPTS_RELAXED);handlePos(pos);gpsLocked=true;localStorage.setItem('mp_location_choice','granted');localStorage.setItem(ONBOARD_FLAG_LOCATION,'true');if(typeof MPPioneer!=='undefined')MPPioneer.recordGpsOutcome(true);gpsWatchId=navigator.geolocation.watchPosition(handlePos,onGpsWatchError,isShiftTracking()?GEO_OPTS_TRACKING:GEO_OPTS_ACCURATE);updateGpsUi(null);hideStatus()}catch(err){gpsLocked=false;if(err?.code===1)localStorage.setItem('mp_location_choice','denied');if(typeof MPPioneer!=='undefined')MPPioneer.recordGpsOutcome(false);updateGpsUi(geoErrorMessage(err));hideStatus();renderCommandCentre()}}
 function enableNotificationPermission(){const btn=q('permNotifBtn');if(!('Notification' in window)){localStorage.setItem('mp_notifications_choice','unsupported');syncNotificationButton();return}if(Notification.permission==='granted'){localStorage.setItem('mp_notifications_choice','granted');syncNotificationButton();return}if(Notification.permission==='denied'){localStorage.setItem('mp_notifications_choice','denied');syncNotificationButton();return}if(btn){btn.disabled=true;btn.textContent='Requesting…'}Notification.requestPermission().then(p=>{localStorage.setItem('mp_notifications_choice',p==='granted'?'granted':p==='denied'?'denied':'skipped');syncNotificationButton()}).catch(()=>{localStorage.setItem('mp_notifications_choice','skipped');syncNotificationButton()})}
-function finishOnboarding(){try{if(typeof applyFtueDefaults==='function')applyFtueDefaults();if(!localStorage.getItem('mp_location_choice'))localStorage.setItem('mp_location_choice','skipped');if(!localStorage.getItem('mp_notifications_choice'))localStorage.setItem('mp_notifications_choice','skipped');markInitialSetupComplete();markStayUpdatedPromptSeen();clearOnboardTimers();try{goHome()}catch(err){console.error('MilePilot finish onboarding goHome',err);if(typeof window.__bootFinishOnboarding==='function')window.__bootFinishOnboarding();else{showScreen('home');q('nav')?.classList.add('show')}}}catch(err){console.error('MilePilot finish onboarding',err);if(typeof window.__bootFinishOnboarding==='function')window.__bootFinishOnboarding();else{try{markInitialSetupComplete()}catch(e){}showScreen('home');q('nav')?.classList.add('show')}}}
+function finishOnboarding(){try{if(typeof applyFtueDefaults==='function')applyFtueDefaults();if(!localStorage.getItem('mp_location_choice'))localStorage.setItem('mp_location_choice','skipped');if(!localStorage.getItem('mp_notifications_choice'))localStorage.setItem('mp_notifications_choice','skipped');markInitialSetupComplete();markStayUpdatedPromptSeen();clearOnboardTimers();if(typeof MPTracking!=='undefined'&&MPTracking.autoMotion)MPTracking.autoMotion.configure({enabled:isAutoMotionEnabled()});try{goHome()}catch(err){console.error('MilePilot finish onboarding goHome',err);if(typeof window.__bootFinishOnboarding==='function')window.__bootFinishOnboarding();else{showScreen('home');q('nav')?.classList.add('show')}}}catch(err){console.error('MilePilot finish onboarding',err);if(typeof window.__bootFinishOnboarding==='function')window.__bootFinishOnboarding();else{try{markInitialSetupComplete()}catch(e){}showScreen('home');q('nav')?.classList.add('show')}}}
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));const screen=q(id);if(screen)screen.classList.add('active');const nav=q('nav');if(nav)nav.classList.toggle('show',!ONBOARD_SCREENS.includes(id));window.scrollTo(0,0)}
 function setNav(n){['Home','Reports','History','Settings'].forEach(x=>{const btn=q('nav'+x);if(!btn)return;btn.classList.toggle('active',x===n);btn.setAttribute('aria-current',x===n?'page':'false')})}
 function fmt(s){s=Number(s)||0;let m=Math.floor(s/60),h=Math.floor(m/60);return h+'h '+String(m%60).padStart(2,'0')+'m'}function money(v){return '£'+(Number(v)||0).toFixed(2)}function claim(mi,v=vehicle){return (Number(mi)||0)*(vehicles[v]?.rate||.55)}

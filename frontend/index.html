@@ -288,6 +288,10 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 .welcome-feature strong{display:block;font-size:11px;font-weight:600;color:rgba(234,242,255,.94);line-height:1.25;margin-bottom:2px}
 .welcome-feature span{display:block;font-size:10px;font-weight:400;color:rgba(147,168,196,.82);line-height:1.35;letter-spacing:.01em;max-width:76px}
 .welcome-form{margin:0;padding:0;border:0;display:flex;flex-direction:column;align-items:stretch;width:100%}
+.welcome-action-stack{width:100%;max-width:320px;align-self:center;display:flex;flex-direction:column;gap:12px}
+.welcome-action-stack .welcome-input-wrap{margin:0;max-width:none;width:100%}
+#welcome .welcome-action-stack .btn.premium-btn,#welcome .welcome-form-minimal .btn.premium-btn{width:100%;height:var(--mp-input-height);min-height:var(--mp-input-height);border-radius:var(--button-radius);font-size:17px;font-weight:600;letter-spacing:-0.01em;margin:0;line-height:1.2;-webkit-appearance:none;appearance:none}
+#welcome .welcome-input-wrap .mp-field-input{width:100%;display:block}
 .welcome-question-wrap{height:40px;min-height:40px;max-height:40px;margin:0 0 20px;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .welcome-question{text-align:center;font-size:clamp(17px,4.6vw,20px);font-weight:600;letter-spacing:-0.02em;color:rgba(255,255,255,.96);line-height:1.25;-webkit-font-smoothing:antialiased;transition:opacity var(--transition-duration) ease;opacity:1;width:100%}
 .welcome-question .cursor{height:19px;width:2px;vertical-align:-2px;margin-left:2px;border-radius:1px}
@@ -320,6 +324,7 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 .cc-body.is-calm-idle .cc-layer2-idle{display:none!important}
 .cc-body.is-calm-idle #ccActivity,.cc-body.is-calm-idle .cc-divider{display:none!important}
 .welcome-version,.onboard-version{display:none}
+html.mp-expo .welcome-version{display:block;margin:18px auto 0;text-align:center;font-size:11px;font-weight:600;letter-spacing:.04em;color:rgba(147,168,196,.65)}
 .premium-btn{height:50px;border-radius:14px;font-size:16px;margin-top:0;background:linear-gradient(180deg,#1A8AFF 0%,#0D6BFF 48%,#0057E7 100%);box-shadow:0 12px 32px rgba(13,107,255,.3);transition:transform .15s ease,box-shadow .15s ease,filter .15s ease}
 .premium-btn:not(:disabled):hover{filter:brightness(1.05);box-shadow:0 16px 36px rgba(13,107,255,.36);transform:translateY(-1px)}
 .premium-btn:not(:disabled):active{transform:translateY(1px);box-shadow:0 8px 20px rgba(13,107,255,.26)}
@@ -762,7 +767,9 @@ body.map-expand-open{overflow:hidden}
 <h1 class="welcome-headline welcome-headline-returning">Your business.<br><span class="blue">On AutoPilot.</span></h1>
 <p class="welcome-support welcome-support-returning">Drive. Track. Claim. Everything else runs automatically.</p>
 <div id="welcomeReturningBlock" class="welcome-form welcome-form-minimal" hidden>
+<div class="welcome-action-stack">
 <button type="button" class="btn premium-btn is-ready" id="welcomeContinue" onclick="if(window.__welcomeContinue)window.__welcomeContinue()">Continue →</button>
+</div>
 </div>
 <div id="welcomeFreshBlock" class="welcome-form">
 <h1 class="welcome-headline welcome-headline-fresh">Every business mile.<br><span class="blue">On AutoPilot.</span></h1>
@@ -774,6 +781,7 @@ body.map-expand-open{overflow:hidden}
 <div class="welcome-feature"><div class="welcome-icon"><svg viewBox="0 0 24 24"><path d="M4 18V6M4 18h16"/><path d="M8 15l2.5-3 2.5 2 3-5 2.5 3.5"/></svg></div><strong>AutoPilot</strong><span>Everything saved automatically</span></div>
 </div>
 <div class="welcome-question-wrap"><div class="welcome-question" id="typed">Welcome to MilePilot.</div></div>
+<div class="welcome-action-stack">
 <div class="mp-field welcome-input-wrap">
 <div class="mp-field-icon-wrap">
 <svg class="mp-field-icon welcome-input-icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M5 20c0-4 3-6 7-6s7 2 7 6"/></svg>
@@ -781,6 +789,7 @@ body.map-expand-open{overflow:hidden}
 </div>
 </div>
 <button type="button" class="btn premium-btn" id="welcomeNameContinue" disabled>Continue →</button>
+</div>
 </div>
 </div>
 <div class="welcome-version" id="appVersion">MP-001 🔒 Locked · v2.8</div>
@@ -1508,7 +1517,7 @@ body.map-expand-open{overflow:hidden}
 </div>
 <script>
 (function(){
-  var v='8.14.0',files=['plan-ux.js','trip-store.js','tracking-engine.js','native-platform.js','tracking-provider.js','driver-intelligence.js','pioneer.js','pwa-device.js'],i=0;
+  var v='8.14.1',files=['plan-ux.js','trip-store.js','tracking-engine.js','native-platform.js','tracking-provider.js','driver-intelligence.js','pioneer.js','pwa-device.js'],i=0;
   window.__mpScriptVersion=v;
   window.__mpScriptsReady=false;
   function next(){
@@ -1522,7 +1531,7 @@ body.map-expand-open{overflow:hidden}
 })();
 </script>
 <script>
-const APP_VERSION='8.14.0';
+const APP_VERSION='8.14.1';
 const BUILD_NUMBER='MP-EXPO-EAS';
 const ONBOARD_COMPLETE_KEY='mp_onboard_complete';
 const ONBOARD_FLAG_ACCOUNT='mp_has_account';
@@ -1685,7 +1694,7 @@ function replayFirstImpressionIntro(){playBrandPulse()}
 function playBrandPulse(){const pulse=q('welcomePulse');if(!pulse)return;pulse.classList.add('alive')}
 let welcomeIntroBound=false;
 function initFirstImpression(mode){updateAppVersionBadge();if(typeof window.__bootWelcomeCeremony==='function')window.__bootWelcomeCeremony(mode||(isReturningWelcomeUser()?'returning':'fresh'))}
-function updateAppVersionBadge(){const el=q('appVersion');if(el)el.textContent='MP-001 🔒 Locked · App v'+APP_VERSION;setText('ccVersion','MilePilot v'+APP_VERSION)}
+function updateAppVersionBadge(){if(window.__MILEPILOT_EXPO__)document.documentElement.classList.add('mp-expo');const el=q('appVersion');if(el)el.textContent='MP-001 🔒 Locked · App v'+APP_VERSION;setText('ccVersion','MilePilot v'+APP_VERSION)}
 let knowYouTimers=[];
 function clearKnowYouMessaging(){knowYouTimers.forEach(t=>clearTimeout(t));knowYouTimers=[]}
 function startKnowYouMessaging(){const el=q('knowYouMessage');if(!el)return;clearKnowYouMessaging();el.textContent=KNOW_YOU_QUESTION;el.style.transition='opacity .38s cubic-bezier(.22,1,.36,1)';el.style.opacity='0';knowYouTimers.push(setTimeout(()=>{el.style.opacity='1'},50))}

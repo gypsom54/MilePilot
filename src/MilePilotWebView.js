@@ -20,6 +20,7 @@ const BRIDGE_BOOT_SCRIPT = `
 (function(){
   window.__MILEPILOT_EXPO__ = true;
   window.__MILEPILOT_RUNTIME__ = 'expo';
+  document.documentElement.classList.add('mp-expo');
   window.__expoBridgeCallbacks = {};
   window.__expoBridgeReceive = function(msg) {
     try {
