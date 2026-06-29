@@ -63,7 +63,7 @@
       this.motionCandidateSince = null;
       this.onPrompt({
         source: source || 'gps',
-        message: 'We detected motion.\nIs this a business or personal trip?',
+        message: 'Are you driving for work?',
         actions: ['business', 'personal'],
       });
       return true;
