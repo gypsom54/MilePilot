@@ -1,3 +1,3 @@
-MilePilot OS v8.15.0 — Never Miss A Trip philosophy (pending review workflow)
+MilePilot OS v8.16.0 — Beta: trip classification, route evidence, email reports
 Build: 2026-06-29
 Brand: Every business mile matters.
