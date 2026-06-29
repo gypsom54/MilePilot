@@ -3,7 +3,7 @@ module.exports = {
   expo: {
     name: 'MilePilot',
     slug: 'milepilot',
-    version: '8.11.0',
+    version: '1.0.0',
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'dark',
@@ -17,19 +17,23 @@ module.exports = {
     ios: {
       supportsTablet: false,
       bundleIdentifier: 'com.milepilot.app',
+      buildNumber: '1',
       infoPlist: {
         NSLocationWhenInUseUsageDescription:
-          'MilePilot uses location to record your business journeys while you are working.',
+          'MilePilot uses your location to record business journeys while you are working.',
         NSLocationAlwaysAndWhenInUseUsageDescription:
-          'MilePilot uses background location so your mileage can continue recording when your phone is locked.',
+          'MilePilot uses background location so mileage continues recording when your phone is locked during a shift.',
         NSLocationAlwaysUsageDescription:
-          'MilePilot uses background location so your mileage can continue recording when your phone is locked.',
+          'MilePilot uses background location so mileage continues recording when your phone is locked during a shift.',
+        NSMotionUsageDescription:
+          'MilePilot may use motion activity to detect when you are driving and improve mileage tracking accuracy.',
         UIBackgroundModes: ['location', 'fetch', 'remote-notification'],
         ITSAppUsesNonExemptEncryption: false,
       },
     },
     android: {
       package: 'com.milepilot.app',
+      versionCode: 1,
       adaptiveIcon: {
         foregroundImage: './assets/adaptive-icon.png',
         backgroundColor: '#031126',
@@ -42,7 +46,13 @@ module.exports = {
         'FOREGROUND_SERVICE_LOCATION',
         'POST_NOTIFICATIONS',
         'WAKE_LOCK',
+        'ACTIVITY_RECOGNITION',
       ],
+      config: {
+        googleMaps: {
+          apiKey: process.env.GOOGLE_MAPS_API_KEY || '',
+        },
+      },
     },
     plugins: [
       'expo-dev-client',
@@ -50,9 +60,9 @@ module.exports = {
         'expo-location',
         {
           locationWhenInUsePermission:
-            'MilePilot uses location to record your business journeys while you are working.',
+            'MilePilot uses your location to record business journeys while you are working.',
           locationAlwaysAndWhenInUsePermission:
-            'MilePilot uses background location so your mileage can continue recording when your phone is locked.',
+            'MilePilot uses background location so mileage continues recording when your phone is locked during a shift.',
           isIosBackgroundLocationEnabled: true,
           isAndroidBackgroundLocationEnabled: true,
         },
@@ -73,7 +83,7 @@ module.exports = {
       },
       webAppUrl:
         process.env.WEB_APP_URL ||
-        'https://app.milepilot.uk/?runtime=expo&v=8.11.0',
+        'https://app.milepilot.uk/?runtime=expo&v=1.0.0',
     },
   },
 };

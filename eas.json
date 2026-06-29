@@ -1,48 +1,53 @@
 {
   "cli": {
     "version": ">= 16.0.0",
-    "appVersionSource": "remote"
+    "appVersionSource": "local"
   },
   "build": {
     "development": {
       "developmentClient": true,
       "distribution": "internal",
       "ios": {
-        "simulator": false
+        "simulator": false,
+        "buildConfiguration": "Debug"
       },
       "android": {
-        "buildType": "apk"
+        "buildType": "apk",
+        "gradleCommand": ":app:assembleDebug"
       },
       "env": {
-        "WEB_APP_URL": "https://app.milepilot.uk/?runtime=expo&build=development&v=8.11.0"
+        "WEB_APP_URL": "https://app.milepilot.uk/?runtime=expo&build=development&v=1.0.0"
       }
     },
     "preview": {
       "distribution": "internal",
       "ios": {
-        "simulator": false
+        "simulator": false,
+        "buildConfiguration": "Release"
       },
       "android": {
         "buildType": "apk"
       },
       "env": {
-        "WEB_APP_URL": "https://app.milepilot.uk/?runtime=expo&build=preview&v=8.11.0"
+        "WEB_APP_URL": "https://app.milepilot.uk/?runtime=expo&build=preview&v=1.0.0"
       }
     },
     "production": {
       "autoIncrement": true,
       "ios": {
-        "resourceClass": "m-medium"
+        "resourceClass": "m-medium",
+        "buildConfiguration": "Release"
       },
       "android": {
         "buildType": "app-bundle"
       },
       "env": {
-        "WEB_APP_URL": "https://app.milepilot.uk/?runtime=expo&build=production&v=8.11.0"
+        "WEB_APP_URL": "https://app.milepilot.uk/?runtime=expo&build=production&v=1.0.0"
       }
     }
   },
   "submit": {
-    "production": {}
+    "production": {},
+    "preview": {}
   }
 }
