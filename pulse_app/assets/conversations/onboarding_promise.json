@@ -1,0 +1,25 @@
+{
+  "id": "onboarding_promise",
+  "steps": [
+    {
+      "type": "typing",
+      "charDelayMs": 40,
+      "charDelayVariance": 0.14,
+      "lines": [
+        { "text": "Perfect.", "pauseAfterMs": 760 },
+        { "text": "I'll build Pulse around what matters to you.", "pauseAfterMs": 720 },
+        { "text": "You'll be able to:", "pauseAfterMs": 480 },
+        { "text": "Keep your research cabinet organised", "pauseAfterMs": 420, "style": "body" },
+        { "text": "Estimate when supply may run low", "pauseAfterMs": 420, "style": "body" },
+        { "text": "Save useful papers, videos and podcasts", "pauseAfterMs": 420, "style": "body" },
+        { "text": "Keep notes in one place", "pauseAfterMs": 420, "style": "body" },
+        { "text": "Get gentle reminders when helpful", "pauseAfterMs": 500, "style": "body" }
+      ]
+    },
+    {
+      "type": "button",
+      "label": "Build My Pulse",
+      "action": "navigate:preview"
+    }
+  ]
+}

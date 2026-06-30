@@ -20,7 +20,16 @@ class ConversationScript {
   }
 }
 
-enum ConversationStepType { typing, pause, fade, input, button, logo }
+enum ConversationStepType {
+  typing,
+  pause,
+  fade,
+  input,
+  button,
+  logo,
+  choice,
+  preview,
+}
 
 class ConversationStep {
   const ConversationStep({
@@ -32,8 +41,11 @@ class ConversationStep {
     this.label,
     this.action,
     this.branch,
+    this.choiceKey,
+    this.options,
     this.charDelayMs = 42,
     this.charDelayVariance = 0.15,
+    this.headingSize,
   });
 
   final ConversationStepType type;
@@ -44,8 +56,11 @@ class ConversationStep {
   final String? label;
   final String? action;
   final Map<String, String>? branch;
+  final String? choiceKey;
+  final List<ConversationOption>? options;
   final int charDelayMs;
   final double charDelayVariance;
+  final double? headingSize;
 
   factory ConversationStep.fromJson(Map<String, dynamic> json) {
     final typeName = json['type'] as String;
@@ -65,8 +80,30 @@ class ConversationStep {
       branch: (json['branch'] as Map<String, dynamic>?)?.map(
         (k, v) => MapEntry(k, v as String),
       ),
+      choiceKey: json['choiceKey'] as String?,
+      options: (json['options'] as List<dynamic>?)
+          ?.map((e) => ConversationOption.fromJson(e as Map<String, dynamic>))
+          .toList(),
       charDelayMs: json['charDelayMs'] as int? ?? 42,
       charDelayVariance: (json['charDelayVariance'] as num?)?.toDouble() ?? 0.15,
+      headingSize: (json['headingSize'] as num?)?.toDouble(),
+    );
+  }
+}
+
+class ConversationOption {
+  const ConversationOption({
+    required this.id,
+    required this.label,
+  });
+
+  final String id;
+  final String label;
+
+  factory ConversationOption.fromJson(Map<String, dynamic> json) {
+    return ConversationOption(
+      id: json['id'] as String,
+      label: json['label'] as String,
     );
   }
 }
@@ -75,15 +112,18 @@ class ConversationLine {
   const ConversationLine({
     required this.text,
     this.pauseAfterMs = 680,
+    this.style,
   });
 
   final String text;
   final int pauseAfterMs;
+  final String? style;
 
   factory ConversationLine.fromJson(Map<String, dynamic> json) {
     return ConversationLine(
       text: json['text'] as String,
       pauseAfterMs: json['pauseAfterMs'] as int? ?? 680,
+      style: json['style'] as String?,
     );
   }
 

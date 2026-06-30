@@ -1,0 +1,25 @@
+{
+  "id": "onboarding_positioning",
+  "steps": [
+    {
+      "type": "typing",
+      "charDelayMs": 38,
+      "charDelayVariance": 0.14,
+      "headingSize": 28,
+      "lines": [
+        { "text": "PULSE", "pauseAfterMs": 720, "style": "display" },
+        { "text": "The beating heart of organised peptide research.", "pauseAfterMs": 800 },
+        { "text": "Track inventory.", "pauseAfterMs": 520, "style": "body" },
+        { "text": "Estimate remaining supply.", "pauseAfterMs": 520, "style": "body" },
+        { "text": "Discover trusted education.", "pauseAfterMs": 520, "style": "body" },
+        { "text": "Stay one step ahead.", "pauseAfterMs": 680, "style": "body" },
+        { "text": "Keep your finger on the Pulse.", "pauseAfterMs": 500, "style": "caption" }
+      ]
+    },
+    {
+      "type": "button",
+      "label": "Get Started",
+      "action": "navigate:name"
+    }
+  ]
+}

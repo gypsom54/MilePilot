@@ -48,8 +48,14 @@ Renders a full conversation script from JSON. Steps execute sequentially — typ
 ### `PulseConversationalWait`
 Wraps async work with human conversation copy. Pulse never shows loading screens.
 
-### `PulseConversationLogo`
-Compact in-conversation heartbeat for departure and milestone moments.
+### `PulseLogo` / `PulseMiniLogo` / `PulseHeader`
+Unified logo system. `PulseHeader` on every onboarding screen — fixed height, animated mark, no layout jump.
+
+### `PulseChoiceCard`
+Selectable onboarding card for help-focus screen.
+
+### `PulseOnboardingPreview`
+Screen 7 dashboard preview before entering home.
 
 ### `PulseTextField`
 Premium text input — pulsing cursor, focus glow, fading placeholder.

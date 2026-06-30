@@ -11,7 +11,26 @@ Approved voice and wording for Pulse. **If it's not here or in the Brain, it doe
 - **Never rush.** Ellipses are allowed for pauses: `Hello...`
 - **Personalise** with the user's first name when known.
 - **No jargon**, no "Coming soon", no "Error 404" tone.
+- **Be clear about what Pulse does within 10 seconds** — peptide research companion.
 - Emoji: **sparingly**. Morning greeting ☀️ only. Birthday 🎂. Otherwise none.
+
+## Compliance — never use
+
+- dosing advice
+- take your dose
+- medical guidance
+- treatment
+- weight loss
+- human use
+
+## Use instead
+
+- research planning
+- inventory estimates
+- research cabinet
+- educational resources
+- research journal
+- planned usage rate
 
 ---
 
@@ -21,52 +40,97 @@ Approved voice and wording for Pulse. **If it's not here or in the Brain, it doe
 
 ---
 
-## Launch
+## Launch (Screen 1)
 
-Tagline under logo:
-
-> Keep your finger on the Pulse.
+Full animated PULSE wordmark reveal.
 
 ---
 
-## Onboarding — Screen 1 (name)
+## Positioning (Screen 2)
 
 ```
-Hello...
-Welcome to Pulse.
-I'm really pleased you're here.
-Let's build something that's completely yours.
+PULSE
+
+The beating heart of organised peptide research.
+
+Track inventory.
+Estimate remaining supply.
+Discover trusted education.
+Stay one step ahead.
+
+Keep your finger on the Pulse.
+```
+
+**Button:** `Get Started`
+
+---
+
+## Name (Screen 3)
+
+```
 Who are we talking to today?
 ```
 
 **Input placeholder:** `Your first name`  
-**Button:** `Continue` — glows first, then gently breathes when the name is entered.
+**Button:** `Continue` — glows first, then breathes when name entered.
 
 ---
 
-## Onboarding — Screen 2 (welcome)
+## Personalise (Screen 4)
 
 ```
 Hello {{firstName}} 👋
-I'm genuinely pleased you're here.
-Pulse was created to help people stay organised...
-discover useful research...
-and feel one step ahead.
-Let's build your experience together.
+Let's personalise Pulse around your research.
 ```
 
-**Button:** `Let's Begin`
+**Button:** `Continue`
 
 ---
 
-## Onboarding — Departure (after Let's Begin)
+## Help focus (Screen 5)
 
 ```
-[heartbeat]
-Perfect...
-Let's build your experience.
-[fade → home]
+What would you like help with most?
 ```
+
+**Cards:**
+- Track my peptide inventory
+- Estimate remaining supply
+- Learn from trusted resources
+- Keep a research journal
+- Use smart research tools
+- Everything
+
+**Button:** `Continue`
+
+---
+
+## Promise (Screen 6)
+
+```
+Perfect.
+I'll build Pulse around what matters to you.
+
+You'll be able to:
+Keep your research cabinet organised
+Estimate when supply may run low
+Save useful papers, videos and podcasts
+Keep notes in one place
+Get gentle reminders when helpful
+```
+
+**Button:** `Build My Pulse`
+
+---
+
+## Home preview (Screen 7)
+
+```
+Welcome home, {{firstName}}.
+Your research cabinet is ready.
+```
+
+**Button:** `Enter Pulse`
 
 ---
 
@@ -77,8 +141,6 @@ Let's build your experience.
 | App ready | Just getting everything ready... |
 | Fetching data | Looking after your latest progress... |
 | Saving | Your research has been safely saved. |
-
-Pulse never shows loading screens. Every technical process becomes human.
 
 ---
 
@@ -102,55 +164,4 @@ Pulse never shows loading screens. Every technical process becomes human.
 |------|-------|------------------|
 | 1 | Research Cabinet | Ready whenever you are. |
 | 2 | Today's Discovery | I've found something interesting for you. |
-| 3 | Research Journal | Continue your journey. |
-| 4 | Pulse | How can I help today? |
-
-Brain may personalise subtitles based on memory (learning type, streaks, compounds).
-
----
-
-## Home — Primary CTA
-
-| State | Label |
-|-------|-------|
-| Empty cabinet | Add your first research item |
-| Has compounds | Add to your cabinet |
-
----
-
-## Tab placeholders
-
-Use the same human copy as cards — never "Coming soon."
-
----
-
-## Words we use
-
-| Use | Avoid |
-|-----|-------|
-| Research | Peptides (in user-facing copy) |
-| Cabinet | Inventory |
-| Discovery | Feed |
-| Journey | Progress tracker |
-| Welcome home | Dashboard |
-| Everything is ready | You're all set! |
-
----
-
-## Words we never use
-
-- Dashboard
-- Syncing...
-- Loading...
-- Oops!
-- Coming soon
-- Tap here
-- Enable notifications now
-
----
-
-## Adding new copy
-
-1. Draft here first
-2. Wire through Brain or conversation JSON
-3. Update this file in the same PR
+| 3 | Research Journal | Your notes are right here. |

@@ -75,7 +75,7 @@ class _LaunchScreenState extends State<LaunchScreen>
     Navigator.of(context).pushReplacement(
       PulseTransition.route(
         const ConversationScreen(
-          assetPath: 'assets/conversations/onboarding_name.json',
+          assetPath: ConversationScreen.positioning,
         ),
       ),
     );

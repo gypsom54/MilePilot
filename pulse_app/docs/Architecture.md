@@ -9,12 +9,18 @@ Pulse is a **Flutter** app (iOS, Android, Web) built as a premium, calm experien
 ```
 LaunchScreen
     ↓  (~5.2s cinematic animation — heartbeat morphs into PULSE)
+ConversationScreen (onboarding_positioning.json)
+    ↓  Get Started
 ConversationScreen (onboarding_name.json)
-    ↓  (name capture)
-ConversationScreen (onboarding_welcome.json)
-    ↓  (Let's Begin)
-ConversationScreen (onboarding_departure.json)
-    ↓  (heartbeat → Perfect... → fade)
+    ↓  name capture
+ConversationScreen (onboarding_personalise.json)
+    ↓
+ConversationScreen (onboarding_help.json)
+    ↓  primary help choice
+ConversationScreen (onboarding_promise.json)
+    ↓  Build My Pulse
+ConversationScreen (onboarding_home_preview.json)
+    ↓  Enter Pulse
 PulseShell
     ├── HomeScreen          ← Brain-driven
     ├── Cabinet placeholder

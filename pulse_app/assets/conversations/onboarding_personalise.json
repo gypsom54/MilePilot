@@ -1,0 +1,19 @@
+{
+  "id": "onboarding_personalise",
+  "steps": [
+    {
+      "type": "typing",
+      "charDelayMs": 40,
+      "charDelayVariance": 0.15,
+      "lines": [
+        { "text": "Hello {{firstName}} 👋", "pauseAfterMs": 880 },
+        { "text": "Let's personalise Pulse around your research.", "pauseAfterMs": 500 }
+      ]
+    },
+    {
+      "type": "button",
+      "label": "Continue",
+      "action": "navigate:help"
+    }
+  ]
+}

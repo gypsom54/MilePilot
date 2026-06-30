@@ -12,12 +12,14 @@ class PulsePrimaryButton extends StatefulWidget {
     required this.onPressed,
     this.enabled = true,
     this.pulseWhenEnabled = false,
+    this.loading = false,
   });
 
   final String label;
   final VoidCallback? onPressed;
   final bool enabled;
   final bool pulseWhenEnabled;
+  final bool loading;
 
   @override
   State<PulsePrimaryButton> createState() => _PulsePrimaryButtonState();
@@ -34,7 +36,8 @@ class _PulsePrimaryButtonState extends State<PulsePrimaryButton>
   late final AnimationController _arrivalGlow;
   late final Animation<double> _arrivalGlowValue;
 
-  bool get _isEnabled => widget.enabled && widget.onPressed != null;
+  bool get _isEnabled =>
+      widget.enabled && widget.onPressed != null && !widget.loading;
 
   @override
   void initState() {
@@ -164,15 +167,24 @@ class _PulsePrimaryButtonState extends State<PulsePrimaryButton>
                 ),
               );
             },
-            child: Text(
-              widget.label,
-              textAlign: TextAlign.center,
-              style: PulseTypography.body(
-                size: 17,
-                weight: FontWeight.w600,
-                color: PulseColors.graphite,
-              ),
-            ),
+            child: widget.loading
+                ? SizedBox(
+                    width: 22,
+                    height: 22,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: PulseColors.graphite.withValues(alpha: 0.85),
+                    ),
+                  )
+                : Text(
+                    widget.label,
+                    textAlign: TextAlign.center,
+                    style: PulseTypography.body(
+                      size: 17,
+                      weight: FontWeight.w600,
+                      color: PulseColors.graphite,
+                    ),
+                  ),
           ),
         ),
       ),

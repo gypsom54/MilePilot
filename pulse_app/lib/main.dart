@@ -3,6 +3,7 @@ import 'package:pulse_app/core/brain/pulse_brain.dart';
 import 'package:pulse_app/core/brain/pulse_brain_scope.dart';
 import 'package:pulse_app/core/theme/pulse_theme.dart';
 import 'package:pulse_app/screens/launch_screen.dart';
+import 'package:pulse_app/screens/shell/pulse_shell.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +26,9 @@ class PulseApp extends StatelessWidget {
         title: 'Pulse',
         debugShowCheckedModeBanner: false,
         theme: PulseTheme.dark(),
-        home: const LaunchScreen(),
+        home: brain.memory.onboardingComplete
+            ? const PulseShell()
+            : const LaunchScreen(),
       ),
     );
   }
