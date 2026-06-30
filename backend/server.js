@@ -181,6 +181,25 @@ app.post("/reports/subscribe", async (req, res) => {
   }
 });
 
+app.post("/reports/preview", async (req, res) => {
+  try {
+    const report = req.body || {};
+    const pdf = await buildPdfBuffer(report);
+    const { downloadUrl } = storeReportDownload(report, pdf);
+    const html = buildReportEmailHtml(report, {
+      pdfDownloadUrl: downloadUrl,
+      archiveUrl: buildReportArchiveDeepLink(),
+    });
+    res.setHeader("Content-Type", "text/html; charset=utf-8");
+    res.send(html);
+  } catch (err) {
+    console.error("Preview failed:", err);
+    return res.status(500).json({
+      message: err.message || "Preview failed",
+    });
+  }
+});
+
 app.get("/reports/download/:token", async (req, res) => {
   try {
     const entry = getStoredDownload(req.params.token);
