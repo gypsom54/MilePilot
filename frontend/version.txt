@@ -1,3 +1,3 @@
-MilePilot OS v7.9.1 — Classify prompt fix
+MilePilot OS v8.0.0 — Driver Intelligence
 Build: 2026-06-30
 Brand: Every business mile matters.
