@@ -162,13 +162,30 @@ function hmrcRateForShifts(shifts) {
   return VEHICLE_RATES[primaryVehicle(shifts)] || 0.55;
 }
 
+function waitingSecondsForShift(s) {
+  if (s.waitingSeconds != null && s.waitingSeconds !== "") return Number(s.waitingSeconds) || 0;
+  return (s.stops || []).reduce((sum, stop) => {
+    const a = new Date(stop.startISO).getTime();
+    const b = new Date(stop.endISO).getTime();
+    return sum + Math.max(0, Math.round((b - a) / 1000));
+  }, 0);
+}
+
 function sumShifts(list) {
   return {
     mi: list.reduce((a, b) => a + Number(b.miles || 0), 0),
     sec: list.reduce((a, b) => a + Number(b.seconds || 0), 0),
     hmrc: list.reduce((a, b) => a + Number(b.hmrc || 0), 0),
     journeys: list.length,
+    drivingSec: list.reduce((a, b) => a + Number(b.movingSeconds || 0), 0),
+    waitingSec: list.reduce((a, b) => a + waitingSecondsForShift(b), 0),
+    segments: list.reduce((a, b) => a + (b.segments?.length || 0), 0),
   };
+}
+
+function isShiftModeReport(report, shifts) {
+  if (report.trackingStyle === "shift") return true;
+  return shifts.some((s) => s.trackingStyle === "shift");
 }
 
 function groupByDay(shifts) {
@@ -278,6 +295,9 @@ export function analyseReport(report) {
   const generatedAt = fmtDateLong(now);
   const generatedAtTime = now.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
 
+  const shiftMode = isShiftModeReport(report, shifts);
+  const trackingStyle = report.trackingStyle || (shiftMode ? "shift" : "pending");
+
   const analysis = {
     totals,
     weekTotals,
@@ -285,6 +305,8 @@ export function analyseReport(report) {
     prevWeekTotals,
     shifts,
     weekShifts,
+    shiftMode,
+    trackingStyle,
     driver: (report.driver || "").trim(),
     period: report.period || "Daily",
     dailyActivity: groupByDay(weekShifts),
@@ -512,12 +534,19 @@ export function buildPdfBuffer(report) {
 
     const cardW = (contentW - 14) / 2;
     const cardH = 62;
-    const cards = [
-      { label: "Travel Time", value: fmtShiftTime(a.totals.sec) },
-      { label: "Business Journeys", value: String(a.totals.journeys) },
-      { label: a.allowanceLabel, value: money(a.totals.hmrc) },
-      { label: "Average Journey", value: a.avgMilesShift > 0 ? `${a.avgMilesShift.toFixed(1)} mi` : "—" },
-    ];
+    const cards = a.shiftMode
+      ? [
+          { label: "Shift Time", value: fmtShiftTime(a.totals.sec) },
+          { label: "Driving Time", value: fmtShiftTime(a.totals.drivingSec || 0) },
+          { label: "Waiting Time", value: fmtShiftTime(a.totals.waitingSec || 0) },
+          { label: a.allowanceLabel, value: money(a.totals.hmrc) },
+        ]
+      : [
+          { label: "Travel Time", value: fmtShiftTime(a.totals.sec) },
+          { label: "Business Journeys", value: String(a.totals.journeys) },
+          { label: a.allowanceLabel, value: money(a.totals.hmrc) },
+          { label: "Average Journey", value: a.avgMilesShift > 0 ? `${a.avgMilesShift.toFixed(1)} mi` : "—" },
+        ];
     cards.forEach((c, i) => {
       const col = i % 2;
       const row = Math.floor(i / 2);
@@ -545,11 +574,20 @@ export function buildPdfBuffer(report) {
     // ── PAGE 2: Journey table ──
     doc.addPage({ margin: 0 });
     y = drawPageHeader(doc, a, margin, contentW, pageW);
-    y = drawSectionTitle(doc, margin, y, "Journeys", "Journey Breakdown", "Professional record for your accountant");
+    const journeyTitle = a.shiftMode ? "Work Shifts" : "Journeys";
+    const journeySubtitle = a.shiftMode
+      ? "Shift breakdown with driving and waiting time"
+      : "Professional record for your accountant";
+    y = drawSectionTitle(doc, margin, y, journeyTitle, "Journey Breakdown", journeySubtitle);
 
-    const tCols = [margin + 8, margin + 52, margin + 102, margin + 162, margin + 222, margin + 292];
+    const tCols = a.shiftMode
+      ? [margin + 8, margin + 48, margin + 92, margin + 132, margin + 168, margin + 214, margin + 262]
+      : [margin + 8, margin + 52, margin + 102, margin + 162, margin + 222, margin + 292];
     doc.roundedRect(margin, y, contentW, 24, 4).fill(BRAND.navy);
-    ["Time", "Start", "Finish", "Miles", "Duration"].forEach((h, i) => {
+    (a.shiftMode
+      ? ["Date", "Start", "Finish", "Miles", "Driving", "Waiting"]
+      : ["Time", "Start", "Finish", "Miles", "Duration"]
+    ).forEach((h, i) => {
       doc.fillColor("#FFF").font("Helvetica-Bold").fontSize(7.5).text(h.toUpperCase(), tCols[i], y + 8);
     });
     y += 24;
@@ -572,7 +610,12 @@ export function buildPdfBuffer(report) {
         doc.text(fmtClock(s.startISO), tCols[1], y + 8);
         doc.text(fmtClock(s.endISO), tCols[2], y + 8);
         doc.font("Helvetica-Bold").text(Number(s.miles || 0).toFixed(1), tCols[3], y + 8);
-        doc.font("Helvetica").text(fmtDurationShort(s.seconds), tCols[4], y + 8);
+        if (a.shiftMode) {
+          doc.font("Helvetica").text(fmtDurationShort(s.movingSeconds || 0), tCols[4], y + 8);
+          doc.text(fmtDurationShort(waitingSecondsForShift(s)), tCols[5], y + 8);
+        } else {
+          doc.font("Helvetica").text(fmtDurationShort(s.seconds), tCols[4], y + 8);
+        }
         y += rowH;
       });
     }
@@ -652,8 +695,14 @@ export function buildReportEmailHtml(report) {
   <p style="margin:0 0 32px;font-size:16px;color:#B9C8DD;line-height:1.55;">${ready}</p>
   <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
     ${metric("Business Miles", a.totals.mi.toFixed(1))}
-    ${metric("Travel Time", fmtShiftTime(a.totals.sec))}
-    ${metric("Business Journeys", String(a.totals.journeys))}
+    ${a.shiftMode ? metric("Shift Time", fmtShiftTime(a.totals.sec)) : metric("Travel Time", fmtShiftTime(a.totals.sec))}
+    ${
+      a.shiftMode
+        ? metric("Driving Time", fmtShiftTime(a.totals.drivingSec || 0)) +
+          metric("Waiting Time", fmtShiftTime(a.totals.waitingSec || 0)) +
+          (a.totals.segments ? metric("Route Segments", String(a.totals.segments)) : "")
+        : metric("Business Journeys", String(a.totals.journeys))
+    }
     ${metric("Estimated HMRC", money(a.totals.hmrc))}
   </table>
   <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:12px;">
@@ -682,8 +731,14 @@ export function buildReportEmailText(report) {
 ${periodReadyLine(a.period)}
 
 Business Miles: ${a.totals.mi.toFixed(1)}
-Travel Time: ${fmtShiftTime(a.totals.sec)}
-Business Journeys: ${a.totals.journeys}
+${a.shiftMode ? `Shift Time: ${fmtShiftTime(a.totals.sec)}` : `Travel Time: ${fmtShiftTime(a.totals.sec)}`}
+${
+  a.shiftMode
+    ? `Driving Time: ${fmtShiftTime(a.totals.drivingSec || 0)}
+Waiting Time: ${fmtShiftTime(a.totals.waitingSec || 0)}
+Route Segments: ${a.totals.segments || 0}`
+    : `Business Journeys: ${a.totals.journeys}`
+}
 Estimated HMRC: ${money(a.totals.hmrc)}
 
 View your report in MilePilot: ${buildReportDeepLink(report, true)}
