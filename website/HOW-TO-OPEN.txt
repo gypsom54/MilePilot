@@ -1,23 +1,13 @@
-MilePilot Website — how to open
-================================
+QUICK OPEN
+==========
+1. Extract the zip (Extract All...)
+2. Open the MilePilot-Website folder
+3. Double-click DOUBLE-CLICK-ME.vbs
 
-IMPORTANT: Do not copy files to C:\ or Desktop one-by-one.
-Use the zip properly:
+MANUAL OPEN (always works)
+==========================
+1. Open Microsoft Edge
+2. Press Ctrl+O
+3. Select index.html from the MilePilot-Website folder
 
-1. Download MilePilot-WEBSITE-v4.6.2-DOWNLOAD.zip from GitHub
-2. Right-click the zip file -> Extract All... -> pick a NEW folder
-3. Open that folder — you should see index.html, styles.css,
-   milepilot-theme.css, main.js and OPEN-WEBSITE.bat together
-4. Double-click OPEN-WEBSITE.bat
-
-If index.html opens in NOTEPAD (you see code, not the website):
-- Your PC has .html set to Notepad
-- Right-click index.html -> Open with -> Microsoft Edge or Chrome
-- Tick "Always use this app"
-
-If OPEN-WEBSITE.bat says a file is missing:
-- You are in the wrong folder
-- Extract the zip again to a fresh folder
-
-If the page looks unstyled or broken:
-- All files must stay in the same folder (do not move index.html alone)
+See READ-ME-FIRST.txt for full help.
