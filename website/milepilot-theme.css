@@ -1,0 +1,503 @@
+/**
+ * MilePilot Theme — copied from frontend/index.html (native app)
+ * Website + all surfaces must use these values. Do not invent alternatives.
+ */
+:root {
+  --bg: #031126;
+  --panel: #0b2348;
+  --blue: #0d6bff;
+  --muted: #b9c8dd;
+  --line: rgba(255, 255, 255, 0.14);
+  --green: #20d781;
+  --red: #ef3333;
+  --brand-blue: #0d6bff;
+  --brand-glow: rgba(13, 107, 255, 0.28);
+  --brand-glow-soft: rgba(13, 107, 255, 0.18);
+  --brand-pulse-height: 2px;
+  --brand-pulse-alive: 4s;
+  --card-radius: 24px;
+  --button-radius: 16px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --screen-pad-x: 22px;
+  --screen-pad-bottom: 108px;
+  --max: 1120px;
+  --nav-h: 72px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: var(--nav-h); }
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  color: #fff;
+  background: #020b1b;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; text-decoration: none; }
+button { font: inherit; cursor: pointer; border: 0; }
+svg { display: block; max-width: 100%; }
+
+.blue { color: var(--blue); }
+
+/* —— Logo (app: .brand-bar, .wordmark) —— */
+.brand-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 18px;
+  text-align: center;
+  width: 100%;
+}
+
+.brand-bar .wordmark {
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: #fff;
+}
+
+.brand-bar.lg .wordmark { font-size: clamp(36px, 5vw, 42px); }
+
+.brand-tagline {
+  margin: 10px 0 0;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: rgba(110, 180, 255, 0.82);
+  line-height: 1.2;
+}
+
+/* Pulse: signature — near logo on brand moments, NOT underline */
+.brand-pulse {
+  position: relative;
+  height: var(--brand-pulse-height);
+  width: min(calc(100% + 24px), 200px);
+  margin-top: 12px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #0a52d4 0%, #0d6bff 28%, #7ec0ff 50%, #0d6bff 72%, #0a52d4 100%);
+  box-shadow: 0 0 18px rgba(13, 107, 255, 0.42), 0 0 8px rgba(13, 107, 255, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.28);
+  opacity: 1;
+  transform-origin: center center;
+  transform: scaleX(1);
+}
+
+.brand-bar .brand-pulse {
+  width: min(calc(100% + 24px), 200px);
+  margin: 12px auto 0;
+}
+
+.brand-bar.align-start .brand-pulse {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.brand-pulse.alive,
+.brand-bar .brand-pulse { animation: brandPulseGlow var(--brand-pulse-alive) ease-in-out infinite; }
+
+@keyframes brandPulseGlow {
+  0%, 100% { opacity: 1; box-shadow: 0 0 22px rgba(13, 107, 255, 0.28), 0 0 10px rgba(13, 107, 255, 0.16); filter: brightness(1); }
+  50% { opacity: 1; box-shadow: 0 0 36px rgba(13, 107, 255, 0.42), 0 0 16px rgba(13, 107, 255, 0.28); filter: brightness(1.15); }
+}
+
+/* —— App screen background —— */
+.app-surface {
+  background: linear-gradient(180deg, #0a2854 0%, #031126 82%);
+}
+
+/* —— Command Centre —— */
+.cc-greeting {
+  font-size: clamp(26px, 6.5vw, 32px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin: 0 0 10px;
+  color: #fff;
+}
+
+.cc-status {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.45;
+  color: rgba(159, 180, 208, 0.92);
+  margin: 0;
+}
+
+.cc-hero { text-align: center; margin: 0 0 20px; padding: 8px 0 4px; }
+
+.cc-hero-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: rgba(110, 180, 255, 0.78);
+  margin-bottom: 10px;
+}
+
+.cc-hero-value {
+  font-size: clamp(52px, 14vw, 72px);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 0.95;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+
+.cc-hero-unit {
+  display: block;
+  margin-top: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  color: rgba(159, 180, 208, 0.9);
+}
+
+.cc-card {
+  border: 1px solid rgba(110, 180, 255, 0.14);
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(13, 107, 255, 0.02));
+  padding: 20px 18px;
+  margin: 0 0 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.cc-card-title {
+  margin: 0 0 16px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(110, 180, 255, 0.82);
+}
+
+.cc-metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 16px;
+}
+
+.cc-metric span {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(147, 168, 196, 0.88);
+  margin-bottom: 6px;
+}
+
+.cc-metric strong {
+  display: block;
+  font-size: clamp(20px, 5vw, 26px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: rgba(234, 242, 255, 0.96);
+  font-variant-numeric: tabular-nums;
+}
+
+.cc-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(110, 180, 255, 0.18) 20%, rgba(110, 180, 255, 0.18) 80%, transparent);
+  margin: 0 0 24px;
+  border: 0;
+}
+
+/* GPS row (app) */
+.cc-map-gps-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(159, 180, 208, 0.92);
+}
+
+.cc-map-gps-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(147, 168, 196, 0.55);
+  flex-shrink: 0;
+}
+
+.cc-map-gps-dot.is-live {
+  background: #0d6bff;
+  box-shadow: 0 0 10px rgba(13, 107, 255, 0.55);
+  animation: ccPulseDot 2s ease-in-out infinite;
+}
+
+@keyframes ccPulseDot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+
+.cc-map-gps-label { color: rgba(234, 242, 255, 0.94); }
+.cc-map-gps-meta { margin-left: auto; font-size: 11px; font-weight: 500; color: rgba(147, 168, 196, 0.82); }
+
+.cc-route-map-wrap {
+  position: relative;
+  height: 160px;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(110, 180, 255, 0.18);
+  background: #0b1b36;
+  box-shadow: 0 8px 32px rgba(13, 107, 255, 0.12);
+}
+
+.cc-map-tap-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 10px;
+  transform: translateX(-50%);
+  z-index: 5;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(2, 11, 27, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(185, 200, 221, 0.88);
+}
+
+/* Live marker (app map) */
+.mp-live-marker-pulse {
+  animation: mapLivePulse 1.4s ease-out infinite;
+  transform-origin: center;
+}
+
+@keyframes mapLivePulse {
+  0% { transform: scale(0.45); opacity: 0.85; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+.route-animated {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: routeDraw 3.5s var(--ease) infinite;
+  filter: drop-shadow(0 0 8px rgba(13, 107, 255, 0.75));
+}
+
+@keyframes routeDraw {
+  0% { stroke-dashoffset: 100; opacity: 0.5; }
+  45% { stroke-dashoffset: 0; opacity: 1; }
+  80% { stroke-dashoffset: 0; opacity: 1; }
+  100% { stroke-dashoffset: -20; opacity: 0.7; }
+}
+
+/* Buttons (app) */
+.cc-primary-btn,
+.premium-btn,
+.btn-site-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 52px;
+  padding: 0 28px;
+  border: 0;
+  border-radius: var(--button-radius);
+  background: linear-gradient(180deg, #1e88ff 0%, #0d6bff 50%, #005fe8 100%);
+  color: #fff;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  box-shadow: 0 8px 28px rgba(13, 107, 255, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  transition: transform 0.24s var(--ease), filter 0.24s ease;
+}
+
+.cc-primary-btn:hover,
+.btn-site-primary:hover { filter: brightness(1.04); }
+
+.cc-primary-btn:active,
+.btn-site-primary:active { transform: scale(0.985); }
+
+.btn-site-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 52px;
+  padding: 0 24px;
+  border-radius: var(--button-radius);
+  border: 1px solid rgba(110, 180, 255, 0.24);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(234, 242, 255, 0.94);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.btn-site-secondary:hover { background: rgba(13, 107, 255, 0.1); }
+
+.cc-report-btn {
+  width: 100%;
+  height: 52px;
+  border: 1px solid rgba(110, 180, 255, 0.24);
+  border-radius: var(--button-radius);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(234, 242, 255, 0.94);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* Nav (app floating bar — adapted for site header) */
+.nav-app {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 100;
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  background: rgba(3, 17, 38, 0.88);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(110, 180, 255, 0.12);
+}
+
+/* App bottom nav */
+.nav {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  padding: 8px 10px;
+  background: rgba(17, 28, 46, 0.88);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(110, 180, 255, 0.12);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.38);
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 4px;
+  background: transparent;
+  color: rgba(147, 168, 196, 0.72);
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.nav-item.active { color: rgba(255, 255, 255, 0.96); font-weight: 600; }
+
+.nav-icon { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.6; }
+
+.nav-pulse {
+  width: 22px;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #0a52d4, #7ec0ff 50%, #0a52d4);
+  box-shadow: 0 0 14px rgba(13, 107, 255, 0.38);
+  opacity: 0;
+}
+
+.nav-item.active .nav-pulse { opacity: 1; }
+
+/* Pending chip */
+.chip-warn {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  background: rgba(240, 195, 90, 0.15);
+  color: #f0c35a;
+}
+
+.chip-blue {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  background: rgba(13, 107, 255, 0.2);
+  color: #7ec0ff;
+}
+
+.card-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.card-text {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(159, 180, 208, 0.92);
+  line-height: 1.45;
+}
+
+/* Reports (app) */
+.reports-title {
+  font-size: clamp(26px, 6.5vw, 34px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin: 0 0 10px;
+}
+
+.reports-sub {
+  font-size: 16px;
+  font-weight: 500;
+  color: rgba(159, 180, 208, 0.92);
+  margin: 0;
+}
+
+.report-doc-band {
+  padding: 24px;
+  background: var(--bg);
+  color: #fff;
+}
+
+.report-doc-body {
+  padding: 24px;
+  background: #fff;
+  color: var(--bg);
+}
+
+/* Radar hero accent */
+.hero-radar {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 360px;
+  height: 360px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0.35;
+}
+
+.radar-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(13, 107, 255, 0.35);
+  animation: radarExpand 3s ease-out infinite;
+}
+
+.radar-ring:nth-child(2) { animation-delay: 1s; }
+
+.radar-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  border-radius: 50%;
+  background: #0d6bff;
+  box-shadow: 0 0 24px rgba(13, 107, 255, 0.7);
+  animation: ccPulseDot 2s ease-in-out infinite;
+}
+
+@keyframes radarExpand {
+  0% { transform: scale(0.3); opacity: 0.8; }
+  100% { transform: scale(1.2); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
