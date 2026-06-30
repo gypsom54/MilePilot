@@ -3,14 +3,14 @@ MilePilot Website v1.2 — easiest preview
 
 OPTION 1 — NO TERMINAL (recommended)
 ------------------------------------
-1. Download MilePilot-WEBSITE-v1.2-DOWNLOAD.zip from GitHub
+1. Download MilePilot-WEBSITE-v1.3-DOWNLOAD.zip from GitHub
 2. Unzip anywhere (e.g. Desktop)
 3. Double-click:  OPEN-WEBSITE.bat
    (or double-click index.html)
 
 Done. Opens in Chrome. No server needed.
 
-Verify: you should see "Drive • Track • Claim" under the logo.
+Verify: hero should say "Your business. On AutoPilot."
 
 
 OPTION 2 — Live link (after GitHub Pages is on)

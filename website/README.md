@@ -1,6 +1,6 @@
-# MilePilot Website v1.2
+# MilePilot Website v1.3
 
-Premium marketing site — Apple-style product launch, matched to app branding (navy panels, electric blue pulse, AutoPilot feel).
+Premium product site — the app brought to life. Navy panels, electric blue GPS pulse, AutoPilot brand moment.
 
 **Live targets:** `milepilot.uk` (marketing) · `app.milepilot.uk` (product)
 
