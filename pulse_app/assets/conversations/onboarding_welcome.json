@@ -1,0 +1,23 @@
+{
+  "id": "onboarding_welcome",
+  "steps": [
+    {
+      "type": "typing",
+      "charDelayMs": 40,
+      "charDelayVariance": 0.16,
+      "lines": [
+        { "text": "Hello {{firstName}} 👋", "pauseAfterMs": 880 },
+        { "text": "I'm genuinely pleased you're here.", "pauseAfterMs": 760 },
+        { "text": "Pulse was created to help people stay organised...", "pauseAfterMs": 720 },
+        { "text": "discover useful research...", "pauseAfterMs": 680 },
+        { "text": "and feel one step ahead.", "pauseAfterMs": 800 },
+        { "text": "Let's build your experience together.", "pauseAfterMs": 500 }
+      ]
+    },
+    {
+      "type": "button",
+      "label": "Let's Begin",
+      "action": "navigate:departure"
+    }
+  ]
+}
