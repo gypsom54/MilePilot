@@ -4,12 +4,12 @@
  */
 import { createHash } from "crypto";
 
-export const MAP_STYLE_VERSION = "1";
+export const MAP_STYLE_VERSION = "2";
 const CACHE_TTL_MS = 30 * 24 * 60 * 60 * 1000;
 const svgCache = new Map();
 
 const EMAIL_MAP_W = 440;
-const EMAIL_MAP_H = 176; // ~38% taller than original 128px
+const EMAIL_MAP_H = 272;
 
 export function downsampleRoute(points, max = 200) {
   const pts = (points || []).filter((p) => p && p.lat != null && p.lon != null);
@@ -107,9 +107,9 @@ function buildGridLines(width, height, padding) {
 
 function markerSvg(x, y, color, label) {
   return `<g>
-    <circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="9" fill="${color}" opacity="0.22"/>
-    <circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5.5" fill="${color}" stroke="#FFFFFF" stroke-width="1.6"/>
-    <text x="${x.toFixed(1)}" y="${(y + 3.5).toFixed(1)}" text-anchor="middle" fill="#FFFFFF" font-size="7" font-weight="700" font-family="-apple-system,BlinkMacSystemFont,sans-serif">${label}</text>
+    <circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="11" fill="${color}" opacity="0.2"/>
+    <circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="6.5" fill="${color}" stroke="#FFFFFF" stroke-width="2"/>
+    <text x="${x.toFixed(1)}" y="${(y + 4).toFixed(1)}" text-anchor="middle" fill="#FFFFFF" font-size="8" font-weight="700" font-family="-apple-system,BlinkMacSystemFont,sans-serif">${label}</text>
   </g>`;
 }
 
@@ -138,8 +138,8 @@ export function generateRouteSvg(journeys, options = {}) {
     })
     .filter((p) => p.d.length > 1);
 
-  const glowPaths = paths.map((p) => `<path d="${p.d}" fill="none" stroke="rgba(13,107,255,.32)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>`).join("");
-  const corePaths = paths.map((p) => `<path d="${p.d}" fill="none" stroke="#4DA3FF" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>`).join("");
+  const glowPaths = paths.map((p) => `<path d="${p.d}" fill="none" stroke="rgba(13,107,255,.28)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>`).join("");
+  const corePaths = paths.map((p) => `<path d="${p.d}" fill="none" stroke="#5BB0FF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>`).join("");
 
   const markers = projected
     .flatMap((j) => {
@@ -175,30 +175,39 @@ export function generateRouteSvg(journeys, options = {}) {
   return svg;
 }
 
-export function generatePlaceholderSvg(options = {}) {
+export function generateEmptyStateSvg(options = {}) {
   const width = options.width || EMAIL_MAP_W;
   const height = options.height || EMAIL_MAP_H;
-  const key = cacheKey(["placeholder", width, height, options.message || ""]);
+  const message = options.message || "No business journeys were recorded during this period.";
+  const key = cacheKey(["empty", width, height, message]);
   const cached = getCachedSvg(key);
   if (cached) return cached;
 
-  const svg = `<svg width="100%" height="${height}" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Route placeholder">
+  const svg = `<svg width="100%" height="${height}" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="No route data">
     <defs>
-      <linearGradient id="mpPhBg" x1="0" y1="0" x2="0" y2="1">
+      <linearGradient id="mpEmptyBg" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0%" stop-color="#0A2854"/>
         <stop offset="100%" stop-color="#061A38"/>
       </linearGradient>
+      <radialGradient id="mpEmptyGlow" cx="50%" cy="40%" r="55%">
+        <stop offset="0%" stop-color="rgba(13,107,255,.12)"/>
+        <stop offset="100%" stop-color="rgba(13,107,255,0)"/>
+      </radialGradient>
     </defs>
-    <rect width="${width}" height="${height}" fill="url(#mpPhBg)"/>
-    <path d="M72 ${height * 0.62} C120 ${height * 0.28}, 180 ${height * 0.78}, 230 ${height * 0.42} S340 ${height * 0.24}, ${width - 72} ${height * 0.55}" fill="none" stroke="rgba(13,107,255,.22)" stroke-width="3" stroke-dasharray="8 10" stroke-linecap="round"/>
-    <circle cx="72" cy="${height * 0.62}" r="6" fill="rgba(32,215,129,.35)" stroke="rgba(32,215,129,.8)" stroke-width="1.5"/>
-    <circle cx="${width - 72}" cy="${height * 0.55}" r="6" fill="rgba(239,68,68,.28)" stroke="rgba(239,68,68,.75)" stroke-width="1.5"/>
-    <path d="M${width / 2 - 18} ${height * 0.36}h36v22h-36z" fill="none" stroke="rgba(110,180,255,.25)" stroke-width="1.5" rx="4"/>
-    <path d="M${width / 2 - 8} ${height * 0.44} l10 10 16-20" fill="none" stroke="rgba(110,180,255,.45)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect width="${width}" height="${height}" fill="url(#mpEmptyBg)"/>
+    <rect width="${width}" height="${height}" fill="url(#mpEmptyGlow)"/>
+    <circle cx="${width / 2}" cy="${height * 0.38}" r="28" fill="rgba(13,107,255,.08)" stroke="rgba(13,107,255,.22)" stroke-width="1.5"/>
+    <path d="M${width / 2 - 10} ${height * 0.38 + 4} l7 7 14-16" fill="none" stroke="rgba(110,180,255,.35)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="${width / 2}" y="${height * 0.62}" text-anchor="middle" fill="#93A8C4" font-size="14" font-weight="500" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif">${message.replace(/&/g, "&amp;").replace(/</g, "&lt;")}</text>
   </svg>`;
 
   setCachedSvg(key, svg);
   return svg;
+}
+
+/** @deprecated Use generateEmptyStateSvg — no fake route lines */
+export function generatePlaceholderSvg(options = {}) {
+  return generateEmptyStateSvg(options);
 }
 
 export function buildJourneyStats(shifts, analysis) {
@@ -267,74 +276,6 @@ function fmtClock(iso) {
 
 function money(v) {
   return `£${Number(v || 0).toFixed(2)}`;
-}
-
-function statPill(label, value) {
-  return `<div style="flex:1;min-width:46%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:12px 14px;">
-    <div style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#93A8C4;margin-bottom:6px;">${label}</div>
-    <div style="font-size:18px;font-weight:700;color:#FFFFFF;letter-spacing:-0.02em;line-height:1.1;">${value}</div>
-  </div>`;
-}
-
-function futureStat(label, value) {
-  if (value == null || value === "—" || value === 0) return "";
-  return statPill(label, value);
-}
-
-export function renderEmailRouteSection(ctx, analysis, helpers = {}) {
-  const fmt = helpers.fmtShiftTime || fmtShiftTime;
-  const fmtMoney = helpers.money || money;
-  const stats = ctx.stats;
-  const title = ctx.title;
-
-  let mapInner = "";
-  let emptyCopy = "";
-
-  if (!ctx.hasJourneys) {
-    emptyCopy = "No business journeys were recorded during this period.";
-    mapInner = generatePlaceholderSvg({ message: emptyCopy });
-  } else if (!ctx.hasAnyRoute) {
-    emptyCopy = "Business journeys are recorded. GPS route maps appear once location data is saved.";
-    mapInner = generatePlaceholderSvg({ message: emptyCopy });
-  } else {
-    const routeJourneys = ctx.journeys.filter((j) => j.hasRoute);
-    mapInner = generateRouteSvg(routeJourneys) || generatePlaceholderSvg();
-    if (routeJourneys.length > 1) {
-      emptyCopy = `${routeJourneys.length} confirmed business ${routeJourneys.length === 1 ? "journey" : "journeys"} mapped from GPS.`;
-    }
-  }
-
-  const futureRow = [
-    futureStat("Longest Journey", stats.longestMi > 0 ? `${stats.longestMi.toFixed(1)} mi` : null),
-    futureStat("Average Journey", stats.avgMi > 0 ? `${stats.avgMi.toFixed(1)} mi` : null),
-    futureStat("Start Time", stats.startTime ? fmtClock(stats.startTime) : null),
-    futureStat("Finish Time", stats.finishTime ? fmtClock(stats.finishTime) : null),
-  ]
-    .filter(Boolean)
-    .join("");
-
-  const futureHtml = futureRow
-    ? `<div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;">${futureRow}</div>`
-    : "";
-
-  const subtitle = emptyCopy
-    ? `<p style="margin:0;padding:0 18px 12px;font-size:13px;line-height:1.5;color:#93A8C4;text-align:center;">${emptyCopy}</p>`
-    : "";
-
-  return `<div style="margin:0 0 28px;border-radius:16px;overflow:hidden;border:1px solid rgba(13,107,255,.28);background:linear-gradient(180deg,#0A2854 0%,#061A38 100%);box-shadow:0 10px 32px rgba(13,107,255,.12);">
-    <div style="padding:16px 18px 10px;font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#6EB4FF;">${title}</div>
-    ${mapInner}
-    ${subtitle}
-    <div style="padding:14px 16px 16px;">
-      <div style="display:flex;flex-wrap:wrap;gap:10px;">
-        ${statPill("Business Miles", stats.miles.toFixed(1))}
-        ${statPill("Driving Time", fmt(stats.sec))}
-        ${statPill("Business Journeys", String(stats.journeys))}
-        ${statPill("HMRC Estimate", fmtMoney(stats.hmrc))}
-      </div>
-      ${futureHtml}
-    </div>
-  </div>`;
 }
 
 export function drawPdfMiniRoute(doc, x, y, w, h, points, BRAND) {

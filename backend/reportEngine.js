@@ -7,11 +7,14 @@ import PDFDocument from "pdfkit";
 import { createHash } from "crypto";
 import {
   buildRouteMapContext,
-  renderEmailRouteSection,
   drawPdfRouteHero,
   drawPdfMiniRoute,
   extractRoutePoints,
 } from "./routeMapService.js";
+import {
+  buildEmailRouteSection,
+  renderEmailCtaSection,
+} from "./reportEmailLayout.js";
 
 export const BRAND = {
   navy: "#031126",
@@ -39,7 +42,7 @@ export const VEHICLE_LABELS = {
   motorcycle: "Motorcycle",
 };
 
-export const REPORT_VERSION = "MP-019-route-maps";
+export const REPORT_VERSION = "MP-020-premium-email";
 const APP_URL = "https://app.milepilot.uk";
 
 /** Locked brand lockup — must match app `.brand-bar` exactly */
@@ -268,8 +271,7 @@ function periodHeroSubtitle(a) {
 }
 
 function buildEmailRouteMap(shifts, analysis) {
-  const ctx = buildRouteMapContext(shifts, analysis);
-  return renderEmailRouteSection(ctx, analysis, { fmtShiftTime, money });
+  return buildEmailRouteSection(shifts, analysis, { fmtShiftTime, money });
 }
 
 function drawRouteHeroPanel(doc, shifts, margin, y, contentW, analysis) {
@@ -970,24 +972,14 @@ export function buildReportEmailHtml(report, options = {}) {
   const a = analyseReport(report);
   const name = firstName(a.driver) || "there";
   const greeting = timeGreeting();
-  const ready = periodReadyLine(a.period, a.periodLabel);
   const isSummary = a.period === "WeeklySummary" || a.period === "MonthlySummary";
-  const status = emailStatusLine(a.period, a.periodLabel);
-  const routeMap = buildEmailRouteMap(a.shifts, a);
-
-  const metricCard = (label, value) =>
-    `<td width="50%" style="padding:0 6px 12px 6px;vertical-align:top;">
-      <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:16px 18px;">
-        <div style="font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#93A8C4;margin-bottom:8px;">${label}</div>
-        <div style="font-size:26px;font-weight:700;color:#FFFFFF;letter-spacing:-0.03em;line-height:1.1;">${value}</div>
-      </div>
-    </td>`;
+  const email = buildEmailRouteSection(a.shifts, a, { fmtShiftTime, money });
 
   const comparison =
-    isSummary || a.weekComparePct !== null || a.monthComparePct !== null
-      ? `<div style="margin:0 0 28px;padding:16px 18px;border-radius:14px;background:rgba(13,107,255,.12);border:1px solid rgba(13,107,255,.28);">
-          <div style="font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#6EB4FF;margin-bottom:8px;">Period Insight</div>
-          <div style="font-size:14px;color:#EAF2FF;line-height:1.55;">${comparisonLine(a, a.period === "MonthlySummary" || a.period === "Monthly")}</div>
+    isSummary && (a.weekComparePct !== null || a.monthComparePct !== null)
+      ? `<div style="margin:0 0 36px;padding:22px 24px;border-radius:18px;background:rgba(13,107,255,.1);border:1px solid rgba(13,107,255,.24);">
+          <div style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#6EB4FF;margin-bottom:10px;">Period Insight</div>
+          <div style="font-size:15px;color:#EAF2FF;line-height:1.6;">${comparisonLine(a, a.period === "MonthlySummary" || a.period === "Monthly")}</div>
         </div>`
       : "";
 
@@ -997,36 +989,22 @@ export function buildReportEmailHtml(report, options = {}) {
   return `<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MilePilot Report</title></head>
 <body style="margin:0;padding:0;background:#031126;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased;">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:linear-gradient(180deg,#0A2854 0%,#031126 55%,#020B1B 100%);padding:44px 20px 52px;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:linear-gradient(180deg,#0A2854 0%,#031126 55%,#020B1B 100%);padding:52px 20px 60px;">
 <tr><td align="center">
 <table width="480" cellpadding="0" cellspacing="0" style="max-width:480px;width:100%;">
-<tr><td style="padding:0 20px;">
+<tr><td style="padding:0 24px;">
   ${buildBrandEmailHeader()}
-  <div style="margin:0 0 24px;padding:10px 14px;border-radius:999px;background:rgba(13,107,255,.14);border:1px solid rgba(13,107,255,.32);text-align:center;">
-    <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#20D781;margin-right:8px;vertical-align:middle;"></span>
-    <span style="font-size:12px;font-weight:600;letter-spacing:0.06em;color:#B9D4FF;vertical-align:middle;">${status}</span>
-  </div>
-  <p style="margin:0 0 10px;font-size:18px;font-weight:600;color:#EAF2FF;line-height:1.45;letter-spacing:-0.01em;">${greeting}, ${name}</p>
-  <p style="margin:0 0 28px;font-size:15px;color:#B9C8DD;line-height:1.6;">${ready}</p>
-  ${routeMap}
-  <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:8px;">
-    <tr>${metricCard("Business Miles", a.totals.mi.toFixed(1))}${metricCard("Driving Time", fmtShiftTime(a.totals.sec))}</tr>
-    <tr>${metricCard("Business Journeys", String(a.totals.journeys))}${metricCard("HMRC Estimate", money(a.totals.hmrc))}</tr>
-  </table>
+  <p style="margin:0 0 32px;font-size:22px;font-weight:600;color:#EAF2FF;line-height:1.35;letter-spacing:-0.02em;">${greeting}, ${name}</p>
+  ${email.mapHero}
+  ${email.metricGrid}
   ${comparison}
-  ${a.pendingNotice ? `<p style="margin:0 0 24px;font-size:13px;color:#F0C35A;line-height:1.55;padding:14px 16px;border-radius:12px;background:rgba(240,195,90,.1);border:1px solid rgba(240,195,90,.28);">${a.pendingNotice}</p>` : ""}
-  <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:8px;">
-    <tr><td align="center" style="padding-bottom:10px;">
-      <a href="${pdfDownloadUrl}" style="display:inline-block;width:100%;max-width:320px;background:linear-gradient(180deg,#1E88FF 0%,#0D6BFF 55%,#005FE8 100%);color:#FFFFFF;font-size:16px;font-weight:600;text-decoration:none;padding:16px 24px;border-radius:14px;letter-spacing:-0.01em;box-sizing:border-box;box-shadow:0 8px 24px rgba(13,107,255,.28);">Download PDF Report</a>
-    </td></tr>
-    <tr><td align="center" style="padding-bottom:4px;">
-      <a href="${archiveUrl}" style="display:inline-block;color:#93A8C4;font-size:14px;font-weight:600;text-decoration:none;padding:8px 16px;">View all reports in MilePilot →</a>
-    </td></tr>
-  </table>
-  <p style="margin:0 0 36px;font-size:13px;color:#93A8C4;line-height:1.6;text-align:center;">Your professional PDF is also attached to this email — ready for HMRC, your accountant, or official records.</p>
-  <div style="border-top:1px solid rgba(255,255,255,.08);padding-top:28px;text-align:center;">
-    <p style="margin:0 0 8px;font-size:12px;font-weight:600;letter-spacing:0.14em;color:#0D6BFF;">${BRAND_TAGLINE}</p>
-    <p style="margin:0 0 6px;font-size:13px;color:#B9C8DD;line-height:1.6;">Thank you for choosing MilePilot.</p>
+  ${a.pendingNotice ? `<p style="margin:0 0 32px;font-size:14px;color:#F0C35A;line-height:1.55;padding:16px 18px;border-radius:14px;background:rgba(240,195,90,.1);border:1px solid rgba(240,195,90,.28);">${a.pendingNotice}</p>` : ""}
+  ${renderEmailCtaSection(pdfDownloadUrl, archiveUrl)}
+  ${email.dailySummary}
+  ${email.automationNotes}
+  <div style="border-top:1px solid rgba(255,255,255,.08);padding-top:32px;text-align:center;">
+    <p style="margin:0 0 10px;font-size:12px;font-weight:600;letter-spacing:0.14em;color:#0D6BFF;">${BRAND_TAGLINE}</p>
+    <p style="margin:0 0 8px;font-size:14px;color:#B9C8DD;line-height:1.6;">Thank you for choosing MilePilot.</p>
     <p style="margin:0;font-size:11px;color:#64748B;line-height:1.55;">HMRC figures are estimates for record keeping. Verify against official guidance before filing.<br>MilePilot · app.milepilot.uk</p>
   </div>
 </td></tr>
@@ -1041,11 +1019,20 @@ export function buildReportEmailText(report, options = {}) {
   const name = firstName(a.driver) || "there";
   const pdfDownloadUrl = options.pdfDownloadUrl || buildReportDeepLink(report, true);
   const archiveUrl = options.archiveUrl || buildReportArchiveDeepLink();
+  const isDaily = a.period === "Daily";
+  const journeyLine =
+    a.totals.journeys > 0
+      ? `✓ ${a.totals.journeys} business ${a.totals.journeys === 1 ? "journey" : "journeys"} completed`
+      : "✓ No business mileage recorded yet";
+
+  const automation = isDaily
+    ? `
+Today's mileage has already been added to this week's total.
+Your weekly report will be delivered automatically every Sunday at 11:59 PM.
+Your monthly report will be delivered automatically on the final day of each month.`
+    : "";
+
   return `${timeGreeting()}, ${name}
-
-${emailStatusLine(a.period, a.periodLabel)}
-
-${periodReadyLine(a.period, a.periodLabel)}
 
 Business Miles: ${a.totals.mi.toFixed(1)}
 Driving Time: ${fmtShiftTime(a.totals.sec)}
@@ -1055,9 +1042,18 @@ HMRC Estimate: ${money(a.totals.hmrc)}
 ${comparisonLine(a, a.period === "MonthlySummary" || a.period === "Monthly")}
 
 Download your PDF: ${pdfDownloadUrl}
-View all reports in MilePilot: ${archiveUrl}
+Open MilePilot: ${archiveUrl}
 
 Your professional PDF is also attached to this email.
+
+Today's Summary
+${journeyLine}
+✓ ${a.totals.mi.toFixed(1)} business miles recorded
+${a.totals.hmrc > 0 ? `✓ Estimated HMRC claim ${money(a.totals.hmrc)}` : ""}
+✓ PDF securely archived in MilePilot
+${isDaily || a.period === "Weekly" || a.period === "Monthly" ? "✓ Included in this week's automatic summary" : ""}
+${isDaily || a.period === "Monthly" ? "✓ Included in this month's automatic summary" : ""}
+${automation}
 
 ${BRAND_TAGLINE}
 HMRC figures are estimates for record keeping. Verify against official guidance before filing.`;
