@@ -112,9 +112,20 @@
 }
 
 .hero-line,
-.hero-rest,
-.hero-phone {
+.hero-rest {
   opacity: 0;
+}
+
+body.hero-ready .hero-line,
+body.hero-ready .hero-rest,
+body.hero-ready .hero-phone {
+  opacity: 1;
+  transform: none;
+}
+
+.hero-line.is-in {
+  opacity: 1;
+  animation: ccFadeIn 0.55s var(--mp-ease) forwards;
 }
 
 .hero-line-1.is-in {
@@ -122,6 +133,11 @@
 }
 
 .hero-line-2.is-in {
+  animation: ccFadeIn 0.38s var(--mp-ease) forwards;
+}
+
+.hero-line-3.is-in {
+  opacity: 1;
   animation: ccFadeIn 0.38s var(--mp-ease) forwards;
 }
 
@@ -168,8 +184,21 @@
   transform: translateY(24px);
 }
 
+@media (min-width: 960px) {
+  .hero-phone {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .hero-phone.is-in {
   animation: ccSlideUp 0.7s var(--mp-ease) forwards;
+}
+
+@media (min-width: 960px) {
+  .hero-phone.is-in {
+    animation: ccSlideUp 0.6s var(--mp-ease) forwards;
+  }
 }
 
 .hero-phone.is-alive {
@@ -284,8 +313,26 @@
 .btn-row.center { justify-content: center; }
 
 @media (min-width: 960px) {
-  .hero-grid { grid-template-columns: 1.05fr 0.95fr; gap: 80px; }
+  .hero-grid { grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  .hero-grid .hero-phone { order: 2; }
+  .hero-grid .hero-copy { order: 1; }
 }
+
+.hero-phone .phone-frame {
+  width: min(268px, 42vw);
+}
+
+.hero-phone .phone-screen-content {
+  transform: scale(0.9);
+  transform-origin: top center;
+  padding-top: 46px;
+}
+
+.hero-phone .cc-route-map-wrap { height: 88px; }
+.hero-phone .cc-hero-value { font-size: 36px; }
+.hero-phone .cc-card { padding: 10px; margin-bottom: 6px; }
+.hero-phone .cc-primary-btn-sm { height: 36px; font-size: 12px; }
+.hero-phone .phone-nav { display: none; }
 
 /* —— Premium iPhone frame —— */
 .phone-wrap { display: flex; justify-content: center; perspective: 1200px; }
@@ -725,6 +772,27 @@
 .role-rotator-value.is-fading {
   opacity: 0;
   transform: translateY(8px);
+}
+
+.audience-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 28px;
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.audience-chips span {
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid rgba(110, 180, 255, 0.16);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(234, 242, 255, 0.9);
 }
 
 /* —— Trust —— */

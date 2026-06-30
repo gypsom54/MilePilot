@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<!-- MilePilot Website v4.2 — app animations -->
+<!-- MilePilot Website v4.3 — hero + audience fix -->
 <html lang="en-GB">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>MilePilot — Your business. On AutoPilot.</title>
-  <meta name="description" content="MilePilot quietly records your driving in the background, helps you review your day, and creates professional mileage reports automatically.">
+  <meta name="description" content="MilePilot quietly records your business journeys in the background, helps you review your day, and prepares professional mileage reports automatically.">
   <meta name="theme-color" content="#031126">
-  <link rel="stylesheet" href="milepilot-theme.css?v=4.2">
-  <link rel="stylesheet" href="styles.css?v=4.2">
+  <link rel="stylesheet" href="milepilot-theme.css?v=4.3">
+  <link rel="stylesheet" href="styles.css?v=4.3">
 </head>
-<body>
+<body class="hero-animating">
   <header class="nav-app" id="nav">
     <div class="site-inner nav-row">
       <a href="#top" class="nav-logo" aria-label="MilePilot home">
@@ -46,10 +46,10 @@
               <div class="brand-pulse hero-autopilot-pulse" id="heroAutopilotPulse"></div>
             </div>
           </div>
-          <p class="site-tagline hero-rest" id="heroLine4">We handle the paperwork while you do the work.</p>
-          <p class="site-lead hero-rest">MilePilot quietly records your driving in the background, helps you review your day, and creates professional mileage reports automatically.</p>
+          <p class="site-tagline hero-rest" id="heroLine4">Drive your business. MilePilot handles the rest.</p>
+          <p class="site-lead hero-rest">MilePilot quietly records your business journeys in the background, helps you review your day, and prepares professional mileage reports automatically.</p>
           <div class="btn-row hero-rest">
-            <a class="btn-site-primary btn-glow" href="#cta">Join the beta</a>
+            <a class="btn-site-primary btn-glow" href="#cta">Join the Founding Drivers Beta</a>
             <button type="button" class="btn-site-secondary" id="demoBtn">See how it works</button>
           </div>
         </div>
@@ -123,16 +123,14 @@
                   </div>
                   <p class="card-text card-text-sm">09:14 Camden → City · 14:05 Client visit</p>
                 </div>
+                <div class="cc-card card-lift phone-seq">
+                  <div class="card-row">
+                    <span class="cc-card-title" style="margin:0">Next report</span>
+                    <span class="chip-blue">Sun 6pm</span>
+                  </div>
+                  <p class="card-text card-text-sm">Weekly summary + PDF</p>
+                </div>
                 <button type="button" class="cc-primary-btn cc-primary-btn-sm phone-seq">Review Day</button>
-                <nav class="nav phone-nav phone-seq" aria-hidden="true">
-                  <span class="nav-item active">
-                    <svg class="nav-icon" viewBox="0 0 24 24"><path d="M4 10.5L12 4l8 6.5V20a1 1 0 01-1 1h-5v-6H10v6H5a1 1 0 01-1-1v-9.5z"/></svg>
-                    <span class="nav-pulse"></span>Dashboard
-                  </span>
-                  <span class="nav-item"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M7 21V11M12 21V6M17 21V15"/></svg>Reports</span>
-                  <span class="nav-item"><svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l2.5 2"/></svg>History</span>
-                  <span class="nav-item"><svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.5"/><path d="M12 3v2M12 19v2"/></svg>Settings</span>
-                </nav>
               </div>
             </div>
             <div class="phone-reflection" aria-hidden="true"></div>
@@ -339,10 +337,16 @@
     <section class="site-section app-surface" id="built-for" data-section="built-for">
       <div class="site-inner reveal center-block">
         <h2 class="section-h">Built for the self-employed</h2>
-        <p class="site-lead center">Whether you&rsquo;re behind the wheel of a taxi, visiting clients, delivering parcels or travelling between jobs — MilePilot keeps track so you don&rsquo;t have to.</p>
+        <p class="site-lead center">If you&rsquo;re self-employed and use your vehicle for business, MilePilot helps record your mileage, review your journeys, and prepare professional reports automatically.</p>
         <div class="role-rotator" aria-live="polite">
           <span class="role-rotator-label">Perfect for</span>
           <span class="role-rotator-value" id="roleRotator">Taxi drivers</span>
+        </div>
+        <div class="audience-chips" aria-label="Who MilePilot is for">
+          <span>Taxi drivers</span><span>Private hire</span><span>Delivery workers</span>
+          <span>Electricians</span><span>Plumbers</span><span>Builders</span>
+          <span>Estate agents</span><span>Sales professionals</span><span>Mobile businesses</span>
+          <span>Self-employed mileage claims</span>
         </div>
       </div>
     </section>
@@ -353,7 +357,7 @@
         <h2 class="section-h">No hardware required</h2>
         <div class="trust-grid">
           <article class="cc-card card-lift"><h3 class="cc-card-title">No extra hardware</h3><p class="card-text">Your phone is all you need.</p></article>
-          <article class="cc-card card-lift"><h3 class="cc-card-title">Works while locked</h3><p class="card-text">Background tracking while you focus on the road.</p></article>
+          <article class="cc-card card-lift"><h3 class="cc-card-title">Works while locked</h3><p class="card-text">Background tracking while you focus on your work.</p></article>
           <article class="cc-card card-lift"><h3 class="cc-card-title">Review your day</h3><p class="card-text">End-of-day review — one calm timeline.</p></article>
           <article class="cc-card card-lift"><h3 class="cc-card-title">HMRC-ready records</h3><p class="card-text">Clear summaries for your accountant.</p></article>
         </div>
@@ -363,12 +367,12 @@
     <!-- Trust -->
     <section class="site-section app-surface" id="trust" data-section="trust">
       <div class="site-inner reveal">
-        <h2 class="section-h center-block">Designed around real drivers</h2>
+        <h2 class="section-h center-block">Designed around real self-employed professionals</h2>
         <ul class="trust-list">
-          <li><span class="trust-check">✓</span> Tested with Uber drivers</li>
-          <li><span class="trust-check">✓</span> Taxi drivers</li>
-          <li><span class="trust-check">✓</span> Self-employed trades</li>
-          <li><span class="trust-check">✓</span> Delivery drivers</li>
+          <li><span class="trust-check">✓</span> Taxi &amp; private hire</li>
+          <li><span class="trust-check">✓</span> Trades &amp; mobile businesses</li>
+          <li><span class="trust-check">✓</span> Delivery &amp; sales professionals</li>
+          <li><span class="trust-check">✓</span> Self-employed mileage claims</li>
           <li><span class="trust-check">✓</span> Works while locked</li>
           <li><span class="trust-check">✓</span> HMRC-ready reports</li>
         </ul>
@@ -379,8 +383,8 @@
     <section class="site-section" id="pricing" data-section="pricing">
       <div class="site-inner reveal center-block">
         <h2 class="section-h">Founding Drivers Beta</h2>
-        <p class="site-lead center">Be among the first to run your business mileage on AutoPilot.</p>
-        <a class="btn-site-primary btn-glow" href="https://app.milepilot.uk">Join the beta</a>
+        <p class="site-lead center">Be among the first self-employed professionals to run business mileage on AutoPilot.</p>
+        <a class="btn-site-primary btn-glow" href="https://app.milepilot.uk">Join the Founding Drivers Beta</a>
       </div>
     </section>
 
@@ -399,7 +403,7 @@
           </article>
           <article class="faq-item cc-card">
             <button type="button" class="faq-question" aria-expanded="false">Is this only for taxi drivers?</button>
-            <div class="faq-answer"><p class="card-text">No. Any self-employed professional who drives for work.</p></div>
+            <div class="faq-answer"><p class="card-text">No. Any self-employed professional who uses their vehicle for business and claims mileage.</p></div>
           </article>
           <article class="faq-item cc-card">
             <button type="button" class="faq-question" aria-expanded="false">How do reports work?</button>
@@ -415,9 +419,9 @@
       <div class="site-inner reveal center-block">
         <div class="brand-pulse alive cta-pulse"></div>
         <h2 class="cta-headline">Stop worrying about mileage forever.</h2>
-        <p class="cta-sub">Join the Founding Drivers.</p>
-        <p class="cta-body">Become one of the first drivers helping build the future of mileage tracking.</p>
-        <a class="btn-site-primary btn-glow btn-cta-large" href="https://app.milepilot.uk">Join the Founding Drivers</a>
+        <p class="cta-sub">Join the Founding Drivers Beta.</p>
+        <p class="cta-body">Be among the first self-employed professionals helping shape the future of business mileage records.</p>
+        <a class="btn-site-primary btn-glow btn-cta-large" href="https://app.milepilot.uk">Join the Founding Drivers Beta</a>
         <button type="button" class="btn-site-secondary" id="demoBtn2">See how it works</button>
       </div>
     </section>
@@ -445,6 +449,7 @@
     </div>
   </div>
 
-  <script src="main.js?v=4.2"></script>
+  <script src="main.js?v=4.3"></script>
+  <noscript><style>body.hero-animating .hero-line,body.hero-animating .hero-rest,body.hero-animating .hero-phone{opacity:1!important;transform:none!important}</style></noscript>
 </body>
 </html>

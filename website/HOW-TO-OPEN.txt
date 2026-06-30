@@ -1,8 +1,8 @@
-MilePilot Website v4.2 — easiest preview
+MilePilot Website v4.3 — easiest preview
 =========================================
 
-1. Download MilePilot-WEBSITE-v4.2-DOWNLOAD.zip from GitHub
-2. Unzip to a NEW folder (delete old copies to avoid cache)
+1. Download MilePilot-WEBSITE-v4.3-DOWNLOAD.zip from GitHub
+2. Unzip to a NEW folder
 3. Double-click OPEN-WEBSITE.bat
 
-Verify: hero headline animates line by line on load
+Verify: phone visible in hero on desktop + all three headline lines animate

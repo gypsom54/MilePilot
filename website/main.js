@@ -1,5 +1,4 @@
 (function () {
-  const APP_EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
   const STAGGER_MS = 100;
 
   const nav = document.getElementById('nav');
@@ -14,16 +13,19 @@
 
   const roles = [
     'Taxi drivers',
-    'Couriers',
+    'Private hire',
+    'Delivery workers',
     'Electricians',
+    'Plumbers',
     'Builders',
     'Estate agents',
-    'Uber drivers',
-    'Mobile hairdressers',
-    'Consultants',
+    'Sales professionals',
+    'Mobile businesses',
+    'Self-employed mileage claims',
   ];
 
   let roleIndex = 0;
+  let heroFallbackTimer = null;
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function onScroll() {
@@ -33,7 +35,7 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
-  function playPulseSweep(el, onDone) {
+  function playPulseSweep(el) {
     if (!el) return;
     el.classList.remove('is-sweep', 'is-alive', 'alive', 'sweep');
     void el.offsetWidth;
@@ -42,9 +44,32 @@
       el.classList.remove('is-sweep', 'sweep');
       el.classList.add('is-alive', 'alive');
       el.removeEventListener('animationend', handler);
-      onDone?.();
     };
     el.addEventListener('animationend', handler);
+  }
+
+  function completeHero() {
+    if (heroFallbackTimer) {
+      clearTimeout(heroFallbackTimer);
+      heroFallbackTimer = null;
+    }
+    document.body.classList.remove('hero-animating');
+    document.body.classList.add('hero-ready');
+
+    document.querySelectorAll('.hero-line, .hero-rest').forEach((el) => {
+      el.classList.add('is-in');
+    });
+
+    const phone = document.getElementById('heroPhone');
+    if (phone) {
+      phone.classList.add('is-in', 'is-alive');
+      animatePhone(phone);
+    }
+
+    const brandPulse = document.getElementById('heroBrandPulse');
+    const autopilotPulse = document.getElementById('heroAutopilotPulse');
+    brandPulse?.classList.add('is-alive', 'alive');
+    autopilotPulse?.classList.add('is-alive', 'alive');
   }
 
   function runHeroSequence() {
@@ -56,22 +81,21 @@
     const rest = document.querySelectorAll('.hero-rest');
     const phone = document.getElementById('heroPhone');
 
+    heroFallbackTimer = setTimeout(completeHero, 4000);
+
     if (reducedMotion) {
-      [line1, line2, line3, ...rest, phone].forEach((el) => el?.classList.add('is-in'));
-      brandPulse?.classList.add('is-alive', 'alive');
-      autopilotPulse?.classList.add('is-alive', 'alive');
-      phone?.classList.add('is-alive');
-      animatePhone(phone);
+      completeHero();
       return;
     }
 
     playPulseSweep(brandPulse);
 
-    const t1 = 150;
+    const t1 = 200;
     const t2 = t1 + 550 + 300;
     const t3 = t2 + 380 + 200;
-    const tRest = t3 + 500;
-    const tPhone = tRest + 200;
+    const tRest = t3 + 350;
+    const tPhone = 350;
+    const tDone = tRest + rest.length * STAGGER_MS + 300;
 
     setTimeout(() => line1?.classList.add('is-in'), t1);
     setTimeout(() => line2?.classList.add('is-in'), t2);
@@ -85,12 +109,11 @@
     });
 
     setTimeout(() => {
-      phone?.classList.add('is-in');
-      setTimeout(() => {
-        phone?.classList.add('is-alive');
-        animatePhone(phone);
-      }, 700);
+      phone?.classList.add('is-in', 'is-alive');
+      animatePhone(phone);
     }, tPhone);
+
+    setTimeout(completeHero, tDone);
   }
 
   function animateCount(el) {
@@ -125,9 +148,9 @@
     drawRouteOnce(phone);
     phone.querySelectorAll('[data-live="once"]').forEach(animateCount);
     const toast = phone.querySelector('.phone-toast-once');
-    if (toast) setTimeout(() => toast.classList.add('is-shown'), 1200);
+    if (toast) setTimeout(() => toast.classList.add('is-shown'), 900);
     phone.querySelectorAll('.phone-seq').forEach((el, i) => {
-      el.style.animationDelay = `${0.12 + i * 0.06}s`;
+      el.style.animationDelay = `${0.08 + i * 0.05}s`;
     });
   }
 
@@ -184,6 +207,7 @@
       phoneObserver.observe(block);
     });
   } else {
+    completeHero();
     reveals.forEach((el) => {
       el.classList.add('is-visible');
       staggerChildren(el);
@@ -251,5 +275,9 @@
     if (e.key === 'Escape') closeDemo();
   });
 
-  runHeroSequence();
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', runHeroSequence);
+  } else {
+    runHeroSequence();
+  }
 })();
