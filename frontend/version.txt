@@ -1,3 +1,3 @@
-MilePilot OS v7.9.0 — Taxi Shift Mode
+MilePilot OS v7.9.1 — Classify prompt fix
 Build: 2026-06-30
 Brand: Every business mile matters.
