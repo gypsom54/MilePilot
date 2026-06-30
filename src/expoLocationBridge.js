@@ -1,8 +1,7 @@
 /**
- * MilePilot — Expo native location bridge (React Native side)
- *
- * Handles WebView messages and routes GPS to expo-location / expo-task-manager.
- * Foreground watch + background task foundation for device testing.
+ * VITAL — BUSINESS CRITICAL (MP-043)
+ * Expo native location bridge — routes GPS to WebView handlePos.
+ * Do not modify without reading docs/TRACKING_CONTRACT.md
  */
 import * as Location from 'expo-location';
 import * as Notifications from 'expo-notifications';

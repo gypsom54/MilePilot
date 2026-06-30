@@ -1,8 +1,7 @@
 /**
- * MilePilot Expo shell — loads the existing MilePilot web UI in a WebView
- * and bridges native GPS via expo-location + expo-task-manager.
- *
- * UI, onboarding, dashboard, reports, AutoPilot logic: unchanged (served from web).
+ * VITAL — BUSINESS CRITICAL (MP-043)
+ * Expo WebView shell — loads PWA and bridges native GPS.
+ * Do not modify without reading docs/TRACKING_CONTRACT.md
  */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, AppState, Platform, SafeAreaView, StatusBar, StyleSheet, View } from 'react-native';

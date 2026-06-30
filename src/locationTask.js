@@ -1,12 +1,7 @@
 /**
- * MilePilot — Expo background location task
- *
- * BACKGROUND GPS TEST POINT
- * -------------------------
- * This task receives location updates while the app is backgrounded or the phone
- * is locked. Verify on a real iPhone drive that locations arrive here and that
- * mileage continues recording in the WebView shift.
- *
+ * VITAL — BUSINESS CRITICAL (MP-043)
+ * Expo background location task — records GPS when phone is locked.
+ * Do not modify without reading docs/TRACKING_CONTRACT.md
  * Do NOT claim background tracking works until confirmed on device.
  */
 import * as TaskManager from 'expo-task-manager';

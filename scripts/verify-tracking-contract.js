@@ -11,6 +11,10 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, "..");
 const contract = JSON.parse(fs.readFileSync(path.join(__dirname, "tracking-contract.json"), "utf8"));
 
+if (contract.vital) {
+  console.log("\n⚠️  VITAL SYSTEM — " + (contract.businessCritical || "Business critical tracking code") + "\n");
+}
+
 let failed = false;
 
 function fail(msg) {

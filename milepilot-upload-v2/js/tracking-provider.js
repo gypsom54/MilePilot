@@ -1,7 +1,7 @@
 /**
- * MP-039 / Expo — Tracking provider abstraction: web | native (Capacitor or Expo)
- * Web: existing navigator.geolocation (wired from index.html)
- * Native: Capacitor Geolocation OR Expo bridge (expo-location via WebView postMessage)
+ * VITAL — BUSINESS CRITICAL (MP-043)
+ * Native GPS bridge: expo-location → handlePos in index.html.
+ * Do not modify without reading docs/TRACKING_CONTRACT.md
  */
 (function (global) {
   'use strict';

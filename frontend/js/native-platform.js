@@ -1,5 +1,7 @@
 /**
- * MP-039 / Expo — Runtime platform detection: browser | pwa | native (Capacitor or Expo)
+ * VITAL — BUSINESS CRITICAL (MP-043)
+ * Native runtime detection for TestFlight / Expo.
+ * Do not modify without reading docs/TRACKING_CONTRACT.md
  */
 (function (global) {
   'use strict';

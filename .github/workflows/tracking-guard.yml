@@ -5,14 +5,17 @@ on:
     paths:
       - 'frontend/**'
       - 'milepilot-upload-v2/**'
+      - 'src/**'
       - 'scripts/tracking-contract.json'
       - 'scripts/verify-tracking-contract.js'
+      - '.github/workflows/tracking-guard.yml'
   push:
     branches:
       - main
     paths:
       - 'frontend/**'
       - 'milepilot-upload-v2/**'
+      - 'src/**'
       - 'scripts/tracking-contract.json'
       - 'scripts/verify-tracking-contract.js'
 

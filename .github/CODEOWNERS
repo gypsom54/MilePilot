@@ -1,0 +1,15 @@
+# BUSINESS CRITICAL — Mileage tracking / background GPS
+# Changes require explicit review. CI enforces scripts/tracking-contract.json
+/frontend/index.html @gypsom54
+/frontend/js/native-platform.js @gypsom54
+/frontend/js/tracking-provider.js @gypsom54
+/milepilot-upload-v2/index.html @gypsom54
+/milepilot-upload-v2/js/native-platform.js @gypsom54
+/milepilot-upload-v2/js/tracking-provider.js @gypsom54
+/src/locationTask.js @gypsom54
+/src/expoLocationBridge.js @gypsom54
+/src/MilePilotWebView.js @gypsom54
+/scripts/tracking-contract.json @gypsom54
+/scripts/verify-tracking-contract.js @gypsom54
+/docs/TRACKING_CONTRACT.md @gypsom54
+/.github/workflows/tracking-guard.yml @gypsom54
