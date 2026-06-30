@@ -1,0 +1,28 @@
+name: Tracking contract guard
+
+on:
+  pull_request:
+    paths:
+      - 'frontend/**'
+      - 'milepilot-upload-v2/**'
+      - 'scripts/tracking-contract.json'
+      - 'scripts/verify-tracking-contract.js'
+  push:
+    branches:
+      - main
+    paths:
+      - 'frontend/**'
+      - 'milepilot-upload-v2/**'
+      - 'scripts/tracking-contract.json'
+      - 'scripts/verify-tracking-contract.js'
+
+jobs:
+  verify-tracking-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify background GPS tracking contract
+        run: node scripts/verify-tracking-contract.js

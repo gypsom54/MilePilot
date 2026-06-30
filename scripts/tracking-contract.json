@@ -1,0 +1,34 @@
+{
+  "id": "MP-043",
+  "version": 1,
+  "description": "Background GPS resilience — required for MilePilot mileage recording. Do not remove without explicit product sign-off.",
+  "files": ["frontend/index.html", "milepilot-upload-v2/index.html"],
+  "minTrackingEngineVersion": 2,
+  "requiredConstants": [
+    "GEO_OPTS_TRACKING",
+    "ACC_SOFT_MAX",
+    "BG_GPS_POLL_MS",
+    "GPS_STALE_MS",
+    "GPS_RECONNECT_MS",
+    "NATIVE_SPEED_GATE_DT"
+  ],
+  "requiredFunctions": [
+    "startBackgroundGpsPoll",
+    "stopBackgroundGpsPoll",
+    "checkGpsStale",
+    "scheduleGpsReconnect",
+    "bindMotionGpsNudge",
+    "onGpsWatchError",
+    "ensureMotionAccess"
+  ],
+  "requiredPatterns": [
+    "enableHighAccuracy:true,maximumAge:0,timeout:12000",
+    "document.visibilityState==='visible'",
+    "startBackgroundGpsPoll()",
+    "enableTrackingGps(false)",
+    "checkGpsStale()",
+    "pageshow",
+    "deviceSpeedMps",
+    "ACC_SOFT_MAX:220"
+  ]
+}
