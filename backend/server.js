@@ -173,6 +173,42 @@ app.post("/reports/subscribe", async (req, res) => {
   }
 });
 
+app.post("/feedback", async (req, res) => {
+  try {
+    const { email, driver, appVersion, answers, submittedAt } = req.body || {};
+
+    if (!answers || typeof answers !== "object") {
+      return res.status(400).json({ ok: false, message: "Feedback answers are required" });
+    }
+
+    const entry = {
+      email: email || "",
+      driver: driver || "",
+      appVersion: appVersion || "",
+      answers,
+      submittedAt: submittedAt || new Date().toISOString(),
+    };
+
+    console.log("Beta feedback received:", JSON.stringify(entry, null, 2));
+
+    if (process.env.RESEND_API_KEY && process.env.FEEDBACK_TO) {
+      await resend.emails.send({
+        from: process.env.EMAIL_FROM || "MilePilot <reports@milepilot.uk>",
+        to: process.env.FEEDBACK_TO,
+        subject: `MilePilot Beta Feedback — ${driver || email || "Anonymous"}`,
+        text: Object.entries(answers)
+          .map(([k, v]) => `${k}: ${v}`)
+          .join("\n"),
+      });
+    }
+
+    return res.json({ ok: true, message: "Feedback received — thank you." });
+  } catch (err) {
+    console.error("Feedback failed:", err);
+    return res.status(500).json({ ok: false, message: err.message || "Feedback failed" });
+  }
+});
+
 app.listen(process.env.PORT || 8787, () => {
   console.log("MilePilot backend running on port " + (process.env.PORT || 8787));
   console.log("Report engine:", REPORT_VERSION);

@@ -32,7 +32,7 @@ export const VEHICLE_LABELS = {
   motorcycle: "Motorcycle",
 };
 
-export const REPORT_VERSION = "MP-016-summary-reports";
+export const REPORT_VERSION = "MP-017-premium-reports";
 const APP_URL = "https://app.milepilot.uk";
 
 /** Locked brand lockup — must match app `.brand-bar` exactly */
@@ -231,6 +231,116 @@ function mostProductiveHour(shifts) {
     label: `${String(best).padStart(2, "0")}:00–${String(end).padStart(2, "0")}:00`,
     miles: bestMi,
   };
+}
+
+function heroOverlineForPeriod(period) {
+  const map = {
+    Daily: "TODAY'S TOTAL",
+    Weekly: "WEEK TOTAL",
+    Monthly: "MONTH TOTAL",
+    Annual: "YEAR TOTAL",
+    Custom: "PERIOD TOTAL",
+    WeeklySummary: "WEEK INSIGHTS",
+    MonthlySummary: "MONTH INSIGHTS",
+  };
+  return map[period] || "PERIOD TOTAL";
+}
+
+function periodHeroSubtitle(a) {
+  if (a.period === "Custom" && a.periodSubtitle) return a.periodSubtitle;
+  if (a.period === "Weekly" || a.period === "WeeklySummary") return `Week ending ${a.weekEnding}`;
+  if (a.period === "Monthly" || a.period === "MonthlySummary") {
+    return new Date().toLocaleDateString("en-GB", { month: "long", year: "numeric" });
+  }
+  if (a.period === "Daily") return a.generatedAt;
+  return null;
+}
+
+function collectRoutePoints(shifts) {
+  const pts = [];
+  (shifts || []).forEach((s) => {
+    (s.route || s.routePoints || []).forEach((p) => {
+      if (p && p.lat != null && p.lon != null) pts.push(p);
+    });
+  });
+  return pts;
+}
+
+function buildEmailRouteMap(shifts) {
+  const pts = collectRoutePoints(shifts);
+  if (pts.length < 2) {
+    return `<div style="margin:0 0 28px;border-radius:16px;overflow:hidden;border:1px solid rgba(13,107,255,.22);background:linear-gradient(180deg,#0A2854 0%,#061A38 100%);padding:28px 20px;text-align:center;">
+      <div style="font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#6EB4FF;margin-bottom:8px;">Route Overview</div>
+      <div style="font-size:14px;color:#93A8C4;line-height:1.5;">Your business journeys are recorded and ready for your records.</div>
+    </div>`;
+  }
+  const lats = pts.map((p) => p.lat);
+  const lons = pts.map((p) => p.lon);
+  const minLat = Math.min(...lats);
+  const maxLat = Math.max(...lats);
+  const minLon = Math.min(...lons);
+  const maxLon = Math.max(...lons);
+  const pad = 14;
+  const w = 440;
+  const h = 128;
+  const scaleX = (w - pad * 2) / Math.max(maxLon - minLon, 1e-6);
+  const scaleY = (h - pad * 2) / Math.max(maxLat - minLat, 1e-6);
+  const scale = Math.min(scaleX, scaleY);
+  const mapped = pts.map((p) => [
+    pad + (p.lon - minLon) * scale,
+    h - pad - (p.lat - minLat) * scale,
+  ]);
+  const path = mapped.map((m, i) => `${i === 0 ? "M" : "L"}${m[0].toFixed(1)},${m[1].toFixed(1)}`).join(" ");
+  const start = mapped[0];
+  const end = mapped[mapped.length - 1];
+  return `<div style="margin:0 0 28px;border-radius:16px;overflow:hidden;border:1px solid rgba(13,107,255,.28);background:linear-gradient(180deg,#0A2854 0%,#061A38 100%);">
+    <div style="padding:14px 18px 0;font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#6EB4FF;">Route Overview</div>
+    <svg width="100%" height="128" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Business route map">
+      <path d="${path}" fill="none" stroke="rgba(13,107,255,.35)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="${path}" fill="none" stroke="#4DA3FF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="${start[0].toFixed(1)}" cy="${start[1].toFixed(1)}" r="5" fill="#20D781" stroke="#FFFFFF" stroke-width="1.5"/>
+      <circle cx="${end[0].toFixed(1)}" cy="${end[1].toFixed(1)}" r="5" fill="#0D6BFF" stroke="#FFFFFF" stroke-width="1.5"/>
+    </svg>
+  </div>`;
+}
+
+function emailStatusLine(period, periodLabel) {
+  const label =
+    period === "WeeklySummary"
+      ? "Weekly insights ready"
+      : period === "MonthlySummary"
+        ? "Monthly insights ready"
+        : period === "Weekly"
+          ? "Weekly report ready"
+          : period === "Monthly"
+            ? "Monthly report ready"
+            : period === "Custom"
+              ? "Custom report ready"
+              : "Daily report ready";
+  if (periodLabel) return `AutoPilot Active · ${periodLabel}`;
+  return `AutoPilot Active · ${label}`;
+}
+
+function drawRouteHeroPanel(doc, shifts, margin, y, contentW) {
+  const pts = collectRoutePoints(shifts);
+  if (pts.length < 2) return y;
+  const panelH = 88;
+  doc.roundedRect(margin, y, contentW, panelH, 14).fillAndStroke("#F0F6FF", BRAND.border);
+  doc.fillColor(BRAND.muted).font("Helvetica-Bold").fontSize(7.5).text("ROUTE OVERVIEW", margin + 18, y + 14, { characterSpacing: 0.8 });
+  drawMiniRoute(doc, margin + contentW - 148, y + 22, 130, 54, pts);
+  doc.fillColor(BRAND.text).font("Helvetica").fontSize(9).text(
+    `${pts.length} GPS points across ${shifts.length} business ${shifts.length === 1 ? "journey" : "journeys"}.`,
+    margin + 18,
+    y + 34,
+    { width: contentW - 180, lineGap: 1.3 }
+  );
+  doc.fillColor(BRAND.muted).font("Helvetica").fontSize(8).text(
+    "Professional record — suitable for HMRC, accountants, and official correspondence.",
+    margin + 18,
+    y + 58,
+    { width: contentW - 180, lineGap: 1.2 }
+  );
+  return y + panelH + 18;
 }
 
 function generateReportId(report, a) {
@@ -438,11 +548,16 @@ export function buildIntelligence(a) {
 }
 
 function drawFooter(doc, a, margin, contentW) {
-  const footY = doc.page.height - 64;
+  const footY = doc.page.height - 72;
   doc.moveTo(margin, footY - 14).lineTo(margin + contentW, footY - 14).strokeColor(BRAND.border).lineWidth(0.5).stroke();
   doc.fillColor(BRAND.blue).font("Helvetica-Bold").fontSize(9).text(BRAND_TAGLINE, margin, footY, { width: contentW, align: "center" });
-  doc.fillColor(BRAND.muted).font("Helvetica").fontSize(7.5).text("Generated by MilePilot", margin, footY + 14, { width: contentW, align: "center" });
-  doc.text(`${a.generatedAt} at ${a.generatedAtTime}  ·  Report ID ${a.reportId}  ·  ${REPORT_VERSION}`, margin, footY + 26, { width: contentW, align: "center" });
+  doc.fillColor(BRAND.muted).font("Helvetica").fontSize(7.5).text(
+    "Generated by MilePilot · Prepared for HMRC, accountants, and official records",
+    margin,
+    footY + 14,
+    { width: contentW, align: "center" }
+  );
+  doc.text(`${a.generatedAt} at ${a.generatedAtTime}  ·  Report ID ${a.reportId}  ·  ${REPORT_VERSION}`, margin, footY + 28, { width: contentW, align: "center" });
 }
 
 /** Solid brand pulse — matches app `.brand-pulse` (opaque blue gradient) */
@@ -714,14 +829,15 @@ export function buildPdfBuffer(report) {
     // ── PAGE 1: Hero + Intelligence ──
     let y = drawPageHeader(doc, a, margin, contentW, pageW);
 
-    const heroOverline = a.period === "Custom" ? "PERIOD TOTAL" : "TODAY'S TOTAL";
+    const heroOverline = heroOverlineForPeriod(a.period);
     doc.fillColor(BRAND.blue).font("Helvetica-Bold").fontSize(8).text(heroOverline, margin, y, { characterSpacing: 1.8 });
     y += 18;
     doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(96).text(a.totals.mi.toFixed(1), margin, y, { lineBreak: false });
     y += 102;
     doc.fillColor(BRAND.muted).font("Helvetica-Bold").fontSize(11).text("Business Miles", margin, y, { characterSpacing: 0.3 });
-    if (a.period === "Custom" && a.periodSubtitle) {
-      doc.fillColor(BRAND.muted).font("Helvetica").fontSize(10).text(a.periodSubtitle, margin, y + 16, { width: contentW });
+    const heroSub = periodHeroSubtitle(a);
+    if (heroSub) {
+      doc.fillColor(BRAND.muted).font("Helvetica").fontSize(10).text(heroSub, margin, y + 16, { width: contentW });
       y += 14;
     }
     doc.moveTo(margin, y + 18).lineTo(margin + 120, y + 18).strokeColor(BRAND.border).lineWidth(1).stroke();
@@ -754,7 +870,9 @@ export function buildPdfBuffer(report) {
       const row = Math.floor(i / 2);
       drawMetricCard(doc, margin + col * (cardW + 14), y + row * (cardH + 14), cardW, cardH, c.label, c.value);
     });
-    y += 2 * (cardH + 14) + 28;
+    y += 2 * (cardH + 14) + 20;
+
+    y = drawRouteHeroPanel(doc, a.shifts, margin, y, contentW);
 
     y = drawSectionTitle(doc, margin, y, "Insights", "MilePilot Intelligence");
 
@@ -913,49 +1031,63 @@ export function buildReportEmailHtml(report) {
   const greeting = timeGreeting();
   const ready = periodReadyLine(a.period, a.periodLabel);
   const isSummary = a.period === "WeeklySummary" || a.period === "MonthlySummary";
+  const status = emailStatusLine(a.period, a.periodLabel);
+  const routeMap = buildEmailRouteMap(a.shifts);
 
-  const metric = (label, value) =>
-    `<tr><td style="padding:0 0 12px;">
-      <div style="font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#93A8C4;margin-bottom:6px;">${label}</div>
-      <div style="font-size:28px;font-weight:700;color:#FFFFFF;letter-spacing:-0.03em;line-height:1.1;">${value}</div>
-    </td></tr>`;
+  const metricCard = (label, value) =>
+    `<td width="50%" style="padding:0 6px 12px 6px;vertical-align:top;">
+      <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:16px 18px;">
+        <div style="font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#93A8C4;margin-bottom:8px;">${label}</div>
+        <div style="font-size:26px;font-weight:700;color:#FFFFFF;letter-spacing:-0.03em;line-height:1.1;">${value}</div>
+      </div>
+    </td>`;
 
-  const comparison = isSummary
-    ? `<p style="margin:0 0 28px;font-size:14px;color:#93A8C4;line-height:1.55;">${comparisonLine(a, a.period === "MonthlySummary")}</p>`
-    : "";
+  const comparison =
+    isSummary || a.weekComparePct !== null || a.monthComparePct !== null
+      ? `<div style="margin:0 0 28px;padding:16px 18px;border-radius:14px;background:rgba(13,107,255,.12);border:1px solid rgba(13,107,255,.28);">
+          <div style="font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#6EB4FF;margin-bottom:8px;">Period Insight</div>
+          <div style="font-size:14px;color:#EAF2FF;line-height:1.55;">${comparisonLine(a, a.period === "MonthlySummary" || a.period === "Monthly")}</div>
+        </div>`
+      : "";
 
   const downloadUrl = buildReportDeepLink(report, true);
   const appUrl = `${APP_URL}/`;
 
   return `<!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
-<body style="margin:0;padding:0;background:#031126;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:linear-gradient(180deg,#0A2854 0%,#031126 100%);padding:44px 20px 52px;">
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MilePilot Report</title></head>
+<body style="margin:0;padding:0;background:#031126;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:linear-gradient(180deg,#0A2854 0%,#031126 55%,#020B1B 100%);padding:44px 20px 52px;">
 <tr><td align="center">
 <table width="480" cellpadding="0" cellspacing="0" style="max-width:480px;width:100%;">
 <tr><td style="padding:0 20px;">
   ${buildBrandEmailHeader()}
-  <p style="margin:0 0 12px;font-size:17px;color:#EAF2FF;line-height:1.5;">${greeting} ${name} 👋</p>
-  <p style="margin:0 0 32px;font-size:16px;color:#B9C8DD;line-height:1.55;">${ready}</p>
-  <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
-    ${metric("Business Miles", a.totals.mi.toFixed(1))}
-    ${metric("Driving Time", fmtShiftTime(a.totals.sec))}
-    ${metric("Business Journeys", String(a.totals.journeys))}
-    ${metric("HMRC Estimate", money(a.totals.hmrc))}
+  <div style="margin:0 0 24px;padding:10px 14px;border-radius:999px;background:rgba(13,107,255,.14);border:1px solid rgba(13,107,255,.32);text-align:center;">
+    <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#20D781;margin-right:8px;vertical-align:middle;"></span>
+    <span style="font-size:12px;font-weight:600;letter-spacing:0.06em;color:#B9D4FF;vertical-align:middle;">${status}</span>
+  </div>
+  <p style="margin:0 0 10px;font-size:18px;font-weight:600;color:#EAF2FF;line-height:1.45;letter-spacing:-0.01em;">${greeting}, ${name}</p>
+  <p style="margin:0 0 28px;font-size:15px;color:#B9C8DD;line-height:1.6;">${ready}</p>
+  ${routeMap}
+  <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:8px;">
+    <tr>${metricCard("Business Miles", a.totals.mi.toFixed(1))}${metricCard("Driving Time", fmtShiftTime(a.totals.sec))}</tr>
+    <tr>${metricCard("Business Journeys", String(a.totals.journeys))}${metricCard("HMRC Estimate", money(a.totals.hmrc))}</tr>
   </table>
   ${comparison}
-  ${a.pendingNotice ? `<p style="margin:0 0 24px;font-size:13px;color:#F0C35A;line-height:1.5;">${a.pendingNotice}</p>` : ""}
+  ${a.pendingNotice ? `<p style="margin:0 0 24px;font-size:13px;color:#F0C35A;line-height:1.55;padding:14px 16px;border-radius:12px;background:rgba(240,195,90,.1);border:1px solid rgba(240,195,90,.28);">${a.pendingNotice}</p>` : ""}
   <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:12px;">
-    <tr><td align="center" style="padding-bottom:10px;">
-      <a href="${downloadUrl}" style="display:inline-block;width:100%;max-width:320px;background:linear-gradient(180deg,#1E88FF,#0D6BFF);color:#FFFFFF;font-size:16px;font-weight:600;text-decoration:none;padding:16px 24px;border-radius:14px;letter-spacing:-0.01em;box-sizing:border-box;">📄 Download PDF Report</a>
+    <tr><td align="center" style="padding-bottom:12px;">
+      <a href="${downloadUrl}" style="display:inline-block;width:100%;max-width:320px;background:linear-gradient(180deg,#1E88FF 0%,#0D6BFF 55%,#005FE8 100%);color:#FFFFFF;font-size:16px;font-weight:600;text-decoration:none;padding:16px 24px;border-radius:14px;letter-spacing:-0.01em;box-sizing:border-box;box-shadow:0 8px 24px rgba(13,107,255,.28);">Download PDF Report</a>
     </td></tr>
     <tr><td align="center">
       <a href="${appUrl}" style="display:inline-block;color:#93A8C4;font-size:14px;font-weight:600;text-decoration:none;padding:8px 16px;">Open MilePilot</a>
     </td></tr>
   </table>
-  <p style="margin:0 0 36px;font-size:14px;color:#93A8C4;line-height:1.6;text-align:center;">Your professional PDF report is attached to this email.</p>
-  <p style="margin:0 0 8px;font-size:12px;font-weight:600;letter-spacing:0.14em;color:#0D6BFF;text-align:center;">${BRAND_TAGLINE}</p>
-  <p style="margin:0;font-size:13px;color:#B9C8DD;line-height:1.6;text-align:center;">Thank you for choosing MilePilot.<br><span style="color:#93A8C4;">Every mile matters.</span></p>
+  <p style="margin:0 0 36px;font-size:13px;color:#93A8C4;line-height:1.6;text-align:center;">Your professional PDF is attached — ready for HMRC, your accountant, or official records.</p>
+  <div style="border-top:1px solid rgba(255,255,255,.08);padding-top:28px;text-align:center;">
+    <p style="margin:0 0 8px;font-size:12px;font-weight:600;letter-spacing:0.14em;color:#0D6BFF;">${BRAND_TAGLINE}</p>
+    <p style="margin:0 0 6px;font-size:13px;color:#B9C8DD;line-height:1.6;">Thank you for choosing MilePilot.</p>
+    <p style="margin:0;font-size:11px;color:#64748B;line-height:1.55;">HMRC figures are estimates for record keeping. Verify against official guidance before filing.<br>MilePilot · app.milepilot.uk</p>
+  </div>
 </td></tr>
 </table>
 </td></tr>
@@ -966,37 +1098,30 @@ export function buildReportEmailHtml(report) {
 export function buildReportEmailText(report) {
   const a = analyseReport(report);
   const name = firstName(a.driver) || "there";
-  return `${timeGreeting()} ${name} 👋
+  return `${timeGreeting()}, ${name}
+
+${emailStatusLine(a.period, a.periodLabel)}
 
 ${periodReadyLine(a.period, a.periodLabel)}
 
 Business Miles: ${a.totals.mi.toFixed(1)}
-Travel Time: ${fmtShiftTime(a.totals.sec)}
+Driving Time: ${fmtShiftTime(a.totals.sec)}
 Business Journeys: ${a.totals.journeys}
-Estimated HMRC: ${money(a.totals.hmrc)}
+HMRC Estimate: ${money(a.totals.hmrc)}
 
-View your report in MilePilot: ${buildReportDeepLink(report, true)}
+${comparisonLine(a, a.period === "MonthlySummary" || a.period === "Monthly")}
 
-Your professional PDF report is attached to this email.
-
+Download your PDF: ${buildReportDeepLink(report, true)}
 Open MilePilot: ${APP_URL}/
 
+Your professional PDF is attached — ready for HMRC, your accountant, or official records.
+
 ${BRAND_TAGLINE}
-Thank you for choosing MilePilot.
-Your business. On AutoPilot.`;
+HMRC figures are estimates for record keeping. Verify against official guidance before filing.`;
 }
 
 export function buildReportSubject(report) {
   const period = report.period || "Daily";
-  const emoji =
-    period === "WeeklySummary" || period === "Weekly"
-      ? "📊 "
-      : period === "MonthlySummary" || period === "Monthly"
-        ? "📈 "
-        : period === "Daily"
-          ? "🚗 "
-          : period === "Custom"
-            ? "📋 "
-            : "✨ ";
-  return `${emoji}Your MilePilot ${periodReportTitle(period, report.periodLabel)}`;
+  const title = periodReportTitle(period, report.periodLabel);
+  return `Your MilePilot ${title}`;
 }

@@ -1,3 +1,1 @@
-MilePilot OS v8.23.0 — Bible polish, AutoPilot tagline, onboarding copy
-Build: 2026-06-29
-Brand: Your business. On AutoPilot.
+8.25.0
