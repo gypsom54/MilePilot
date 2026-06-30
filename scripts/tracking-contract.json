@@ -1,8 +1,18 @@
 {
   "id": "MP-043",
-  "version": 1,
+  "version": 2,
   "description": "Background GPS resilience — required for MilePilot mileage recording. Do not remove without explicit product sign-off.",
   "files": ["frontend/index.html", "milepilot-upload-v2/index.html"],
+  "companionFiles": [
+    "frontend/js/native-platform.js",
+    "frontend/js/tracking-provider.js",
+    "milepilot-upload-v2/js/native-platform.js",
+    "milepilot-upload-v2/js/tracking-provider.js"
+  ],
+  "companionExports": [
+    { "file": "frontend/js/native-platform.js", "symbol": "MPPlatform" },
+    { "file": "frontend/js/tracking-provider.js", "symbol": "MPTrackingProvider" }
+  ],
   "minTrackingEngineVersion": 2,
   "requiredConstants": [
     "GEO_OPTS_TRACKING",
@@ -19,7 +29,8 @@
     "scheduleGpsReconnect",
     "bindMotionGpsNudge",
     "onGpsWatchError",
-    "ensureMotionAccess"
+    "ensureMotionAccess",
+    "movementSpeedMps"
   ],
   "requiredPatterns": [
     "enableHighAccuracy:true,maximumAge:0,timeout:12000",
@@ -28,6 +39,8 @@
     "enableTrackingGps(false)",
     "checkGpsStale()",
     "pageshow",
+    "nativeGps",
+    "MPTrackingProvider.init",
     "deviceSpeedMps",
     "ACC_SOFT_MAX:220"
   ]

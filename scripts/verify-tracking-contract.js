@@ -57,10 +57,30 @@ for (const rel of contract.files) {
   }
 }
 
+for (const rel of contract.companionFiles || []) {
+  const filePath = path.join(root, rel);
+  if (!fs.existsSync(filePath)) {
+    fail(`Missing companion file: ${rel}`);
+    continue;
+  }
+  pass(`companion file ${rel}`);
+}
+
+for (const entry of contract.companionExports || []) {
+  const filePath = path.join(root, entry.file);
+  if (!fs.existsSync(filePath)) continue;
+  const src = fs.readFileSync(filePath, "utf8");
+  if (!src.includes(`global.${entry.symbol}`) && !src.includes(`${entry.symbol}`)) {
+    fail(`${entry.file}: missing export ${entry.symbol}`);
+  } else {
+    pass(`${entry.file}: ${entry.symbol}`);
+  }
+}
+
 if (failed) {
   console.error("\nTRACKING CONTRACT VIOLATION — background GPS resilience may be broken.");
   console.error("See docs/TRACKING_CONTRACT.md before changing tracking code.\n");
   process.exit(1);
 }
 
-console.log("\nTracking contract OK (" + contract.id + ")\n");
+console.log("\nTracking contract OK (" + contract.id + " v" + contract.version + ")\n");

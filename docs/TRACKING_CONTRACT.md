@@ -39,7 +39,7 @@ This contract prevents silent regressions when `index.html` is edited.
 
 | Version | Date | Change |
 |---------|------|--------|
-| MP-043 v1 | 2026-06-30 | Restored MP-041 fixes + added contract guard after consolidation regression |
+| MP-043 v2 | 2026-06-30 | Native TestFlight bridge restored (`MPPlatform`, `MPTrackingProvider`, `nativeGps` speed gate) |
 
 ## iOS limitation
 
