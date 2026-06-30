@@ -27,9 +27,11 @@ Premium · Minimal · Calm · Professional · Modern
 
 - Large iPhone mockup with animated route
 - **Headline:** Stop thinking about mileage.
-- **Subheadline:** MilePilot quietly records your driving in the background so you can focus on your business—not your paperwork.
-- **Primary CTA:** Start Free Trial → `https://app.milepilot.uk`
-- **Secondary CTA:** Watch 90 Second Demo (modal; video asset TBD)
+- **Supporting:** MilePilot records your journeys in the background, helps you review your day, and creates professional mileage reports automatically.
+- **Primary CTA:** Join the beta → `https://app.milepilot.uk`
+- **Secondary CTA:** See how it works (modal; video asset TBD)
+
+*No free trial language until public launch.*
 
 ---
 
