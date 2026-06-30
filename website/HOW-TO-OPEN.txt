@@ -1,8 +1,8 @@
-MilePilot Website v4.4 — easiest preview
-=========================================
+MilePilot Website v4.5 — easiest preview
+========================================
 
-1. Download MilePilot-WEBSITE-v4.4-DOWNLOAD.zip from GitHub
-2. Unzip to a NEW folder
+1. Download MilePilot-WEBSITE-v4.5-DOWNLOAD.zip from GitHub
+2. Unzip to a NEW folder (avoid stale cached copies)
 3. Double-click OPEN-WEBSITE.bat
 
-Verify: "Why AutoPilot is different" section before final CTA
+If the page looks old, clear your browser cache or use a private window.

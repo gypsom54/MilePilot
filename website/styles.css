@@ -457,6 +457,10 @@ body.hero-ready .hero-phone {
 
 .app-demo-phone .phone-frame { width: min(300px, 88vw); }
 
+.app-demo-phone.is-alive {
+  animation: phoneFloat 7s ease-in-out infinite;
+}
+
 .london-map { width: 100%; height: 100%; display: block; }
 
 /* —— Section dividers —— */
@@ -548,6 +552,35 @@ body.hero-ready .hero-phone {
 
 @media (min-width: 768px) {
   .steps-grid:not(.steps-grid-4) { grid-template-columns: repeat(3, 1fr); }
+}
+
+.step-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.step-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(13, 107, 255, 0.1);
+  border: 1px solid rgba(13, 107, 255, 0.18);
+  color: rgba(110, 180, 255, 0.92);
+  flex-shrink: 0;
+}
+
+.step-icon svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 /* Phone live polish */
@@ -728,9 +761,57 @@ body.hero-ready .hero-phone {
   color: rgba(234, 242, 255, 0.92);
 }
 
+.report-email-flow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 28px;
+  padding: 20px 24px;
+  border-radius: 18px;
+  border: 1px solid rgba(110, 180, 255, 0.14);
+  background: rgba(13, 107, 255, 0.05);
+}
+
+.report-email-step {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: rgba(159, 180, 208, 0.88);
+}
+
+.report-email-step.is-highlight {
+  color: rgba(110, 180, 255, 0.95);
+}
+
+.report-email-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 20px;
+}
+
+.report-email-arrow .brand-pulse {
+  width: 2px;
+  height: 20px;
+  margin: 0;
+  transform: rotate(90deg);
+  opacity: 0.7;
+}
+
 .hardware-lead {
   margin-bottom: 32px;
   max-width: 640px;
+}
+
+.hardware-card {
+  padding: 22px 20px;
+}
+
+.hardware-card-text {
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(185, 200, 221, 0.92);
 }
 
 .trust-cards {
@@ -1104,6 +1185,29 @@ body.hero-ready .hero-phone {
   margin-bottom: 16px;
 }
 
+.cta-footnote {
+  margin: 0 0 24px;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(159, 180, 208, 0.72);
+}
+
+/* —— Beta feedback —— */
+.beta-cards {
+  display: grid;
+  gap: 16px;
+  margin-top: 40px;
+  text-align: left;
+}
+
+@media (min-width: 768px) {
+  .beta-cards { grid-template-columns: repeat(3, 1fr); }
+}
+
+.beta-card {
+  padding: 22px 20px;
+}
+
 /* —— Footer —— */
 .site-footer { padding: 40px 0; }
 
@@ -1185,6 +1289,7 @@ body.hero-ready .hero-phone {
 @media (prefers-reduced-motion: reduce) {
   .phone-float,
   .hero-phone.is-alive,
+  .app-demo-phone.is-alive,
   .hero-pulse-bg,
   .hero-line,
   .hero-rest,

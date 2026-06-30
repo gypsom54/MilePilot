@@ -9,21 +9,6 @@
   const demoBtn = document.getElementById('demoBtn');
   const demoBtn2 = document.getElementById('demoBtn2');
   const demoClose = document.getElementById('demoClose');
-  const roleRotator = document.getElementById('roleRotator');
-
-  const roles = [
-    'HMRC mileage claims',
-    'Client visits',
-    'Site visits',
-    'Deliveries',
-    'Taxi & private hire',
-    'Trades & mobile businesses',
-    'Sales appointments',
-    'Estate agency visits',
-    'Self-employed mileage records',
-  ];
-
-  let roleIndex = 0;
   let heroFallbackTimer = null;
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -207,19 +192,34 @@
     );
     document.querySelectorAll('[data-section]').forEach((el) => sectionObserver.observe(el));
 
-    document.querySelectorAll('.app-demo-phone, .report-wallet').forEach((block) => {
-      const phoneObserver = new IntersectionObserver(
+    document.querySelectorAll('.app-demo-phone').forEach((phone) => {
+      const demoObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add('is-alive');
+            animatePhone(entry.target);
+            demoObserver.unobserve(entry.target);
+          });
+        },
+        { threshold: 0.35 }
+      );
+      demoObserver.observe(phone);
+    });
+
+    document.querySelectorAll('.report-wallet').forEach((wallet) => {
+      const walletObserver = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
             if (!entry.isIntersecting) return;
             drawRouteOnce(entry.target);
             entry.target.querySelectorAll('[data-count]').forEach(animateCount);
-            phoneObserver.unobserve(entry.target);
+            walletObserver.unobserve(entry.target);
           });
         },
         { threshold: 0.35 }
       );
-      phoneObserver.observe(block);
+      walletObserver.observe(wallet);
     });
 
     const workflowCard = document.getElementById('workflowCard');
@@ -262,18 +262,6 @@
       }
     });
   });
-
-  function rotateRole() {
-    if (!roleRotator || reducedMotion) return;
-    roleRotator.classList.add('is-fading');
-    setTimeout(() => {
-      roleIndex = (roleIndex + 1) % roles.length;
-      roleRotator.textContent = roles[roleIndex];
-      roleRotator.classList.remove('is-fading');
-    }, 500);
-  }
-
-  if (roleRotator) setInterval(rotateRole, 2800);
 
   function openDemo() {
     if (!demoOverlay) return;
