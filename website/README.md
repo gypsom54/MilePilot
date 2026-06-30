@@ -1,6 +1,6 @@
-# MilePilot Website v1.0
+# MilePilot Website v1.2
 
-Premium marketing site — Apple-style product launch. Not a typical SaaS landing page.
+Premium marketing site — Apple-style product launch, matched to app branding (navy panels, electric blue pulse, AutoPilot feel).
 
 **Live targets:** `milepilot.uk` (marketing) · `app.milepilot.uk` (product)
 

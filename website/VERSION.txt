@@ -1,6 +1,3 @@
-MilePilot Website v1.1 — polished beta CTAs + phone carousel
+MilePilot Website v1.2 — app branding match
 Build: 2026-06-30
-Branch: cursor/milepilot-bible-polish-4c0e
-Commit: f2924c3
-
-Verify: open index.html and search for "Join the beta" (NOT "Start free trial")
+Verify: search index.html for "Drive • Track • Claim" and "v1.2"
