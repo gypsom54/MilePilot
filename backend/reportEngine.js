@@ -5,6 +5,13 @@
 
 import PDFDocument from "pdfkit";
 import { createHash } from "crypto";
+import {
+  buildRouteMapContext,
+  renderEmailRouteSection,
+  drawPdfRouteHero,
+  drawPdfMiniRoute,
+  extractRoutePoints,
+} from "./routeMapService.js";
 
 export const BRAND = {
   navy: "#031126",
@@ -32,7 +39,7 @@ export const VEHICLE_LABELS = {
   motorcycle: "Motorcycle",
 };
 
-export const REPORT_VERSION = "MP-018-report-delivery";
+export const REPORT_VERSION = "MP-019-route-maps";
 const APP_URL = "https://app.milepilot.uk";
 
 /** Locked brand lockup — must match app `.brand-bar` exactly */
@@ -260,52 +267,14 @@ function periodHeroSubtitle(a) {
   return null;
 }
 
-function collectRoutePoints(shifts) {
-  const pts = [];
-  (shifts || []).forEach((s) => {
-    (s.route || s.routePoints || []).forEach((p) => {
-      if (p && p.lat != null && p.lon != null) pts.push(p);
-    });
-  });
-  return pts;
+function buildEmailRouteMap(shifts, analysis) {
+  const ctx = buildRouteMapContext(shifts, analysis);
+  return renderEmailRouteSection(ctx, analysis, { fmtShiftTime, money });
 }
 
-function buildEmailRouteMap(shifts) {
-  const pts = collectRoutePoints(shifts);
-  if (pts.length < 2) {
-    return `<div style="margin:0 0 28px;border-radius:16px;overflow:hidden;border:1px solid rgba(13,107,255,.22);background:linear-gradient(180deg,#0A2854 0%,#061A38 100%);padding:28px 20px;text-align:center;">
-      <div style="font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#6EB4FF;margin-bottom:8px;">Route Overview</div>
-      <div style="font-size:14px;color:#93A8C4;line-height:1.5;">Your business journeys are recorded and ready for your records.</div>
-    </div>`;
-  }
-  const lats = pts.map((p) => p.lat);
-  const lons = pts.map((p) => p.lon);
-  const minLat = Math.min(...lats);
-  const maxLat = Math.max(...lats);
-  const minLon = Math.min(...lons);
-  const maxLon = Math.max(...lons);
-  const pad = 14;
-  const w = 440;
-  const h = 128;
-  const scaleX = (w - pad * 2) / Math.max(maxLon - minLon, 1e-6);
-  const scaleY = (h - pad * 2) / Math.max(maxLat - minLat, 1e-6);
-  const scale = Math.min(scaleX, scaleY);
-  const mapped = pts.map((p) => [
-    pad + (p.lon - minLon) * scale,
-    h - pad - (p.lat - minLat) * scale,
-  ]);
-  const path = mapped.map((m, i) => `${i === 0 ? "M" : "L"}${m[0].toFixed(1)},${m[1].toFixed(1)}`).join(" ");
-  const start = mapped[0];
-  const end = mapped[mapped.length - 1];
-  return `<div style="margin:0 0 28px;border-radius:16px;overflow:hidden;border:1px solid rgba(13,107,255,.28);background:linear-gradient(180deg,#0A2854 0%,#061A38 100%);">
-    <div style="padding:14px 18px 0;font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#6EB4FF;">Route Overview</div>
-    <svg width="100%" height="128" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Business route map">
-      <path d="${path}" fill="none" stroke="rgba(13,107,255,.35)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="${path}" fill="none" stroke="#4DA3FF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-      <circle cx="${start[0].toFixed(1)}" cy="${start[1].toFixed(1)}" r="5" fill="#20D781" stroke="#FFFFFF" stroke-width="1.5"/>
-      <circle cx="${end[0].toFixed(1)}" cy="${end[1].toFixed(1)}" r="5" fill="#0D6BFF" stroke="#FFFFFF" stroke-width="1.5"/>
-    </svg>
-  </div>`;
+function drawRouteHeroPanel(doc, shifts, margin, y, contentW, analysis) {
+  const ctx = buildRouteMapContext(shifts, analysis);
+  return drawPdfRouteHero(doc, ctx, analysis, margin, y, contentW, BRAND, { fmtShiftTime, money });
 }
 
 function emailStatusLine(period, periodLabel) {
@@ -323,28 +292,6 @@ function emailStatusLine(period, periodLabel) {
               : "Daily report ready";
   if (periodLabel) return `AutoPilot Active · ${periodLabel}`;
   return `AutoPilot Active · ${label}`;
-}
-
-function drawRouteHeroPanel(doc, shifts, margin, y, contentW) {
-  const pts = collectRoutePoints(shifts);
-  if (pts.length < 2) return y;
-  const panelH = 88;
-  doc.roundedRect(margin, y, contentW, panelH, 14).fillAndStroke("#F0F6FF", BRAND.border);
-  doc.fillColor(BRAND.muted).font("Helvetica-Bold").fontSize(7.5).text("ROUTE OVERVIEW", margin + 18, y + 14, { characterSpacing: 0.8 });
-  drawMiniRoute(doc, margin + contentW - 148, y + 22, 130, 54, pts);
-  doc.fillColor(BRAND.text).font("Helvetica").fontSize(9).text(
-    `${pts.length} GPS points across ${shifts.length} business ${shifts.length === 1 ? "journey" : "journeys"}.`,
-    margin + 18,
-    y + 34,
-    { width: contentW - 180, lineGap: 1.3 }
-  );
-  doc.fillColor(BRAND.muted).font("Helvetica").fontSize(8).text(
-    "Professional record — suitable for HMRC, accountants, and official correspondence.",
-    margin + 18,
-    y + 58,
-    { width: contentW - 180, lineGap: 1.2 }
-  );
-  return y + panelH + 18;
 }
 
 function generateReportId(report, a) {
@@ -661,26 +608,7 @@ function drawProgressBar(doc, x, y, w, h, pct) {
 }
 
 function drawMiniRoute(doc, x, y, w, h, route) {
-  const pts = (route || []).filter((p) => p && p.lat != null && p.lon != null);
-  if (pts.length < 2) return;
-  const lats = pts.map((p) => p.lat);
-  const lons = pts.map((p) => p.lon);
-  const minLat = Math.min(...lats);
-  const maxLat = Math.max(...lats);
-  const minLon = Math.min(...lons);
-  const maxLon = Math.max(...lons);
-  const pad = 5;
-  const scaleX = (w - pad * 2) / Math.max(maxLon - minLon, 1e-6);
-  const scaleY = (h - pad * 2) / Math.max(maxLat - minLat, 1e-6);
-  const scale = Math.min(scaleX, scaleY);
-  doc.roundedRect(x, y, w, h, 4).fillAndStroke(BRAND.light, BRAND.border);
-  const mapped = pts.map((p) => [
-    x + pad + (p.lon - minLon) * scale,
-    y + h - pad - (p.lat - minLat) * scale,
-  ]);
-  doc.moveTo(mapped[0][0], mapped[0][1]);
-  for (let i = 1; i < mapped.length; i++) doc.lineTo(mapped[i][0], mapped[i][1]);
-  doc.strokeColor(BRAND.blue).lineWidth(1.1).stroke();
+  drawPdfMiniRoute(doc, x, y, w, h, extractRoutePoints({ route, routePoints: route }), BRAND);
 }
 
 function comparisonLine(a, isMonthly) {
@@ -744,7 +672,9 @@ function buildInsightSummaryPdf(report, a) {
       const row = Math.floor(i / 2);
       drawMetricCard(doc, margin + col * (cardW + 14), y + row * (cardH + 14), cardW, cardH, c.label, c.value);
     });
-    y += 2 * (cardH + 14) + 24;
+    y += 2 * (cardH + 14) + 20;
+
+    y = drawRouteHeroPanel(doc, a.shifts, margin, y, contentW, a);
 
     doc.roundedRect(margin, y, contentW, 56, 12).fillAndStroke("#EEF4FF", BRAND.blue);
     doc.fillColor(BRAND.muted).font("Helvetica-Bold").fontSize(7.5).text("PERIOD INSIGHT", margin + 18, y + 14, { characterSpacing: 0.6 });
@@ -876,7 +806,7 @@ export function buildPdfBuffer(report) {
     });
     y += 2 * (cardH + 14) + 20;
 
-    y = drawRouteHeroPanel(doc, a.shifts, margin, y, contentW);
+    y = drawRouteHeroPanel(doc, a.shifts, margin, y, contentW, a);
 
     y = drawSectionTitle(doc, margin, y, "Insights", "MilePilot Intelligence");
 
@@ -901,11 +831,18 @@ export function buildPdfBuffer(report) {
     y = drawSectionTitle(doc, margin, y, "Journeys", "Trip Timeline", a.period === "Custom" ? "Business journeys in date order" : "Professional record for your accountant");
 
     const isCustom = a.period === "Custom";
-    const tCols = isCustom
-      ? [margin + 8, margin + 48, margin + 92, margin + 142, margin + 192, margin + 248]
+    const showRouteCol = isCustom || a.period === "Weekly" || a.period === "Monthly";
+    const tCols = showRouteCol
+      ? isCustom
+        ? [margin + 8, margin + 48, margin + 92, margin + 142, margin + 192, margin + 248]
+        : [margin + 8, margin + 44, margin + 84, margin + 128, margin + 168, margin + 214]
       : [margin + 8, margin + 52, margin + 102, margin + 162, margin + 222, margin + 292];
     doc.roundedRect(margin, y, contentW, 24, 4).fill(BRAND.navy);
-    (isCustom ? ["Date", "Start", "Finish", "Miles", "Drive", "Route"] : ["Time", "Start", "Finish", "Miles", "Duration"]).forEach((h, i) => {
+    (showRouteCol
+      ? isCustom
+        ? ["Date", "Start", "Finish", "Miles", "Drive", "Route"]
+        : ["Day", "Start", "Finish", "Miles", "Drive", "Route"]
+      : ["Time", "Start", "Finish", "Miles", "Duration"]).forEach((h, i) => {
       doc.fillColor("#FFF").font("Helvetica-Bold").fontSize(7.5).text(h.toUpperCase(), tCols[i], y + 8);
     });
     y += 24;
@@ -915,7 +852,8 @@ export function buildPdfBuffer(report) {
       doc.fillColor(BRAND.muted).font("Helvetica").fontSize(10).text("No journeys recorded in this period.", margin + 16, y + 14);
     } else {
       a.shifts.forEach((s, idx) => {
-        const rowH = isCustom && (s.route?.length >= 2 || s.routePoints?.length >= 2) ? 36 : 24;
+        const route = s.route || s.routePoints || [];
+        const rowH = showRouteCol && route.length >= 2 ? 36 : 24;
         if (y + rowH > doc.page.height - 180) {
           drawFooter(doc, a, margin, contentW);
           doc.addPage({ margin: 0 });
@@ -929,8 +867,7 @@ export function buildPdfBuffer(report) {
         doc.text(fmtClock(s.endISO), tCols[2], y + (rowH > 24 ? 12 : 8));
         doc.font("Helvetica-Bold").text(Number(s.miles || 0).toFixed(1), tCols[3], y + (rowH > 24 ? 12 : 8));
         doc.font("Helvetica").text(fmtDurationShort(s.seconds), tCols[4], y + (rowH > 24 ? 12 : 8));
-        if (isCustom) {
-          const route = s.route || s.routePoints || [];
+        if (showRouteCol) {
           if (route.length >= 2) drawMiniRoute(doc, tCols[5], y + 4, contentW - (tCols[5] - margin) - 8, rowH - 8, route);
           else doc.fillColor(BRAND.muted).fontSize(7.5).text("—", tCols[5], y + 12);
         }
@@ -1036,7 +973,7 @@ export function buildReportEmailHtml(report, options = {}) {
   const ready = periodReadyLine(a.period, a.periodLabel);
   const isSummary = a.period === "WeeklySummary" || a.period === "MonthlySummary";
   const status = emailStatusLine(a.period, a.periodLabel);
-  const routeMap = buildEmailRouteMap(a.shifts);
+  const routeMap = buildEmailRouteMap(a.shifts, a);
 
   const metricCard = (label, value) =>
     `<td width="50%" style="padding:0 6px 12px 6px;vertical-align:top;">
