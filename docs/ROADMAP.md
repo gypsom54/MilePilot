@@ -5,6 +5,22 @@
 
 ---
 
+## 🔒 MP-041 — Reporting, Shift Mode & AI (LOCKED)
+
+**Doc:** `docs/MP-041-REPORTING-AI-ROADMAP.md`  
+**Status:** Locked June 2026 — TestFlight confirmed
+
+| Policy | Status |
+|--------|--------|
+| No report after every trip / End Shift | ✅ Locked |
+| Daily / weekly / monthly scheduled digests only | ✅ Locked |
+| Business miles only; Pending excluded with count | ✅ Locked |
+| Stationary grace — short stops don't end trips | ✅ Shipped v8.19.0 |
+| Taxi shift mode (shift ≠ per-trip review) | 🔜 Roadmap — preserve shift engine |
+| AI suggests, never auto-classifies or auto-ends | ✅ Locked architecture |
+
+---
+
 ## Progress snapshot
 
 | Area | Status |

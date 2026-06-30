@@ -1,1 +1,1 @@
-MilePilot OS v8.19.0 — Stationary grace period for trip ending (20 min default)
+MilePilot OS v8.19.1 — Locked reporting policy (MP-041); no PDF on End Shift

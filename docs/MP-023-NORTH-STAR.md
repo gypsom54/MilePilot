@@ -223,3 +223,4 @@ That is the future of MilePilot.
 - `docs/MP-021-AUTOPILOT-PHILOSOPHY.md` — onboarding implementation
 - `docs/MP-022-BRAND-MESSAGING.md` — copy and voice
 - `docs/AUTO_PILOT.md` — driving flow automation (MP-016)
+- `docs/MP-041-REPORTING-AI-ROADMAP.md` — reporting schedule, shift mode & AI rules (locked)

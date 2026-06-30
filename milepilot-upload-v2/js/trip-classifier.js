@@ -1,6 +1,7 @@
 /**
- * MilePilot Trip Classifier — AI suggestion architecture
- * Suggestions only. The user always has final approval — never auto-classify.
+ * MilePilot Trip Classifier — LOCKED (MP-041)
+ * AI suggestion architecture: suggest only, never auto-classify.
+ * User always confirms Business / Personal / Later.
  */
 (function (global) {
   'use strict';

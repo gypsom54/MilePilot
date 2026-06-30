@@ -1,6 +1,7 @@
 /**
- * MilePilot Report Scheduler — frequency-based summary reports (not per-trip).
- * Daily / weekly / monthly digests only; one email per period.
+ * MilePilot Report Scheduler — LOCKED (MP-041)
+ * Frequency-based summary reports only — never per-trip or per-shift.
+ * Daily 6pm · Weekly Sunday 6pm · Monthly 1st. Business trips only; pending excluded.
  */
 (function (global) {
   'use strict';

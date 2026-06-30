@@ -1,6 +1,9 @@
 /**
  * MilePilot Tracking Engine v3
  * Auto-records journeys; classifies after sustained stationary period (pending → business | personal).
+ *
+ * ROADMAP (MP-041): Taxi/cab Shift Mode — treat work as one shift; long waits do not end shift;
+ * waiting time tracked separately. Preserve shift lifecycle when extending — do not remove.
  */
 (function (global) {
   'use strict';

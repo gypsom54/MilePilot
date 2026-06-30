@@ -1,6 +1,9 @@
 /**
  * MilePilot Report Engine — MP-012 Premium Document v11 (LOCKED)
  * PDF layout locked — informational charts · coach intelligence · official footer
+ *
+ * Content rules (MP-041): Business trips only · Pending excluded with count ·
+ * Scheduled digests (daily/weekly/monthly) — never per-trip email triggers.
  */
 
 import PDFDocument from "pdfkit";
