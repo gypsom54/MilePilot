@@ -38,6 +38,7 @@ Taxi & private hire · Delivery · Tradespeople · Estate agents · Sales reps �
 - Your data stays yours
 - Review before reports
 - Built for UK business mileage
+- **No beacons or accessories** — your phone is enough
 
 ### CTA block
 **Your business. On AutoPilot.**  
@@ -78,6 +79,7 @@ MilePilot quietly records your business journeys while you work. Review your day
 • Custom date ranges for any period  
 • HMRC-ready mileage estimates  
 • Calm, simple design — no clutter  
+• **No hardware required** — no beacons, tags, or accessories
 
 **Built for**
 
@@ -103,7 +105,10 @@ Download MilePilot. Your business. On AutoPilot.
 A business companion that records your mileage automatically and prepares professional reports.
 
 **Do I need to start a timer?**  
-No. Start a shift when you're working. MilePilot handles the rest.
+No. MilePilot works quietly in the background while you drive. Review your day when it suits you.
+
+**Do I need beacons or car accessories?**  
+No. MilePilot never requires additional hardware — no Bluetooth beacons, vehicle tags, or GPS accessories. Install the app, enable permissions once, and drive normally.
 
 **Is my data private?**  
 Yes. Your journeys stay on your account. We don't sell your data.

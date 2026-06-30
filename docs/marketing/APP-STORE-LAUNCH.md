@@ -31,6 +31,7 @@ Your business. On AutoPilot. Quiet mileage recording, daily review, and professi
 ## Release notes (v1.0 template)
 
 - Automatic business journey recording  
+- **No hardware required** — phone only, no beacons or accessories  
 - Professional PDF mileage reports  
 - Custom date range reports  
 - Email reports on your schedule  

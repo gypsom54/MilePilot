@@ -36,6 +36,9 @@ One calm interface. One trust layer. One brand.
 - A noisy fleet tracker
 - A feature dump for accountants only
 - A product that asks users to think about mileage all day
+- A hardware-dependent tracker (no beacons, tags, or accessories — ever)
+
+See [NO-HARDWARE-PHILOSOPHY.md](./NO-HARDWARE-PHILOSOPHY.md).
 
 ---
 
@@ -62,6 +65,26 @@ Before any feature ships, answer **yes** to all:
 5. Does it reinforce **Your business. On AutoPilot.**?
 
 If any answer is **no** — rethink.
+
+### No hardware — ever 🔒
+
+MilePilot will **never** require Bluetooth beacons, iBeacons, vehicle tags, car accessories, or external GPS devices.
+
+**Only:** Install → enable permissions once → AutoPilot → drive normally.
+
+Full policy: [NO-HARDWARE-PHILOSOPHY.md](./NO-HARDWARE-PHILOSOPHY.md).
+
+Our competitive advantage is **simplicity** — not gadget ecosystems.
+
+### AutoPilot Intelligence
+
+Instead of hardware, software signals determine the workday:
+
+- Motion activity · Background GPS · Speed · Stationary detection
+- Driver Intelligence · Learned routines · Start/end locations · Typical working hours
+- **User confirmations** (business vs personal)
+
+The user should never need to remember to start tracking, stop tracking, buy hardware, or pair Bluetooth devices. MilePilot works quietly in the background.
 
 ### AI policy
 
@@ -227,6 +250,8 @@ Under 15 words per beat. See [marketing/ONBOARDING-COPY.md](./marketing/ONBOARDI
 - Suggest patterns; user confirms
 - Shown on dashboard when calm (not during active tracking)
 - Never blocks core tracking flow
+- **Phone-only signals** — motion, GPS, speed, stationary detection, routines, locations, working hours (see [NO-HARDWARE-PHILOSOPHY.md](./NO-HARDWARE-PHILOSOPHY.md))
+- Goal: reduce manual start/stop; never require hardware
 
 ---
 
@@ -286,6 +311,7 @@ Not: "Can we build this?"
 |---------|-----------|
 | v8.22.x | Custom date range reports |
 | v8.23.0 | Bible + UX polish + onboarding copy |
+| v8.23.1 | No-hardware philosophy locked |
 | Future | Review Day, AutoPilot OS modules |
 
 ---
