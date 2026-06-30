@@ -1,3 +1,3 @@
-MilePilot OS v8.22.2 — Custom date range explainer (generic)
+MilePilot OS v8.23.0 — Bible polish, AutoPilot tagline, onboarding copy
 Build: 2026-06-29
-Brand: Every business mile matters.
+Brand: Your business. On AutoPilot.

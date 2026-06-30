@@ -36,7 +36,7 @@ export const REPORT_VERSION = "MP-015-document-v2";
 const APP_URL = "https://app.milepilot.uk";
 
 /** Locked brand lockup — must match app `.brand-bar` exactly */
-export const BRAND_TAGLINE = "Drive • Track • Claim";
+export const BRAND_TAGLINE = "Your business. On AutoPilot.";
 export const BRAND_WORDMARK_SIZE = 34;
 export const BRAND_PULSE_WIDTH = 200;
 
@@ -829,9 +829,9 @@ Your professional PDF report is attached to this email.
 
 Open MilePilot: ${APP_URL}/
 
-Drive • Track • Claim
+${BRAND_TAGLINE}
 Thank you for choosing MilePilot.
-Every mile matters.`;
+Your business. On AutoPilot.`;
 }
 
 export function buildReportSubject(report) {
