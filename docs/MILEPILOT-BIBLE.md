@@ -285,6 +285,7 @@ That free-text field **is** the roadmap.
 
 Full package: [marketing/](./marketing/)
 
+- **Website v1.0:** [website/](../website/) — Apple-style launch page
 - Homepage & landing copy
 - App Store listing
 - FAQ, welcome emails
