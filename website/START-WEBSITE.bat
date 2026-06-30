@@ -1,13 +1,18 @@
 @echo off
-title MilePilot Website v4.6
+setlocal EnableExtensions
+title MilePilot Website
 cd /d "%~dp0"
-echo.
-type VERSION.txt
-echo.
-findstr /C:"milepilot-theme.css" index.html >nul
-if errorlevel 1 (
-  echo ERROR: Download MilePilot-WEBSITE-v4.6-DOWNLOAD.zip from GitHub.
+
+if not exist "%~dp0index.html" (
+  echo ERROR: index.html not found. Unzip the website download zip first.
+  echo Folder: %CD%
   pause
   exit /b 1
 )
-start "" "%~dp0index.html"
+
+if exist "%~dp0VERSION.txt" type "%~dp0VERSION.txt" & echo.
+
+set "PAGE=%~dp0index.html"
+start "" "%PAGE%"
+echo Opened %PAGE%
+timeout /t 2 /nobreak >nul

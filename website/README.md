@@ -1,4 +1,4 @@
-# MilePilot Website v4.6
+# MilePilot Website v4.6.1
 
 App design system replica with unified card glow consistency pass.
 
@@ -6,7 +6,7 @@ App design system replica with unified card glow consistency pass.
 
 ## Preview locally
 
-1. Download `MilePilot-WEBSITE-v4.6-DOWNLOAD.zip` from GitHub
+1. Download `MilePilot-WEBSITE-v4.6.1-DOWNLOAD.zip` from GitHub
 2. Unzip to a **new** folder
 3. Double-click `OPEN-WEBSITE.bat`
 
