@@ -108,22 +108,28 @@ function timeGreeting() {
   return "Good evening";
 }
 
-function periodReadyLine(period) {
+function periodReadyLine(period, periodLabel) {
+  if (periodLabel) {
+    return `Your business mileage summary for ${periodLabel.replace(/^Custom Period · /, "")} is ready.`;
+  }
   const map = {
     Daily: "Your business mileage summary for today is ready.",
     Weekly: "Your business mileage summary for this week is ready.",
     Monthly: "Your business mileage summary for this month is ready.",
     Annual: "Your annual business mileage summary is ready.",
+    Custom: "Your custom-period business mileage summary is ready.",
   };
   return map[period] || "Your business mileage summary is ready.";
 }
 
-function periodReportTitle(period) {
+function periodReportTitle(period, periodLabel) {
+  if (periodLabel) return periodLabel;
   const map = {
     Daily: "Daily Business Mileage Report",
     Weekly: "Weekly Business Mileage Report",
     Monthly: "Monthly Business Mileage Report",
     Annual: "Annual Business Mileage Report",
+    Custom: "Custom Period Business Mileage Report",
   };
   return map[period] || `${period} Business Mileage Report`;
 }
@@ -226,7 +232,7 @@ function mostProductiveHour(shifts) {
 function generateReportId(report, a) {
   const raw = `${a.period}|${a.driver}|${new Date().toISOString().slice(0, 10)}|${a.totals.mi}`;
   const hash = createHash("sha256").update(raw).digest("hex").slice(0, 8).toUpperCase();
-  const prefix = { Daily: "DY", Weekly: "WK", Monthly: "MO", Annual: "YR" }[a.period] || "RP";
+  const prefix = { Daily: "DY", Weekly: "WK", Monthly: "MO", Annual: "YR", Custom: "CP" }[a.period] || "RP";
   return `MP-${new Date().toISOString().slice(0, 10).replace(/-/g, "")}-${prefix}-${hash}`;
 }
 
@@ -287,6 +293,7 @@ export function analyseReport(report) {
     weekShifts,
     driver: (report.driver || "").trim(),
     period: report.period || "Daily",
+    periodLabel: (report.periodLabel || "").trim() || null,
     dailyActivity: groupByDay(weekShifts),
     longest,
     longestJ,
@@ -405,7 +412,7 @@ function drawPageHeader(doc, a, margin, contentW, pageW) {
   drawBrandPulse(doc, margin, 70, BRAND_PULSE_WIDTH);
   doc.fillColor("#6EB4FF").font("Helvetica-Bold").fontSize(10.5).text(BRAND_TAGLINE, margin, 82, { characterSpacing: 1.4 });
   const rightX = pageW - margin - 210;
-  doc.fillColor("#FFFFFF").font("Helvetica-Bold").fontSize(9.5).text(periodReportTitle(a.period).toUpperCase(), rightX, 32, { width: 210, align: "right", characterSpacing: 0.8 });
+  doc.fillColor("#FFFFFF").font("Helvetica-Bold").fontSize(9.5).text(periodReportTitle(a.period, a.periodLabel).toUpperCase(), rightX, 32, { width: 210, align: "right", characterSpacing: 0.8 });
   doc.fillColor(BRAND.soft).font("Helvetica").fontSize(9).text(a.generatedAt, rightX, 50, { width: 210, align: "right" });
   if (a.driver) {
     doc.text(`Prepared for ${a.driver}`, rightX, 66, { width: 210, align: "right" });
@@ -502,7 +509,8 @@ export function buildPdfBuffer(report) {
     // ── PAGE 1: Hero + Intelligence ──
     let y = drawPageHeader(doc, a, margin, contentW, pageW);
 
-    doc.fillColor(BRAND.blue).font("Helvetica-Bold").fontSize(8).text("TODAY'S TOTAL", margin, y, { characterSpacing: 1.8 });
+    const heroOverline = a.period === "Custom" ? "PERIOD TOTAL" : "TODAY'S TOTAL";
+    doc.fillColor(BRAND.blue).font("Helvetica-Bold").fontSize(8).text(heroOverline, margin, y, { characterSpacing: 1.8 });
     y += 18;
     doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(96).text(a.totals.mi.toFixed(1), margin, y, { lineBreak: false });
     y += 102;
@@ -629,7 +637,7 @@ export function buildReportEmailHtml(report) {
   const a = analyseReport(report);
   const name = firstName(a.driver) || "there";
   const greeting = timeGreeting();
-  const ready = periodReadyLine(a.period);
+  const ready = periodReadyLine(a.period, a.periodLabel);
 
   const metric = (label, value) =>
     `<tr><td style="padding:0 0 12px;">
@@ -679,7 +687,7 @@ export function buildReportEmailText(report) {
   const name = firstName(a.driver) || "there";
   return `${timeGreeting()} ${name} 👋
 
-${periodReadyLine(a.period)}
+${periodReadyLine(a.period, a.periodLabel)}
 
 Business Miles: ${a.totals.mi.toFixed(1)}
 Travel Time: ${fmtShiftTime(a.totals.sec)}
@@ -699,6 +707,6 @@ Every mile matters.`;
 
 export function buildReportSubject(report) {
   const period = report.period || "Daily";
-  const emoji = period === "Weekly" ? "📊 " : period === "Daily" ? "🚗 " : "";
-  return `${emoji}Your MilePilot ${periodReportTitle(period)}`;
+  const emoji = period === "Weekly" ? "📊 " : period === "Daily" ? "🚗 " : period === "Custom" ? "📋 " : "";
+  return `${emoji}Your MilePilot ${periodReportTitle(period, report.periodLabel)}`;
 }
