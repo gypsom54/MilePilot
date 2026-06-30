@@ -1,3 +1,3 @@
-MilePilot Website v4.6.3 — foolproof launcher
+MilePilot Website v4.7 — trust + glow polish
 Build: 2026-06-29
-Verify: zip contains MilePilot-Website folder + DOUBLE-CLICK-ME.vbs
+Verify: consistent card glow + modern smartphone trust wording

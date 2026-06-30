@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- MilePilot Website v4.6 — card glow consistency -->
+<!-- MilePilot Website v4.7 — trust + glow polish -->
 <html lang="en-GB">
 <head>
   <meta charset="utf-8">
@@ -7,8 +7,8 @@
   <title>MilePilot — Your business. On AutoPilot.</title>
   <meta name="description" content="MilePilot quietly records your business journeys in the background, helps you review your day, and prepares professional mileage reports automatically.">
   <meta name="theme-color" content="#031126">
-  <link rel="stylesheet" href="milepilot-theme.css?v=4.6.3">
-  <link rel="stylesheet" href="styles.css?v=4.6.3">
+  <link rel="stylesheet" href="milepilot-theme.css?v=4.7">
+  <link rel="stylesheet" href="styles.css?v=4.7">
 </head>
 <body class="hero-animating">
   <header class="nav-app" id="nav">
@@ -155,7 +155,7 @@
         <ul class="moment-list">
           <li>No spreadsheets</li>
           <li>No forgotten trips</li>
-          <li>No extra hardware</li>
+          <li>No extra devices</li>
         </ul>
       </div>
     </section>
@@ -302,7 +302,7 @@
         <p class="reports-sub">Tomorrow&rsquo;s paperwork. Ready tonight.</p>
         <p class="site-lead reports-lead">Your mileage report is prepared automatically from the journeys you confirm as business.</p>
         <div class="reports-layout">
-          <div class="report-delivery">
+          <div class="report-delivery mp-glow-panel">
             <ul class="report-delivery-list">
               <li><span class="chip-blue">Daily PDF</span></li>
               <li><span class="chip-blue">Weekly PDF</span></li>
@@ -367,16 +367,16 @@
       </div>
     </section>
 
-    <!-- 7. Your phone is enough -->
+    <!-- 7. No extra hardware -->
     <section class="site-section" id="hardware" data-section="hardware">
       <div class="site-inner reveal">
-        <h2 class="section-h">Your phone is enough</h2>
-        <p class="site-lead hardware-lead">No Bluetooth beacons. No car trackers. No extra hardware. MilePilot is built to work with the phone already in your pocket.</p>
+        <h2 class="section-h">No extra hardware for modern smartphones.</h2>
+        <p class="site-lead hardware-lead">MilePilot is designed to work with the phone already in your pocket. No Bluetooth beacons, car trackers or extra devices required.</p>
         <div class="trust-grid hardware-cards">
-          <article class="cc-card card-lift hardware-card"><h3 class="cc-card-title">No extra hardware</h3><p class="card-text hardware-card-text">Your phone is all you need. No beacons. No car trackers. No extra hardware.</p></article>
-          <article class="cc-card card-lift hardware-card"><h3 class="cc-card-title">Works while locked</h3><p class="card-text hardware-card-text">Background tracking while you focus on your work.</p></article>
-          <article class="cc-card card-lift hardware-card"><h3 class="cc-card-title">Review your day</h3><p class="card-text hardware-card-text">One calm end-of-day timeline. Confirm journeys in minutes.</p></article>
-          <article class="cc-card card-lift hardware-card"><h3 class="cc-card-title">HMRC-ready records</h3><p class="card-text hardware-card-text">Clear mileage summaries ready for your accountant.</p></article>
+          <article class="cc-card card-lift hardware-card"><h3 class="cc-card-title">No extra hardware</h3><p class="card-text hardware-card-text">No beacons. No car trackers. Just your smartphone.</p></article>
+          <article class="cc-card card-lift hardware-card"><h3 class="cc-card-title">Works while locked</h3><p class="card-text hardware-card-text">Built for background tracking on supported iPhone and Android devices.</p></article>
+          <article class="cc-card card-lift hardware-card"><h3 class="cc-card-title">Review your day</h3><p class="card-text hardware-card-text">One calm end-of-day timeline before reports are generated.</p></article>
+          <article class="cc-card card-lift hardware-card"><h3 class="cc-card-title">HMRC-ready records</h3><p class="card-text hardware-card-text">Clear mileage summaries for your accountant or records.</p></article>
         </div>
       </div>
     </section>
@@ -390,7 +390,7 @@
           <article class="cc-card card-lift" data-stagger><h3 class="cc-card-title">Trades &amp; mobile businesses</h3><p class="card-text">Site visits and client calls recorded quietly.</p></article>
           <article class="cc-card card-lift" data-stagger><h3 class="cc-card-title">Delivery &amp; sales professionals</h3><p class="card-text">Journeys captured while you work.</p></article>
           <article class="cc-card card-lift" data-stagger><h3 class="cc-card-title">HMRC mileage claims</h3><p class="card-text">Clear records for your accountant.</p></article>
-          <article class="cc-card card-lift" data-stagger><h3 class="cc-card-title">Works while locked</h3><p class="card-text">Background recording on your phone.</p></article>
+          <article class="cc-card card-lift" data-stagger><h3 class="cc-card-title">Works while locked</h3><p class="card-text">Background recording on supported smartphones.</p></article>
           <article class="cc-card card-lift" data-stagger><h3 class="cc-card-title">Professional reports</h3><p class="card-text">PDFs prepared automatically.</p></article>
         </div>
       </div>
@@ -399,9 +399,11 @@
     <!-- 8. Beta -->
     <section class="site-section" id="pricing" data-section="pricing">
       <div class="site-inner reveal center-block">
-        <h2 class="section-h">Founding Drivers Beta</h2>
-        <p class="site-lead center">Be among the first self-employed professionals to run business mileage on AutoPilot.</p>
-        <a class="btn-site-primary btn-glow" href="https://app.milepilot.uk">Join the Founding Drivers Beta</a>
+        <div class="beta-panel cc-card card-lift">
+          <h2 class="section-h">Founding Drivers Beta</h2>
+          <p class="site-lead center">Be among the first self-employed professionals to run business mileage on AutoPilot.</p>
+          <a class="btn-site-primary btn-glow" href="https://app.milepilot.uk">Join the Founding Drivers Beta</a>
+        </div>
       </div>
     </section>
 
@@ -412,11 +414,15 @@
         <div class="faq-list" id="faqList">
           <article class="faq-item cc-card is-open">
             <button type="button" class="faq-question" aria-expanded="true">Does it work when my phone is locked?</button>
-            <div class="faq-answer"><p class="card-text">Yes. MilePilot is built for background tracking while you work.</p></div>
+            <div class="faq-answer"><p class="card-text">On supported iPhone and Android devices with background location enabled, MilePilot is built for tracking while your phone is locked.</p></div>
           </article>
           <article class="faq-item cc-card">
             <button type="button" class="faq-question" aria-expanded="false">Do I need extra hardware?</button>
-            <div class="faq-answer"><p class="card-text">No. Your phone is all you need.</p></div>
+            <div class="faq-answer"><p class="card-text">No. MilePilot is designed for modern smartphones — no beacons, car trackers or extra devices required.</p></div>
+          </article>
+          <article class="faq-item cc-card">
+            <button type="button" class="faq-question" aria-expanded="false">Will MilePilot work on every phone?</button>
+            <div class="faq-answer"><p class="card-text">MilePilot is designed for modern iPhone and Android devices with background location and motion permissions enabled. Very old devices or restricted permission settings may affect background tracking performance.</p></div>
           </article>
           <article class="faq-item cc-card">
             <button type="button" class="faq-question" aria-expanded="false">Is this only for taxi drivers?</button>
@@ -520,7 +526,7 @@
     </div>
   </div>
 
-  <script src="main.js?v=4.6.3"></script>
+  <script src="main.js?v=4.7"></script>
   <noscript><style>body.hero-animating .hero-line,body.hero-animating .hero-rest,body.hero-animating .hero-phone{opacity:1!important;transform:none!important}</style></noscript>
 </body>
 </html>

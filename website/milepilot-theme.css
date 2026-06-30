@@ -16,6 +16,7 @@
   --mp-card-border: rgba(110, 180, 255, 0.16);
   --mp-card-border-hover: rgba(13, 107, 255, 0.32);
   --mp-card-border-strong: rgba(13, 107, 255, 0.35);
+  --mp-card-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(3, 17, 38, 0.38));
   --mp-card-shadow:
     0 8px 32px rgba(13, 107, 255, 0.12),
     0 2px 8px rgba(0, 0, 0, 0.14),
@@ -232,7 +233,7 @@ svg { display: block; max-width: 100%; }
 .cc-card {
   border: 1px solid var(--mp-card-border);
   border-radius: 22px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(13, 107, 255, 0.03));
+  background: var(--mp-card-bg);
   padding: 20px 18px;
   margin: 0 0 16px;
   box-shadow: var(--mp-card-shadow);

@@ -558,6 +558,13 @@ body.hero-ready .hero-phone {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  background: var(--mp-card-bg);
+}
+
+.step-card.card-lift:hover {
+  transform: translateY(-4px);
+  border-color: var(--mp-card-border-hover);
+  box-shadow: var(--mp-card-shadow-hover);
 }
 
 .step-icon {
@@ -669,6 +676,10 @@ body.hero-ready .hero-phone {
     inset 0 1px 0 rgba(255, 255, 255, 0.07);
 }
 
+.timeline-card.card-lift {
+  background: var(--mp-card-bg);
+}
+
 .timeline-card.card-lift:hover,
 .timeline-highlight.card-lift:hover {
   transform: translateY(-3px);
@@ -709,7 +720,7 @@ body.hero-ready .hero-phone {
   position: relative;
   border-radius: 16px;
   border: 1px solid var(--mp-card-border);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(13, 107, 255, 0.02));
+  background: var(--mp-card-bg);
   box-shadow: var(--mp-card-shadow);
   transition: var(--mp-card-transition);
 }
@@ -765,6 +776,33 @@ body.hero-ready .hero-phone {
   max-width: 560px;
 }
 
+.report-delivery-list {
+  list-style: none;
+  margin: 0 0 24px;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.report-delivery-list li {
+  list-style: none;
+}
+
+.mp-glow-panel {
+  padding: 24px 22px;
+  border-radius: 22px;
+  border: 1px solid var(--mp-card-border);
+  background: var(--mp-card-bg);
+  box-shadow: var(--mp-card-shadow);
+  transition: var(--mp-card-transition);
+}
+
+.mp-glow-panel:hover {
+  border-color: var(--mp-card-border-hover);
+  box-shadow: var(--mp-card-shadow-hover);
+}
+
 .report-delivery-list,
 .report-features-list {
   list-style: none;
@@ -781,7 +819,7 @@ body.hero-ready .hero-phone {
   font-size: 14px;
   font-weight: 500;
   border: 1px solid var(--mp-card-border);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(13, 107, 255, 0.03));
+  background: var(--mp-card-bg);
   color: rgba(234, 242, 255, 0.92);
   box-shadow: var(--mp-card-shadow);
   transition: var(--mp-card-transition);
@@ -802,7 +840,7 @@ body.hero-ready .hero-phone {
   padding: 20px 24px;
   border-radius: 18px;
   border: 1px solid var(--mp-card-border);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(13, 107, 255, 0.04));
+  background: var(--mp-card-bg);
   box-shadow: var(--mp-card-shadow);
   transition: var(--mp-card-transition);
 }
@@ -845,6 +883,13 @@ body.hero-ready .hero-phone {
 
 .hardware-card {
   padding: 22px 20px;
+  background: var(--mp-card-bg);
+}
+
+.hardware-card.card-lift:hover {
+  transform: translateY(-4px);
+  border-color: var(--mp-card-border-hover);
+  box-shadow: var(--mp-card-shadow-hover);
 }
 
 .hardware-card-text {
@@ -888,6 +933,13 @@ body.hero-ready .hero-phone {
 
 .workflow-card {
   padding: 24px 22px;
+  background: var(--mp-card-bg);
+}
+
+.workflow-card.card-lift:hover {
+  transform: translateY(-4px);
+  border-color: var(--mp-card-border-hover);
+  box-shadow: var(--mp-card-shadow-hover);
 }
 
 .workflow-steps {
@@ -1087,7 +1139,7 @@ body.hero-ready .hero-phone {
   font-size: 13px;
   font-weight: 500;
   border: 1px solid var(--mp-card-border);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(13, 107, 255, 0.03));
+  background: var(--mp-card-bg);
   color: rgba(234, 242, 255, 0.9);
   box-shadow: 0 4px 20px rgba(13, 107, 255, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.04);
   transition: var(--mp-card-transition);
@@ -1204,7 +1256,7 @@ body.hero-ready .hero-phone {
 }
 
 .faq-item.is-open .faq-answer {
-  max-height: 280px;
+  max-height: 360px;
   padding: 0 24px 22px;
 }
 
@@ -1218,8 +1270,14 @@ body.hero-ready .hero-phone {
   padding: clamp(40px, 6vw, 56px) clamp(24px, 5vw, 48px);
   border-radius: 28px;
   border: 1px solid var(--mp-card-border);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(13, 107, 255, 0.05));
+  background: var(--mp-card-bg);
   box-shadow: var(--mp-card-shadow);
+  transition: var(--mp-card-transition);
+}
+
+.cta-final .site-inner:hover {
+  border-color: var(--mp-card-border-hover);
+  box-shadow: var(--mp-card-shadow-hover);
 }
 
 .cta-pulse { margin: 0 auto 32px; width: 180px; }
@@ -1278,6 +1336,27 @@ body.hero-ready .hero-phone {
 
 .beta-card {
   padding: 22px 20px;
+  background: var(--mp-card-bg);
+}
+
+.beta-panel {
+  padding: clamp(32px, 5vw, 48px) clamp(24px, 4vw, 40px);
+  margin: 0 auto;
+  max-width: 640px;
+  text-align: center;
+  background: var(--mp-card-bg);
+}
+
+.beta-panel .section-h {
+  margin-bottom: 16px;
+}
+
+.beta-panel .site-lead {
+  margin-bottom: 28px;
+}
+
+.trust-cards .cc-card {
+  background: var(--mp-card-bg);
 }
 
 /* —— Footer —— */
