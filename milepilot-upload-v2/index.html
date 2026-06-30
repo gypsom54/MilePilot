@@ -874,7 +874,7 @@ body.map-expand-open{overflow:hidden}
 <script src="js/app-copy.js"></script>
 <script src="js/beta-feedback.js"></script>
 <script>
-const APP_VERSION='8.26.0';
+const APP_VERSION='8.26.1';
 const DEFAULT_WEEKLY_GOAL_MILES=400;
 const BUSINESS_PROFILE_KEY='mp_business_profile';
 const PRODUCT_VISION_LOCK='2026-06-vision-v1';
@@ -1130,7 +1130,6 @@ function deleteArchiveReport(id){if(typeof MPReportArchive==='undefined')return;
 function parseDeepLink(){const params=new URLSearchParams(location.search);if(params.get('view')==='reports'){showReports();clearDeepLink();return true}const r=params.get('reports');if(!r)return false;if(r.toLowerCase()==='archive'){showReports();clearDeepLink();return true}const map={day:'daily',daily:'daily',week:'weekly',weekly:'weekly',month:'monthly',monthly:'monthly',custom:'all'};const f=map[r.toLowerCase()];if(f){if(f!=='all')setArchiveFilter(f);showReports();clearDeepLink();return true}return false}
 function clearDeepLink(){if(location.search)history.replaceState({},'',location.pathname+location.hash)}
 function buildReportPayload(){const t=periodTotals(),week=periodTotals('week'),prev=previousPeriodTotals(),prevWeek=previousWeekTotals(),meta=periodMeta();return{driver:localStorage.getItem('mp_driver')||'',period:meta.api,totals:{miles:t.mi,time:fmt(t.sec),hmrc:t.hmrc},previousPeriod:prev,previousWeek:prevWeek,weekShifts:week.list,hmrcRate:vehicles[vehicle]?.rate||0.55,shifts:t.list}}
-let customReportState=null,customReportInited=false;
 function resolveCustomReportRange(){const start=q('customReportStart')?.value||'',end=q('customReportEnd')?.value||'';if(typeof MPCustomReport==='undefined')return{ok:false,error:'Custom reports not loaded — refresh the app.'};return MPCustomReport.parseDateRangeRequest(start,end)}
 function previewCustomPeriod(){refreshTripStore();const r=resolveCustomReportRange(),hint=q('customReportHint'),preview=q('customReportPreview'),pendingEl=q('customReportPending');if(!r.ok){if(hint)hint.textContent=r.error;if(preview)preview.hidden=true;if(pendingEl)pendingEl.hidden=true;customReportState=null;return false}const data=MPCustomReport.collectReportJourneys({shifts,trips,start:r.start,end:r.end,claimFn:claim,vehicle});customReportState={...r,data};if(hint)hint.textContent='';if(pendingEl){if(data.pendingNotice){pendingEl.textContent=data.pendingNotice;pendingEl.hidden=false}else pendingEl.hidden=true}if(preview){preview.hidden=false;setText('customReportRange',r.label);setText('customReportMiles',data.mi.toFixed(1)+' business miles');setText('customReportSub',data.included.length+' business journey'+(data.included.length===1?'':'s')+' · '+money(data.hmrc)+' estimated · '+fmt(data.waitingSec)+' waiting')}const email=q('customReportEmail');if(email&&!email.value)email.value=localStorage.getItem('mp_email')||'';return true}
 function buildCustomReportPayload(){if(!customReportState?.ok&&!previewCustomPeriod())return null;return MPCustomReport.buildPayload({shifts,trips,range:customReportState,driver:localStorage.getItem('mp_driver')||'',hmrcRate:vehicles[vehicle]?.rate||0.55,fmt,claimFn:claim,vehicle})}
