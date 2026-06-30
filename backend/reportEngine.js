@@ -693,6 +693,7 @@ export function buildReportEmailHtml(report) {
   ${buildBrandEmailHeader()}
   <p style="margin:0 0 12px;font-size:17px;color:#EAF2FF;line-height:1.5;">${greeting} ${name} 👋</p>
   <p style="margin:0 0 32px;font-size:16px;color:#B9C8DD;line-height:1.55;">${ready}</p>
+  ${report.pendingWarning ? `<p style="margin:0 0 24px;font-size:14px;color:#FFC857;line-height:1.5;padding:12px 14px;border-radius:12px;background:rgba(255,193,7,.08);border:1px solid rgba(255,193,7,.2);">${report.pendingWarning}</p>` : ""}
   <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
     ${metric("Business Miles", a.totals.mi.toFixed(1))}
     ${a.shiftMode ? metric("Shift Time", fmtShiftTime(a.totals.sec)) : metric("Travel Time", fmtShiftTime(a.totals.sec))}
@@ -730,7 +731,7 @@ export function buildReportEmailText(report) {
 
 ${periodReadyLine(a.period)}
 
-Business Miles: ${a.totals.mi.toFixed(1)}
+${report.pendingWarning ? report.pendingWarning + "\n\n" : ""}Business Miles: ${a.totals.mi.toFixed(1)}
 ${a.shiftMode ? `Shift Time: ${fmtShiftTime(a.totals.sec)}` : `Travel Time: ${fmtShiftTime(a.totals.sec)}`}
 ${
   a.shiftMode
