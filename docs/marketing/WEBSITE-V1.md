@@ -1,7 +1,7 @@
 # MilePilot Website Version 1.0
 
-**Status:** v1.0 spec — June 2026  
-**Implementation:** `website/index.html`
+**Status:** ⚠️ **Superseded for visual work** — use [MILEPILOT-BRAND-SYSTEM-v1.0.md](../MILEPILOT-BRAND-SYSTEM-v1.0.md). Website development paused until Brand System is applied.  
+**Implementation:** `website/index.html` (v3.0 — partial, not system-compliant)
 
 This website should not feel like a software landing page. It should feel like an **Apple product launch**.
 

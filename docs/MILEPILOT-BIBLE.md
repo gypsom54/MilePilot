@@ -103,11 +103,21 @@ The user should never need to remember to start tracking, stop tracking, buy har
 
 ## 4. Brand
 
+**Full visual system:** [MILEPILOT-BRAND-SYSTEM-v1.0.md](./MILEPILOT-BRAND-SYSTEM-v1.0.md) — tokens, pulse, route, hero moment, platform rules.
+
+### Message hierarchy (locked)
+
+| Level | Copy |
+|-------|------|
+| Primary | Stop thinking about mileage. |
+| Secondary | Your business. On AutoPilot. |
+| Legacy | Drive • Track • Claim — footer/transitional only |
+
 ### Wordmark
 
 **Mile** <span style="color:#0D6BFF">Pilot</span> — system UI, weight 700, letter-spacing -0.04em
 
-### Tagline (primary)
+### Tagline (secondary — emotional centre)
 
 **Your business. On AutoPilot.**
 

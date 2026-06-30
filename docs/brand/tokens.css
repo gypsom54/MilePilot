@@ -1,0 +1,95 @@
+/**
+ * MilePilot Brand System v1.0 — Design Tokens
+ * Canonical source for all platforms. Import or mirror exactly.
+ * Do not invent new values outside this file without updating the Brand System doc.
+ */
+
+:root {
+  /* —— Colour —— */
+  --mp-navy: #031126;
+  --mp-navy-soft: #0a2854;
+  --mp-panel: #0b2348;
+  --mp-map: #0b1b36;
+  --mp-blue: #0d6bff;
+  --mp-blue-bright: #1e88ff;
+  --mp-blue-deep: #005fe8;
+  --mp-blue-muted: #6eadff;
+  --mp-blue-glow: rgba(13, 107, 255, 0.35);
+  --mp-blue-glow-soft: rgba(13, 107, 255, 0.18);
+  --mp-white: #ffffff;
+  --mp-off-white: #f7f9fc;
+  --mp-text: #0f1d33;
+  --mp-muted: #b9c8dd;
+  --mp-muted-label: #9fb4d0;
+  --mp-muted-dim: rgba(147, 168, 196, 0.88);
+  --mp-line: rgba(255, 255, 255, 0.14);
+  --mp-line-subtle: rgba(110, 180, 255, 0.14);
+  --mp-green: #20d781;
+  --mp-amber: #f0c35a;
+  --mp-red: #ef3333;
+
+  /* —— Typography —— */
+  --mp-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  --mp-weight-bold: 700;
+  --mp-weight-semibold: 600;
+  --mp-weight-medium: 500;
+  --mp-weight-regular: 400;
+  --mp-tracking-tight: -0.04em;
+  --mp-tracking-label: 0.08em;
+  --mp-tracking-tagline: 0.06em;
+
+  /* —— Spacing —— */
+  --mp-space-xs: 8px;
+  --mp-space-sm: 12px;
+  --mp-space-md: 16px;
+  --mp-space-lg: 24px;
+  --mp-space-xl: 32px;
+  --mp-space-2xl: 48px;
+  --mp-screen-pad-x: 22px;
+  --mp-screen-pad-bottom: 108px;
+  --mp-logo-pad-top: 24px;
+  --mp-logo-pad-bottom: 18px;
+  --mp-logo-gap-tagline: 10px;
+
+  /* —— Radius —— */
+  --mp-radius-card: 24px;
+  --mp-radius-card-inner: 18px;
+  --mp-radius-button: 16px;
+  --mp-radius-chip: 999px;
+
+  /* —— Motion —— */
+  --mp-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --mp-pulse-duration: 4s;
+  --mp-gps-pulse-duration: 2s;
+  --mp-route-draw-duration: 3.5s;
+  --mp-route-draw-slow: 8s;
+  --mp-reveal-duration: 0.7s;
+
+  /* —— Signature: Blue Pulse —— */
+  --mp-pulse-height: 2px;
+  --mp-pulse-gradient: linear-gradient(
+    90deg,
+    #0a52d4 0%,
+    #0d6bff 28%,
+    #7ec0ff 50%,
+    #0d6bff 72%,
+    #0a52d4 100%
+  );
+  --mp-pulse-shadow: 0 0 18px rgba(13, 107, 255, 0.42), 0 0 8px rgba(13, 107, 255, 0.32);
+  --mp-pulse-gps-size: 8px;
+  --mp-pulse-gps-shadow: 0 0 10px rgba(13, 107, 255, 0.55);
+
+  /* —— Cards —— */
+  --mp-card-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(13, 107, 255, 0.02));
+  --mp-card-border: 1px solid rgba(110, 180, 255, 0.14);
+  --mp-card-shadow: 0 4px 24px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+  /* —— Buttons —— */
+  --mp-btn-gradient: linear-gradient(180deg, #1e88ff 0%, #0d6bff 50%, #005fe8 100%);
+  --mp-btn-shadow: 0 8px 28px rgba(13, 107, 255, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  --mp-btn-height: 52px;
+
+  /* —— Screen backgrounds —— */
+  --mp-bg-app: linear-gradient(180deg, #0a2854 0%, #031126 82%);
+  --mp-bg-hero: linear-gradient(180deg, #020b1b 0%, #031126 55%, #0a2854 100%);
+}
