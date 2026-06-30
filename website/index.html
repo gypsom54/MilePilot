@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- MilePilot Website v4.0 — app design system replica -->
+<!-- MilePilot Website v4.1 — premium polish pass -->
 <html lang="en-GB">
 <head>
   <meta charset="utf-8">
@@ -7,8 +7,8 @@
   <title>MilePilot — Your business. On AutoPilot.</title>
   <meta name="description" content="MilePilot quietly records your driving in the background, helps you review your day, and creates professional mileage reports automatically.">
   <meta name="theme-color" content="#031126">
-  <link rel="stylesheet" href="milepilot-theme.css?v=4.0">
-  <link rel="stylesheet" href="styles.css?v=4.0">
+  <link rel="stylesheet" href="milepilot-theme.css?v=4.1">
+  <link rel="stylesheet" href="styles.css?v=4.1">
 </head>
 <body>
   <header class="nav-app" id="nav">
@@ -17,20 +17,20 @@
         <span class="wordmark-nav">Mile <span class="blue">Pilot</span></span>
       </a>
       <nav class="nav-links" aria-label="Primary">
-        <a href="#autopilot">AutoPilot</a>
-        <a href="#how">How it works</a>
-        <a href="#app-demo">App demo</a>
-        <a href="#reports">Reports</a>
-        <a href="#built-for">Built for</a>
-        <a href="#faq">FAQ</a>
+        <a href="#autopilot" data-nav="autopilot">AutoPilot</a>
+        <a href="#how" data-nav="how">How it works</a>
+        <a href="#timeline" data-nav="timeline">Your day</a>
+        <a href="#app-demo" data-nav="app-demo">App demo</a>
+        <a href="#reports" data-nav="reports">Reports</a>
+        <a href="#faq" data-nav="faq">FAQ</a>
       </nav>
-      <a class="btn-site-primary nav-cta" href="#cta">Join the beta</a>
+      <a class="btn-site-primary nav-cta btn-glow" href="#cta">Join the beta</a>
     </div>
   </header>
 
   <main>
     <!-- 1. Hero -->
-    <section class="site-section hero app-surface" id="top">
+    <section class="site-section hero app-surface" id="top" data-section="top">
       <div class="hero-pulse-bg" aria-hidden="true"></div>
       <div class="site-inner hero-grid">
         <div class="hero-copy reveal">
@@ -40,119 +40,111 @@
           </header>
           <h1 class="site-headline">Stop thinking about mileage.</h1>
           <p class="site-brandline">Your business.<br>On AutoPilot.</p>
+          <p class="site-tagline">We handle the paperwork while you do the work.</p>
           <p class="site-lead">MilePilot quietly records your driving in the background, helps you review your day, and creates professional mileage reports automatically.</p>
           <div class="btn-row">
-            <a class="btn-site-primary" href="#cta">Join the beta</a>
+            <a class="btn-site-primary btn-glow" href="#cta">Join the beta</a>
             <button type="button" class="btn-site-secondary" id="demoBtn">See how it works</button>
           </div>
         </div>
 
-        <div class="phone-wrap reveal" aria-label="MilePilot app — live session">
+        <div class="phone-wrap phone-float reveal" aria-label="MilePilot app — live session">
           <div class="phone-frame">
-            <div class="phone-notch"></div>
+            <div class="phone-dynamic-island" aria-hidden="true"></div>
             <div class="phone-inner app-surface cc-screen-demo">
-              <header class="brand-bar compact">
-                <div class="wordmark" style="font-size:17px">Mile <span class="blue">Pilot</span></div>
-                <div class="brand-pulse alive"></div>
-                <p class="brand-tagline">Your business. On AutoPilot.</p>
-              </header>
-              <div class="cc-map-gps-row">
-                <span class="cc-map-gps-dot is-live"></span>
-                <span class="cc-map-gps-label">AutoPilot Active</span>
-                <span class="cc-map-gps-meta">GPS locked</span>
-              </div>
-              <div class="cc-greeting-wrap">
-                <h2 class="cc-greeting" style="font-size:15px;margin-bottom:4px">Good afternoon</h2>
-                <p class="cc-status" style="font-size:13px">Recording your business day.</p>
-              </div>
-              <div class="cc-hero">
-                <span class="cc-hero-label">TODAY</span>
-                <div class="cc-hero-value" data-count="24.6" data-decimals="1">0.0</div>
-                <span class="cc-hero-unit">Business miles</span>
-              </div>
-              <div class="cc-card">
-                <h3 class="cc-card-title">Today's Business</h3>
-                <div class="cc-metrics">
-                  <div class="cc-metric"><span>Business Miles</span><strong data-count="24.6" data-decimals="1">0.0</strong></div>
-                  <div class="cc-metric"><span>Travel Time</span><strong>4h 12m</strong></div>
-                  <div class="cc-metric"><span>Business Journeys</span><strong data-count="3" data-decimals="0">0</strong></div>
-                  <div class="cc-metric"><span>Mileage Allowance</span><strong>£13.53</strong></div>
+              <div class="phone-screen-content">
+                <div class="phone-toast" aria-hidden="true">
+                  <span class="phone-toast-dot"></span>
+                  <span>2 journeys pending review</span>
                 </div>
-              </div>
-              <div class="cc-card">
-                <h3 class="cc-card-title">Live Route</h3>
-                <div class="cc-route-map-wrap">
-                  <svg width="100%" height="100%" viewBox="0 0 260 160" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-                    <rect width="260" height="160" fill="#0B1B36"/>
-                    <g stroke="rgba(110,180,255,0.1)" stroke-width="1">
-                      <line x1="0" y1="32" x2="260" y2="32"/><line x1="0" y1="64" x2="260" y2="64"/>
-                      <line x1="0" y1="96" x2="260" y2="96"/><line x1="0" y1="128" x2="260" y2="128"/>
-                      <line x1="52" y1="0" x2="52" y2="160"/><line x1="104" y1="0" x2="104" y2="160"/>
-                      <line x1="156" y1="0" x2="156" y2="160"/><line x1="208" y1="0" x2="208" y2="160"/>
-                    </g>
-                    <text x="14" y="20" fill="rgba(147,168,196,0.55)" font-size="8" font-weight="600">CAMDEN</text>
-                    <text x="108" y="20" fill="rgba(147,168,196,0.55)" font-size="8" font-weight="600">CITY</text>
-                    <text x="182" y="20" fill="rgba(147,168,196,0.55)" font-size="8" font-weight="600">WESTMINSTER</text>
-                    <path d="M0 100 Q90 80, 140 90 T260 74" fill="none" stroke="rgba(13,107,255,0.12)" stroke-width="14"/>
-                    <path class="route-animated" d="M28 112 C68 94, 102 76, 138 66 S200 44, 238 34" fill="none" stroke="#0D6BFF" stroke-width="3" stroke-linecap="round" pathLength="100"/>
-                    <circle cx="28" cy="112" r="5" fill="#20D781" stroke="#fff" stroke-width="1.5"/>
-                    <circle cx="238" cy="34" r="5" fill="#0D6BFF" stroke="#fff" stroke-width="1.5"/>
-                    <circle cx="158" cy="58" r="14" fill="rgba(13,107,255,0.35)" class="mp-live-marker-pulse"/>
-                    <circle cx="158" cy="58" r="6" fill="#0D6BFF" stroke="#fff" stroke-width="2"/>
-                  </svg>
-                  <span class="cc-map-tap-hint">Tap to expand</span>
+                <header class="brand-bar compact">
+                  <div class="wordmark">Mile <span class="blue">Pilot</span></div>
+                  <div class="brand-pulse alive"></div>
+                  <p class="brand-tagline">Your business. On AutoPilot.</p>
+                </header>
+                <div class="cc-map-gps-row autopilot-row">
+                  <span class="cc-map-gps-dot is-live"></span>
+                  <span class="cc-map-gps-label">AutoPilot Active</span>
+                  <span class="cc-map-gps-meta">GPS locked</span>
                 </div>
-              </div>
-              <div class="cc-card" style="border-color:rgba(240,195,90,0.25)">
-                <div class="card-row">
-                  <span class="cc-card-title" style="margin:0">Pending review</span>
-                  <span class="chip-warn">2 journeys</span>
+                <div class="cc-hero is-live">
+                  <span class="cc-hero-label">TODAY</span>
+                  <div class="cc-hero-value live-count" data-count="24.6" data-decimals="1" data-live="true">0.0</div>
+                  <span class="cc-hero-unit">Business miles</span>
                 </div>
-                <p class="card-text" style="font-size:12px">09:14 Camden → City · 14:05 Client visit</p>
-              </div>
-              <div class="cc-card">
-                <div class="card-row">
-                  <span class="cc-card-title" style="margin:0">Next report</span>
-                  <span class="chip-blue">Sun 6pm</span>
+                <div class="cc-card card-lift">
+                  <h3 class="cc-card-title">Today&rsquo;s Business</h3>
+                  <div class="cc-metrics">
+                    <div class="cc-metric"><span>Business Miles</span><strong class="live-count" data-count="24.6" data-decimals="1" data-live="true">0.0</strong></div>
+                    <div class="cc-metric"><span>Travel Time</span><strong>4h 12m</strong></div>
+                    <div class="cc-metric"><span>Business Journeys</span><strong data-count="3" data-decimals="0">0</strong></div>
+                    <div class="cc-metric"><span>Mileage Allowance</span><strong>£13.53</strong></div>
+                  </div>
                 </div>
-                <p class="card-text" style="font-size:12px">Weekly summary + PDF</p>
+                <div class="cc-card card-lift">
+                  <h3 class="cc-card-title">Live Route</h3>
+                  <div class="cc-route-map-wrap">
+                    <svg class="london-map" viewBox="0 0 260 160" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                      <defs>
+                        <linearGradient id="mapBg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0c1a32"/><stop offset="100%" stop-color="#081222"/></linearGradient>
+                        <filter id="routeGlow1"><feGaussianBlur stdDeviation="2"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                      </defs>
+                      <rect width="260" height="160" fill="url(#mapBg1)"/>
+                      <ellipse cx="48" cy="52" rx="22" ry="16" fill="rgba(32,215,129,0.06)"/>
+                      <ellipse cx="195" cy="118" rx="28" ry="18" fill="rgba(32,215,129,0.05)"/>
+                      <path d="M-10 108 Q60 98, 110 104 T200 92 T270 88" fill="none" stroke="rgba(80,130,180,0.22)" stroke-width="10"/>
+                      <path d="M0 42 L260 38" stroke="rgba(180,200,230,0.08)" stroke-width="3"/>
+                      <path d="M0 72 L260 68" stroke="rgba(180,200,230,0.1)" stroke-width="4"/>
+                      <path d="M72 0 L68 160" stroke="rgba(180,200,230,0.07)" stroke-width="3"/>
+                      <path d="M130 0 L126 160" stroke="rgba(180,200,230,0.09)" stroke-width="4"/>
+                      <text x="18" y="24" fill="rgba(147,168,196,0.45)" font-size="7" font-weight="600">CAMDEN</text>
+                      <text x="108" y="24" fill="rgba(147,168,196,0.45)" font-size="7" font-weight="600">CITY</text>
+                      <text x="178" y="24" fill="rgba(147,168,196,0.45)" font-size="7" font-weight="600">WESTMINSTER</text>
+                      <path d="M32 118 C72 98, 108 72, 142 58 S198 38, 232 28" fill="none" stroke="rgba(13,107,255,0.14)" stroke-width="12" stroke-linecap="round"/>
+                      <path class="route-animated" d="M32 118 C72 98, 108 72, 142 58 S198 38, 232 28" fill="none" stroke="#0D6BFF" stroke-width="3" stroke-linecap="round" pathLength="100" filter="url(#routeGlow1)"/>
+                      <circle cx="32" cy="118" r="5" fill="#20D781" stroke="#fff" stroke-width="1.5"/>
+                      <circle cx="32" cy="118" r="10" fill="none" stroke="rgba(32,215,129,0.45)" stroke-width="1" class="origin-pulse"/>
+                      <circle cx="232" cy="28" r="5" fill="#0D6BFF" stroke="#fff" stroke-width="1.5"/>
+                      <circle cx="142" cy="58" r="16" fill="rgba(13,107,255,0.3)" class="mp-live-marker-pulse"/>
+                      <circle cx="142" cy="58" r="6" fill="#0D6BFF" stroke="#fff" stroke-width="2"/>
+                    </svg>
+                  </div>
+                </div>
+                <div class="cc-card card-lift" style="border-color:rgba(240,195,90,0.25)">
+                  <div class="card-row">
+                    <span class="cc-card-title" style="margin:0">Pending review</span>
+                    <span class="chip-warn">2 journeys</span>
+                  </div>
+                  <p class="card-text card-text-sm">09:14 Camden → City · 14:05 Client visit</p>
+                </div>
+                <button type="button" class="cc-primary-btn cc-primary-btn-sm">Review Day</button>
+                <nav class="nav phone-nav" aria-hidden="true">
+                  <span class="nav-item active">
+                    <svg class="nav-icon" viewBox="0 0 24 24"><path d="M4 10.5L12 4l8 6.5V20a1 1 0 01-1 1h-5v-6H10v6H5a1 1 0 01-1-1v-9.5z"/></svg>
+                    <span class="nav-pulse"></span>Dashboard
+                  </span>
+                  <span class="nav-item"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M7 21V11M12 21V6M17 21V15"/></svg>Reports</span>
+                  <span class="nav-item"><svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l2.5 2"/></svg>History</span>
+                  <span class="nav-item"><svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.5"/><path d="M12 3v2M12 19v2"/></svg>Settings</span>
+                </nav>
               </div>
-              <button type="button" class="cc-primary-btn" style="height:46px;font-size:15px;margin-bottom:8px">Review Day</button>
-              <nav class="nav phone-nav" aria-hidden="true">
-                <span class="nav-item active">
-                  <svg class="nav-icon" viewBox="0 0 24 24"><path d="M4 10.5L12 4l8 6.5V20a1 1 0 01-1 1h-5v-6H10v6H5a1 1 0 01-1-1v-9.5z"/></svg>
-                  <span class="nav-pulse"></span>
-                  Dashboard
-                </span>
-                <span class="nav-item">
-                  <svg class="nav-icon" viewBox="0 0 24 24"><path d="M7 21V11M12 21V6M17 21V15"/></svg>
-                  Reports
-                </span>
-                <span class="nav-item">
-                  <svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l2.5 2"/></svg>
-                  History
-                </span>
-                <span class="nav-item">
-                  <svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.5"/><path d="M12 3v2M12 19v2"/></svg>
-                  Settings
-                </span>
-              </nav>
             </div>
+            <div class="phone-reflection" aria-hidden="true"></div>
           </div>
         </div>
       </div>
     </section>
 
+  <div class="section-pulse-divider" aria-hidden="true"><span class="brand-pulse alive"></span></div>
+
     <!-- 2. AutoPilot brand moment -->
-    <section class="site-section moment" id="autopilot">
+    <section class="site-section moment" id="autopilot" data-section="autopilot">
       <div class="hero-pulse-bg" aria-hidden="true"></div>
       <div class="hero-radar" aria-hidden="true">
-        <span class="radar-ring"></span>
-        <span class="radar-ring"></span>
-        <span class="radar-dot"></span>
+        <span class="radar-ring"></span><span class="radar-ring"></span><span class="radar-dot"></span>
       </div>
       <div class="site-inner moment-inner reveal">
-        <div class="brand-pulse alive" style="margin:0 auto 24px"></div>
+        <div class="brand-pulse alive moment-pulse"></div>
         <h2 class="moment-headline">Your business.<br><span class="blue">On AutoPilot.</span></h2>
         <p class="moment-lead">Install MilePilot once. Drive normally. Review your day. Receive professional mileage reports automatically.</p>
         <ul class="moment-list">
@@ -163,29 +155,75 @@
       </div>
     </section>
 
+  <div class="section-pulse-divider" aria-hidden="true"><span class="brand-pulse alive"></span></div>
+
     <!-- 3. How it works -->
-    <section class="site-section app-surface" id="how">
+    <section class="site-section app-surface" id="how" data-section="how">
       <div class="site-inner reveal">
         <h2 class="section-h">How it works</h2>
         <div class="steps-grid">
-          <article class="cc-card">
-            <h3 class="cc-card-title">1 · Drive normally</h3>
-            <p class="card-text">AutoPilot records in the background — even when your phone is locked.</p>
-          </article>
-          <article class="cc-card">
-            <h3 class="cc-card-title">2 · Review your day</h3>
-            <p class="card-text">Confirm business journeys once. One calm timeline.</p>
-          </article>
-          <article class="cc-card">
-            <h3 class="cc-card-title">3 · Receive your report</h3>
-            <p class="card-text">Professional PDFs on your schedule — daily, weekly or monthly.</p>
-          </article>
+          <article class="cc-card card-lift reveal-stagger"><h3 class="cc-card-title">1 · Drive normally</h3><p class="card-text">AutoPilot records in the background — even when your phone is locked.</p></article>
+          <article class="cc-card card-lift reveal-stagger"><h3 class="cc-card-title">2 · Review your day</h3><p class="card-text">Confirm business journeys once. One calm timeline.</p></article>
+          <article class="cc-card card-lift reveal-stagger"><h3 class="cc-card-title">3 · Receive your report</h3><p class="card-text">Professional PDFs on your schedule — daily, weekly or monthly.</p></article>
         </div>
       </div>
     </section>
 
+    <!-- Timeline — explains the product -->
+    <section class="site-section timeline-section" id="timeline" data-section="timeline">
+      <div class="site-inner reveal">
+        <h2 class="section-h center-block">A day with MilePilot</h2>
+        <p class="site-lead center">From first movement to PDF in your inbox — fully automatic.</p>
+        <div class="timeline">
+          <div class="timeline-step reveal-stagger">
+            <span class="timeline-time">08:12</span>
+            <div class="timeline-card cc-card">
+              <span class="timeline-icon">🚗</span>
+              <div><strong>Motion detected</strong><p class="card-text">MilePilot senses you&rsquo;re driving.</p></div>
+            </div>
+          </div>
+          <div class="timeline-connector"><span class="brand-pulse alive"></span></div>
+          <div class="timeline-step reveal-stagger">
+            <span class="timeline-time">08:13</span>
+            <div class="timeline-card cc-card timeline-prompt">
+              <span class="timeline-icon">📲</span>
+              <div><strong>&ldquo;Is this a Business Trip?&rdquo;</strong><span class="chip-blue">Business</span></div>
+            </div>
+          </div>
+          <div class="timeline-connector"><span class="brand-pulse alive"></span></div>
+          <div class="timeline-step reveal-stagger">
+            <span class="timeline-time"></span>
+            <div class="timeline-card cc-card">
+              <span class="timeline-icon cc-map-gps-dot is-live" style="width:12px;height:12px"></span>
+              <div><strong>Driving&hellip;</strong><p class="card-text">Route recorded quietly in the background.</p></div>
+            </div>
+          </div>
+          <div class="timeline-connector"><span class="brand-pulse alive"></span></div>
+          <div class="timeline-step reveal-stagger">
+            <span class="timeline-time"></span>
+            <div class="timeline-card cc-card"><span class="timeline-icon">✓</span><div><strong>Trip recorded</strong><p class="card-text">Miles, time and route saved automatically.</p></div></div>
+          </div>
+          <div class="timeline-connector"><span class="brand-pulse alive"></span></div>
+          <div class="timeline-step reveal-stagger">
+            <span class="timeline-time">19:30</span>
+            <div class="timeline-card cc-card"><span class="timeline-icon">📋</span><div><strong>Daily Review Ready</strong><p class="card-text">One calm timeline. Confirm in seconds.</p></div></div>
+          </div>
+          <div class="timeline-connector"><span class="brand-pulse alive"></span></div>
+          <div class="timeline-step reveal-stagger">
+            <span class="timeline-time">20:45</span>
+            <div class="timeline-card cc-card timeline-highlight">
+              <span class="timeline-icon">📄</span>
+              <div><strong>Daily PDF sent</strong><p class="card-text">Professional mileage report — HMRC-ready.</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  <div class="section-pulse-divider" aria-hidden="true"><span class="brand-pulse alive"></span></div>
+
     <!-- 4. App phone demo -->
-    <section class="site-section" id="app-demo">
+    <section class="site-section app-surface" id="app-demo" data-section="app-demo">
       <div class="site-inner reveal">
         <h2 class="section-h center-block">Review your day</h2>
         <p class="site-lead center">The same dashboard you open every evening — not a marketing mockup.</p>
@@ -194,78 +232,63 @@
             <li><strong>AutoPilot Active</strong> — GPS locked, recording in the background</li>
             <li><strong>Today&rsquo;s business miles</strong> — live total at the top of your day</li>
             <li><strong>Driving time</strong> — travel time alongside journeys and allowance</li>
-            <li><strong>Live Route</strong> — London-style map with blue route line</li>
+            <li><strong>Live Route</strong> — London map with blue route line</li>
             <li><strong>Pending journeys</strong> — trips waiting for your review</li>
-            <li><strong>Next report</strong> — scheduled PDF delivery</li>
             <li><strong>Review Day</strong> — one calm timeline, one tap</li>
           </ul>
-          <div class="phone-wrap app-demo-phone" aria-label="MilePilot app dashboard">
+          <div class="phone-wrap phone-float app-demo-phone" aria-label="MilePilot app dashboard">
             <div class="phone-frame">
-              <div class="phone-notch"></div>
+              <div class="phone-dynamic-island" aria-hidden="true"></div>
               <div class="phone-inner app-surface cc-screen-demo">
-                <header class="brand-bar compact">
-                  <div class="wordmark" style="font-size:17px">Mile <span class="blue">Pilot</span></div>
-                  <div class="brand-pulse alive"></div>
-                  <p class="brand-tagline">Your business. On AutoPilot.</p>
-                </header>
-                <div class="cc-map-gps-row">
-                  <span class="cc-map-gps-dot is-live"></span>
-                  <span class="cc-map-gps-label">AutoPilot Active</span>
-                  <span class="cc-map-gps-meta">GPS locked</span>
-                </div>
-                <div class="cc-hero">
-                  <span class="cc-hero-label">TODAY</span>
-                  <div class="cc-hero-value" data-count="24.6" data-decimals="1">0.0</div>
-                  <span class="cc-hero-unit">Business miles</span>
-                </div>
-                <div class="cc-card">
-                  <h3 class="cc-card-title">Today&rsquo;s Business</h3>
-                  <div class="cc-metrics">
-                    <div class="cc-metric"><span>Business Miles</span><strong data-count="24.6" data-decimals="1">0.0</strong></div>
-                    <div class="cc-metric"><span>Travel Time</span><strong>4h 12m</strong></div>
-                    <div class="cc-metric"><span>Business Journeys</span><strong data-count="3" data-decimals="0">0</strong></div>
-                    <div class="cc-metric"><span>Mileage Allowance</span><strong>£13.53</strong></div>
+                <div class="phone-screen-content">
+                  <header class="brand-bar compact">
+                    <div class="wordmark">Mile <span class="blue">Pilot</span></div>
+                    <div class="brand-pulse alive"></div>
+                    <p class="brand-tagline">Your business. On AutoPilot.</p>
+                  </header>
+                  <div class="cc-map-gps-row autopilot-row">
+                    <span class="cc-map-gps-dot is-live"></span>
+                    <span class="cc-map-gps-label">AutoPilot Active</span>
+                    <span class="cc-map-gps-meta">GPS locked</span>
                   </div>
-                </div>
-                <div class="cc-card">
-                  <h3 class="cc-card-title">Live Route</h3>
-                  <div class="cc-route-map-wrap">
-                    <svg width="100%" height="100%" viewBox="0 0 260 160" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-                      <rect width="260" height="160" fill="#0B1B36"/>
-                      <g stroke="rgba(110,180,255,0.1)" stroke-width="1">
-                        <line x1="0" y1="32" x2="260" y2="32"/><line x1="0" y1="64" x2="260" y2="64"/>
-                        <line x1="0" y1="96" x2="260" y2="96"/><line x1="0" y1="128" x2="260" y2="128"/>
-                        <line x1="52" y1="0" x2="52" y2="160"/><line x1="104" y1="0" x2="104" y2="160"/>
-                        <line x1="156" y1="0" x2="156" y2="160"/><line x1="208" y1="0" x2="208" y2="160"/>
-                      </g>
-                      <text x="14" y="20" fill="rgba(147,168,196,0.55)" font-size="8" font-weight="600">CAMDEN</text>
-                      <text x="108" y="20" fill="rgba(147,168,196,0.55)" font-size="8" font-weight="600">CITY</text>
-                      <text x="182" y="20" fill="rgba(147,168,196,0.55)" font-size="8" font-weight="600">WESTMINSTER</text>
-                      <path d="M0 100 Q90 80, 140 90 T260 74" fill="none" stroke="rgba(13,107,255,0.12)" stroke-width="14"/>
-                      <path class="route-animated" d="M28 112 C68 94, 102 76, 138 66 S200 44, 238 34" fill="none" stroke="#0D6BFF" stroke-width="3" stroke-linecap="round" pathLength="100"/>
-                      <circle cx="28" cy="112" r="5" fill="#20D781" stroke="#fff" stroke-width="1.5"/>
-                      <circle cx="238" cy="34" r="5" fill="#0D6BFF" stroke="#fff" stroke-width="1.5"/>
-                      <circle cx="158" cy="58" r="14" fill="rgba(13,107,255,0.35)" class="mp-live-marker-pulse"/>
-                      <circle cx="158" cy="58" r="6" fill="#0D6BFF" stroke="#fff" stroke-width="2"/>
-                    </svg>
+                  <div class="cc-hero is-live">
+                    <span class="cc-hero-label">TODAY</span>
+                    <div class="cc-hero-value" data-count="24.6" data-decimals="1">0.0</div>
+                    <span class="cc-hero-unit">Business miles</span>
                   </div>
-                </div>
-                <div class="cc-card" style="border-color:rgba(240,195,90,0.25)">
-                  <div class="card-row">
-                    <span class="cc-card-title" style="margin:0">Pending review</span>
-                    <span class="chip-warn">2 journeys</span>
+                  <div class="cc-card card-lift">
+                    <h3 class="cc-card-title">Today&rsquo;s Business</h3>
+                    <div class="cc-metrics">
+                      <div class="cc-metric"><span>Business Miles</span><strong data-count="24.6" data-decimals="1">0.0</strong></div>
+                      <div class="cc-metric"><span>Travel Time</span><strong>4h 12m</strong></div>
+                      <div class="cc-metric"><span>Business Journeys</span><strong data-count="3" data-decimals="0">0</strong></div>
+                      <div class="cc-metric"><span>Mileage Allowance</span><strong>£13.53</strong></div>
+                    </div>
                   </div>
-                  <p class="card-text" style="font-size:12px">09:14 Camden → City · 14:05 Client visit</p>
-                </div>
-                <div class="cc-card">
-                  <div class="card-row">
-                    <span class="cc-card-title" style="margin:0">Next report</span>
-                    <span class="chip-blue">Sun 6pm</span>
+                  <div class="cc-card card-lift">
+                    <h3 class="cc-card-title">Live Route</h3>
+                    <div class="cc-route-map-wrap">
+                      <svg class="london-map" viewBox="0 0 260 160" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                        <rect width="260" height="160" fill="#0c1a32"/>
+                        <path d="M-10 108 Q60 98, 110 104 T200 92 T270 88" fill="none" stroke="rgba(80,130,180,0.22)" stroke-width="10"/>
+                        <path d="M32 118 C72 98, 108 72, 142 58 S198 38, 232 28" fill="none" stroke="rgba(13,107,255,0.14)" stroke-width="12" stroke-linecap="round"/>
+                        <path class="route-animated" d="M32 118 C72 98, 108 72, 142 58 S198 38, 232 28" fill="none" stroke="#0D6BFF" stroke-width="3" stroke-linecap="round" pathLength="100"/>
+                        <circle cx="32" cy="118" r="5" fill="#20D781" stroke="#fff" stroke-width="1.5"/>
+                        <circle cx="32" cy="118" r="10" fill="none" stroke="rgba(32,215,129,0.45)" stroke-width="1" class="origin-pulse"/>
+                        <circle cx="232" cy="28" r="5" fill="#0D6BFF" stroke="#fff" stroke-width="1.5"/>
+                        <circle cx="142" cy="58" r="16" fill="rgba(13,107,255,0.3)" class="mp-live-marker-pulse"/>
+                        <circle cx="142" cy="58" r="6" fill="#0D6BFF" stroke="#fff" stroke-width="2"/>
+                      </svg>
+                    </div>
                   </div>
-                  <p class="card-text" style="font-size:12px">Weekly summary + PDF</p>
+                  <div class="cc-card card-lift" style="border-color:rgba(240,195,90,0.25)">
+                    <div class="card-row"><span class="cc-card-title" style="margin:0">Pending review</span><span class="chip-warn">2 journeys</span></div>
+                    <p class="card-text card-text-sm">09:14 Camden → City · 14:05 Client visit</p>
+                  </div>
+                  <button type="button" class="cc-primary-btn cc-primary-btn-sm">Review Day</button>
                 </div>
-                <button type="button" class="cc-primary-btn" style="height:46px;font-size:15px">Review Day</button>
               </div>
+              <div class="phone-reflection" aria-hidden="true"></div>
             </div>
           </div>
         </div>
@@ -273,93 +296,123 @@
     </section>
 
     <!-- 5. Professional reports -->
-    <section class="site-section" id="reports">
+    <section class="site-section" id="reports" data-section="reports">
       <div class="site-inner reveal">
         <h2 class="section-h">Professional mileage reports</h2>
-        <p class="reports-sub">Tomorrow's paperwork. Ready tonight.</p>
+        <p class="reports-sub">Tomorrow&rsquo;s paperwork. Ready tonight.</p>
         <div class="report-stage">
-          <div class="report-doc">
-            <div class="report-doc-band">
-              <div class="wordmark" style="font-size:22px;margin-bottom:6px">Mile <span class="blue">Pilot</span></div>
-              <p class="brand-tagline">Your business. On AutoPilot.</p>
+          <article class="report-wallet cc-card card-lift">
+            <div class="report-wallet-header">
+              <div class="wordmark report-wallet-logo">Mile <span class="blue">Pilot</span></div>
+              <span class="chip-blue">Weekly Report</span>
             </div>
-            <div class="report-doc-body">
-              <p class="report-meta">Weekly Business Mileage · Generated 30 Jun 2026, 18:00</p>
-              <p class="report-label">Business miles</p>
-              <p class="report-miles" data-count="142.8" data-decimals="1">0.0</p>
-              <div class="report-stats">
-                <div><span>HMRC estimate</span><strong>£78.54</strong></div>
-                <div><span>Journeys</span><strong>18</strong></div>
-                <div><span>Travel time</span><strong>12h 40m</strong></div>
-              </div>
-              <div class="cc-route-map-wrap" style="height:80px;margin:16px 0">
-                <svg width="100%" height="100%" viewBox="0 0 280 80"><rect width="280" height="80" fill="#0B1B36"/><path class="route-animated" d="M10 60 C60 40, 100 55, 140 35 S220 20, 265 15" fill="none" stroke="#0D6BFF" stroke-width="3" pathLength="100"/></svg>
-              </div>
-              <p class="report-footer">Your business. On AutoPilot.</p>
+            <p class="report-wallet-meta">Generated 30 Jun 2026 · 18:00</p>
+            <p class="report-wallet-label">Business miles</p>
+            <p class="report-wallet-miles" data-count="142.8" data-decimals="1">0.0</p>
+            <div class="report-wallet-stats">
+              <div><span>HMRC estimate</span><strong>£78.54</strong></div>
+              <div><span>Journeys</span><strong>18</strong></div>
+              <div><span>Travel time</span><strong>12h 40m</strong></div>
             </div>
-          </div>
+            <div class="cc-route-map-wrap report-wallet-map">
+              <svg viewBox="0 0 280 80" aria-hidden="true">
+                <rect width="280" height="80" fill="#081222"/>
+                <path class="route-animated" d="M10 60 C60 40, 100 55, 140 35 S220 20, 265 15" fill="none" stroke="#0D6BFF" stroke-width="3" pathLength="100"/>
+                <circle cx="10" cy="60" r="4" fill="#20D781" class="origin-pulse"/>
+                <circle cx="265" cy="15" r="4" fill="#0D6BFF"/>
+              </svg>
+            </div>
+            <div class="brand-pulse alive report-wallet-pulse"></div>
+            <p class="report-wallet-footer">Your business. On AutoPilot.</p>
+          </article>
         </div>
       </div>
     </section>
 
     <!-- 6. Built for self-employed -->
-    <section class="site-section app-surface" id="built-for">
-      <div class="site-inner reveal">
+    <section class="site-section app-surface" id="built-for" data-section="built-for">
+      <div class="site-inner reveal center-block">
         <h2 class="section-h">Built for the self-employed</h2>
-        <p class="site-lead center">Whether you're behind the wheel of a taxi, visiting clients, delivering parcels or travelling between jobs, MilePilot keeps track of your business mileage so you don't have to.</p>
-        <div class="chips">
-          <span>Taxi drivers</span><span>Private hire</span><span>Delivery drivers</span>
-          <span>Electricians</span><span>Plumbers</span><span>Builders</span>
-          <span>Estate agents</span><span>Sales professionals</span><span>Mobile businesses</span>
-          <span>Self-employed professionals</span>
+        <p class="site-lead center">Whether you&rsquo;re behind the wheel of a taxi, visiting clients, delivering parcels or travelling between jobs — MilePilot keeps track so you don&rsquo;t have to.</p>
+        <div class="role-rotator" aria-live="polite">
+          <span class="role-rotator-label">Perfect for</span>
+          <span class="role-rotator-value" id="roleRotator">Taxi drivers</span>
         </div>
       </div>
     </section>
 
     <!-- 7. No hardware -->
-    <section class="site-section" id="hardware">
+    <section class="site-section" id="hardware" data-section="hardware">
       <div class="site-inner reveal">
         <h2 class="section-h">No hardware required</h2>
         <div class="trust-grid">
-          <article class="cc-card"><h3 class="cc-card-title">No extra hardware</h3><p class="card-text">Your phone is all you need. No beacons or car devices.</p></article>
-          <article class="cc-card"><h3 class="cc-card-title">Works while locked</h3><p class="card-text">Background tracking while you focus on the road.</p></article>
-          <article class="cc-card"><h3 class="cc-card-title">Review your day</h3><p class="card-text">End-of-day review — one calm timeline.</p></article>
-          <article class="cc-card"><h3 class="cc-card-title">HMRC-ready records</h3><p class="card-text">Clear summaries for your accountant.</p></article>
+          <article class="cc-card card-lift"><h3 class="cc-card-title">No extra hardware</h3><p class="card-text">Your phone is all you need.</p></article>
+          <article class="cc-card card-lift"><h3 class="cc-card-title">Works while locked</h3><p class="card-text">Background tracking while you focus on the road.</p></article>
+          <article class="cc-card card-lift"><h3 class="cc-card-title">Review your day</h3><p class="card-text">End-of-day review — one calm timeline.</p></article>
+          <article class="cc-card card-lift"><h3 class="cc-card-title">HMRC-ready records</h3><p class="card-text">Clear summaries for your accountant.</p></article>
         </div>
       </div>
     </section>
 
+    <!-- Trust -->
+    <section class="site-section app-surface" id="trust" data-section="trust">
+      <div class="site-inner reveal">
+        <h2 class="section-h center-block">Designed around real drivers</h2>
+        <ul class="trust-list">
+          <li><span class="trust-check">✓</span> Tested with Uber drivers</li>
+          <li><span class="trust-check">✓</span> Taxi drivers</li>
+          <li><span class="trust-check">✓</span> Self-employed trades</li>
+          <li><span class="trust-check">✓</span> Delivery drivers</li>
+          <li><span class="trust-check">✓</span> Works while locked</li>
+          <li><span class="trust-check">✓</span> HMRC-ready reports</li>
+        </ul>
+      </div>
+    </section>
+
     <!-- 8. Beta -->
-    <section class="site-section app-surface" id="pricing">
+    <section class="site-section" id="pricing" data-section="pricing">
       <div class="site-inner reveal center-block">
         <h2 class="section-h">Founding Drivers Beta</h2>
         <p class="site-lead center">Be among the first to run your business mileage on AutoPilot.</p>
-        <a class="btn-site-primary" href="https://app.milepilot.uk">Join the beta</a>
+        <a class="btn-site-primary btn-glow" href="https://app.milepilot.uk">Join the beta</a>
       </div>
     </section>
 
     <!-- 9. FAQ -->
-    <section class="site-section" id="faq">
+    <section class="site-section app-surface" id="faq" data-section="faq">
       <div class="site-inner reveal">
         <h2 class="section-h">FAQ</h2>
-        <div class="faq-list">
-          <details class="cc-card faq-item"><summary>Does it work when my phone is locked?</summary><p class="card-text">Yes. MilePilot is built for background tracking while you work.</p></details>
-          <details class="cc-card faq-item"><summary>Do I need extra hardware?</summary><p class="card-text">No. Your phone is all you need.</p></details>
-          <details class="cc-card faq-item"><summary>Is this only for taxi drivers?</summary><p class="card-text">No. Any self-employed professional who drives for work.</p></details>
+        <div class="faq-list" id="faqList">
+          <article class="faq-item cc-card">
+            <button type="button" class="faq-question" aria-expanded="false">Does it work when my phone is locked?</button>
+            <div class="faq-answer"><p class="card-text">Yes. MilePilot is built for background tracking while you work.</p></div>
+          </article>
+          <article class="faq-item cc-card">
+            <button type="button" class="faq-question" aria-expanded="false">Do I need extra hardware?</button>
+            <div class="faq-answer"><p class="card-text">No. Your phone is all you need.</p></div>
+          </article>
+          <article class="faq-item cc-card">
+            <button type="button" class="faq-question" aria-expanded="false">Is this only for taxi drivers?</button>
+            <div class="faq-answer"><p class="card-text">No. Any self-employed professional who drives for work.</p></div>
+          </article>
+          <article class="faq-item cc-card">
+            <button type="button" class="faq-question" aria-expanded="false">How do reports work?</button>
+            <div class="faq-answer"><p class="card-text">Professional PDFs arrive on your schedule — daily, weekly or monthly.</p></div>
+          </article>
         </div>
       </div>
     </section>
 
     <!-- 10. Final CTA -->
-    <section class="site-section moment" id="cta">
+    <section class="site-section moment cta-final" id="cta" data-section="cta">
       <div class="hero-pulse-bg" aria-hidden="true"></div>
       <div class="site-inner reveal center-block">
-        <h2 class="site-headline">Stop thinking about mileage.</h2>
-        <p class="site-brandline">Your business. On AutoPilot.</p>
-        <div class="btn-row center">
-          <a class="btn-site-primary" href="https://app.milepilot.uk">Join the Founding Drivers Beta</a>
-          <button type="button" class="btn-site-secondary" id="demoBtn2">See how it works</button>
-        </div>
+        <div class="brand-pulse alive cta-pulse"></div>
+        <h2 class="cta-headline">Stop worrying about mileage forever.</h2>
+        <p class="cta-sub">Join the Founding Drivers.</p>
+        <p class="cta-body">Become one of the first drivers helping build the future of mileage tracking.</p>
+        <a class="btn-site-primary btn-glow btn-cta-large" href="https://app.milepilot.uk">Join the Founding Drivers</a>
+        <button type="button" class="btn-site-secondary" id="demoBtn2">See how it works</button>
       </div>
     </section>
   </main>
@@ -374,18 +427,18 @@
   </footer>
 
   <div class="demo-overlay" id="demoOverlay" hidden>
-    <div class="cc-card demo-modal">
+    <div class="cc-card demo-modal card-lift">
       <h3 class="cc-card-title">How MilePilot works</h3>
       <ol class="demo-steps card-text">
         <li>Drive normally — MilePilot records quietly.</li>
         <li>Review your day — confirm business trips.</li>
         <li>Receive your report — professional PDFs.</li>
       </ol>
-      <a class="btn-site-primary" href="https://app.milepilot.uk">Join the beta</a>
+      <a class="btn-site-primary btn-glow" href="https://app.milepilot.uk">Join the beta</a>
       <button type="button" class="btn-site-secondary" id="demoClose" style="margin-top:12px;width:100%">Close</button>
     </div>
   </div>
 
-  <script src="main.js?v=4.0"></script>
+  <script src="main.js?v=4.1"></script>
 </body>
 </html>

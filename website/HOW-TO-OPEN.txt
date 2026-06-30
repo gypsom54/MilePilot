@@ -1,10 +1,10 @@
-MilePilot Website v4.0 — easiest preview
+MilePilot Website v4.1 — easiest preview
 =========================================
 
-1. Download MilePilot-WEBSITE-v4.0-DOWNLOAD.zip from GitHub
-2. Unzip anywhere (use a NEW folder — delete old v3.0 folders to avoid cache)
+1. Download MilePilot-WEBSITE-v4.1-DOWNLOAD.zip from GitHub
+2. Unzip to a NEW folder (delete old copies to avoid cache)
 3. Double-click OPEN-WEBSITE.bat
 
-Verify: "Stop thinking about mileage." hero + milepilot-theme.css in page source
+Verify: "Stop worrying about mileage forever." in final CTA
 
 Live (GitHub Pages): https://gypsom54.github.io/MilePilot/

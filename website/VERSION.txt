@@ -1,3 +1,3 @@
-MilePilot Website v4.0 — app brand replica
+MilePilot Website v4.1 — premium polish
 Build: 2026-06-29
-Verify: search index.html for "milepilot-theme.css" and "Stop thinking about mileage."
+Verify: search index.html for "Stop worrying about mileage forever" and milepilot-theme.css

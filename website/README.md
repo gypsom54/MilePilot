@@ -1,13 +1,13 @@
-# MilePilot Website v4.0
+# MilePilot Website v4.1
 
-App design system replica — styles copied from `frontend/index.html`.
+App design system replica with premium polish pass.
 
-**Theme file:** `milepilot-theme.css` (tokens, cards, pulse, buttons, map — same as native app)
+**Theme file:** `milepilot-theme.css`
 
 ## Preview locally
 
-1. Download `MilePilot-WEBSITE-v4.0-DOWNLOAD.zip` from GitHub
-2. Unzip to a **new** folder (avoid stale v3.0 copies)
+1. Download `MilePilot-WEBSITE-v4.1-DOWNLOAD.zip` from GitHub
+2. Unzip to a **new** folder
 3. Double-click `OPEN-WEBSITE.bat`
 
 ## Sections

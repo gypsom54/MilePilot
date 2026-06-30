@@ -1,12 +1,12 @@
 @echo off
-title MilePilot Website v4.0
+title MilePilot Website v4.1
 cd /d "%~dp0"
 echo.
 type VERSION.txt
 echo.
 findstr /C:"milepilot-theme.css" index.html >nul
 if errorlevel 1 (
-  echo ERROR: Download MilePilot-WEBSITE-v4.0-DOWNLOAD.zip from GitHub.
+  echo ERROR: Download MilePilot-WEBSITE-v4.1-DOWNLOAD.zip from GitHub.
   pause
   exit /b 1
 )
