@@ -1,0 +1,13 @@
+QUICK OPEN
+==========
+1. Extract the zip (Extract All...)
+2. Open the MilePilot-Website folder
+3. Double-click DOUBLE-CLICK-ME.vbs
+
+MANUAL OPEN (always works)
+==========================
+1. Open Microsoft Edge
+2. Press Ctrl+O
+3. Select index.html from the MilePilot-Website folder
+
+See READ-ME-FIRST.txt for full help.

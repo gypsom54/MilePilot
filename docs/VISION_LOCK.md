@@ -13,8 +13,10 @@ It is becoming **the business companion for self-employed professionals**.
 
 Mileage tracking remains the **core feature**, but the platform must grow naturally **without redesigning the experience**.
 
-> Driversnote helps people track miles.  
-> MilePilot helps people run their business.
+> Driversnote helps people track miles — often with beacons and accessories.  
+> MilePilot helps people run their business — **phone only, no hardware.**
+
+**Locked:** MilePilot will never require Bluetooth beacons, vehicle tags, or external GPS devices. See [NO-HARDWARE-PHILOSOPHY.md](./NO-HARDWARE-PHILOSOPHY.md).
 
 ---
 

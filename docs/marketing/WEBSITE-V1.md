@@ -1,0 +1,113 @@
+# MilePilot Website Version 1.0
+
+**Status:** ⚠️ **Superseded for visual work** — use [MILEPILOT-BRAND-SYSTEM-v1.0.md](../MILEPILOT-BRAND-SYSTEM-v1.0.md). Website development paused until Brand System is applied.  
+**Implementation:** `website/index.html` (v3.0 — partial, not system-compliant)
+
+This website should not feel like a software landing page. It should feel like an **Apple product launch**.
+
+---
+
+## Design goals
+
+Premium · Minimal · Calm · Professional · Modern
+
+- Lots of white space
+- Dark navy branding
+- Blue accents
+- Glassmorphism where appropriate
+- Smooth animations
+
+**Everything centred around one promise:**
+
+> **YOUR BUSINESS. ON AUTOPILOT.**
+
+---
+
+## Hero
+
+- Large iPhone mockup with animated route
+- **Headline:** Stop thinking about mileage.
+- **Supporting:** MilePilot records your journeys in the background, helps you review your day, and creates professional mileage reports automatically.
+- **Primary CTA:** Join the beta → `https://app.milepilot.uk`
+- **Secondary CTA:** See how it works (modal; video asset TBD)
+
+*No free trial language until public launch.*
+
+---
+
+## Story flow
+
+1. Problem  
+2. Solution  
+3. AutoPilot  
+4. Features  
+5. Reports  
+6. Driver Intelligence  
+7. Pricing  
+8. FAQ  
+9. Final CTA  
+
+---
+
+## Key messaging
+
+Never mention GPS first. Never mention tracking first.
+
+Sell:
+
+- Freedom from admin
+- Peace of mind
+- Automatic reports
+- Time saved
+
+---
+
+## Key differentiators
+
+- No hardware required
+- Works while phone is locked
+- Background recording
+- Daily review
+- Professional PDF reports
+- HMRC-ready
+- Custom date reports
+- Driver Intelligence
+- Future AI assistant
+
+---
+
+## Tone
+
+Confident. Premium. Simple.
+
+Every sentence should make users think: *"This will save me time."*
+
+Not: *"This has lots of features."*
+
+---
+
+## Inspiration
+
+Apple · Linear · Notion · Stripe · Arc Browser
+
+Minimal. Beautiful. Fast. Professional.
+
+The website should feel like the product already feels.
+
+---
+
+## Pricing (display)
+
+| Plan | Price | Notes |
+|------|-------|-------|
+| MilePilot Tracker | £5.99/mo | Target pricing |
+| MilePilot Business | £9.99/mo | Roadmap features |
+
+---
+
+## Related
+
+- [MARKETING-PACKAGE.md](./MARKETING-PACKAGE.md)
+- [EXPLAINER-VIDEO-90s.md](./EXPLAINER-VIDEO-90s.md)
+- [NO-HARDWARE-PHILOSOPHY.md](../NO-HARDWARE-PHILOSOPHY.md)
+- [MILEPILOT-BIBLE.md](../MILEPILOT-BIBLE.md)

@@ -70,6 +70,12 @@ app.post("/reports/send", async (req, res) => {
     const pdf = await buildPdfBuffer(report);
     const periodLabel = report.period || "Daily";
     const dateSlug = new Date().toISOString().slice(0, 10);
+    const attachmentNames = {
+      WeeklySummary: `MilePilot-weekly-insights-summary-${dateSlug}.pdf`,
+      MonthlySummary: `MilePilot-monthly-insights-summary-${dateSlug}.pdf`,
+    };
+    const attachmentFilename =
+      attachmentNames[periodLabel] || `MilePilot-${String(periodLabel).toLowerCase()}-report-${dateSlug}.pdf`;
 
     const result = await resend.emails.send({
       from: process.env.EMAIL_FROM || "MilePilot <reports@milepilot.uk>",
@@ -79,7 +85,7 @@ app.post("/reports/send", async (req, res) => {
       html: buildReportEmailHtml(report),
       attachments: [
         {
-          filename: `MilePilot-${String(periodLabel).toLowerCase()}-report-${dateSlug}.pdf`,
+          filename: attachmentFilename,
           content: pdf,
         },
       ],
@@ -164,6 +170,42 @@ app.post("/reports/subscribe", async (req, res) => {
       subscribed: false,
       message: err.message || "Subscribe failed",
     });
+  }
+});
+
+app.post("/feedback", async (req, res) => {
+  try {
+    const { email, driver, appVersion, answers, submittedAt } = req.body || {};
+
+    if (!answers || typeof answers !== "object") {
+      return res.status(400).json({ ok: false, message: "Feedback answers are required" });
+    }
+
+    const entry = {
+      email: email || "",
+      driver: driver || "",
+      appVersion: appVersion || "",
+      answers,
+      submittedAt: submittedAt || new Date().toISOString(),
+    };
+
+    console.log("Beta feedback received:", JSON.stringify(entry, null, 2));
+
+    if (process.env.RESEND_API_KEY && process.env.FEEDBACK_TO) {
+      await resend.emails.send({
+        from: process.env.EMAIL_FROM || "MilePilot <reports@milepilot.uk>",
+        to: process.env.FEEDBACK_TO,
+        subject: `MilePilot Beta Feedback — ${driver || email || "Anonymous"}`,
+        text: Object.entries(answers)
+          .map(([k, v]) => `${k}: ${v}`)
+          .join("\n"),
+      });
+    }
+
+    return res.json({ ok: true, message: "Feedback received — thank you." });
+  } catch (err) {
+    console.error("Feedback failed:", err);
+    return res.status(500).json({ ok: false, message: err.message || "Feedback failed" });
   }
 });
 

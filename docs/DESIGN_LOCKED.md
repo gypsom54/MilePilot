@@ -1,6 +1,7 @@
 # MilePilot Design Language — 🔒 LOCKED
 
 **Status:** Frozen as of Phase 2 (June 2026)  
+**Visual identity:** Superseded for *new work* by [MILEPILOT-BRAND-SYSTEM-v1.0.md](./MILEPILOT-BRAND-SYSTEM-v1.0.md) — apply Brand System before any website or collateral changes.  
 **Rule:** No screen redesigns. New features inherit this system.
 
 ---
@@ -23,14 +24,7 @@
 
 ## CSS tokens (do not change)
 
-```css
---bg: #031126
---panel: #0B2348
---blue: #0D6BFF
---muted: #B9C8DD
---card-radius: 24px
---button-radius: 16px
-```
+Use canonical tokens: [`docs/brand/tokens.css`](./brand/tokens.css)
 
 ---
 

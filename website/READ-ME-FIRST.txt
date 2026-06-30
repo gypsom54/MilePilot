@@ -1,0 +1,53 @@
+MILEPILOT WEBSITE — READ THIS FIRST
+====================================
+
+DOWNLOAD (copy this link into your browser):
+https://github.com/gypsom54/MilePilot/raw/cursor/website-app-brand-replica-4c0e/MilePilot-WEBSITE-v1.0-DOWNLOAD.zip
+
+
+STEP 1 — UNZIP
+--------------
+- Find the downloaded zip in your Downloads folder
+- RIGHT-CLICK the zip file
+- Choose "Extract All..."
+- Pick a simple folder, e.g.  C:\MilePilot-Website
+- Click Extract
+
+You should see a folder called "MilePilot-Website" containing:
+  index.html
+  styles.css
+  milepilot-theme.css
+  main.js
+  DOUBLE-CLICK-ME.vbs
+
+
+STEP 2 — OPEN THE WEBSITE
+-------------------------
+Open the MilePilot-Website folder, then:
+
+>>> Double-click DOUBLE-CLICK-ME.vbs <<<
+
+(NOT index.html — that may open in Notepad on your PC)
+
+
+IF THE ZIP WILL NOT EXTRACT
+---------------------------
+- Right-click the zip -> Properties -> tick "Unblock" -> OK -> Extract again
+- Or install 7-Zip (free) and extract with that
+
+
+IF NOTHING OPENS IN THE BROWSER
+-------------------------------
+1. Open Microsoft Edge from the Start menu (blue e icon)
+2. Press Ctrl+O on your keyboard (hold Ctrl, tap O)
+3. Browse to your MilePilot-Website folder
+4. Click index.html -> Open
+
+You should see the dark blue MilePilot website.
+
+
+DO NOT
+------
+- Copy files one-by-one to C:\
+- Double-click index.html if it opens Notepad
+- Mix files from old and new downloads

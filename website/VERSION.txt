@@ -1,0 +1,8 @@
+MilePilot Website v1.0 — frozen release
+Build: 2026-06-29
+Status: Website complete. Focus shifts to the app.
+
+Next website updates (when ready):
+- Real beta metrics and testimonials
+- App screenshots replacing mockups
+- Live usage numbers from production data

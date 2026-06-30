@@ -1,37 +1,46 @@
-MilePilot — UPLOAD v7.6.0
-=========================
+MilePilot — Cloudflare upload package
+=====================================
 
-DOWNLOAD
---------
-Use MilePilot-UPLOAD-v7.6.0.zip from this folder or the repo root.
+ZIP TO USE
+----------
+MilePilot-v8.25.0-CLOUDFLARE-UPLOAD.zip (repo root)
 
-CHECK APP VERSION
------------------
+CHECK LIVE VERSION AFTER UPLOAD
+-------------------------------
 https://app.milepilot.uk/version.txt
-Must show: MilePilot OS v7.6.0 — Business Profile integration
+Must show: 8.25.0
 
-WHAT'S NEW IN v7.6.0
---------------------
-- Business Profile architecture (mp_business_profile)
-- Profession selector after onboarding with confirmation animation
-- Settings: elegant Business Profile row with Change →
-- Terminology adapts by profession across dashboard & reports
-- Prepared for future profile fields (accountant, VAT, tax year, etc.)
+https://app.milepilot.uk/index.html — footer should show App v8.25.0
 
-FILES IN THIS ZIP (upload all 7)
---------------------------------
+WHAT'S IN v8.25.0
+-----------------
+- Premium empty states with route illustration + encouraging copy
+- MilePilot voice notifications (app-copy.js)
+- Beta feedback survey (beta-feedback.js) — Settings or after 3 shifts
+- Automatic summary reports (summary-reports.js)
+- Custom date range reports (custom-period-report.js)
+
+FILES IN THIS ZIP (upload ALL — including js folder)
+---------------------------------------------------
 index.html
-manifest.json
-service-worker.js
 version.txt
+service-worker.js
+manifest.json
 icon.svg
 _headers
-UPLOAD-INSTRUCTIONS.txt
+js/app-copy.js
+js/beta-feedback.js
+js/custom-period-report.js
+js/summary-reports.js
+js/trip-store.js
 
 UPLOAD STEPS (Cloudflare)
 -------------------------
-1. Download MilePilot-UPLOAD-v7.6.0.zip
-2. Unzip all files (do not upload the zip itself)
-3. Cloudflare → milepilot-app → Upload assets → select all 7 files → Deploy
+1. Unzip MilePilot-v8.25.0-CLOUDFLARE-UPLOAD.zip locally
+2. Cloudflare → milepilot-app → Upload assets
+3. Upload the FULL unzipped folder (index.html + js/ + all files)
+4. Deploy — do NOT upload only version.txt
+
+NOTE: PDF + email polish also needs Railway backend deploy (reportEngine.js).
 
 APP: https://app.milepilot.uk
