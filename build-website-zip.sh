@@ -1,0 +1,9 @@
+#!/bin/bash
+set -e
+ROOT="$(cd "$(dirname "$0")" && pwd)"
+VER=$(grep "Website v" "$ROOT/website/VERSION.txt" | head -1 | sed 's/.*Website //' | cut -d' ' -f1)
+ZIP="$ROOT/MilePilot-WEBSITE-${VER}-DOWNLOAD.zip"
+cd "$ROOT/website"
+zip -r "$ZIP" index.html styles.css main.js VERSION.txt README.md
+echo "Built $ZIP"
+cat VERSION.txt
