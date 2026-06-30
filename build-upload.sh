@@ -6,7 +6,7 @@ cp "$ROOT/frontend/index.html" "$ROOT/frontend/version.txt" "$ROOT/frontend/serv
 mkdir -p "$ROOT/milepilot-upload-v2/js"
 cp "$ROOT/frontend/js/"*.js "$ROOT/milepilot-upload-v2/js/" 2>/dev/null || true
 cd "$ROOT/milepilot-upload-v2"
-zip -r "$ROOT/MilePilot-v8.22.1-CLOUDFLARE-UPLOAD.zip" .
-echo "Built $ROOT/MilePilot-v8.22.1-CLOUDFLARE-UPLOAD.zip"
+zip -r "$ROOT/MilePilot-v8.22.2-CLOUDFLARE-UPLOAD.zip" .
+echo "Built $ROOT/MilePilot-v8.22.2-CLOUDFLARE-UPLOAD.zip"
 grep "APP_VERSION" index.html | head -1
 grep "v8" version.txt | head -1

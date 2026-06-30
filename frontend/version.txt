@@ -1,3 +1,3 @@
-MilePilot OS v8.22.1 — Custom report how-to explainer
+MilePilot OS v8.22.2 — Custom date range explainer (generic)
 Build: 2026-06-29
 Brand: Every business mile matters.

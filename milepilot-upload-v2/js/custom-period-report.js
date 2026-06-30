@@ -6,8 +6,8 @@
   'use strict';
 
   const DEFAULT_CYCLE_DAY = 23;
-  const STORAGE_KEY = 'mp_job_centre_cycle_day';
-  const PRESET_JOB_CENTRE = 'job-centre';
+  const STORAGE_KEY = 'mp_custom_report_cycle_day';
+  const PRESET_MONTHLY_CYCLE = 'monthly-cycle';
 
   const MONTHS = {
     jan: 0, january: 0, feb: 1, february: 1, mar: 2, march: 2, apr: 3, april: 3,
@@ -18,7 +18,9 @@
 
   function getCycleDay() {
     try {
-      const stored = global.localStorage?.getItem(STORAGE_KEY);
+      const stored =
+        global.localStorage?.getItem(STORAGE_KEY) ||
+        global.localStorage?.getItem('mp_job_centre_cycle_day');
       const n = stored ? parseInt(stored, 10) : DEFAULT_CYCLE_DAY;
       return n >= 1 && n <= 28 ? n : DEFAULT_CYCLE_DAY;
     } catch (e) {
@@ -57,8 +59,8 @@
     return startStr + ' – ' + endStr;
   }
 
-  /** Job Centre preset: 23rd of previous month → 23rd of current month (inclusive). */
-  function jobCentrePresetPeriod(refDate, cycleDay) {
+  /** Optional monthly cycle preset (internal — not shown in UI). */
+  function monthlyCyclePresetPeriod(refDate, cycleDay) {
     const ref = refDate || new Date();
     const day = cycleDay || getCycleDay();
     const start = new Date(ref.getFullYear(), ref.getMonth() - 1, day);
@@ -68,7 +70,7 @@
       start,
       end,
       label: formatPeriodLabel(start, end),
-      preset: PRESET_JOB_CENTRE,
+      preset: PRESET_MONTHLY_CYCLE,
     };
   }
 
@@ -160,14 +162,9 @@
     const t = (text || '').trim().toLowerCase();
     if (!t) return { ok: false, error: 'Say which dates you need.' };
 
-    if (/job\s*cent|benefit|claim\s*period|reporting\s*month/.test(t)) {
-      const p = jobCentrePresetPeriod(new Date(), cycle);
-      return { ok: true, ...p, source: 'nl-job-centre' };
-    }
-
-    if (/23\s*(?:rd)?\s*(?:to|–|-|—)\s*23/.test(t)) {
-      const p = cyclePeriodContaining(new Date(), cycle);
-      return { ok: true, ...p, source: 'nl-23rd-cycle' };
+    if (/reporting\s*period|claim\s*period|23\s*(?:rd)?\s*(?:to|–|-|—)\s*23/.test(t)) {
+      const p = monthlyCyclePresetPeriod(new Date(), cycle);
+      return { ok: true, ...p, source: 'nl-cycle-preset' };
     }
 
     const pair = extractTwoDates(text);
@@ -184,8 +181,19 @@
     }
 
     if (/add up|total|sum|mileage|generate|report|show/.test(t)) {
-      const p = jobCentrePresetPeriod(new Date(), cycle);
-      return { ok: true, ...p, source: 'nl-default-job-centre' };
+      const pair = extractTwoDates(text);
+      if (pair) {
+        const [a, b] = pair[0] <= pair[1] ? pair : [pair[1], pair[0]];
+        const end = endExclusiveFromInclusiveEnd(b);
+        return {
+          ok: true,
+          start: a,
+          end,
+          label: formatPeriodLabel(a, end),
+          source: 'nl-dates-fallback',
+        };
+      }
+      return { ok: false, error: 'Pick a start date and end date for your report.' };
     }
 
     return { ok: false, error: 'Try “Generate report from 23 May to 23 June”.' };
@@ -480,7 +488,7 @@
   global.MPCustomReport = {
     getCycleDay: getCycleDay,
     setCycleDay: setCycleDay,
-    jobCentrePresetPeriod: jobCentrePresetPeriod,
+    monthlyCyclePresetPeriod: monthlyCyclePresetPeriod,
     cyclePeriodContaining: cyclePeriodContaining,
     previousCyclePeriod: previousCyclePeriod,
     parseUkDate: parseUkDate,
@@ -490,7 +498,7 @@
     buildPayload: buildPayload,
     formatPeriodLabel: formatPeriodLabel,
     pdfFilename: pdfFilename,
-    PRESET_JOB_CENTRE: PRESET_JOB_CENTRE,
+    PRESET_MONTHLY_CYCLE: PRESET_MONTHLY_CYCLE,
     DEFAULT_CYCLE_DAY: DEFAULT_CYCLE_DAY,
   };
 })(typeof window !== 'undefined' ? window : globalThis);
