@@ -1,26 +1,10 @@
-MilePilot Website v1.2 — easiest preview
+MilePilot Website v3.0 — easiest preview
 =========================================
 
-OPTION 1 — NO TERMINAL (recommended)
-------------------------------------
-1. Download MilePilot-WEBSITE-v1.3-DOWNLOAD.zip from GitHub
-2. Unzip anywhere (e.g. Desktop)
-3. Double-click:  OPEN-WEBSITE.bat
-   (or double-click index.html)
+1. Download MilePilot-WEBSITE-v3.0-DOWNLOAD.zip from GitHub
+2. Unzip anywhere
+3. Double-click OPEN-WEBSITE.bat
 
-Done. Opens in Chrome. No server needed.
+Verify: "Stop thinking about mileage." in hero + "Your business. On AutoPilot." brand moment
 
-Verify: hero should say "Your business. On AutoPilot."
-
-
-OPTION 2 — Live link (after GitHub Pages is on)
------------------------------------------------
-https://gypsom54.github.io/MilePilot/
-
-Bookmark that — always the latest website from GitHub.
-
-
-OPTION 3 — Upload to milepilot.uk (when ready)
-----------------------------------------------
-Cloudflare → your marketing site → upload these files:
-  index.html, styles.css, main.js
+Live (GitHub Pages): https://gypsom54.github.io/MilePilot/
