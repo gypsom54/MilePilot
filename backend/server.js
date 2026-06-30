@@ -70,6 +70,12 @@ app.post("/reports/send", async (req, res) => {
     const pdf = await buildPdfBuffer(report);
     const periodLabel = report.period || "Daily";
     const dateSlug = new Date().toISOString().slice(0, 10);
+    const attachmentNames = {
+      WeeklySummary: `MilePilot-weekly-insights-summary-${dateSlug}.pdf`,
+      MonthlySummary: `MilePilot-monthly-insights-summary-${dateSlug}.pdf`,
+    };
+    const attachmentFilename =
+      attachmentNames[periodLabel] || `MilePilot-${String(periodLabel).toLowerCase()}-report-${dateSlug}.pdf`;
 
     const result = await resend.emails.send({
       from: process.env.EMAIL_FROM || "MilePilot <reports@milepilot.uk>",
@@ -79,7 +85,7 @@ app.post("/reports/send", async (req, res) => {
       html: buildReportEmailHtml(report),
       attachments: [
         {
-          filename: `MilePilot-${String(periodLabel).toLowerCase()}-report-${dateSlug}.pdf`,
+          filename: attachmentFilename,
           content: pdf,
         },
       ],

@@ -32,7 +32,7 @@ export const VEHICLE_LABELS = {
   motorcycle: "Motorcycle",
 };
 
-export const REPORT_VERSION = "MP-015-document-v2";
+export const REPORT_VERSION = "MP-016-summary-reports";
 const APP_URL = "https://app.milepilot.uk";
 
 /** Locked brand lockup — must match app `.brand-bar` exactly */
@@ -116,6 +116,8 @@ function periodReadyLine(period, periodLabel) {
     Daily: "Your business mileage summary for today is ready.",
     Weekly: "Your business mileage summary for this week is ready.",
     Monthly: "Your business mileage summary for this month is ready.",
+    WeeklySummary: "Your weekly business insights summary is ready.",
+    MonthlySummary: "Your monthly business insights summary is ready.",
     Annual: "Your annual business mileage summary is ready.",
     Custom: "Your custom-period business mileage summary is ready.",
   };
@@ -128,6 +130,8 @@ function periodReportTitle(period, periodLabel) {
     Daily: "Daily Business Mileage Report",
     Weekly: "Weekly Business Mileage Report",
     Monthly: "Monthly Business Mileage Report",
+    WeeklySummary: "Weekly Business Insights Summary",
+    MonthlySummary: "Monthly Business Insights Summary",
     Annual: "Annual Business Mileage Report",
     Custom: "Custom Period Business Mileage Report",
   };
@@ -232,7 +236,7 @@ function mostProductiveHour(shifts) {
 function generateReportId(report, a) {
   const raw = `${a.period}|${a.driver}|${new Date().toISOString().slice(0, 10)}|${a.totals.mi}`;
   const hash = createHash("sha256").update(raw).digest("hex").slice(0, 8).toUpperCase();
-  const prefix = { Daily: "DY", Weekly: "WK", Monthly: "MO", Annual: "YR", Custom: "CP" }[a.period] || "RP";
+  const prefix = { Daily: "DY", Weekly: "WK", Monthly: "MO", WeeklySummary: "WS", MonthlySummary: "MS", Annual: "YR", Custom: "CP" }[a.period] || "RP";
   return `MP-${new Date().toISOString().slice(0, 10).replace(/-/g, "")}-${prefix}-${hash}`;
 }
 
@@ -326,6 +330,15 @@ export function analyseReport(report) {
       : buildCalendarDailyBreakdown(shifts);
   analysis.pendingNotice = report.pendingNotice || null;
   analysis.excludedPending = Number(report.excludedPending) || 0;
+  analysis.weeklyBreakdown =
+    Array.isArray(report.weeklyBreakdown) && report.weeklyBreakdown.length
+      ? report.weeklyBreakdown
+      : [];
+  analysis.avgMilesPerDay = Number(report.avgMilesPerDay) || (workingDays ? totals.mi / workingDays : 0);
+  analysis.mostActiveDay = report.mostActiveDay || (busiest ? busiest.day : null);
+  analysis.longestJourneyMiles = longestJ ? Number(longestJ.miles) : 0;
+  analysis.monthComparePct =
+    prevTotals.mi > 0 && totals.mi > 0 ? Math.round((totals.mi / prevTotals.mi - 1) * 100) : null;
   if (report.periodLabel) {
     analysis.periodSubtitle = report.periodLabel.replace(/^Custom Date Range · /, "");
   }
@@ -551,9 +564,141 @@ function drawMiniRoute(doc, x, y, w, h, route) {
   doc.strokeColor(BRAND.blue).lineWidth(1.1).stroke();
 }
 
-export function buildPdfBuffer(report) {
+function comparisonLine(a, isMonthly) {
+  const pct = isMonthly ? a.monthComparePct : a.weekComparePct;
+  const prev = isMonthly ? a.prevTotals : a.prevWeekTotals;
+  if (pct === null || !prev.mi) return "No comparison data from the previous period.";
+  const dir = pct > 0 ? "more" : "less";
+  return `You drove ${Math.abs(pct)}% ${dir} than the previous ${isMonthly ? "month" : "week"} (${prev.mi.toFixed(1)} mi previously).`;
+}
+
+function buildInsightSummaryPdf(report, a) {
   return new Promise((resolve, reject) => {
-    const a = analyseReport(report);
+    const isMonthly = a.period === "MonthlySummary";
+    const doc = new PDFDocument({ margin: 0, size: "A4", autoFirstPage: true });
+    const chunks = [];
+    doc.on("data", (c) => chunks.push(c));
+    doc.on("end", () => resolve(Buffer.concat(chunks)));
+    doc.on("error", reject);
+
+    const pageW = doc.page.width;
+    const margin = 52;
+    const contentW = pageW - margin * 2;
+    let y = drawPageHeader(doc, a, margin, contentW, pageW);
+
+    doc.fillColor(BRAND.blue).font("Helvetica-Bold").fontSize(8).text("BUSINESS INSIGHTS", margin, y, { characterSpacing: 1.8 });
+    y += 18;
+    doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(72).text(a.totals.mi.toFixed(1), margin, y, { lineBreak: false });
+    y += 88;
+    doc.fillColor(BRAND.muted).font("Helvetica-Bold").fontSize(11).text("Total Business Miles", margin, y);
+    if (a.periodSubtitle) {
+      doc.fillColor(BRAND.muted).font("Helvetica").fontSize(10).text(a.periodSubtitle, margin, y + 16, { width: contentW });
+      y += 14;
+    }
+    y += 34;
+
+    if (a.pendingNotice) {
+      doc.roundedRect(margin, y, contentW, 40, 10).fillAndStroke("#FFF8E8", "#F0C35A");
+      doc.fillColor("#7A5B12").font("Helvetica").fontSize(9).text(a.pendingNotice, margin + 14, y + 14, { width: contentW - 28 });
+      y += 52;
+    }
+
+    const cardW = (contentW - 14) / 2;
+    const cardH = 62;
+    const cards = [
+      { label: "Driving Time", value: fmtShiftTime(a.totals.sec) },
+      { label: "HMRC Estimate", value: money(a.totals.hmrc) },
+      { label: "Business Journeys", value: String(a.totals.journeys) },
+      {
+        label: isMonthly ? "Avg Miles / Day" : "Week Comparison",
+        value: isMonthly
+          ? a.avgMilesPerDay > 0
+            ? `${a.avgMilesPerDay.toFixed(1)} mi`
+            : "—"
+          : a.weekComparePct !== null
+            ? `${a.weekComparePct > 0 ? "+" : ""}${a.weekComparePct}%`
+            : "—",
+      },
+    ];
+    cards.forEach((c, i) => {
+      const col = i % 2;
+      const row = Math.floor(i / 2);
+      drawMetricCard(doc, margin + col * (cardW + 14), y + row * (cardH + 14), cardW, cardH, c.label, c.value);
+    });
+    y += 2 * (cardH + 14) + 24;
+
+    doc.roundedRect(margin, y, contentW, 56, 12).fillAndStroke("#EEF4FF", BRAND.blue);
+    doc.fillColor(BRAND.muted).font("Helvetica-Bold").fontSize(7.5).text("PERIOD INSIGHT", margin + 18, y + 14, { characterSpacing: 0.6 });
+    doc.fillColor(BRAND.text).font("Helvetica").fontSize(10).text(comparisonLine(a, isMonthly), margin + 18, y + 30, { width: contentW - 36, lineGap: 1.4 });
+    y += 72;
+
+    if (isMonthly && a.mostActiveDay) {
+      doc.fillColor(BRAND.muted).font("Helvetica").fontSize(9).text(
+        `Most active day: ${a.mostActiveDay}  ·  Longest journey: ${a.longestJourneyMiles > 0 ? a.longestJourneyMiles.toFixed(1) + " mi" : "—"}`,
+        margin,
+        y,
+        { width: contentW }
+      );
+      y += 28;
+    }
+
+    y = drawSectionTitle(
+      doc,
+      margin,
+      y,
+      "Breakdown",
+      isMonthly ? "Weekly Breakdown" : "Daily Breakdown",
+      isMonthly ? "Business miles grouped by week" : "Business miles by day this week"
+    );
+
+    const rows = isMonthly ? a.weeklyBreakdown : a.dailyBreakdown;
+    const maxMi = Math.max(...(rows || []).map((d) => d.miles), 1);
+    if (!rows || !rows.length) {
+      doc.fillColor(BRAND.muted).font("Helvetica").fontSize(10).text("No business activity recorded in this period.", margin, y + 8);
+    } else {
+      rows.forEach((d) => {
+        const label = d.label || d.date || d.week || d.day || "—";
+        doc.fillColor(BRAND.text).font("Helvetica").fontSize(9).text(label, margin, y + 3, { width: 120 });
+        drawProgressBar(doc, margin + 124, y + 4, contentW - 220, 8, d.miles / maxMi);
+        doc.fillColor(BRAND.muted).font("Helvetica-Bold").fontSize(8).text(
+          d.miles > 0 ? `${d.miles.toFixed(1)} mi · ${d.journeys || d.trips || 0} j` : "—",
+          margin + contentW - 88,
+          y + 2,
+          { width: 88, align: "right" }
+        );
+        y += 22;
+      });
+    }
+
+    y += 20;
+    const stats = [
+      ["Generated", `${a.generatedAt} at ${a.generatedAtTime}`],
+      ["Report ID", a.reportId],
+      ["Pending journeys excluded", a.excludedPending > 0 ? String(a.excludedPending) : "None"],
+    ];
+    doc.roundedRect(margin, y, contentW, stats.length * 28 + 24, 14).fillAndStroke("#FFFFFF", BRAND.border);
+    doc.roundedRect(margin + 1, y + 1, contentW - 2, 4, 2).fill(BRAND.blue);
+    let sy = y + 16;
+    stats.forEach(([label, val]) => {
+      doc.fillColor(BRAND.muted).font("Helvetica").fontSize(9).text(label, margin + 18, sy);
+      doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(10).text(val, margin + contentW / 2, sy, {
+        width: contentW / 2 - 24,
+        align: "right",
+      });
+      sy += 28;
+    });
+
+    drawFooter(doc, a, margin, contentW);
+    doc.end();
+  });
+}
+
+export function buildPdfBuffer(report) {
+  const a = analyseReport(report);
+  if (a.period === "WeeklySummary" || a.period === "MonthlySummary") {
+    return buildInsightSummaryPdf(report, a);
+  }
+  return new Promise((resolve, reject) => {
     const intel = buildIntelligence(a);
     const doc = new PDFDocument({ margin: 0, size: "A4", autoFirstPage: true });
     const chunks = [];
@@ -767,12 +912,17 @@ export function buildReportEmailHtml(report) {
   const name = firstName(a.driver) || "there";
   const greeting = timeGreeting();
   const ready = periodReadyLine(a.period, a.periodLabel);
+  const isSummary = a.period === "WeeklySummary" || a.period === "MonthlySummary";
 
   const metric = (label, value) =>
     `<tr><td style="padding:0 0 12px;">
       <div style="font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#93A8C4;margin-bottom:6px;">${label}</div>
       <div style="font-size:28px;font-weight:700;color:#FFFFFF;letter-spacing:-0.03em;line-height:1.1;">${value}</div>
     </td></tr>`;
+
+  const comparison = isSummary
+    ? `<p style="margin:0 0 28px;font-size:14px;color:#93A8C4;line-height:1.55;">${comparisonLine(a, a.period === "MonthlySummary")}</p>`
+    : "";
 
   const downloadUrl = buildReportDeepLink(report, true);
   const appUrl = `${APP_URL}/`;
@@ -789,10 +939,12 @@ export function buildReportEmailHtml(report) {
   <p style="margin:0 0 32px;font-size:16px;color:#B9C8DD;line-height:1.55;">${ready}</p>
   <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
     ${metric("Business Miles", a.totals.mi.toFixed(1))}
-    ${metric("Travel Time", fmtShiftTime(a.totals.sec))}
+    ${metric("Driving Time", fmtShiftTime(a.totals.sec))}
     ${metric("Business Journeys", String(a.totals.journeys))}
-    ${metric("Estimated HMRC", money(a.totals.hmrc))}
+    ${metric("HMRC Estimate", money(a.totals.hmrc))}
   </table>
+  ${comparison}
+  ${a.pendingNotice ? `<p style="margin:0 0 24px;font-size:13px;color:#F0C35A;line-height:1.5;">${a.pendingNotice}</p>` : ""}
   <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:12px;">
     <tr><td align="center" style="padding-bottom:10px;">
       <a href="${downloadUrl}" style="display:inline-block;width:100%;max-width:320px;background:linear-gradient(180deg,#1E88FF,#0D6BFF);color:#FFFFFF;font-size:16px;font-weight:600;text-decoration:none;padding:16px 24px;border-radius:14px;letter-spacing:-0.01em;box-sizing:border-box;">📄 Download PDF Report</a>
@@ -836,6 +988,15 @@ Your business. On AutoPilot.`;
 
 export function buildReportSubject(report) {
   const period = report.period || "Daily";
-  const emoji = period === "Weekly" ? "📊 " : period === "Daily" ? "🚗 " : period === "Custom" ? "📋 " : "";
+  const emoji =
+    period === "WeeklySummary" || period === "Weekly"
+      ? "📊 "
+      : period === "MonthlySummary" || period === "Monthly"
+        ? "📈 "
+        : period === "Daily"
+          ? "🚗 "
+          : period === "Custom"
+            ? "📋 "
+            : "✨ ";
   return `${emoji}Your MilePilot ${periodReportTitle(period, report.periodLabel)}`;
 }
