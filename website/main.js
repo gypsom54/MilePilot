@@ -24,7 +24,7 @@
           }
         });
       },
-      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+      { threshold: 0.1, rootMargin: '0px 0px -32px 0px' }
     );
     reveals.forEach((el) => observer.observe(el));
   } else {
@@ -73,4 +73,46 @@
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeDemo();
   });
+
+  const carousel = document.getElementById('phoneCarousel');
+  const dotsEl = document.getElementById('phoneDots');
+  const captionEl = document.getElementById('phoneCaption');
+  if (carousel && dotsEl) {
+    const slides = Array.from(carousel.querySelectorAll('.phone-slide'));
+    let current = 0;
+    let timer = null;
+
+    slides.forEach((_, i) => {
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'phone-dot' + (i === 0 ? ' is-active' : '');
+      dot.setAttribute('aria-label', 'Show screen ' + (i + 1));
+      dot.addEventListener('click', () => goTo(i, true));
+      dotsEl.appendChild(dot);
+    });
+
+    const dots = Array.from(dotsEl.querySelectorAll('.phone-dot'));
+
+    function goTo(index, manual) {
+      current = (index + slides.length) % slides.length;
+      slides.forEach((s, i) => s.classList.toggle('is-active', i === current));
+      dots.forEach((d, i) => d.classList.toggle('is-active', i === current));
+      if (captionEl && slides[current].dataset.label) {
+        captionEl.textContent = slides[current].dataset.label;
+      }
+      if (manual) resetTimer();
+    }
+
+    function next() {
+      goTo(current + 1, false);
+    }
+
+    function resetTimer() {
+      if (timer) clearInterval(timer);
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      timer = setInterval(next, 4200);
+    }
+
+    resetTimer();
+  }
 })();
