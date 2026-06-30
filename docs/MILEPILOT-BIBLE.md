@@ -313,6 +313,7 @@ Not: "Can we build this?"
 | v8.22.x | Custom date range reports |
 | v8.23.0 | Bible + UX polish + onboarding copy |
 | v8.23.1 | No-hardware philosophy locked |
+| Website v1.0 | Apple-style marketing site (`website/`) |
 | Future | Review Day, AutoPilot OS modules |
 
 ---
