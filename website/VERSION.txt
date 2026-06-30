@@ -1,3 +1,3 @@
-MilePilot Website v4.6.1 — bat launcher fix
+MilePilot Website v4.6.2 — browser launcher fix
 Build: 2026-06-29
-Verify: OPEN-WEBSITE.bat opens index.html in browser
+Verify: OPEN-WEBSITE.bat opens in Edge/Chrome, not Notepad

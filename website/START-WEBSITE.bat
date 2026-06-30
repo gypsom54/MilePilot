@@ -3,16 +3,19 @@ setlocal EnableExtensions
 title MilePilot Website
 cd /d "%~dp0"
 
-if not exist "%~dp0index.html" (
-  echo ERROR: index.html not found. Unzip the website download zip first.
-  echo Folder: %CD%
+if not exist "index.html" (
+  echo ERROR: index.html not found in %CD%
   pause
   exit /b 1
 )
 
-if exist "%~dp0VERSION.txt" type "%~dp0VERSION.txt" & echo.
-
 set "PAGE=%~dp0index.html"
+if exist "%ProgramFiles%\Microsoft\Edge\Application\msedge.exe" (
+  start "" "%ProgramFiles%\Microsoft\Edge\Application\msedge.exe" "%PAGE%"
+  exit /b 0
+)
+if exist "%ProgramFiles%\Google\Chrome\Application\chrome.exe" (
+  start "" "%ProgramFiles%\Google\Chrome\Application\chrome.exe" "%PAGE%"
+  exit /b 0
+)
 start "" "%PAGE%"
-echo Opened %PAGE%
-timeout /t 2 /nobreak >nul

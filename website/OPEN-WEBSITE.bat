@@ -9,12 +9,19 @@ echo   MilePilot Website
 echo ========================================
 echo.
 
-if not exist "%~dp0index.html" (
-  echo ERROR: index.html was not found in this folder.
+set "MISSING="
+for %%F in (index.html styles.css milepilot-theme.css main.js) do (
+  if not exist "%%~F" set "MISSING=%%~F"
+)
+
+if defined MISSING (
+  echo ERROR: Missing file: %MISSING%
   echo.
-  echo Download MilePilot-WEBSITE-v4.6-DOWNLOAD.zip from GitHub,
-  echo unzip it to a NEW folder, then double-click OPEN-WEBSITE.bat
-  echo from inside that unzipped folder.
+  echo All website files must sit in the SAME folder as this .bat file.
+  echo.
+  echo 1. Download MilePilot-WEBSITE-v4.6.2-DOWNLOAD.zip from GitHub
+  echo 2. Right-click the zip -^> Extract All... to a NEW folder
+  echo 3. Open that folder and double-click OPEN-WEBSITE.bat
   echo.
   echo This folder: %CD%
   echo.
@@ -22,24 +29,50 @@ if not exist "%~dp0index.html" (
   exit /b 1
 )
 
-if exist "%~dp0VERSION.txt" (
-  type "%~dp0VERSION.txt"
+if exist "VERSION.txt" (
+  type "VERSION.txt"
   echo.
 )
 
 set "PAGE=%~dp0index.html"
-echo Opening website in your default browser...
+echo Opening the website in your browser...
+echo NOT in Notepad.
+echo.
 echo %PAGE%
 echo.
 
+if exist "%ProgramFiles%\Microsoft\Edge\Application\msedge.exe" (
+  start "" "%ProgramFiles%\Microsoft\Edge\Application\msedge.exe" "%PAGE%"
+  goto opened
+)
+if exist "%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe" (
+  start "" "%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe" "%PAGE%"
+  goto opened
+)
+if exist "%ProgramFiles%\Google\Chrome\Application\chrome.exe" (
+  start "" "%ProgramFiles%\Google\Chrome\Application\chrome.exe" "%PAGE%"
+  goto opened
+)
+if exist "%LocalAppData%\Google\Chrome\Application\chrome.exe" (
+  start "" "%LocalAppData%\Google\Chrome\Application\chrome.exe" "%PAGE%"
+  goto opened
+)
+if exist "%ProgramFiles%\Mozilla Firefox\firefox.exe" (
+  start "" "%ProgramFiles%\Mozilla Firefox\firefox.exe" "%PAGE%"
+  goto opened
+)
+
+echo Could not find Edge, Chrome or Firefox automatically.
+echo Trying your default app...
 start "" "%PAGE%"
 
+:opened
 echo.
-echo If nothing opened, try one of these:
-echo   1. Double-click index.html in this folder
-echo   2. Drag index.html into Chrome, Edge or Firefox
+echo If you still see CODE in Notepad instead of the website:
+echo   Right-click index.html  -^>  Open with  -^>  Microsoft Edge
 echo.
-echo Folder: %CD%
+echo Keep all files in this folder:
+echo   %CD%
 echo.
 pause
 exit /b 0
