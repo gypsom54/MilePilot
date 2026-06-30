@@ -1,0 +1,23 @@
+MilePilot Website — easiest preview
+====================================
+
+OPTION 1 — NO TERMINAL (recommended)
+------------------------------------
+1. Unzip this folder anywhere (e.g. Desktop)
+2. Double-click:  OPEN-WEBSITE.bat
+   (or double-click index.html)
+
+Done. Opens in Chrome. No server needed.
+
+
+OPTION 2 — Live link (after GitHub Pages is on)
+-----------------------------------------------
+https://gypsom54.github.io/MilePilot/
+
+Bookmark that — always the latest website from GitHub.
+
+
+OPTION 3 — Upload to milepilot.uk (when ready)
+----------------------------------------------
+Cloudflare → your marketing site → upload these files:
+  index.html, styles.css, main.js
