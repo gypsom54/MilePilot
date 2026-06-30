@@ -7,8 +7,10 @@ import {
   buildReportEmailHtml,
   buildReportEmailText,
   buildReportSubject,
+  buildReportArchiveDeepLink,
   REPORT_VERSION,
 } from "./reportEngine.js";
+import { storeReportDownload, getStoredDownload } from "./reportDownload.js";
 
 dotenv.config();
 
@@ -77,12 +79,18 @@ app.post("/reports/send", async (req, res) => {
     const attachmentFilename =
       attachmentNames[periodLabel] || `MilePilot-${String(periodLabel).toLowerCase()}-report-${dateSlug}.pdf`;
 
+    const { downloadUrl } = storeReportDownload(report, pdf);
+    const emailOptions = {
+      pdfDownloadUrl: downloadUrl,
+      archiveUrl: buildReportArchiveDeepLink(),
+    };
+
     const result = await resend.emails.send({
       from: process.env.EMAIL_FROM || "MilePilot <reports@milepilot.uk>",
       to: report.email,
       subject: buildReportSubject(report),
-      text: buildReportEmailText(report),
-      html: buildReportEmailHtml(report),
+      text: buildReportEmailText(report, emailOptions),
+      html: buildReportEmailHtml(report, emailOptions),
       attachments: [
         {
           filename: attachmentFilename,
@@ -170,6 +178,21 @@ app.post("/reports/subscribe", async (req, res) => {
       subscribed: false,
       message: err.message || "Subscribe failed",
     });
+  }
+});
+
+app.get("/reports/download/:token", async (req, res) => {
+  try {
+    const entry = getStoredDownload(req.params.token);
+    if (!entry) {
+      return res.status(404).send("This download link has expired. Open MilePilot to download your report again.");
+    }
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", `inline; filename="${entry.filename}"`);
+    res.send(entry.pdfBuffer);
+  } catch (err) {
+    console.error("Download failed:", err);
+    return res.status(500).send("Could not download report.");
   }
 });
 

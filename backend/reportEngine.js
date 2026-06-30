@@ -32,7 +32,7 @@ export const VEHICLE_LABELS = {
   motorcycle: "Motorcycle",
 };
 
-export const REPORT_VERSION = "MP-017-premium-reports";
+export const REPORT_VERSION = "MP-018-report-delivery";
 const APP_URL = "https://app.milepilot.uk";
 
 /** Locked brand lockup — must match app `.brand-bar` exactly */
@@ -44,6 +44,10 @@ export function buildReportDeepLink(report, download = false) {
   const map = { Daily: "day", Weekly: "week", Monthly: "month", Annual: "year" };
   const p = map[report.period || "Daily"] || "day";
   return `${APP_URL}/?reports=${p}${download ? "&download=1" : ""}`;
+}
+
+export function buildReportArchiveDeepLink() {
+  return `${APP_URL}/?view=reports`;
 }
 
 export function buildBrandEmailHeader() {
@@ -1025,7 +1029,7 @@ export function buildPdfBuffer(report) {
   });
 }
 
-export function buildReportEmailHtml(report) {
+export function buildReportEmailHtml(report, options = {}) {
   const a = analyseReport(report);
   const name = firstName(a.driver) || "there";
   const greeting = timeGreeting();
@@ -1050,8 +1054,8 @@ export function buildReportEmailHtml(report) {
         </div>`
       : "";
 
-  const downloadUrl = buildReportDeepLink(report, true);
-  const appUrl = `${APP_URL}/`;
+  const pdfDownloadUrl = options.pdfDownloadUrl || buildReportDeepLink(report, true);
+  const archiveUrl = options.archiveUrl || buildReportArchiveDeepLink();
 
   return `<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MilePilot Report</title></head>
@@ -1074,15 +1078,15 @@ export function buildReportEmailHtml(report) {
   </table>
   ${comparison}
   ${a.pendingNotice ? `<p style="margin:0 0 24px;font-size:13px;color:#F0C35A;line-height:1.55;padding:14px 16px;border-radius:12px;background:rgba(240,195,90,.1);border:1px solid rgba(240,195,90,.28);">${a.pendingNotice}</p>` : ""}
-  <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:12px;">
-    <tr><td align="center" style="padding-bottom:12px;">
-      <a href="${downloadUrl}" style="display:inline-block;width:100%;max-width:320px;background:linear-gradient(180deg,#1E88FF 0%,#0D6BFF 55%,#005FE8 100%);color:#FFFFFF;font-size:16px;font-weight:600;text-decoration:none;padding:16px 24px;border-radius:14px;letter-spacing:-0.01em;box-sizing:border-box;box-shadow:0 8px 24px rgba(13,107,255,.28);">Download PDF Report</a>
+  <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:8px;">
+    <tr><td align="center" style="padding-bottom:10px;">
+      <a href="${pdfDownloadUrl}" style="display:inline-block;width:100%;max-width:320px;background:linear-gradient(180deg,#1E88FF 0%,#0D6BFF 55%,#005FE8 100%);color:#FFFFFF;font-size:16px;font-weight:600;text-decoration:none;padding:16px 24px;border-radius:14px;letter-spacing:-0.01em;box-sizing:border-box;box-shadow:0 8px 24px rgba(13,107,255,.28);">Download PDF Report</a>
     </td></tr>
-    <tr><td align="center">
-      <a href="${appUrl}" style="display:inline-block;color:#93A8C4;font-size:14px;font-weight:600;text-decoration:none;padding:8px 16px;">Open MilePilot</a>
+    <tr><td align="center" style="padding-bottom:4px;">
+      <a href="${archiveUrl}" style="display:inline-block;color:#93A8C4;font-size:14px;font-weight:600;text-decoration:none;padding:8px 16px;">View all reports in MilePilot →</a>
     </td></tr>
   </table>
-  <p style="margin:0 0 36px;font-size:13px;color:#93A8C4;line-height:1.6;text-align:center;">Your professional PDF is attached — ready for HMRC, your accountant, or official records.</p>
+  <p style="margin:0 0 36px;font-size:13px;color:#93A8C4;line-height:1.6;text-align:center;">Your professional PDF is also attached to this email — ready for HMRC, your accountant, or official records.</p>
   <div style="border-top:1px solid rgba(255,255,255,.08);padding-top:28px;text-align:center;">
     <p style="margin:0 0 8px;font-size:12px;font-weight:600;letter-spacing:0.14em;color:#0D6BFF;">${BRAND_TAGLINE}</p>
     <p style="margin:0 0 6px;font-size:13px;color:#B9C8DD;line-height:1.6;">Thank you for choosing MilePilot.</p>
@@ -1095,9 +1099,11 @@ export function buildReportEmailHtml(report) {
 </body></html>`;
 }
 
-export function buildReportEmailText(report) {
+export function buildReportEmailText(report, options = {}) {
   const a = analyseReport(report);
   const name = firstName(a.driver) || "there";
+  const pdfDownloadUrl = options.pdfDownloadUrl || buildReportDeepLink(report, true);
+  const archiveUrl = options.archiveUrl || buildReportArchiveDeepLink();
   return `${timeGreeting()}, ${name}
 
 ${emailStatusLine(a.period, a.periodLabel)}
@@ -1111,10 +1117,10 @@ HMRC Estimate: ${money(a.totals.hmrc)}
 
 ${comparisonLine(a, a.period === "MonthlySummary" || a.period === "Monthly")}
 
-Download your PDF: ${buildReportDeepLink(report, true)}
-Open MilePilot: ${APP_URL}/
+Download your PDF: ${pdfDownloadUrl}
+View all reports in MilePilot: ${archiveUrl}
 
-Your professional PDF is attached — ready for HMRC, your accountant, or official records.
+Your professional PDF is also attached to this email.
 
 ${BRAND_TAGLINE}
 HMRC figures are estimates for record keeping. Verify against official guidance before filing.`;
