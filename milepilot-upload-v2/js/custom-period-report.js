@@ -1,11 +1,13 @@
 /**
- * MilePilot Custom Period Reports — job-centre style 23rd–23rd cycles + natural-language dates.
+ * MilePilot Custom Date Range Reports
+ * Manual date picker now · natural-language hooks for future AI (parseNaturalLanguageRequest).
  */
 (function (global) {
   'use strict';
 
   const DEFAULT_CYCLE_DAY = 23;
   const STORAGE_KEY = 'mp_job_centre_cycle_day';
+  const PRESET_JOB_CENTRE = 'job-centre';
 
   const MONTHS = {
     jan: 0, january: 0, feb: 1, february: 1, mar: 2, march: 2, apr: 3, april: 3,
@@ -55,6 +57,21 @@
     return startStr + ' – ' + endStr;
   }
 
+  /** Job Centre preset: 23rd of previous month → 23rd of current month (inclusive). */
+  function jobCentrePresetPeriod(refDate, cycleDay) {
+    const ref = refDate || new Date();
+    const day = cycleDay || getCycleDay();
+    const start = new Date(ref.getFullYear(), ref.getMonth() - 1, day);
+    const endIncl = new Date(ref.getFullYear(), ref.getMonth(), day);
+    const end = endExclusiveFromInclusiveEnd(endIncl);
+    return {
+      start,
+      end,
+      label: formatPeriodLabel(start, end),
+      preset: PRESET_JOB_CENTRE,
+    };
+  }
+
   function cyclePeriodContaining(refDate, cycleDay) {
     const ref = startOfDay(refDate || new Date());
     const day = cycleDay || getCycleDay();
@@ -99,11 +116,11 @@
 
     const verbal = raw.match(/(\d{1,2})(?:st|nd|rd|th)?\s+([a-z]+)(?:\s+(\d{4}))?/i);
     if (verbal) {
-      const day = parseInt(verbal[1], 10);
+      const d = parseInt(verbal[1], 10);
       const mon = MONTHS[verbal[2].toLowerCase()];
       if (mon !== undefined) {
         const y = verbal[3] ? parseInt(verbal[3], 10) : new Date().getFullYear();
-        return startOfDay(new Date(y, mon, day));
+        return startOfDay(new Date(y, mon, d));
       }
     }
 
@@ -134,37 +151,23 @@
     return null;
   }
 
-  function parseRequest(text, startInput, endInput, cycleDay) {
+  /**
+   * Future AI entry point — same generator as manual date picker.
+   * Returns { ok, start, end, label, source } or { ok: false, error }.
+   */
+  function parseNaturalLanguageRequest(text, cycleDay) {
     const cycle = cycleDay || getCycleDay();
     const t = (text || '').trim().toLowerCase();
+    if (!t) return { ok: false, error: 'Say which dates you need.' };
 
-    if (startInput && endInput) {
-      const start = parseUkDate(startInput);
-      const endIncl = parseUkDate(endInput);
-      if (!start || !endIncl) {
-        return { ok: false, error: 'Check your start and end dates.' };
-      }
-      if (endIncl < start) {
-        return { ok: false, error: 'End date must be on or after the start date.' };
-      }
-      const end = endExclusiveFromInclusiveEnd(endIncl);
-      return {
-        ok: true,
-        start,
-        end,
-        label: formatPeriodLabel(start, end),
-        source: 'picker',
-      };
+    if (/job\s*cent|benefit|claim\s*period|reporting\s*month/.test(t)) {
+      const p = jobCentrePresetPeriod(new Date(), cycle);
+      return { ok: true, ...p, source: 'nl-job-centre' };
     }
 
-    if (/last|previous/.test(t) && (/job\s*cent|benefit|23/.test(t) || /period|cycle|month/.test(t))) {
-      const p = previousCyclePeriod(new Date(), cycle);
-      return { ok: true, ...p, source: 'preset-last-cycle' };
-    }
-
-    if (/job\s*cent|benefit|23\s*(?:rd)?\s*(?:to|–|-|—)\s*23|reporting\s*period|claim\s*period/.test(t)) {
+    if (/23\s*(?:rd)?\s*(?:to|–|-|—)\s*23/.test(t)) {
       const p = cyclePeriodContaining(new Date(), cycle);
-      return { ok: true, ...p, source: 'preset-current-cycle' };
+      return { ok: true, ...p, source: 'nl-23rd-cycle' };
     }
 
     const pair = extractTwoDates(text);
@@ -176,95 +179,318 @@
         start: a,
         end,
         label: formatPeriodLabel(a, end),
-        source: 'text-dates',
+        source: 'nl-dates',
       };
     }
 
-    if (/add up|total|sum|mileage|generate|report/.test(t)) {
-      const p = cyclePeriodContaining(new Date(), cycle);
-      return {
-        ok: true,
-        ...p,
-        source: 'default-cycle',
-        hint: 'Using your ' + cycle + ordinal(cycle) + '–' + cycle + ordinal(cycle) + ' reporting period.',
-      };
+    if (/add up|total|sum|mileage|generate|report|show/.test(t)) {
+      const p = jobCentrePresetPeriod(new Date(), cycle);
+      return { ok: true, ...p, source: 'nl-default-job-centre' };
     }
 
+    return { ok: false, error: 'Try “Generate report from 23 May to 23 June”.' };
+  }
+
+  /** Manual picker — primary path for v1. */
+  function parseDateRangeRequest(startInput, endInput) {
+    if (!startInput || !endInput) {
+      return { ok: false, error: 'Choose a start and end date.' };
+    }
+    const start = parseUkDate(startInput);
+    const endIncl = parseUkDate(endInput);
+    if (!start || !endIncl) {
+      return { ok: false, error: 'Check your start and end dates.' };
+    }
+    if (endIncl < start) {
+      return { ok: false, error: 'End date must be on or after the start date.' };
+    }
+    const end = endExclusiveFromInclusiveEnd(endIncl);
     return {
-      ok: false,
-      error: 'Try “Add up mileage 23rd to 23rd” or pick start and end dates below.',
+      ok: true,
+      start,
+      end,
+      label: formatPeriodLabel(start, end),
+      source: 'picker',
     };
   }
 
-  function ordinal(n) {
-    if (n >= 11 && n <= 13) return 'th';
-    const r = n % 10;
-    if (r === 1) return 'st';
-    if (r === 2) return 'nd';
-    if (r === 3) return 'rd';
-    return 'th';
+  function sumStopSeconds(stops) {
+    return (stops || []).reduce(function (acc, stop) {
+      const a = new Date(stop.startISO || 0).getTime();
+      const b = new Date(stop.endISO || stop.startISO || 0).getTime();
+      if (!a || !b || b <= a) return acc;
+      return acc + Math.round((b - a) / 1000);
+    }, 0);
+  }
+
+  function waitingSecondsForJourney(j) {
+    const stopWait = sumStopSeconds(j.stops);
+    if (stopWait > 0) return stopWait;
+    const sec = Number(j.seconds) || 0;
+    const mov = Number(j.movingSeconds) || 0;
+    return Math.max(0, sec - mov);
+  }
+
+  function loadTripsFromStore(vehicle, claimFn) {
+    if (typeof global.MPTrips === 'undefined') {
+      try {
+        return JSON.parse(global.localStorage?.getItem('mp_trips') || '[]');
+      } catch (e) {
+        return [];
+      }
+    }
+    return global.MPTrips.loadTrips(vehicle, claimFn);
   }
 
   function shiftsInRange(shifts, start, endExclusive) {
-    return (shifts || []).filter((s) => {
+    return (shifts || []).filter(function (s) {
       const d = new Date(s.startISO);
       return d >= start && d < endExclusive;
     });
   }
 
-  function totalsForRange(shifts, start, endExclusive) {
-    const list = shiftsInRange(shifts, start, endExclusive);
+  function journeyInRange(j, start, endExclusive) {
+    const d = new Date(j.startISO);
+    return d >= start && d < endExclusive;
+  }
+
+  /**
+   * Collect reportable journeys: business + reviewed only.
+   * Legacy shifts (no trip store) count as reviewed business.
+   */
+  function collectReportJourneys(opts) {
+    const shifts = opts.shifts || [];
+    const trips = opts.trips || loadTripsFromStore(opts.vehicle, opts.claimFn);
+    const start = opts.start;
+    const end = opts.end;
+    const claimFn = opts.claimFn;
+    const vehicle = opts.vehicle || 'car';
+
+    let included = [];
+    let pendingInRange = [];
+    let personalInRange = [];
+    let unreviewedInRange = [];
+
+    const hasTripData = trips.length > 0 && typeof global.MPTrips !== 'undefined';
+
+    if (hasTripData) {
+      const startMs = start.getTime();
+      const endMs = end.getTime();
+      const inRange = global.MPTrips.tripsInRange(trips, startMs, endMs);
+      pendingInRange = inRange.filter(function (t) {
+        return t.status === global.MPTrips.TRIP_STATUS.PENDING;
+      });
+      personalInRange = inRange.filter(function (t) {
+        return t.status === global.MPTrips.TRIP_STATUS.PERSONAL;
+      });
+      unreviewedInRange = inRange.filter(function (t) {
+        return t.status !== global.MPTrips.TRIP_STATUS.BUSINESS;
+      });
+      included = inRange
+        .filter(function (t) {
+          return t.status === global.MPTrips.TRIP_STATUS.BUSINESS;
+        })
+        .map(function (t) {
+          return journeyToReportRow(t);
+        });
+    } else if (trips.length) {
+      trips.forEach(function (t) {
+        if (!journeyInRange(t, start, end)) return;
+        if (t.status === 'pending') pendingInRange.push(t);
+        else if (t.status === 'personal') personalInRange.push(t);
+        else if (t.status === 'business') included.push(journeyToReportRow(t));
+        else unreviewedInRange.push(t);
+      });
+    } else {
+      included = shiftsInRange(shifts, start, end).map(function (s) {
+        return shiftToReportRow(s, claimFn, vehicle);
+      });
+    }
+
+    const mi = included.reduce(function (a, j) {
+      return a + Number(j.miles || 0);
+    }, 0);
+    const sec = included.reduce(function (a, j) {
+      return a + Number(j.seconds || 0);
+    }, 0);
+    const hmrc = included.reduce(function (a, j) {
+      return a + Number(j.hmrc || 0);
+    }, 0);
+    const waitingSec = included.reduce(function (a, j) {
+      return a + Number(j.waitingSeconds || 0);
+    }, 0);
+
+    const pendingCount = pendingInRange.length;
+    const pendingNotice =
+      pendingCount > 0
+        ? pendingCount +
+          ' journey' +
+          (pendingCount === 1 ? '' : 's') +
+          ' in this period ' +
+          (pendingCount === 1 ? 'is' : 'are') +
+          ' awaiting review and ' +
+          (pendingCount === 1 ? 'is' : 'are') +
+          ' not included.'
+        : null;
+
     return {
-      mi: list.reduce((a, b) => a + Number(b.miles || 0), 0),
-      sec: list.reduce((a, b) => a + Number(b.seconds || 0), 0),
-      hmrc: list.reduce((a, b) => a + Number(b.hmrc || 0), 0),
-      list,
+      included: included,
+      mi: mi,
+      sec: sec,
+      hmrc: hmrc,
+      waitingSec: waitingSec,
+      pendingCount: pendingCount,
+      personalCount: personalInRange.length,
+      excludedCount: personalInRange.length + pendingCount,
+      pendingNotice: pendingNotice,
+      dailyBreakdown: buildDailyBreakdown(included, start, end),
     };
   }
 
-  function buildPayload(opts) {
-    const {
-      shifts,
-      start,
-      end,
-      label,
-      driver,
-      hmrcRate,
-      fmt,
-    } = opts;
-    const t = totalsForRange(shifts, start, end);
-    const periodLabel = 'Custom Period · ' + label;
+  function shiftToReportRow(shift, claimFn, vehicle) {
+    const v = shift.vehicle || vehicle || 'car';
+    const mi = Number(shift.miles) || 0;
+    const route = shift.route || shift.routePoints || [];
+    const hmrc =
+      Number(shift.hmrc) ||
+      Number((typeof claimFn === 'function' ? claimFn(mi, v) : mi * 0.55).toFixed(2));
     return {
-      driver: driver || '',
+      id: shift.id,
+      miles: mi,
+      seconds: Number(shift.seconds) || 0,
+      movingSeconds: Number(shift.movingSeconds) || 0,
+      waitingSeconds: waitingSecondsForJourney(shift),
+      vehicle: v,
+      hmrc: hmrc,
+      date: shift.date || new Date(shift.startISO).toLocaleDateString('en-GB'),
+      startISO: shift.startISO,
+      endISO: shift.endISO,
+      route: route,
+      routePoints: route,
+      stops: shift.stops || [],
+      classification: 'Business',
+      status: 'business',
+      hasRoute: route.length >= 2,
+    };
+  }
+
+  function journeyToReportRow(trip) {
+    const route = trip.route || trip.routePoints || [];
+    return {
+      id: trip.id,
+      miles: Number(trip.miles) || 0,
+      seconds: Number(trip.seconds) || 0,
+      movingSeconds: Number(trip.movingSeconds) || 0,
+      waitingSeconds: waitingSecondsForJourney(trip),
+      vehicle: trip.vehicle,
+      hmrc: Number(trip.hmrc) || 0,
+      date: trip.date,
+      startISO: trip.startISO,
+      endISO: trip.endISO,
+      route: route,
+      routePoints: route,
+      stops: trip.stops || [],
+      classification: 'Business',
+      status: 'business',
+      startLat: trip.startLat,
+      startLon: trip.startLon,
+      endLat: trip.endLat,
+      endLon: trip.endLon,
+      hasRoute: route.length >= 2,
+    };
+  }
+
+  function buildDailyBreakdown(journeys, start, endExclusive) {
+    const days = [];
+    const cursor = startOfDay(start);
+    const end = startOfDay(endExclusive);
+    while (cursor < end) {
+      const key = cursor.toDateString();
+      const dayList = journeys.filter(function (j) {
+        return new Date(j.startISO).toDateString() === key;
+      });
+      days.push({
+        date: cursor.toLocaleDateString('en-GB', {
+          weekday: 'short',
+          day: 'numeric',
+          month: 'short',
+        }),
+        iso: cursor.toISOString().slice(0, 10),
+        miles: dayList.reduce(function (a, j) {
+          return a + Number(j.miles || 0);
+        }, 0),
+        seconds: dayList.reduce(function (a, j) {
+          return a + Number(j.seconds || 0);
+        }, 0),
+        waitingSeconds: dayList.reduce(function (a, j) {
+          return a + Number(j.waitingSeconds || 0);
+        }, 0),
+        journeys: dayList.length,
+      });
+      cursor.setDate(cursor.getDate() + 1);
+    }
+    return days;
+  }
+
+  function buildPayload(opts) {
+    const fmt = opts.fmt;
+    const range = opts.range;
+    const data = collectReportJourneys({
+      shifts: opts.shifts,
+      trips: opts.trips,
+      start: range.start,
+      end: range.end,
+      claimFn: opts.claimFn,
+      vehicle: opts.vehicle,
+    });
+
+    const periodLabel = 'Custom Date Range · ' + range.label;
+
+    return {
+      driver: opts.driver || '',
       period: 'Custom',
-      periodLabel,
-      periodStart: start.toISOString(),
-      periodEnd: end.toISOString(),
-      totals: { miles: t.mi, time: fmt(t.sec), hmrc: t.hmrc },
+      periodLabel: periodLabel,
+      periodStart: range.start.toISOString(),
+      periodEnd: range.end.toISOString(),
+      totals: {
+        miles: data.mi,
+        time: fmt(data.sec),
+        waitingTime: fmt(data.waitingSec),
+        hmrc: data.hmrc,
+        journeys: data.included.length,
+      },
+      waitingSeconds: data.waitingSec,
+      dailyBreakdown: data.dailyBreakdown,
+      excludedPending: data.pendingCount,
+      pendingNotice: data.pendingNotice,
       previousPeriod: { miles: 0, seconds: 0, hmrc: 0, journeys: 0 },
       previousWeek: { miles: 0, seconds: 0, hmrc: 0, journeys: 0 },
       weekShifts: [],
-      hmrcRate: hmrcRate || 0.55,
-      shifts: t.list,
+      hmrcRate: opts.hmrcRate || 0.55,
+      shifts: data.included,
+      generatedAt: new Date().toISOString(),
     };
   }
 
   function pdfFilename(label) {
     const safe = (label || 'custom').replace(/[^\w\-]+/g, '-').slice(0, 40);
-    return 'MilePilot-custom-report-' + safe + '-' + new Date().toISOString().slice(0, 10) + '.pdf';
+    return 'MilePilot-custom-date-report-' + safe + '-' + new Date().toISOString().slice(0, 10) + '.pdf';
   }
 
   global.MPCustomReport = {
-    getCycleDay,
-    setCycleDay,
-    cyclePeriodContaining,
-    previousCyclePeriod,
-    parseUkDate,
-    parseRequest,
-    totalsForRange,
-    buildPayload,
-    formatPeriodLabel,
-    pdfFilename,
-    DEFAULT_CYCLE_DAY,
+    getCycleDay: getCycleDay,
+    setCycleDay: setCycleDay,
+    jobCentrePresetPeriod: jobCentrePresetPeriod,
+    cyclePeriodContaining: cyclePeriodContaining,
+    previousCyclePeriod: previousCyclePeriod,
+    parseUkDate: parseUkDate,
+    parseDateRangeRequest: parseDateRangeRequest,
+    parseNaturalLanguageRequest: parseNaturalLanguageRequest,
+    collectReportJourneys: collectReportJourneys,
+    buildPayload: buildPayload,
+    formatPeriodLabel: formatPeriodLabel,
+    pdfFilename: pdfFilename,
+    PRESET_JOB_CENTRE: PRESET_JOB_CENTRE,
+    DEFAULT_CYCLE_DAY: DEFAULT_CYCLE_DAY,
   };
 })(typeof window !== 'undefined' ? window : globalThis);

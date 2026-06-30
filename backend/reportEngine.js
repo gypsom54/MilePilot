@@ -317,7 +317,44 @@ export function analyseReport(report) {
   };
 
   analysis.reportId = generateReportId(report, analysis);
+  analysis.waitingSec =
+    Number(report.waitingSeconds) ||
+    shifts.reduce((acc, s) => acc + Number(s.waitingSeconds || 0), 0);
+  analysis.dailyBreakdown =
+    Array.isArray(report.dailyBreakdown) && report.dailyBreakdown.length
+      ? report.dailyBreakdown
+      : buildCalendarDailyBreakdown(shifts);
+  analysis.pendingNotice = report.pendingNotice || null;
+  analysis.excludedPending = Number(report.excludedPending) || 0;
+  if (report.periodLabel) {
+    analysis.periodSubtitle = report.periodLabel.replace(/^Custom Date Range · /, "");
+  }
   return analysis;
+}
+
+function buildCalendarDailyBreakdown(shifts) {
+  const map = {};
+  shifts.forEach((s) => {
+    const d = new Date(s.startISO);
+    const key = d.toISOString().slice(0, 10);
+    if (!map[key]) {
+      map[key] = {
+        date: d.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" }),
+        iso: key,
+        miles: 0,
+        seconds: 0,
+        waitingSeconds: 0,
+        journeys: 0,
+      };
+    }
+    map[key].miles += Number(s.miles || 0);
+    map[key].seconds += Number(s.seconds || 0);
+    map[key].waitingSeconds += Number(s.waitingSeconds || 0);
+    map[key].journeys += 1;
+  });
+  return Object.keys(map)
+    .sort()
+    .map((k) => map[k]);
 }
 
 export function buildIntelligence(a) {
@@ -491,6 +528,29 @@ function drawProgressBar(doc, x, y, w, h, pct) {
   if (fillW > h) doc.roundedRect(x, y, fillW, h, h / 2).fill(BRAND.blue);
 }
 
+function drawMiniRoute(doc, x, y, w, h, route) {
+  const pts = (route || []).filter((p) => p && p.lat != null && p.lon != null);
+  if (pts.length < 2) return;
+  const lats = pts.map((p) => p.lat);
+  const lons = pts.map((p) => p.lon);
+  const minLat = Math.min(...lats);
+  const maxLat = Math.max(...lats);
+  const minLon = Math.min(...lons);
+  const maxLon = Math.max(...lons);
+  const pad = 5;
+  const scaleX = (w - pad * 2) / Math.max(maxLon - minLon, 1e-6);
+  const scaleY = (h - pad * 2) / Math.max(maxLat - minLat, 1e-6);
+  const scale = Math.min(scaleX, scaleY);
+  doc.roundedRect(x, y, w, h, 4).fillAndStroke(BRAND.light, BRAND.border);
+  const mapped = pts.map((p) => [
+    x + pad + (p.lon - minLon) * scale,
+    y + h - pad - (p.lat - minLat) * scale,
+  ]);
+  doc.moveTo(mapped[0][0], mapped[0][1]);
+  for (let i = 1; i < mapped.length; i++) doc.lineTo(mapped[i][0], mapped[i][1]);
+  doc.strokeColor(BRAND.blue).lineWidth(1.1).stroke();
+}
+
 export function buildPdfBuffer(report) {
   return new Promise((resolve, reject) => {
     const a = analyseReport(report);
@@ -515,17 +575,35 @@ export function buildPdfBuffer(report) {
     doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(96).text(a.totals.mi.toFixed(1), margin, y, { lineBreak: false });
     y += 102;
     doc.fillColor(BRAND.muted).font("Helvetica-Bold").fontSize(11).text("Business Miles", margin, y, { characterSpacing: 0.3 });
+    if (a.period === "Custom" && a.periodSubtitle) {
+      doc.fillColor(BRAND.muted).font("Helvetica").fontSize(10).text(a.periodSubtitle, margin, y + 16, { width: contentW });
+      y += 14;
+    }
     doc.moveTo(margin, y + 18).lineTo(margin + 120, y + 18).strokeColor(BRAND.border).lineWidth(1).stroke();
     y += 34;
 
+    if (a.period === "Custom" && a.pendingNotice) {
+      doc.roundedRect(margin, y, contentW, 44, 10).fillAndStroke("#FFF8E8", "#F0C35A");
+      doc.fillColor("#7A5B12").font("Helvetica").fontSize(9).text(a.pendingNotice, margin + 14, y + 14, { width: contentW - 28 });
+      y += 56;
+    }
+
     const cardW = (contentW - 14) / 2;
     const cardH = 62;
-    const cards = [
-      { label: "Travel Time", value: fmtShiftTime(a.totals.sec) },
-      { label: "Business Journeys", value: String(a.totals.journeys) },
-      { label: a.allowanceLabel, value: money(a.totals.hmrc) },
-      { label: "Average Journey", value: a.avgMilesShift > 0 ? `${a.avgMilesShift.toFixed(1)} mi` : "—" },
-    ];
+    const cards =
+      a.period === "Custom"
+        ? [
+            { label: "Driving Time", value: fmtShiftTime(a.totals.sec) },
+            { label: "Waiting Time", value: a.waitingSec > 0 ? fmtShiftTime(a.waitingSec) : "—" },
+            { label: "Business Journeys", value: String(a.totals.journeys) },
+            { label: a.allowanceLabel, value: money(a.totals.hmrc) },
+          ]
+        : [
+            { label: "Travel Time", value: fmtShiftTime(a.totals.sec) },
+            { label: "Business Journeys", value: String(a.totals.journeys) },
+            { label: a.allowanceLabel, value: money(a.totals.hmrc) },
+            { label: "Average Journey", value: a.avgMilesShift > 0 ? `${a.avgMilesShift.toFixed(1)} mi` : "—" },
+          ];
     cards.forEach((c, i) => {
       const col = i % 2;
       const row = Math.floor(i / 2);
@@ -553,11 +631,14 @@ export function buildPdfBuffer(report) {
     // ── PAGE 2: Journey table ──
     doc.addPage({ margin: 0 });
     y = drawPageHeader(doc, a, margin, contentW, pageW);
-    y = drawSectionTitle(doc, margin, y, "Journeys", "Journey Breakdown", "Professional record for your accountant");
+    y = drawSectionTitle(doc, margin, y, "Journeys", "Trip Timeline", a.period === "Custom" ? "Business journeys in date order" : "Professional record for your accountant");
 
-    const tCols = [margin + 8, margin + 52, margin + 102, margin + 162, margin + 222, margin + 292];
+    const isCustom = a.period === "Custom";
+    const tCols = isCustom
+      ? [margin + 8, margin + 48, margin + 92, margin + 142, margin + 192, margin + 248]
+      : [margin + 8, margin + 52, margin + 102, margin + 162, margin + 222, margin + 292];
     doc.roundedRect(margin, y, contentW, 24, 4).fill(BRAND.navy);
-    ["Time", "Start", "Finish", "Miles", "Duration"].forEach((h, i) => {
+    (isCustom ? ["Date", "Start", "Finish", "Miles", "Drive", "Route"] : ["Time", "Start", "Finish", "Miles", "Duration"]).forEach((h, i) => {
       doc.fillColor("#FFF").font("Helvetica-Bold").fontSize(7.5).text(h.toUpperCase(), tCols[i], y + 8);
     });
     y += 24;
@@ -567,7 +648,7 @@ export function buildPdfBuffer(report) {
       doc.fillColor(BRAND.muted).font("Helvetica").fontSize(10).text("No journeys recorded in this period.", margin + 16, y + 14);
     } else {
       a.shifts.forEach((s, idx) => {
-        const rowH = 24;
+        const rowH = isCustom && (s.route?.length >= 2 || s.routePoints?.length >= 2) ? 36 : 24;
         if (y + rowH > doc.page.height - 180) {
           drawFooter(doc, a, margin, contentW);
           doc.addPage({ margin: 0 });
@@ -576,11 +657,16 @@ export function buildPdfBuffer(report) {
         doc.rect(margin, y, contentW, rowH).fill(idx % 2 === 0 ? "#FFFFFF" : BRAND.light);
         const d = new Date(s.startISO);
         doc.fillColor(BRAND.text).font("Helvetica").fontSize(8.5);
-        doc.text(d.toLocaleDateString("en-GB", { day: "2-digit", month: "short" }), tCols[0], y + 8);
-        doc.text(fmtClock(s.startISO), tCols[1], y + 8);
-        doc.text(fmtClock(s.endISO), tCols[2], y + 8);
-        doc.font("Helvetica-Bold").text(Number(s.miles || 0).toFixed(1), tCols[3], y + 8);
-        doc.font("Helvetica").text(fmtDurationShort(s.seconds), tCols[4], y + 8);
+        doc.text(d.toLocaleDateString("en-GB", { day: "2-digit", month: "short" }), tCols[0], y + (rowH > 24 ? 12 : 8));
+        doc.text(fmtClock(s.startISO), tCols[1], y + (rowH > 24 ? 12 : 8));
+        doc.text(fmtClock(s.endISO), tCols[2], y + (rowH > 24 ? 12 : 8));
+        doc.font("Helvetica-Bold").text(Number(s.miles || 0).toFixed(1), tCols[3], y + (rowH > 24 ? 12 : 8));
+        doc.font("Helvetica").text(fmtDurationShort(s.seconds), tCols[4], y + (rowH > 24 ? 12 : 8));
+        if (isCustom) {
+          const route = s.route || s.routePoints || [];
+          if (route.length >= 2) drawMiniRoute(doc, tCols[5], y + 4, contentW - (tCols[5] - margin) - 8, rowH - 8, route);
+          else doc.fillColor(BRAND.muted).fontSize(7.5).text("—", tCols[5], y + 12);
+        }
         y += rowH;
       });
     }
@@ -594,9 +680,51 @@ export function buildPdfBuffer(report) {
 
     drawFooter(doc, a, margin, contentW);
 
-    // ── PAGE 3: Weekly performance ──
+    // ── PAGE 3: Performance / daily breakdown ──
     doc.addPage({ margin: 0 });
     y = drawPageHeader(doc, a, margin, contentW, pageW);
+
+    if (a.period === "Custom") {
+      y = drawSectionTitle(doc, margin, y, "Daily", "Daily Breakdown", "Business miles by day in this period");
+      const days = a.dailyBreakdown || [];
+      const maxDayMi = Math.max(...days.map((d) => d.miles), 1);
+      if (!days.length) {
+        doc.fillColor(BRAND.muted).font("Helvetica").fontSize(10).text("No daily activity in this period.", margin, y + 8);
+      } else {
+        days.forEach((d) => {
+          doc.fillColor(BRAND.text).font("Helvetica").fontSize(9).text(d.date, margin, y + 3, { width: 88 });
+          drawProgressBar(doc, margin + 92, y + 4, contentW - 200, 8, d.miles / maxDayMi);
+          doc.fillColor(BRAND.muted).font("Helvetica-Bold").fontSize(8).text(
+            d.miles > 0 ? `${d.miles.toFixed(1)} mi · ${d.journeys} j` : "—",
+            margin + contentW - 96,
+            y + 2,
+            { width: 96, align: "right" }
+          );
+          y += 22;
+        });
+      }
+      y += 16;
+      const stats = [
+        ["Total business miles", `${a.totals.mi.toFixed(1)} mi`],
+        ["Total driving time", fmtShiftTime(a.totals.sec)],
+        ["Total waiting time", a.waitingSec > 0 ? fmtShiftTime(a.waitingSec) : "—"],
+        ["Business journeys", String(a.totals.journeys)],
+        ["HMRC mileage estimate", money(a.totals.hmrc)],
+        ["Generated", `${a.generatedAt} at ${a.generatedAtTime}`],
+      ];
+      doc.roundedRect(margin, y, contentW, stats.length * 28 + 24, 14).fillAndStroke("#FFFFFF", BRAND.border);
+      doc.roundedRect(margin + 1, y + 1, contentW - 2, 4, 2).fill(BRAND.blue);
+      let sy = y + 16;
+      stats.forEach(([label, val]) => {
+        doc.fillColor(BRAND.muted).font("Helvetica").fontSize(9).text(label, margin + 18, sy);
+        doc.fillColor(BRAND.text).font("Helvetica-Bold").fontSize(10).text(val, margin + contentW / 2, sy, {
+          width: contentW / 2 - 24,
+          align: "right",
+        });
+        sy += 28;
+      });
+      drawFooter(doc, a, margin, contentW);
+    } else {
     y = drawSectionTitle(doc, margin, y, "Performance", "Weekly Performance", `Week ending ${a.weekEnding}`);
 
     const maxDayMi = Math.max(...a.dailyActivity.map((d) => d.miles), 1);
@@ -629,6 +757,7 @@ export function buildPdfBuffer(report) {
     });
 
     drawFooter(doc, a, margin, contentW);
+    }
     doc.end();
   });
 }

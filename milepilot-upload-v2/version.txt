@@ -1,3 +1,3 @@
-MilePilot OS v8.21.0 — Custom period reports (job centre 23rd–23rd)
+MilePilot OS v8.22.0 — Custom Date Range Reports (business-only filtering)
 Build: 2026-06-29
 Brand: Every business mile matters.
