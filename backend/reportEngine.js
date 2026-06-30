@@ -184,8 +184,8 @@ function sumShifts(list) {
 }
 
 function isShiftModeReport(report, shifts) {
-  if (report.trackingStyle === "shift") return true;
-  return shifts.some((s) => s.trackingStyle === "shift");
+  if (report.trackingStyle === "shift" || report.trackingStyle === "smart") return true;
+  return shifts.some((s) => s.trackingStyle === "shift" || s.trackingStyle === "smart");
 }
 
 function groupByDay(shifts) {
