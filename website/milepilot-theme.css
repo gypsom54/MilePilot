@@ -380,6 +380,22 @@ svg { display: block; max-width: 100%; }
   animation: routeDraw var(--mp-route-draw-duration, 3.5s) var(--ease) forwards;
 }
 
+.route-animated.is-drawn {
+  stroke-dashoffset: 0;
+  animation: routeGlowPulse 4.5s ease-in-out infinite;
+}
+
+@keyframes routeGlowPulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 5px rgba(13, 107, 255, 0.45));
+    opacity: 0.88;
+  }
+  50% {
+    filter: drop-shadow(0 0 10px rgba(13, 107, 255, 0.65));
+    opacity: 1;
+  }
+}
+
 @keyframes routeDraw {
   0% { stroke-dashoffset: 100; opacity: 0.5; }
   100% { stroke-dashoffset: 0; opacity: 1; }
@@ -414,6 +430,32 @@ svg { display: block; max-width: 100%; }
     inset 0 1px 0 rgba(255, 255, 255, 0.14);
 }
 
+.btn-site-primary.btn-glow {
+  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease), filter 0.35s ease;
+}
+
+.btn-site-primary.btn-glow:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+  box-shadow:
+    0 10px 40px rgba(13, 107, 255, 0.48),
+    0 0 36px rgba(13, 107, 255, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.btn-site-primary.btn-glow:focus-visible {
+  outline: 2px solid rgba(126, 192, 255, 0.9);
+  outline-offset: 3px;
+  box-shadow:
+    0 0 0 4px rgba(13, 107, 255, 0.3),
+    0 10px 40px rgba(13, 107, 255, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+
+.btn-site-primary.btn-glow:active {
+  transform: translateY(0) scale(0.985);
+}
+
 .cc-primary-btn:active,
 .btn-site-primary:active { transform: scale(0.985); }
 
@@ -440,14 +482,6 @@ svg { display: block; max-width: 100%; }
 /* Button glow pulse on hover */
 .btn-glow {
   position: relative;
-  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease), filter 0.35s ease;
-}
-
-.btn-glow:hover {
-  box-shadow:
-    0 8px 36px rgba(13, 107, 255, 0.45),
-    0 0 32px rgba(13, 107, 255, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.14);
 }
 
 .btn-glow::after {
@@ -536,6 +570,11 @@ svg { display: block; max-width: 100%; }
   font-weight: 700;
   background: rgba(240, 195, 90, 0.15);
   color: #f0c35a;
+}
+
+.chip-warn.chip-pulse,
+.phone-live .chip-warn {
+  animation: chipPulse 2.8s ease-in-out infinite;
 }
 
 .chip-blue {

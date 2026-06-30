@@ -120,17 +120,24 @@
   function drawRouteOnce(container) {
     if (!container) return;
     container.querySelectorAll('.route-animated').forEach((path) => {
-      path.classList.remove('is-drawing');
+      path.classList.remove('is-drawing', 'is-drawn');
       path.style.strokeDashoffset = '100';
       void path.offsetWidth;
       path.classList.add('is-drawing');
+      const onEnd = () => {
+        path.classList.remove('is-drawing');
+        path.classList.add('is-drawn');
+        path.removeEventListener('animationend', onEnd);
+      };
+      path.addEventListener('animationend', onEnd);
     });
   }
 
   function animatePhone(phone) {
     if (!phone) return;
+    phone.classList.add('phone-live');
     drawRouteOnce(phone);
-    phone.querySelectorAll('[data-live="once"]').forEach(animateCount);
+    phone.querySelectorAll('[data-count]').forEach(animateCount);
     const toast = phone.querySelector('.phone-toast-once');
     if (toast) setTimeout(() => toast.classList.add('is-shown'), 900);
     phone.querySelectorAll('.phone-seq').forEach((el, i) => {

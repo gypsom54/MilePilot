@@ -206,6 +206,28 @@ body.hero-ready .hero-phone {
   animation-delay: 0.7s;
 }
 
+/* Phone live shine */
+.phone-wrap.phone-live .cc-map-gps-dot.is-live {
+  animation: ccPulseDot 2.6s ease-in-out infinite;
+}
+
+.phone-wrap.phone-live .autopilot-glow {
+  animation: autopilotRowGlow 3.2s ease-in-out infinite;
+}
+
+.phone-wrap.phone-live .cc-hero.is-live .cc-hero-value {
+  animation: milesGlow 4s ease-in-out infinite;
+}
+
+.phone-wrap.phone-live .origin-pulse {
+  animation: originPulse 2.4s ease-out infinite;
+}
+
+@keyframes milesGlow {
+  0%, 100% { text-shadow: 0 0 24px rgba(13, 107, 255, 0.15); }
+  50% { text-shadow: 0 0 36px rgba(13, 107, 255, 0.28); }
+}
+
 /* —— Phone live (once, not looping) —— */
 .phone-toast-once {
   opacity: 0;
@@ -803,6 +825,28 @@ body.hero-ready .hero-phone {
   box-shadow: var(--mp-card-shadow-hover);
 }
 
+.mp-glow-panel.card-lift:hover {
+  transform: translateY(-4px);
+}
+
+.why-copy.mp-glow-panel {
+  padding: clamp(24px, 4vw, 32px);
+}
+
+.why-copy.mp-glow-panel .section-h {
+  margin-bottom: 20px;
+}
+
+.faq-item.card-lift:hover {
+  transform: translateY(-3px);
+}
+
+.beta-card.card-lift:hover {
+  transform: translateY(-4px);
+  border-color: var(--mp-card-border-hover);
+  box-shadow: var(--mp-card-shadow-hover);
+}
+
 .report-delivery-list,
 .report-features-list {
   list-style: none;
@@ -1309,10 +1353,24 @@ body.hero-ready .hero-phone {
 }
 
 .btn-cta-large {
-  height: 60px;
-  padding: 0 40px;
-  font-size: 18px;
+  height: 56px;
+  padding: 0 36px;
+  font-size: 17px;
   margin-bottom: 16px;
+  min-width: min(100%, 360px);
+}
+
+.nav-cta.btn-glow {
+  white-space: nowrap;
+  font-size: 13px;
+  padding: 0 16px;
+}
+
+@media (min-width: 1100px) {
+  .nav-cta.btn-glow {
+    font-size: 14px;
+    padding: 0 18px;
+  }
 }
 
 .cta-footnote {
@@ -1456,6 +1514,7 @@ body.hero-ready .hero-phone {
 
 @media (prefers-reduced-motion: reduce) {
   .phone-float,
+  .phone-wrap.phone-live,
   .hero-phone.is-alive,
   .app-demo-phone.is-alive,
   .hero-pulse-bg,
