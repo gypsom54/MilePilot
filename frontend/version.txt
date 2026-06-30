@@ -1,1 +1,1 @@
-MilePilot OS v8.19.1 — Locked reporting policy (MP-041); no PDF on End Shift
+MilePilot OS v8.20.0 — Daily Summary philosophy: silent day, review at end, one daily report

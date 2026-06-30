@@ -5,6 +5,21 @@
 
 ---
 
+## 🔒 MP-042 — Daily Summary Philosophy (LOCKED)
+
+**Doc:** `docs/MP-042-DAILY-SUMMARY-PHILOSOPHY.md`  
+**Status:** Locked — silent day recording · end-of-day review · one daily report
+
+| Policy | Status |
+|--------|--------|
+| Same tracking engine for all users | ✅ Locked |
+| Silent recording during the day | ✅ Shipped v8.20.0 |
+| Daily Review at end of day | ✅ Shipped v8.20.0 |
+| Daily report only after review | ✅ Shipped v8.20.0 |
+| No per-trip Business/Personal modal | ✅ Shipped v8.20.0 |
+
+---
+
 ## 🔒 MP-041 — Reporting, Shift Mode & AI (LOCKED)
 
 **Doc:** `docs/MP-041-REPORTING-AI-ROADMAP.md`  
