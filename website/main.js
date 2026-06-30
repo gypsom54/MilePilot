@@ -12,16 +12,15 @@
   const roleRotator = document.getElementById('roleRotator');
 
   const roles = [
-    'Taxi drivers',
-    'Private hire',
-    'Delivery workers',
-    'Electricians',
-    'Plumbers',
-    'Builders',
-    'Estate agents',
-    'Sales professionals',
-    'Mobile businesses',
-    'Self-employed mileage claims',
+    'HMRC mileage claims',
+    'Client visits',
+    'Site visits',
+    'Deliveries',
+    'Taxi & private hire',
+    'Trades & mobile businesses',
+    'Sales appointments',
+    'Estate agency visits',
+    'Self-employed mileage records',
   ];
 
   let roleIndex = 0;
@@ -156,11 +155,27 @@
 
   function staggerChildren(container) {
     const items = container.querySelectorAll(
-      '.cc-card, .reveal-stagger, .timeline-step, [data-stagger], .trust-list li'
+      '.cc-card, .reveal-stagger, .timeline-step, [data-stagger]'
     );
     items.forEach((el, i) => {
       setTimeout(() => el.classList.add('is-visible'), i * STAGGER_MS);
     });
+  }
+
+  function animateWorkflowCard(card) {
+    if (!card || reducedMotion) {
+      card?.querySelectorAll('.workflow-step').forEach((s) => s.classList.add('is-active'));
+      return;
+    }
+    const steps = card.querySelectorAll('.workflow-step');
+    let i = 0;
+    function next() {
+      if (i >= steps.length) return;
+      steps[i].classList.add('is-active');
+      i += 1;
+      setTimeout(next, 600);
+    }
+    next();
   }
 
   if ('IntersectionObserver' in window) {
@@ -206,6 +221,21 @@
       );
       phoneObserver.observe(block);
     });
+
+    const workflowCard = document.getElementById('workflowCard');
+    if (workflowCard) {
+      const wfObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            animateWorkflowCard(entry.target);
+            wfObserver.unobserve(entry.target);
+          });
+        },
+        { threshold: 0.4 }
+      );
+      wfObserver.observe(workflowCard);
+    }
   } else {
     completeHero();
     reveals.forEach((el) => {
@@ -266,7 +296,11 @@
     if (timeline) timeline.scrollIntoView({ behavior: 'smooth', block: 'start' });
     else openDemo();
   });
-  demoBtn2?.addEventListener('click', openDemo);
+  demoBtn2?.addEventListener('click', () => {
+    const why = document.getElementById('why-different');
+    if (why) why.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    else openDemo();
+  });
   demoClose?.addEventListener('click', closeDemo);
   demoOverlay?.addEventListener('click', (e) => {
     if (e.target === demoOverlay) closeDemo();
