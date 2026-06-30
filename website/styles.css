@@ -364,8 +364,14 @@ body.hero-ready .hero-phone {
 }
 
 @keyframes phoneFloat {
-  0%, 100% { transform: translateY(0) rotateX(0deg); }
-  50% { transform: translateY(-10px) rotateX(1deg); }
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, calc(-1 * var(--mp-phone-float)), 0); }
+}
+
+.phone-float,
+.hero-phone.is-alive,
+.app-demo-phone.is-alive {
+  will-change: transform;
 }
 
 .phone-frame {
@@ -584,7 +590,7 @@ body.hero-ready .hero-phone {
 }
 
 .step-card.card-lift:hover {
-  transform: translateY(-4px);
+  transform: translateY(var(--mp-lift));
   border-color: var(--mp-card-border-hover);
   box-shadow: var(--mp-card-shadow-hover);
 }
@@ -704,7 +710,7 @@ body.hero-ready .hero-phone {
 
 .timeline-card.card-lift:hover,
 .timeline-highlight.card-lift:hover {
-  transform: translateY(-3px);
+  transform: translateY(var(--mp-lift));
   border-color: var(--mp-card-border-hover);
   box-shadow: var(--mp-card-shadow-hover);
 }
@@ -748,7 +754,7 @@ body.hero-ready .hero-phone {
 }
 
 .app-demo-features li:hover {
-  transform: translateY(-2px);
+  transform: translateY(var(--mp-lift));
   border-color: var(--mp-card-border-hover);
   box-shadow: var(--mp-card-shadow-hover);
 }
@@ -826,7 +832,7 @@ body.hero-ready .hero-phone {
 }
 
 .mp-glow-panel.card-lift:hover {
-  transform: translateY(-4px);
+  transform: translateY(var(--mp-lift));
 }
 
 .why-copy.mp-glow-panel {
@@ -838,11 +844,11 @@ body.hero-ready .hero-phone {
 }
 
 .faq-item.card-lift:hover {
-  transform: translateY(-3px);
+  transform: translateY(var(--mp-lift));
 }
 
 .beta-card.card-lift:hover {
-  transform: translateY(-4px);
+  transform: translateY(var(--mp-lift));
   border-color: var(--mp-card-border-hover);
   box-shadow: var(--mp-card-shadow-hover);
 }
@@ -870,7 +876,7 @@ body.hero-ready .hero-phone {
 }
 
 .report-features-list li:hover {
-  transform: translateY(-2px);
+  transform: translateY(var(--mp-lift));
   border-color: var(--mp-card-border-hover);
   box-shadow: var(--mp-card-shadow-hover);
 }
@@ -931,7 +937,7 @@ body.hero-ready .hero-phone {
 }
 
 .hardware-card.card-lift:hover {
-  transform: translateY(-4px);
+  transform: translateY(var(--mp-lift));
   border-color: var(--mp-card-border-hover);
   box-shadow: var(--mp-card-shadow-hover);
 }
@@ -981,7 +987,7 @@ body.hero-ready .hero-phone {
 }
 
 .workflow-card.card-lift:hover {
-  transform: translateY(-4px);
+  transform: translateY(var(--mp-lift));
   border-color: var(--mp-card-border-hover);
   box-shadow: var(--mp-card-shadow-hover);
 }
@@ -1190,7 +1196,7 @@ body.hero-ready .hero-phone {
 }
 
 .audience-chips span:hover {
-  transform: translateY(-2px);
+  transform: translateY(var(--mp-lift));
   border-color: var(--mp-card-border-hover);
   box-shadow: 0 8px 28px rgba(13, 107, 255, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
@@ -1280,7 +1286,7 @@ body.hero-ready .hero-phone {
   font-size: 22px;
   font-weight: 400;
   color: rgba(110, 180, 255, 0.7);
-  transition: transform 0.4s var(--ease), color 0.3s ease;
+  transition: transform 0.5s var(--mp-ease), color 0.35s ease;
   flex-shrink: 0;
 }
 
@@ -1293,15 +1299,29 @@ body.hero-ready .hero-phone {
 }
 
 .faq-answer {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.5s var(--ease), padding 0.5s var(--ease);
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.5s var(--mp-ease), padding 0.5s var(--mp-ease);
   padding: 0 24px;
 }
 
+.faq-answer > .card-text {
+  overflow: hidden;
+  min-height: 0;
+  margin: 0;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.4s var(--mp-ease) 0.05s, transform 0.45s var(--mp-ease) 0.05s;
+}
+
 .faq-item.is-open .faq-answer {
-  max-height: 360px;
+  grid-template-rows: 1fr;
   padding: 0 24px 22px;
+}
+
+.faq-item.is-open .faq-answer > .card-text {
+  opacity: 1;
+  transform: none;
 }
 
 .faq-answer .card-text { font-size: 15px; }
@@ -1483,6 +1503,7 @@ body.hero-ready .hero-phone {
 
 .card-lift {
   transition: var(--mp-card-transition);
+  will-change: transform;
 }
 
 .card-lift.is-visible {
@@ -1490,7 +1511,7 @@ body.hero-ready .hero-phone {
 }
 
 .card-lift:hover {
-  transform: translateY(-4px);
+  transform: translateY(var(--mp-lift));
   border-color: var(--mp-card-border-hover);
   box-shadow: var(--mp-card-shadow-hover);
 }
@@ -1503,7 +1524,7 @@ body.hero-ready .hero-phone {
 }
 
 .report-wallet.card-lift:hover {
-  transform: translateY(-4px);
+  transform: translateY(var(--mp-lift));
   box-shadow: var(--mp-card-shadow-premium-hover);
 }
 
@@ -1524,5 +1545,6 @@ body.hero-ready .hero-phone {
   .reveal,
   .reveal-stagger,
   [data-stagger],
-  .card-lift { animation: none !important; transition: none !important; opacity: 1 !important; transform: none !important; }
+  .card-lift,
+  .btn-site-primary.btn-glow { animation: none !important; transition: none !important; opacity: 1 !important; transform: none !important; }
 }

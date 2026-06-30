@@ -1,14 +1,20 @@
-# MilePilot Website v4.6.3
+# MilePilot Website v1.0 — Frozen
 
-## Preview locally
+The marketing website is **complete for launch**. Further website work should wait until you have real beta data.
 
-1. Download `MilePilot-WEBSITE-v4.6.3-DOWNLOAD.zip`
-2. Right-click zip → **Extract All…**
-3. Open the **MilePilot-Website** folder
-4. Double-click **DOUBLE-CLICK-ME.vbs**
+## Download
 
-**Manual fallback:** Open Edge → press **Ctrl+O** → select `index.html`
+`MilePilot-WEBSITE-v1.0-DOWNLOAD.zip`
 
-See `READ-ME-FIRST.txt` in the zip for full help.
+1. Extract All → open **MilePilot-Website** folder
+2. Double-click **DOUBLE-CLICK-ME.vbs**
 
-See: [`docs/brand/`](../docs/brand/README.md)
+## What's next (website, later)
+
+- Replace mockups with real app screenshots
+- Add real beta metrics when available
+- Collect testimonials from founding drivers
+
+## Focus now: the app
+
+Background tracking, onboarding, PDF reports, and real user feedback.
