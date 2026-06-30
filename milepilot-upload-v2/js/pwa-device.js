@@ -220,6 +220,16 @@
     );
   }
 
+  function getTripLifecycleText() {
+    if (typeof global.MPTracking === 'undefined' || !global.MPTracking.getTripLifecycleStatus) return '—';
+    return global.MPTracking.getTripLifecycleStatus().label || '—';
+  }
+
+  function getStationaryGraceText() {
+    if (typeof global.MPTracking === 'undefined' || !global.MPTracking.getStationaryGraceMs) return '—';
+    return Math.round(global.MPTracking.getStationaryGraceMs() / 60000) + ' min';
+  }
+
   function renderTestPanel() {
     var card = q('testModeCard');
     var body = q('testModeBody');
@@ -251,6 +261,8 @@
         renderTestPanelRow('Location permission', perm || 'unknown') +
         renderTestPanelRow('GPS accuracy', getGpsAccuracyText()) +
         renderTestPanelRow('Tracking state', getTrackingStateText()) +
+        renderTestPanelRow('Trip status', getTripLifecycleText()) +
+        renderTestPanelRow('Stationary grace', getStationaryGraceText()) +
         renderTestPanelRow('Route points', getRoutePointCount()) +
         renderTestPanelRow('Last saved shift', getLastSavedShiftTime()) +
         renderTestPanelRow('Report schedule', getReportScheduleText()) +

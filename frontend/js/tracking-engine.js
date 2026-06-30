@@ -1,20 +1,22 @@
 /**
- * MilePilot Tracking Engine v3 — FEATURE FREEZE (Phase 3)
- * Core recording logic is stable. Changes should be reliability fixes only.
- * Auto-records journeys; classifies after motion stops (pending → business | personal).
+ * MilePilot Tracking Engine v3
+ * Auto-records journeys; classifies after sustained stationary period (pending → business | personal).
  */
 (function (global) {
   'use strict';
 
   const ENGINE_VERSION = 3;
   const STORAGE = { SHIFTS: 'mp_shifts', ACTIVE: 'mp_active_shift' };
+  const STATIONARY_GRACE_OPTIONS_MIN = [10, 20, 30];
+  const DEFAULT_STATIONARY_GRACE_MIN = 20;
+  const STATIONARY_GRACE_STORAGE_KEY = 'mp_stationary_grace_min';
 
   const ENGINE = {
     MIN_MOVE_M: 6,
     MAX_JUMP_M: 400,
     MAX_SPEED_MPS: 67,
     STOP_SPEED_MPS: 0.9,
-    STOP_AFTER_MS: 90000,
+    STATIONARY_GRACE_MS: DEFAULT_STATIONARY_GRACE_MIN * 60 * 1000,
     ROUTE_MAX: 500,
     ACC_MAX: 120,
     ACC_SOFT_MAX: 220,
@@ -27,6 +29,37 @@
     MOTION_MIN_DURATION_MS: 18000,
     MOTION_MAGNITUDE_MIN: 11,
   };
+
+  function getStationaryGraceMs() {
+    try {
+      const stored = parseInt(global.localStorage.getItem(STATIONARY_GRACE_STORAGE_KEY), 10);
+      if (STATIONARY_GRACE_OPTIONS_MIN.indexOf(stored) >= 0) return stored * 60 * 1000;
+    } catch (e) {}
+    return ENGINE.STATIONARY_GRACE_MS;
+  }
+
+  function setStationaryGraceMinutes(minutes) {
+    if (STATIONARY_GRACE_OPTIONS_MIN.indexOf(minutes) < 0) return false;
+    try {
+      global.localStorage.setItem(STATIONARY_GRACE_STORAGE_KEY, String(minutes));
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function stationaryElapsedMs(now) {
+    if (!state.stopCandidateAt) return 0;
+    return (now || Date.now()) - state.stopCandidateAt;
+  }
+
+  function markTripMoving() {
+    if (state.activeTrip) state.activeTrip.phase = 'moving';
+  }
+
+  function markTripStationary() {
+    if (state.activeTrip) state.activeTrip.phase = 'stationary';
+  }
 
   /** Auto-start recording on sustained motion — no pre-classification prompt. */
   const autoMotion = {
@@ -177,6 +210,7 @@
     state.activeTrip = {
       id: 'trip_' + now,
       status: 'recording',
+      phase: 'moving',
       miles: 0,
       movingSeconds: 0,
       routePoints: [],
@@ -230,6 +264,64 @@
       createdAt: new Date().toISOString(),
       classifiedAt: null,
     };
+  }
+
+  function checkStationaryGrace(endP) {
+    if (!state.stopCandidateAt) return false;
+    if (stationaryElapsedMs() < getStationaryGraceMs()) return false;
+    const p =
+      endP ||
+      state.lastPoint ||
+      state.stopCandidatePoint || { lat: 0, lon: 0, t: Date.now(), acc: 999 };
+    if (state.activeTrip) finalizeActiveTrip(p);
+    else recordStop(p);
+    return true;
+  }
+
+  function getTripLifecycleStatus(now) {
+    now = now || Date.now();
+    const graceMs = getStationaryGraceMs();
+    const base = {
+      endingInMs: null,
+      stationaryMs: 0,
+      graceMs: graceMs,
+      graceMinutes: Math.round(graceMs / 60000),
+    };
+    if (state.shiftStatus !== SHIFT_STATUS.TRACKING) {
+      return Object.assign(base, { phase: 'none', label: '—' });
+    }
+    if (!state.activeTrip) {
+      return Object.assign(base, { phase: 'ended', label: 'Ended' });
+    }
+    if (!state.stopCandidateAt) {
+      return Object.assign(base, { phase: 'moving', label: 'Moving' });
+    }
+    const elapsed = stationaryElapsedMs(now);
+    const remaining = Math.max(0, graceMs - elapsed);
+    if (remaining <= 0) {
+      return Object.assign(base, {
+        phase: 'ending',
+        label: 'Ending',
+        endingInMs: 0,
+        stationaryMs: elapsed,
+      });
+    }
+    const mins = Math.max(1, Math.ceil(remaining / 60000));
+    return Object.assign(base, {
+      phase: 'stationary',
+      label: 'Stationary · ending in ' + mins + ' min',
+      endingInMs: remaining,
+      stationaryMs: elapsed,
+    });
+  }
+
+  function reconcileStationaryAfterRestore() {
+    if (!state.stopCandidateAt || !state.activeTrip) return;
+    if (stationaryElapsedMs() >= getStationaryGraceMs()) {
+      checkStationaryGrace(state.lastPoint);
+      return;
+    }
+    markTripStationary();
   }
 
   function finalizeActiveTrip(endP) {
@@ -297,14 +389,15 @@
         if (state.stopCandidateAt) {
           state.stopCandidateAt = null;
           state.stopCandidatePoint = null;
+          markTripMoving();
         }
       } else if (speed < ENGINE.STOP_SPEED_MPS && d < ENGINE.MIN_MOVE_M * 2) {
         if (!state.stopCandidateAt) {
-          state.stopCandidateAt = p.t;
+          state.stopCandidateAt = Date.now();
           state.stopCandidatePoint = p;
-        } else if (p.t - state.stopCandidateAt >= ENGINE.STOP_AFTER_MS) {
-          if (state.activeTrip) finalizeActiveTrip(p);
-          else recordStop(p);
+          markTripStationary();
+        } else {
+          checkStationaryGrace(p);
         }
       } else if (d >= ENGINE.MAX_JUMP_M) {
         state.stopCandidateAt = null;
@@ -393,6 +486,8 @@
       lastPoint: state.lastPoint,
       vehicle: state.vehicle,
       activeTrip: state.activeTrip,
+      stopCandidateAt: state.stopCandidateAt,
+      stopCandidatePoint: state.stopCandidatePoint,
     };
   }
 
@@ -404,8 +499,10 @@
     state.miles = state.businessMiles;
     state.shiftId = s.shiftId || null;
     state.activeTrip = s.activeTrip || null;
-    state.stopCandidateAt = null;
-    state.stopCandidatePoint = null;
+    if (state.activeTrip && !state.activeTrip.phase) state.activeTrip.phase = 'moving';
+    state.stopCandidateAt = s.stopCandidateAt || null;
+    state.stopCandidatePoint = s.stopCandidatePoint || null;
+    reconcileStationaryAfterRestore();
   }
 
   function buildCompletedShift(claimFn) {
@@ -542,6 +639,7 @@
   function tickElapsed() {
     if (state.shiftStatus !== SHIFT_STATUS.TRACKING || !state.shiftStartedAt) return state.elapsed;
     state.elapsed = Math.floor((Date.now() - state.shiftStartedAt) / 1000);
+    if (state.stopCandidateAt) checkStationaryGrace(state.lastPoint);
     return state.elapsed;
   }
 
@@ -655,6 +753,8 @@
       lastGpsAt: state.lastGpsAt,
       activeTrip: state.activeTrip,
       isRecordingTrip: !!state.activeTrip,
+      tripLifecycle: getTripLifecycleStatus(),
+      stopCandidateAt: state.stopCandidateAt,
     };
   }
 
@@ -721,6 +821,10 @@
     gpsLossMs: gpsLossMs,
     buildCompletedShift: buildCompletedShift,
     simulateMovement: simulateMovement,
+    getTripLifecycleStatus: getTripLifecycleStatus,
+    getStationaryGraceMs: getStationaryGraceMs,
+    setStationaryGraceMinutes: setStationaryGraceMinutes,
+    STATIONARY_GRACE_OPTIONS_MIN: STATIONARY_GRACE_OPTIONS_MIN,
     isActive: function () {
       return isTracking();
     },
