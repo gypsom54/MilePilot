@@ -567,10 +567,12 @@ body.hero-ready .hero-phone {
   width: 36px;
   height: 36px;
   border-radius: 10px;
-  background: rgba(13, 107, 255, 0.1);
-  border: 1px solid rgba(13, 107, 255, 0.18);
+  background: linear-gradient(180deg, rgba(13, 107, 255, 0.12), rgba(13, 107, 255, 0.06));
+  border: 1px solid var(--mp-card-border);
   color: rgba(110, 180, 255, 0.92);
+  box-shadow: 0 4px 16px rgba(13, 107, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.05);
   flex-shrink: 0;
+  transition: var(--mp-card-transition);
 }
 
 .step-icon svg {
@@ -660,8 +662,18 @@ body.hero-ready .hero-phone {
 .timeline-prompt .chip-blue { margin-top: 6px; display: inline-block; }
 
 .timeline-highlight {
-  border-color: rgba(13, 107, 255, 0.35);
-  box-shadow: 0 8px 32px rgba(13, 107, 255, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  border-color: var(--mp-card-border-strong);
+  box-shadow:
+    0 10px 36px rgba(13, 107, 255, 0.16),
+    0 2px 8px rgba(0, 0, 0, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+.timeline-card.card-lift:hover,
+.timeline-highlight.card-lift:hover {
+  transform: translateY(-3px);
+  border-color: var(--mp-card-border-hover);
+  box-shadow: var(--mp-card-shadow-hover);
 }
 
 .timeline-connector {
@@ -693,15 +705,27 @@ body.hero-ready .hero-phone {
   font-size: 15px;
   line-height: 1.5;
   color: rgba(159, 180, 208, 0.92);
-  padding-left: 18px;
+  padding: 14px 16px 14px 28px;
   position: relative;
+  border-radius: 16px;
+  border: 1px solid var(--mp-card-border);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(13, 107, 255, 0.02));
+  box-shadow: var(--mp-card-shadow);
+  transition: var(--mp-card-transition);
+}
+
+.app-demo-features li:hover {
+  transform: translateY(-2px);
+  border-color: var(--mp-card-border-hover);
+  box-shadow: var(--mp-card-shadow-hover);
 }
 
 .app-demo-features li::before {
   content: "";
   position: absolute;
-  left: 0;
-  top: 9px;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
   width: 6px;
   height: 6px;
   border-radius: 50%;
@@ -756,9 +780,17 @@ body.hero-ready .hero-phone {
   border-radius: 14px;
   font-size: 14px;
   font-weight: 500;
-  border: 1px solid rgba(110, 180, 255, 0.14);
-  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--mp-card-border);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(13, 107, 255, 0.03));
   color: rgba(234, 242, 255, 0.92);
+  box-shadow: var(--mp-card-shadow);
+  transition: var(--mp-card-transition);
+}
+
+.report-features-list li:hover {
+  transform: translateY(-2px);
+  border-color: var(--mp-card-border-hover);
+  box-shadow: var(--mp-card-shadow-hover);
 }
 
 .report-email-flow {
@@ -769,8 +801,15 @@ body.hero-ready .hero-phone {
   margin: 0 0 28px;
   padding: 20px 24px;
   border-radius: 18px;
-  border: 1px solid rgba(110, 180, 255, 0.14);
-  background: rgba(13, 107, 255, 0.05);
+  border: 1px solid var(--mp-card-border);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(13, 107, 255, 0.04));
+  box-shadow: var(--mp-card-shadow);
+  transition: var(--mp-card-transition);
+}
+
+.report-email-flow:hover {
+  border-color: var(--mp-card-border-hover);
+  box-shadow: var(--mp-card-shadow-hover);
 }
 
 .report-email-step {
@@ -865,18 +904,19 @@ body.hero-ready .hero-phone {
   align-items: flex-start;
   padding: 14px 16px;
   border-radius: 16px;
-  border: 1px solid rgba(110, 180, 255, 0.1);
-  background: rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--mp-card-border);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(13, 107, 255, 0.02));
+  box-shadow: 0 4px 20px rgba(13, 107, 255, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.04);
   opacity: 0;
   transform: translateY(12px);
-  transition: opacity 0.5s var(--mp-ease), transform 0.5s var(--mp-ease), border-color 0.4s ease;
+  transition: opacity 0.5s var(--mp-ease), transform 0.5s var(--mp-ease), var(--mp-card-transition);
 }
 
 .workflow-step.is-active {
   opacity: 1;
   transform: none;
-  border-color: rgba(13, 107, 255, 0.28);
-  box-shadow: 0 4px 20px rgba(13, 107, 255, 0.1);
+  border-color: var(--mp-card-border-hover);
+  box-shadow: var(--mp-card-shadow);
 }
 
 .workflow-step strong {
@@ -906,12 +946,14 @@ body.hero-ready .hero-phone {
   width: 100%;
   max-width: 440px;
   padding: 28px 24px 24px;
-  background: linear-gradient(165deg, rgba(255, 255, 255, 0.09) 0%, rgba(13, 107, 255, 0.06) 50%, rgba(3, 17, 38, 0.4) 100%);
-  border: 1px solid rgba(110, 180, 255, 0.22);
-  box-shadow:
-    0 24px 64px rgba(0, 0, 0, 0.28),
-    0 8px 24px rgba(13, 107, 255, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.09) 0%, rgba(13, 107, 255, 0.07) 50%, rgba(3, 17, 38, 0.42) 100%);
+  border: 1px solid var(--mp-card-border-strong);
+  box-shadow: var(--mp-card-shadow-premium);
+}
+
+.report-wallet:hover {
+  border-color: rgba(13, 107, 255, 0.42);
+  box-shadow: var(--mp-card-shadow-premium-hover);
 }
 
 .report-wallet-header {
@@ -1044,9 +1086,17 @@ body.hero-ready .hero-phone {
   border-radius: 999px;
   font-size: 13px;
   font-weight: 500;
-  border: 1px solid rgba(110, 180, 255, 0.16);
-  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--mp-card-border);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(13, 107, 255, 0.03));
   color: rgba(234, 242, 255, 0.9);
+  box-shadow: 0 4px 20px rgba(13, 107, 255, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  transition: var(--mp-card-transition);
+}
+
+.audience-chips span:hover {
+  transform: translateY(-2px);
+  border-color: var(--mp-card-border-hover);
+  box-shadow: 0 8px 28px rgba(13, 107, 255, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 /* —— Trust —— */
@@ -1093,11 +1143,24 @@ body.hero-ready .hero-phone {
 /* —— FAQ accordions —— */
 .faq-list { display: grid; gap: 16px; max-width: 720px; }
 
-.faq-item { padding: 0; overflow: hidden; transition: border-color 0.4s var(--ease), box-shadow 0.4s var(--ease); }
+.faq-item {
+  padding: 0;
+  overflow: hidden;
+  box-shadow: var(--mp-card-shadow);
+  transition: var(--mp-card-transition);
+}
+
+.faq-item:hover {
+  border-color: var(--mp-card-border-hover);
+  box-shadow: var(--mp-card-shadow-hover);
+}
 
 .faq-item.is-open {
-  border-color: rgba(13, 107, 255, 0.35);
-  box-shadow: 0 8px 32px rgba(13, 107, 255, 0.12);
+  border-color: var(--mp-card-border-strong);
+  box-shadow:
+    0 10px 36px rgba(13, 107, 255, 0.16),
+    0 2px 8px rgba(0, 0, 0, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
 }
 
 .faq-question {
@@ -1149,6 +1212,15 @@ body.hero-ready .hero-phone {
 
 /* —— Final CTA —— */
 .cta-final { padding: clamp(120px, 16vw, 180px) 0; }
+
+.cta-final .site-inner {
+  position: relative;
+  padding: clamp(40px, 6vw, 56px) clamp(24px, 5vw, 48px);
+  border-radius: 28px;
+  border: 1px solid var(--mp-card-border);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(13, 107, 255, 0.05));
+  box-shadow: var(--mp-card-shadow);
+}
 
 .cta-pulse { margin: 0 auto 32px; width: 180px; }
 
@@ -1273,7 +1345,7 @@ body.hero-ready .hero-phone {
 }
 
 .card-lift {
-  transition: transform 0.5s var(--mp-ease), box-shadow 0.5s var(--mp-ease), border-color 0.5s var(--mp-ease);
+  transition: var(--mp-card-transition);
 }
 
 .card-lift.is-visible {
@@ -1282,8 +1354,25 @@ body.hero-ready .hero-phone {
 
 .card-lift:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18), 0 4px 16px rgba(13, 107, 255, 0.1);
-  border-color: rgba(110, 180, 255, 0.22);
+  border-color: var(--mp-card-border-hover);
+  box-shadow: var(--mp-card-shadow-hover);
+}
+
+/* Phone mockup cards stay calm — no lift inside the device */
+.phone-screen-content .card-lift:hover {
+  transform: none;
+  border-color: var(--mp-card-border);
+  box-shadow: var(--mp-card-shadow);
+}
+
+.report-wallet.card-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--mp-card-shadow-premium-hover);
+}
+
+.step-card:hover .step-icon {
+  border-color: var(--mp-card-border-hover);
+  box-shadow: 0 0 16px rgba(13, 107, 255, 0.2);
 }
 
 @media (prefers-reduced-motion: reduce) {
