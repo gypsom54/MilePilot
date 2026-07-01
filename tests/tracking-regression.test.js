@@ -11,6 +11,8 @@ import {
   simulateDrive,
   point,
   movementSpeedMps,
+  shouldResetAutoEndIdle,
+  distanceMeters,
 } from "./tracking-engine-core.js";
 
 function test(name, fn) {
@@ -145,6 +147,35 @@ run("BG_GPS_POLL_MS is 12 seconds", () => {
 run("ACC_SOFT_MAX allows weak signal in handlePos layer", () => {
   assert.equal(ENGINE.ACC_SOFT_MAX, 220);
   assert.ok(ENGINE.ACC_SOFT_MAX > ENGINE.ACC_MAX, "soft max is more permissive than hard max");
+});
+
+run("indoor GPS drift does not reset auto-end idle timer", () => {
+  const t0 = Date.now();
+  const home = point(51.5, -0.12, t0, { acc: 22 });
+  const drift = point(51.50003, -0.11997, t0 + 12000, { acc: 28, speedMps: 0 });
+  const d = distanceMeters(home, drift);
+  const speed = movementSpeedMps(d, drift, home, 0);
+  assert.ok(d < ENGINE.AUTO_END_MIN_MOVE_M, "drift distance stays below auto-end threshold");
+  assert.equal(shouldResetAutoEndIdle(d, speed, 0, drift.acc), false);
+});
+
+run("real driving movement resets auto-end idle timer", () => {
+  const t0 = Date.now();
+  const start = point(51.5, -0.12, t0, { acc: 12 });
+  const drive = point(51.5005, -0.12, t0 + 10000, { acc: 12, speedMps: 8 });
+  const d = distanceMeters(start, drive);
+  const speed = movementSpeedMps(d, drive, start, 8);
+  assert.ok(d >= ENGINE.AUTO_END_MIN_MOVE_M);
+  assert.equal(shouldResetAutoEndIdle(d, speed, 8, drive.acc), true);
+});
+
+run("poor GPS accuracy blocks auto-end idle reset", () => {
+  const t0 = Date.now();
+  const start = point(51.5, -0.12, t0, { acc: 80 });
+  const jump = point(51.5005, -0.12, t0 + 10000, { acc: 90, speedMps: 8 });
+  const d = distanceMeters(start, jump);
+  const speed = movementSpeedMps(d, jump, start, 8);
+  assert.equal(shouldResetAutoEndIdle(d, speed, 8, jump.acc), false);
 });
 
 console.log(`\nTracking regression: ${passed} passed, ${failed} failed\n`);

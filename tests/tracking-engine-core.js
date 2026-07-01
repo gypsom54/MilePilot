@@ -16,6 +16,9 @@ export const ENGINE = {
   GPS_STALE_MS: 35000,
   BG_GPS_POLL_MS: 12000,
   NATIVE_SPEED_GATE_DT: 2,
+  AUTO_END_MIN_MOVE_M: 40,
+  AUTO_END_MIN_SPEED_MPS: 1.8,
+  AUTO_END_MAX_ACC_M: 65,
 };
 
 export function distanceMeters(a, b) {
@@ -35,6 +38,16 @@ export function movementSpeedMps(d, p, prev, deviceSpeedMps) {
   if (p.speedMps != null && p.speedMps >= 0) return p.speedMps;
   const gateDt = p.nativeGps || deviceSpeedMps != null ? Math.max(dtSec, ENGINE.NATIVE_SPEED_GATE_DT) : dtSec;
   return d / gateDt;
+}
+
+export function shouldResetAutoEndIdle(d, speed, deviceSpeedMps, acc) {
+  const minMove = ENGINE.AUTO_END_MIN_MOVE_M || 40;
+  const minSpeed = ENGINE.AUTO_END_MIN_SPEED_MPS || 1.8;
+  const maxAcc = ENGINE.AUTO_END_MAX_ACC_M || 65;
+  if (acc != null && acc > maxAcc) return false;
+  if (d < minMove) return false;
+  const effectiveSpeed = deviceSpeedMps != null && deviceSpeedMps >= 0 ? deviceSpeedMps : speed;
+  return effectiveSpeed >= minSpeed;
 }
 
 export function createShiftState(overrides = {}) {
