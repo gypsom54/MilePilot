@@ -71,7 +71,7 @@ run('movement resets inactivity timer', () => {
   const M = loadTripAutoEnd(ls);
   const t0 = 1_700_000_000_000;
   M.onTripStarted('shift_1', t0);
-  M.onMovementDetected(t0 + 30000);
+  M.onMovementDetected(t0 + 30000, 5);
   assert.equal(M.getDebugState(true).lastMovementAt, t0 + 30000);
   assert.equal(M.shouldAutoEnd(t0 + 50000), false);
 });
@@ -97,6 +97,28 @@ run('auto-end performs callback exactly once', () => {
   M.checkInactivity(t0 + 5001, () => { count++; });
   M.checkInactivity(t0 + 10000, () => { count++; });
   assert.equal(count, 1);
+});
+
+run('GPS drift below speed threshold does not reset timer', () => {
+  const ls = createMockLocalStorage();
+  ls.setItem('mp_debug_auto_end_ms', '60000');
+  const M = loadTripAutoEnd(ls);
+  const t0 = 1_700_000_000_000;
+  M.onTripStarted('shift_1', t0);
+  M.onMovementDetected(t0 + 5000, 0.2);
+  assert.equal(M.getDebugState(true).lastMovementAt, t0);
+});
+
+run('onGpsTick triggers auto-end when idle threshold reached', () => {
+  const ls = createMockLocalStorage();
+  ls.setItem('mp_debug_auto_end_ms', '60000');
+  const M = loadTripAutoEnd(ls);
+  let ended = false;
+  M.setTickCallback(() => { ended = true; });
+  const t0 = 1_700_000_000_000;
+  M.onTripStarted('shift_1', t0);
+  M.onGpsTick(t0 + 61000);
+  assert.equal(ended, true);
 });
 
 run('90 minute default threshold', () => {
