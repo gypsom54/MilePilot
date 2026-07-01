@@ -1,17 +1,19 @@
-MilePilot — UPLOAD v8.9.9
+MilePilot — UPLOAD v8.12.0
 =========================
 
 Download:
-https://github.com/gypsom54/MilePilot/raw/cursor/mp-045-email-gps-permissions-ae00/MilePilot-UPLOAD-v8.9.9.zip
+https://github.com/gypsom54/MilePilot/raw/cursor/mp-046-onboarding-friction-ae00/MilePilot-UPLOAD-v8.12.0.zip
 
 After upload, verify:
 https://app.milepilot.uk/version.txt
-Must show: MilePilot OS v8.9.9
+Must show: MilePilot OS v8.12.0 — MP-046 onboarding friction reduction
 
-WHAT'S IN v8.9.9
-----------------
-• Report emails: PDF is part of the message (attachment callout, no dashboard link)
-• Amber AutoPilot items have Enable Location / fix buttons
-• Settings → Location & AutoPilot with phone-specific help guide
+WHAT'S IN v8.12.0
+-----------------
+• Onboarding reduced to 5 screens: Welcome → Tracking mode → Configure → Email → Dashboard
+• Unified "Let's configure MilePilot" permission screen (one Continue)
+• Vehicle selection moved to Settings
+• Report schedule deferred to Settings / post-first-trip prompt
+• Welcome hero: no duplicate AutoPilot tagline
 
-Deploy Railway backend too for latest email template.
+Deploy to Cloudflare Pages: upload zip contents to app.milepilot.uk
