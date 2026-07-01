@@ -23,7 +23,8 @@
     "test:tracking": "node tests/tracking-regression.test.js",
     "test:reports": "node tests/reports-regression.test.js",
     "test:trips": "node tests/trip-persistence.test.js",
-    "test:vital": "npm run verify:tracking && npm run verify:reports && npm run test:tracking && npm run test:reports && npm run test:trips"
+    "test:auto-end": "node tests/trip-auto-end.test.js",
+    "test:vital": "npm run verify:tracking && npm run verify:reports && npm run test:tracking && npm run test:reports && npm run test:trips && npm run test:auto-end"
   },
   "dependencies": {
     "expo": "~56.0.12",

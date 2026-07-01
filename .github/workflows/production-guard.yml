@@ -34,3 +34,6 @@ jobs:
 
       - name: Trip persistence tests
         run: node tests/trip-persistence.test.js
+
+      - name: Trip auto-end tests
+        run: node tests/trip-auto-end.test.js
