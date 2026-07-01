@@ -60,6 +60,7 @@
 
   function nativeSyncFromState(state) {
     if (!state) return;
+    if (global.MPTrackingMode && !global.MPTrackingMode.usesBackgroundTracking()) return;
     syncNative({
       active: true,
       shiftId: state.shiftId,
@@ -261,7 +262,9 @@
   function onTripEnded(reason) {
     stopTimers();
     log('Trip ended', { reason: reason || 'unknown' });
-    syncNative({ active: false });
+    if (!global.MPTrackingMode || global.MPTrackingMode.usesBackgroundTracking()) {
+      syncNative({ active: false });
+    }
     clearState();
   }
 

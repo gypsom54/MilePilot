@@ -7,6 +7,7 @@
 
   global.MPCopy = {
     shiftStarted: "You're on the road — MilePilot is tracking your shift.",
+    journeyStarted: "Journey started — MilePilot is recording your miles.",
     shiftSaved: "Today's journeys are ready for review.",
     reportSent: function (email) {
       return 'Your business summary is on its way to ' + email + '.';
@@ -45,6 +46,7 @@
     betaSubmitFailed: 'Could not send feedback — try again in a moment.',
     experienceUpdated: 'Experience updated.',
     profileUpdated: 'Business profile updated.',
+    trackingModeSaved: 'Tracking mode updated.',
     testShiftAdded: 'Test shift added.',
     testShiftsCleared: 'Test shifts cleared.',
     shareCopied: 'Report summary copied.',
