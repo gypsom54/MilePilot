@@ -1,0 +1,134 @@
+/**
+ * VITAL — Canonical tracking engine logic for regression tests (MP-043).
+ * Must stay aligned with frontend/index.html ENGINE + processGpsPoint.
+ * Do not change without updating tests and docs/TRACKING_CONTRACT.md
+ */
+export const ENGINE = {
+  MIN_MOVE_M: 6,
+  MAX_JUMP_M: 400,
+  MAX_SPEED_MPS: 67,
+  STOP_SPEED_MPS: 0.9,
+  STOP_AFTER_MS: 90000,
+  ROUTE_MAX: 500,
+  ACC_MAX: 120,
+  ACC_SOFT_MAX: 220,
+  GPS_RECONNECT_MS: 15000,
+  GPS_STALE_MS: 35000,
+  BG_GPS_POLL_MS: 12000,
+  NATIVE_SPEED_GATE_DT: 2,
+};
+
+export function distanceMeters(a, b) {
+  const R = 6371000;
+  const rad = Math.PI / 180;
+  const dLat = (b.lat - a.lat) * rad;
+  const dLon = (b.lon - a.lon) * rad;
+  const la1 = a.lat * rad;
+  const la2 = b.lat * rad;
+  const x = Math.sin(dLat / 2) ** 2 + Math.cos(la1) * Math.cos(la2) * Math.sin(dLon / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1 - x));
+}
+
+export function movementSpeedMps(d, p, prev, deviceSpeedMps) {
+  const dtSec = Math.max(0.001, (p.t - prev.t) / 1000);
+  if (deviceSpeedMps != null && deviceSpeedMps >= 0) return deviceSpeedMps;
+  if (p.speedMps != null && p.speedMps >= 0) return p.speedMps;
+  const gateDt = p.nativeGps || deviceSpeedMps != null ? Math.max(dtSec, ENGINE.NATIVE_SPEED_GATE_DT) : dtSec;
+  return d / gateDt;
+}
+
+export function createShiftState(overrides = {}) {
+  return {
+    miles: 0,
+    movingSeconds: 0,
+    routePoints: [],
+    lastPoint: null,
+    stopCandidateAt: null,
+    stopCandidatePoint: null,
+    shiftStops: [],
+    ccState: "active",
+    ...overrides,
+  };
+}
+
+export function processGpsPoint(state, p, deviceSpeedMps = null) {
+  const next = { ...state, routePoints: [...state.routePoints, p] };
+  const prev = state.lastPoint;
+  if (prev) {
+    const d = distanceMeters(prev, p);
+    const dt = Math.max(0.001, (p.t - prev.t) / 1000);
+    const speed = movementSpeedMps(d, p, prev, deviceSpeedMps);
+    if (d >= ENGINE.MIN_MOVE_M && d < ENGINE.MAX_JUMP_M && speed < ENGINE.MAX_SPEED_MPS) {
+      if (next.stopCandidateAt) {
+        recordStop(next, p);
+      }
+      next.miles += d / 1609.344;
+      next.movingSeconds += Math.min(dt, 120);
+    } else if (speed < ENGINE.STOP_SPEED_MPS && d < ENGINE.MIN_MOVE_M * 2) {
+      if (!next.stopCandidateAt) {
+        next.stopCandidateAt = p.t;
+        next.stopCandidatePoint = p;
+      } else if (p.t - next.stopCandidateAt >= ENGINE.STOP_AFTER_MS) {
+        recordStop(next, p);
+      }
+    } else if (d >= ENGINE.MAX_JUMP_M) {
+      next.stopCandidateAt = null;
+      next.stopCandidatePoint = null;
+      next.lastPoint = p;
+      return next;
+    }
+  }
+  next.lastPoint = p;
+  return next;
+}
+
+function recordStop(state, endP) {
+  if (!state.stopCandidateAt) return;
+  state.shiftStops.push({
+    lat: state.stopCandidatePoint?.lat ?? endP.lat,
+    lon: state.stopCandidatePoint?.lon ?? endP.lon,
+    startISO: new Date(state.stopCandidateAt).toISOString(),
+    endISO: new Date(endP.t).toISOString(),
+  });
+  state.stopCandidateAt = null;
+  state.stopCandidatePoint = null;
+}
+
+export function buildActiveShiftPayload(state) {
+  return {
+    engineVersion: 2,
+    startedAt: state.startedAt || Date.now() - 3600000,
+    miles: state.miles,
+    elapsed: state.elapsed || 3600,
+    movingSeconds: state.movingSeconds,
+    routePoints: state.routePoints,
+    stops: state.shiftStops,
+    lastPoint: state.lastPoint,
+    vehicle: "car",
+  };
+}
+
+export function restoreShiftState(payload) {
+  return createShiftState({
+    miles: Number(payload.miles) || 0,
+    movingSeconds: Number(payload.movingSeconds) || 0,
+    routePoints: payload.routePoints || [],
+    lastPoint: payload.lastPoint || null,
+    shiftStops: payload.stops || [],
+    startedAt: payload.startedAt,
+    elapsed: payload.elapsed,
+  });
+}
+
+/** Simulate GPS points along a straight line */
+export function simulateDrive(points) {
+  let state = createShiftState();
+  for (const pt of points) {
+    state = processGpsPoint(state, pt, pt.speedMps ?? null);
+  }
+  return state;
+}
+
+export function point(lat, lon, t, extras = {}) {
+  return { lat, lon, t, acc: extras.acc ?? 12, nativeGps: extras.nativeGps ?? false, speedMps: extras.speedMps ?? null };
+}

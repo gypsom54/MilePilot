@@ -17,7 +17,13 @@
     "build:ios:production": "eas build --platform ios --profile production",
     "build:android:preview": "eas build --platform android --profile preview",
     "build:android:production": "eas build --platform android --profile production",
-    "submit:ios": "eas submit --platform ios --latest"
+    "submit:ios": "eas submit --platform ios --latest",
+    "verify:tracking": "node scripts/verify-tracking-contract.js",
+    "verify:reports": "node scripts/verify-reports-contract.js",
+    "test:tracking": "node tests/tracking-regression.test.js",
+    "test:reports": "node tests/reports-regression.test.js",
+    "test:trips": "node tests/trip-persistence.test.js",
+    "test:vital": "npm run verify:tracking && npm run verify:reports && npm run test:tracking && npm run test:reports && npm run test:trips"
   },
   "dependencies": {
     "expo": "~56.0.12",

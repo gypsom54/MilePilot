@@ -44,13 +44,16 @@ Mirrored in `milepilot-upload-v2/` for Cloudflare deploys.
 
 ---
 
-## Automated protection (5 layers)
+## Automated protection (6 layers)
 
-1. **CI guard** — `.github/workflows/tracking-guard.yml` fails PRs that break the contract
-2. **Build guard** — `build-upload.sh` won't zip unless verifier passes
-3. **Runtime guard** — `assertTrackingResilience()` errors at app boot if functions missing
-4. **CODEOWNERS** — `.github/CODEOWNERS` requires review on protected paths
-5. **Cursor rule** — `.cursor/rules/vital-gps-tracking.mdc` instructs agents not to touch this code
+1. **CI guard** — `.github/workflows/production-guard.yml` runs contract verifiers + regression tests on every PR
+2. **Path guard** — `.github/workflows/tracking-guard.yml` fails PRs that break the tracking contract
+3. **Build guard** — `build-upload.sh` won't zip unless verifier passes
+4. **Runtime guard** — `assertTrackingResilience()` errors at app boot if functions missing
+5. **CODEOWNERS** — `.github/CODEOWNERS` requires review on protected paths
+6. **Cursor rule** — `.cursor/rules/vital-gps-tracking.mdc` instructs agents not to touch this code
+
+**Related:** `docs/CRITICAL_FILES.md` · `docs/PRODUCTION_MONITORING_PLAN.md` · `docs/BRANCH_PROTECTION.md` · `npm run test:vital`
 
 ---
 

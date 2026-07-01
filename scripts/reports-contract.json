@@ -1,0 +1,45 @@
+{
+  "id": "MP-044",
+  "version": 1,
+  "vital": true,
+  "businessCritical": "Automatic report scheduling, email delivery, and PDF generation must not silently break. Drivers rely on HMRC summaries after every shift.",
+  "description": "Report pipeline contract — scheduling, PDF, email, and download endpoints.",
+  "files": [
+    "backend/reportEngine.js",
+    "backend/server.js",
+    "backend/reportDownload.js",
+    "frontend/js/summary-reports.js"
+  ],
+  "companionFiles": [
+    "milepilot-upload-v2/js/summary-reports.js",
+    "backend/routeMapService.js"
+  ],
+  "requiredExports": [
+    { "file": "backend/reportEngine.js", "symbol": "analyseReport" },
+    { "file": "backend/reportEngine.js", "symbol": "buildPdfBuffer" },
+    { "file": "backend/reportEngine.js", "symbol": "buildReportEmailHtml" },
+    { "file": "backend/reportEngine.js", "symbol": "buildReportSubject" },
+    { "file": "backend/reportDownload.js", "symbol": "storeReportDownload" },
+    { "file": "backend/reportDownload.js", "symbol": "getStoredDownload" }
+  ],
+  "requiredPatterns": [
+    { "file": "backend/server.js", "pattern": "app.get(\"/health\"" },
+    { "file": "backend/server.js", "pattern": "app.post(\"/reports/send\"" },
+    { "file": "backend/server.js", "pattern": "app.post(\"/reports/pdf\"" },
+    { "file": "backend/server.js", "pattern": "buildPdfBuffer" },
+    { "file": "backend/server.js", "pattern": "resend.emails.send" },
+    { "file": "frontend/js/summary-reports.js", "pattern": "scheduleDailyAfterShift" },
+    { "file": "frontend/js/summary-reports.js", "pattern": "checkScheduledReports" },
+    { "file": "frontend/js/summary-reports.js", "pattern": "MPSummaryReports" },
+    { "file": "frontend/js/summary-reports.js", "pattern": "/reports/send" }
+  ],
+  "tripPersistenceFiles": [
+    "frontend/js/trip-store.js",
+    "milepilot-upload-v2/js/trip-store.js"
+  ],
+  "tripPersistencePatterns": [
+    "mp_trips",
+    "mp_active_trip",
+    "MPTrips"
+  ]
+}

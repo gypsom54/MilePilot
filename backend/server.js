@@ -1,3 +1,9 @@
+/**
+ * VITAL — BUSINESS CRITICAL (MP-044)
+ * Report API: /health, /reports/send, /reports/pdf, email delivery via Resend.
+ * Do not modify report routes without explicit approval.
+ * Contract: scripts/reports-contract.json · See docs/CRITICAL_FILES.md
+ */
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";

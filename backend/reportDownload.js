@@ -1,3 +1,8 @@
+/**
+ * VITAL — BUSINESS CRITICAL (MP-044)
+ * PDF download token store for one-click email links. Do not modify without approval.
+ * Contract: scripts/reports-contract.json · See docs/CRITICAL_FILES.md
+ */
 import { randomBytes } from "crypto";
 
 const TTL_MS = 30 * 24 * 60 * 60 * 1000;

@@ -1,6 +1,6 @@
 /**
- * MilePilot Automatic Summary Reports
- * Works alongside the user's chosen report frequency — summaries stack, not replace.
+ * VITAL — BUSINESS CRITICAL (MP-044) — Cloudflare deploy mirror
+ * See frontend/js/summary-reports.js and docs/CRITICAL_FILES.md
  */
 (function (global) {
   'use strict';
