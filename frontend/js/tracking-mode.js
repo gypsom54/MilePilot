@@ -13,12 +13,12 @@
   const MODES = {
     autopilot: {
       id: MODE_AUTOPILOT,
-      label: 'MilePilot Auto Tracking',
-      shortLabel: 'Auto Tracking',
-      emoji: '🚀',
-      shortTagline: 'Drive normally — MilePilot records in the background and prepares your reports.',
+      label: 'AutoPilot',
+      shortLabel: 'AutoPilot',
+      emoji: '🚗',
+      shortTagline: 'Drive normally — MilePilot detects journeys automatically.',
       description:
-        'Set it once. MilePilot detects business journeys while your phone is locked and sends professional reports automatically.',
+        'Drive normally. MilePilot detects journeys automatically while your phone is locked. Perfect for regular business drivers.',
       badge: 'RECOMMENDED',
       recommended: true,
       features: [
@@ -34,12 +34,12 @@
     },
     manual: {
       id: MODE_MANUAL,
-      label: 'MilePilot Manual Tracking',
-      shortLabel: 'Manual Tracking',
-      emoji: '🎯',
-      shortTagline: 'Start and end each journey yourself — full control, same professional reports.',
+      label: 'Manual',
+      shortLabel: 'Manual',
+      emoji: '✋',
+      shortTagline: 'Start and stop each journey yourself — full control, same professional reports.',
       description:
-        'Perfect when you only occasionally claim business miles or prefer not to use background tracking.',
+        'Start and stop journeys yourself. Perfect if you prefer complete control or only drive occasionally.',
       badge: null,
       recommended: false,
       features: [
