@@ -6,6 +6,7 @@ cp "$ROOT/frontend/index.html" "$ROOT/frontend/version.txt" "$ROOT/frontend/serv
    "$ROOT/frontend/manifest.json" "$ROOT/frontend/icon.svg" "$ROOT/milepilot-upload-v2/"
 mkdir -p "$ROOT/milepilot-upload-v2/js"
 cp "$ROOT/frontend/js/"*.js "$ROOT/milepilot-upload-v2/js/" 2>/dev/null || true
+node "$ROOT/scripts/verify-tracking-contract.js"
 cd "$ROOT/milepilot-upload-v2"
 ZIP="$ROOT/MilePilot-v${VERSION}-CLOUDFLARE-UPLOAD.zip"
 zip -r "$ZIP" .

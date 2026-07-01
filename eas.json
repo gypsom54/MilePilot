@@ -1,0 +1,52 @@
+{
+  "cli": {
+    "version": ">= 16.0.0",
+    "appVersionSource": "local"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "ios": {
+        "simulator": false,
+        "buildConfiguration": "Debug"
+      },
+      "android": {
+        "buildType": "apk",
+        "gradleCommand": ":app:assembleDebug"
+      },
+      "env": {
+        "WEB_APP_URL": "https://app.milepilot.uk/?runtime=expo&build=development&v=8.28.1"
+      }
+    },
+    "preview": {
+      "distribution": "internal",
+      "ios": {
+        "simulator": false,
+        "buildConfiguration": "Release"
+      },
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "WEB_APP_URL": "https://app.milepilot.uk/?runtime=expo&build=preview&v=8.28.1"
+      }
+    },
+    "production": {
+      "ios": {
+        "resourceClass": "m-medium",
+        "buildConfiguration": "Release"
+      },
+      "android": {
+        "buildType": "app-bundle"
+      },
+      "env": {
+        "WEB_APP_URL": "https://app.milepilot.uk/?runtime=expo&build=production&v=8.28.1"
+      }
+    }
+  },
+  "submit": {
+    "production": {},
+    "preview": {}
+  }
+}

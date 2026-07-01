@@ -1,0 +1,34 @@
+# BUSINESS CRITICAL — Mileage tracking / background GPS (MP-043)
+# Changes require explicit review. CI enforces scripts/tracking-contract.json
+/frontend/index.html @gypsom54
+/frontend/js/native-platform.js @gypsom54
+/frontend/js/tracking-provider.js @gypsom54
+/milepilot-upload-v2/index.html @gypsom54
+/milepilot-upload-v2/js/native-platform.js @gypsom54
+/milepilot-upload-v2/js/tracking-provider.js @gypsom54
+/src/locationTask.js @gypsom54
+/src/expoLocationBridge.js @gypsom54
+/src/MilePilotWebView.js @gypsom54
+/scripts/tracking-contract.json @gypsom54
+/scripts/verify-tracking-contract.js @gypsom54
+/docs/TRACKING_CONTRACT.md @gypsom54
+/.github/workflows/tracking-guard.yml @gypsom54
+
+# BUSINESS CRITICAL — Trip persistence, report scheduling, email, PDF (MP-044)
+/frontend/js/trip-store.js @gypsom54
+/frontend/js/summary-reports.js @gypsom54
+/milepilot-upload-v2/js/trip-store.js @gypsom54
+/milepilot-upload-v2/js/summary-reports.js @gypsom54
+/backend/reportEngine.js @gypsom54
+/backend/server.js @gypsom54
+/backend/reportDownload.js @gypsom54
+/backend/routeMapService.js @gypsom54
+/scripts/reports-contract.json @gypsom54
+/scripts/verify-reports-contract.js @gypsom54
+
+# VITAL regression tests and monitoring docs
+/tests/ @gypsom54
+/docs/CRITICAL_FILES.md @gypsom54
+/docs/PRODUCTION_MONITORING_PLAN.md @gypsom54
+/docs/BRANCH_PROTECTION.md @gypsom54
+/.github/workflows/production-guard.yml @gypsom54

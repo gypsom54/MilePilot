@@ -1,0 +1,53 @@
+{
+  "id": "MP-043",
+  "version": 2,
+  "vital": true,
+  "businessCritical": "Without background GPS mileage recording, MilePilot has no product. Do not modify without explicit sign-off and device testing.",
+  "description": "Background GPS resilience — required for MilePilot mileage recording. Do not remove without explicit product sign-off.",
+  "files": ["frontend/index.html", "milepilot-upload-v2/index.html"],
+  "companionFiles": [
+    "frontend/js/native-platform.js",
+    "frontend/js/tracking-provider.js",
+    "milepilot-upload-v2/js/native-platform.js",
+    "milepilot-upload-v2/js/tracking-provider.js",
+    "src/locationTask.js",
+    "src/expoLocationBridge.js",
+    "src/MilePilotWebView.js"
+  ],
+  "companionExports": [
+    { "file": "frontend/js/native-platform.js", "symbol": "MPPlatform" },
+    { "file": "frontend/js/tracking-provider.js", "symbol": "MPTrackingProvider" }
+  ],
+  "minTrackingEngineVersion": 2,
+  "requiredConstants": [
+    "VITAL_TRACKING_SYSTEM",
+    "GEO_OPTS_TRACKING",
+    "ACC_SOFT_MAX",
+    "BG_GPS_POLL_MS",
+    "GPS_STALE_MS",
+    "GPS_RECONNECT_MS",
+    "NATIVE_SPEED_GATE_DT"
+  ],
+  "requiredFunctions": [
+    "startBackgroundGpsPoll",
+    "stopBackgroundGpsPoll",
+    "checkGpsStale",
+    "scheduleGpsReconnect",
+    "bindMotionGpsNudge",
+    "onGpsWatchError",
+    "ensureMotionAccess",
+    "movementSpeedMps"
+  ],
+  "requiredPatterns": [
+    "enableHighAccuracy:true,maximumAge:0,timeout:12000",
+    "document.visibilityState==='visible'",
+    "startBackgroundGpsPoll()",
+    "enableTrackingGps(false)",
+    "checkGpsStale()",
+    "pageshow",
+    "nativeGps",
+    "MPTrackingProvider.init",
+    "deviceSpeedMps",
+    "ACC_SOFT_MAX:220"
+  ]
+}

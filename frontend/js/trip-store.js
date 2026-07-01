@@ -1,4 +1,8 @@
 /**
+ * VITAL — BUSINESS CRITICAL (MP-044)
+ * Trip persistence (mp_trips, mp_active_trip). Do not modify without explicit approval.
+ * Contract: scripts/reports-contract.json · See docs/CRITICAL_FILES.md
+ *
  * MilePilot Trip Store — Never Miss A Trip
  * Trips: pending | business | personal
  * Pending trips are excluded from HMRC, reports, and business mileage totals.

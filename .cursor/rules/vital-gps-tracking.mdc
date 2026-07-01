@@ -1,0 +1,41 @@
+---
+description: BUSINESS CRITICAL — background GPS mileage tracking. Do not modify without explicit user approval.
+globs:
+  - frontend/index.html
+  - frontend/js/native-platform.js
+  - frontend/js/tracking-provider.js
+  - milepilot-upload-v2/index.html
+  - milepilot-upload-v2/js/native-platform.js
+  - milepilot-upload-v2/js/tracking-provider.js
+  - src/locationTask.js
+  - src/expoLocationBridge.js
+  - src/MilePilotWebView.js
+  - scripts/tracking-contract.json
+  - scripts/verify-tracking-contract.js
+  - docs/TRACKING_CONTRACT.md
+  - .github/workflows/tracking-guard.yml
+alwaysApply: false
+---
+
+# VITAL: Mileage Tracking System (MP-043)
+
+**This is MilePilot's core product. Without background GPS mileage recording, there is no business.**
+
+## Rules for agents and developers
+
+1. **Do NOT modify, refactor, consolidate, or "clean up" tracking code** unless the user explicitly requests a tracking change.
+2. **Do NOT remove** any function, constant, or file listed in `scripts/tracking-contract.json`.
+3. **Do NOT inline** tracking logic elsewhere without updating the contract and running `node scripts/verify-tracking-contract.js`.
+4. If a task touches nearby code (UI, reports, onboarding), **leave the tracking block untouched**.
+5. Before any intentional tracking change: read `docs/TRACKING_CONTRACT.md`, bump `TRACKING_ENGINE_V`, run the verifier, test on a real device (foreground + background + locked screen).
+
+## Protected capabilities
+
+- `GEO_OPTS_TRACKING`, `startBackgroundGpsPoll`, `checkGpsStale`, `scheduleGpsReconnect`
+- `MPTrackingProvider` / `MPPlatform` native bridge
+- `nativeGps`, `movementSpeedMps` speed gate
+- `src/locationTask.js` background buffer for TestFlight
+
+## CI
+
+`.github/workflows/tracking-guard.yml` fails PRs that break the contract.

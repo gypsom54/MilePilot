@@ -1,0 +1,36 @@
+name: Production guard
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  vital-contracts-and-regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install backend dependencies (PDF engine)
+        working-directory: backend
+        run: npm ci
+
+      - name: Verify tracking contract (MP-043)
+        run: node scripts/verify-tracking-contract.js
+
+      - name: Verify reports contract (MP-044)
+        run: node scripts/verify-reports-contract.js
+
+      - name: Tracking regression tests
+        run: node tests/tracking-regression.test.js
+
+      - name: Reports regression tests
+        run: node tests/reports-regression.test.js
+
+      - name: Trip persistence tests
+        run: node tests/trip-persistence.test.js

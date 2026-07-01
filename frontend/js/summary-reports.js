@@ -1,4 +1,9 @@
 /**
+ * VITAL — BUSINESS CRITICAL (MP-044)
+ * Automatic report scheduling and delivery. Do not modify without explicit approval.
+ * Contract: scripts/reports-contract.json · CI: production-guard.yml
+ * See docs/CRITICAL_FILES.md and docs/PRODUCTION_MONITORING_PLAN.md
+ *
  * MilePilot Automatic Summary Reports
  * Works alongside the user's chosen report frequency — summaries stack, not replace.
  */

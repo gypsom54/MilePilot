@@ -1,0 +1,74 @@
+/**
+ * VITAL — BUSINESS CRITICAL (MP-043)
+ * Native runtime detection for TestFlight / Expo.
+ * Do not modify without reading docs/TRACKING_CONTRACT.md
+ */
+(function (global) {
+  'use strict';
+
+  function isExpoNative() {
+    return global.__MILEPILOT_EXPO__ === true || global.__MILEPILOT_RUNTIME__ === 'expo';
+  }
+
+  function isCapacitorNative() {
+    try {
+      return !!(global.Capacitor && global.Capacitor.isNativePlatform && global.Capacitor.isNativePlatform());
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function isStandalonePwa() {
+    return (
+      (global.matchMedia && global.matchMedia('(display-mode: standalone)').matches) ||
+      global.navigator.standalone === true ||
+      (document.referrer && document.referrer.indexOf('android-app://') === 0)
+    );
+  }
+
+  function getRuntimeMode() {
+    if (isExpoNative() || isCapacitorNative()) return 'native';
+    if (isStandalonePwa()) return 'pwa';
+    return 'browser';
+  }
+
+  function isWebShell() {
+    const mode = getRuntimeMode();
+    return mode === 'browser' || mode === 'pwa';
+  }
+
+  function getRuntimeLabel() {
+    if (isExpoNative()) return 'Expo native app';
+    if (isCapacitorNative()) return 'Native app';
+    const map = { native: 'Native app', pwa: 'Installed PWA', browser: 'Browser' };
+    return map[getRuntimeMode()] || 'Unknown';
+  }
+
+  function getNativeProvider() {
+    if (isExpoNative()) return 'expo';
+    if (isCapacitorNative()) return 'capacitor';
+    return 'web';
+  }
+
+  /** User-facing note — background GPS is native-test only */
+  function getBackgroundTrackingNote() {
+    if (getRuntimeMode() === 'native') {
+      if (isExpoNative()) {
+        return 'Expo native background location is enabled for testing. Confirm mileage on a real drive before release.';
+      }
+      return 'Native background location is enabled for testing. Confirm mileage on a real drive before release.';
+    }
+    return 'Background tracking is tested in the native MilePilot app — not in the browser or PWA.';
+  }
+
+  global.MPPlatform = {
+    isExpoNative: isExpoNative,
+    isCapacitorNative: isCapacitorNative,
+    isStandalonePwa: isStandalonePwa,
+    isWebShell: isWebShell,
+    getRuntimeMode: getRuntimeMode,
+    getRuntimeLabel: getRuntimeLabel,
+    getNativeProvider: getNativeProvider,
+    getBackgroundTrackingNote: getBackgroundTrackingNote,
+  };
+})(typeof window !== 'undefined' ? window : global);

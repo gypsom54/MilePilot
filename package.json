@@ -1,0 +1,50 @@
+{
+  "name": "milepilot",
+  "version": "1.0.0",
+  "private": true,
+  "description": "MilePilot — business mileage tracking (Expo native shell + web PWA)",
+  "main": "index.js",
+  "scripts": {
+    "start": "expo start",
+    "start:dev-client": "expo start --dev-client",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "doctor": "npx expo-doctor",
+    "sync:expo-web": "node scripts/sync-expo-web.js",
+    "prestart": "node scripts/sync-expo-web.js",
+    "prebuild": "node scripts/sync-expo-web.js",
+    "build:ios:preview": "eas build --platform ios --profile preview",
+    "build:ios:production": "eas build --platform ios --profile production",
+    "build:android:preview": "eas build --platform android --profile preview",
+    "build:android:production": "eas build --platform android --profile production",
+    "submit:ios": "eas submit --platform ios --latest",
+    "verify:tracking": "node scripts/verify-tracking-contract.js",
+    "verify:reports": "node scripts/verify-reports-contract.js",
+    "test:tracking": "node tests/tracking-regression.test.js",
+    "test:reports": "node tests/reports-regression.test.js",
+    "test:trips": "node tests/trip-persistence.test.js",
+    "test:vital": "npm run verify:tracking && npm run verify:reports && npm run test:tracking && npm run test:reports && npm run test:trips"
+  },
+  "dependencies": {
+    "expo": "~56.0.12",
+    "expo-asset": "~56.0.17",
+    "expo-constants": "~56.0.18",
+    "expo-dev-client": "~56.0.20",
+    "expo-file-system": "~56.0.8",
+    "expo-location": "~56.0.18",
+    "expo-notifications": "~56.0.18",
+    "expo-status-bar": "~56.0.4",
+    "expo-system-ui": "~56.0.5",
+    "expo-task-manager": "~56.0.19",
+    "react": "19.2.3",
+    "react-native": "0.85.3",
+    "react-native-maps": "1.27.2",
+    "react-native-webview": "13.16.1"
+  },
+  "devDependencies": {
+    "babel-preset-expo": "~56.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

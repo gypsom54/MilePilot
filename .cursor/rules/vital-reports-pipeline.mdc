@@ -1,0 +1,41 @@
+---
+description: BUSINESS CRITICAL — report scheduling, PDF generation, email delivery. Do not modify without explicit user approval.
+globs:
+  - frontend/js/summary-reports.js
+  - frontend/js/trip-store.js
+  - milepilot-upload-v2/js/summary-reports.js
+  - milepilot-upload-v2/js/trip-store.js
+  - backend/reportEngine.js
+  - backend/server.js
+  - backend/reportDownload.js
+  - backend/routeMapService.js
+  - scripts/reports-contract.json
+  - scripts/verify-reports-contract.js
+  - docs/PRODUCTION_MONITORING_PLAN.md
+  - docs/CRITICAL_FILES.md
+  - .github/workflows/production-guard.yml
+alwaysApply: false
+---
+
+# VITAL: Report Pipeline (MP-044)
+
+**Drivers rely on automatic HMRC summaries after every shift.**
+
+## Rules for agents and developers
+
+1. **Do NOT modify** report scheduling, PDF, or email code unless the user explicitly requests it.
+2. **Do NOT remove** endpoints `/reports/send`, `/reports/pdf`, or `/health`.
+3. **Do NOT change** `scheduleDailyAfterShift` or `checkScheduledReports` timing without product sign-off.
+4. **Do NOT alter** `mp_trips` / `mp_active_trip` storage keys without migration plan.
+5. Before intentional changes: run `npm run test:vital` and send a test report email.
+
+## Protected capabilities
+
+- `MPSummaryReports` automatic scheduling
+- `buildPdfBuffer`, `buildReportEmailHtml`, Resend integration
+- `storeReportDownload` for email PDF links
+- Trip store persistence (`MPTrips`)
+
+## CI
+
+`.github/workflows/production-guard.yml` runs contract verifiers and regression tests on every PR.

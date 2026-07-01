@@ -1,7 +1,6 @@
 /**
- * MilePilot Trip Store — Never Miss A Trip
- * Trips: pending | business | personal
- * Pending trips are excluded from HMRC, reports, and business mileage totals.
+ * VITAL — BUSINESS CRITICAL (MP-044) — Cloudflare deploy mirror
+ * See frontend/js/trip-store.js and docs/CRITICAL_FILES.md
  */
 (function (global) {
   'use strict';

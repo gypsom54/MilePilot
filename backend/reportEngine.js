@@ -1,4 +1,9 @@
 /**
+ * VITAL — BUSINESS CRITICAL (MP-044)
+ * PDF generation and email HTML for automatic reports. Do not modify without explicit approval.
+ * Contract: scripts/reports-contract.json · CI: production-guard.yml
+ * See docs/CRITICAL_FILES.md and docs/PRODUCTION_MONITORING_PLAN.md
+ *
  * MilePilot Report Engine — MP-013 Magazine Reports
  * Email = 30-second preview · PDF = 2–3 page premium experience
  */
