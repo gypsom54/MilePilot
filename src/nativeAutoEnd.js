@@ -5,7 +5,9 @@
 import * as Notifications from 'expo-notifications';
 
 const MOVEMENT_METERS = 50;
+const SOFT_MOVEMENT_METERS = 22;
 const MIN_SPEED_MPS = 1.8;
+const SOFT_SPEED_MPS = 1.0;
 const MAX_ACC_M = 65;
 const NOTIF_ID = 'milepilot-auto-end';
 
@@ -130,8 +132,12 @@ export function onNativeBackgroundLocation(payload) {
   if (state.lastLat != null && state.lastLon != null) {
     const d = distanceMeters({ lat: state.lastLat, lon: state.lastLon }, { lat, lon });
     const accOk = acc == null || acc <= MAX_ACC_M;
-    const speedOk = speed != null && speed >= 0 ? speed >= MIN_SPEED_MPS : true;
-    if (d >= MOVEMENT_METERS && accOk && speedOk) {
+    const speedVal = speed != null && speed >= 0 ? speed : null;
+    const speedOk = speedVal != null ? speedVal >= MIN_SPEED_MPS : true;
+    const softSpeedOk = speedVal != null ? speedVal >= SOFT_SPEED_MPS : true;
+    const hardMove = d >= MOVEMENT_METERS && accOk && speedOk;
+    const softMove = d >= SOFT_MOVEMENT_METERS && accOk && softSpeedOk;
+    if (hardMove || softMove) {
       state.lastMovementAt = now;
       state.autoEndDeadlineAt = now + state.inactivityMs;
       state.pendingAutoEnd = false;

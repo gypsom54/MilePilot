@@ -11,6 +11,7 @@ import {
   simulateDrive,
   point,
   movementSpeedMps,
+  calcSpeedMps,
   shouldResetAutoEndIdle,
   distanceMeters,
 } from "./tracking-engine-core.js";
@@ -154,9 +155,19 @@ run("indoor GPS drift does not reset auto-end idle timer", () => {
   const home = point(51.5, -0.12, t0, { acc: 22 });
   const drift = point(51.50003, -0.11997, t0 + 12000, { acc: 28, speedMps: 0 });
   const d = distanceMeters(home, drift);
-  const speed = movementSpeedMps(d, drift, home, 0);
-  assert.ok(d < ENGINE.AUTO_END_MIN_MOVE_M, "drift distance stays below auto-end threshold");
-  assert.equal(shouldResetAutoEndIdle(d, speed, 0, drift.acc), false);
+  const calc = calcSpeedMps(d, drift, home);
+  assert.ok(d < ENGINE.AUTO_END_SOFT_MOVE_M, "drift distance stays below auto-end threshold");
+  assert.equal(shouldResetAutoEndIdle(d, calc, 0, drift.acc), false);
+});
+
+run("slow traffic still resets auto-end idle timer", () => {
+  const t0 = Date.now();
+  const start = point(51.5, -0.12, t0, { acc: 18, nativeGps: true });
+  const creep = point(51.5002, -0.12, t0 + 12000, { acc: 18, nativeGps: true, speedMps: 0 });
+  const d = distanceMeters(start, creep);
+  const calc = calcSpeedMps(d, creep, start);
+  assert.ok(d >= ENGINE.AUTO_END_SOFT_MOVE_M);
+  assert.equal(shouldResetAutoEndIdle(d, calc, 0, creep.acc), true);
 });
 
 run("real driving movement resets auto-end idle timer", () => {
@@ -164,9 +175,9 @@ run("real driving movement resets auto-end idle timer", () => {
   const start = point(51.5, -0.12, t0, { acc: 12 });
   const drive = point(51.5005, -0.12, t0 + 10000, { acc: 12, speedMps: 8 });
   const d = distanceMeters(start, drive);
-  const speed = movementSpeedMps(d, drive, start, 8);
+  const calc = calcSpeedMps(d, drive, start);
   assert.ok(d >= ENGINE.AUTO_END_MIN_MOVE_M);
-  assert.equal(shouldResetAutoEndIdle(d, speed, 8, drive.acc), true);
+  assert.equal(shouldResetAutoEndIdle(d, calc, 8, drive.acc), true);
 });
 
 run("poor GPS accuracy blocks auto-end idle reset", () => {
@@ -174,8 +185,8 @@ run("poor GPS accuracy blocks auto-end idle reset", () => {
   const start = point(51.5, -0.12, t0, { acc: 80 });
   const jump = point(51.5005, -0.12, t0 + 10000, { acc: 90, speedMps: 8 });
   const d = distanceMeters(start, jump);
-  const speed = movementSpeedMps(d, jump, start, 8);
-  assert.equal(shouldResetAutoEndIdle(d, speed, 8, jump.acc), false);
+  const calc = calcSpeedMps(d, jump, start);
+  assert.equal(shouldResetAutoEndIdle(d, calc, 8, jump.acc), false);
 });
 
 console.log(`\nTracking regression: ${passed} passed, ${failed} failed\n`);
