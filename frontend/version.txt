@@ -1,1 +1,1 @@
-MilePilot OS v8.14.0 — MP-048 onboarding flow order + calm permissions
+MilePilot OS v8.15.0 — MP-049 keyboard-safe email + input polish

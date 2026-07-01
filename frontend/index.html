@@ -349,6 +349,23 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 #meetGreet .meet-greet-sub{margin:0 auto 28px;max-width:300px;font-size:15px;font-weight:500;line-height:1.5;color:rgba(159,180,208,.88)}
 #meetGreet .knowYou-foot{margin-top:auto;padding-top:8px;flex-shrink:0;width:100%}
 #planPick .knowYou-message-wrap{display:none}
+#ftueEmail.active{overflow-y:auto;-webkit-overflow-scrolling:touch}
+#ftueEmail.is-keyboard-open{overflow:hidden;padding-top:max(16px,env(safe-area-inset-top));padding-bottom:max(8px,env(safe-area-inset-bottom))}
+#ftueEmail .onboard-inner{flex:1;min-height:0;display:flex;flex-direction:column;width:100%}
+#ftueEmail .ftue-email-body{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:flex-start}
+#ftueEmail.is-keyboard-open .onboard-brand{margin-bottom:10px;flex-shrink:0}
+#ftueEmail.is-keyboard-open .onboard-brand .wordmark{font-size:clamp(28px,7vw,34px)}
+#ftueEmail.is-keyboard-open .onboard-brand .brand-pulse{width:min(160px,48vw);margin-top:10px}
+#ftueEmail.is-keyboard-open .onboard-brand .brand-tagline{display:none}
+#ftueEmail.is-keyboard-open .onboard-greeting{font-size:clamp(22px,5.8vw,26px);margin-bottom:8px}
+#ftueEmail.is-keyboard-open .onboard-message-wrap{display:none}
+#ftueEmail.is-keyboard-open .ftue-input-wrap{margin-bottom:12px}
+#ftueEmail .ftue-email-actions{margin-top:auto;padding-top:12px;flex-shrink:0;width:100%}
+#ftueEmail.is-keyboard-open .ftue-email-actions{padding-top:8px;padding-bottom:max(4px,env(safe-area-inset-bottom))}
+#welcome.is-name-step.is-keyboard-open{overflow:hidden}
+.onboard-input-screen .mp-field{max-width:320px;width:100%;align-self:center;margin-left:auto;margin-right:auto;margin-bottom:0}
+.onboard-input-screen .welcome-input-wrap{margin-bottom:18px}
+#welcome.is-name-step.is-keyboard-open .welcome-input-wrap{margin-bottom:12px}
 .report-setup-note{font-size:13px;font-weight:500;color:rgba(159,180,208,.85);line-height:1.5;margin:12px 0 0;text-align:center}
 .cc-ap-calm-lines{display:none;margin:0;padding:0}
 .cc-ap-health.is-calm .cc-ap-health-head{display:none}
@@ -781,7 +798,7 @@ body.map-expand-open{overflow:hidden}
 <p class="welcome-support welcome-support-fresh">Drive normally.<br>We'll handle the paperwork.</p>
 <button type="button" class="btn premium-btn is-ready" id="welcomeGetStarted">Get Started</button>
 </div>
-<div id="welcomeNamePhase" hidden>
+<div id="welcomeNamePhase" class="onboard-input-screen" hidden>
 <h1 class="welcome-headline welcome-headline-name">What's your first name?</h1>
 <div class="mp-field welcome-input-wrap">
 <div class="mp-field-icon-wrap">
@@ -821,7 +838,13 @@ body.map-expand-open{overflow:hidden}
     var open=false;
     if(window.visualViewport){open=window.visualViewport.height<window.innerHeight*0.82}
     screen.classList.toggle('is-keyboard-open',open);
-    if(open&&namePhase.querySelector('#name')){try{namePhase.scrollIntoView({block:'nearest',behavior:'smooth'})}catch(e){}}
+    if(open&&window.visualViewport){
+      var h=window.visualViewport.height;
+      screen.style.height=h+'px';screen.style.minHeight=h+'px';screen.style.maxHeight=h+'px';
+      window.scrollTo(0,0);screen.scrollTop=0;
+    }else{
+      screen.style.height='';screen.style.minHeight='';screen.style.maxHeight='';
+    }
   }
   function setNameStep(on){
     var screen=q('welcome');if(!screen)return;
@@ -962,12 +985,17 @@ body.map-expand-open{overflow:hidden}
 <div class="onboard-bg" aria-hidden="true"><div class="onboard-glow onboard-glow-1"></div><div class="onboard-glow onboard-glow-2"></div></div>
 <div class="onboard-inner">
 <header class="brand-bar onboard-brand center"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div><p class="brand-tagline">Drive • Track • Claim</p></header>
-<div class="onboard-body">
+<div class="onboard-body ftue-email-body onboard-input-screen">
 <h1 class="onboard-greeting onboard-greeting--long">Where should we send your reports?</h1>
 <div class="onboard-message-wrap"><p class="onboard-message" style="opacity:1">Enter your email once — reports arrive on your schedule.</p></div>
-<div class="mp-field"><label class="mp-field-label" for="ftueEmailInput">Email address</label><input id="ftueEmailInput" class="mp-field-input" placeholder="you@example.com" inputmode="email" autocomplete="email"></div>
+<div class="mp-field welcome-input-wrap ftue-input-wrap">
+<div class="mp-field-icon-wrap">
+<svg class="mp-field-icon welcome-input-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+<input id="ftueEmailInput" class="mp-field-input" placeholder="you@example.com" inputmode="email" autocomplete="email" enterkeyhint="done">
 </div>
-<div class="onboard-foot"><button class="btn premium-btn is-ready" id="ftueEmailContinue" onclick="confirmFtueEmail()">Continue →</button></div>
+</div>
+<div class="onboard-foot ftue-email-actions"><button class="btn premium-btn is-ready" id="ftueEmailContinue" onclick="confirmFtueEmail()">Continue →</button></div>
+</div>
 </div>
 </section>
 <!-- MP-021 Enable AutoPilot — legacy (settings fallback) -->
@@ -1512,8 +1540,8 @@ body.map-expand-open{overflow:hidden}
 })();
 </script>
 <script>
-const APP_VERSION='8.14.0';
-const BUILD_NUMBER='MP-048-ONBOARD';
+const APP_VERSION='8.15.0';
+const BUILD_NUMBER='MP-049-ONBOARD';
 const ONBOARD_COMPLETE_KEY='mp_onboard_complete';
 const ONBOARD_FLAG_ACCOUNT='mp_has_account';
 const ONBOARD_FLAG_REPORT='mp_has_report_schedule';
@@ -1713,7 +1741,10 @@ function continueFromLocation(){if(!localStorage.getItem('mp_location_choice'))l
 function initReportSetup(){onboardReportFrequency=getReportFrequency()||'weekly';document.querySelectorAll('#reportSetup .su-freq-tab').forEach(el=>el.classList.toggle('active',el.dataset.freq===onboardReportFrequency))}
 function selectOnboardReportFrequency(freq){onboardReportFrequency=freq;document.querySelectorAll('#reportSetup .su-freq-tab').forEach(el=>el.classList.toggle('active',el.dataset.freq===freq))}
 function confirmOnboardReports(){setReportFrequency(onboardReportFrequency);saveReportPrefs({emailReports:true});localStorage.setItem(ONBOARD_FLAG_REPORT,'true');advanceFromSetupStep('reportSetup')}
-function initFtueEmail(){const emailEl=q('ftueEmailInput');if(emailEl)emailEl.value=localStorage.getItem('mp_email')||''}
+function applyOnboardKeyboardViewport(screen,open){if(!screen)return;if(open&&window.visualViewport){const h=window.visualViewport.height;screen.style.height=h+'px';screen.style.minHeight=h+'px';screen.style.maxHeight=h+'px';window.scrollTo(0,0);screen.scrollTop=0}else{screen.style.height='';screen.style.minHeight='';screen.style.maxHeight=''}}
+function syncOnboardKeyboardOpen(screenId,inputId){const screen=q(screenId),input=q(inputId);if(!screen||!input)return;const focused=document.activeElement===input;const open=!!(window.visualViewport&&window.visualViewport.height<window.innerHeight*0.82);const active=open&&focused;screen.classList.toggle('is-keyboard-open',active);applyOnboardKeyboardViewport(screen,active)}
+function wireOnboardKeyboard(screenId,inputId){const input=q(inputId);if(!input||input.dataset.keyboardWired)return;input.dataset.keyboardWired='1';const sync=()=>syncOnboardKeyboardOpen(screenId,inputId);input.addEventListener('focus',sync);input.addEventListener('blur',function(){setTimeout(function(){const screen=q(screenId);if(screen){screen.classList.remove('is-keyboard-open');applyOnboardKeyboardViewport(screen,false)}},120)});input.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();if(screenId==='ftueEmail')confirmFtueEmail()}});if(!window.__onboardKeyboardVpWired){window.__onboardKeyboardVpWired=true;const resync=function(){syncOnboardKeyboardOpen('welcome','name');syncOnboardKeyboardOpen('ftueEmail','ftueEmailInput');window.scrollTo(0,0)};if(window.visualViewport){window.visualViewport.addEventListener('resize',resync);window.visualViewport.addEventListener('scroll',resync)}window.addEventListener('resize',resync)}}
+function initFtueEmail(){const emailEl=q('ftueEmailInput');if(emailEl){emailEl.value=localStorage.getItem('mp_email')||'';wireOnboardKeyboard('ftueEmail','ftueEmailInput')}const screen=q('ftueEmail');if(screen){screen.classList.remove('is-keyboard-open');applyOnboardKeyboardViewport(screen,false)}}
 async function confirmFtueEmail(){const emailEl=q('ftueEmailInput'),email=emailEl?emailEl.value.trim():'';if(!email){toast('Add your email to receive automatic reports');emailEl?.focus();return}localStorage.setItem('mp_email',email);localStorage.setItem(ONBOARD_FLAG_EMAIL,'true');applyFtueDefaults();try{await syncReportSubscription()}catch(e){}markInitialSetupComplete();markOnboardingComplete();routeReturningUserToDashboard()}
 function initAutoPilotReady(){const list=q('autoPilotReadyList');if(list){list.style.opacity='1'}if(typeof window.__bootAutoPilotReady==='function')window.__bootAutoPilotReady()}
 function showAutoPilotReady(){localStorage.setItem('mp_onboard_step','autoPilotReady');initAutoPilotReady();showScreen('autoPilotReady')}
