@@ -1,12 +1,12 @@
 /**
  * VITAL — Trip auto-end on prolonged inactivity (MP-045)
- * Timestamp-based checks run on every GPS sample (not only setInterval — survives lock screen).
+ * Own watchdog timer + wall-clock deadline. Does not rely on GPS firing while parked.
  */
 (function (global) {
   'use strict';
 
   const DEFAULT_INACTIVITY_MS = 90 * 60 * 1000;
-  const MOVEMENT_SPEED_MPS = 0.9;
+  const WATCHDOG_MS = 5000;
   const STORAGE_KEY = 'mp_auto_end_state';
   const LOG_KEY = 'mp_auto_end_logs';
   const LOG_MAX = 80;
@@ -14,6 +14,8 @@
 
   let memoryLogs = [];
   let tickCallback = null;
+  let watchdogId = null;
+  let deadlineId = null;
 
   function nowMs() {
     return Date.now();
@@ -62,22 +64,81 @@
     localStorage.removeItem(STORAGE_KEY);
   }
 
+  function stopTimers() {
+    if (watchdogId) {
+      clearInterval(watchdogId);
+      watchdogId = null;
+    }
+    if (deadlineId) {
+      clearTimeout(deadlineId);
+      deadlineId = null;
+    }
+  }
+
   function setTickCallback(fn) {
     tickCallback = typeof fn === 'function' ? fn : null;
   }
 
-  function onTripStarted(shiftId, startedAt) {
-    const t = startedAt || nowMs();
+  function computeDeadline(lastMovementAt) {
+    return lastMovementAt + getInactivityMs();
+  }
+
+  function scheduleDeadline() {
+    if (deadlineId) {
+      clearTimeout(deadlineId);
+      deadlineId = null;
+    }
+    const state = loadState();
+    if (!state || state.autoEndFired) return;
+    const wait = Math.max(0, state.autoEndDeadlineAt - nowMs());
+    log('Inactivity deadline scheduled', {
+      waitSec: Math.floor(wait / 1000),
+      deadlineISO: new Date(state.autoEndDeadlineAt).toISOString(),
+    });
+    deadlineId = setTimeout(function () {
+      log('Inactivity deadline fired', {});
+      checkInactivity(nowMs());
+    }, wait);
+  }
+
+  function startWatchdog() {
+    stopTimers();
+    const state = loadState();
+    if (!state || state.autoEndFired) return;
+    scheduleDeadline();
+    watchdogId = setInterval(function () {
+      const s = loadState();
+      if (!s || s.autoEndFired) {
+        stopTimers();
+        return;
+      }
+      const remaining = s.autoEndDeadlineAt - nowMs();
+      if (remaining <= 0) {
+        checkInactivity(nowMs());
+      }
+    }, WATCHDOG_MS);
+    log('Watchdog started', { intervalSec: WATCHDOG_MS / 1000 });
+  }
+
+  function armState(shiftId, startedAt, lastMovementAt) {
+    const t = lastMovementAt || startedAt || nowMs();
     const state = {
       shiftId: shiftId || 'shift_' + t,
-      tripStartedAt: t,
+      tripStartedAt: startedAt || t,
       lastMovementAt: t,
+      autoEndDeadlineAt: computeDeadline(t),
       autoEndFired: false,
     };
     saveState(state);
+    startWatchdog();
+    return state;
+  }
+
+  function onTripStarted(shiftId, startedAt) {
+    const state = armState(shiftId, startedAt, startedAt);
     log('Trip started — inactivity timer armed', {
       shiftId: state.shiftId,
-      inactivityMin: getInactivityMs() / 60000,
+      inactivitySec: Math.floor(getInactivityMs() / 1000),
     });
   }
 
@@ -86,52 +147,49 @@
     if (existing && existing.shiftId === shiftId && !existing.autoEndFired) {
       if (lastMovementAt && lastMovementAt > 0) {
         existing.lastMovementAt = lastMovementAt;
+        existing.autoEndDeadlineAt = computeDeadline(lastMovementAt);
       }
       saveState(existing);
+      startWatchdog();
       log('Trip restored — inactivity timer resumed', {
         shiftId: shiftId,
         idleSec: Math.floor((nowMs() - existing.lastMovementAt) / 1000),
+        remainingSec: Math.floor((existing.autoEndDeadlineAt - nowMs()) / 1000),
       });
       return;
     }
-    const t = lastMovementAt && lastMovementAt > 0 ? lastMovementAt : nowMs();
-    onTripStarted(shiftId, t);
+    onTripStarted(shiftId, lastMovementAt || nowMs());
   }
 
-  function onMovementDetected(at, speedMps) {
+  function onMovementDetected(at) {
     const state = loadState();
     if (!state || state.autoEndFired) return;
-    if (speedMps != null && speedMps >= 0 && speedMps < MOVEMENT_SPEED_MPS) {
-      log('GPS drift ignored — not resetting inactivity timer', { speedMps: speedMps });
-      return;
-    }
     const t = at || nowMs();
     const prev = state.lastMovementAt;
     state.lastMovementAt = t;
+    state.autoEndDeadlineAt = computeDeadline(t);
     saveState(state);
+    scheduleDeadline();
     log('Movement detected — inactivity timer reset', {
       idleWasSec: prev ? Math.floor((t - prev) / 1000) : 0,
-      speedMps: speedMps,
+      nextDeadlineSec: Math.floor(getInactivityMs() / 1000),
     });
   }
 
   function msUntilAutoEnd(at) {
     const state = loadState();
     if (!state || state.autoEndFired) return null;
-    const t = at || nowMs();
-    return Math.max(0, getInactivityMs() - (t - state.lastMovementAt));
+    return Math.max(0, state.autoEndDeadlineAt - (at || nowMs()));
   }
 
   function shouldAutoEnd(at) {
     const state = loadState();
     if (!state || state.autoEndFired) return false;
     const t = at || nowMs();
-    const idle = t - state.lastMovementAt;
-    const threshold = getInactivityMs();
-    if (idle >= threshold) {
+    if (t >= state.autoEndDeadlineAt) {
       log('Inactivity threshold reached', {
-        idleSec: Math.floor(idle / 1000),
-        thresholdSec: Math.floor(threshold / 1000),
+        idleSec: Math.floor((t - state.lastMovementAt) / 1000),
+        thresholdSec: Math.floor(getInactivityMs() / 1000),
       });
       return true;
     }
@@ -144,6 +202,7 @@
     const t = at || nowMs();
     state.autoEndFired = true;
     saveState(state);
+    stopTimers();
     log('Inactivity timer expired — auto-ending trip', {
       shiftId: state.shiftId,
       idleSec: Math.floor((t - state.lastMovementAt) / 1000),
@@ -157,28 +216,25 @@
         log('Auto-end callback error', { error: String(e && e.message ? e.message : e) });
         state.autoEndFired = false;
         saveState(state);
+        startWatchdog();
         return false;
       }
     } else {
       log('Auto-end callback missing — trip not ended', {});
       state.autoEndFired = false;
       saveState(state);
+      startWatchdog();
       return false;
     }
     return true;
   }
 
-  function onGpsTick(at, onAutoEnd) {
-    const state = loadState();
-    if (!state || state.autoEndFired) return false;
-    const remaining = msUntilAutoEnd(at);
-    if (remaining != null && remaining <= 0) {
-      return checkInactivity(at, onAutoEnd);
-    }
-    return false;
+  function onGpsTick(at) {
+    return checkInactivity(at);
   }
 
   function onTripEnded(reason) {
+    stopTimers();
     log('Trip ended', { reason: reason || 'unknown' });
     clearState();
   }
@@ -193,18 +249,23 @@
     const t = nowMs();
     const threshold = getInactivityMs();
     const lastMove = state ? state.lastMovementAt : null;
-    const countdown = lastMove != null ? Math.max(0, threshold - (t - lastMove)) : null;
+    const countdown =
+      state && state.autoEndDeadlineAt != null ? Math.max(0, state.autoEndDeadlineAt - t) : null;
     let storedLogs = [];
     try {
       storedLogs = JSON.parse(localStorage.getItem(LOG_KEY) || '[]');
     } catch (e) {}
     return {
       tripStatus: isActive ? 'active' : 'idle',
+      moduleLoaded: true,
+      watchdogActive: !!watchdogId,
+      deadlineScheduled: !!deadlineId,
       inactivityThresholdMs: threshold,
       inactivityThresholdMin: threshold / 60000,
       lastMovementAt: lastMove,
       lastMovementISO: lastMove ? new Date(lastMove).toISOString() : null,
       lastMovementAgoSec: lastMove != null ? Math.floor((t - lastMove) / 1000) : null,
+      autoEndDeadlineAt: state ? state.autoEndDeadlineAt : null,
       countdownMs: countdown,
       countdownSec: countdown != null ? Math.floor(countdown / 1000) : null,
       countdownMin: countdown != null ? Number((countdown / 60000).toFixed(2)) : null,
@@ -221,7 +282,6 @@
 
   global.MPTripAutoEnd = {
     DEFAULT_INACTIVITY_MS: DEFAULT_INACTIVITY_MS,
-    MOVEMENT_SPEED_MPS: MOVEMENT_SPEED_MPS,
     getInactivityMs: getInactivityMs,
     setTickCallback: setTickCallback,
     onTripStarted: onTripStarted,

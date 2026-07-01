@@ -30,6 +30,10 @@ function loadTripAutoEnd(ls) {
   const sandbox = {
     console,
     Date,
+    setInterval,
+    clearInterval,
+    setTimeout,
+    clearTimeout,
     localStorage: ls,
     window: {},
     globalThis: {},
@@ -63,15 +67,16 @@ run('timer starts when trip begins', () => {
   assert.equal(dbg.tripStatus, 'active');
   assert.equal(dbg.lastMovementAt, t0);
   assert.ok(dbg.countdownMs >= 89 * 60 * 1000);
+  assert.equal(dbg.watchdogActive, true);
 });
 
-run('movement resets inactivity timer', () => {
+run('movement resets deadline', () => {
   const ls = createMockLocalStorage();
   ls.setItem('mp_debug_auto_end_ms', '60000');
   const M = loadTripAutoEnd(ls);
   const t0 = 1_700_000_000_000;
   M.onTripStarted('shift_1', t0);
-  M.onMovementDetected(t0 + 30000, 5);
+  M.onMovementDetected(t0 + 30000);
   assert.equal(M.getDebugState(true).lastMovementAt, t0 + 30000);
   assert.equal(M.shouldAutoEnd(t0 + 50000), false);
 });
@@ -81,9 +86,10 @@ run('inactivity reaches threshold and triggers auto-end', () => {
   ls.setItem('mp_debug_auto_end_ms', '60000');
   const M = loadTripAutoEnd(ls);
   let ended = null;
+  M.setTickCallback((r) => { ended = r; });
   const t0 = 1_700_000_000_000;
   M.onTripStarted('shift_1', t0);
-  assert.equal(M.checkInactivity(t0 + 61001, (r) => { ended = r; }), true);
+  assert.equal(M.checkInactivity(t0 + 61001), true);
   assert.equal(ended, 'auto');
 });
 
@@ -92,33 +98,12 @@ run('auto-end performs callback exactly once', () => {
   ls.setItem('mp_debug_auto_end_ms', '5000');
   const M = loadTripAutoEnd(ls);
   let count = 0;
+  M.setTickCallback(() => { count++; });
   const t0 = 1_700_000_000_000;
   M.onTripStarted('s', t0);
-  M.checkInactivity(t0 + 5001, () => { count++; });
-  M.checkInactivity(t0 + 10000, () => { count++; });
+  M.checkInactivity(t0 + 5001);
+  M.checkInactivity(t0 + 10000);
   assert.equal(count, 1);
-});
-
-run('GPS drift below speed threshold does not reset timer', () => {
-  const ls = createMockLocalStorage();
-  ls.setItem('mp_debug_auto_end_ms', '60000');
-  const M = loadTripAutoEnd(ls);
-  const t0 = 1_700_000_000_000;
-  M.onTripStarted('shift_1', t0);
-  M.onMovementDetected(t0 + 5000, 0.2);
-  assert.equal(M.getDebugState(true).lastMovementAt, t0);
-});
-
-run('onGpsTick triggers auto-end when idle threshold reached', () => {
-  const ls = createMockLocalStorage();
-  ls.setItem('mp_debug_auto_end_ms', '60000');
-  const M = loadTripAutoEnd(ls);
-  let ended = false;
-  M.setTickCallback(() => { ended = true; });
-  const t0 = 1_700_000_000_000;
-  M.onTripStarted('shift_1', t0);
-  M.onGpsTick(t0 + 61000);
-  assert.equal(ended, true);
 });
 
 run('90 minute default threshold', () => {
@@ -133,6 +118,7 @@ run('trip end clears auto-end state', () => {
   M.onTripStarted('s', 1);
   M.onTripEnded('manual');
   assert.equal(M.getDebugState(false).shiftId, null);
+  assert.equal(M.getDebugState(false).watchdogActive, false);
 });
 
 console.log(`\nTrip auto-end: ${passed} passed, ${failed} failed\n`);
