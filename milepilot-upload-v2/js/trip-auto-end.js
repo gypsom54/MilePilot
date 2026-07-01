@@ -47,6 +47,28 @@
     } catch (e) {}
   }
 
+  function syncNative(payload) {
+    try {
+      if (
+        global.MPExpoBridge &&
+        typeof global.MPExpoBridge.post === 'function'
+      ) {
+        global.MPExpoBridge.post({ type: 'expo:autoend:sync', payload: payload || {} });
+      }
+    } catch (e) {}
+  }
+
+  function nativeSyncFromState(state) {
+    if (!state) return;
+    syncNative({
+      active: true,
+      shiftId: state.shiftId,
+      lastMovementAt: state.lastMovementAt,
+      autoEndDeadlineAt: state.autoEndDeadlineAt,
+      inactivityMs: getInactivityMs(),
+    });
+  }
+
   function loadState() {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
@@ -140,6 +162,7 @@
       shiftId: state.shiftId,
       inactivitySec: Math.floor(getInactivityMs() / 1000),
     });
+    nativeSyncFromState(state);
   }
 
   function onRestore(shiftId, lastMovementAt) {
@@ -156,6 +179,7 @@
         idleSec: Math.floor((nowMs() - existing.lastMovementAt) / 1000),
         remainingSec: Math.floor((existing.autoEndDeadlineAt - nowMs()) / 1000),
       });
+      nativeSyncFromState(existing);
       return;
     }
     onTripStarted(shiftId, lastMovementAt || nowMs());
@@ -174,6 +198,7 @@
       idleWasSec: prev ? Math.floor((t - prev) / 1000) : 0,
       nextDeadlineSec: Math.floor(getInactivityMs() / 1000),
     });
+    nativeSyncFromState(state);
   }
 
   function msUntilAutoEnd(at) {
@@ -236,6 +261,7 @@
   function onTripEnded(reason) {
     stopTimers();
     log('Trip ended', { reason: reason || 'unknown' });
+    syncNative({ active: false });
     clearState();
   }
 
