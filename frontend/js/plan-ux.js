@@ -1,27 +1,45 @@
 /**
- * MilePilot Plan UX (MP-020)
- * Tracker vs Pro visibility and work-type personalisation.
- * No payments — plan stored locally until billing is built.
+ * MilePilot Plan UX (MP-020 / MP-047)
+ * Tracking style (AutoPilot vs Manual) — not pricing tiers.
  */
 (function (global) {
   'use strict';
 
-  const VERSION = 1;
+  const VERSION = 2;
   const STORAGE_PLAN = 'mp_user_plan';
   const STORAGE_WORK = 'mp_user_work_type';
+  const STORAGE_TRACKING_MODE = 'mp_tracking_mode';
 
+  const TRACKING_MODES = {
+    autopilot: {
+      id: 'autopilot',
+      label: 'AutoPilot',
+      badge: 'Recommended',
+      desc: 'Drive normally. MilePilot detects journeys automatically in the background.',
+      tagline: 'Automatic background tracking',
+    },
+    manual: {
+      id: 'manual',
+      label: 'Manual',
+      badge: '',
+      desc: 'Start and stop journeys yourself. Perfect if you prefer full control.',
+      tagline: 'Start and stop yourself',
+    },
+  };
+
+  /** Legacy plan ids — kept for dashboard class hooks; not shown in onboarding. */
   const PLANS = {
     tracker: {
       id: 'tracker',
-      label: 'MilePilot Tracker',
-      tagline: 'Business mileage on AutoPilot — no clutter.',
-      summary: 'Layer 1 · Auto-detect · Reports · HMRC · History',
+      label: 'AutoPilot',
+      tagline: 'Automatic background tracking',
+      summary: 'Auto-detect · Reports · HMRC · History',
     },
     pro: {
       id: 'pro',
-      label: 'MilePilot Pro',
-      tagline: 'Run your business on AutoPilot.',
-      summary: 'Layer 2 · Everything in Tracker · Insights · Goals · Expenses soon',
+      label: 'Manual',
+      tagline: 'Start and stop yourself',
+      summary: 'Full control · Reports · HMRC · History',
     },
   };
 
@@ -63,12 +81,47 @@
     },
   };
 
+  function getTrackingMode() {
+    const stored = localStorage.getItem(STORAGE_TRACKING_MODE);
+    if (stored === 'autopilot' || stored === 'manual') return stored;
+    if (localStorage.getItem(STORAGE_PLAN) === 'tracker') return 'autopilot';
+    if (localStorage.getItem(STORAGE_PLAN) === 'pro') return 'manual';
+    return 'autopilot';
+  }
+
+  function setTrackingMode(mode) {
+    if (!TRACKING_MODES[mode]) return;
+    localStorage.setItem(STORAGE_TRACKING_MODE, mode);
+    localStorage.setItem(STORAGE_PLAN, 'pro');
+    if (mode === 'autopilot') {
+      localStorage.setItem('mp_autopilot_enabled', 'true');
+      localStorage.setItem('mp_motion_choice', 'enabled');
+    } else {
+      localStorage.setItem('mp_autopilot_enabled', 'manual');
+      localStorage.removeItem('mp_motion_choice');
+    }
+  }
+
+  function getTrackingModeMeta(mode) {
+    return TRACKING_MODES[mode || getTrackingMode()] || TRACKING_MODES.autopilot;
+  }
+
+  function isAutoPilotMode() {
+    return getTrackingMode() === 'autopilot';
+  }
+
+  function isManualMode() {
+    return getTrackingMode() === 'manual';
+  }
+
   function getUserPlan() {
-    return localStorage.getItem(STORAGE_PLAN) || 'pro';
+    return localStorage.getItem(STORAGE_PLAN) || (isAutoPilotMode() ? 'tracker' : 'pro');
   }
 
   function setUserPlan(plan) {
-    if (PLANS[plan]) localStorage.setItem(STORAGE_PLAN, plan);
+    if (plan === 'tracker') setTrackingMode('autopilot');
+    else if (plan === 'pro') setTrackingMode('manual');
+    else if (PLANS[plan]) localStorage.setItem(STORAGE_PLAN, plan);
   }
 
   function getUserWorkType() {
@@ -88,7 +141,8 @@
   }
 
   function getPlanMeta(plan) {
-    return PLANS[plan || getUserPlan()] || PLANS.pro;
+    const mode = plan === 'tracker' ? 'autopilot' : plan === 'pro' ? 'manual' : getTrackingMode();
+    return getTrackingModeMeta(mode);
   }
 
   function getWorkTypeMeta(type) {
@@ -105,14 +159,17 @@
 
   function migrateLegacyUser() {
     if (localStorage.getItem('mp_onboarding_reset') === 'true') return;
-    if (localStorage.getItem(STORAGE_PLAN)) return;
-    const onboarded =
+    if (localStorage.getItem(STORAGE_TRACKING_MODE)) return;
+    const plan = localStorage.getItem(STORAGE_PLAN);
+    if (plan === 'tracker') setTrackingMode('autopilot');
+    else if (plan === 'pro') setTrackingMode('manual');
+    else if (
       localStorage.getItem('mp_onboard_complete') === 'true' ||
       localStorage.getItem('mp_email') ||
       localStorage.getItem('mp_report_frequency') ||
-      localStorage.getItem('mp_shifts');
-    if (onboarded) {
-      setUserPlan('pro');
+      localStorage.getItem('mp_shifts')
+    ) {
+      setTrackingMode('autopilot');
       if (!localStorage.getItem(STORAGE_WORK)) setUserWorkType('other');
     }
   }
@@ -120,7 +177,13 @@
   global.MPPlanUX = {
     VERSION,
     PLANS,
+    TRACKING_MODES,
     WORK_TYPES,
+    getTrackingMode,
+    setTrackingMode,
+    getTrackingModeMeta,
+    isAutoPilotMode,
+    isManualMode,
     getUserPlan,
     setUserPlan,
     getUserWorkType,

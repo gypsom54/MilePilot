@@ -1,1 +1,1 @@
-MilePilot OS v8.12.0 — MP-046 onboarding friction reduction
+MilePilot OS v8.13.0 — MP-047 tracking style onboarding polish
