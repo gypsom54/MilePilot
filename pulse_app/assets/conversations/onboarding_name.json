@@ -1,0 +1,23 @@
+{
+  "id": "onboarding_name",
+  "steps": [
+    {
+      "type": "typing",
+      "charDelayMs": 42,
+      "charDelayVariance": 0.16,
+      "lines": [
+        { "text": "Who are we talking to today?", "pauseAfterMs": 400 }
+      ]
+    },
+    {
+      "type": "input",
+      "inputKey": "firstName",
+      "placeholder": "Your first name"
+    },
+    {
+      "type": "button",
+      "label": "Continue",
+      "action": "navigate:personalise"
+    }
+  ]
+}
