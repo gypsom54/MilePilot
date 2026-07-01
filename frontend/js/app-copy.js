@@ -48,6 +48,11 @@
     testShiftAdded: 'Test shift added.',
     testShiftsCleared: 'Test shifts cleared.',
     shareCopied: 'Report summary copied.',
+    autopilotRequirementsTitle: 'Tracking without opening the app',
+    autopilotRequirementsIntro:
+      'For automatic mileage while your phone is locked, please accept the permissions below.',
+    autopilotRequirementsFooter:
+      'Trips end after 90 minutes without movement. Force-quitting the app or denying background location may pause tracking until you open MilePilot again.',
   };
 
   global.MPCopy.getReportEmpty = function (period, hasAnyShifts) {

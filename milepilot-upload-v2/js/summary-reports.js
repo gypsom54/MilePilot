@@ -543,6 +543,82 @@
     return results;
   }
 
+  async function sendShiftCompletionEmail(deps, shift, endReason) {
+    const email = deps.getEmail();
+    if (!email) {
+      const skip = { skipped: true, reason: 'no_email' };
+      reportLog('Shift completion email skipped — no email', { endReason: endReason });
+      saveLastEmailResult(skip);
+      return skip;
+    }
+
+    const frequency = deps.getFrequency();
+    if (!frequency || frequency === 'off') {
+      const skip = { skipped: true, reason: 'reports_off' };
+      reportLog('Shift completion email skipped — reports off', { endReason: endReason });
+      saveLastEmailResult(skip);
+      return skip;
+    }
+
+    const sentKey = 'shift_completion_' + (shift && shift.id ? shift.id : Date.now());
+    if (localStorage.getItem(SENT_PREFIX + sentKey) === '1') {
+      return { skipped: true, reason: 'already_sent' };
+    }
+
+    const now = shift && shift.endISO ? new Date(shift.endISO) : new Date();
+    const payload = buildStandardPayload(deps, 'Daily', now);
+    if (!payload.shifts.length) {
+      const skip = { skipped: true, reason: 'no_data' };
+      reportLog('Shift completion email skipped — no journeys in payload', { shiftId: shift && shift.id });
+      saveLastEmailResult(skip);
+      return skip;
+    }
+
+    reportLog('Sending shift completion email', {
+      shiftId: shift && shift.id,
+      endReason: endReason,
+      email: email,
+      journeys: payload.shifts.length,
+    });
+
+    try {
+      const result = await deps.apiPost('/reports/send', payload);
+      if (result && result.res && result.res.ok && result.data && result.data.sent) {
+        localStorage.setItem(SENT_PREFIX + sentKey, '1');
+        if (typeof deps.onSent === 'function') deps.onSent('Daily', payload);
+        const ok = { sent: true, type: 'ShiftCompletion', messageId: result.data.messageId || null };
+        reportLog('Shift completion email sent', ok);
+        saveLastEmailResult(ok);
+        return ok;
+      }
+      const fail = {
+        skipped: true,
+        reason: 'send_failed',
+        detail: result && result.data ? result.data : result,
+      };
+      reportLog('Shift completion email failed — API rejected', fail);
+      saveLastEmailResult(fail);
+      return fail;
+    } catch (e) {
+      const err = { skipped: true, reason: 'error', detail: String(e && e.message ? e.message : e) };
+      reportLog('Shift completion email failed — exception', err);
+      saveLastEmailResult(err);
+      return err;
+    }
+  }
+
+  async function onShiftEnded(deps, shift, endReason) {
+    reportLog('Shift ended — starting email workflow', {
+      shiftId: shift && shift.id,
+      endReason: endReason || 'manual',
+    });
+    const immediate = await sendShiftCompletionEmail(deps, shift, endReason || 'manual');
+    if (shift && shift.endISO && deps.getFrequency() === 'daily') {
+      scheduleDailyAfterShift(deps, shift.endISO);
+    }
+    return immediate;
+  }
+
   function scheduleDailyAfterShift(deps, shiftEndedAt) {
     const frequency = deps.getFrequency();
     if (frequency !== 'daily') {
@@ -616,6 +692,12 @@
     },
     scheduleDailyAfterShift: function (shiftEndedAt) {
       return scheduleDailyAfterShift(requireDeps(), shiftEndedAt);
+    },
+    onShiftEnded: function (shift, endReason) {
+      return onShiftEnded(requireDeps(), shift, endReason);
+    },
+    sendShiftCompletionEmail: function (shift, endReason) {
+      return sendShiftCompletionEmail(requireDeps(), shift, endReason);
     },
     getLastEmailResult: getLastEmailResult,
     getPendingReport: loadPendingReport,
