@@ -1,63 +1,17 @@
-MilePilot — UPLOAD v4.6.1 (onboarding flow fix)
-=================================================
+MilePilot — UPLOAD v8.9.9
+=========================
 
-IMPORTANT: Upload ALL 5 files. Replace every file from the previous upload.
+Download:
+https://github.com/gypsom54/MilePilot/raw/cursor/mp-045-email-gps-permissions-ae00/MilePilot-UPLOAD-v8.9.9.zip
 
-WHY YOU MAY STILL SEE THE OLD FLOW
-----------------------------------
-The server may already have v4.6, but your browser can still open MP-003
-because old onboarding data is saved in localStorage (e.g. name "Jonathan").
+After upload, verify:
+https://app.milepilot.uk/version.txt
+Must show: MilePilot OS v8.9.9
 
-This v4.6.1 build automatically clears incomplete onboarding when the app
-version changes, so you start again at MP-001 after upload.
+WHAT'S IN v8.9.9
+----------------
+• Report emails: PDF is part of the message (attachment callout, no dashboard link)
+• Amber AutoPilot items have Enable Location / fix buttons
+• Settings → Location & AutoPilot with phone-specific help guide
 
-ONBOARDING FLOW
----------------
-  MP-001  Welcome (name entry)
-    ↓
-  MP-002  Vehicle selection
-    ↓
-  MP-003  The MilePilot Promise
-    ↓
-  MP-004  Location Permission
-    ↓
-  MP-005  Notification Permission
-    ↓
-  Dashboard
-
-FILES TO UPLOAD (all 5 in this folder)
----------------------------------------
-  index.html
-  manifest.json
-  icon.svg
-  service-worker.js
-  version.txt
-
-STEP 1 — Upload to Cloudflare
-------------------------------
-1. Cloudflare Dashboard → Workers & Pages → MilePilot
-2. Create deployment → Upload assets
-3. Select ALL 5 files from THIS folder
-4. Deploy
-
-STEP 2 — Confirm upload worked
--------------------------------
-Open:
-  https://app.milepilot.uk/version.txt
-
-You MUST see:
-  MilePilot OS v4.6.1 — Onboarding flow fix + stale state reset
-
-STEP 3 — Open the app
-----------------------
-  https://app.milepilot.uk
-
-Use Incognito OR hard refresh: Ctrl+Shift+R
-
-STEP 4 — Check the welcome screen badge
-----------------------------------------
-Bottom of MP-001 should say:
-  MP-001 🔒 Locked · App v4.6.1
-
-If you still see MP-003 first:
-  Settings → Reset onboarding
+Deploy Railway backend too for latest email template.
