@@ -65,9 +65,10 @@ Motion permission nudges GPS when the device moves but watch callbacks stall.
 | File | Symbols |
 |------|---------|
 | `frontend/index.html` | `startShiftCommandCentre`, `endShiftCommandCentre`, `processGpsPoint`, `recordStop`, `normaliseShift` |
+| `frontend/js/trip-auto-end.js` | `MPTripAutoEnd` — 90 min inactivity auto-end (MP-045) |
 | `milepilot-upload-v2/index.html` | Mirror |
 
-Trip **ends** only when the driver taps End Shift — not on stationary timeout.
+Trip **ends** when the driver taps End Shift **or** after 90 minutes without GPS movement (`MPTripAutoEnd`). See `docs/AUTO_END_TRIP.md`.
 
 ---
 

@@ -1,11 +1,85 @@
 /**
- * VITAL — BUSINESS CRITICAL (MP-044) — Cloudflare deploy mirror
- * See frontend/js/summary-reports.js and docs/CRITICAL_FILES.md
+ * VITAL — BUSINESS CRITICAL (MP-044)
+ * Automatic report scheduling and delivery. Do not modify without explicit approval.
+ * Contract: scripts/reports-contract.json · CI: production-guard.yml
+ * See docs/CRITICAL_FILES.md and docs/PRODUCTION_MONITORING_PLAN.md
+ *
+ * MilePilot Automatic Summary Reports
+ * Works alongside the user's chosen report frequency — summaries stack, not replace.
  */
 (function (global) {
   'use strict';
 
   const SENT_PREFIX = 'mp_auto_report_sent_';
+  const PENDING_REPORT_KEY = 'mp_pending_report';
+  const LAST_EMAIL_RESULT_KEY = 'mp_last_email_result';
+  const LOG_PREFIX = '[MilePilot Reports]';
+
+  function reportLog(msg, data) {
+    if (typeof console !== 'undefined' && console.log) {
+      console.log(LOG_PREFIX, msg, data !== undefined ? data : '');
+    }
+  }
+
+  function saveLastEmailResult(result) {
+    try {
+      localStorage.setItem(
+        LAST_EMAIL_RESULT_KEY,
+        JSON.stringify(Object.assign({ t: Date.now() }, result || {}))
+      );
+    } catch (e) {}
+  }
+
+  function getLastEmailResult() {
+    try {
+      return JSON.parse(localStorage.getItem(LAST_EMAIL_RESULT_KEY) || 'null');
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function persistPendingReport(type, fireAt, shiftEndedAt) {
+    try {
+      localStorage.setItem(
+        PENDING_REPORT_KEY,
+        JSON.stringify({
+          type: type,
+          fireAt: fireAt,
+          shiftEndedAt: shiftEndedAt,
+          createdAt: Date.now(),
+        })
+      );
+      reportLog('Report email scheduled (persisted)', {
+        type: type,
+        fireAt: new Date(fireAt).toISOString(),
+      });
+    } catch (e) {
+      reportLog('Failed to persist pending report', { error: String(e) });
+    }
+  }
+
+  function clearPendingReport() {
+    localStorage.removeItem(PENDING_REPORT_KEY);
+  }
+
+  function loadPendingReport() {
+    try {
+      const raw = localStorage.getItem(PENDING_REPORT_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  async function checkPendingReports(deps) {
+    const pending = loadPendingReport();
+    if (!pending) return null;
+    if (Date.now() < pending.fireAt) return { waiting: true, pending: pending };
+    reportLog('Pending report due — sending', { type: pending.type });
+    clearPendingReport();
+    const result = await sendAutomaticReport(deps, pending.type, new Date());
+    return result;
+  }
 
   const SCHEDULE = {
     dailyAfterShiftHours: 1,
@@ -399,30 +473,63 @@
 
   async function sendAutomaticReport(deps, type, now) {
     const key = dedupeKey(type, now || new Date());
-    if (wasSent(type, key)) return { skipped: true, reason: 'already_sent' };
+    if (wasSent(type, key)) {
+      const skip = { skipped: true, reason: 'already_sent' };
+      reportLog('Email skipped — already sent', { type: type, key: key });
+      saveLastEmailResult(skip);
+      return skip;
+    }
 
     const email = deps.getEmail();
-    if (!email) return { skipped: true, reason: 'no_email' };
+    if (!email) {
+      const skip = { skipped: true, reason: 'no_email' };
+      reportLog('Email skipped — no email on file', { type: type });
+      saveLastEmailResult(skip);
+      return skip;
+    }
 
     const payload = buildPayload(deps, type, now);
     if (!payload.shifts.length && type !== 'WeeklySummary' && type !== 'MonthlySummary') {
-      return { skipped: true, reason: 'no_data' };
+      const skip = { skipped: true, reason: 'no_data' };
+      reportLog('Email skipped — no shift data', { type: type });
+      saveLastEmailResult(skip);
+      return skip;
     }
+
+    reportLog('Sending automatic report email', { type: type, email: email, journeys: payload.shifts.length });
 
     try {
       const result = await deps.apiPost('/reports/send', payload);
       if (result && result.res && result.res.ok && result.data && result.data.sent) {
         markSent(type, key);
         if (typeof deps.onSent === 'function') deps.onSent(type, payload);
-        return { sent: true, type: type };
+        const ok = { sent: true, type: type, messageId: result.data.messageId || null };
+        reportLog('Email sent successfully', ok);
+        saveLastEmailResult(ok);
+        return ok;
       }
-      return { skipped: true, reason: 'send_failed', detail: result };
+      const fail = {
+        skipped: true,
+        reason: 'send_failed',
+        detail: result && result.data ? result.data : result,
+      };
+      reportLog('Email send failed — API rejected', fail);
+      saveLastEmailResult(fail);
+      return fail;
     } catch (e) {
-      return { skipped: true, reason: 'error', detail: e };
+      const err = { skipped: true, reason: 'error', detail: String(e && e.message ? e.message : e) };
+      reportLog('Email send failed — exception', err);
+      saveLastEmailResult(err);
+      return err;
     }
   }
 
   async function checkScheduledReports(deps) {
+    const pendingResult = await checkPendingReports(deps);
+    if (pendingResult && pendingResult.sent) {
+      return [pendingResult];
+    }
+
     const frequency = deps.getFrequency();
     if (!frequency || frequency === 'off') return [];
     if (!deps.getEmail()) return [];
@@ -438,18 +545,27 @@
 
   function scheduleDailyAfterShift(deps, shiftEndedAt) {
     const frequency = deps.getFrequency();
-    if (frequency !== 'daily') return null;
+    if (frequency !== 'daily') {
+      reportLog('Post-shift email not scheduled — frequency is not daily', { frequency: frequency });
+      return null;
+    }
     const email = deps.getEmail();
-    if (!email) return null;
+    if (!email) {
+      reportLog('Post-shift email not scheduled — no email', {});
+      return null;
+    }
 
     const delayMs = SCHEDULE.dailyAfterShiftHours * 60 * 60 * 1000;
     const fireAt = new Date(shiftEndedAt).getTime() + delayMs;
     const wait = Math.max(0, fireAt - Date.now());
 
+    persistPendingReport('Daily', fireAt, shiftEndedAt);
+
     return setTimeout(async function () {
       const now = new Date();
       const key = dedupeKey('Daily', now);
       if (wasSent('Daily', key)) return;
+      clearPendingReport();
       await sendAutomaticReport(deps, 'Daily', now);
     }, wait);
   }
@@ -500,6 +616,11 @@
     },
     scheduleDailyAfterShift: function (shiftEndedAt) {
       return scheduleDailyAfterShift(requireDeps(), shiftEndedAt);
+    },
+    getLastEmailResult: getLastEmailResult,
+    getPendingReport: loadPendingReport,
+    checkPendingReports: function () {
+      return checkPendingReports(requireDeps());
     },
     wasSent: wasSent,
     markSent: markSent,
