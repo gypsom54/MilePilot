@@ -13,22 +13,19 @@
   const MODES = {
     autopilot: {
       id: MODE_AUTOPILOT,
-      label: 'AutoPilot',
+      label: 'MilePilot Auto Tracking',
+      shortLabel: 'Auto Tracking',
       emoji: '🚀',
-      shortTagline: 'Set it once. MilePilot handles the rest.',
+      shortTagline: 'Drive normally — MilePilot records in the background and prepares your reports.',
       description:
-        'Drive normally. MilePilot quietly detects business journeys in the background while your phone is locked and prepares your reports automatically.',
+        'Set it once. MilePilot detects business journeys while your phone is locked and sends professional reports automatically.',
       badge: 'RECOMMENDED',
       recommended: true,
       features: [
         'Background trip detection',
         'Lock-screen support',
         'Automatic journey detection',
-        'End-of-day review',
-        'Daily reports',
-        'Weekly Summary every Sunday 11:59 PM',
-        'Monthly Summary on the last day of each month',
-        'AI learning (future)',
+        'Daily, weekly & monthly reports',
       ],
       startLabel: 'Start Shift',
       endLabel: 'End Shift',
@@ -37,20 +34,19 @@
     },
     manual: {
       id: MODE_MANUAL,
-      label: 'Manual',
+      label: 'MilePilot Manual Tracking',
+      shortLabel: 'Manual Tracking',
       emoji: '🎯',
-      shortTagline: 'Track journeys only when you choose.',
+      shortTagline: 'Start and end each journey yourself — full control, same professional reports.',
       description:
-        'Perfect if you prefer complete control or only occasionally claim business mileage.',
+        'Perfect when you only occasionally claim business miles or prefer not to use background tracking.',
       badge: null,
       recommended: false,
       features: [
-        'Start Journey',
-        'End Journey',
-        'Generate reports on demand',
-        'No continuous background tracking',
-        'Lower battery usage',
-        'Greater privacy',
+        'Start & end journeys on demand',
+        'Reports when you need them',
+        'No background tracking',
+        'Lower battery · greater privacy',
       ],
       startLabel: 'Start Journey',
       endLabel: 'End Journey',
@@ -163,9 +159,9 @@
   function getSwitchExplanation(fromMode, toMode) {
     if (fromMode === toMode) return '';
     if (toMode === MODE_AUTOPILOT) {
-      return 'Switching to AutoPilot enables background GPS, lock-screen recording, and automatic trip end after 90 minutes stopped. iPhone will ask for Always Allow location.';
+      return 'Switching to MilePilot Auto Tracking enables background GPS, lock-screen recording, and automatic trip end after 90 minutes stopped.';
     }
-    return 'Switching to Manual stops background tracking and auto-end. You start and end each journey yourself. Reports work the same when you finish a journey.';
+    return 'Switching to MilePilot Manual Tracking stops background tracking. You start and end each journey yourself. Reports work the same.';
   }
 
   global.MPTrackingMode = {
