@@ -100,8 +100,8 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 @keyframes brandHeadlineIn{to{opacity:1}}
 .welcome-headline{text-align:center;font-size:clamp(31px,7.8vw,37px);line-height:1.14;font-weight:700;letter-spacing:-0.03em;margin:0 0 var(--headline-spacing);-webkit-font-smoothing:antialiased}
 .welcome-headline .blue{font-weight:700}
-#welcome,#planPick,#workType,#reportSetup,#ftueEmail,#autoPilotSetup,#autoPilotReady,#knowYou,#promise,#permissions,#notifications{position:relative;overflow:hidden;background:linear-gradient(180deg,#050F22 0%,#020B1B 55%,#010810 100%)}
-#welcome.active,#planPick.active,#workType.active,#reportSetup.active,#ftueEmail.active,#autoPilotSetup.active,#autoPilotReady.active,#knowYou.active,#promise.active,#permissions.active,#notifications.active{display:flex;flex-direction:column;min-height:100dvh;padding:max(32px,env(safe-area-inset-top)) 24px max(24px,env(safe-area-inset-bottom))}
+#welcome,#meetGreet,#planPick,#workType,#reportSetup,#ftueEmail,#autoPilotSetup,#autoPilotReady,#knowYou,#promise,#permissions,#notifications{position:relative;overflow:hidden;background:linear-gradient(180deg,#050F22 0%,#020B1B 55%,#010810 100%)}
+#welcome.active,#meetGreet.active,#planPick.active,#workType.active,#reportSetup.active,#ftueEmail.active,#autoPilotSetup.active,#autoPilotReady.active,#knowYou.active,#promise.active,#permissions.active,#notifications.active{display:flex;flex-direction:column;min-height:100dvh;padding:max(32px,env(safe-area-inset-top)) 24px max(24px,env(safe-area-inset-bottom))}
 #welcome.active{justify-content:flex-start;overflow-y:auto;-webkit-overflow-scrolling:touch}
 #welcome:not(.is-name-step).active{justify-content:center}
 #welcome.active.is-name-step{padding-top:max(20px,env(safe-area-inset-top));padding-bottom:max(12px,env(safe-area-inset-bottom))}
@@ -133,6 +133,7 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 #planPick .mode-card .vehicle-tag.is-muted{color:rgba(147,168,196,.82);font-weight:500}
 #planPick .tracking-style-note{font-size:13px;font-weight:500;color:rgba(159,180,208,.85);text-align:center;margin:0 0 4px;line-height:1.45}
 #planPick .knowYou-foot{padding-top:4px;flex-shrink:0}
+#meetGreet.active,#planPick.active,#workType.active,#reportSetup.active,#ftueEmail.active,#autoPilotSetup.active,#autoPilotReady.active,#knowYou.active,#promise.active,#permissions.active,#notifications.active{justify-content:flex-start}
 #knowYou .onboard-inner,#promise .onboard-inner,#autoPilotSetup .onboard-inner,#autoPilotReady .onboard-inner,#permissions .onboard-inner,#notifications .onboard-inner,#ftueEmail .onboard-inner,#reportSetup .onboard-inner{flex:1;display:flex;flex-direction:column;padding-top:4px;min-height:0}
 #knowYou .brand-bar.onboard-brand,#promise .brand-bar.onboard-brand,#autoPilotSetup .brand-bar.onboard-brand,#autoPilotReady .brand-bar.onboard-brand,#permissions .brand-bar.onboard-brand,#notifications .brand-bar.onboard-brand,#ftueEmail .brand-bar.onboard-brand,#reportSetup .brand-bar.onboard-brand{margin-bottom:24px}
 #knowYou .brand-bar .wordmark,#promise .brand-bar .wordmark,#autoPilotSetup .brand-bar .wordmark,#autoPilotReady .brand-bar .wordmark,#permissions .brand-bar .wordmark,#notifications .brand-bar .wordmark,#ftueEmail .brand-bar .wordmark,#reportSetup .brand-bar .wordmark{font-size:42px}
@@ -340,7 +341,14 @@ button{font-family:inherit}.btn{width:100%;height:58px;border-radius:18px;border
 .configure-checklist{list-style:none;margin:0 0 24px;padding:0;display:grid;gap:14px}
 .configure-checklist li{display:flex;align-items:flex-start;gap:12px;font-size:16px;font-weight:600;color:rgba(234,242,255,.96);line-height:1.35}
 .configure-checklist li span.configure-tick{color:#20D781;font-weight:700;flex-shrink:0}
-.configure-sub{font-size:15px;font-weight:500;color:rgba(159,180,208,.88);text-align:center;margin:0 0 20px;line-height:1.45}
+.configure-sub{font-size:15px;font-weight:500;color:rgba(159,180,208,.88);text-align:center;margin:0 0 16px;line-height:1.45}
+.configure-sub.configure-label{font-size:14px;font-weight:600;color:rgba(234,242,255,.92);text-align:left;margin:0 0 10px}
+#permissions .configure-privacy{font-size:13px;font-weight:500;color:rgba(110,180,255,.78);line-height:1.45;text-align:center;margin:16px 0 0}
+#meetGreet .onboard-inner{flex:1;display:flex;flex-direction:column;min-height:0;justify-content:center}
+#meetGreet .meet-greet-body{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:8px 0 24px}
+#meetGreet .meet-greet-sub{margin:0 auto 28px;max-width:300px;font-size:15px;font-weight:500;line-height:1.5;color:rgba(159,180,208,.88)}
+#meetGreet .knowYou-foot{margin-top:auto;padding-top:8px;flex-shrink:0;width:100%}
+#planPick .knowYou-message-wrap{display:none}
 .report-setup-note{font-size:13px;font-weight:500;color:rgba(159,180,208,.85);line-height:1.5;margin:12px 0 0;text-align:center}
 .cc-ap-calm-lines{display:none;margin:0;padding:0}
 .cc-ap-health.is-calm .cc-ap-health-head{display:none}
@@ -792,7 +800,7 @@ body.map-expand-open{overflow:hidden}
 <script>
 /* MP-046 — Welcome hero → name → setup (no duplicate tagline) */
 (function(){
-  var ONBOARD=['bootSplash','welcome','permissions','reportSetup','ftueEmail','autoPilotReady','planPick','workType','autoPilotSetup','knowYou','promise','notifications'];
+  var ONBOARD=['bootSplash','welcome','meetGreet','permissions','reportSetup','ftueEmail','autoPilotReady','planPick','workType','autoPilotSetup','knowYou','promise','notifications'];
   var timers=[],freshWired=false,returnWired=false;
   function q(id){return document.getElementById(id)}
   function clearTimers(){timers.forEach(function(t){clearTimeout(t)});timers=[]}
@@ -835,10 +843,9 @@ body.map-expand-open{overflow:hidden}
   function welcomeSubmitFresh(){
     var nameEl=q('name');if(!nameEl)return;
     var n=nameEl.value.trim();if(!n)return;
-    try{localStorage.setItem('mp_driver',n);localStorage.setItem('mp_onboard_step','planPick')}catch(e){}
-    if(typeof window.goToOnboardingStep==='function'){window.goToOnboardingStep('planPick');var greet=q('planPickGreeting');if(greet)greet.textContent='Great to meet you, '+n+' 👋';return}
-    welcomeShowScreen('planPick');
-    var greet=q('planPickGreeting');if(greet)greet.textContent='Great to meet you, '+n+' 👋';
+    try{localStorage.setItem('mp_driver',n);localStorage.removeItem('mp_meet_greet_done');localStorage.setItem('mp_onboard_step','meetGreet')}catch(e){}
+    if(typeof window.goToOnboardingStep==='function'){window.goToOnboardingStep('meetGreet');return}
+    welcomeShowScreen('meetGreet');
   }
   function welcomeContinueReturning(){
     if(typeof window.continueFromWelcome==='function'){window.continueFromWelcome();return}
@@ -893,14 +900,25 @@ body.map-expand-open{overflow:hidden}
   else bootWelcomeCeremony('fresh');
 })();
 </script>
-<!-- MP-020 Plan selection -->
+<!-- MP-047 Meet greet — before tracking style -->
+<section id="meetGreet" class="screen" data-mp="MP-047">
+<div class="onboard-bg" aria-hidden="true"><div class="onboard-glow onboard-glow-1"></div><div class="onboard-glow onboard-glow-2"></div></div>
+<div class="onboard-inner">
+<header class="brand-bar onboard-brand center"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div><p class="brand-tagline">Drive • Track • Claim</p></header>
+<div class="meet-greet-body">
+<h1 class="knowYou-greeting" id="meetGreetTitle">Great to meet you 👋</h1>
+<p class="meet-greet-sub">Let's get you set up in under a minute.</p>
+</div>
+<div class="knowYou-foot"><button type="button" class="btn premium-btn is-ready" id="meetGreetContinue" onclick="confirmMeetGreet()">Continue →</button></div>
+</div>
+</section>
+<!-- MP-020 Tracking style -->
 <section id="planPick" class="screen" data-mp="MP-020">
 <div class="onboard-bg" aria-hidden="true"><div class="onboard-glow onboard-glow-1"></div><div class="onboard-glow onboard-glow-2"></div></div>
 <div class="onboard-inner">
 <header class="brand-bar onboard-brand center"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div><p class="brand-tagline">Drive • Track • Claim</p></header>
 <div class="knowYou-body">
 <h1 class="knowYou-greeting">Choose your tracking style</h1>
-<div class="knowYou-message-wrap"><p class="knowYou-message" id="planPickGreeting" style="opacity:1">Great to meet you 👋</p></div>
 <div class="knowYou-cards"><div class="vehicle-grid">
 <button type="button" class="vehicle-card mode-card" data-tracking-mode="autopilot" onclick="selectTrackingMode('autopilot')"><div class="vehicle-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M12 8.8v3.2l2.2 1.2"/></svg></div><div class="vehicle-copy"><strong>AutoPilot</strong><span class="vehicle-tag">Recommended</span><span class="vehicle-desc">Drive normally. MilePilot detects journeys automatically in the background.</span></div><span class="vehicle-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"/></svg></span></button>
 <button type="button" class="vehicle-card mode-card" data-tracking-mode="manual" onclick="selectTrackingMode('manual')"><div class="vehicle-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14M16 5v14M5 12h14"/></svg></div><div class="vehicle-copy"><strong>Manual</strong><span class="vehicle-tag is-muted">Privacy-first control</span><span class="vehicle-desc">Start and stop journeys yourself. Perfect if you prefer full control.</span></div><span class="vehicle-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"/></svg></span></button>
@@ -1105,19 +1123,16 @@ body.map-expand-open{overflow:hidden}
 <div class="perm-scroll">
 <div class="perm-section" id="permConfigure">
 <h1 class="onboard-greeting" style="margin-bottom:8px">Let's configure MilePilot</h1>
-<p class="configure-sub">This takes about 20 seconds.</p>
-<p class="configure-sub" style="margin-bottom:16px">We'll enable:</p>
-<ul class="configure-checklist" id="configureChecklist">
-<li><span class="configure-tick" aria-hidden="true">✓</span><span>Automatic journey tracking</span></li>
-<li><span class="configure-tick" aria-hidden="true">✓</span><span>Professional reports</span></li>
-<li><span class="configure-tick" aria-hidden="true">✓</span><span>Helpful notifications</span></li>
-</ul>
+<p class="configure-sub" id="configureIntro">We'll set up MilePilot based on the tracking style you choose.</p>
+<p class="configure-sub configure-label" id="configureNeedsLabel">AutoPilot may need:</p>
+<ul class="configure-checklist" id="configureChecklist"></ul>
+<p class="configure-privacy" id="configurePrivacy">Your location is only used to create mileage records and reports.</p>
 <p class="perm-privacy perm-gps-help" id="permGpsHelp" hidden></p>
 </div>
 </div>
 </div>
 <div class="onboard-foot">
-<button class="btn premium-btn is-ready" id="permConfigureBtn" onclick="runConfigureMilePilot()">Continue</button>
+<button class="btn premium-btn is-ready" id="permConfigureBtn" onclick="runConfigureMilePilot()">Continue setup</button>
 </div>
 </div>
 <div class="onboard-version">MP-004 🔒 Locked · Final</div>
@@ -1497,16 +1512,16 @@ body.map-expand-open{overflow:hidden}
 })();
 </script>
 <script>
-const APP_VERSION='8.13.0';
-const BUILD_NUMBER='MP-047-ONBOARD';
+const APP_VERSION='8.14.0';
+const BUILD_NUMBER='MP-048-ONBOARD';
 const ONBOARD_COMPLETE_KEY='mp_onboard_complete';
 const ONBOARD_FLAG_ACCOUNT='mp_has_account';
 const ONBOARD_FLAG_REPORT='mp_has_report_schedule';
 const ONBOARD_FLAG_EMAIL='mp_has_email';
 const ONBOARD_FLAG_LOCATION='mp_has_location_permission';
 const ONBOARD_FLAG_SETUP='mp_has_completed_initial_setup';
-const SETUP_STEP_ORDER=['planPick','permissions','ftueEmail'];
-const FRESH_START_KEYS=['mp_driver','mp_vehicle','mp_user_plan','mp_user_work_type','mp_tracking_mode','mp_location_choice','mp_notifications_choice','mp_autopilot_enabled','mp_motion_choice','mp_background_choice','mp_configure_done','mp_onboard_step',ONBOARD_COMPLETE_KEY,ONBOARD_FLAG_ACCOUNT,ONBOARD_FLAG_REPORT,ONBOARD_FLAG_EMAIL,ONBOARD_FLAG_LOCATION,ONBOARD_FLAG_SETUP,'mp_report_frequency','mp_report_prefs','mp_stay_updated_prompted','mp_email','mp_shifts','mp_active_shift','mp_day_off'];
+const SETUP_STEP_ORDER=['meetGreet','planPick','permissions','ftueEmail'];
+const FRESH_START_KEYS=['mp_driver','mp_vehicle','mp_user_plan','mp_user_work_type','mp_tracking_mode','mp_meet_greet_done','mp_location_choice','mp_notifications_choice','mp_autopilot_enabled','mp_motion_choice','mp_background_choice','mp_configure_done','mp_onboard_step',ONBOARD_COMPLETE_KEY,ONBOARD_FLAG_ACCOUNT,ONBOARD_FLAG_REPORT,ONBOARD_FLAG_EMAIL,ONBOARD_FLAG_LOCATION,ONBOARD_FLAG_SETUP,'mp_report_frequency','mp_report_prefs','mp_stay_updated_prompted','mp_email','mp_shifts','mp_active_shift','mp_day_off'];
 const UI_LOCKED=true;
 const TRACKING_ENGINE_V=(typeof MPTracking!=='undefined'&&MPTracking.ENGINE_VERSION)||0;
 function syncEngineState(){if(typeof MPTracking==='undefined')return;const s=MPTracking.getState();shiftStatus=s.shiftStatus||(s.ccState==='active'?'tracking':'idle');ccState=s.ccState;miles=s.miles;elapsed=s.elapsed;shiftStartedAt=s.shiftStartedAt;shiftId=s.shiftId;routePoints=s.routePoints;lastPoint=s.lastPoint;shiftStops=s.shiftStops;movingSeconds=s.movingSeconds;currentJourneyMiles=s.currentJourneyMiles;lastGpsAt=s.lastGpsAt||lastGpsAt;}
@@ -1542,7 +1557,7 @@ const MP_003_LOCKED=true;
 const MP_004_LOCKED=true;
 const MP_005_LOCKED=true;
 const ONBOARDING_COMPLETE=true;
-const ONBOARD_SCREENS=['bootSplash','welcome','permissions','reportSetup','ftueEmail','autoPilotReady','planPick','workType','autoPilotSetup','knowYou','promise','notifications','about'];
+const ONBOARD_SCREENS=['bootSplash','welcome','meetGreet','permissions','reportSetup','ftueEmail','autoPilotReady','planPick','workType','autoPilotSetup','knowYou','promise','notifications','about'];
 const KNOW_YOU_QUESTION='What do you use for business travel?';
 const PROMISE_PROGRESS=PROMISE_PURPOSE;
 function syncOnboardingFlagsFromData(){const email=(localStorage.getItem('mp_email')||'').trim();if(email)localStorage.setItem(ONBOARD_FLAG_EMAIL,'true');else localStorage.removeItem(ONBOARD_FLAG_EMAIL);const freq=getReportFrequency();if(freq&&freq!=='off')localStorage.setItem(ONBOARD_FLAG_REPORT,'true');else localStorage.removeItem(ONBOARD_FLAG_REPORT);if(localStorage.getItem('mp_location_choice')==='granted')localStorage.setItem(ONBOARD_FLAG_LOCATION,'true');else localStorage.removeItem(ONBOARD_FLAG_LOCATION);if(localStorage.getItem(ONBOARD_COMPLETE_KEY)==='true'||localStorage.getItem(ONBOARD_FLAG_SETUP)==='true'||email||freq||localStorage.getItem('mp_driver')||localStorage.getItem('mp_user_plan'))localStorage.setItem(ONBOARD_FLAG_ACCOUNT,'true')}
@@ -1550,10 +1565,10 @@ function getOnboardingState(){syncOnboardingFlagsFromData();const forced=localSt
 function hasExistingAccountSignals(){if(localStorage.getItem('mp_onboarding_reset')==='true')return false;try{if(localStorage.getItem('mp_email'))return true;if(localStorage.getItem('mp_report_frequency'))return true;if(localStorage.getItem('mp_autopilot_enabled'))return true;if(localStorage.getItem('mp_driver'))return true;if(localStorage.getItem('mp_user_plan'))return true;if(localStorage.getItem('mp_user_work_type'))return true;if(localStorage.getItem('mp_stay_updated_prompted')==='true')return true;const raw=localStorage.getItem('mp_shifts');if(raw&&raw!=='[]'){const s=JSON.parse(raw);if(Array.isArray(s)&&s.length)return true}}catch(e){}return false}
 function hasCompletedInitialSetup(){if(localStorage.getItem('mp_onboarding_reset')==='true')return false;if(localStorage.getItem(ONBOARD_FLAG_SETUP)==='true')return true;if(localStorage.getItem(ONBOARD_COMPLETE_KEY)==='true')return true;const s=getOnboardingState();if(s.hasPlan&&s.hasConfigureDone&&s.hasEmail)return true;if(s.hasEmail&&s.hasReportSchedule)return true;try{const raw=localStorage.getItem('mp_shifts');if(raw&&raw!=='[]'){const arr=JSON.parse(raw);if(Array.isArray(arr)&&arr.length)return true}}catch(e){}return false}
 function hasCompletedOnboarding(){return hasCompletedInitialSetup()}
-function stepStillRequired(step){const s=getOnboardingState();if(step==='planPick')return !s.hasPlan;if(step==='permissions')return !s.hasConfigureDone;if(step==='ftueEmail')return !s.hasEmail;if(step==='workType'||step==='reportSetup'||step==='autoPilotReady')return false;return false}
+function stepStillRequired(step){const s=getOnboardingState();if(step==='meetGreet')return localStorage.getItem('mp_meet_greet_done')!=='true'&&!s.hasPlan&&!!localStorage.getItem('mp_driver');if(step==='planPick')return !s.hasPlan;if(step==='permissions')return !s.hasConfigureDone;if(step==='ftueEmail')return !s.hasEmail;if(step==='workType'||step==='reportSetup'||step==='autoPilotReady')return false;return false}
 function getNextRequiredSetupStep(){if(hasCompletedInitialSetup())return null;for(const step of SETUP_STEP_ORDER){if(stepStillRequired(step))return step}return null}
 function getNextRequiredSetupStepAfter(completed){const idx=SETUP_STEP_ORDER.indexOf(completed);for(let i=(idx>=0?idx+1:0);i<SETUP_STEP_ORDER.length;i++){if(stepStillRequired(SETUP_STEP_ORDER[i]))return SETUP_STEP_ORDER[i]}return null}
-function goToOnboardingStep(step){if(!step)return;localStorage.setItem('mp_onboard_step',step);if(step==='planPick'){initPlanPick();showScreen('planPick')}else if(step==='workType'){initWorkType();showScreen('workType')}else if(step==='reportSetup'){initReportSetup();showScreen('reportSetup')}else if(step==='ftueEmail'){initFtueEmail();showScreen('ftueEmail')}else if(step==='permissions'){initLocationPermission();showScreen('permissions')}else if(step==='autoPilotReady'){initAutoPilotReady();showScreen('autoPilotReady')}}
+function goToOnboardingStep(step){if(!step)return;localStorage.setItem('mp_onboard_step',step);if(step==='meetGreet'){initMeetGreet();showScreen('meetGreet')}else if(step==='planPick'){initPlanPick();showScreen('planPick')}else if(step==='workType'){initWorkType();showScreen('workType')}else if(step==='reportSetup'){initReportSetup();showScreen('reportSetup')}else if(step==='ftueEmail'){initFtueEmail();showScreen('ftueEmail')}else if(step==='permissions'){initLocationPermission();showScreen('permissions')}else if(step==='autoPilotReady'){initAutoPilotReady();showScreen('autoPilotReady')}}
 window.goToOnboardingStep=goToOnboardingStep;
 function advanceFromSetupStep(completed){syncOnboardingFlagsFromData();const next=getNextRequiredSetupStepAfter(completed);if(next){goToOnboardingStep(next);return}markInitialSetupComplete();routeReturningUserToDashboard()}
 function continueFromWelcome(){syncOnboardingFlagsFromData();if(hasCompletedInitialSetup()){localStorage.removeItem('mp_onboard_step');routeReturningUserToDashboard();return}const next=getNextRequiredSetupStep();if(!next){markInitialSetupComplete();routeReturningUserToDashboard();return}goToOnboardingStep(next)}
@@ -1638,8 +1653,11 @@ function clearOnboardTimers(){onboardTimers.forEach(t=>clearTimeout(t));onboardT
 function fadeInEl(el,delay=0){if(!el)return;el.style.opacity='0';onboardTimers.push(setTimeout(()=>{el.style.transition='opacity .38s cubic-bezier(.22,1,.36,1)';el.style.opacity='1'},delay))}
 function initPromise(){driver=driver||localStorage.getItem('mp_driver')||'';clearOnboardTimers();q('promiseGreeting').textContent=`You're all set, ${driver}.`;const welcome=q('promiseWelcome'),intro=q('promiseIntro'),list=q('promiseList'),btn=q('promiseContinue'),sig=q('promiseSignature');if(welcome){welcome.textContent=PROMISE_PURPOSE;welcome.style.opacity='0'}if(intro){intro.textContent='';intro.hidden=true}if(list){list.classList.remove('is-visible');list.style.opacity='0'}if(btn){btn.disabled=true;btn.classList.remove('is-ready')}if(sig)sig.classList.remove('is-visible');fadeInEl(welcome,500);onboardTimers.push(setTimeout(()=>{if(list){list.style.opacity='1';list.classList.add('is-visible')}},1100));onboardTimers.push(setTimeout(()=>{if(btn){btn.disabled=false;btn.classList.add('is-ready')}if(sig)sig.classList.add('is-visible')},2350))}
 function startDriving(){localStorage.setItem('mp_onboard_step','permissions');initLocationPermission();showScreen('permissions')}
-function renderConfigureChecklist(){const list=q('configureChecklist');if(!list)return;const isAuto=typeof MPPlanUX!=='undefined'&&MPPlanUX.isAutoPilotMode();if(isAuto){list.innerHTML='<li><span class="configure-tick" aria-hidden="true">✓</span><span>Location while you drive</span></li><li><span class="configure-tick" aria-hidden="true">✓</span><span>Background location for AutoPilot</span></li><li><span class="configure-tick" aria-hidden="true">✓</span><span>Helpful notifications</span></li>'}else{list.innerHTML='<li><span class="configure-tick" aria-hidden="true">✓</span><span>Location while using MilePilot</span></li><li><span class="configure-tick" aria-hidden="true">✓</span><span>Notifications (optional)</span></li>'}}
-function initLocationPermission(){clearOnboardTimers();renderConfigureChecklist();const configure=q('permConfigure'),btn=q('permConfigureBtn'),help=q('permGpsHelp');if(configure)configure.style.opacity='0';if(btn){btn.disabled=false;btn.textContent='Continue';btn.classList.add('is-ready')}if(help)help.hidden=true;queryGeoPermission().then(perm=>{if(perm==='granted'){localStorage.setItem('mp_location_choice','granted');gpsLocked=true}else if(perm==='denied'&&!localStorage.getItem('mp_location_choice'))localStorage.setItem('mp_location_choice','denied')});fadeInEl(configure,200);if(btn)fadeInEl(btn,700)}
+function renderConfigureChecklist(){const list=q('configureChecklist'),label=q('configureNeedsLabel');if(!list)return;const isAuto=typeof MPPlanUX!=='undefined'&&MPPlanUX.isAutoPilotMode();if(label)label.textContent=isAuto?'AutoPilot may need:':'Manual may need:';if(isAuto){list.innerHTML='<li><span class="configure-tick" aria-hidden="true">✓</span><span>Location access</span></li><li><span class="configure-tick" aria-hidden="true">✓</span><span>Background location</span></li><li><span class="configure-tick" aria-hidden="true">✓</span><span>Notifications</span></li>'}else{list.innerHTML='<li><span class="configure-tick" aria-hidden="true">✓</span><span>Location while using the app</span></li><li><span class="configure-tick" aria-hidden="true">✓</span><span>Optional notifications</span></li>'}}
+function initLocationPermission(){clearOnboardTimers();renderConfigureChecklist();const configure=q('permConfigure'),btn=q('permConfigureBtn'),help=q('permGpsHelp');if(configure)configure.style.opacity='0';if(btn){btn.disabled=false;btn.textContent='Continue setup';btn.classList.add('is-ready')}if(help){help.hidden=true;help.textContent=''}fadeInEl(configure,200);if(btn)fadeInEl(btn,700)}
+function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
+async function requestLocationWhileUsing(help){if(!navigator.geolocation||!isSecureGeoContext()){if(!navigator.geolocation)localStorage.setItem('mp_location_choice','unsupported');else if(help){help.textContent=geoErrorMessage({code:0});help.hidden=false}return false}try{await requestGeolocation(GEO_OPTS_ACCURATE,GEO_OPTS_RELAXED);localStorage.setItem('mp_location_choice','granted');localStorage.setItem(ONBOARD_FLAG_LOCATION,'true');gpsLocked=true;if(typeof MPPioneer!=='undefined')MPPioneer.recordGpsOutcome(true);if(help)help.hidden=true;return true}catch(err){if(err?.code===1)localStorage.setItem('mp_location_choice','denied');else localStorage.removeItem('mp_location_choice');if(typeof MPPioneer!=='undefined')MPPioneer.recordGpsOutcome(false);if(help){help.textContent=geoErrorMessage(err);help.hidden=false}return false}}
+async function promptBackgroundLocationIfNeeded(help){if(!isIosDevice()||localStorage.getItem('mp_location_choice')!=='granted')return;if(help){help.textContent='For AutoPilot in the background, choose Always Allow if your iPhone asks.';help.hidden=false}try{await ensureMotionAccess()}catch(e){}localStorage.setItem('mp_motion_choice','enabled');try{if(navigator.geolocation){await new Promise((resolve,reject)=>{const id=navigator.geolocation.watchPosition(()=>{navigator.geolocation.clearWatch(id);resolve()},reject,GEO_OPTS_TRACKING);setTimeout(()=>{navigator.geolocation.clearWatch(id);resolve()},4000)})}}catch(e){}await sleep(400);if(help)help.hidden=true}
 function initAutoPilotSetup(){startFtueLocation()}
 function continueToNotifications(){continueFromLocation()}
 function initNotifications(){clearOnboardTimers();const notif=q('permNotifications'),done=q('permDone');if(notif)notif.style.opacity='0';if(done)done.style.opacity='0';syncNotificationButton();fadeInEl(notif,200);fadeInEl(done,700)}
@@ -1657,7 +1675,7 @@ async function queryGeoPermission(){if(!navigator.permissions?.query)return 'unk
 function requestGeolocation(primary,fallback){return new Promise((resolve,reject)=>{if(!navigator.geolocation){reject({code:0,message:'unsupported'});return}navigator.geolocation.getCurrentPosition(resolve,err=>{if(fallback&&err?.code===3)navigator.geolocation.getCurrentPosition(resolve,reject,fallback);else reject(err)},primary)})}
 async function enableGpsPermission(){const btn=q('permGpsBtn'),help=q('permGpsHelp');if(!navigator.geolocation){localStorage.setItem('mp_location_choice','unsupported');if(typeof MPPioneer!=='undefined')MPPioneer.recordGpsOutcome(false);syncLocationButton();return}if(!isSecureGeoContext()){if(help){help.textContent=geoErrorMessage({code:0});help.hidden=false}return}if(btn){btn.disabled=true;btn.textContent='Requesting…'}if(help)help.hidden=true;try{await requestGeolocation(GEO_OPTS_ACCURATE,GEO_OPTS_RELAXED);localStorage.setItem('mp_location_choice','granted');localStorage.setItem(ONBOARD_FLAG_LOCATION,'true');gpsLocked=true;if(typeof MPPioneer!=='undefined')MPPioneer.recordGpsOutcome(true);if(help)help.hidden=true}catch(err){if(err?.code===1)localStorage.setItem('mp_location_choice','denied');else localStorage.removeItem('mp_location_choice');if(typeof MPPioneer!=='undefined')MPPioneer.recordGpsOutcome(false);if(help){help.textContent=geoErrorMessage(err);help.hidden=false}}syncLocationButton()}
 async function requestNotificationPermission(){if(!('Notification' in window)){localStorage.setItem('mp_notifications_choice','unsupported');return}if(Notification.permission==='granted'){localStorage.setItem('mp_notifications_choice','granted');return}if(Notification.permission==='denied'){localStorage.setItem('mp_notifications_choice','denied');return}try{const p=await Notification.requestPermission();localStorage.setItem('mp_notifications_choice',p==='granted'?'granted':p==='denied'?'denied':'skipped')}catch(e){localStorage.setItem('mp_notifications_choice','skipped')}}
-async function runConfigureMilePilot(){const btn=q('permConfigureBtn'),help=q('permGpsHelp');const isAuto=typeof MPPlanUX!=='undefined'&&MPPlanUX.isAutoPilotMode();if(btn){btn.disabled=true;btn.textContent='Configuring…';btn.classList.remove('is-ready')}if(help)help.hidden=true;try{if(navigator.geolocation&&isSecureGeoContext()){try{await requestGeolocation(GEO_OPTS_ACCURATE,GEO_OPTS_RELAXED);localStorage.setItem('mp_location_choice','granted');localStorage.setItem(ONBOARD_FLAG_LOCATION,'true');gpsLocked=true;if(typeof MPPioneer!=='undefined')MPPioneer.recordGpsOutcome(true)}catch(err){if(err?.code===1)localStorage.setItem('mp_location_choice','denied');else localStorage.removeItem('mp_location_choice');if(typeof MPPioneer!=='undefined')MPPioneer.recordGpsOutcome(false);if(help){help.textContent=geoErrorMessage(err);help.hidden=false}}}else if(!navigator.geolocation){localStorage.setItem('mp_location_choice','unsupported')}else if(help){help.textContent=geoErrorMessage({code:0});help.hidden=false}if(isAuto){try{await ensureMotionAccess()}catch(e){}localStorage.setItem('mp_motion_choice','enabled');localStorage.setItem('mp_autopilot_enabled','true');await requestNotificationPermission()}else{localStorage.setItem('mp_autopilot_enabled','manual');if(!localStorage.getItem('mp_notifications_choice'))localStorage.setItem('mp_notifications_choice','skipped')}}finally{localStorage.setItem('mp_configure_done','true');if(btn){btn.disabled=false;btn.textContent='Continue';btn.classList.add('is-ready')}advanceFromSetupStep('permissions')}}
+async function runConfigureMilePilot(){const btn=q('permConfigureBtn'),help=q('permGpsHelp');const isAuto=typeof MPPlanUX!=='undefined'&&MPPlanUX.isAutoPilotMode();if(btn){btn.disabled=true;btn.textContent='Setting up…';btn.classList.remove('is-ready')}if(help){help.hidden=true;help.textContent=''}try{const locOk=await requestLocationWhileUsing(help);if(isAuto&&locOk){await promptBackgroundLocationIfNeeded(help);localStorage.setItem('mp_autopilot_enabled','true');await requestNotificationPermission()}else if(isAuto){localStorage.setItem('mp_autopilot_enabled','true')}else{localStorage.setItem('mp_autopilot_enabled','manual');if(!localStorage.getItem('mp_notifications_choice'))localStorage.setItem('mp_notifications_choice','skipped')}}finally{localStorage.setItem('mp_configure_done','true');if(btn){btn.disabled=false;btn.textContent='Continue setup';btn.classList.add('is-ready')}advanceFromSetupStep('permissions')}}
 function stopGpsWatch(){if(gpsWatchId!==null){navigator.geolocation.clearWatch(gpsWatchId);gpsWatchId=null}stopBackgroundGpsPoll()}
 function getGpsAccuracyInfo(m){if(m==null||m>=999)return{tier:'unknown',tierLabel:'Waiting for GPS',accuracyText:'',label:'Waiting for GPS',value:'--',quality:'',className:'is-warn',dotClass:'is-warn'};const rounded=Math.round(m);if(m<=15)return{tier:'excellent',tierLabel:'🟢 Excellent GPS',accuracyText:'Accuracy: '+rounded+' m',label:'Excellent GPS',value:rounded+'m',quality:'Excellent',className:'is-excellent',dotClass:'is-excellent'};if(m<=80)return{tier:'good',tierLabel:'🟡 Good GPS',accuracyText:'Accuracy: '+rounded+' m',label:'Good GPS',value:rounded+'m',quality:'Good',className:'is-good',dotClass:'is-good'};return{tier:'weak',tierLabel:'🔴 Weak GPS',accuracyText:'Accuracy: '+rounded+' m',label:'Weak GPS',value:rounded+'m',quality:'Weak',className:'is-weak',dotClass:'is-weak'}}
 function renderLiveGpsDisplay(){const tierEl=q('ccLiveGpsTier'),accEl=q('ccLiveGpsAccuracy');const info=getGpsAccuracyInfo(lastGpsAccuracy);if(tierEl){tierEl.textContent=gpsLocked&&info.tier!=='unknown'?info.tierLabel:'--';tierEl.className=info.className||''}if(accEl){accEl.textContent=gpsLocked&&info.accuracyText?info.accuracyText:'';accEl.className='cc-metric-sub'+(info.className?' '+info.className:'')}}
@@ -1676,7 +1694,9 @@ function fmt(s){s=Number(s)||0;let m=Math.floor(s/60),h=Math.floor(m/60);return 
 function loadShifts(){try{return MPTracking.loadShifts(vehicle,claim)}catch(e){return[]}}function saveShifts(){return persistShifts()}
 function normaliseShift(s){return MPTracking.normaliseShift(s,vehicle,claim)}
 function showPersonal(){startFtueLocation()}
-function initPlanPick(){driver=driver||localStorage.getItem('mp_driver')||'';selectedTrackingMode=typeof MPPlanUX!=='undefined'?MPPlanUX.getTrackingMode():null;if(!selectedTrackingMode&&localStorage.getItem('mp_user_plan')==='pro')selectedTrackingMode='manual';if(!selectedTrackingMode&&localStorage.getItem('mp_user_plan')==='tracker')selectedTrackingMode='autopilot';const greet=q('planPickGreeting');if(greet)greet.textContent='Great to meet you'+(driver?', '+driver:'')+' 👋';document.querySelectorAll('[data-tracking-mode]').forEach(c=>c.classList.toggle('selected',c.dataset.trackingMode===selectedTrackingMode));syncPlanPickContinue()}
+function initMeetGreet(){driver=driver||localStorage.getItem('mp_driver')||'';const title=q('meetGreetTitle');if(title)title.textContent='Great to meet you'+(driver?', '+driver:'')+' 👋'}
+function confirmMeetGreet(){localStorage.setItem('mp_meet_greet_done','true');advanceFromSetupStep('meetGreet')}
+function initPlanPick(){driver=driver||localStorage.getItem('mp_driver')||'';selectedTrackingMode=typeof MPPlanUX!=='undefined'?MPPlanUX.getTrackingMode():null;if(!selectedTrackingMode&&localStorage.getItem('mp_user_plan')==='pro')selectedTrackingMode='manual';if(!selectedTrackingMode&&localStorage.getItem('mp_user_plan')==='tracker')selectedTrackingMode='autopilot';document.querySelectorAll('[data-tracking-mode]').forEach(c=>c.classList.toggle('selected',c.dataset.trackingMode===selectedTrackingMode));syncPlanPickContinue()}
 function selectTrackingMode(mode){selectedTrackingMode=mode;document.querySelectorAll('[data-tracking-mode]').forEach(c=>c.classList.toggle('selected',c.dataset.trackingMode===mode));syncPlanPickContinue()}
 function syncPlanPickContinue(){const btn=q('planPickContinue');if(!btn)return;const ready=!!selectedTrackingMode;btn.disabled=!ready;btn.classList.toggle('is-ready',ready);btn.textContent=ready?'Continue →':'Select tracking style'}
 function confirmTrackingMode(){if(!selectedTrackingMode)return;MPPlanUX.setTrackingMode(selectedTrackingMode);advanceFromSetupStep('planPick')}
