@@ -1,19 +1,17 @@
-MilePilot — UPLOAD v8.12.0
+MilePilot — UPLOAD v8.13.0
 =========================
 
 Download:
-https://github.com/gypsom54/MilePilot/raw/cursor/mp-046-onboarding-friction-ae00/MilePilot-UPLOAD-v8.12.0.zip
+https://github.com/gypsom54/MilePilot/raw/cursor/mp-046-onboarding-friction-ae00/MilePilot-UPLOAD-v8.13.0.zip
 
 After upload, verify:
 https://app.milepilot.uk/version.txt
-Must show: MilePilot OS v8.12.0 — MP-046 onboarding friction reduction
+Must show: MilePilot OS v8.13.0
 
-WHAT'S IN v8.12.0
+WHAT'S IN v8.13.0
 -----------------
-• Onboarding reduced to 5 screens: Welcome → Tracking mode → Configure → Email → Dashboard
-• Unified "Let's configure MilePilot" permission screen (one Continue)
-• Vehicle selection moved to Settings
-• Report schedule deferred to Settings / post-first-trip prompt
-• Welcome hero: no duplicate AutoPilot tagline
-
-Deploy to Cloudflare Pages: upload zip contents to app.milepilot.uk
+• Keyboard-safe name screen (logo stays visible)
+• AutoPilot / Manual tracking style (not pricing plans)
+• Compact tracking choice cards
+• Mode-aware configure screen (permissions after Continue)
+• Flow: Welcome → Name → Tracking style → Configure → Email → Dashboard
