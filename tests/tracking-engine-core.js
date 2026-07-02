@@ -49,8 +49,8 @@ export function movementSpeedMps(d, p, prev, deviceSpeedMps) {
   const dtSec = Math.max(0.001, (p.t - prev.t) / 1000);
   const gateDt = p.nativeGps || deviceSpeedMps != null ? Math.max(dtSec, ENGINE.NATIVE_SPEED_GATE_DT) : dtSec;
   const calcSpeed = d / gateDt;
-  if (deviceSpeedMps != null && deviceSpeedMps >= 0.5) return deviceSpeedMps;
-  if (p.speedMps != null && p.speedMps >= 0.5) return p.speedMps;
+  if (deviceSpeedMps != null && deviceSpeedMps >= 0.5) return Math.max(deviceSpeedMps, calcSpeed);
+  if (p.speedMps != null && p.speedMps >= 0.5) return Math.max(p.speedMps, calcSpeed);
   return calcSpeed;
 }
 

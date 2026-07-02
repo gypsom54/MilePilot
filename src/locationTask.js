@@ -57,23 +57,24 @@ TaskManager.defineTask(BACKGROUND_LOCATION_TASK, ({ data, error }) => {
   const locations = data?.locations;
   if (!locations || !locations.length) return;
 
-  const latest = locations[locations.length - 1];
-  const payload = locationToPayload(latest);
-  if (!payload) return;
+  for (const loc of locations) {
+    const payload = locationToPayload(loc);
+    if (!payload) continue;
 
-  console.log(
-    '[MilePilot BG GPS] location',
-    payload.coords.latitude,
-    payload.coords.longitude,
-    'acc',
-    payload.coords.accuracy
-  );
+    console.log(
+      '[MilePilot BG GPS] location',
+      payload.coords.latitude,
+      payload.coords.longitude,
+      'acc',
+      payload.coords.accuracy
+    );
 
-  const sync = ingestNativeLocation(payload, { source: 'background' });
-  if (sync) {
-    queueSync(sync);
-  } else {
-    onNativeBackgroundLocation(payload);
+    const sync = ingestNativeLocation(payload, { source: 'background' });
+    if (sync) {
+      queueSync(sync);
+    } else {
+      onNativeBackgroundLocation(payload);
+    }
   }
 });
 
@@ -88,8 +89,8 @@ export async function startBackgroundLocationUpdates() {
 
   await Location.startLocationUpdatesAsync(BACKGROUND_LOCATION_TASK, {
     accuracy: Location.Accuracy.BestForNavigation,
-    distanceInterval: 10,
-    timeInterval: 5000,
+    distanceInterval: 5,
+    timeInterval: 3000,
     showsBackgroundLocationIndicator: true,
     pausesUpdatesAutomatically: false,
     activityType: Location.ActivityType.AutomotiveNavigation,

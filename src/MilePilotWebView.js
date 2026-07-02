@@ -101,7 +101,11 @@ export default function MilePilotWebView() {
     const sub = AppState.addEventListener('change', (nextState) => {
       appStateRef.current = nextState;
       setNativeDebugMeta({ appState: nextState });
+      if (nextState === 'background' || nextState === 'inactive') {
+        sendToWebView({ type: 'expo:appstate', state: nextState });
+      }
       if (nextState === 'active') {
+        sendToWebView({ type: 'expo:appstate', state: 'active' });
         pushNativeState();
         flushPendingNativeAutoEnd();
       }

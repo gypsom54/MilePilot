@@ -78,8 +78,8 @@ function movementSpeedMps(d, p, prev, deviceSpeedMps) {
   const dt = Math.max(0.001, (p.t - prev.t) / 1000);
   const gateDt = Math.max(dt, ENGINE.NATIVE_SPEED_GATE_DT);
   const calcSpeed = d / gateDt;
-  if (deviceSpeedMps != null && deviceSpeedMps >= 0.5) return deviceSpeedMps;
-  if (p.speedMps != null && p.speedMps >= 0.5) return p.speedMps;
+  if (deviceSpeedMps != null && deviceSpeedMps >= 0.5) return Math.max(deviceSpeedMps, calcSpeed);
+  if (p.speedMps != null && p.speedMps >= 0.5) return Math.max(p.speedMps, calcSpeed);
   return calcSpeed;
 }
 
@@ -191,14 +191,20 @@ export async function loadPersistedState() {
   return false;
 }
 
-export function startNativeTrip({ shiftId, startedAt, vehicle } = {}) {
+export function startNativeTrip({ shiftId, startedAt, vehicle, miles: seedMiles, pendingMeters: seedPending, routePoints: seedRoute, lastPoint: seedLastPoint, lastMileRecordedAt: seedLastMile, lastGpsAt: seedLastGps } = {}) {
   trip = {
     ...emptyTrip(),
     active: true,
     shiftId: shiftId || `shift_${Date.now()}`,
     startedAt: startedAt || Date.now(),
     vehicle: vehicle || 'car',
-    lastMileRecordedAt: startedAt || Date.now(),
+    miles: Number(seedMiles) || 0,
+    pendingMeters: Number(seedPending) || 0,
+    routePoints: seedRoute || [],
+    lastPoint: seedLastPoint || null,
+    lastMileRecordedAt: seedLastMile || startedAt || Date.now(),
+    lastGpsAt: seedLastGps || seedLastPoint?.t || null,
+    gpsPointCount: seedRoute?.length || 0,
   };
   persistState();
   console.log('[MilePilot NativeEngine] trip started', trip.shiftId);
@@ -230,6 +236,7 @@ export function restoreNativeTrip(payload) {
     lastMileRecordedAt: payload.lastMileRecordedAt || payload.startedAt,
     gpsPointCount: payload.gpsPointCount || (payload.routePoints?.length || 0),
     lastGpsAt: payload.lastGpsAt || payload.lastPoint?.t || null,
+    gpsPointCount: payload.gpsPointCount || (payload.routePoints?.length || 0),
   };
   persistState();
   return getTripSyncPayload();
