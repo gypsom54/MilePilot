@@ -1001,7 +1001,7 @@ body.always-modal-open .nav{display:none!important}
 <div class="onboard-version">MP-004 🔒 Locked · Final</div>
 </section>
 <!-- MP-046 Tracking Mode — AutoPilot vs Manual -->
-<section id="trackingMode" class="screen" data-mp="MP-046">
+<section id="trackingMode" class="screen" data-mp="MP-046" data-locked="true">
 <div class="onboard-bg" aria-hidden="true">
 <div class="onboard-glow onboard-glow-1"></div>
 <div class="onboard-glow onboard-glow-2"></div>
@@ -1068,7 +1068,7 @@ body.always-modal-open .nav{display:none!important}
 </div>
 </section>
 <section id="reportSchedule" class="screen" hidden aria-hidden="true" data-mp="report-schedule-removed"></section>
-<section id="onboardReady" class="screen" data-mp="onboard-ready">
+<section id="onboardReady" class="screen" data-mp="onboard-ready" data-locked="true">
 <div class="onboard-bg" aria-hidden="true"><div class="onboard-glow onboard-glow-1"></div><div class="onboard-glow onboard-glow-2"></div></div>
 <div class="onboard-inner">
 <header class="brand-bar onboard-brand center"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div><p class="brand-tagline">Your business. On AutoPilot.</p></header>
@@ -1076,17 +1076,17 @@ body.always-modal-open .nav{display:none!important}
 <div class="onboard-body" style="align-items:center;justify-content:center;text-align:center;padding:12px 0 20px">
 <div class="onboard-ready-icon" id="onboardReadyIcon" aria-hidden="true">✓</div>
 <h1 class="knowYou-greeting" id="onboardReadyGreeting">Welcome aboard.</h1>
-<p class="onboard-ready-sub" id="onboardReadyLead">MilePilot is now ready to record your business mileage automatically.</p>
+<p class="onboard-ready-sub" id="onboardReadyLead">MilePilot is ready to track your business mileage automatically.</p>
 <p class="onboard-ready-brand" id="onboardReadyBrand">Your business is now on <span class="blue">AutoPilot</span>.</p>
 <p class="onboard-ready-tagline" id="onboardReadyTagline">Business mileage without the paperwork.</p>
 <ul class="onboard-ready-steps" id="onboardReadySteps" aria-label="What happens next">
 <li>Start your shift</li>
 <li>Drive normally</li>
 <li>Review today's journeys</li>
-<li>Download or receive your mileage report</li>
+<li>Download your mileage report</li>
 </ul>
-<p class="onboard-ready-payoff" id="onboardReadyPayoff">From now on, every business mile can become a tax deduction.</p>
-<p class="onboard-ready-cta-line" id="onboardReadyCtaLine">Let's get your first shift started.</p>
+<p class="onboard-ready-payoff" id="onboardReadyPayoff">Every business mile now counts.</p>
+<p class="onboard-ready-cta-line" id="onboardReadyCtaLine">Let's put MilePilot to work.</p>
 </div>
 <div class="knowYou-foot"><button type="button" class="btn premium-btn is-ready" onclick="openDashboard()">Start My First Shift</button><p class="onboard-ready-hint">You can change these settings any time.</p></div>
 </div>
@@ -1329,7 +1329,7 @@ body.always-modal-open .nav{display:none!important}
 <script src="js/app-copy.js"></script>
 <script src="js/beta-feedback.js"></script>
 <script>
-const APP_VERSION='8.43.9';
+const APP_VERSION='8.43.10';
 const DEFAULT_WEEKLY_GOAL_MILES=400;
 const BUSINESS_PROFILE_KEY='mp_business_profile';
 const PRODUCT_VISION_LOCK='2026-06-vision-v1';
