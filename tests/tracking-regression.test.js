@@ -189,5 +189,29 @@ run("poor GPS accuracy blocks auto-end idle reset", () => {
   assert.equal(shouldResetAutoEndIdle(d, calc, 8, jump.acc), false);
 });
 
+run("movementSpeedMps uses calculated speed when device reports zero", () => {
+  const t0 = Date.now();
+  const prev = point(51.5, -0.12, t0, { nativeGps: true });
+  const p = point(51.5002, -0.12, t0 + 12000, { nativeGps: true, speedMps: 0 });
+  const d = distanceMeters(prev, p);
+  const speed = movementSpeedMps(d, p, prev, 0);
+  assert.ok(speed > 0.5, "should not trust device zero when distance shows movement");
+});
+
+run("small GPS segments accumulate via pendingMeters odometer", () => {
+  const t0 = Date.now();
+  const segmentM = 3.5;
+  const segmentLat = segmentM / 111000;
+  const nSegments = Math.round(4828 / segmentM);
+  const pts = [point(51.5, -0.12, t0, { nativeGps: true, speedMps: 0 })];
+  for (let i = 1; i <= nSegments; i++) {
+    pts.push(point(51.5 + i * segmentLat, -0.12, t0 + i * 2000, { nativeGps: true, speedMps: 0 }));
+  }
+  const state = simulateDrive(pts);
+  const expectedMiles = (nSegments * segmentM) / 1609.344;
+  assert.ok(state.miles > expectedMiles * 0.9, `expected ~${expectedMiles.toFixed(2)} mi, got ${state.miles.toFixed(2)}`);
+  assert.ok(state.miles < expectedMiles * 1.1, `expected ~${expectedMiles.toFixed(2)} mi, got ${state.miles.toFixed(2)}`);
+});
+
 console.log(`\nTracking regression: ${passed} passed, ${failed} failed\n`);
 process.exit(failed > 0 ? 1 : 0);
