@@ -2,7 +2,7 @@
 
 **Status:** DESIGN COMPLETE — Frozen (July 2026)  
 **Component:** `.nav` `#nav` — main app dock  
-**Version locked:** v8.43.20
+**Version locked:** v8.43.21
 
 > **Rule:** No redesign, icon changes, or functionality changes unless a genuine usability issue is discovered.
 
@@ -21,8 +21,8 @@ The bottom navigation is a **full-width application dock**, not a floating card 
 
 | Property | Value |
 | --- | --- |
-| Position | `fixed` — anchored to bottom |
-| Width | Full screen (`100%`) |
+| Position | In document flow — flex shell pins dock to bottom |
+| Width | Full screen (`align-self: stretch`) |
 | Safe area | `padding-bottom: calc(8px + env(safe-area-inset-bottom))` |
 | Separation | Top border + upward shadow — content scrolls above dock |
 | Background | `#0A2854` → `#031126` gradient (matches dashboard navy) |
@@ -33,10 +33,11 @@ The bottom navigation is a **full-width application dock**, not a floating card 
 
 ```css
 --nav-dock-inner: 64px;
---nav-dock-pad: calc(var(--nav-dock-inner) + env(safe-area-inset-bottom, 0px) + 24px);
+--nav-dock-total: calc(var(--nav-dock-inner) + 12px + env(safe-area-inset-bottom, 0px));
+--nav-dock-pad: 24px; /* scroll-end breathing room inside docked screens */
 ```
 
-All main screens use `--nav-dock-pad` for bottom content padding so cards never sit inside the dock.
+Screens with the dock visible use a flex column shell (`body` → `.app` + `.nav`). Main content scrolls inside the active screen above the dock — content never renders behind the nav.
 
 ### Not allowed
 

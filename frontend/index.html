@@ -23,13 +23,15 @@
   --card-shadow:0 4px 24px rgba(0,0,0,.12),inset 0 1px 0 rgba(255,255,255,.05);
   --card-shadow-lg:0 8px 32px rgba(0,0,0,.14),0 2px 8px rgba(13,107,255,.06),inset 0 1px 0 rgba(255,255,255,.06);
   --animation-speed:1s;--transition-duration:.5s;
-  --nav-dock-inner:64px;--nav-dock-pad:calc(var(--nav-dock-inner) + env(safe-area-inset-bottom,0px) + 24px)
+  --nav-dock-inner:64px;--nav-dock-total:calc(var(--nav-dock-inner) + 12px + env(safe-area-inset-bottom,0px));--nav-dock-pad:24px
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;min-height:100%;background:#020B1B;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
-body{display:flex;justify-content:center}
-.app{width:min(430px,100vw);min-height:100dvh;background:linear-gradient(180deg,#0A2854 0%,#031126 82%);position:relative}
-.screen{display:none;min-height:100dvh;padding:24px 22px var(--nav-dock-pad)}.screen.active{display:block}
+body{display:flex;flex-direction:column;align-items:center;min-height:100dvh;margin:0}
+.app{width:min(430px,100vw);min-height:100dvh;flex:1 1 auto;background:linear-gradient(180deg,#0A2854 0%,#031126 82%);position:relative;display:flex;flex-direction:column}
+body:has(.nav.show) .app{min-height:0;flex:1 1 0}
+.screen{display:none;min-height:100dvh;padding:24px 22px var(--nav-dock-pad);flex:1 1 auto}.screen.active{display:block}
+body:has(.nav.show) .screen.active{min-height:0;flex:1 1 auto;height:auto;max-height:none;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
 #home.cc-screen.active,#reports.reports-screen.active,#settings.screen.active,#history.screen.active{animation:appScreenIn .38s var(--ease-premium) both}
 @keyframes appScreenIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
 .logoRow{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:18px}
@@ -65,7 +67,7 @@ body{display:flex;justify-content:center}
 input,select{width:100%;height:58px;border-radius:18px;border:1px solid rgba(255,255,255,.16);background:#07182F;color:#fff;font-size:17px;padding:0 16px;outline:none}input::placeholder{color:#7F8DA5}
 button{font-family:inherit}.btn{width:100%;height:var(--btn-height);border-radius:var(--button-radius);border:0;background:linear-gradient(180deg,#1882FF,#0057E7);color:white;font-weight:1000;font-size:17px;margin-top:14px;box-shadow:0 12px 32px rgba(13,107,255,.24),inset 0 1px 0 rgba(255,255,255,.1);transition:transform .24s var(--ease-premium),filter .24s ease,box-shadow .24s ease}.btn:active{transform:scale(.985)}.btn.red{background:linear-gradient(180deg,#FF3838,#D82323);box-shadow:0 12px 32px rgba(239,51,51,.24),inset 0 1px 0 rgba(255,255,255,.08)}.btn.outline{background:transparent;border:1px solid var(--blue);color:#6EADFF;box-shadow:none}.btn.small{height:var(--btn-height-sm);font-size:14px;font-weight:600}
 /* MP-007 Premium Navigation */
-.nav{position:fixed;left:0;right:0;bottom:0;width:100%;max-width:none;transform:none;height:auto;min-height:calc(var(--nav-dock-inner) + env(safe-area-inset-bottom,0px));padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));display:none;grid-template-columns:repeat(4,1fr);gap:4px;z-index:30;background:linear-gradient(180deg,#0A2854 0%,#031126 100%);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:0;border-top:1px solid rgba(110,180,255,.14);border-radius:0;box-shadow:0 -8px 32px rgba(0,0,0,.32),inset 0 1px 0 rgba(255,255,255,.04)}.nav.show{display:grid}
+.nav{position:relative;align-self:stretch;width:100%;max-width:none;transform:none;height:var(--nav-dock-total);min-height:var(--nav-dock-total);flex-shrink:0;padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));display:none;grid-template-columns:repeat(4,1fr);gap:4px;z-index:30;background:linear-gradient(180deg,#0A2854 0%,#031126 100%);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:0;border-top:1px solid rgba(110,180,255,.14);border-radius:0;box-shadow:0 -8px 32px rgba(0,0,0,.32),inset 0 1px 0 rgba(255,255,255,.04)}.nav.show{display:grid}
 .nav-item{position:relative;border:0;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:6px 4px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .22s ease-out}
 .nav-item:active{opacity:.82}
 .nav-icon-wrap{position:relative;display:flex;align-items:center;justify-content:center;width:34px;height:30px}
@@ -587,7 +589,7 @@ body.summary-open .nav{display:none!important}
 .cc-body.is-active .cc-card{display:none}
 .cc-body.is-active .cc-divider{display:none}
 .cc-body.is-post-work .cc-greeting-wrap{margin-bottom:20px}
-.cc-version{position:absolute;left:0;right:0;bottom:calc(var(--nav-dock-inner) + env(safe-area-inset-bottom,0px) + 10px);text-align:center;font-size:9px;font-weight:500;letter-spacing:.08em;color:rgba(143,168,201,.35);pointer-events:none}
+.cc-version{position:relative;margin:20px 0 4px;text-align:center;font-size:9px;font-weight:500;letter-spacing:.08em;color:rgba(143,168,201,.35);pointer-events:none}
 .cc-gps-banner{margin:0 0 16px;padding:16px 18px;border-radius:20px;border:1px solid rgba(239,180,80,.28);background:linear-gradient(180deg,rgba(239,180,80,.1),rgba(239,180,80,.03));animation:ccSlideIn .45s cubic-bezier(.22,1,.36,1) both}
 .cc-gps-banner[hidden]{display:none!important}
 .cc-gps-banner p{margin:0 0 12px;font-size:14px;font-weight:500;line-height:1.45;color:rgba(234,220,180,.92)}
@@ -1334,7 +1336,7 @@ body.always-modal-open .nav{display:none!important}
 <script src="js/app-copy.js"></script>
 <script src="js/beta-feedback.js"></script>
 <script>
-const APP_VERSION='8.43.20';
+const APP_VERSION='8.43.21';
 const DEFAULT_WEEKLY_GOAL_MILES=400;
 const BUSINESS_PROFILE_KEY='mp_business_profile';
 const PRODUCT_VISION_LOCK='2026-06-vision-v1';
@@ -1537,7 +1539,7 @@ function updateGpsUi(message){const banner=q('ccGpsBanner'),text=q('ccGpsBannerT
 async function enableTrackingGps(fromUserGesture=false){if(typeof MPTrackingProvider!=='undefined'&&MPTrackingProvider.isNative()){const result=await MPTrackingProvider.enableTracking(fromUserGesture);const ok=result&&(result.ok!==false);if(ok){gpsLocked=true;localStorage.setItem('mp_location_choice','granted');if((result.backgroundActive===false||MPTrackingProvider.getPermission()==='foreground-only')&&isAutoPilotTracking())setTimeout(function(){showNativeAlwaysLocationModal()},2500);else if(MPTrackingProvider.getPermission()==='granted')hideNativeAlwaysLocationModal()}return}if(!navigator.geolocation){updateGpsUi('GPS not available on this device.');return}if(!isSecureGeoContext()){updateGpsUi('Location needs HTTPS. Use https://app.milepilot.uk');return}if(!fromUserGesture){const perm=await queryGeoPermission();if(perm!=='granted'){updateGpsUi(perm==='denied'?geoErrorMessage({code:1}):'Tap Enable Location to start tracking.');return}}stopGpsWatch();if(gpsReconnectTimer){clearTimeout(gpsReconnectTimer);gpsReconnectTimer=null}updateGpsUi('Requesting location permission…');try{const pos=await requestGeolocation(GEO_OPTS_ACCURATE,GEO_OPTS_RELAXED);handlePos(pos);gpsLocked=true;localStorage.setItem('mp_location_choice','granted');const watchOpts=ccState==='active'?GEO_OPTS_TRACKING:GEO_OPTS_ACCURATE;gpsWatchId=navigator.geolocation.watchPosition(handlePos,onGpsWatchError,watchOpts);updateGpsUi(null)}catch(err){gpsLocked=false;if(err?.code===1)localStorage.setItem('mp_location_choice','denied');updateGpsUi(geoErrorMessage(err));renderCommandCentre()}}
 function enableNotificationPermission(){const btn=q('permNotifBtn');if(!('Notification' in window)){localStorage.setItem('mp_notifications_choice','unsupported');syncNotificationButton();return}if(Notification.permission==='granted'){localStorage.setItem('mp_notifications_choice','granted');syncNotificationButton();return}if(Notification.permission==='denied'){localStorage.setItem('mp_notifications_choice','denied');syncNotificationButton();return}if(btn){btn.disabled=true;btn.textContent='Requesting…'}Notification.requestPermission().then(p=>{localStorage.setItem('mp_notifications_choice',p==='granted'?'granted':p==='denied'?'denied':'skipped');syncNotificationButton()}).catch(()=>{localStorage.setItem('mp_notifications_choice','skipped');syncNotificationButton()})}
 function finishOnboarding(){if(!localStorage.getItem('mp_vehicle')){vehicle='car';localStorage.setItem('mp_vehicle','car')}if(!hasTrackingModeSelected()){trackingModeChoiceMode='onboard';initTrackingMode(false);showScreen('trackingMode');return}if(!localStorage.getItem('mp_location_choice'))localStorage.setItem('mp_location_choice','skipped');if(!localStorage.getItem('mp_notifications_choice'))localStorage.setItem('mp_notifications_choice','skipped');localStorage.setItem('mp_onboard_complete','true');localStorage.removeItem('mp_onboard_step');clearOnboardTimers();if(typeof MPSubscription!=='undefined')MPSubscription.startTrialIfNeeded();ensureDefaultBusinessProfile();syncReportSubscription();goHome()}
-function showScreen(id){const target=q(id)||q('home');if(!target){console.error('[MilePilot] showScreen missing:',id);return}if(ONBOARD_SCREENS.includes(target.id))hideNativeAlwaysLocationModal();document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));target.classList.add('active');const nav=q('nav');if(nav)nav.classList.toggle('show',!ONBOARD_SCREENS.includes(target.id)&&target.id!=='tracking');window.scrollTo(0,0);if(target.id==='tracking')setTimeout(()=>previewMapBundle?.map?.invalidateSize(),120)}
+function showScreen(id){const target=q(id)||q('home');if(!target){console.error('[MilePilot] showScreen missing:',id);return}if(ONBOARD_SCREENS.includes(target.id))hideNativeAlwaysLocationModal();document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));target.classList.add('active');const nav=q('nav');if(nav)nav.classList.toggle('show',!ONBOARD_SCREENS.includes(target.id)&&target.id!=='tracking');window.scrollTo(0,0);target.scrollTop=0;if(target.id==='tracking')setTimeout(()=>previewMapBundle?.map?.invalidateSize(),120)}
 function setNav(n){['Home','Reports','History','Settings'].forEach(x=>{const btn=q('nav'+x);if(!btn)return;btn.classList.toggle('active',x===n);btn.setAttribute('aria-current',x===n?'page':'false')})}
 function fmt(s){s=Number(s)||0;let m=Math.floor(s/60),h=Math.floor(m/60);return h+'h '+String(m%60).padStart(2,'0')+'m'}function money(v){return '£'+(Number(v)||0).toFixed(2)}function claim(mi,v=vehicle){return (Number(mi)||0)*(vehicles[v]?.rate||.55)}
 function loadShifts(){try{return JSON.parse(localStorage.getItem('mp_shifts')||'[]').map(normaliseShift)}catch(e){return[]}}function saveShifts(){localStorage.setItem('mp_shifts',JSON.stringify(shifts))}function refreshTripStore(){trips=loadTripsStore();hydrateTripsFromShifts()}

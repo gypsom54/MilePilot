@@ -135,14 +135,26 @@ Commit and screenshot on each approved screen; upload **one final zip** when the
   - Helper: You can change these settings any time.
 - **Animation:** Green tick single pulse + soft blue glow; progress bar 83% → 100% on arrival (`prefers-reduced-motion` respected)
 
+### Dashboard — LOCKED
+
+- **File:** `frontend/index.html` → `#home`
+- **Marker:** `data-locked="true"` `data-mp="MP-006"`
+- **Detail:** [UI_LOCK_DASHBOARD.md](./UI_LOCK_DASHBOARD.md)
+- **Permanent hero message:** MilePilot is ready when you are.
+
+### Bottom Navigation — LOCKED
+
+- **File:** `frontend/index.html` → `.nav` `#nav`
+- **Detail:** [UI_LOCK_NAVIGATION.md](./UI_LOCK_NAVIGATION.md)
+- **Version:** v8.43.21 — flex shell dock; content scrolls above nav
+
 ---
 
 ## Pending screens (not yet locked)
 
 | Screen | ID | MP code | Notes |
 | --- | --- | --- | --- |
-| Email Reports Screen | `#emailSetup` | email | 🟡 In review — see [MILEPILOT_UI_LOCK.md](./MILEPILOT_UI_LOCK.md) |
-| Command Centre (Dashboard) | `#home` | MP-006 | |
+| Email Reports Screen | `#emailSetup` | email | 🟡 In review |
 | Reports | `#reports` | MP-008 | |
 | History | `#history` | — | |
 | Settings | `#settings` | — | |
