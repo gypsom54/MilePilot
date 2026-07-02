@@ -1,5 +1,7 @@
 # Sprint 3 Roadmap — Intelligence First
 
+**UI status (June 2026):** Final polish sprint complete. No further onboarding, dashboard, or navigation redesign unless explicitly approved. **Development focus shifts to the MilePilot Intelligence Engine.**
+
 Sprint 2 built the foundation: MIE, end-of-day review, mode-based reports. Sprint 3 deepens **learning, trust, and admin reduction** — not new settings screens.
 
 ## North star
