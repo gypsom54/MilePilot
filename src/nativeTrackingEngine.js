@@ -47,6 +47,7 @@ const emptyTrip = () => ({
 });
 
 let trip = emptyTrip();
+let appInBackground = false;
 let debugMeta = {
   permissionStatus: 'unknown',
   backgroundActive: false,
@@ -61,6 +62,14 @@ function logError(msg, detail) {
   if (debugMeta.errors.length > 100) debugMeta.errors.shift();
   trip.lastError = msg;
   console.error('[MilePilot NativeEngine]', msg, detail || '');
+}
+
+export function setNativeAppBackground(active) {
+  appInBackground = !!active;
+}
+
+export function isNativeAppBackground() {
+  return appInBackground;
 }
 
 export function distanceMeters(a, b) {
@@ -236,7 +245,6 @@ export function restoreNativeTrip(payload) {
     lastMileRecordedAt: payload.lastMileRecordedAt || payload.startedAt,
     gpsPointCount: payload.gpsPointCount || (payload.routePoints?.length || 0),
     lastGpsAt: payload.lastGpsAt || payload.lastPoint?.t || null,
-    gpsPointCount: payload.gpsPointCount || (payload.routePoints?.length || 0),
   };
   persistState();
   return getTripSyncPayload();
@@ -264,8 +272,8 @@ export function ingestNativeLocation(payload, { source = 'unknown' } = {}) {
     trip.lastForegroundUpdateAt = Date.now();
   }
 
-  // Foreground: WebView handlePos owns mileage while app is open; native only tracks metadata.
-  if (source === 'foreground') {
+  // Foreground watch: count miles when app is backgrounded/locked (WebView suspended).
+  if (source === 'foreground' && !appInBackground) {
     persistState();
     return null;
   }

@@ -18,6 +18,7 @@ import {
   getTripSyncPayload,
   getNativeDebugSnapshot,
   setNativeDebugMeta,
+  setNativeAppBackground,
   loadPersistedState,
   isNativeTripActive,
 } from './nativeTrackingEngine';
@@ -248,6 +249,11 @@ export async function handleWebViewMessage(raw, sendToWebView) {
     case 'expo:autoend:sync': {
       syncNativeAutoEnd(msg.payload || {});
       reply({ type: 'expo:autoend:sync:ok', ok: true });
+      break;
+    }
+    case 'expo:native:background': {
+      setNativeAppBackground(!!msg.payload?.active);
+      reply({ type: 'expo:native:background:ok', ok: true });
       break;
     }
     case 'expo:settings:open': {

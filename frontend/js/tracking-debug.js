@@ -44,7 +44,9 @@
       autoEndCountdown: auto.countdownSec,
       autoEndIdle: auto.lastMovementAgoSec,
       nativeAuthoritative: !!global.__nativeEngineAuthoritative,
+      nativeBgFallback: !!(global.nativeBgFallbackActive),
       lastNativeSync: global.lastNativeSyncAt || null,
+      lastNativeBg: global.lastNativeBgAt || null,
       permission:
         typeof global.MPTrackingProvider !== 'undefined'
           ? global.MPTrackingProvider.getPermission()
@@ -70,6 +72,7 @@
       'Trip active (native): ' + (nativeSnap?.active ? 'YES' : 'NO'),
       'Shift id: ' + (nativeSnap?.shiftId || global.shiftId || '—'),
       'Native engine authoritative: ' + (webDbg.nativeAuthoritative ? 'YES' : 'NO'),
+      'Web BG fallback active: ' + (webDbg.nativeBgFallback ? 'YES' : 'NO'),
       '',
       '--- GPS ---',
       'Miles (web display): ' + (webDbg.miles != null ? webDbg.miles.toFixed(4) : '—'),

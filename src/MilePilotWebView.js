@@ -13,7 +13,7 @@ import {
   initNativeTracking,
 } from './expoLocationBridge';
 import { setNativeAutoEndInjector, flushPendingNativeAutoEnd } from './nativeAutoEnd';
-import { getTripSyncPayload, setNativeDebugMeta } from './nativeTrackingEngine';
+import { getTripSyncPayload, setNativeDebugMeta, setNativeAppBackground } from './nativeTrackingEngine';
 
 const WEB_APP_URL = Constants.expoConfig?.extra?.webAppUrl || 'https://app.milepilot.uk/?runtime=expo';
 const BUILD_NUMBER = Constants.expoConfig?.ios?.buildNumber || '?';
@@ -101,6 +101,7 @@ export default function MilePilotWebView() {
     const sub = AppState.addEventListener('change', (nextState) => {
       appStateRef.current = nextState;
       setNativeDebugMeta({ appState: nextState });
+      setNativeAppBackground(nextState !== 'active');
       if (nextState === 'background' || nextState === 'inactive') {
         sendToWebView({ type: 'expo:appstate', state: nextState });
       }
