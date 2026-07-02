@@ -3,18 +3,19 @@ MilePilot — Cloudflare upload package
 
 ZIP TO USE
 ----------
-MilePilot-v8.43.27-CLOUDFLARE-UPLOAD.zip (repo root)
+MilePilot-v8.43.28-CLOUDFLARE-UPLOAD.zip (repo root)
 
 CHECK LIVE VERSION AFTER UPLOAD
 -------------------------------
 https://app.milepilot.uk/version.txt
-Must show: 8.43.27
+Must show: 8.43.28
 
 https://app.milepilot.uk/index.html — footer should show App v8.43.27
 
-WHAT'S IN v8.43.27
+WHAT'S IN v8.43.28
 ------------------
 - Phase 1 UI lock complete (Welcome through Settings)
+- Secret debug enable: tap Dashboard footer version 7× quickly
 - Settings card header uniformity (TITLE → value → copy)
 - Dashboard, Reports, Navigation dock polish
 - Mileage tracking fixes (v8.43.2 stale speed gate + native sync)
@@ -32,17 +33,15 @@ js/*.js
 
 UPLOAD STEPS (Cloudflare)
 -------------------------
-1. Unzip MilePilot-v8.43.27-CLOUDFLARE-UPLOAD.zip locally
+1. Unzip MilePilot-v8.43.28-CLOUDFLARE-UPLOAD.zip locally
 2. Cloudflare → milepilot-app → Upload assets
 3. Upload the FULL unzipped folder (index.html + js/ + all files)
 4. Deploy — do NOT upload only version.txt
 
-MOT TEST DRIVE — BEFORE YOU GO
-------------------------------
-- Tracking mode: AutoPilot
-- iOS Settings → MilePilot → Location → Always
-- Start shift; open Tracking Debug (Settings → Developer debug)
-- Confirm: Background task running = YES
-- Test: foreground miles, then lock screen 5+ min, then Maps 5+ min
+MOT TEST DRIVE — ENABLE DEBUG ON iPHONE
+---------------------------------------
+Dashboard → tap "MilePilot v8.43.28" at the bottom 7 times quickly
+Toast: "Developer debug enabled" → Settings → scroll to Developer debug
+Or open in Safari: https://app.milepilot.uk/?debug=tracking&v=8.43.28
 
 APP: https://app.milepilot.uk
