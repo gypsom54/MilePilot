@@ -100,5 +100,65 @@ run("daily report includes newly ended shift when older business trips exist", (
   assert.ok(payload.totals.miles >= 12, "daily totals must include new shift miles");
 });
 
+run("night shift daily report fires 90 minutes after shift ends", () => {
+  const M = loadSummaryReports(createMockLocalStorage());
+  const shiftEnd = new Date("2026-06-29T04:00:00.000Z");
+  const fireAt = M.computeDailyReportFireAt(shiftEnd.toISOString());
+  const expected = shiftEnd.getTime() + 90 * 60 * 1000;
+  assert.equal(fireAt, expected);
+});
+
+run("day shift daily report fires at 11:59pm when later than 90 minutes", () => {
+  const M = loadSummaryReports(createMockLocalStorage());
+  const shiftEnd = new Date("2026-06-29T17:00:00");
+  const fireAt = M.computeDailyReportFireAt(shiftEnd.toISOString());
+  const endOfDay = new Date(shiftEnd);
+  endOfDay.setHours(23, 59, 0, 0);
+  assert.equal(fireAt, endOfDay.getTime());
+});
+
+run("daily frequency schedules report instead of sending immediately on shift end", () => {
+  const ls = createMockLocalStorage();
+  const M = loadSummaryReports(ls);
+  let apiCalls = 0;
+  M.init({
+    getEmail: () => "driver@example.com",
+    getDriver: () => "Alex",
+    getFrequency: () => "daily",
+    getTrips: () => [],
+    getShifts: () => [
+      {
+        id: "shift_night",
+        miles: 40,
+        seconds: 14400,
+        startISO: "2026-06-29T18:00:00.000Z",
+        endISO: "2026-06-29T04:00:00.000Z",
+        vehicle: "car",
+        hmrc: 22,
+        date: "29/06/2026",
+      },
+    ],
+    fmt: (s) => String(s) + "s",
+    apiPost: async () => {
+      apiCalls++;
+      return { res: { ok: true }, data: { sent: true } };
+    },
+    getHmrcRate: () => 0.55,
+  });
+  M.onShiftEnded(
+    {
+      id: "shift_night",
+      miles: 40,
+      endISO: "2026-06-29T04:00:00.000Z",
+    },
+    "auto"
+  );
+  assert.equal(apiCalls, 0, "daily should not email immediately on shift end");
+  const pending = M.getPendingReport();
+  assert.ok(pending, "pending daily report should be stored");
+  assert.equal(pending.type, "Daily");
+  assert.ok(pending.fireAt > Date.parse("2026-06-29T04:00:00.000Z"));
+});
+
 console.log(`\nSummary reports collect: ${passed} passed, ${failed} failed\n`);
 process.exit(failed > 0 ? 1 : 0);

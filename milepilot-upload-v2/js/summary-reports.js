@@ -82,12 +82,33 @@
   }
 
   const SCHEDULE = {
-    dailyAfterShiftHours: 1,
+    dailyAfterShiftMinutes: 90,
+    dailyNightShiftEndHour: 10,
+    dailyEndOfDaySlot: { hour: 23, minute: 59, windowMin: 35 },
     weeklyPrimary: { day: 0, hour: 18, minute: 0, windowMin: 45 },
     weeklySummary: { day: 0, hour: 23, minute: 59, windowMin: 35 },
     monthlyPrimary: { hour: 23, minute: 59, windowMin: 35 },
     monthlySummary: { hour: 23, minute: 59, windowMin: 35 },
   };
+
+  /** Daily delivery: 11:59pm for day shifts, or 90 min after shift ends for night drivers. */
+  function computeDailyReportFireAt(shiftEndedAt) {
+    const end = new Date(shiftEndedAt);
+    const afterShift = end.getTime() + SCHEDULE.dailyAfterShiftMinutes * 60 * 1000;
+    const hour = end.getHours();
+    const min = end.getMinutes();
+
+    if (hour < SCHEDULE.dailyNightShiftEndHour || (hour === SCHEDULE.dailyNightShiftEndHour && min < 30)) {
+      return afterShift;
+    }
+
+    const endOfDay = new Date(end);
+    endOfDay.setHours(SCHEDULE.dailyEndOfDaySlot.hour, SCHEDULE.dailyEndOfDaySlot.minute, 0, 0);
+    if (endOfDay.getTime() <= end.getTime()) {
+      return afterShift;
+    }
+    return Math.max(afterShift, endOfDay.getTime());
+  }
 
   function pad2(n) {
     return String(n).padStart(2, '0');
@@ -156,6 +177,8 @@
     if (!frequency || frequency === 'off') return due;
 
     if (frequency === 'daily') {
+      const slot = SCHEDULE.dailyEndOfDaySlot;
+      if (inTimeWindow(now, slot.hour, slot.minute, slot.windowMin)) due.push('Daily');
       if (isSundaySlot(now, SCHEDULE.weeklySummary)) due.push('WeeklySummary');
       if (isMonthlySlot(now, SCHEDULE.monthlySummary)) due.push('MonthlySummary');
     } else if (frequency === 'weekly') {
@@ -613,11 +636,11 @@
       shiftId: shift && shift.id,
       endReason: endReason || 'manual',
     });
-    const immediate = await sendShiftCompletionEmail(deps, shift, endReason || 'manual');
-    if (shift && shift.endISO && deps.getFrequency() === 'daily') {
-      scheduleDailyAfterShift(deps, shift.endISO);
+    if (deps.getFrequency() === 'daily' && shift && shift.endISO) {
+      const scheduled = scheduleDailyAfterShift(deps, shift.endISO);
+      return scheduled || { scheduled: false, reason: 'not_scheduled' };
     }
-    return immediate;
+    return sendShiftCompletionEmail(deps, shift, endReason || 'manual');
   }
 
   function scheduleDailyAfterShift(deps, shiftEndedAt) {
@@ -632,11 +655,15 @@
       return null;
     }
 
-    const delayMs = SCHEDULE.dailyAfterShiftHours * 60 * 60 * 1000;
-    const fireAt = new Date(shiftEndedAt).getTime() + delayMs;
+    const fireAt = computeDailyReportFireAt(shiftEndedAt);
     const wait = Math.max(0, fireAt - Date.now());
 
     persistPendingReport('Daily', fireAt, shiftEndedAt);
+    reportLog('Daily report scheduled', {
+      shiftEndedISO: new Date(shiftEndedAt).toISOString(),
+      fireAtISO: new Date(fireAt).toISOString(),
+      waitMin: Math.round(wait / 60000),
+    });
 
     return setTimeout(async function () {
       const now = new Date();
@@ -649,7 +676,7 @@
 
   function getScheduleDescription(frequency) {
     if (frequency === 'daily') {
-      return "Daily reports after each shift, plus a Weekly Summary every Sunday at 11:59pm and a Monthly Summary on the last day of each month.";
+      return "Daily summary at 11:59pm, or 90 minutes after your shift ends for night drivers — plus Weekly Summary every Sunday at 11:59pm and Monthly Summary on the last day of each month.";
     }
     if (frequency === 'weekly') {
       return "Weekly report every Sunday, plus a Monthly Summary on the last day of each month at 11:59pm.";
@@ -707,5 +734,6 @@
     },
     wasSent: wasSent,
     markSent: markSent,
+    computeDailyReportFireAt: computeDailyReportFireAt,
   };
 })(typeof window !== 'undefined' ? window : globalThis);

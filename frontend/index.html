@@ -1039,7 +1039,7 @@ body.map-expand-open{overflow:hidden}
 <script src="js/app-copy.js"></script>
 <script src="js/beta-feedback.js"></script>
 <script>
-const APP_VERSION='8.30.3';
+const APP_VERSION='8.30.4';
 const DEFAULT_WEEKLY_GOAL_MILES=400;
 const BUSINESS_PROFILE_KEY='mp_business_profile';
 const PRODUCT_VISION_LOCK='2026-06-vision-v1';
@@ -1059,7 +1059,7 @@ const VITAL_TRACKING_SYSTEM='MP-043-v2';
 const TRACKING_ENGINE_V=2;
 const TRACKING_CONTRACT_ID='MP-043-v2';
 const ENGINE={MIN_MOVE_M:6,MAX_JUMP_M:400,MAX_SPEED_MPS:67,STOP_SPEED_MPS:0.9,STOP_AFTER_MS:90000,ROUTE_MAX:500,ACC_MAX:120,ACC_SOFT_MAX:220,GPS_RECONNECT_MS:15000,GPS_STALE_MS:35000,BG_GPS_POLL_MS:12000,NATIVE_SPEED_GATE_DT:2,AUTO_END_MIN_MOVE_M:40,AUTO_END_MIN_SPEED_MPS:1.8,AUTO_END_SOFT_MOVE_M:22,AUTO_END_SOFT_SPEED_MPS:1.0,AUTO_END_MAX_ACC_M:65,AUTO_END_MILE_GRACE_MS:1200000};
-const REPORT_FREQ_OPTIONS={daily:{label:'Every day',schedule:"After each shift we'll email your daily summary, plus a Weekly Insights Summary every Sunday at 11:59pm and a Monthly Insights Summary on the last day of each month."},weekly:{label:'Every week',schedule:"Every Sunday we'll email your weekly business report, plus a Monthly Insights Summary on the last day of each month at 11:59pm."},monthly:{label:'Every month',schedule:"On the last day of each month at 11:59pm we'll email your monthly business report."},custom:{label:'Custom date range',schedule:'Request any date range from Report Centre. Weekly Summary every Sunday at 11:59 PM and Monthly Summary on the final day of every month are still included automatically.'}};
+const REPORT_FREQ_OPTIONS={daily:{label:'Every day',schedule:"Daily summary at 11:59pm, or 90 minutes after your shift ends if you finish late at night — plus Weekly Insights every Sunday at 11:59pm and Monthly Insights on the last day of each month."},weekly:{label:'Every week',schedule:"Every Sunday we'll email your weekly business report, plus a Monthly Insights Summary on the last day of each month at 11:59pm."},monthly:{label:'Every month',schedule:"On the last day of each month at 11:59pm we'll email your monthly business report."},custom:{label:'Custom date range',schedule:'Request any date range from Report Centre. Weekly Summary every Sunday at 11:59 PM and Monthly Summary on the final day of every month are still included automatically.'}};
 let suSelectedFrequency='weekly',pendingStayUpdatedAfterShift=false;
 const BRAND_MESSAGE='Your business. On AutoPilot.';
 const BRAND_TAGLINE='Your business. On AutoPilot.';
@@ -1176,7 +1176,7 @@ function tryShowPendingStayUpdated(){if(pendingStayUpdatedAfterShift&&shouldOffe
 function renderReportSettings(){const freq=getReportFrequency()||'weekly';document.querySelectorAll('.settings-freq-btn[data-freq]').forEach(btn=>btn.classList.toggle('active',btn.dataset.freq===freq));const sched=q('settingsSchedule');if(sched)sched.textContent=getFrequencyScheduleCopy(freq);const prefs=getReportPrefs();q('toggleEmailReports')?.classList.toggle('is-on',prefs.emailReports);q('togglePdfAttachment')?.classList.toggle('is-on',prefs.pdfAttachment);q('toggleBusinessInsights')?.classList.toggle('is-on',prefs.businessInsights);renderBusinessProfileSettings()}
 function setSettingsFrequency(freq){setReportFrequency(freq);renderReportSettings();syncReportSubscription();toast(typeof MPCopy!=='undefined'?MPCopy.frequencySet(getFrequencyLabel(freq)):'Report frequency set to '+getFrequencyLabel(freq).toLowerCase()+' ✓')}
 function toggleReportPref(key){const prefs=getReportPrefs();prefs[key]=!prefs[key];saveReportPrefs(prefs);renderReportSettings();syncReportSubscription()}
-function getAutoReportStatusLabel(freq){const labels={daily:'Daily reports + weekly & monthly summaries',weekly:'Weekly reports + monthly summaries',monthly:'Monthly reports are on'};return labels[freq]||'Automatic reports are on'}
+function getAutoReportStatusLabel(freq){const labels={daily:'Daily at 11:59pm or 90 min after shift + weekly & monthly summaries',weekly:'Weekly reports + monthly summaries',monthly:'Monthly reports are on'};return labels[freq]||'Automatic reports are on'}
 function renderReportAutoBanner(){const on=hasReportAutomation(),freq=getReportFrequency(),status=q('reportAutoStatus'),desc=q('reportAutoDesc'),turnOn=q('reportAutoTurnOn'),manage=q('reportAutoManage');if(status){status.textContent=on?getAutoReportStatusLabel(freq):'Not set up yet — tap below to turn on';status.classList.toggle('is-on',on)}if(desc)desc.textContent=on?getFrequencyScheduleCopy(freq):'Choose daily, weekly or monthly — MilePilot emails your business mileage summary and PDF automatically.';if(turnOn)turnOn.hidden=on;if(manage)manage.hidden=!on}
 function typeInto(id,text,speed=38){let e=q(id);if(!e)return;let i=0;e.innerHTML='';(function f(){if(i<=text.length){e.innerHTML=text.slice(0,i).replace(/\n/g,'<br>')+'<span class="cursor"></span>';i++;setTimeout(f,speed)}else{e.innerHTML=text.replace(/\n/g,'<br>')}})()}
 let welcomeTypingTimers=[];
