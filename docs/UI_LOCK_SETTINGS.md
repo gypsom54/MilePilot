@@ -1,10 +1,10 @@
 # Settings Screen UI Lock
 
-**Status:** APPROVED — Frozen (2 July 2026)  
+**Status:** 🔒 **UI LOCKED** — Officially frozen (2 July 2026)  
 **Component:** `#settings` `.screen` — premium control centre  
-**Version locked:** v8.43.26 (final — no further visual changes)
+**Version locked:** v8.43.26 (final)
 
-> **Rule:** Visual polish only. No tracking, permissions, report, navigation, or state logic changes unless a genuine usability issue is discovered.
+> **Rule:** No visual changes. No wording changes. No spacing tweaks. Revisit only if users are confused during testing, or a new feature genuinely requires another setting.
 
 **Related docs:**
 - [UI_LOCK_DASHBOARD.md](./UI_LOCK_DASHBOARD.md) — visual standard

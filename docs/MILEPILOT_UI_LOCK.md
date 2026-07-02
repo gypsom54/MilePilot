@@ -86,6 +86,8 @@
 
 ## Next up
 
-**History** (`#history`) — Phase 1 polish.
+**History** (`#history`) — last major Phase 1 app screen.
 
-**Locked:** Settings v8.43.25 · Dashboard v8.43.23 · Reports v8.43.22 · Navigation v8.43.21.
+**Phase 1 foundation locked:** Welcome · Name & Vehicle · Tracking Mode · Permissions · Success · Dashboard · Navigation · Reports · **Settings** (v8.43.26). Email Reports onboarding (`#emailSetup`) still in review.
+
+**Phase 2 focus:** mileage tracking reliability · background GPS · reports data · AI learning — not UI polish.
