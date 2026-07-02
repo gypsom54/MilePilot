@@ -53,8 +53,12 @@ function locationToPayload(loc) {
 
 function pushLocationAndSync(payload, source, sendToWebView) {
   const sync = ingestNativeLocation(payload, { source });
-  if (sync && typeof sendToWebView === 'function') {
-    sendToWebView(sync);
+  if (typeof sendToWebView === 'function') {
+    if (sync) sendToWebView(sync);
+    // Foreground GPS also feeds WebView handlePos for live map/miles while app is open.
+    if (source === 'foreground') {
+      sendToWebView({ type: 'expo:location', ...payload });
+    }
   }
   return sync;
 }
@@ -247,12 +251,11 @@ export async function handleWebViewMessage(raw, sendToWebView) {
       break;
     }
     case 'expo:settings:open': {
-      try {
-        await Linking.openSettings();
-        reply({ type: 'expo:settings:result', ok: true });
-      } catch (e) {
-        reply({ type: 'expo:settings:result', ok: false, error: e.message });
-      }
+      // Reply before opening — iOS may background the app before injectJavaScript runs.
+      reply({ type: 'expo:settings:result', ok: true });
+      Linking.openSettings().catch((e) => {
+        console.warn('[MilePilot] openSettings failed', e.message);
+      });
       break;
     }
     default:

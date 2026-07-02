@@ -364,6 +364,10 @@
   async function openAppSettings() {
     if (!isExpoNative()) return false;
     try {
+      if (global.MPExpoBridge && global.MPExpoBridge.post) {
+        global.MPExpoBridge.post({ type: 'expo:settings:open', id: 'settings_' + Date.now() });
+        return true;
+      }
       const res = await expoBridgeRequest('expo:settings:open');
       return !!(res && res.ok);
     } catch (e) {

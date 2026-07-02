@@ -257,6 +257,12 @@ export function ingestNativeLocation(payload, { source = 'unknown' } = {}) {
     trip.lastForegroundUpdateAt = Date.now();
   }
 
+  // Foreground: WebView handlePos owns mileage while app is open; native only tracks metadata.
+  if (source === 'foreground') {
+    persistState();
+    return null;
+  }
+
   if (p.acc > ENGINE.ACC_SOFT_MAX) {
     persistState();
     return getTripSyncPayload();
