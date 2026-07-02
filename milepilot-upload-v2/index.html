@@ -47,7 +47,7 @@ body{display:flex;justify-content:center}
 #welcome .welcome-brand-compact .brand-tagline{display:none}
 #welcome .welcome-message{margin:0 0 8px}
 #welcome .welcome-headline{animation:brandHeadlineIn .6s cubic-bezier(.22,1,.36,1) .85s forwards;opacity:0;font-size:clamp(34px,8.6vw,42px);line-height:1.08;letter-spacing:-0.035em;margin:0 0 18px}
-#welcome .welcome-value-line{text-align:center;font-size:clamp(17px,4.3vw,19px);font-weight:500;line-height:1.55;color:rgba(159,180,208,.94);margin:0 auto 40px;max-width:320px;letter-spacing:-.01em;-webkit-font-smoothing:antialiased;animation:welcomeValueIn .55s cubic-bezier(.22,1,.36,1) 1.15s forwards;opacity:0}
+#welcome .welcome-value-line{text-align:center;font-size:clamp(17px,4.4vw,20px);font-weight:500;line-height:1.5;color:rgba(180,200,228,.96);margin:0 auto 40px;max-width:300px;letter-spacing:-.015em;-webkit-font-smoothing:antialiased;animation:welcomeValueIn .55s var(--ease-premium) 1.15s forwards;opacity:0}
 #welcome .welcome-get-started{margin-top:0;animation:welcomeBtnIn .5s cubic-bezier(.22,1,.36,1) 1.45s forwards;opacity:0}
 @keyframes welcomeBrandIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @keyframes welcomeValueIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
@@ -126,7 +126,7 @@ body.map-expand-open{overflow:hidden}
 .row{display:flex;justify-content:space-between;gap:16px;border-bottom:1px solid rgba(255,255,255,.11);padding:13px 0;align-items:center}.row span{color:#C4D2E6}.row strong{font-size:20px;text-align:right}
 .historyItem{border:1px solid var(--line);background:rgba(255,255,255,.05);border-radius:20px;padding:15px;margin:12px 0}.historyTop{display:flex;justify-content:space-between;font-weight:1000}.historySub{color:#B9C8DD;margin-top:8px;font-size:14px;line-height:1.45}
 .history-test-btn{opacity:.45;margin-bottom:8px}
-.history-empty{text-align:center;padding:40px 24px;border:1px solid var(--line);border-radius:20px;background:rgba(255,255,255,.04);margin-top:8px}
+.history-empty{text-align:center;padding:36px 24px;border:1px solid rgba(110,180,255,.12);border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(13,107,255,.02));margin-top:8px;box-shadow:var(--card-shadow)}
 .history-empty .icon{font-size:40px;margin-bottom:12px;opacity:1;line-height:1;display:flex;align-items:center;justify-content:center}
 .history-empty .icon .mp-empty-svg{width:96px;height:auto}
 .history-empty-title{margin:0 0 8px;font-size:17px;font-weight:600;color:rgba(234,242,255,.94);letter-spacing:-0.01em}
@@ -339,17 +339,17 @@ body.map-expand-open{overflow:hidden}
 #home.cc-screen{background:linear-gradient(180deg,#0A2854 0%,#031126 82%);padding:24px 22px 108px;position:relative}
 #home.cc-screen.active{display:block}
 .cc-body{max-width:390px;margin:0 auto}
-.cc-greeting-wrap{margin:4px 0 32px;animation:ccFadeIn .55s cubic-bezier(.22,1,.36,1) both}
-.cc-greeting{font-size:clamp(26px,6.5vw,32px);font-weight:700;letter-spacing:-0.03em;line-height:1.15;margin:0 0 10px;-webkit-font-smoothing:antialiased}
-.cc-status{font-size:16px;font-weight:500;line-height:1.5;color:rgba(159,180,208,.9);margin:0;letter-spacing:-.01em}
+.cc-greeting-wrap{margin:4px 0 28px;animation:ccFadeIn .55s var(--ease-premium) both}
+.cc-greeting{font-size:clamp(26px,6.5vw,32px);font-weight:700;letter-spacing:-0.03em;line-height:1.12;margin:0 0 8px;-webkit-font-smoothing:antialiased}
+.cc-status{font-size:15px;font-weight:500;line-height:1.5;color:rgba(159,180,208,.88);margin:0;letter-spacing:-.01em}
 .cc-tracking-bar{margin:0 0 20px;padding:16px 18px;border:1px solid rgba(32,215,129,.22);border-radius:20px;background:linear-gradient(180deg,rgba(32,215,129,.08),rgba(32,215,129,.02));animation:ccSlideIn .45s cubic-bezier(.22,1,.36,1) both}
 .cc-tracking-head{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;color:rgba(234,242,255,.94);letter-spacing:-0.01em;margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em;font-size:12px}
 .cc-dot{width:9px;height:9px;border-radius:50%;background:#20D781;box-shadow:0 0 12px rgba(32,215,129,.65);animation:ccPulseDot 2s ease-in-out infinite}
 @keyframes ccPulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.7;transform:scale(.92)}}
 .cc-timer{font-size:clamp(36px,9vw,44px);font-weight:700;letter-spacing:-0.03em;line-height:1;font-variant-numeric:tabular-nums;color:#fff;-webkit-font-smoothing:antialiased}
-.cc-hero{text-align:center;margin:0 0 28px;padding:8px 0 4px;animation:ccFadeIn .55s cubic-bezier(.22,1,.36,1) .08s both}
-.cc-hero-label{display:block;font-size:11px;font-weight:600;letter-spacing:.14em;color:rgba(110,180,255,.78);margin-bottom:10px}
-.cc-hero-value{font-size:clamp(68px,19vw,92px);font-weight:700;letter-spacing:-0.045em;line-height:.95;color:#fff;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums;transition:transform .35s cubic-bezier(.22,1,.36,1)}
+.cc-hero{text-align:center;margin:0 0 24px;padding:12px 0 8px;animation:ccFadeIn .55s var(--ease-premium) .08s both}
+.cc-hero-label{display:block;font-size:11px;font-weight:600;letter-spacing:.14em;color:rgba(110,180,255,.78);margin-bottom:8px}
+.cc-hero-value{font-size:clamp(68px,19vw,92px);font-weight:700;letter-spacing:-0.045em;line-height:.95;color:#fff;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums;transition:transform .35s var(--ease-premium);text-shadow:0 4px 32px rgba(13,107,255,.18)}
 .cc-hero.is-live .cc-hero-value{color:rgba(234,242,255,.98)}
 .cc-hero-unit{display:block;margin-top:10px;font-size:15px;font-weight:500;color:rgba(159,180,208,.9);letter-spacing:.02em}
 .cc-primary-btn{width:100%;height:var(--btn-height);border:0;border-radius:var(--button-radius);background:linear-gradient(180deg,#1E88FF 0%,#0D6BFF 50%,#005FE8 100%);color:#fff;font-size:17px;font-weight:600;letter-spacing:-0.01em;margin:0 0 28px;box-shadow:0 8px 28px rgba(13,107,255,.28),inset 0 1px 0 rgba(255,255,255,.12);cursor:pointer;transition:transform .24s var(--ease-premium),box-shadow .36s ease,filter .24s ease;animation:ccFadeIn .55s var(--ease-premium) .12s both}
@@ -363,9 +363,10 @@ body.map-expand-open{overflow:hidden}
 .cc-card:nth-of-type(2){animation-delay:.22s}
 .cc-card:nth-of-type(3){animation-delay:.28s}
 .cc-card-title{margin:0 0 16px;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(110,180,255,.82)}
-.cc-metrics{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px}
-.cc-metric span{display:block;font-size:12px;font-weight:500;color:rgba(147,168,196,.88);margin-bottom:6px;letter-spacing:.01em}
-.cc-metric strong{display:block;font-size:clamp(22px,5.5vw,26px);font-weight:700;letter-spacing:-0.03em;color:rgba(234,242,255,.96);font-variant-numeric:tabular-nums;line-height:1.1}
+.cc-metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cc-metric{padding:14px 12px;border-radius:16px;border:1px solid rgba(110,180,255,.1);background:rgba(255,255,255,.035);transition:border-color .28s var(--ease-premium),background .28s var(--ease-premium)}
+.cc-metric span{display:block;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:rgba(147,168,196,.82);margin-bottom:6px}
+.cc-metric strong{display:block;font-size:clamp(21px,5.2vw,25px);font-weight:700;letter-spacing:-0.03em;color:rgba(234,242,255,.96);font-variant-numeric:tabular-nums;line-height:1.1}
 .cc-insight{margin:0;font-size:15px;font-weight:500;line-height:1.5;color:rgba(159,180,208,.92);letter-spacing:.01em}
 .cc-activity{display:flex;flex-direction:column;gap:0}
 .cc-activity-item{padding:14px 0;border-bottom:1px solid rgba(255,255,255,.08)}
@@ -515,9 +516,9 @@ body.map-expand-open{overflow:hidden}
 #reports.reports-screen{background:linear-gradient(180deg,#0A2854 0%,#031126 82%);padding:24px 22px 108px}
 #reports.reports-screen.active{display:block}
 .reports-body{max-width:390px;margin:0 auto}
-.reports-header{margin:8px 0 28px}
-.reports-title{font-size:clamp(26px,6.5vw,34px);font-weight:700;letter-spacing:-0.03em;line-height:1.08;margin:0 0 10px;-webkit-font-smoothing:antialiased}
-.reports-sub{font-size:15px;font-weight:500;line-height:1.45;color:rgba(147,168,196,.88);margin:0;letter-spacing:.01em}
+.reports-header{margin:4px 0 24px}
+.reports-title{font-size:clamp(26px,6.5vw,34px);font-weight:700;letter-spacing:-0.03em;line-height:1.08;margin:0 0 8px;-webkit-font-smoothing:antialiased}
+.reports-sub{font-size:15px;font-weight:500;line-height:1.5;color:rgba(147,168,196,.88);margin:0;letter-spacing:-.01em}
 .report-auto-card{margin:0 0 20px}
 .report-auto-card .report-auto-heading{margin:0 0 10px;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(110,180,255,.82)}
 .report-auto-desc{margin:0 0 14px;font-size:15px;font-weight:500;line-height:1.5;color:rgba(159,180,208,.92);letter-spacing:.01em}
@@ -549,11 +550,7 @@ body.map-expand-open{overflow:hidden}
 .report-custom-presets{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
 .report-custom-preset{flex:1 1 auto;min-width:0;height:40px;padding:0 12px;border-radius:12px;border:1px solid rgba(110,180,255,.2);background:rgba(13,107,255,.08);color:rgba(126,184,255,.95);font-size:13px;font-weight:600;font-family:inherit;cursor:pointer}
 .report-custom-preset:active{opacity:.88}
-.report-custom-preview{margin:0 0 12px;padding:14px 16px;border-radius:16px;background:rgba(13,107,255,.1);border:1px solid rgba(13,107,255,.22)}
 .report-custom-preview[hidden]{display:none!important}
-.report-custom-preview-range{margin:0 0 6px;font-size:13px;font-weight:600;color:rgba(126,184,255,.95)}
-.report-custom-preview-miles{margin:0 0 4px;font-size:28px;font-weight:700;letter-spacing:-0.03em;color:#fff;font-variant-numeric:tabular-nums}
-.report-custom-preview-sub{margin:0;font-size:14px;font-weight:500;color:rgba(159,180,208,.88)}
 .report-custom-hint{margin:0 0 10px;font-size:13px;font-weight:500;line-height:1.4;color:rgba(147,168,196,.82);min-height:0}
 .report-custom-hint:empty{display:none}
 .report-custom-secondary{display:block;width:100%;margin-top:10px;padding:12px;border:0;background:transparent;color:rgba(147,168,196,.88);font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;text-align:center}
@@ -569,25 +566,27 @@ body.map-expand-open{overflow:hidden}
 .report-archive-filter{height:34px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:rgba(234,242,255,.88);font-size:13px;font-weight:600;cursor:pointer}
 .report-archive-filter.active{background:rgba(13,107,255,.22);border-color:rgba(13,107,255,.5);color:#fff}
 .report-archive-list{display:flex;flex-direction:column;gap:10px}
-.report-archive-item{border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:14px 14px 12px;background:rgba(255,255,255,.04)}
-.report-archive-item-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:8px}
-.report-archive-item-title{margin:0;font-size:16px;font-weight:600;color:rgba(234,242,255,.95);letter-spacing:-0.01em}
-.report-archive-item-sub{margin:4px 0 0;font-size:13px;line-height:1.45;color:rgba(147,168,196,.9)}
-.report-archive-badge{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 8px;border-radius:999px;background:rgba(13,107,255,.16);color:#6EB4FF;white-space:nowrap}
+.report-archive-item{border:1px solid rgba(110,180,255,.12);border-radius:18px;padding:16px 16px 14px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(13,107,255,.02));box-shadow:var(--card-shadow);transition:border-color .24s var(--ease-premium),box-shadow .24s var(--ease-premium)}
+.report-archive-item-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:10px}
+.report-archive-item-title{margin:0;font-size:16px;font-weight:600;color:rgba(234,242,255,.96);letter-spacing:-0.02em;line-height:1.25}
+.report-archive-item-sub{margin:4px 0 0;font-size:13px;line-height:1.45;color:rgba(147,168,196,.88)}
+.report-archive-badge{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 9px;border-radius:999px;background:rgba(13,107,255,.18);color:rgba(126,184,255,.98);white-space:nowrap;border:1px solid rgba(13,107,255,.22)}
 .report-archive-actions{display:flex;gap:8px;flex-wrap:wrap}
 .report-archive-btn{height:34px;padding:0 12px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:rgba(234,242,255,.92);font-size:12px;font-weight:600;cursor:pointer}
 .report-archive-btn.danger{color:#ffb4b4;border-color:rgba(255,120,120,.25)}
-.report-archive-empty{text-align:center;padding:28px 12px;color:rgba(147,168,196,.88)}
+.report-archive-empty{text-align:center;padding:32px 16px;color:rgba(147,168,196,.82);font-size:15px;font-weight:500;line-height:1.45}
 .report-archive-note{margin:12px 0 0;font-size:13px;line-height:1.45;color:rgba(147,168,196,.78)}
 .report-custom-link-btn{display:none!important}
-.report-option-card{display:flex;align-items:center;gap:14px;width:100%;margin:0 0 16px;padding:var(--card-padding);text-align:left;cursor:pointer;border:1px solid rgba(110,180,255,.16);border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(13,107,255,.03));box-shadow:var(--card-shadow);font-family:inherit;color:inherit;transition:transform .24s var(--ease-premium),border-color .24s ease,box-shadow .24s ease,background .24s ease;-webkit-tap-highlight-color:transparent}
-.report-option-card:hover{border-color:rgba(13,107,255,.32);box-shadow:var(--card-shadow-lg)}
+.report-option-card{display:flex;align-items:center;gap:14px;width:100%;margin:0 0 16px;padding:var(--card-padding);text-align:left;cursor:pointer;border:1px solid rgba(13,107,255,.28);border-radius:22px;background:linear-gradient(180deg,rgba(13,107,255,.1),rgba(13,107,255,.03));box-shadow:var(--card-shadow-lg);font-family:inherit;color:inherit;transition:transform .24s var(--ease-premium),border-color .24s ease,box-shadow .24s ease,background .24s ease;-webkit-tap-highlight-color:transparent;position:relative;overflow:hidden}
+.report-option-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(126,184,255,.35),transparent);pointer-events:none}
+.report-option-card:hover{border-color:rgba(13,107,255,.42);box-shadow:0 10px 36px rgba(13,107,255,.16),inset 0 1px 0 rgba(255,255,255,.08)}
 .report-option-card:active{transform:scale(.985)}
-.report-option-icon{flex-shrink:0;width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;line-height:1;background:linear-gradient(145deg,rgba(13,107,255,.22),rgba(13,107,255,.06));border:1px solid rgba(110,180,255,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
+.report-option-icon{flex-shrink:0;width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;line-height:1;background:linear-gradient(145deg,rgba(13,107,255,.32),rgba(13,107,255,.1));border:1px solid rgba(110,180,255,.28);box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 4px 16px rgba(13,107,255,.12)}
 .report-option-copy{flex:1;min-width:0}
 .report-option-title{display:block;font-size:17px;font-weight:600;letter-spacing:-0.02em;color:rgba(234,242,255,.96);margin-bottom:4px}
 .report-option-desc{display:block;font-size:14px;font-weight:500;line-height:1.4;color:rgba(159,180,208,.88)}
-.report-option-chevron{flex-shrink:0;font-size:22px;font-weight:300;line-height:1;color:rgba(110,180,255,.75)}
+.report-option-badge{display:inline-block;margin-bottom:6px;padding:3px 8px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:linear-gradient(180deg,#1E88FF,#0D6BFF);color:#fff;box-shadow:0 2px 10px rgba(13,107,255,.28)}
+.report-option-chevron{flex-shrink:0;font-size:22px;font-weight:300;line-height:1;color:rgba(126,184,255,.9)}
 #customReport.custom-report-screen{background:linear-gradient(180deg,#0A2854 0%,#031126 82%);padding:max(20px,env(safe-area-inset-top)) 22px 108px;min-height:100dvh}
 #customReport.custom-report-screen.active{display:block;animation:customReportIn .4s cubic-bezier(.22,1,.36,1) both}
 @keyframes customReportIn{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
@@ -596,8 +595,13 @@ body.map-expand-open{overflow:hidden}
 .custom-report-back:hover{color:rgba(159,200,255,.98)}
 .custom-report-back:active{opacity:.75}
 .custom-report-body{max-width:390px;margin:0 auto;animation:ccFadeIn .45s cubic-bezier(.22,1,.36,1) .08s both}
-.custom-report-title{font-size:clamp(26px,6.5vw,32px);font-weight:700;letter-spacing:-0.035em;line-height:1.1;margin:0 0 10px;-webkit-font-smoothing:antialiased}
-.custom-report-sub{font-size:16px;font-weight:500;line-height:1.5;color:rgba(159,180,208,.9);margin:0 0 28px;letter-spacing:-.01em}
+.custom-report-title{font-size:clamp(26px,6.5vw,32px);font-weight:700;letter-spacing:-0.035em;line-height:1.1;margin:0 0 8px;-webkit-font-smoothing:antialiased}
+.custom-report-sub{font-size:16px;font-weight:500;line-height:1.5;color:rgba(159,180,208,.88);margin:0 0 24px;letter-spacing:-.01em}
+.custom-report-doc-kicker{display:inline-block;margin:0 0 12px;padding:4px 10px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:rgba(13,107,255,.14);border:1px solid rgba(13,107,255,.28);color:rgba(126,184,255,.95)}
+.report-custom-preview{margin:0 0 16px;padding:18px 18px 16px;border-radius:18px;background:linear-gradient(180deg,rgba(13,107,255,.12),rgba(13,107,255,.04));border:1px solid rgba(13,107,255,.26);box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+.report-custom-preview-range{margin:0 0 8px;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(126,184,255,.92)}
+.report-custom-preview-miles{margin:0 0 6px;font-size:clamp(32px,8vw,38px);font-weight:700;letter-spacing:-0.04em;color:#fff;font-variant-numeric:tabular-nums;line-height:1}
+.report-custom-preview-sub{margin:0;font-size:14px;font-weight:500;line-height:1.45;color:rgba(159,180,208,.88)}
 .custom-date-block{margin:0 0 20px;padding:var(--card-padding);border-radius:20px;border:1px solid rgba(110,180,255,.14);background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(13,107,255,.02));box-shadow:var(--card-shadow)}
 .custom-date-label{display:block;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(110,180,255,.82);margin:0 0 8px}
 .custom-date-value{margin:0 0 14px;font-size:16px;font-weight:600;letter-spacing:-0.02em;color:rgba(234,242,255,.94);line-height:1.35;min-height:1.35em}
@@ -717,6 +721,11 @@ body.map-expand-open{overflow:hidden}
 #settings .card .sub{margin-top:0}
 #settings .card label{display:block;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(110,180,255,.82);margin:0 0 10px}
 #settings .card input{height:var(--btn-height);border-radius:var(--button-radius);margin:0 0 4px}
+#settings .card .btn{margin-top:12px}
+#settings .card .btn.small{margin-top:10px}
+#history.screen{background:linear-gradient(180deg,#0A2854 0%,#031126 82%);padding:24px 22px 108px}
+#history.screen .title{margin:8px 0 10px;font-size:clamp(26px,6.5vw,34px)}
+#history.screen .sub{margin:0 0 20px;font-size:15px;color:rgba(147,168,196,.88)}
 .settings-freq{display:flex;flex-direction:column;gap:8px;margin:0 0 18px}
 .settings-freq-btn{height:var(--btn-height-sm);border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:#C7D6EB;font-weight:600;font-size:15px;text-align:left;padding:0 16px;cursor:pointer;transition:border-color .22s var(--ease-premium),background .22s var(--ease-premium),color .22s ease;font-family:inherit}
 .settings-freq-btn.active{background:rgba(13,107,255,.18);border-color:rgba(13,107,255,.45);color:#fff}
@@ -758,7 +767,7 @@ body.map-expand-open{overflow:hidden}
 </div>
 <div class="welcome-message">
 <h1 class="welcome-headline">Run your business on <span class="blue">AutoPilot</span>.</h1>
-<p class="welcome-value-line">Mileage that tracks itself — so you can run your business.</p>
+<p class="welcome-value-line">Business mileage without the paperwork.</p>
 </div>
 <button type="button" class="btn premium-btn is-ready welcome-get-started" onclick="startOnboardingName()">Get Started</button>
 </div>
@@ -1019,7 +1028,7 @@ body.map-expand-open{overflow:hidden}
 </div>
 <div class="cc-card">
 <h2 class="cc-card-title">Business Insight</h2>
-<p class="cc-insight" id="ccInsight">Start your first shift to unlock personalised insights.</p>
+<p class="cc-insight" id="ccInsight">Your business insights will appear here after your first shift.</p>
 </div>
 <div class="cc-card">
 <h2 class="cc-card-title">Recent Activity</h2>
@@ -1075,13 +1084,14 @@ body.map-expand-open{overflow:hidden}
 </div>
 <button class="btn red" onclick="endShift()">End Shift</button>
 </section>
-<section id="reports" class="screen reports-screen"><header class="brand-bar"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div><p class="brand-tagline">Your business. On AutoPilot.</p></header><div class="reports-body"><div class="reports-header"><h1 class="reports-title">Report Centre</h1><p class="reports-sub" id="reportsSub">Business summaries when you need them — download, share, or recreate any period.</p></div><div class="cc-card report-send-card" id="reportSendCard"><h2 class="report-auto-heading">Send a test email</h2><p class="report-auto-desc">Email today's business report with PDF attached — same layout as automatic delivery.</p><div class="report-email-primary" style="margin:0;padding:0;border:0"><label for="reportQuickEmail">Email address</label><input id="reportQuickEmail" placeholder="you@example.com" inputmode="email" aria-label="Email for test report"></div><button type="button" class="report-email-btn" id="reportQuickSendBtn" onclick="sendQuickReportEmail(event)">Send today's report</button><button type="button" class="report-custom-secondary" onclick="previewReportEmail()">Preview email</button></div><div class="cc-card report-auto-card" id="reportAutoBanner"><h2 class="report-auto-heading" id="reportModeHeading">How reports work</h2><p class="report-auto-desc" id="reportAutoDesc">Your operating mode controls report delivery automatically.</p><p class="report-auto-status is-on" id="reportAutoStatus">AutoPilot — emailed after each shift</p></div><button type="button" class="report-option-card" onclick="openCustomReportScreen()" aria-label="Custom date range report"><span class="report-option-icon" aria-hidden="true">📅</span><span class="report-option-copy"><strong class="report-option-title">Custom Date Range</strong><span class="report-option-desc">Build an HMRC-ready report for any date range.</span></span><span class="report-option-chevron" aria-hidden="true">›</span></button><div class="cc-card report-archive-card" id="reportArchiveCard"><div class="report-archive-toolbar"><input type="search" class="report-archive-search" id="reportArchiveSearch" placeholder="Search reports…" aria-label="Search reports" oninput="onArchiveSearchInput()"><div class="report-archive-filters" role="group" aria-label="Filter reports"><button type="button" class="report-archive-filter active" data-filter="all" onclick="setArchiveFilter('all')">All</button><button type="button" class="report-archive-filter" data-filter="daily" onclick="setArchiveFilter('daily')">Daily</button><button type="button" class="report-archive-filter" data-filter="weekly" onclick="setArchiveFilter('weekly')">Weekly</button><button type="button" class="report-archive-filter" data-filter="monthly" onclick="setArchiveFilter('monthly')">Monthly</button></div></div><div id="reportArchiveList" class="report-archive-list" aria-live="polite"></div><p class="report-archive-note">Reports are saved when emailed. Tap download to open your PDF again.</p></div></div></section>
+<section id="reports" class="screen reports-screen"><header class="brand-bar"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div><p class="brand-tagline">Your business. On AutoPilot.</p></header><div class="reports-body"><div class="reports-header"><h1 class="reports-title">Report Centre</h1><p class="reports-sub" id="reportsSub">Your business documents — HMRC-ready summaries, anytime.</p></div><div class="cc-card report-auto-card" id="reportAutoBanner"><h2 class="report-auto-heading" id="reportModeHeading">How reports work</h2><p class="report-auto-desc" id="reportAutoDesc">Your operating mode controls report delivery automatically.</p><p class="report-auto-status is-on" id="reportAutoStatus">AutoPilot — emailed after each shift</p></div><button type="button" class="report-option-card" onclick="openCustomReportScreen()" aria-label="Custom date range report"><span class="report-option-icon" aria-hidden="true">📄</span><span class="report-option-copy"><span class="report-option-badge">Premium</span><strong class="report-option-title">Custom Business Report</strong><span class="report-option-desc">Professional HMRC summary for any date range.</span></span><span class="report-option-chevron" aria-hidden="true">›</span></button><div class="cc-card report-send-card" id="reportSendCard"><h2 class="report-auto-heading">Send a test email</h2><p class="report-auto-desc">Email today's business report with PDF attached — same layout as automatic delivery.</p><div class="report-email-primary" style="margin:0;padding:0;border:0"><label for="reportQuickEmail">Email address</label><input id="reportQuickEmail" placeholder="you@example.com" inputmode="email" aria-label="Email for test report"></div><button type="button" class="report-email-btn" id="reportQuickSendBtn" onclick="sendQuickReportEmail(event)">Send today's report</button><button type="button" class="report-custom-secondary" onclick="previewReportEmail()">Preview email</button></div><div class="cc-card report-archive-card" id="reportArchiveCard"><div class="report-archive-toolbar"><input type="search" class="report-archive-search" id="reportArchiveSearch" placeholder="Search reports…" aria-label="Search reports" oninput="onArchiveSearchInput()"><div class="report-archive-filters" role="group" aria-label="Filter reports"><button type="button" class="report-archive-filter active" data-filter="all" onclick="setArchiveFilter('all')">All</button><button type="button" class="report-archive-filter" data-filter="daily" onclick="setArchiveFilter('daily')">Daily</button><button type="button" class="report-archive-filter" data-filter="weekly" onclick="setArchiveFilter('weekly')">Weekly</button><button type="button" class="report-archive-filter" data-filter="monthly" onclick="setArchiveFilter('monthly')">Monthly</button></div></div><div id="reportArchiveList" class="report-archive-list" aria-live="polite"></div><p class="report-archive-note">Each report is a complete business document — mileage, allowance, and journey detail.</p></div></div></section>
 <section id="customReport" class="screen custom-report-screen">
 <header class="brand-bar"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div><p class="brand-tagline">Your business. On AutoPilot.</p></header>
 <div class="custom-report-top"><button type="button" class="custom-report-back" onclick="closeCustomReportScreen()">← Back</button></div>
 <div class="custom-report-body">
-<h1 class="custom-report-title">Create Custom Report</h1>
-<p class="custom-report-sub">Select your dates — we'll total your reviewed business mileage for that period.</p>
+<p class="custom-report-doc-kicker">Business Document</p>
+<h1 class="custom-report-title">Custom Business Report</h1>
+<p class="custom-report-sub">Choose your dates. MilePilot prepares a professional HMRC summary from your reviewed business journeys.</p>
 <div class="custom-date-block">
 <label class="custom-date-label" for="customReportStart">Select Start Date</label>
 <p class="custom-date-value" id="customStartDisplay">Tap a date below</p>
@@ -1106,7 +1116,7 @@ body.map-expand-open{overflow:hidden}
 <button type="button" class="report-email-btn" id="customReportGenerateBtn" onclick="generateCustomPeriodReport()">Generate Report</button>
 <button type="button" class="report-custom-secondary" onclick="emailCustomPeriodReport(event)">Email this report</button>
 </div>
-<p class="custom-report-note">Only reviewed business journeys are included.</p>
+<p class="custom-report-note">Only confirmed business journeys are included in your report.</p>
 <input id="customReportAsk" type="hidden" aria-hidden="true" value="">
 </div>
 </section>
@@ -1204,7 +1214,7 @@ body.map-expand-open{overflow:hidden}
 <script src="js/app-copy.js"></script>
 <script src="js/beta-feedback.js"></script>
 <script>
-const APP_VERSION='8.38.0';
+const APP_VERSION='8.39.0';
 const DEFAULT_WEEKLY_GOAL_MILES=400;
 const BUSINESS_PROFILE_KEY='mp_business_profile';
 const PRODUCT_VISION_LOCK='2026-06-vision-v1';
