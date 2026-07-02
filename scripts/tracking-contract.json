@@ -12,7 +12,9 @@
     "milepilot-upload-v2/js/tracking-provider.js",
     "src/locationTask.js",
     "src/expoLocationBridge.js",
-    "src/MilePilotWebView.js"
+    "src/MilePilotWebView.js",
+    "src/nativeTrackingEngine.js",
+    "src/nativeAutoEnd.js"
   ],
   "companionExports": [
     { "file": "frontend/js/native-platform.js", "symbol": "MPPlatform" },
