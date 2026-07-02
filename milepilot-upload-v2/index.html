@@ -148,8 +148,10 @@ body.map-expand-open{overflow:hidden}
 #knowYou.active,#experienceChoice.active,#businessProfile.active,#promise.active,#permissions.active,#notifications.active,#trackingMode.active,#emailSetup.active,#reportSchedule.active,#onboardReady.active{justify-content:flex-start}
 #knowYou .onboard-inner,#experienceChoice .onboard-inner,#businessProfile .onboard-inner,#promise .onboard-inner,#permissions .onboard-inner,#notifications .onboard-inner,#trackingMode .onboard-inner,#emailSetup .onboard-inner,#reportSchedule .onboard-inner,#onboardReady .onboard-inner{flex:1;display:flex;flex-direction:column;padding-top:4px;min-height:0}
 #knowYou .brand-bar.onboard-brand,#experienceChoice .brand-bar.onboard-brand,#businessProfile .brand-bar.onboard-brand,#promise .brand-bar.onboard-brand,#permissions .brand-bar.onboard-brand,#notifications .brand-bar.onboard-brand,#trackingMode .brand-bar.onboard-brand,#emailSetup .brand-bar.onboard-brand,#reportSchedule .brand-bar.onboard-brand,#onboardReady .brand-bar.onboard-brand{margin-bottom:24px}
-#welcome.active{justify-content:center}
-#welcome .onboard-inner{margin:auto 0;max-width:360px}
+#welcome.active{justify-content:flex-start;padding-top:max(44px,calc(env(safe-area-inset-top,0px) + 16px));padding-right:24px;padding-bottom:max(24px,env(safe-area-inset-bottom,0px));padding-left:24px}
+#welcome .onboard-inner{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;margin:0;max-width:360px;width:100%;align-self:center;min-height:0}
+html.mp-expo #welcome.active{padding-top:max(52px,calc(env(safe-area-inset-top,0px) + 20px))}
+#welcome .welcome-brand-compact{width:100%}
 #welcome .premium-btn.is-ready{opacity:1}
 #knowYou .onboard-inner{display:flex;flex-direction:column;min-height:0;overflow:hidden}
 #knowYou .brand-bar .wordmark,#experienceChoice .brand-bar .wordmark,#businessProfile .brand-bar .wordmark,#promise .brand-bar .wordmark,#permissions .brand-bar .wordmark,#notifications .brand-bar .wordmark{font-size:42px}
@@ -1257,7 +1259,7 @@ body.always-modal-open .nav{display:none!important}
 <script src="js/app-copy.js"></script>
 <script src="js/beta-feedback.js"></script>
 <script>
-const APP_VERSION='8.43.0';
+const APP_VERSION='8.43.1';
 const DEFAULT_WEEKLY_GOAL_MILES=400;
 const BUSINESS_PROFILE_KEY='mp_business_profile';
 const PRODUCT_VISION_LOCK='2026-06-vision-v1';
