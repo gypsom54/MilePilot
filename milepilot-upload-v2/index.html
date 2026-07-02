@@ -22,13 +22,16 @@
   --ease-premium:cubic-bezier(.22,1,.36,1);
   --card-shadow:0 4px 24px rgba(0,0,0,.12),inset 0 1px 0 rgba(255,255,255,.05);
   --card-shadow-lg:0 8px 32px rgba(0,0,0,.14),0 2px 8px rgba(13,107,255,.06),inset 0 1px 0 rgba(255,255,255,.06);
-  --animation-speed:1s;--transition-duration:.5s
+  --animation-speed:1s;--transition-duration:.5s;
+  --nav-dock-inner:64px;--nav-dock-total:calc(var(--nav-dock-inner) + 12px + env(safe-area-inset-bottom,0px));--nav-dock-pad:24px
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;min-height:100%;background:#020B1B;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
-body{display:flex;justify-content:center}
-.app{width:min(430px,100vw);min-height:100dvh;background:linear-gradient(180deg,#0A2854 0%,#031126 82%);position:relative}
-.screen{display:none;min-height:100dvh;padding:24px 22px 108px}.screen.active{display:block}
+body{display:flex;flex-direction:column;align-items:center;min-height:100dvh;margin:0}
+.app{width:min(430px,100vw);min-height:100dvh;flex:1 1 auto;background:linear-gradient(180deg,#0A2854 0%,#031126 82%);position:relative;display:flex;flex-direction:column}
+body:has(.nav.show) .app{min-height:0;flex:1 1 0}
+.screen{display:none;min-height:100dvh;padding:24px 22px var(--nav-dock-pad);flex:1 1 auto}.screen.active{display:block}
+body:has(.nav.show) .screen.active{min-height:0;flex:1 1 auto;height:auto;max-height:none;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
 #home.cc-screen.active,#reports.reports-screen.active,#settings.screen.active,#history.screen.active{animation:appScreenIn .38s var(--ease-premium) both}
 @keyframes appScreenIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
 .logoRow{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:18px}
@@ -64,16 +67,16 @@ body{display:flex;justify-content:center}
 input,select{width:100%;height:58px;border-radius:18px;border:1px solid rgba(255,255,255,.16);background:#07182F;color:#fff;font-size:17px;padding:0 16px;outline:none}input::placeholder{color:#7F8DA5}
 button{font-family:inherit}.btn{width:100%;height:var(--btn-height);border-radius:var(--button-radius);border:0;background:linear-gradient(180deg,#1882FF,#0057E7);color:white;font-weight:1000;font-size:17px;margin-top:14px;box-shadow:0 12px 32px rgba(13,107,255,.24),inset 0 1px 0 rgba(255,255,255,.1);transition:transform .24s var(--ease-premium),filter .24s ease,box-shadow .24s ease}.btn:active{transform:scale(.985)}.btn.red{background:linear-gradient(180deg,#FF3838,#D82323);box-shadow:0 12px 32px rgba(239,51,51,.24),inset 0 1px 0 rgba(255,255,255,.08)}.btn.outline{background:transparent;border:1px solid var(--blue);color:#6EADFF;box-shadow:none}.btn.small{height:var(--btn-height-sm);font-size:14px;font-weight:600}
 /* MP-007 Premium Navigation */
-.nav{position:fixed;left:50%;bottom:max(16px,env(safe-area-inset-bottom));transform:translateX(-50%);width:min(398px,calc(100vw - 32px));height:72px;padding:8px 10px;display:none;grid-template-columns:repeat(4,1fr);gap:6px;z-index:20;background:rgba(17,28,46,.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(110,180,255,.12);border-radius:20px;box-shadow:0 8px 32px rgba(0,0,0,.38),0 2px 8px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.05)}.nav.show{display:grid}
+.nav{position:relative;align-self:stretch;width:100%;max-width:none;transform:none;height:var(--nav-dock-total);min-height:var(--nav-dock-total);flex-shrink:0;padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));display:none;grid-template-columns:repeat(4,1fr);gap:4px;z-index:30;background:linear-gradient(180deg,#0A2854 0%,#031126 100%);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:0;border-top:1px solid rgba(110,180,255,.14);border-radius:0;box-shadow:0 -8px 32px rgba(0,0,0,.32),inset 0 1px 0 rgba(255,255,255,.04)}.nav.show{display:grid}
 .nav-item{position:relative;border:0;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:6px 4px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .22s ease-out}
 .nav-item:active{opacity:.82}
 .nav-icon-wrap{position:relative;display:flex;align-items:center;justify-content:center;width:34px;height:30px}
 .nav-item.active .nav-icon-wrap::before{content:'';position:absolute;inset:-2px -6px;border-radius:12px;background:radial-gradient(circle at 50% 55%,rgba(13,107,255,.32) 0%,rgba(13,107,255,.08) 45%,transparent 72%);opacity:1;transition:opacity .22s ease-out;pointer-events:none}
-.nav-icon{width:22px;height:22px;stroke:rgba(147,168,196,.72);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;transition:stroke .22s ease-out,transform .22s ease-out,opacity .22s ease-out;transform:scale(1);transform-origin:center}
+.nav-icon{width:22px;height:22px;stroke:rgba(147,168,196,.52);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;transition:stroke .22s ease-out,transform .22s ease-out,opacity .22s ease-out;transform:scale(1);transform-origin:center}
 .nav-item.active .nav-icon{stroke:rgba(255,255,255,.96);transform:scale(1.08)}
 .nav-pulse{position:absolute;left:50%;bottom:0;width:22px;height:2px;margin-left:-11px;border-radius:999px;background:linear-gradient(90deg,#0A52D4,#7EC0FF 50%,#0A52D4);box-shadow:0 0 14px rgba(13,107,255,.38),0 0 6px rgba(13,107,255,.18);opacity:0;transform:scaleX(0);transform-origin:center;transition:opacity .22s ease-out,transform .22s ease-out;pointer-events:none}
 .nav-item.active .nav-pulse{opacity:1;transform:scaleX(1)}
-.nav-label{font-size:10px;font-weight:500;letter-spacing:.03em;color:rgba(147,168,196,.72);line-height:1.2;transition:color .22s ease-out,font-weight .22s ease-out;white-space:nowrap}
+.nav-label{font-size:10px;font-weight:500;letter-spacing:.03em;color:rgba(147,168,196,.52);line-height:1.2;transition:color .22s ease-out,font-weight .22s ease-out;white-space:nowrap}
 .nav-item.active .nav-label{color:rgba(255,255,255,.96);font-weight:600}
 @media(prefers-reduced-motion:reduce){.nav-icon,.nav-pulse,.nav-label,.nav-item.active .nav-icon-wrap::before{transition:none!important}}
 .metricGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:14px 0}.metricBox{border:1px solid var(--line);background:rgba(255,255,255,.055);border-radius:18px;padding:13px;text-align:center}.metricBox strong{font-size:21px;display:block}.metricBox span{font-size:12px;color:#D1DEEF}
@@ -206,26 +209,18 @@ html.mp-expo #welcome.active{padding-top:max(52px,calc(env(safe-area-inset-top,0
 .perm-section .perm-privacy{margin-top:12px;font-size:13px;font-weight:500;color:rgba(110,180,255,.78);line-height:1.45}
 #permissions .brand-bar.onboard-brand{margin-bottom:16px}
 #permissions .onboard-progress{margin:0 0 12px}
-#permissions .perm-screen-title{margin:0 0 14px;font-size:clamp(24px,6.2vw,28px);line-height:1.15}
+#permissions .perm-screen-title{margin:0 0 15px;font-size:clamp(24px,6.2vw,28px);line-height:1.15}
+#permissions .perm-confidence{margin:0 0 16px;font-size:14px;font-weight:500;line-height:1.45;color:rgba(147,168,196,.82);text-align:center}
 #permissions .perm-scroll{margin:0 0 12px}
 #permissions .perm-section{padding:24px 20px 22px;margin:0;border-color:rgba(110,180,255,.22);box-shadow:0 8px 32px rgba(0,0,0,.14),0 0 24px rgba(13,107,255,.08),inset 0 1px 0 rgba(255,255,255,.06)}
 #permissions .perm-lead{margin:0 0 16px;font-size:15px;font-weight:500;line-height:1.45;color:rgba(159,180,208,.92);text-align:center}
-#permissions .perm-permission-lead{margin:0 0 16px;padding:16px 16px 14px;text-align:left}
-#permissions .perm-permission-title{display:block;margin:0 0 8px;font-size:14px;font-weight:600;letter-spacing:-.01em;color:rgba(234,242,255,.96)}
-#permissions .perm-permission-intro{margin:0 0 10px;font-size:13px;font-weight:500;line-height:1.4;color:rgba(159,180,208,.9)}
-#permissions .perm-benefit-list{margin:0;padding:0;list-style:none}
-#permissions .perm-benefit-list li{position:relative;margin:0 0 8px;padding-left:18px;font-size:13px;font-weight:500;line-height:1.35;color:rgba(180,210,245,.92)}
-#permissions .perm-benefit-list li:last-child{margin-bottom:0}
-#permissions .perm-benefit-list li::before{content:'✓';position:absolute;left:0;top:0;color:rgba(110,180,255,.88);font-size:12px;font-weight:700}
-#permissions .perm-privacy-block{margin:0;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid rgba(110,180,255,.1)}
-#permissions .perm-privacy-head{display:flex;align-items:center;gap:8px;margin:0 0 10px}
-#permissions .perm-lock-icon{width:15px;height:15px;flex-shrink:0;stroke:rgba(110,180,255,.82);fill:none;stroke-width:1.6}
-#permissions .perm-privacy-head h3{margin:0;font-size:13px;font-weight:600;letter-spacing:-.01em;color:rgba(234,242,255,.92)}
-#permissions .perm-privacy-list{margin:0;padding:0;list-style:none}
-#permissions .perm-privacy-list li{position:relative;margin:0 0 6px;padding-left:14px;font-size:12px;font-weight:500;line-height:1.4;color:rgba(147,168,196,.88)}
-#permissions .perm-privacy-list li:last-child{margin-bottom:0}
-#permissions .perm-privacy-list li::before{content:'•';position:absolute;left:0;color:rgba(110,180,255,.65);font-weight:700}
-#permissions .perm-btn-hint{margin:8px 0 0;text-align:center;font-size:12px;font-weight:500;line-height:1.35;color:rgba(147,168,196,.78)}
+#permissions .perm-permission-lead{margin:0 0 16px;padding:28px 20px 26px;text-align:left}
+#permissions .perm-permission-title{display:block;margin:0 0 10px;font-size:14px;font-weight:600;letter-spacing:-.01em;line-height:1.4;color:rgba(234,242,255,.96)}
+#permissions .perm-permission-body{margin:0;font-size:14px;font-weight:500;line-height:1.58;color:rgba(180,210,245,.92)}
+#permissions .perm-explain{margin:0 0 10px;font-size:15px;font-weight:400;line-height:1.5;color:rgba(159,180,208,.9)}
+#permissions .perm-reassure{margin:0;font-size:12px;font-weight:500;line-height:1.4;color:rgba(147,168,196,.78)}
+#permissions .perm-battery{margin:8px 0 0;font-size:12px;font-weight:500;line-height:1.4;color:rgba(147,168,196,.83)}
+#permissions .perm-btn-hint{margin:8px 0 0;text-align:center;font-size:12px;font-weight:500;line-height:1.35;color:rgba(147,168,196,.58)}
 .autopilot-req-list{margin:14px 0 0;padding:0;list-style:none}
 .autopilot-req-list li{position:relative;margin:0 0 11px;padding-left:22px;font-size:14px;font-weight:500;line-height:1.45;color:rgba(159,180,208,.92);letter-spacing:.01em}
 .autopilot-req-list li::before{content:'';position:absolute;left:0;top:.45em;width:8px;height:8px;border-radius:50%;background:#20D781;box-shadow:0 0 0 3px rgba(32,215,129,.18)}
@@ -268,6 +263,16 @@ html.mp-expo #welcome.active{padding-top:max(52px,calc(env(safe-area-inset-top,0
 .enable-mode-block strong{display:block;margin:0 0 6px;font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:rgba(126,184,255,.92)}
 .enable-mode-block p{margin:0;font-size:14px;line-height:1.45;color:rgba(159,180,208,.9)}
 #emailSetup .onboard-inner,#reportSchedule .onboard-inner{max-width:340px;margin:0 auto;width:100%}
+#emailSetup .knowYou-body{flex:1;display:flex;flex-direction:column;min-height:0}
+#emailSetup .knowYou-greeting{margin:0 0 10px}
+#emailSetup .email-setup-copy{margin:0 0 24px}
+#emailSetup .email-setup-support{margin:0 auto 12px;max-width:300px}
+#emailSetup .email-setup-support:last-child{margin-bottom:0}
+#emailSetup .email-setup-prefill{margin:0 0 10px;text-align:center;font-size:12px;font-weight:500;line-height:1.4;color:rgba(126,184,255,.85)}
+#emailSetup .email-setup-prefill[hidden]{display:none}
+#emailSetup .onboard-email-input{margin:0 0 8px;padding:0 16px;height:52px;box-sizing:border-box;line-height:52px;-webkit-appearance:none;appearance:none}
+#emailSetup .email-setup-privacy{margin:0 0 28px;text-align:center;font-size:12px;font-weight:500;line-height:1.4;color:rgba(147,168,196,.78)}
+#emailSetup .knowYou-foot{margin-top:auto;padding-top:8px}
 .onboard-name-input{height:52px;border-radius:var(--button-radius);border:1px solid rgba(110,180,255,.38);background:rgba(18,36,62,.92);color:rgba(248,251,255,.98);box-shadow:inset 0 1px 0 rgba(255,255,255,.08);font-size:17px;font-weight:500;padding:0 16px 0 44px;width:100%;margin:0 0 18px;transition:border-color .28s ease,box-shadow .28s ease;-webkit-font-smoothing:antialiased}
 .onboard-name-input::placeholder{color:rgba(186,204,228,.78)}
 .onboard-name-input:focus{border-color:rgba(13,107,255,.62);box-shadow:0 0 0 3px rgba(13,107,255,.14),inset 0 0 14px rgba(13,107,255,.07);outline:none}
@@ -275,19 +280,15 @@ html.mp-expo #welcome.active{padding-top:max(52px,calc(env(safe-area-inset-top,0
 .onboard-oauth-btn{height:50px;border-radius:14px;border:1px solid rgba(110,180,255,.22);background:rgba(255,255,255,.06);color:rgba(234,242,255,.94);font-size:16px;font-weight:600;width:100%;margin:0 0 10px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:10px;transition:background .22s ease,border-color .22s ease}
 .onboard-oauth-btn:active{transform:scale(.985)}
 .onboard-or{margin:14px 0;text-align:center;font-size:13px;font-weight:500;color:rgba(147,168,196,.78);letter-spacing:.04em}
-.onboard-ready-icon{width:64px;height:64px;margin:0 auto 20px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(32,215,129,.2),rgba(13,107,255,.12));border:1px solid rgba(32,215,129,.35);box-shadow:0 0 32px rgba(32,215,129,.15),0 0 48px rgba(13,107,255,.08);font-size:28px;font-weight:700;color:#20D781}
-@keyframes onboardReadySuccessPulse{0%{transform:scale(1);box-shadow:0 0 32px rgba(32,215,129,.15),0 0 48px rgba(13,107,255,.08)}45%{transform:scale(1.05);box-shadow:0 0 40px rgba(13,107,255,.32),0 0 56px rgba(32,215,129,.22)}100%{transform:scale(1);box-shadow:0 0 36px rgba(13,107,255,.2),0 0 44px rgba(32,215,129,.16)}}
+.onboard-ready-icon{width:64px;height:64px;margin:0 auto 44px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(32,215,129,.2),rgba(13,107,255,.12));border:1px solid rgba(32,215,129,.35);box-shadow:0 0 35px rgba(32,215,129,.165),0 0 53px rgba(13,107,255,.088);font-size:28px;font-weight:700;color:#20D781}
+@keyframes onboardReadySuccessPulse{0%{transform:scale(1);box-shadow:0 0 35px rgba(32,215,129,.165),0 0 53px rgba(13,107,255,.088)}45%{transform:scale(1.05);box-shadow:0 0 44px rgba(13,107,255,.35),0 0 62px rgba(32,215,129,.24)}100%{transform:scale(1);box-shadow:0 0 40px rgba(13,107,255,.22),0 0 48px rgba(32,215,129,.18)}}
 #onboardReady .onboard-ready-icon.is-animated{animation:onboardReadySuccessPulse 1.15s cubic-bezier(.22,1,.36,1) .25s 1 both}
 @media(prefers-reduced-motion:reduce){#onboardReady .onboard-ready-icon.is-animated{animation:none}}
-#onboardReady .onboard-ready-brand{margin:0 auto 6px;max-width:300px;font-size:16px;font-weight:600;line-height:1.4;color:rgba(234,242,255,.96);letter-spacing:-.02em}
-#onboardReady .onboard-ready-tagline{margin:0 auto 18px;max-width:300px;font-size:14px;font-weight:500;line-height:1.45;color:rgba(126,184,255,.9)}
-#onboardReady .onboard-ready-steps{margin:0 auto 16px;padding:0;max-width:280px;list-style:none;text-align:left}
-#onboardReady .onboard-ready-steps li{position:relative;margin:0 0 9px;padding-left:22px;font-size:14px;font-weight:500;line-height:1.4;color:rgba(180,210,245,.92)}
-#onboardReady .onboard-ready-steps li:last-child{margin-bottom:0}
-#onboardReady .onboard-ready-steps li::before{content:'✓';position:absolute;left:0;top:0;color:#20D781;font-size:13px;font-weight:700}
-#onboardReady .onboard-ready-payoff{margin:0 auto 14px;max-width:300px;font-size:14px;font-weight:500;line-height:1.45;color:rgba(159,180,208,.88)}
-#onboardReady .onboard-ready-cta-line{margin:0 auto 4px;max-width:300px;font-size:14px;font-weight:600;line-height:1.4;color:rgba(180,210,245,.94)}
+#onboardReady .onboard-ready-feature{margin:0 auto 16px;max-width:300px;font-size:15px;font-weight:500;line-height:1.5;color:rgba(159,180,208,.9)}
+#onboardReady .onboard-ready-payoff{margin:0 auto 20px;max-width:300px;font-size:14px;font-weight:700;line-height:1.4;color:rgba(126,184,255,.95);letter-spacing:-.01em}
 #onboardReady .onboard-ready-hint{margin:10px 0 0;text-align:center;font-size:12px;font-weight:500;line-height:1.35;color:rgba(147,168,196,.78)}
+#onboardReady .onboard-progress-fill{transition:width .65s cubic-bezier(.22,1,.36,1)}
+@media(prefers-reduced-motion:reduce){#onboardReady .onboard-progress-fill{transition:none}}
 .onboard-summary-note{margin:0 0 20px;padding:14px 16px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid rgba(110,180,255,.12);font-size:13px;line-height:1.5;color:rgba(159,180,208,.9)}
 .onboard-summary-note strong{display:block;margin:0 0 8px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(126,184,255,.88)}
 #welcome .welcome-get-started{margin-top:8px}
@@ -401,10 +402,14 @@ html.mp-expo #welcome.active{padding-top:max(52px,calc(env(safe-area-inset-top,0
 .premium-btn:active{transform:translateY(1px);box-shadow:0 8px 20px rgba(13,107,255,.26)}
 @media(prefers-reduced-motion:reduce){#welcome .welcome-brand-compact,#welcome .welcome-headline,#welcome .welcome-value-line,#welcome .welcome-get-started{animation:none!important;opacity:1!important;transform:none!important}}
 /* MP-006 Command Centre */
-#home.cc-screen{background:linear-gradient(180deg,#0A2854 0%,#031126 82%);padding:24px 22px 108px;position:relative}
+#home.cc-screen{background:linear-gradient(180deg,#0A2854 0%,#031126 82%);padding:24px 22px var(--nav-dock-pad);position:relative}
 #home.cc-screen.active{display:block}
+#home .brand-bar{margin-bottom:14px}
+#home .brand-bar .wordmark{font-size:clamp(28px,7.2vw,29px)}
+#home .brand-bar .brand-pulse{width:min(170px,48vw);margin:10px auto 0}
+#home .brand-tagline{margin-top:8px;font-size:10px}
 .cc-body{max-width:390px;margin:0 auto}
-.cc-greeting-wrap{margin:4px 0 28px;animation:ccFadeIn .55s var(--ease-premium) both}
+.cc-greeting-wrap{margin:2px 0 20px;animation:ccFadeIn .55s var(--ease-premium) both}
 .cc-greeting{font-size:clamp(26px,6.5vw,32px);font-weight:700;letter-spacing:-0.03em;line-height:1.12;margin:0 0 8px;-webkit-font-smoothing:antialiased}
 .cc-status{font-size:15px;font-weight:500;line-height:1.5;color:rgba(159,180,208,.88);margin:0;letter-spacing:-.01em}
 .cc-tracking-bar{margin:0 0 20px;padding:16px 18px;border:1px solid rgba(32,215,129,.22);border-radius:20px;background:linear-gradient(180deg,rgba(32,215,129,.08),rgba(32,215,129,.02));animation:ccSlideIn .45s cubic-bezier(.22,1,.36,1) both}
@@ -412,11 +417,13 @@ html.mp-expo #welcome.active{padding-top:max(52px,calc(env(safe-area-inset-top,0
 .cc-dot{width:9px;height:9px;border-radius:50%;background:#20D781;box-shadow:0 0 12px rgba(32,215,129,.65);animation:ccPulseDot 2s ease-in-out infinite}
 @keyframes ccPulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.7;transform:scale(.92)}}
 .cc-timer{font-size:clamp(36px,9vw,44px);font-weight:700;letter-spacing:-0.03em;line-height:1;font-variant-numeric:tabular-nums;color:#fff;-webkit-font-smoothing:antialiased}
-.cc-hero{text-align:center;margin:0 0 24px;padding:12px 0 8px;animation:ccFadeIn .55s var(--ease-premium) .08s both}
-.cc-hero-label{display:block;font-size:11px;font-weight:600;letter-spacing:.14em;color:rgba(110,180,255,.78);margin-bottom:8px}
+.cc-hero{text-align:center;margin:0 0 18px;padding:4px 0 0;animation:ccFadeIn .55s var(--ease-premium) .08s both}
+.cc-hero-label{display:block;font-size:15px;font-weight:600;letter-spacing:-.02em;text-transform:none;color:rgba(159,180,208,.92);margin-bottom:10px;line-height:1.3}
 .cc-hero-value{font-size:clamp(68px,19vw,92px);font-weight:700;letter-spacing:-0.045em;line-height:.95;color:#fff;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums;transition:transform .35s var(--ease-premium);text-shadow:0 4px 32px rgba(13,107,255,.18)}
 .cc-hero.is-live .cc-hero-value{color:rgba(234,242,255,.98)}
-.cc-hero-unit{display:block;margin-top:10px;font-size:15px;font-weight:500;color:rgba(159,180,208,.9);letter-spacing:.02em}
+.cc-hero-unit{display:none}
+#home .cc-primary-btn:not(.is-end){height:61px;padding:0 16px;margin-bottom:24px;box-shadow:0 10px 36px rgba(13,107,255,.34),0 0 28px rgba(13,107,255,.12),inset 0 1px 0 rgba(255,255,255,.12)}
+#home .cc-primary-btn:not(.is-end):hover{box-shadow:0 14px 40px rgba(13,107,255,.38),0 0 32px rgba(13,107,255,.14),inset 0 1px 0 rgba(255,255,255,.12)}
 .cc-primary-btn{width:100%;height:var(--btn-height);border:0;border-radius:var(--button-radius);background:linear-gradient(180deg,#1E88FF 0%,#0D6BFF 50%,#005FE8 100%);color:#fff;font-size:17px;font-weight:600;letter-spacing:-0.01em;margin:0 0 28px;box-shadow:0 8px 28px rgba(13,107,255,.28),inset 0 1px 0 rgba(255,255,255,.12);cursor:pointer;transition:transform .24s var(--ease-premium),box-shadow .36s ease,filter .24s ease;animation:ccFadeIn .55s var(--ease-premium) .12s both}
 .cc-primary-btn:hover{filter:brightness(1.04);box-shadow:0 12px 32px rgba(13,107,255,.32),inset 0 1px 0 rgba(255,255,255,.12)}
 .cc-primary-btn:active{transform:scale(.985)}
@@ -429,6 +436,17 @@ html.mp-expo #welcome.active{padding-top:max(52px,calc(env(safe-area-inset-top,0
 .cc-card:nth-of-type(3){animation-delay:.28s}
 .cc-card-title{margin:0 0 16px;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(110,180,255,.82)}
 .cc-metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cc-metrics--three{grid-template-columns:repeat(3,1fr);gap:10px}
+.cc-metrics--three .cc-metric{padding:14px 10px}
+.cc-metrics--three .cc-metric span{font-size:10.5px;letter-spacing:.04em}
+.cc-metrics--three .cc-metric strong{font-size:clamp(19px,5.1vw,24px)}
+.cc-activity-empty-state{padding:8px 0 4px;text-align:center}
+.cc-activity-empty-title{margin:0 0 6px;font-size:15px;font-weight:600;color:rgba(180,210,245,.9);line-height:1.35}
+.cc-activity-empty-sub{margin:0;font-size:14px;font-weight:500;line-height:1.45;color:rgba(147,168,196,.78)}
+.cc-empty-state{margin:0 0 16px;padding:16px 18px;border-radius:16px;border:1px dashed rgba(110,180,255,.14);background:rgba(255,255,255,.02);text-align:center}
+.cc-empty-state[hidden]{display:none!important}
+.cc-empty-title{margin:0 0 6px;font-size:14px;font-weight:600;color:rgba(180,210,245,.9);line-height:1.35}
+.cc-empty-sub{margin:0;font-size:13px;font-weight:500;line-height:1.45;color:rgba(147,168,196,.78)}
 .cc-metric{padding:14px 12px;border-radius:16px;border:1px solid rgba(110,180,255,.1);background:rgba(255,255,255,.035);transition:border-color .28s var(--ease-premium),background .28s var(--ease-premium)}
 .cc-metric span{display:block;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:rgba(147,168,196,.82);margin-bottom:6px}
 .cc-metric strong{display:block;font-size:clamp(21px,5.2vw,25px);font-weight:700;letter-spacing:-0.03em;color:rgba(234,242,255,.96);font-variant-numeric:tabular-nums;line-height:1.1}
@@ -552,6 +570,13 @@ body.summary-open .nav{display:none!important}
 .ai-all-sorted p{margin:0;font-size:16px;font-weight:600;color:rgba(234,242,255,.95)}
 .ai-all-sub{margin-top:8px!important;font-size:14px!important;font-weight:500!important;color:rgba(159,180,208,.88)!important}
 .ai-sorted-note{margin:0 0 14px;padding:12px 14px;border-radius:14px;background:rgba(13,107,255,.1);border:1px solid rgba(110,180,255,.16);font-size:13px;font-weight:500;line-height:1.45;color:rgba(200,220,248,.9);text-align:center}
+.cc-positioning{margin:6px 0 0;font-size:12px;font-weight:600;letter-spacing:.04em;color:rgba(126,184,255,.72)}
+.cc-trial-pill{display:flex;align-items:center;justify-content:center;gap:6px;width:fit-content;max-width:100%;margin:0 auto 14px;padding:8px 14px;border-radius:999px;border:1px solid rgba(110,180,255,.14);background:rgba(13,107,255,.06);font-family:inherit;font-size:12px;font-weight:500;line-height:1.35;color:rgba(180,210,245,.88);cursor:pointer;transition:background .22s ease,border-color .22s ease}
+.cc-trial-pill:hover{background:rgba(13,107,255,.1);border-color:rgba(110,180,255,.22)}
+.cc-trial-pill.is-expired{border-color:rgba(239,180,80,.22);background:rgba(239,180,80,.07);color:rgba(255,220,170,.92)}
+.cc-trial-pill[hidden]{display:none!important}
+.cc-trial-pill-chevron{font-size:14px;line-height:1;color:rgba(126,184,255,.72)}
+.cc-trial-pill.is-expired .cc-trial-pill-chevron{color:rgba(255,200,140,.75)}
 .cc-sub-banner{margin:0 0 18px;padding:14px 16px;border-radius:16px;border:1px solid rgba(110,180,255,.18);background:rgba(13,107,255,.08);font-size:13px;font-weight:600;line-height:1.45;color:rgba(200,220,248,.92);cursor:pointer}
 .cc-sub-banner.is-expired{border-color:rgba(239,180,80,.28);background:rgba(239,180,80,.08);color:rgba(255,220,170,.95)}
 .cc-sub-banner[hidden]{display:none!important}
@@ -567,7 +592,7 @@ body.summary-open .nav{display:none!important}
 .cc-body.is-active .cc-card{display:none}
 .cc-body.is-active .cc-divider{display:none}
 .cc-body.is-post-work .cc-greeting-wrap{margin-bottom:20px}
-.cc-version{position:absolute;left:0;right:0;bottom:max(88px,env(safe-area-inset-bottom));text-align:center;font-size:9px;font-weight:500;letter-spacing:.08em;color:rgba(143,168,201,.35)}
+.cc-version{position:relative;margin:20px 0 4px;text-align:center;font-size:9px;font-weight:500;letter-spacing:.08em;color:rgba(143,168,201,.35);pointer-events:none}
 .cc-gps-banner{margin:0 0 16px;padding:16px 18px;border-radius:20px;border:1px solid rgba(239,180,80,.28);background:linear-gradient(180deg,rgba(239,180,80,.1),rgba(239,180,80,.03));animation:ccSlideIn .45s cubic-bezier(.22,1,.36,1) both}
 .cc-gps-banner[hidden]{display:none!important}
 .cc-gps-banner p{margin:0 0 12px;font-size:14px;font-weight:500;line-height:1.45;color:rgba(234,220,180,.92)}
@@ -586,7 +611,7 @@ body.always-modal-open .nav{display:none!important}
 @keyframes ccSlideUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.cc-greeting-wrap,.cc-hero,.cc-primary-btn,.cc-card,.cc-summary,.cc-summary-panel,.cc-dot{animation:none!important;transition:none!important}}
 /* MP-008 Reports — premium consistency */
-#reports.reports-screen{background:linear-gradient(180deg,#0A2854 0%,#031126 82%);padding:24px 22px 108px}
+#reports.reports-screen{background:linear-gradient(180deg,#0A2854 0%,#031126 82%);padding:24px 22px var(--nav-dock-pad)}
 #reports.reports-screen.active{display:block}
 .reports-body{max-width:390px;margin:0 auto}
 .reports-header{margin:4px 0 24px}
@@ -637,7 +662,7 @@ body.always-modal-open .nav{display:none!important}
 .report-archive-search::placeholder{color:rgba(147,168,196,.72)}
 .report-archive-filters{display:flex;gap:8px;flex-wrap:wrap}
 .report-archive-filter{height:34px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:rgba(234,242,255,.88);font-size:13px;font-weight:600;cursor:pointer}
-.report-archive-filter.active{background:rgba(13,107,255,.22);border-color:rgba(13,107,255,.5);color:#fff}
+.report-archive-filter.active{background:linear-gradient(180deg,rgba(30,136,255,.38),rgba(13,107,255,.26));border-color:rgba(126,184,255,.72);color:#fff;box-shadow:0 0 18px rgba(13,107,255,.2),inset 0 1px 0 rgba(255,255,255,.1)}
 .report-archive-list{display:flex;flex-direction:column;gap:10px}
 .report-archive-item{border:1px solid rgba(110,180,255,.12);border-radius:18px;padding:16px 16px 14px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(13,107,255,.02));box-shadow:var(--card-shadow);transition:border-color .24s var(--ease-premium),box-shadow .24s var(--ease-premium)}
 .report-archive-item-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:10px}
@@ -648,19 +673,22 @@ body.always-modal-open .nav{display:none!important}
 .report-archive-btn{height:34px;padding:0 12px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:rgba(234,242,255,.92);font-size:12px;font-weight:600;cursor:pointer}
 .report-archive-btn.danger{color:#ffb4b4;border-color:rgba(255,120,120,.25)}
 .report-archive-empty{text-align:center;padding:32px 16px;color:rgba(147,168,196,.82);font-size:15px;font-weight:500;line-height:1.45}
-.report-archive-note{margin:12px 0 0;font-size:13px;line-height:1.45;color:rgba(147,168,196,.78)}
+.report-archive-features{margin:16px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;text-align:center}
+.report-archive-features li{font-size:12px;font-weight:500;line-height:1.4;color:rgba(147,168,196,.68);letter-spacing:.01em}
+.report-archive-features li::before{content:'✓ ';color:rgba(110,180,255,.55)}
 .report-custom-link-btn{display:none!important}
 .report-option-card{display:flex;align-items:center;gap:14px;width:100%;margin:0 0 16px;padding:var(--card-padding);text-align:left;cursor:pointer;border:1px solid rgba(13,107,255,.28);border-radius:22px;background:linear-gradient(180deg,rgba(13,107,255,.1),rgba(13,107,255,.03));box-shadow:var(--card-shadow-lg);font-family:inherit;color:inherit;transition:transform .24s var(--ease-premium),border-color .24s ease,box-shadow .24s ease,background .24s ease;-webkit-tap-highlight-color:transparent;position:relative;overflow:hidden}
 .report-option-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(126,184,255,.35),transparent);pointer-events:none}
 .report-option-card:hover{border-color:rgba(13,107,255,.42);box-shadow:0 10px 36px rgba(13,107,255,.16),inset 0 1px 0 rgba(255,255,255,.08)}
 .report-option-card:active{transform:scale(.985)}
-.report-option-icon{flex-shrink:0;width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;line-height:1;background:linear-gradient(145deg,rgba(13,107,255,.32),rgba(13,107,255,.1));border:1px solid rgba(110,180,255,.28);box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 4px 16px rgba(13,107,255,.12)}
+.report-option-icon{flex-shrink:0;width:53px;height:53px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;line-height:1;background:linear-gradient(145deg,rgba(13,107,255,.32),rgba(13,107,255,.1));border:1px solid rgba(110,180,255,.28);box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 4px 16px rgba(13,107,255,.12)}
 .report-option-copy{flex:1;min-width:0}
 .report-option-title{display:block;font-size:17px;font-weight:600;letter-spacing:-0.02em;color:rgba(234,242,255,.96);margin-bottom:4px}
 .report-option-desc{display:block;font-size:14px;font-weight:500;line-height:1.4;color:rgba(159,180,208,.88)}
-.report-option-badge{display:inline-block;margin-bottom:6px;padding:3px 8px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:linear-gradient(180deg,#1E88FF,#0D6BFF);color:#fff;box-shadow:0 2px 10px rgba(13,107,255,.28)}
+.report-option-badge{display:inline-block;margin-bottom:4px;padding:3px 8px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:linear-gradient(180deg,#1E88FF,#0D6BFF);color:#fff;box-shadow:0 2px 10px rgba(13,107,255,.28)}
+.report-option-kicker{display:block;margin:0 0 6px;font-size:13px;font-weight:500;line-height:1.35;color:rgba(126,184,255,.88);letter-spacing:.01em}
 .report-option-chevron{flex-shrink:0;font-size:22px;font-weight:300;line-height:1;color:rgba(126,184,255,.9)}
-#customReport.custom-report-screen{background:linear-gradient(180deg,#0A2854 0%,#031126 82%);padding:max(20px,env(safe-area-inset-top)) 22px 108px;min-height:100dvh}
+#customReport.custom-report-screen{background:linear-gradient(180deg,#0A2854 0%,#031126 82%);padding:max(20px,env(safe-area-inset-top)) 22px var(--nav-dock-pad);min-height:100dvh}
 #customReport.custom-report-screen.active{display:block;animation:customReportIn .4s cubic-bezier(.22,1,.36,1) both}
 @keyframes customReportIn{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
 .custom-report-top{margin:0 0 20px}
@@ -706,10 +734,11 @@ body.always-modal-open .nav{display:none!important}
 .report-summary-card{margin:0 0 20px}
 .report-period-title{margin:0 0 18px;font-size:clamp(22px,5.5vw,26px);font-weight:700;letter-spacing:-0.03em;color:rgba(234,242,255,.96);line-height:1.15}
 .report-empty{text-align:center;padding:28px 12px 12px}
-.report-empty-illus{margin:0 auto 16px;width:120px;height:88px;display:flex;align-items:center;justify-content:center}
+.report-empty-illus{margin:0 auto 16px;width:132px;height:97px;display:flex;align-items:center;justify-content:center}
 .report-empty-illus .mp-empty-svg{width:100%;height:auto;display:block;filter:drop-shadow(0 8px 24px rgba(13,107,255,.18))}
 .report-empty-title{margin:0 0 8px;font-size:17px;font-weight:600;color:rgba(234,242,255,.94);letter-spacing:-0.01em}
 .report-empty-sub{margin:0 auto;font-size:15px;font-weight:500;line-height:1.45;color:rgba(147,168,196,.88);max-width:300px}
+.report-empty-support{margin:10px auto 0;font-size:14px;font-weight:500;line-height:1.45;color:rgba(147,168,196,.72);max-width:300px}
 .beta-overlay{position:fixed;inset:0;z-index:80;background:rgba(2,8,18,.72);backdrop-filter:blur(8px);display:flex;align-items:flex-end;justify-content:center;padding:16px}
 .beta-overlay[hidden]{display:none!important}
 .beta-sheet{width:min(420px,100%);max-height:min(88dvh,720px);overflow:auto;background:linear-gradient(180deg,#0B2348 0%,#061A38 100%);border:1px solid rgba(255,255,255,.12);border-radius:24px 24px 20px 20px;padding:24px 20px 28px;box-shadow:0 24px 64px rgba(0,0,0,.45)}
@@ -756,8 +785,6 @@ body.always-modal-open .nav{display:none!important}
 .report-doc-secondary-label{margin:0 0 14px;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(147,168,196,.78)}
 .report-doc-actions{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:0}
 .report-doc-actions .report-action-btn.primary{grid-column:span 2}
-.report-archive-note{margin:14px 0 0;font-size:12px;font-weight:500;color:rgba(147,168,196,.72);text-align:center;line-height:1.4}
-.report-doc-badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 12px;border-radius:999px;margin-bottom:12px;border:1px solid transparent}
 .report-doc-badge.is-ready{background:rgba(13,107,255,.18);color:rgba(126,184,255,.98);border-color:rgba(13,107,255,.32)}
 .report-doc-badge.is-empty{background:rgba(147,168,196,.1);color:rgba(147,168,196,.82);border-color:rgba(255,255,255,.08)}
 .report-doc-sub{margin:6px 0 0;font-size:14px;font-weight:500;color:rgba(147,168,196,.88)}
@@ -765,7 +792,6 @@ body.always-modal-open .nav{display:none!important}
 .report-action-btn{height:46px;border-radius:14px;border:1px solid rgba(110,180,255,.18);background:rgba(255,255,255,.05);color:rgba(234,242,255,.94);font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .report-action-btn.primary{grid-column:span 2;background:linear-gradient(180deg,#1E88FF 0%,#0D6BFF 50%,#005FE8 100%);border-color:rgba(13,107,255,.45);color:#fff;box-shadow:0 6px 20px rgba(13,107,255,.22)}
 .report-action-btn:active{opacity:.88}
-.report-archive-note{margin:14px 0 0;font-size:12px;font-weight:500;color:rgba(147,168,196,.72);text-align:center;line-height:1.4}
 .report-email-section{display:none}
 @media(prefers-reduced-motion:reduce){.report-tab,.report-email-btn{transition:none!important}}
 /* Stay Updated — premium full-screen (matches Reports / Command Centre) */
@@ -788,15 +814,40 @@ body.always-modal-open .nav{display:none!important}
 .su-skip:hover{color:rgba(159,180,208,.96)}
 .su-badge-inline{display:inline-block;margin-left:8px;font-size:10px;font-weight:600;letter-spacing:.04em;padding:3px 8px;border-radius:999px;background:rgba(13,107,255,.22);color:rgba(126,184,255,.95);vertical-align:middle}
 .settings-section-title{margin:0 0 12px;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(110,180,255,.82)}
-#settings.screen{background:linear-gradient(180deg,#0A2854 0%,#031126 82%);padding:24px 22px 108px}
+#settings.screen{background:linear-gradient(180deg,#0A2854 0%,#031126 82%);padding:24px 22px var(--nav-dock-pad)}
 #settings.screen.active{display:block}
-#settings .title{margin:8px 0 22px;font-size:clamp(26px,6.5vw,34px)}
-#settings .card .sub{margin-top:0}
-#settings .card label{display:block;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(110,180,255,.82);margin:0 0 10px}
-#settings .card input{height:var(--btn-height);border-radius:var(--button-radius);margin:0 0 4px}
-#settings .card .btn{margin-top:12px}
-#settings .card .btn.small{margin-top:10px}
-#history.screen{background:linear-gradient(180deg,#0A2854 0%,#031126 82%);padding:24px 22px 108px}
+#settings .title{margin:8px 0 20px;font-size:clamp(26px,6.5vw,34px)}
+.settings-body{max-width:390px;margin:0 auto}
+#settings .settings-card{border:1px solid rgba(110,180,255,.14);border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(13,107,255,.02));box-shadow:var(--card-shadow);margin:0 0 12px;padding:18px 18px 16px}
+#settings .settings-card--hero{padding:22px 20px 20px;margin-bottom:12px;background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(13,107,255,.05));border-color:rgba(110,180,255,.2);box-shadow:var(--card-shadow-lg)}
+#settings .settings-card--medium{padding:20px 18px 18px;margin-bottom:12px}
+#settings .settings-card--compact{padding:14px 16px;margin-bottom:12px}
+.settings-card-head{display:flex;align-items:flex-start;gap:12px}
+.settings-card-icon{flex-shrink:0;width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;line-height:1;background:linear-gradient(145deg,rgba(13,107,255,.22),rgba(13,107,255,.08));border:1px solid rgba(110,180,255,.2);box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
+.settings-card-headcopy{flex:1;min-width:0}
+.settings-card-title{margin:0 0 10px;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(110,180,255,.82)}
+.settings-card-head .settings-card-title{margin:0 0 8px}
+.settings-hero-mode{margin:0 0 8px;font-size:20px;font-weight:600;letter-spacing:-0.02em;color:rgba(234,242,255,.96);line-height:1.2}
+.settings-hero-lead{margin:0 0 6px;font-size:15px;font-weight:500;line-height:1.45;color:rgba(180,210,245,.9)}
+.settings-hero-desc{margin:0;font-size:14px;font-weight:500;line-height:1.45;color:rgba(147,168,196,.82)}
+.settings-hero-reassure{margin:8px 0 0;font-size:13px;font-weight:500;line-height:1.4;color:rgba(147,168,196,.72)}
+.settings-value-line{margin:0 0 4px;font-size:18px;font-weight:600;letter-spacing:-0.02em;color:rgba(234,242,255,.96);line-height:1.25}
+.settings-value-desc{margin:0 0 14px;font-size:14px;font-weight:500;line-height:1.45;color:rgba(147,168,196,.82)}
+.settings-checklist{margin:4px 0 0;padding:0;list-style:none}
+.settings-checklist li{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:14px;font-weight:500;line-height:1.35;color:rgba(234,242,255,.92)}
+.settings-checklist li:last-child{border-bottom:0;padding-bottom:0}
+.settings-checklist .mark{flex-shrink:0;width:18px;text-align:center;font-size:14px;font-weight:700;color:rgba(32,215,129,.92)}
+.settings-checklist li.is-off{color:rgba(147,168,196,.72)}
+.settings-checklist li.is-off .mark{color:rgba(147,168,196,.45)}
+#settings .settings-card .sub{margin-top:0}
+#settings .settings-card label{display:block;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(110,180,255,.82);margin:0 0 10px}
+#settings .settings-card input{height:var(--btn-height);border-radius:var(--button-radius);margin:0 0 4px}
+#settings .settings-card .btn{margin-top:12px}
+#settings .settings-card .btn.small{margin-top:10px}
+#settings .settings-card .btn.outline.small{margin-top:8px}
+.settings-stack-actions{display:flex;flex-direction:column;gap:8px}
+.settings-stack-actions .btn{margin-top:0}
+#history.screen{background:linear-gradient(180deg,#0A2854 0%,#031126 82%);padding:24px 22px var(--nav-dock-pad)}
 #history.screen .title{margin:8px 0 10px;font-size:clamp(26px,6.5vw,34px)}
 #history.screen .sub{margin:0 0 20px;font-size:15px;color:rgba(147,168,196,.88)}
 .settings-freq{display:flex;flex-direction:column;gap:8px;margin:0 0 18px}
@@ -964,30 +1015,17 @@ body.always-modal-open .nav{display:none!important}
 <header class="brand-bar onboard-brand center"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div><p class="brand-tagline">Your business. On AutoPilot.</p></header>
 <div class="onboard-progress"><div class="onboard-progress-track"><div class="onboard-progress-fill" style="width:67%"></div></div><p class="onboard-progress-label">Step 4 of 6</p></div>
 <div class="onboard-body">
-<h1 class="knowYou-greeting perm-screen-title">Never miss another business mile.</h1>
+<h1 class="knowYou-greeting perm-screen-title">Unlock AutoPilot Tracking</h1>
+<p class="perm-confidence">Drive normally. MilePilot takes care of the rest.</p>
 <div class="perm-scroll">
 <div class="perm-section" id="permLocation" style="opacity:1">
-<p class="perm-lead">Drive normally. MilePilot does the rest.</p>
 <div class="onboard-setup-lead perm-permission-lead">
-<strong class="perm-permission-title">AutoPilot needs Location permission</strong>
-<p class="perm-permission-intro">Allowing location lets MilePilot:</p>
-<ul class="perm-benefit-list">
-<li>Detect business journeys automatically</li>
-<li>Track mileage while your phone is locked</li>
-<li>Prepare your mileage reports automatically</li>
-</ul>
+<strong class="perm-permission-title">📍 Always Location Permission</strong>
+<p class="perm-permission-body">Allowing Always Location lets MilePilot automatically detect your business journeys—even when your phone is locked.</p>
 </div>
-<div class="perm-privacy-block">
-<div class="perm-privacy-head">
-<svg class="perm-lock-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>
-<h3>Your privacy comes first.</h3>
-</div>
-<ul class="perm-privacy-list">
-<li>Your location is never sold</li>
-<li>Never used for advertising</li>
-<li>Only used to create your mileage reports</li>
-</ul>
-</div>
+<p class="perm-explain">Your location is only used to detect business journeys and calculate mileage.</p>
+<p class="perm-reassure">🔒 Your location is never sold or shared.</p>
+<p class="perm-battery">⚡ Designed to minimise battery usage.</p>
 <p class="perm-privacy perm-gps-help" id="permGpsHelp" hidden></p>
 </div>
 </div>
@@ -995,13 +1033,13 @@ body.always-modal-open .nav{display:none!important}
 <div class="onboard-foot">
 <button type="button" class="btn premium-btn is-ready" id="permSetupBtn" onclick="continueSetup()">Enable AutoPilot</button>
 <p class="perm-btn-hint">Takes about 10 seconds.</p>
-<button type="button" class="onboard-skip" onclick="continueWithManualMode()">Continue with Manual Mode</button>
+<button type="button" class="onboard-skip" onclick="continueWithManualMode()">Use Manual Tracking Instead</button>
 </div>
 </div>
 <div class="onboard-version">MP-004 🔒 Locked · Final</div>
 </section>
 <!-- MP-046 Tracking Mode — AutoPilot vs Manual -->
-<section id="trackingMode" class="screen" data-mp="MP-046">
+<section id="trackingMode" class="screen" data-mp="MP-046" data-locked="true">
 <div class="onboard-bg" aria-hidden="true">
 <div class="onboard-glow onboard-glow-1"></div>
 <div class="onboard-glow onboard-glow-2"></div>
@@ -1061,44 +1099,43 @@ body.always-modal-open .nav{display:none!important}
 <div class="onboard-inner">
 <header class="brand-bar onboard-brand center"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div><p class="brand-tagline">Your business. On AutoPilot.</p></header>
 <div class="onboard-progress"><div class="onboard-progress-track"><div class="onboard-progress-fill" style="width:83%"></div></div><p class="onboard-progress-label">Step 5 of 6</p></div>
-<h1 class="knowYou-greeting" style="margin-bottom:12px">Where should we email your business reports?</h1>
-<p class="knowYou-support" style="margin-bottom:20px">AutoPilot emails your report after each shift. Manual mode — you send reports yourself.</p>
+<div class="knowYou-body">
+<h1 class="knowYou-greeting">Where should we send your mileage reports?</h1>
+<div class="email-setup-copy">
+<p class="knowYou-support email-setup-support">AutoPilot automatically emails your mileage reports after each completed shift.</p>
+<p class="knowYou-support email-setup-support">Manual Mode keeps your reports safely in your dashboard until you're ready to send or download them.</p>
+</div>
+<p class="email-setup-prefill" id="emailSetupPrefillHint" hidden>We've pre-filled this using your account email.</p>
 <input id="emailInput" class="onboard-email-input" placeholder="you@example.com" inputmode="email" autocomplete="email">
-<div class="knowYou-foot"><button type="button" class="btn premium-btn is-ready" onclick="confirmEmailSetup()">Continue</button><button type="button" class="onboard-skip" onclick="skipEmailSetup()">Skip for now</button></div>
+<p class="email-setup-privacy">Your email is only used for reports and important account updates.</p>
+</div>
+<div class="knowYou-foot"><button type="button" class="btn premium-btn is-ready" onclick="confirmEmailSetup()">Continue</button><button type="button" class="onboard-skip" onclick="skipEmailSetup()">I'll add this later</button></div>
 </div>
 </section>
 <section id="reportSchedule" class="screen" hidden aria-hidden="true" data-mp="report-schedule-removed"></section>
-<section id="onboardReady" class="screen" data-mp="onboard-ready">
+<section id="onboardReady" class="screen" data-mp="onboard-ready" data-locked="true">
 <div class="onboard-bg" aria-hidden="true"><div class="onboard-glow onboard-glow-1"></div><div class="onboard-glow onboard-glow-2"></div></div>
 <div class="onboard-inner">
 <header class="brand-bar onboard-brand center"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div><p class="brand-tagline">Your business. On AutoPilot.</p></header>
-<div class="onboard-progress"><div class="onboard-progress-track"><div class="onboard-progress-fill" style="width:100%"></div></div><p class="onboard-progress-label">Step 6 of 6</p></div>
+<div class="onboard-progress"><div class="onboard-progress-track"><div class="onboard-progress-fill" id="onboardReadyProgressFill" style="width:83%"></div></div><p class="onboard-progress-label">Step 6 of 6</p></div>
 <div class="onboard-body" style="align-items:center;justify-content:center;text-align:center;padding:12px 0 20px">
 <div class="onboard-ready-icon" id="onboardReadyIcon" aria-hidden="true">✓</div>
-<h1 class="knowYou-greeting" id="onboardReadyGreeting">Welcome aboard.</h1>
-<p class="onboard-ready-sub" id="onboardReadyLead">MilePilot is now ready to record your business mileage automatically.</p>
-<p class="onboard-ready-brand" id="onboardReadyBrand">Your business is now on <span class="blue">AutoPilot</span>.</p>
-<p class="onboard-ready-tagline" id="onboardReadyTagline">Business mileage without the paperwork.</p>
-<ul class="onboard-ready-steps" id="onboardReadySteps" aria-label="What happens next">
-<li>Start your shift</li>
-<li>Drive normally</li>
-<li>Review today's journeys</li>
-<li>Download or receive your mileage report</li>
-</ul>
-<p class="onboard-ready-payoff" id="onboardReadyPayoff">From now on, every business mile can become a tax deduction.</p>
-<p class="onboard-ready-cta-line" id="onboardReadyCtaLine">Let's get your first shift started.</p>
+<h1 class="knowYou-greeting" id="onboardReadyGreeting">Welcome aboard!</h1>
+<p class="onboard-ready-sub" id="onboardReadyLead">MilePilot is ready to track your business mileage automatically.</p>
+<p class="onboard-ready-feature" id="onboardReadyFeature">Start your first shift. MilePilot will automatically record your journeys and prepare your mileage reports.</p>
+<p class="onboard-ready-payoff" id="onboardReadyPayoff">Every business mile now counts.</p>
 </div>
 <div class="knowYou-foot"><button type="button" class="btn premium-btn is-ready" onclick="openDashboard()">Start My First Shift</button><p class="onboard-ready-hint">You can change these settings any time.</p></div>
 </div>
 </section>
 <!-- MP-006 The Command Centre -->
-<section id="home" class="screen cc-screen" data-mp="MP-006">
+<section id="home" class="screen cc-screen" data-mp="MP-006" data-locked="true">
 <header class="brand-bar"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div><p class="brand-tagline">Your business. On AutoPilot.</p></header>
 <div class="cc-body" id="ccBody">
-<div class="cc-sub-banner" id="ccSubBanner" hidden onclick="openPaywall()"></div>
+<button type="button" class="cc-trial-pill" id="ccSubBanner" hidden onclick="openPaywall()"><span id="ccSubBannerText">7 days left in your free trial</span><span class="cc-trial-pill-chevron" aria-hidden="true">›</span></button>
 <div class="cc-greeting-wrap">
 <h1 class="cc-greeting" id="ccGreeting">Good afternoon</h1>
-<p class="cc-status" id="ccStatus">Start a shift when you're ready.</p>
+<p class="cc-status" id="ccStatus">Ready for another shift?</p>
 </div>
 <div class="cc-context-row" id="ccContextRow" hidden>
 <div class="cc-context-chip"><span class="cc-context-chip-label">Today's goal</span><span class="cc-context-chip-value" id="ccGoalValue">0 miles</span></div>
@@ -1113,25 +1150,23 @@ body.always-modal-open .nav{display:none!important}
 <button type="button" class="cc-gps-btn" onclick="enableTrackingGps(true)">Enable Location</button>
 </div>
 <div class="cc-hero" id="ccHero">
-<span class="cc-hero-label">TODAY</span>
+<span class="cc-hero-label" id="ccHeroLabel">Today's Business Miles</span>
 <div class="cc-hero-value" id="ccHeroMiles">0.0</div>
-<span class="cc-hero-unit">Business Miles</span>
 </div>
 <button type="button" class="cc-primary-btn" id="ccPrimaryBtn" onclick="toggleShift()">Start Shift</button>
 <button type="button" class="cc-report-btn" id="ccReportBtn" hidden onclick="viewTodayReport()">View Report →</button>
 <div class="cc-divider" aria-hidden="true"></div>
 <div class="cc-card">
 <h2 class="cc-card-title" id="ccTodayTitle">Today's Business</h2>
-<div class="cc-metrics">
+<div class="cc-metrics cc-metrics--three">
 <div class="cc-metric"><span id="ccMilesLabel">Business Miles</span><strong id="ccMiles">0.0</strong></div>
-<div class="cc-metric"><span id="ccTravelLabel">Travel Time</span><strong id="ccTime">0h</strong></div>
-<div class="cc-metric"><span id="ccJourneysLabel">Business Journeys</span><strong id="ccJourneys">0</strong></div>
-<div class="cc-metric"><span id="ccHmrcLabel">Mileage Allowance</span><strong id="ccHmrc">£0.00</strong></div>
+<div class="cc-metric"><span id="ccTravelLabel">Drive Time</span><strong id="ccTime">0h</strong></div>
+<div class="cc-metric"><span id="ccJourneysLabel">Journeys</span><strong id="ccJourneys">0</strong></div>
 </div>
 </div>
-<div class="cc-card">
-<h2 class="cc-card-title">Business Insight</h2>
-<p class="cc-insight" id="ccInsight">Your business insights will appear here after your first shift.</p>
+<div class="cc-empty-state" id="ccEmptyState" hidden>
+<p class="cc-empty-title">Your first business journey starts here.</p>
+<p class="cc-empty-sub">Press Start Shift to begin tracking.</p>
 </div>
 <div class="cc-card">
 <h2 class="cc-card-title">Recent Activity</h2>
@@ -1187,7 +1222,7 @@ body.always-modal-open .nav{display:none!important}
 </div>
 <button class="btn red" onclick="endShift()">End Shift</button>
 </section>
-<section id="reports" class="screen reports-screen"><header class="brand-bar"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div><p class="brand-tagline">Your business. On AutoPilot.</p></header><div class="reports-body"><div class="reports-header"><h1 class="reports-title">Report Centre</h1><p class="reports-sub" id="reportsSub">Your business documents — HMRC-ready summaries, anytime.</p></div><div class="cc-card report-auto-card" id="reportAutoBanner"><h2 class="report-auto-heading" id="reportModeHeading">How reports work</h2><p class="report-auto-desc" id="reportAutoDesc">Your operating mode controls report delivery automatically.</p><p class="report-auto-status is-on" id="reportAutoStatus">AutoPilot — emailed after each shift</p></div><button type="button" class="report-option-card" onclick="openCustomReportScreen()" aria-label="Custom date range report"><span class="report-option-icon" aria-hidden="true">📄</span><span class="report-option-copy"><span class="report-option-badge">Premium</span><strong class="report-option-title">Custom Business Report</strong><span class="report-option-desc">Professional HMRC summary for any date range.</span></span><span class="report-option-chevron" aria-hidden="true">›</span></button><div class="cc-card report-send-card" id="reportSendCard"><h2 class="report-auto-heading">Send a test email</h2><p class="report-auto-desc">Email today's business report with PDF attached — same layout as automatic delivery.</p><div class="report-email-primary" style="margin:0;padding:0;border:0"><label for="reportQuickEmail">Email address</label><input id="reportQuickEmail" placeholder="you@example.com" inputmode="email" aria-label="Email for test report"></div><button type="button" class="report-email-btn" id="reportQuickSendBtn" onclick="sendQuickReportEmail(event)">Send today's report</button><button type="button" class="report-custom-secondary" onclick="previewReportEmail()">Preview email</button></div><div class="cc-card report-archive-card" id="reportArchiveCard"><div class="report-archive-toolbar"><input type="search" class="report-archive-search" id="reportArchiveSearch" placeholder="Search reports…" aria-label="Search reports" oninput="onArchiveSearchInput()"><div class="report-archive-filters" role="group" aria-label="Filter reports"><button type="button" class="report-archive-filter active" data-filter="all" onclick="setArchiveFilter('all')">All</button><button type="button" class="report-archive-filter" data-filter="daily" onclick="setArchiveFilter('daily')">Daily</button><button type="button" class="report-archive-filter" data-filter="weekly" onclick="setArchiveFilter('weekly')">Weekly</button><button type="button" class="report-archive-filter" data-filter="monthly" onclick="setArchiveFilter('monthly')">Monthly</button></div></div><div id="reportArchiveList" class="report-archive-list" aria-live="polite"></div><p class="report-archive-note">Each report is a complete business document — mileage, allowance, and journey detail.</p></div></div></section>
+<section id="reports" class="screen reports-screen" data-mp="MP-008" data-locked="true"><header class="brand-bar"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div><p class="brand-tagline">Your business. On AutoPilot.</p></header><div class="reports-body"><div class="reports-header"><h1 class="reports-title">Report Centre</h1><p class="reports-sub" id="reportsSub">Your business documents — HMRC-ready summaries, anytime.</p></div><div class="cc-card report-auto-card" id="reportAutoBanner"><h2 class="report-auto-heading" id="reportModeHeading">How reports work</h2><p class="report-auto-desc" id="reportAutoDesc">Your operating mode controls report delivery automatically.</p><p class="report-auto-status is-on" id="reportAutoStatus">AutoPilot — emailed after each shift</p></div><button type="button" class="report-option-card" onclick="openCustomReportScreen()" aria-label="Custom date range report"><span class="report-option-icon" aria-hidden="true">📄</span><span class="report-option-copy"><span class="report-option-badge">Premium</span><span class="report-option-kicker">Accountant-ready PDF reports</span><strong class="report-option-title">Custom Business Report</strong><span class="report-option-desc">Professional HMRC summary for any date range.</span></span><span class="report-option-chevron" aria-hidden="true">›</span></button><div class="cc-card report-send-card" id="reportSendCard"><h2 class="report-auto-heading">Send a test email</h2><p class="report-auto-desc">Email today's business report with PDF attached — same layout as automatic delivery.</p><div class="report-email-primary" style="margin:0;padding:0;border:0"><label for="reportQuickEmail">Email address</label><input id="reportQuickEmail" placeholder="you@example.com" inputmode="email" aria-label="Email for test report"></div><button type="button" class="report-email-btn" id="reportQuickSendBtn" onclick="sendQuickReportEmail(event)">Send today's report</button><button type="button" class="report-custom-secondary" onclick="previewReportEmail()">Preview email</button></div><div class="cc-card report-archive-card" id="reportArchiveCard"><div class="report-archive-toolbar"><input type="search" class="report-archive-search" id="reportArchiveSearch" placeholder="Search saved reports…" aria-label="Search saved reports" oninput="onArchiveSearchInput()"><div class="report-archive-filters" role="group" aria-label="Filter reports"><button type="button" class="report-archive-filter active" data-filter="all" onclick="setArchiveFilter('all')">All</button><button type="button" class="report-archive-filter" data-filter="daily" onclick="setArchiveFilter('daily')">Daily</button><button type="button" class="report-archive-filter" data-filter="weekly" onclick="setArchiveFilter('weekly')">Weekly</button><button type="button" class="report-archive-filter" data-filter="monthly" onclick="setArchiveFilter('monthly')">Monthly</button></div></div><div id="reportArchiveList" class="report-archive-list" aria-live="polite"></div><ul class="report-archive-features" aria-label="Report contents"><li>Business mileage</li><li>Journey history</li><li>HMRC summary</li><li>PDF export</li></ul></div></div></section>
 <section id="customReport" class="screen custom-report-screen">
 <header class="brand-bar"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div><p class="brand-tagline">Your business. On AutoPilot.</p></header>
 <div class="custom-report-top"><button type="button" class="custom-report-back" onclick="closeCustomReportScreen()">← Back</button></div>
@@ -1251,7 +1286,101 @@ body.always-modal-open .nav{display:none!important}
 <button type="button" class="btn outline" onclick="showSettings()">Back to Settings</button>
 </div>
 </section>
-<section id="settings" class="screen"><header class="brand-bar"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div><p class="brand-tagline">Your business. On AutoPilot.</p></header><h1 class="title">Settings</h1><div class="card" id="settingsTrackingModeCard"><h2 class="settings-section-title">Tracking Mode</h2><p class="sub" style="margin:-6px 0 8px">You choose how you track. MilePilot handles the paperwork.</p><div class="settings-profile-row"><div><span class="settings-profile-label">Current mode</span><strong class="settings-profile-value" id="settingsTrackingModeLabel">AutoPilot</strong></div><button type="button" class="settings-profile-change" onclick="openTrackingModeSettings()">Change →</button></div><p class="settings-req-note" id="settingsTrackingModeSummary" style="margin-top:14px">AutoPilot records in the background. Manual lets you start and end each journey yourself.</p></div><div class="card" id="settingsVehicleCard"><h2 class="settings-section-title">Vehicle</h2><div class="settings-profile-row"><div><span class="settings-profile-label">Vehicle type</span><strong class="settings-profile-value" id="settingsVehicleLabel">Car</strong></div><button type="button" class="settings-profile-change" onclick="openVehicleSelector()">Change →</button></div></div><div class="card" id="settingsAutopilotCard" hidden><h2 class="settings-section-title">Automatic tracking</h2><p class="sub" style="margin:-6px 0 12px">For mileage recording without opening the app:</p><ul class="settings-req-list"><li>Location set to <strong>Always Allow</strong> (iPhone Settings → MilePilot → Location)</li><li>Start a <strong>shift</strong> before driving</li><li><strong>Notifications</strong> allowed — trip auto-end and report alerts</li><li><strong>Email</strong> saved below with reports turned on</li></ul><p class="settings-req-note">Trips end automatically after <strong>90 minutes</strong> without movement, then your report is emailed. Force-quitting the app or using Low Power Mode for long periods may delay this until you reopen MilePilot.</p></div><div class="card" id="settingsBusinessProfileCard"><h2 class="settings-section-title">Business Profile</h2><div class="settings-profile-row"><div><span class="settings-profile-label">Experience</span><strong class="settings-profile-value" id="settingsProfileExperience">—</strong></div><button type="button" class="settings-profile-change" onclick="openExperienceSelector()">Change →</button></div><div class="settings-profile-row" style="margin-top:18px;padding-top:18px;border-top:1px solid rgba(255,255,255,.1)"><div><span class="settings-profile-label">Work Type</span><strong class="settings-profile-value" id="settingsProfileProfession">—</strong></div><button type="button" class="settings-profile-change" onclick="openBusinessProfileSelector()">Change →</button></div></div><div class="card"><label>Email</label><input id="settingsEmail" placeholder="you@example.com" inputmode="email"><p class="sub" style="margin:8px 0 12px">Used for automatic report delivery.</p><button type="button" class="btn outline small" onclick="sendTestReportEmail(event)">Send test report email</button></div><div class="card" id="settingsReportsCard"><h2 class="settings-section-title">Reports</h2><p class="sub" id="settingsReportModeCopy" style="margin:-6px 0 14px">AutoPilot emails your business report after each shift. Manual mode — you generate and send when ready.</p><div class="settings-toggle-row"><span>PDF attachment</span><button type="button" class="settings-toggle" id="togglePdfAttachment" onclick="toggleReportPref('pdfAttachment')" aria-label="PDF attachment"></button></div><button type="button" class="btn small" onclick="saveSettings()">Save Settings</button></div><div class="card"><h2 class="settings-section-title">Beta Feedback</h2><p class="sub" style="margin:-6px 0 14px">Help shape MilePilot with specific answers — your feedback becomes our roadmap.</p><button type="button" class="btn outline" onclick="MPBetaFeedback.open()">Share beta feedback →</button></div><div class="card"><button class="btn outline" onclick="resetOnboarding()">Reset onboarding</button><button class="btn outline" onclick="clearData()">Clear test shifts</button></div><div class="card" id="debugPanelCard" hidden><h2 class="settings-section-title">Developer debug</h2><p class="sub" style="margin-top:0">Auto-end trip + email pipeline (enable with <code>localStorage.setItem('mp_debug','1')</code>)</p><pre id="debugPanelBody" class="debug-panel-body">Loading…</pre><button type="button" class="btn outline small" onclick="renderDebugPanel()">Refresh</button><button type="button" class="btn outline small" onclick="toggleDebugAutoEnd()">Simulate auto-end check</button><button type="button" class="btn outline small" onclick="MPTrackingDebug.open()">Open Tracking Debug →</button></div></section>
+<section id="settings" class="screen" data-mp="MP-009" data-locked="true">
+<header class="brand-bar"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div><p class="brand-tagline">Your business. On AutoPilot.</p></header>
+<h1 class="title">Settings</h1>
+<div class="settings-body">
+<div class="settings-card settings-card--hero" id="settingsTrackingModeCard">
+<div class="settings-card-head">
+<span class="settings-card-icon" id="settingsTrackingModeIcon" aria-hidden="true">🚀</span>
+<div class="settings-card-headcopy">
+<h2 class="settings-card-title">Tracking Mode</h2>
+<p class="settings-hero-mode" id="settingsTrackingModeLabel">AutoPilot</p>
+<p class="settings-hero-lead" id="settingsTrackingModeLead">You're using MilePilot's smartest tracking mode.</p>
+<p class="settings-hero-desc" id="settingsTrackingModeDesc">Automatically detects journeys and prepares your mileage reports.</p>
+<p class="settings-hero-reassure" id="settingsTrackingModeReassure">You can switch to Manual Tracking anytime.</p>
+</div>
+</div>
+<div class="settings-profile-row" style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,.08)">
+<span class="settings-profile-label" style="margin:0">Current Mode</span>
+<button type="button" class="settings-profile-change" onclick="openTrackingModeSettings()">Change →</button>
+</div>
+</div>
+<div class="settings-card settings-card--medium" id="settingsEmailReportsCard">
+<div class="settings-card-head">
+<span class="settings-card-icon" aria-hidden="true">📧</span>
+<div class="settings-card-headcopy">
+<h2 class="settings-card-title">Email Reports</h2>
+<p class="settings-value-line" id="settingsReportModeLabel">Automatic Reports</p>
+<p class="settings-value-desc" id="settingsReportModeCopy">Your mileage reports are automatically emailed after each completed business shift.</p>
+<label for="settingsEmail">Email address</label>
+<input id="settingsEmail" placeholder="you@example.com" inputmode="email">
+</div>
+</div>
+<div class="settings-toggle-row"><span>PDF attachment</span><button type="button" class="settings-toggle" id="togglePdfAttachment" onclick="toggleReportPref('pdfAttachment')" aria-label="PDF attachment"></button></div>
+<button type="button" class="btn outline small" onclick="sendTestReportEmail(event)">Send test report email</button>
+<button type="button" class="btn small" onclick="saveSettings()">Save Settings</button>
+</div>
+<div class="settings-card settings-card--medium" id="settingsVehicleCard">
+<div class="settings-card-head">
+<span class="settings-card-icon" aria-hidden="true">🚗</span>
+<div class="settings-card-headcopy">
+<h2 class="settings-card-title">Vehicle</h2>
+<p class="settings-value-line" id="settingsVehicleLabel">Car</p>
+<p class="settings-value-desc">Used for HMRC mileage calculations.</p>
+</div>
+</div>
+<div class="settings-profile-row" style="margin-top:12px">
+<span class="settings-profile-label" style="margin:0">Vehicle type</span>
+<button type="button" class="settings-profile-change" onclick="openVehicleSelector()">Change →</button>
+</div>
+</div>
+<div class="settings-card settings-card--medium" id="settingsAutopilotCard" hidden>
+<div class="settings-card-head">
+<span class="settings-card-icon" aria-hidden="true">⚡</span>
+<div class="settings-card-headcopy">
+<h2 class="settings-card-title">Automatic Tracking</h2>
+<p class="settings-value-line" id="settingsAutopilotLabel">Active</p>
+<ul class="settings-checklist" id="settingsAutopilotChecklist" aria-label="Automatic tracking status"></ul>
+</div>
+</div>
+</div>
+<div class="settings-card settings-card--medium" id="settingsBusinessProfileCard">
+<div class="settings-card-head">
+<span class="settings-card-icon" aria-hidden="true">👤</span>
+<div class="settings-card-headcopy">
+<h2 class="settings-card-title">Business Details</h2>
+<p class="settings-value-line" id="settingsBusinessProfileLabel">—</p>
+<div class="settings-profile-row" style="padding:0;margin:0 0 14px">
+<div><span class="settings-profile-label">Experience</span><strong class="settings-profile-value" id="settingsProfileExperience">—</strong></div>
+<button type="button" class="settings-profile-change" onclick="openExperienceSelector()">Change →</button>
+</div>
+<div class="settings-profile-row" style="padding:14px 0 0;margin:0;border-top:1px solid rgba(255,255,255,.08)">
+<div><span class="settings-profile-label">Business Type</span><strong class="settings-profile-value" id="settingsProfileProfession">—</strong></div>
+<button type="button" class="settings-profile-change" onclick="openBusinessProfileSelector()">Change →</button>
+</div>
+</div>
+</div>
+</div>
+<div class="settings-card settings-card--compact">
+<h2 class="settings-card-title">Beta Feedback</h2>
+<p class="sub" style="margin:-4px 0 12px">Help shape MilePilot — your feedback becomes our roadmap.</p>
+<button type="button" class="btn outline small" onclick="MPBetaFeedback.open()">Share beta feedback →</button>
+</div>
+<div class="settings-card settings-card--compact settings-stack-actions">
+<button class="btn outline small" onclick="resetOnboarding()">Reset onboarding</button>
+<button class="btn outline small" onclick="clearData()">Clear test shifts</button>
+</div>
+<div class="settings-card settings-card--compact" id="debugPanelCard" hidden>
+<h2 class="settings-card-title">Developer debug</h2>
+<p class="sub" style="margin-top:0">Auto-end trip + email pipeline (enable with <code>localStorage.setItem('mp_debug','1')</code>)</p>
+<pre id="debugPanelBody" class="debug-panel-body">Loading…</pre>
+<button type="button" class="btn outline small" onclick="renderDebugPanel()">Refresh</button>
+<button type="button" class="btn outline small" onclick="toggleDebugAutoEnd()">Simulate auto-end check</button>
+<button type="button" class="btn outline small" onclick="MPTrackingDebug.open()">Open Tracking Debug →</button>
+</div>
+</div>
+</section>
 </div>
 <nav class="nav" id="nav" aria-label="Main">
 <button type="button" class="nav-item" id="navHome" onclick="goHome()" aria-label="Dashboard"><span class="nav-icon-wrap"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5L12 4l8 6.5V20a1 1 0 01-1 1h-5v-6H10v6H5a1 1 0 01-1-1v-9.5z"/></svg><span class="nav-pulse"></span></span><span class="nav-label">Dashboard</span></button>
@@ -1329,7 +1458,7 @@ body.always-modal-open .nav{display:none!important}
 <script src="js/app-copy.js"></script>
 <script src="js/beta-feedback.js"></script>
 <script>
-const APP_VERSION='8.43.9';
+const APP_VERSION='8.43.27';
 const DEFAULT_WEEKLY_GOAL_MILES=400;
 const BUSINESS_PROFILE_KEY='mp_business_profile';
 const PRODUCT_VISION_LOCK='2026-06-vision-v1';
@@ -1400,7 +1529,7 @@ function getProfileTerms(){return getProfessionMeta().terms}
 function getProfileInsight(week){const p=getProfession(),n=week.list.length;if(n<2)return null;if(p==='driver'){const busiest=getBusiestDayInPeriod('week');return busiest?busiest+' was your busiest driving day.':null}if(p==='tradesperson')return 'You recorded '+n+' work journey'+(n===1?'':'s')+' this week.';if(p==='mobile')return 'You visited '+n+' business location'+(n===1?'':'s')+' this week.';if(p==='professional')return 'You recorded '+n+' client visit'+(n===1?'':'s')+' this week.';return 'You tracked '+n+' business journey'+(n===1?'':'s')+' this week.'}
 function getWorkTypeReady(){const exp=getUserExperience(),prof=getProfession();if(exp==='tracker'&&prof==='driver')return "Ready to start today's shift?";if(exp==='tracker'&&prof==='tradesperson')return "Ready to track today's client visits?";if(exp==='business'&&prof==='tradesperson')return "Ready to track mileage and business expenses?";if(exp==='business'&&prof==='driver')return "Ready to manage your driving business?";return getProfessionMeta().ready}
 function applyProfileTerms(){const t=getProfileTerms();setText('ccTodayTitle',t.todaySection);setText('ccMilesLabel',t.miles);setText('ccJourneysLabel',t.journeys);setText('ccTravelLabel',t.travel);setText('ccHmrcLabel',t.allowance);const rp=q('reportPreviewLabel');if(rp)rp.textContent=t.miles;const rm=q('reportMetrics');if(rm){const spans=rm.querySelectorAll('.cc-metric span');if(spans[0])spans[0].textContent=t.miles;if(spans[1])spans[1].textContent=t.travel;if(spans[2])spans[2].textContent=t.journeys;if(spans[3])spans[3].textContent=t.allowance}}
-function renderBusinessProfileSettings(){const expLabel=q('settingsProfileExperience'),profLabel=q('settingsProfileProfession');if(expLabel)expLabel.textContent=hasExperienceSelected()?getExperienceLabel():'—';if(profLabel)profLabel.textContent=getProfessionMeta().label}
+function renderBusinessProfileSettings(){const expLabel=q('settingsProfileExperience'),profLabel=q('settingsProfileProfession'),profileLabel=q('settingsBusinessProfileLabel');if(profileLabel)profileLabel.textContent=localStorage.getItem('mp_driver')||driver||'—';if(expLabel)expLabel.textContent=hasExperienceSelected()?getExperienceLabel():'—';if(profLabel)profLabel.textContent=getProfessionMeta().label}
 function openExperienceSelector(){experienceChoiceMode='settings';initExperienceChoice();showScreen('experienceChoice')}
 function initExperienceChoice(){selectedExperience=getBusinessProfile().experience||null;document.querySelectorAll('[data-experience]').forEach(c=>c.classList.toggle('selected',c.dataset.experience===selectedExperience));syncExperienceContinue()}
 function selectExperience(key){if(!EXPERIENCES[key])return;selectedExperience=key;document.querySelectorAll('[data-experience]').forEach(c=>c.classList.toggle('selected',c.dataset.experience===key));syncExperienceContinue()}
@@ -1445,18 +1574,19 @@ async function continueSetup(){const btn=q('permSetupBtn');if(btn){btn.disabled=
 function goToEmailSetup(){localStorage.setItem('mp_onboard_step','email');initEmailSetup();showScreen('emailSetup')}
 function applyModeReportPrefs(){const mode=(typeof MPTrackingMode!=='undefined'&&MPTrackingMode.getMode())||selectedTrackingMode||'autopilot';localStorage.setItem('mp_operating_mode',mode);setReportFrequency('off');if(mode==='manual')saveReportPrefs({emailReports:false,pdfAttachment:true});else{saveReportPrefs({emailReports:true,pdfAttachment:true});markStayUpdatedPromptSeen()}}
 function saveOnboardReportPrefs(){applyModeReportPrefs()}
-function initOnboardReady(){driver=localStorage.getItem('mp_driver')||driver||'';const name=driver.trim(),greet=q('onboardReadyGreeting');if(greet)greet.textContent=name?`Welcome aboard, ${name}.`:'Welcome aboard.';const icon=q('onboardReadyIcon');if(icon){icon.classList.remove('is-animated');void icon.offsetWidth;icon.classList.add('is-animated')}}
+function initOnboardReady(){const icon=q('onboardReadyIcon');if(icon){icon.classList.remove('is-animated');void icon.offsetWidth;icon.classList.add('is-animated')}const fill=q('onboardReadyProgressFill');if(fill){fill.style.width='83%';requestAnimationFrame(()=>{fill.style.width='100%'})}}
 async function enableOnboardNotifications(){if(typeof MPExpoBridge!=='undefined'&&MPExpoBridge.request){try{const res=await MPExpoBridge.request('expo:notification:request');localStorage.setItem('mp_notifications_choice',res&&(res.granted||res.status==='granted')?'granted':'skipped');return}catch(e){}}enableNotificationPermission();await new Promise(r=>setTimeout(r,400))}
-function initEmailSetup(){const email=q('emailInput');if(email)email.value=localStorage.getItem('mp_email')||''}
+function initEmailSetup(){const email=q('emailInput'),hint=q('emailSetupPrefillHint'),stored=(localStorage.getItem('mp_email')||'').trim();if(email)email.value=stored;if(hint)hint.hidden=!stored}
 function confirmEmailSetup(){const e=q('emailInput')?.value.trim();if(e)localStorage.setItem('mp_email',e);saveOnboardReportPrefs();localStorage.setItem('mp_onboard_step','ready');initOnboardReady();showScreen('onboardReady')}
 function skipEmailSetup(){saveOnboardReportPrefs();localStorage.setItem('mp_onboard_step','ready');initOnboardReady();showScreen('onboardReady')}
 function openDashboard(){finishOnboarding()}
 function openVehicleSelector(){knowYouMode='vehicle';const namePanel=q('onboardNamePanel'),vehiclePanel=q('vehicleSelectPanel'),nameBtn=q('knowYouContinue'),vehicleBtn=q('vehicleContinue');if(namePanel)namePanel.hidden=true;if(vehiclePanel)vehiclePanel.hidden=false;if(nameBtn)nameBtn.hidden=true;if(vehicleBtn){vehicleBtn.hidden=false;syncKnowYouContinue()}selectedVehicle=localStorage.getItem('mp_vehicle')||null;document.querySelectorAll('.vehicle-card[data-vehicle]').forEach(c=>c.classList.toggle('selected',c.dataset.vehicle===selectedVehicle));showScreen('knowYou')}
-function renderVehicleSettingsSummary(){const el=q('settingsVehicleLabel');if(el)el.textContent=vehicles[localStorage.getItem('mp_vehicle')||vehicle||'car']?.label||'Car'}
+function renderVehicleSettingsSummary(){const el=q('settingsVehicleLabel');const v=vehicles[localStorage.getItem('mp_vehicle')||vehicle||'car'];if(el)el.textContent=v?.label||'Car'}
+function renderAutopilotStatusChecklist(){const list=q('settingsAutopilotChecklist'),autoLabel=q('settingsAutopilotLabel');if(!list)return;const locOk=localStorage.getItem('mp_location_choice')==='granted';const notifOk=localStorage.getItem('mp_notifications_choice')==='granted';const emailOk=!!(localStorage.getItem('mp_email')||'').trim()&&getReportPrefs().emailReports;const autoEndOk=typeof MPTrackingMode!=='undefined'&&!MPTrackingMode.isManual()&&typeof MPTripAutoEnd!=='undefined';const items=[{label:'Location Always Allowed',ok:locOk},{label:'Notifications Enabled',ok:notifOk},{label:'Email Reports Enabled',ok:emailOk},{label:'Auto End Trip Enabled',ok:autoEndOk}];if(autoLabel)autoLabel.textContent=items.every(function(i){return i.ok})?'All set':'Review items below';list.innerHTML=items.map(function(i){return '<li class="'+(i.ok?'is-on':'is-off')+'"><span class="mark" aria-hidden="true">'+(i.ok?'✓':'○')+'</span><span>'+i.label+'</span></li>'}).join('')}
 async function confirmTrackingMode(){if(!selectedTrackingMode)return;if(typeof MPTrackingMode!=='undefined')MPTrackingMode.setMode(selectedTrackingMode,{frequency:selectedDrivingFrequency||undefined});if(trackingModeChoiceMode==='settings'){if(selectedTrackingMode==='autopilot')await enableAutopilotBackgroundPermission();saveTrackingModeSettings();return}}
 function openTrackingModeSettings(){trackingModeChoiceMode='settings';initTrackingMode(true);showScreen('trackingModeSettings')}
 function saveTrackingModeSettings(){if(!selectedTrackingMode)return;const prev=typeof MPTrackingMode!=='undefined'?MPTrackingMode.getMode():null;if(typeof MPTrackingMode!=='undefined')MPTrackingMode.setMode(selectedTrackingMode,{frequency:selectedDrivingFrequency||undefined});applyModeReportPrefs();if(prev&&prev!==selectedTrackingMode&&ccState==='active'){if(selectedTrackingMode==='manual'){stopBackgroundGpsPoll();if(typeof MPTrackingProvider!=='undefined')MPTrackingProvider.stopTracking()}else enableTrackingGps(false)}trackingModeChoiceMode='onboard';renderTrackingModeSettingsSummary();renderReportModeUI();showSettings();toast(copyMsg('trackingModeSaved','Tracking mode updated ✓'))}
-function renderTrackingModeSettingsSummary(){const label=q('settingsTrackingModeLabel'),sum=q('settingsTrackingModeSummary'),autoCard=q('settingsAutopilotCard');if(typeof MPTrackingMode==='undefined')return;const meta=MPTrackingMode.getModeMeta(MPTrackingMode.getMode());if(label)label.textContent=meta.shortLabel||meta.label;let text=meta.id==='manual'?meta.label+' — you start and end each journey. Professional reports work the same.':meta.label+' — background recording, lock-screen support, and automatic trip end after 90 minutes stopped.';if(meta.id!=='manual'&&localStorage.getItem('mp_location_choice')!=='granted')text+=' Setup incomplete — enable background location in Settings.';if(sum)sum.textContent=text;if(autoCard)autoCard.hidden=MPTrackingMode.isManual()}
+function renderTrackingModeSettingsSummary(){const label=q('settingsTrackingModeLabel'),lead=q('settingsTrackingModeLead'),desc=q('settingsTrackingModeDesc'),reassure=q('settingsTrackingModeReassure'),icon=q('settingsTrackingModeIcon'),autoCard=q('settingsAutopilotCard');if(typeof MPTrackingMode==='undefined')return;const meta=MPTrackingMode.getModeMeta(MPTrackingMode.getMode());const isManual=meta.id==='manual';const emoji=isManual?'✋':'🚀';if(icon)icon.textContent=emoji;if(label)label.textContent=meta.shortLabel||meta.label;if(lead)lead.textContent=isManual?"You're in full control of every journey.":"You're using MilePilot's smartest tracking mode.";if(desc)desc.textContent=isManual?'You start and end each trip yourself. Professional reports work the same.':'Automatically detects journeys and prepares your mileage reports.';if(reassure){reassure.textContent=isManual?'You can switch to AutoPilot anytime.':'You can switch to Manual Tracking anytime.';reassure.hidden=false}if(autoCard)autoCard.hidden=isManual;renderAutopilotStatusChecklist()}
 function q(id){return document.getElementById(id)}function toast(msg){q('toast').textContent=msg;q('toast').classList.add('show');setTimeout(()=>q('toast').classList.remove('show'),3000)}
 function copyMsg(key,fallback){return(typeof MPCopy!=='undefined'&&MPCopy[key])?(typeof MPCopy[key]==='function'?MPCopy[key]:MPCopy[key]):fallback}
 function renderEmptyIllustration(el){if(!el||typeof MPCopy==='undefined')return;el.innerHTML=MPCopy.emptyIllustrationSvg()}
@@ -1477,8 +1607,8 @@ function maybeShowStayUpdatedPrompt(){}
 function tryShowPendingStayUpdated(){}
 function isManualOperatingMode(){return typeof MPTrackingMode!=='undefined'&&MPTrackingMode.isManual()}
 function getOperatingModeLabel(){return isManualOperatingMode()?'Manual Mode':'AutoPilot'}
-function renderReportModeUI(){const manual=isManualOperatingMode();const sendCard=q('reportSendCard'),heading=q('reportModeHeading'),desc=q('reportAutoDesc'),status=q('reportAutoStatus'),sub=q('reportsSub'),settingsCopy=q('settingsReportModeCopy');if(sub)sub.textContent=manual?'Your business documents — generate, download, or email HMRC summaries when you need them.':'Your business documents — HMRC-ready summaries emailed after each shift.';if(heading)heading.textContent='How reports work';if(desc)desc.textContent=manual?'You are in complete control. Review journeys, then generate and send reports yourself.':'MilePilot takes care of everything. After each shift, uncertain journeys are reviewed, then your business report is emailed and saved here.';if(status){status.textContent=manual?'Manual Mode — generate reports yourself':'AutoPilot — emailed after each shift';status.classList.add('is-on')}if(sendCard)sendCard.hidden=!manual;if(settingsCopy)settingsCopy.textContent=manual?'Manual Mode — generate and email reports from Report Centre when you need them.':'AutoPilot — business reports are emailed automatically after each shift. No scheduling required.'}
-function renderReportSettings(){const prefs=getReportPrefs();q('togglePdfAttachment')?.classList.toggle('is-on',prefs.pdfAttachment);renderReportModeUI();renderBusinessProfileSettings()}
+function renderReportModeUI(){const manual=isManualOperatingMode();const sendCard=q('reportSendCard'),heading=q('reportModeHeading'),desc=q('reportAutoDesc'),status=q('reportAutoStatus'),sub=q('reportsSub'),settingsLabel=q('settingsReportModeLabel'),settingsCopy=q('settingsReportModeCopy');if(sub)sub.textContent=manual?'Your business documents — generate, download, or email HMRC summaries when you need them.':'Your business documents — HMRC-ready summaries emailed after each shift.';if(heading)heading.textContent='How reports work';if(desc)desc.textContent=manual?'You are in complete control. Review journeys, then generate and send reports yourself.':'MilePilot takes care of everything. After each shift, uncertain journeys are reviewed, then your business report is emailed and saved here.';if(status){status.textContent=manual?'Manual Mode — generate reports yourself':'AutoPilot — emailed after each shift';status.classList.add('is-on')}if(sendCard)sendCard.hidden=!manual;if(settingsLabel)settingsLabel.textContent=manual?'Manual Reports':'Automatic Reports';if(settingsCopy)settingsCopy.textContent=manual?'Generate and email reports from Report Centre when you are ready.':'Your mileage reports are automatically emailed after each completed business shift.'}
+function renderReportSettings(){const prefs=getReportPrefs();q('togglePdfAttachment')?.classList.toggle('is-on',prefs.pdfAttachment);renderReportModeUI();renderBusinessProfileSettings();renderAutopilotStatusChecklist()}
 function setSettingsFrequency(freq){applyModeReportPrefs();renderReportSettings();toast('Report behaviour follows your operating mode ('+getOperatingModeLabel()+')')}
 function toggleReportPref(key){const prefs=getReportPrefs();prefs[key]=!prefs[key];saveReportPrefs(prefs);renderReportSettings()}
 function renderReportAutoBanner(){renderReportModeUI()}
@@ -1532,7 +1662,7 @@ function updateGpsUi(message){const banner=q('ccGpsBanner'),text=q('ccGpsBannerT
 async function enableTrackingGps(fromUserGesture=false){if(typeof MPTrackingProvider!=='undefined'&&MPTrackingProvider.isNative()){const result=await MPTrackingProvider.enableTracking(fromUserGesture);const ok=result&&(result.ok!==false);if(ok){gpsLocked=true;localStorage.setItem('mp_location_choice','granted');if((result.backgroundActive===false||MPTrackingProvider.getPermission()==='foreground-only')&&isAutoPilotTracking())setTimeout(function(){showNativeAlwaysLocationModal()},2500);else if(MPTrackingProvider.getPermission()==='granted')hideNativeAlwaysLocationModal()}return}if(!navigator.geolocation){updateGpsUi('GPS not available on this device.');return}if(!isSecureGeoContext()){updateGpsUi('Location needs HTTPS. Use https://app.milepilot.uk');return}if(!fromUserGesture){const perm=await queryGeoPermission();if(perm!=='granted'){updateGpsUi(perm==='denied'?geoErrorMessage({code:1}):'Tap Enable Location to start tracking.');return}}stopGpsWatch();if(gpsReconnectTimer){clearTimeout(gpsReconnectTimer);gpsReconnectTimer=null}updateGpsUi('Requesting location permission…');try{const pos=await requestGeolocation(GEO_OPTS_ACCURATE,GEO_OPTS_RELAXED);handlePos(pos);gpsLocked=true;localStorage.setItem('mp_location_choice','granted');const watchOpts=ccState==='active'?GEO_OPTS_TRACKING:GEO_OPTS_ACCURATE;gpsWatchId=navigator.geolocation.watchPosition(handlePos,onGpsWatchError,watchOpts);updateGpsUi(null)}catch(err){gpsLocked=false;if(err?.code===1)localStorage.setItem('mp_location_choice','denied');updateGpsUi(geoErrorMessage(err));renderCommandCentre()}}
 function enableNotificationPermission(){const btn=q('permNotifBtn');if(!('Notification' in window)){localStorage.setItem('mp_notifications_choice','unsupported');syncNotificationButton();return}if(Notification.permission==='granted'){localStorage.setItem('mp_notifications_choice','granted');syncNotificationButton();return}if(Notification.permission==='denied'){localStorage.setItem('mp_notifications_choice','denied');syncNotificationButton();return}if(btn){btn.disabled=true;btn.textContent='Requesting…'}Notification.requestPermission().then(p=>{localStorage.setItem('mp_notifications_choice',p==='granted'?'granted':p==='denied'?'denied':'skipped');syncNotificationButton()}).catch(()=>{localStorage.setItem('mp_notifications_choice','skipped');syncNotificationButton()})}
 function finishOnboarding(){if(!localStorage.getItem('mp_vehicle')){vehicle='car';localStorage.setItem('mp_vehicle','car')}if(!hasTrackingModeSelected()){trackingModeChoiceMode='onboard';initTrackingMode(false);showScreen('trackingMode');return}if(!localStorage.getItem('mp_location_choice'))localStorage.setItem('mp_location_choice','skipped');if(!localStorage.getItem('mp_notifications_choice'))localStorage.setItem('mp_notifications_choice','skipped');localStorage.setItem('mp_onboard_complete','true');localStorage.removeItem('mp_onboard_step');clearOnboardTimers();if(typeof MPSubscription!=='undefined')MPSubscription.startTrialIfNeeded();ensureDefaultBusinessProfile();syncReportSubscription();goHome()}
-function showScreen(id){const target=q(id)||q('home');if(!target){console.error('[MilePilot] showScreen missing:',id);return}if(ONBOARD_SCREENS.includes(target.id))hideNativeAlwaysLocationModal();document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));target.classList.add('active');const nav=q('nav');if(nav)nav.classList.toggle('show',!ONBOARD_SCREENS.includes(target.id)&&target.id!=='tracking');window.scrollTo(0,0);if(target.id==='tracking')setTimeout(()=>previewMapBundle?.map?.invalidateSize(),120)}
+function showScreen(id){const target=q(id)||q('home');if(!target){console.error('[MilePilot] showScreen missing:',id);return}if(ONBOARD_SCREENS.includes(target.id))hideNativeAlwaysLocationModal();document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));target.classList.add('active');const nav=q('nav');if(nav)nav.classList.toggle('show',!ONBOARD_SCREENS.includes(target.id)&&target.id!=='tracking');window.scrollTo(0,0);target.scrollTop=0;if(target.id==='tracking')setTimeout(()=>previewMapBundle?.map?.invalidateSize(),120)}
 function setNav(n){['Home','Reports','History','Settings'].forEach(x=>{const btn=q('nav'+x);if(!btn)return;btn.classList.toggle('active',x===n);btn.setAttribute('aria-current',x===n?'page':'false')})}
 function fmt(s){s=Number(s)||0;let m=Math.floor(s/60),h=Math.floor(m/60);return h+'h '+String(m%60).padStart(2,'0')+'m'}function money(v){return '£'+(Number(v)||0).toFixed(2)}function claim(mi,v=vehicle){return (Number(mi)||0)*(vehicles[v]?.rate||.55)}
 function loadShifts(){try{return JSON.parse(localStorage.getItem('mp_shifts')||'[]').map(normaliseShift)}catch(e){return[]}}function saveShifts(){localStorage.setItem('mp_shifts',JSON.stringify(shifts))}function refreshTripStore(){trips=loadTripsStore();hydrateTripsFromShifts()}
@@ -1584,9 +1714,9 @@ function renderIntelligenceLayer(mode){const el=q('ccIntelligence');if(!el)retur
 function setBusinessInsightCard(mode){const el=q('ccInsight');if(!el)return;if(mode==='active'){el.textContent=getBusinessInsight(mode);return}if(!shifts.length&&ccState!=='active'){el.textContent=copyMsg('insightEmpty','Start your first shift to unlock personalised insights.');return}const insights=generateSmartInsights();if(insights.length){el.innerHTML=renderInsightList(insights);return}el.textContent=getBusinessInsight(mode)}
 function getContextCopy(mode,today){driver=localStorage.getItem('mp_driver')||driver||'there';const timeGreet=getTimeGreeting();const lastWeek=getLastWeekTotals();const terms=getProfileTerms();const tl=getTrackingActionLabels();const mondayStatus=lastWeek.mi>0?'Last week: '+lastWeek.mi.toFixed(0)+' miles · '+money(lastWeek.hmrc)+' estimated':getIdleDashboardStatus(today);const startLabel=today.journeys>0?'Start New '+tl.start.replace(/^Start\s+/,''):tl.start;const copies={active:{greeting:'Tracking',status:fmtLong(elapsed)+' · '+miles.toFixed(1)+' miles · '+money(claim(miles))+' estimated',heroLabel:'LIVE',heroUnit:terms.heroUnit,primary:tl.end},day_off:{greeting:'Enjoy your day off.',status:'Take a well-earned break.',heroLabel:'THIS WEEK',heroUnit:terms.heroUnit,primary:''},monday_morning:{greeting:timeGreet.greeting,status:mondayStatus,heroLabel:"TODAY'S GOAL",heroUnit:terms.heroUnit,primary:startLabel},morning:{greeting:timeGreet.greeting,status:timeGreet.status,heroLabel:'TODAY',heroUnit:terms.heroUnit,primary:startLabel},afternoon:{greeting:timeGreet.greeting,status:timeGreet.status,heroLabel:'TODAY',heroUnit:terms.heroUnit,primary:startLabel},evening:{greeting:timeGreet.greeting,status:timeGreet.status,heroLabel:'TODAY',heroUnit:terms.heroUnit,primary:startLabel}};return copies[mode]||copies.afternoon}
 async function fetchWeather(){const today=new Date().toDateString();try{const cached=localStorage.getItem('mp_weather');if(cached){const j=JSON.parse(cached);if(j.date===today){ccWeather=j.temp;return j.temp}}}catch(e){}if(!navigator.geolocation)return null;return new Promise(resolve=>{navigator.geolocation.getCurrentPosition(async pos=>{try{const url='https://api.open-meteo.com/v1/forecast?latitude='+pos.coords.latitude+'&longitude='+pos.coords.longitude+'&current=temperature_2m';const r=await fetch(url);const d=await r.json();const temp=Math.round(d.current.temperature_2m);localStorage.setItem('mp_weather',JSON.stringify({date:today,temp}));ccWeather=temp;resolve(temp)}catch(e){resolve(null)}},()=>resolve(null),{maximumAge:900000,timeout:8000})})}
-function renderRecentActivity(){const el=q('ccActivity');if(!el)return;let html='';for(let i=1;i<=3;i++){const d=new Date();d.setDate(d.getDate()-i);const label=i===1?'Yesterday':d.toLocaleDateString('en-GB',{weekday:'long'});const t=dayTotals(d);if(t.list.length)html+='<div class="cc-activity-item"><div class="cc-activity-day">'+label+'</div><div class="cc-activity-detail">'+t.mi.toFixed(1)+' miles · '+fmtShort(t.sec)+'</div></div>';else html+='<div class="cc-activity-item"><div class="cc-activity-day">'+label+'</div><div class="cc-activity-detail cc-activity-empty">'+(typeof MPCopy!=='undefined'?MPCopy.activityEmpty:'No journeys recorded')+'</div></div>'}el.innerHTML=html}
+function renderRecentActivity(){const el=q('ccActivity');if(!el)return;let html='',hasActivity=false;for(let i=0;i<=3;i++){const d=new Date();d.setDate(d.getDate()-i);const label=i===0?'Today':i===1?'Yesterday':d.toLocaleDateString('en-GB',{weekday:'long'});const t=dayTotals(d);if(t.list.length){hasActivity=true;html+='<div class="cc-activity-item"><div class="cc-activity-day">'+label+'</div><div class="cc-activity-detail">'+t.mi.toFixed(1)+' miles · '+fmtShort(t.sec)+'</div></div>'}}if(!hasActivity){el.innerHTML='<div class="cc-activity-empty-state"><p class="cc-activity-empty-title">No journeys yet</p><p class="cc-activity-empty-sub">Your completed trips will appear here.</p></div>';return}el.innerHTML=html}
 function setText(id,val){const el=q(id);if(el)el.textContent=val}
-function renderCommandCentre(){driver=localStorage.getItem('mp_driver')||driver||'there';vehicle=localStorage.getItem('mp_vehicle')||vehicle||'car';renderSubscriptionBanner();if(ccState==='active'){renderTrackingScreen();return}const today=getTodayTotals(),mode=getCommandMode(),copy=getContextCopy(mode,today),body=q('ccBody'),hero=q('ccHero'),track=q('ccTrackingBar'),btn=q('ccPrimaryBtn'),reportBtn=q('ccReportBtn'),ctxRow=q('ccContextRow');if(body){body.classList.toggle('is-weekend',mode==='day_off');body.classList.toggle('is-post-work',false);body.classList.toggle('is-active',false)}setText('ccGreeting',copy.greeting);setText('ccStatus',copy.status);if(track)track.hidden=true;if(hero){hero.classList.toggle('is-live',false);hero.classList.toggle('is-goal',mode==='monday_morning')}const heroLabel=hero?.querySelector('.cc-hero-label');if(heroLabel)heroLabel.textContent=copy.heroLabel;const heroUnit=hero?.querySelector('.cc-hero-unit');if(heroUnit)heroUnit.textContent=copy.heroUnit;const heroVal=mode==='day_off'?periodTotals('week').mi:today.mi;setText('ccHeroMiles',heroVal.toFixed(1));setText('ccMiles',today.mi.toFixed(1));setText('ccTime',today.sec<60?'0h':fmtShort(today.sec));setText('ccJourneys',String(today.journeys));setText('ccHmrc',money(today.hmrc));setBusinessInsightCard(mode);if(btn){btn.textContent=copy.primary||'Start Shift';btn.classList.toggle('is-end',false);btn.hidden=!copy.primary}if(reportBtn){const pendingReview=(today.pending||0)>0;if(pendingReview){reportBtn.hidden=false;reportBtn.textContent='Review today\u2019s journeys \u2192';reportBtn.onclick=function(){openDailyAiReview()}}else{reportBtn.hidden=true;reportBtn.onclick=viewTodayReport}}if(ctxRow){const showCtx=mode==='monday_morning';ctxRow.hidden=!showCtx;if(showCtx){setText('ccGoalValue',today.mi.toFixed(1)+' miles');fetchWeather().then(t=>{if(t!==null)setText('ccWeatherValue',t+'°C')})}}renderRecentActivity();renderIntelligenceLayer(mode);applyProfileTerms()}
+function renderCommandCentre(){driver=localStorage.getItem('mp_driver')||driver||'there';vehicle=localStorage.getItem('mp_vehicle')||vehicle||'car';renderSubscriptionBanner();if(ccState==='active'){renderTrackingScreen();return}const today=getTodayTotals(),mode=getCommandMode(),copy=getContextCopy(mode,today),body=q('ccBody'),hero=q('ccHero'),track=q('ccTrackingBar'),btn=q('ccPrimaryBtn'),reportBtn=q('ccReportBtn'),ctxRow=q('ccContextRow');if(body){body.classList.toggle('is-weekend',mode==='day_off');body.classList.toggle('is-post-work',false);body.classList.toggle('is-active',false)}setText('ccGreeting',copy.greeting);if(mode==='day_off'||mode==='active')setText('ccStatus',copy.status);else setText('ccStatus','Ready for another shift?');if(track)track.hidden=true;if(hero){hero.classList.toggle('is-live',false);hero.classList.toggle('is-goal',mode==='monday_morning')}const heroLabel=q('ccHeroLabel')||hero?.querySelector('.cc-hero-label');if(heroLabel){if(mode==='day_off')heroLabel.textContent="This Week's Business Miles";else if(mode==='active')heroLabel.textContent='LIVE';else heroLabel.textContent="Today's Business Miles"}const heroVal=mode==='day_off'?periodTotals('week').mi:today.mi;setText('ccHeroMiles',heroVal.toFixed(1));setText('ccMiles',today.mi.toFixed(1));setText('ccTime',today.sec<60?'0h':fmtShort(today.sec));setText('ccJourneys',String(today.journeys));if(btn){btn.textContent=copy.primary||'Start Shift';btn.classList.toggle('is-end',false);btn.hidden=!copy.primary}if(reportBtn){const pendingReview=(today.pending||0)>0;if(pendingReview){reportBtn.hidden=false;reportBtn.textContent='Review today\u2019s journeys \u2192';reportBtn.onclick=function(){openDailyAiReview()}}else{reportBtn.hidden=true;reportBtn.onclick=viewTodayReport}}if(ctxRow){const showCtx=mode==='monday_morning';ctxRow.hidden=!showCtx;if(showCtx){setText('ccGoalValue',today.mi.toFixed(1)+' miles');fetchWeather().then(t=>{if(t!==null)setText('ccWeatherValue',t+'°C')})}}renderRecentActivity();renderIntelligenceLayer(mode);applyProfileTerms();setText('ccMilesLabel','Business Miles');setText('ccTravelLabel','Drive Time');setText('ccJourneysLabel','Journeys');const empty=q('ccEmptyState');if(empty)empty.hidden=!(today.mi===0&&today.journeys===0&&shifts.length===0&&mode!=='day_off')}
 function viewTodayReport(){setArchiveFilter('daily');showReports()}
 function generateTodayReport(){showReports();setTimeout(function(){downloadArchiveReport('syn_today')},350)}
 function downsampleRoute(pts,max=ENGINE.ROUTE_MAX){if(!pts?.length)return[];if(pts.length<=max)return pts;const step=Math.ceil(pts.length/max);return pts.filter((_,i)=>i%step===0||i===pts.length-1)}
@@ -1617,7 +1747,7 @@ function openDailyAiReview(){hideNativeAlwaysLocationModal();setNav('Home');show
 function openPaywall(){const overlay=q('subscriptionPaywall');if(!overlay)return;if(typeof MPSubscription!=='undefined'){const copy=MPSubscription.getPaywallCopy();setText('paywallTitle',copy.title);setText('paywallBody',copy.body);setText('paywallPrice',copy.price);setText('paywallNote',copy.note)}overlay.hidden=false}
 function closePaywall(){const overlay=q('subscriptionPaywall');if(overlay)overlay.hidden=true}
 function activateMilePilotSubscription(){if(typeof MPSubscription!=='undefined')MPSubscription.activateSubscription();closePaywall();renderSubscriptionBanner();renderCommandCentre();toast('MilePilot subscription active — tracking and reports unlocked')}
-function renderSubscriptionBanner(){const el=q('ccSubBanner');if(!el||typeof MPSubscription==='undefined'){if(el)el.hidden=true;return}const banner=MPSubscription.getStatusBanner();if(!banner){el.hidden=true;return}el.hidden=false;el.textContent=banner.message;el.classList.toggle('is-expired',banner.type==='expired')}
+function renderSubscriptionBanner(){const el=q('ccSubBanner');if(!el||typeof MPSubscription==='undefined'){if(el)el.hidden=true;return}const banner=MPSubscription.getStatusBanner();if(!banner){el.hidden=true;return}el.hidden=false;el.classList.toggle('is-expired',banner.type==='expired');const textEl=q('ccSubBannerText');let msg=banner.message;if(banner.type==='trial'){const days=MPSubscription.getTrialDaysRemaining();msg=days+' day'+(days===1?'':'s')+' left in your free trial'}if(textEl)textEl.textContent=msg;else el.textContent=msg}
 function requireActiveAccess(featureLabel){if(canUseActiveFeatures())return true;openPaywall();if(featureLabel)toast(featureLabel);return false}
 function aiClassifyTrip(tripId,status,suggestion,userCorrected){const trip=trips.find(function(t){return t.id===tripId});if(!trip)return;const sug=suggestion||(typeof MPMIE!=='undefined'?MPMIE.analyseTrip(trip):null);MPJourneyReview.classifyTripInStore(trips,tripId,status,claim,vehicle);if(typeof MPMIE!=='undefined')MPMIE.onUserClassification(trip,status,sug,!!userCorrected);MPTrips.saveTrips(trips)}
 function runAiDailyReview(date){const reviewDate=date||new Date();if(typeof MPMIE==='undefined'||typeof MPJourneyReview==='undefined')return null;return MPMIE.prepareDailyReview(trips,reviewDate,function(tripId,status,suggestion){aiClassifyTrip(tripId,status,suggestion,false)})}
@@ -1667,7 +1797,7 @@ let customReportState=null,customReportInited=false,customReportCalMounted=false
 function getArchiveDeps(){return{getEmail:()=>localStorage.getItem('mp_email')||'',getDriver:()=>localStorage.getItem('mp_driver')||driver||'',getTrips:()=>{refreshTripStore();return trips.slice()},getShifts:()=>shifts.slice(),getHmrcRate:()=>vehicles[vehicle]?.rate||0.55,fmt,money}}
 function getArchiveEntryById(id){if(typeof MPReportArchive==='undefined')return null;return MPReportArchive.listEntries(getArchiveDeps(),{search:'',filter:'all'}).find(e=>e.id===id)||null}
 function archiveBadgeLabel(kind){if(kind==='weekly_summary')return 'Weekly Summary';if(kind==='monthly_summary')return 'Monthly Summary';if(kind==='weekly')return 'Weekly';if(kind==='monthly')return 'Monthly';if(kind==='custom')return 'Custom';return 'Daily'}
-function renderReportArchive(){const listEl=q('reportArchiveList');if(!listEl||typeof MPReportArchive==='undefined')return;const quickEmail=q('reportQuickEmail');if(quickEmail&&!quickEmail.value)quickEmail.value=localStorage.getItem('mp_email')||'';const entries=MPReportArchive.listEntries(getArchiveDeps(),{search:archiveSearchQuery,filter:archiveFilter});if(!entries.length){listEl.innerHTML='<div class="report-archive-empty"><div class="report-empty-illus">'+(typeof MPCopy!=='undefined'?MPCopy.emptyIllustrationSvg():'')+'</div><p class="report-empty-title">'+(typeof MPCopy!=='undefined'?MPCopy.reportEmptyTitle:'Your reports are waiting for you')+'</p><p class="report-empty-sub">'+(typeof MPCopy!=='undefined'?MPCopy.reportEmptySub:'Your first professional report will appear here after your first working day.')+'</p></div>';return}listEl.innerHTML=entries.map(function(e){const del=e.canDelete?'<button type="button" class="report-archive-btn danger" onclick="deleteArchiveReport(\''+e.id+'\')">Remove</button>':'';return '<article class="report-archive-item"><div class="report-archive-item-head"><div><h3 class="report-archive-item-title">'+e.title+'</h3><p class="report-archive-item-sub">'+e.subtitle+'</p></div><span class="report-archive-badge">'+archiveBadgeLabel(e.kind)+'</span></div><div class="report-archive-actions"><button type="button" class="report-archive-btn" onclick="downloadArchiveReport(\''+e.id+'\')">Download</button><button type="button" class="report-archive-btn" onclick="emailArchiveReport(\''+e.id+'\',event)">Email</button><button type="button" class="report-archive-btn" onclick="shareArchiveReport(\''+e.id+'\')">Share</button>'+del+'</div></article>'}).join('')}
+function renderReportArchive(){const listEl=q('reportArchiveList');if(!listEl||typeof MPReportArchive==='undefined')return;const quickEmail=q('reportQuickEmail');if(quickEmail&&!quickEmail.value)quickEmail.value=localStorage.getItem('mp_email')||'';const entries=MPReportArchive.listEntries(getArchiveDeps(),{search:archiveSearchQuery,filter:archiveFilter});if(!entries.length){const support=(typeof MPCopy!=='undefined'&&MPCopy.reportEmptySupport)?MPCopy.reportEmptySupport:'Ready to share with HMRC or your accountant.';listEl.innerHTML='<div class="report-archive-empty"><div class="report-empty-illus">'+(typeof MPCopy!=='undefined'?MPCopy.emptyIllustrationSvg():'')+'</div><p class="report-empty-title">'+(typeof MPCopy!=='undefined'?MPCopy.reportEmptyTitle:'Your reports will appear here')+'</p><p class="report-empty-sub">'+(typeof MPCopy!=='undefined'?MPCopy.reportEmptySub:'After each completed business shift, MilePilot automatically prepares your professional mileage report.')+'</p><p class="report-empty-support">'+support+'</p></div>';return}listEl.innerHTML=entries.map(function(e){const del=e.canDelete?'<button type="button" class="report-archive-btn danger" onclick="deleteArchiveReport(\''+e.id+'\')">Remove</button>':'';return '<article class="report-archive-item"><div class="report-archive-item-head"><div><h3 class="report-archive-item-title">'+e.title+'</h3><p class="report-archive-item-sub">'+e.subtitle+'</p></div><span class="report-archive-badge">'+archiveBadgeLabel(e.kind)+'</span></div><div class="report-archive-actions"><button type="button" class="report-archive-btn" onclick="downloadArchiveReport(\''+e.id+'\')">Download</button><button type="button" class="report-archive-btn" onclick="emailArchiveReport(\''+e.id+'\',event)">Email</button><button type="button" class="report-archive-btn" onclick="shareArchiveReport(\''+e.id+'\')">Share</button>'+del+'</div></article>'}).join('')}
 function setArchiveFilter(filter){archiveFilter=filter;document.querySelectorAll('.report-archive-filter').forEach(btn=>btn.classList.toggle('active',btn.dataset.filter===filter));renderReportArchive()}
 function onArchiveSearchInput(){archiveSearchQuery=q('reportArchiveSearch')?.value||'';renderReportArchive()}
 function openCustomReportScreen(){initCustomPeriodReport();refreshTripStore();previewCustomPeriod();setNav('Reports');showScreen('customReport')}
@@ -1699,7 +1829,7 @@ async function previewReport(){await openReport()}
 function scrollToReportEmail(){showReports();setTimeout(()=>q('reportSendCard')?.scrollIntoView({behavior:'smooth',block:'start'}),200)}
 function shareReport(){let t=periodTotals();if(!t.list.length){toast(copyMsg('reportShareNoData','No report data to share yet'));return}const labels={day:'daily',week:'weekly',month:'monthly',year:'annual'};const text='My MilePilot '+labels[period]+' report: '+t.mi.toFixed(1)+' business miles · '+money(t.hmrc)+' estimated allowance · '+t.list.length+' journeys';if(navigator.share){navigator.share({title:'MilePilot Report',text,url:location.origin+'/?reports='+period}).catch(()=>{})}else if(navigator.clipboard){navigator.clipboard.writeText(text).then(()=>toast(copyMsg('shareCopied','Report summary copied ✓'))).catch(()=>toast(text))}else toast(text)}
 function showHistory(){setNav('History');let list=shifts.slice().reverse();q('historyList').innerHTML=list.length?list.map(s=>{const stops=s.stops?.length?` · ${s.stops.length} stop${s.stops.length===1?'':'s'}`:'';return `<div class="historyItem"><div class="historyTop"><span>${s.date}</span><span>${s.miles.toFixed(2)} mi</span></div><div class="historySub">${vehicles[s.vehicle]?.label||s.vehicle} • ${fmt(s.seconds)} • ${money(s.hmrc)}${stops}</div></div>`}).join(''):'<div class="history-empty"><div class="icon" aria-hidden="true">'+((typeof MPCopy!=='undefined')?MPCopy.emptyIllustrationSvg():'📋')+'</div><p class="history-empty-title">'+(typeof MPCopy!=='undefined'?MPCopy.historyEmptyTitle:'Your journey history starts here')+'</p><p class="history-empty-sub">'+(typeof MPCopy!=='undefined'?MPCopy.historyEmptySub:'End your first shift and every business mile will be saved automatically.')+'</p></div>';showScreen('history')}
-function showSettings(){setNav('Settings');q('settingsEmail').value=localStorage.getItem('mp_email')||'';renderReportSettings();renderTrackingModeSettingsSummary();renderVehicleSettingsSummary();const dbg=q('debugPanelCard');if(dbg)dbg.hidden=localStorage.getItem('mp_debug')!=='1';if(!dbg?.hidden)renderDebugPanel();showScreen('settings')}
+function showSettings(){setNav('Settings');q('settingsEmail').value=localStorage.getItem('mp_email')||'';renderReportSettings();renderTrackingModeSettingsSummary();renderVehicleSettingsSummary();renderAutopilotStatusChecklist();const dbg=q('debugPanelCard');if(dbg)dbg.hidden=localStorage.getItem('mp_debug')!=='1';if(!dbg?.hidden)renderDebugPanel();showScreen('settings')}
 function renderDebugPanel(){const el=q('debugPanelBody');if(!el)return;const auto=typeof MPTripAutoEnd!=='undefined'?MPTripAutoEnd.getDebugState(ccState==='active'):{};const email=typeof MPSummaryReports!=='undefined'&&MPSummaryReports.getLastEmailResult?MPSummaryReports.getLastEmailResult():null;const pending=typeof MPSummaryReports!=='undefined'&&MPSummaryReports.getPendingReport?MPSummaryReports.getPendingReport():null;const lines=['Trip status: '+(ccState==='active'?'ACTIVE':'idle'),'Inactivity threshold: '+(auto.inactivityThresholdMin||'?')+' min','Last movement: '+(auto.lastMovementISO||'—'),'Idle for: '+(auto.lastMovementAgoSec!=null?auto.lastMovementAgoSec+' sec':'—'),'Countdown to auto-end: '+(auto.countdownMin!=null?auto.countdownMin+' min':'—'),'Auto-end fired: '+(auto.autoEndFired?'yes':'no'),'Shift id: '+(auto.shiftId||shiftId||'—'),'','Email queue pending: '+(pending?pending.type+' @ '+new Date(pending.fireAt).toISOString():'none'),'Last email result: '+(email?JSON.stringify(email):'none'),'','Recent auto-end logs:'];(auto.recentLogs||[]).slice(-6).forEach(l=>lines.push(new Date(l.t).toISOString()+' '+l.msg));el.textContent=lines.join('\n')}
 function toggleDebugAutoEnd(){checkTripAutoEnd();renderDebugPanel();toast('Auto-end check run — see debug panel')}function saveSettings(){let e=q('settingsEmail').value.trim();if(e)localStorage.setItem('mp_email',e);syncReportSubscription();toast(copyMsg('settingsSaved','Settings saved ✓'))}function createTestShift(){let s=normaliseShift({miles:.1,seconds:300,vehicle,startISO:new Date().toISOString(),endISO:new Date().toISOString()});shifts.push(s);saveShifts();toast(copyMsg('testShiftAdded','Test shift added ✓'));showHistory()}
 async function emailArchiveReport(id,ev){if(!requireActiveAccess('Subscribe to send reports'))return;const entry=getArchiveEntryById(id);if(!entry?.payload){toast(copyMsg('reportNoData','No report data yet'));return}let email=localStorage.getItem('mp_email')||'';if(id==='syn_today'){const quick=q('reportQuickEmail')?.value?.trim();if(quick)email=quick}if(!email){toast(copyMsg('emailRequired','Add an email address first'));showReports();return}localStorage.setItem('mp_email',email);const payload={...entry.payload,email,driver:entry.payload.driver||localStorage.getItem('mp_driver')||''};const btn=ev?.target;if(btn){btn.dataset.label=btn.dataset.label||btn.textContent;btn.textContent='Sending…';btn.disabled=true}try{const{res,data}=await apiPost('/reports/send',payload);if(!res.ok||!data.sent)throw new Error(data.message||'Email failed');saveReportToArchive(payload,'email');toast(typeof MPCopy!=='undefined'?MPCopy.reportSent(email):'Report sent to '+email+' ✓')}catch(e){toast(copyMsg('reportEmailFailed','Email failed — try downloading your PDF instead.'))}finally{if(btn){btn.textContent=btn.dataset.label||'Email';btn.disabled=false}}}
