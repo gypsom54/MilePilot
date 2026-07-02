@@ -2,7 +2,7 @@
 
 **Status:** APPROVED — Frozen (2 July 2026)  
 **Component:** `#settings` `.screen` — premium control centre  
-**Version locked:** v8.43.25
+**Version locked:** v8.43.26 (final — no further visual changes)
 
 > **Rule:** Visual polish only. No tracking, permissions, report, navigation, or state logic changes unless a genuine usability issue is discovered.
 
