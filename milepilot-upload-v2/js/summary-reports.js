@@ -195,26 +195,27 @@
     const pending = trips.filter(function (t) {
       return t.status === 'pending';
     });
-
-    if (business.length) {
-      return {
-        list: business.map(tripToShiftRow),
-        excludedPending: pending.length,
-        pendingNotice:
-          pending.length > 0
-            ? pending.length +
-              ' pending journey' +
-              (pending.length > 1 ? 's' : '') +
-              ' excluded from this report.'
-            : null,
-      };
-    }
-
     const shifts = typeof deps.getShifts === 'function' ? deps.getShifts() : [];
+    const tripShiftIds = new Set(
+      business.map(function (t) {
+        return t.shiftId;
+      }).filter(Boolean)
+    );
+    const unmigratedShifts = shifts.filter(function (s) {
+      return !tripShiftIds.has(s.id) && (Number(s.miles) || 0) >= 0.01;
+    });
+    const list = business.map(tripToShiftRow).concat(unmigratedShifts);
+
     return {
-      list: shifts.slice(),
-      excludedPending: 0,
-      pendingNotice: null,
+      list: list,
+      excludedPending: pending.length,
+      pendingNotice:
+        pending.length > 0
+          ? pending.length +
+            ' pending journey' +
+            (pending.length > 1 ? 's' : '') +
+            ' excluded from this report.'
+          : null,
     };
   }
 

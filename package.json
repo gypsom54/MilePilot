@@ -22,10 +22,11 @@
     "verify:reports": "node scripts/verify-reports-contract.js",
     "test:tracking": "node tests/tracking-regression.test.js",
     "test:reports": "node tests/reports-regression.test.js",
+    "test:summary-collect": "node tests/summary-reports-collect.test.js",
     "test:trips": "node tests/trip-persistence.test.js",
     "test:auto-end": "node tests/trip-auto-end.test.js",
     "test:tracking-mode": "node tests/tracking-mode.test.js",
-    "test:vital": "npm run verify:tracking && npm run verify:reports && npm run test:tracking && npm run test:reports && npm run test:trips && npm run test:auto-end && npm run test:tracking-mode"
+    "test:vital": "npm run verify:tracking && npm run verify:reports && npm run test:tracking && npm run test:reports && npm run test:summary-collect && npm run test:trips && npm run test:auto-end && npm run test:tracking-mode"
   },
   "dependencies": {
     "expo": "~56.0.12",
