@@ -222,6 +222,10 @@ html.mp-expo #welcome.active{padding-top:max(52px,calc(env(safe-area-inset-top,0
 .mode-card.selected{border-color:rgba(13,107,255,.58);background:linear-gradient(180deg,rgba(13,107,255,.16),rgba(13,107,255,.05));box-shadow:0 0 0 3px rgba(13,107,255,.14),0 16px 48px rgba(13,107,255,.2),inset 0 1px 0 rgba(255,255,255,.1)}
 .mode-card:active{transform:scale(.985)}
 .mode-badge{display:inline-block;padding:4px 10px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:linear-gradient(180deg,#1E88FF,#0D6BFF);color:#fff;box-shadow:0 4px 14px rgba(13,107,255,.35)}
+#trackingMode .mode-badge{padding:5px 12px;font-size:11px;letter-spacing:.09em}
+#trackingMode .mode-benefits{margin:2px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:3px;width:100%}
+#trackingMode .mode-benefits li{position:relative;padding-left:14px;font-size:11px;line-height:1.25;color:rgba(147,168,196,.85)}
+#trackingMode .mode-benefits li::before{content:'✓';position:absolute;left:0;top:0;color:rgba(110,180,255,.82);font-size:10px;font-weight:700}
 .mode-card-head{display:flex;align-items:center;gap:10px;width:100%}
 .mode-card-emoji{font-size:28px;line-height:1}
 .mode-card-title{margin:0;font-size:18px;font-weight:700;letter-spacing:-0.02em;color:rgba(234,242,255,.96)}
@@ -957,18 +961,28 @@ body.always-modal-open .nav{display:none!important}
 <div class="onboard-progress"><div class="onboard-progress-track"><div class="onboard-progress-fill" style="width:33%"></div></div><p class="onboard-progress-label">Step 3 of 6</p></div>
 <div class="knowYou-body">
 <h1 class="knowYou-greeting">How would you like to track your business mileage?</h1>
-<p class="knowYou-support" style="margin-bottom:20px">Choose the tracking style that suits your business.<br>You can switch at any time in Settings.</p>
+<p class="knowYou-support" style="margin-bottom:20px">Choose your preferred tracking style.<br>You can change it anytime in Settings.</p>
 <div class="knowYou-cards">
 <div class="mode-card-grid" id="tmModeGrid">
 <button type="button" class="mode-card is-recommended" data-mode="autopilot" onclick="selectTrackingMode('autopilot')">
 <span class="mode-badge">Recommended</span>
 <div class="mode-card-head"><span class="mode-card-emoji" aria-hidden="true">🚀</span><h2 class="mode-card-title">AutoPilot</h2></div>
-<p class="mode-card-desc">Drive normally.<br><br>MilePilot records your business journeys automatically and prepares your reports in the background.</p>
-<p class="mode-card-tagline">Best for people who want less admin.</p>
+<p class="mode-card-desc">Drive normally.<br>Automatically records journeys and prepares your reports.</p>
+<ul class="mode-benefits" aria-label="AutoPilot benefits">
+<li>Automatic journey detection</li>
+<li>Automatic reports</li>
+<li>Less admin</li>
+</ul>
+<p class="mode-card-tagline">Best for less admin.</p>
 </button>
 <button type="button" class="mode-card" data-mode="manual" onclick="selectTrackingMode('manual')">
 <div class="mode-card-head"><span class="mode-card-emoji" aria-hidden="true">✋</span><h2 class="mode-card-title">Manual Tracking</h2></div>
-<p class="mode-card-desc">Start and stop journeys yourself whenever you choose.</p>
+<p class="mode-card-desc">Start and stop journeys yourself.</p>
+<ul class="mode-benefits" aria-label="Manual tracking benefits">
+<li>Manual journey control</li>
+<li>Full flexibility</li>
+<li>Complete control</li>
+</ul>
 <p class="mode-card-tagline">Best if you prefer complete control.</p>
 </button>
 </div>
@@ -1266,7 +1280,7 @@ body.always-modal-open .nav{display:none!important}
 <script src="js/app-copy.js"></script>
 <script src="js/beta-feedback.js"></script>
 <script>
-const APP_VERSION='8.43.5';
+const APP_VERSION='8.43.6';
 const DEFAULT_WEEKLY_GOAL_MILES=400;
 const BUSINESS_PROFILE_KEY='mp_business_profile';
 const PRODUCT_VISION_LOCK='2026-06-vision-v1';
