@@ -103,7 +103,8 @@ export function processGpsPoint(state, p, deviceSpeedMps = null) {
       next.lastPoint = p;
       return next;
     }
-    const isStopped = d < ENGINE.MIN_MOVE_M * 2 && (d === 0 || speed < ENGINE.STOP_SPEED_MPS);
+    const calcSpeed = calcSpeedMps(d, p, prev);
+    const isStopped = d < ENGINE.MIN_MOVE_M * 2 && (d === 0 || calcSpeed < ENGINE.STOP_SPEED_MPS);
     if (isStopped) {
       if (!next.stopCandidateAt) {
         next.stopCandidateAt = p.t;

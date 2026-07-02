@@ -123,7 +123,7 @@ function processPoint(p, deviceSpeedMps) {
       trip.lastPoint = p;
       return;
     }
-    const isStopped = d < ENGINE.MIN_MOVE_M * 2 && (d === 0 || speed < ENGINE.STOP_SPEED_MPS);
+    const isStopped = d < ENGINE.MIN_MOVE_M * 2 && (d === 0 || calcSpeed < ENGINE.STOP_SPEED_MPS);
     if (isStopped) {
       if (!trip.stopCandidateAt) {
         trip.stopCandidateAt = p.t;

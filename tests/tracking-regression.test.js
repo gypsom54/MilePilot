@@ -198,6 +198,27 @@ run("movementSpeedMps uses calculated speed when device reports zero", () => {
   assert.ok(speed > 0.5, "should not trust device zero when distance shows movement");
 });
 
+run("stale low device speed on 5m native hops does not halve mileage", () => {
+  const t0 = Date.now();
+  const segmentM = 5;
+  const segmentLat = segmentM / 111000;
+  const targetM = 4828;
+  const nSegments = Math.round(targetM / segmentM);
+  const pts = [point(51.5, -0.12, t0, { nativeGps: true })];
+  for (let i = 1; i <= nSegments; i++) {
+    pts.push(
+      point(51.5 + i * segmentLat, -0.12, t0 + i * 5000, {
+        nativeGps: true,
+        speedMps: 0.6,
+      })
+    );
+  }
+  const state = simulateDrive(pts);
+  const expectedMiles = targetM / 1609.344;
+  assert.ok(state.miles > expectedMiles * 0.9, `expected ~${expectedMiles.toFixed(2)} mi, got ${state.miles.toFixed(2)}`);
+  assert.ok(state.miles < expectedMiles * 1.1, `expected ~${expectedMiles.toFixed(2)} mi, got ${state.miles.toFixed(2)}`);
+});
+
 run("small GPS segments accumulate via pendingMeters odometer", () => {
   const t0 = Date.now();
   const segmentM = 3.5;
