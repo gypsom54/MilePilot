@@ -19,7 +19,7 @@
 ✅ **Welcome Screen** (Locked)  
 ✅ **Name & Vehicle** (Locked)  
 ✅ **Tracking Mode** (Locked)  
-✅ **Background Location Screen** (Locked)  
+✅ **Background Permission Screen** (Locked)  
 🟡 **Email Reports Screen** (In Review)  
 ✅ **Success Screen** (Locked)
 
@@ -53,7 +53,7 @@
 | Welcome Screen | ✅ Locked | `#welcome` `data-mp="MP-001"` `data-locked="true"` | |
 | Name & Vehicle | ✅ Locked | `#knowYou` `data-mp="MP-002"` `data-locked="true"` | See [ONBOARDING_V1_LOCK.md](./ONBOARDING_V1_LOCK.md) |
 | Tracking Mode | ✅ Locked | `#trackingMode` `data-mp="MP-046"` `data-locked="true"` | |
-| Background Location Screen | ✅ Locked | `#permissions` `data-mp="MP-004"` `data-locked="true"` | Frozen — UI lock complete |
+| Background Permission Screen | ✅ Locked | `#permissions` `data-mp="MP-004"` `data-locked="true"` | Frozen — UI lock complete |
 | Email Reports Screen | 🟡 In Review | `#emailSetup` `data-mp="email"` | Step 5 of 6 — **current focus** |
 | Success Screen | ✅ Locked | `#onboardReady` `data-mp="onboard-ready"` `data-locked="true"` | Frozen — UI lock complete |
 | Dashboard | ⬜ Pending | `#home` `data-mp="MP-006"` | Command Centre |

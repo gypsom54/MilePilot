@@ -206,16 +206,18 @@ html.mp-expo #welcome.active{padding-top:max(52px,calc(env(safe-area-inset-top,0
 .perm-section .perm-privacy{margin-top:12px;font-size:13px;font-weight:500;color:rgba(110,180,255,.78);line-height:1.45}
 #permissions .brand-bar.onboard-brand{margin-bottom:16px}
 #permissions .onboard-progress{margin:0 0 12px}
-#permissions .perm-screen-title{margin:0 0 14px;font-size:clamp(24px,6.2vw,28px);line-height:1.15}
+#permissions .perm-screen-title{margin:0 0 10px;font-size:clamp(24px,6.2vw,28px);line-height:1.15}
+#permissions .perm-confidence{margin:0 0 16px;font-size:14px;font-weight:500;line-height:1.45;color:rgba(147,168,196,.82);text-align:center}
 #permissions .perm-scroll{margin:0 0 12px}
 #permissions .perm-section{padding:24px 20px 22px;margin:0;border-color:rgba(110,180,255,.22);box-shadow:0 8px 32px rgba(0,0,0,.14),0 0 24px rgba(13,107,255,.08),inset 0 1px 0 rgba(255,255,255,.06)}
 #permissions .perm-lead{margin:0 0 16px;font-size:15px;font-weight:500;line-height:1.45;color:rgba(159,180,208,.92);text-align:center}
 #permissions .perm-permission-lead{margin:0 0 16px;padding:28px 20px 26px;text-align:left}
-#permissions .perm-permission-title{display:block;margin:0 0 10px;font-size:14px;font-weight:600;letter-spacing:-.01em;color:rgba(234,242,255,.96)}
-#permissions .perm-permission-body{margin:0;font-size:14px;font-weight:500;line-height:1.45;color:rgba(180,210,245,.92)}
+#permissions .perm-permission-title{display:block;margin:0 0 10px;font-size:14px;font-weight:600;letter-spacing:-.01em;line-height:1.4;color:rgba(234,242,255,.96)}
+#permissions .perm-permission-body{margin:0;font-size:14px;font-weight:500;line-height:1.58;color:rgba(180,210,245,.92)}
 #permissions .perm-explain{margin:0 0 10px;font-size:15px;font-weight:400;line-height:1.5;color:rgba(159,180,208,.9)}
 #permissions .perm-reassure{margin:0;font-size:12px;font-weight:500;line-height:1.4;color:rgba(147,168,196,.78)}
-#permissions .perm-btn-hint{margin:8px 0 0;text-align:center;font-size:12px;font-weight:500;line-height:1.35;color:rgba(147,168,196,.78)}
+#permissions .perm-battery{margin:8px 0 0;font-size:12px;font-weight:500;line-height:1.4;color:rgba(147,168,196,.78)}
+#permissions .perm-btn-hint{margin:8px 0 0;text-align:center;font-size:12px;font-weight:500;line-height:1.35;color:rgba(147,168,196,.58)}
 .autopilot-req-list{margin:14px 0 0;padding:0;list-style:none}
 .autopilot-req-list li{position:relative;margin:0 0 11px;padding-left:22px;font-size:14px;font-weight:500;line-height:1.45;color:rgba(159,180,208,.92);letter-spacing:.01em}
 .autopilot-req-list li::before{content:'';position:absolute;left:0;top:.45em;width:8px;height:8px;border-radius:50%;background:#20D781;box-shadow:0 0 0 3px rgba(32,215,129,.18)}
@@ -961,14 +963,16 @@ body.always-modal-open .nav{display:none!important}
 <div class="onboard-progress"><div class="onboard-progress-track"><div class="onboard-progress-fill" style="width:67%"></div></div><p class="onboard-progress-label">Step 4 of 6</p></div>
 <div class="onboard-body">
 <h1 class="knowYou-greeting perm-screen-title">Unlock AutoPilot Tracking</h1>
+<p class="perm-confidence">Drive normally. MilePilot takes care of the rest.</p>
 <div class="perm-scroll">
 <div class="perm-section" id="permLocation" style="opacity:1">
 <div class="onboard-setup-lead perm-permission-lead">
-<strong class="perm-permission-title">📍 Background Location</strong>
+<strong class="perm-permission-title">📍 Always Location Permission</strong>
 <p class="perm-permission-body">Allowing Always Location lets MilePilot automatically detect your business journeys—even when your phone is locked.</p>
 </div>
 <p class="perm-explain">Your location is only used to detect business journeys and calculate mileage.</p>
 <p class="perm-reassure">🔒 Your location is never sold or shared.</p>
+<p class="perm-battery">⚡ Designed to minimise battery usage.</p>
 <p class="perm-privacy perm-gps-help" id="permGpsHelp" hidden></p>
 </div>
 </div>
@@ -1309,7 +1313,7 @@ body.always-modal-open .nav{display:none!important}
 <script src="js/app-copy.js"></script>
 <script src="js/beta-feedback.js"></script>
 <script>
-const APP_VERSION='8.43.14';
+const APP_VERSION='8.43.15';
 const DEFAULT_WEEKLY_GOAL_MILES=400;
 const BUSINESS_PROFILE_KEY='mp_business_profile';
 const PRODUCT_VISION_LOCK='2026-06-vision-v1';

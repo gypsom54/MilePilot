@@ -21,7 +21,7 @@
 | ✓ | **Welcome Screen** | `#welcome` | MP-001 |
 | ✓ | **Name & Vehicle** | `#knowYou` | MP-002 |
 | ✓ | **Tracking Mode** | `#trackingMode` | MP-046 |
-| ✓ | **Background Location Screen** | `#permissions` | MP-004 |
+| ✓ | **Background Permission Screen** | `#permissions` | MP-004 |
 | ✓ | **Success Screen** | `#onboardReady` | onboard-ready |
 
 All five screens above are **🔒 LOCKED**. Do not change unless a genuine bug is reported.
@@ -96,17 +96,19 @@ Commit and screenshot on each approved screen; upload **one final zip** when the
 - **Marker:** `data-locked="true"` `data-mp="MP-046"`
 - **Policy:** AutoPilot vs Manual cards, copy, and layout frozen unless bug fix.
 
-### Background Location Screen — LOCKED
+### Background Permission Screen — LOCKED
 
 - **File:** `frontend/index.html` → `#permissions`
 - **Marker:** `data-locked="true"` `data-mp="MP-004"`
 - **Frozen:** June 2026 — no further UI changes unless genuine bug
 - **Approved copy:**
   - Headline: Unlock AutoPilot Tracking
-  - Card title: 📍 Background Location
+  - Confidence: Drive normally. MilePilot takes care of the rest.
+  - Card title: 📍 Always Location Permission
   - Card body: Allowing Always Location lets MilePilot automatically detect your business journeys—even when your phone is locked.
   - Explain: Your location is only used to detect business journeys and calculate mileage.
-  - Reassurance: 🔒 Your location is never sold or shared.
+  - Privacy: 🔒 Your location is never sold or shared.
+  - Battery: ⚡ Designed to minimise battery usage.
   - Primary CTA: Enable AutoPilot
   - Secondary: Use Manual Tracking Instead
   - Hint: Takes about 10 seconds.
