@@ -6,7 +6,8 @@
 > **Rule:** Locked screens must not be changed again unless there is a genuine bug.
 
 **Related docs:**
-- [ONBOARDING_V1_LOCK.md](./ONBOARDING_V1_LOCK.md) — Vehicle Selection detail
+- [MILEPILOT_UI_LOCK.md](./MILEPILOT_UI_LOCK.md) — screen status board (canonical checklist)
+- [ONBOARDING_V1_LOCK.md](./ONBOARDING_V1_LOCK.md) — Name & Vehicle detail
 - [MILEPILOT-DESIGN-BIBLE.md](./MILEPILOT-DESIGN-BIBLE.md) — copy, UI, animation standards
 - [TRACKING_RELIABILITY_LOCKDOWN.md](./TRACKING_RELIABILITY_LOCKDOWN.md) — Phase 2 engine rules
 - [DEVELOPMENT_PRIORITIES.md](./DEVELOPMENT_PRIORITIES.md) — sprint focus
@@ -18,12 +19,14 @@
 | | Screen | ID | MP code |
 | --- | --- | --- | --- |
 | ✓ | **Welcome Screen** | `#welcome` | MP-001 |
-| ✓ | **Vehicle Selection** | `#knowYou` | MP-002 |
+| ✓ | **Name & Vehicle** | `#knowYou` | MP-002 |
 | ✓ | **Tracking Mode** | `#trackingMode` | MP-046 |
 | ✓ | **AutoPilot Permission** | `#permissions` | MP-004 |
 | ✓ | **Success Screen** | `#onboardReady` | onboard-ready |
 
 All five screens above are **🔒 LOCKED**. Do not change unless a genuine bug is reported.
+
+**In review:** Email Reports Screen (`#emailSetup`) — see [MILEPILOT_UI_LOCK.md](./MILEPILOT_UI_LOCK.md).
 
 ---
 
@@ -81,7 +84,7 @@ Commit and screenshot on each approved screen; upload **one final zip** when the
 - **Marker:** `data-locked="true"` `data-mp="MP-001"`
 - **Policy:** Visual and copy frozen unless bug fix.
 
-### Vehicle Selection — LOCKED
+### Name & Vehicle — LOCKED
 
 - **File:** `frontend/index.html` → `#knowYou`
 - **Marker:** `data-locked="true"` `data-onboard-lock="v1.0"` `data-onboard-frozen="true"` `data-mp="MP-002"`
@@ -121,7 +124,7 @@ Commit and screenshot on each approved screen; upload **one final zip** when the
 
 | Screen | ID | MP code | Notes |
 | --- | --- | --- | --- |
-| Email setup | `#emailSetup` | email | Step 5 of 6 — next onboarding polish |
+| Email Reports Screen | `#emailSetup` | email | 🟡 In review — see [MILEPILOT_UI_LOCK.md](./MILEPILOT_UI_LOCK.md) |
 | Command Centre (Dashboard) | `#home` | MP-006 | |
 | Reports | `#reports` | MP-008 | |
 | History | `#history` | — | |
