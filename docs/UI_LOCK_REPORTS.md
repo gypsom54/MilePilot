@@ -1,6 +1,6 @@
 # Reports Screen UI Lock
 
-**Status:** DESIGN COMPLETE — Frozen (July 2026)  
+**Status:** APPROVED — Frozen (July 2026)  
 **Component:** `#reports` `.reports-screen` — Report Centre  
 **Version locked:** v8.43.22
 

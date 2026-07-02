@@ -1,8 +1,9 @@
 # Dashboard UI Lock
 
-**Status:** APPROVED — Frozen (July 2026)  
+**Status:** APPROVED — Frozen (2 July 2026)  
 **Screen:** Command Centre — `#home` `data-mp="MP-006"` `data-locked="true"`  
-**Version locked:** v8.43.23 (nav dock v8.43.21 — see [UI_LOCK_NAVIGATION.md](./UI_LOCK_NAVIGATION.md))
+**Version locked:** v8.43.23 (nav dock v8.43.21 — see [UI_LOCK_NAVIGATION.md](./UI_LOCK_NAVIGATION.md))  
+**User approval:** Dashboard screenshot approved — Phase 1 Dashboard UI complete.
 
 **Related docs:**
 - [UI_LOCK_NAVIGATION.md](./UI_LOCK_NAVIGATION.md) — bottom navigation dock

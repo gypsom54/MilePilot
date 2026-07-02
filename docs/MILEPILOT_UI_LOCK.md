@@ -31,8 +31,8 @@
 ⬜ **Start Shift**  
 ⬜ **Live Tracking**  
 ⬜ **AI Review**  
-🟡 **Reports** (In Review — polish complete, awaiting approval)  
-⬜ **History**  
+✅ **Reports** (Locked)  
+⬜ **History** (Next up)  
 ⬜ **Settings**  
 ⬜ **Subscription**
 
@@ -63,8 +63,8 @@
 | Start Shift | ⬜ Pending | `#home` → `#ccPrimaryBtn` | Dashboard idle CTA — frozen with Dashboard |
 | Live Tracking | ⬜ Pending | `#tracking` | |
 | AI Review | ⬜ Pending | `#home` → `#ccSummary` / `#journeyReviewPanel` | |
-| Reports | 🟡 In Review | `#reports` `data-mp="MP-008"` `data-locked="true"` | See [UI_LOCK_REPORTS.md](./UI_LOCK_REPORTS.md) |
-| History | ⬜ Pending | `#history` | |
+| Reports | ✅ Locked | `#reports` `data-mp="MP-008"` `data-locked="true"` | See [UI_LOCK_REPORTS.md](./UI_LOCK_REPORTS.md) |
+| History | 🟡 In Review | `#history` | Next up — Phase 1 polish |
 | Settings | ⬜ Pending | `#settings` | |
 | Subscription | ⬜ Pending | `#subscriptionPaywall` | |
 
@@ -86,6 +86,6 @@
 
 ## Next up
 
-**Email Reports Screen** (`#emailSetup`) — remaining onboarding polish.
+**History** (`#history`) — Phase 1 polish (dashboard visual standard).
 
-**Dashboard** is frozen. See [UI_LOCK_DASHBOARD.md](./UI_LOCK_DASHBOARD.md).
+**Locked:** Dashboard v8.43.23 · Reports v8.43.22 · Navigation v8.43.21. See [UI_LOCK_DASHBOARD.md](./UI_LOCK_DASHBOARD.md) and [UI_LOCK_REPORTS.md](./UI_LOCK_REPORTS.md).
