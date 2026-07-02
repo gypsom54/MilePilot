@@ -17,6 +17,28 @@ The TestFlight app is a **native shell** that loads the PWA from `app.milepilot.
 | Speed gate | `nativeGps` + `movementSpeedMps()` for TestFlight bursts |
 | iOS build | `buildNumber: 3` |
 
+## Production TestFlight (v8.39.0+)
+
+Before building, confirm Cloudflare serves the matching PWA:
+
+- https://app.milepilot.uk/version.txt → `8.39.0`
+
+Then from repo root (requires `EXPO_TOKEN` or `eas login`):
+
+```bash
+npm install
+npm run build:ios:production -- --non-interactive
+npm run submit:ios -- --non-interactive
+```
+
+Or one command:
+
+```bash
+npm run release:ios
+```
+
+Pins: `app.config.js` `buildNumber`, `eas.json` `WEB_APP_URL` `v=8.39.0`, production profile.
+
 ## Deploy (two steps required)
 
 ### Step 1 — Cloudflare (immediate)
