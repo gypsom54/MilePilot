@@ -1,21 +1,20 @@
 /**
- * VITAL — BUSINESS CRITICAL (MP-043)
- * Expo background location task — records GPS when phone is locked.
- * Do not modify without reading docs/TRACKING_CONTRACT.md
- * Do NOT claim background tracking works until confirmed on device.
+ * CRITICAL MILEAGE ENGINE FILE — MP-043
+ * Expo background location task. GPS points feed nativeTrackingEngine immediately.
  */
+import { onNativeBackgroundLocation } from './nativeAutoEnd';
+import { ingestNativeLocation } from './nativeTrackingEngine';
 import * as TaskManager from 'expo-task-manager';
 import * as Location from 'expo-location';
 
 export const BACKGROUND_LOCATION_TASK = 'MILEPILOT_BACKGROUND_LOCATION';
 
-/** Set from MilePilotWebView to forward coords into the WebView JS layer */
 let forwardLocationToWebView = null;
-const pendingBackgroundLocations = [];
+const pendingSyncPayloads = [];
 
 export function takePendingBackgroundLocations() {
-  if (!pendingBackgroundLocations.length) return [];
-  return pendingBackgroundLocations.splice(0, pendingBackgroundLocations.length);
+  if (!pendingSyncPayloads.length) return [];
+  return pendingSyncPayloads.splice(0, pendingSyncPayloads.length);
 }
 
 export function setBackgroundLocationForwarder(fn) {
@@ -39,6 +38,17 @@ function locationToPayload(loc) {
   };
 }
 
+function queueSync(sync) {
+  if (!sync) return;
+  pendingSyncPayloads.push(sync);
+  if (pendingSyncPayloads.length > 100) {
+    pendingSyncPayloads.splice(0, pendingSyncPayloads.length - 100);
+  }
+  if (typeof forwardLocationToWebView === 'function') {
+    forwardLocationToWebView(sync);
+  }
+}
+
 TaskManager.defineTask(BACKGROUND_LOCATION_TASK, ({ data, error }) => {
   if (error) {
     console.error('[MilePilot BG GPS]', error.message || error);
@@ -51,24 +61,22 @@ TaskManager.defineTask(BACKGROUND_LOCATION_TASK, ({ data, error }) => {
   const payload = locationToPayload(latest);
   if (!payload) return;
 
-  pendingBackgroundLocations.push(payload);
-  if (pendingBackgroundLocations.length > 500) {
-    pendingBackgroundLocations.splice(0, pendingBackgroundLocations.length - 500);
-  }
+  console.log(
+    '[MilePilot BG GPS] location',
+    payload.coords.latitude,
+    payload.coords.longitude,
+    'acc',
+    payload.coords.accuracy
+  );
 
-  // BACKGROUND GPS TEST POINT — log to Metro / Xcode console during device tests
-  console.log('[MilePilot BG GPS] location', payload.coords.latitude, payload.coords.longitude);
-
-  if (typeof forwardLocationToWebView === 'function') {
-    forwardLocationToWebView(payload);
+  const sync = ingestNativeLocation(payload, { source: 'background' });
+  if (sync) {
+    queueSync(sync);
+  } else {
+    onNativeBackgroundLocation(payload);
   }
 });
 
-/**
- * BACKGROUND GPS TEST POINT
- * Start native background location updates during an active shift.
- * Requires "Always" location permission on iOS.
- */
 export async function startBackgroundLocationUpdates() {
   const hasTask = await TaskManager.isTaskRegisteredAsync(BACKGROUND_LOCATION_TASK);
   if (!hasTask) {
