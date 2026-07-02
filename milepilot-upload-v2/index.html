@@ -17,7 +17,7 @@
   --bg:#031126;--panel:#0B2348;--blue:#0D6BFF;--muted:#B9C8DD;--line:rgba(255,255,255,.14);--green:#20D781;--red:#EF3333;
   --brand-blue:#0D6BFF;--brand-glow:rgba(13,107,255,.28);--brand-glow-soft:rgba(13,107,255,.18);
   --brand-pulse-opacity:.88;--brand-pulse-height:2px;--brand-pulse-alive:4s;
-  --headline-spacing:16px;--card-radius:24px;--button-radius:16px;
+  --headline-spacing:20px;--card-radius:24px;--button-radius:16px;
   --animation-speed:1s;--transition-duration:.5s
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -35,15 +35,24 @@ body{display:flex;justify-content:center}
 #tracking .gps-badge-top{position:absolute;top:max(24px,env(safe-area-inset-top));right:22px;margin:0;z-index:2}
 .gps-badge{margin-left:auto;border:1px solid rgba(255,255,255,.28);border-radius:18px;padding:9px 14px;font-weight:700;font-size:13px;letter-spacing:.04em;color:rgba(234,242,255,.92);white-space:nowrap}
 .onboard-brand{display:flex;flex-direction:column;align-items:center;margin:0 0 24px;padding:0}
-#welcome .brand-bar .wordmark,#welcome .onboard-brand .wordmark{font-size:42px;font-weight:700;letter-spacing:-0.04em;line-height:1;-webkit-font-smoothing:antialiased}
-#welcome .brand-bar .brand-pulse,#welcome .onboard-brand .brand-pulse{width:min(calc(100% + 32px),220px);margin:16px auto 0}
+#welcome .brand-bar .wordmark,#welcome .onboard-brand .wordmark{font-size:36px;font-weight:700;letter-spacing:-0.04em;line-height:1;-webkit-font-smoothing:antialiased}
+#welcome .brand-bar .brand-pulse,#welcome .onboard-brand .brand-pulse,#welcome .welcome-brand-compact .brand-pulse{width:min(168px,52vw);margin:12px auto 0}
+#welcome .welcome-brand-compact{margin:0 0 36px;text-align:center;animation:welcomeBrandIn .7s cubic-bezier(.22,1,.36,1) .1s both}
+#welcome .welcome-brand-compact .brand-tagline{display:none}
+#welcome .welcome-message{margin:0 0 8px}
+#welcome .welcome-headline{animation:brandHeadlineIn .6s cubic-bezier(.22,1,.36,1) .85s forwards;opacity:0;font-size:clamp(34px,8.6vw,42px);line-height:1.08;letter-spacing:-0.035em;margin:0 0 18px}
+#welcome .welcome-value-line{text-align:center;font-size:clamp(17px,4.3vw,19px);font-weight:500;line-height:1.55;color:rgba(159,180,208,.94);margin:0 auto 40px;max-width:320px;letter-spacing:-.01em;-webkit-font-smoothing:antialiased;animation:welcomeValueIn .55s cubic-bezier(.22,1,.36,1) 1.15s forwards;opacity:0}
+#welcome .welcome-get-started{margin-top:0;animation:welcomeBtnIn .5s cubic-bezier(.22,1,.36,1) 1.45s forwards;opacity:0}
+@keyframes welcomeBrandIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes welcomeValueIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes welcomeBtnIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 .brand-pulse{position:relative;height:var(--brand-pulse-height);border-radius:999px;background:linear-gradient(90deg,#0A52D4 0%,#0D6BFF 28%,#7EC0FF 50%,#0D6BFF 72%,#0A52D4 100%);box-shadow:0 0 18px rgba(13,107,255,.42),0 0 8px rgba(13,107,255,.32),inset 0 1px 0 rgba(255,255,255,.28);opacity:1;transform-origin:center center;transform:scaleX(1)}
 .brand-pulse.alive,.brand-bar .brand-pulse:not(#welcomePulse){animation:brandPulseGlow var(--brand-pulse-alive) ease-in-out infinite}
 #welcome .brand-pulse.alive,#welcome #welcomePulse.alive{opacity:1;transform:scaleX(1)}
 .blue{color:var(--blue)}
 .wordmark{font-size:34px;line-height:1;font-weight:700;letter-spacing:-0.04em;-webkit-font-smoothing:antialiased}
 .title{font-size:34px;line-height:1.05;margin:14px 0 8px;font-weight:1000;letter-spacing:-1px}.sub{color:var(--muted);font-size:16px;line-height:1.45}
-.card{border:1px solid var(--line);background:rgba(255,255,255,.055);border-radius:24px;padding:18px;margin:16px 0;box-shadow:0 18px 48px rgba(0,0,0,.14)}
+.card{border:1px solid var(--line);background:rgba(255,255,255,.055);border-radius:24px;padding:20px 18px;margin:16px 0;box-shadow:0 18px 48px rgba(0,0,0,.14)}
 .infoCard{border:1px solid var(--line);background:rgba(255,255,255,.045);border-radius:22px;padding:16px;margin:16px 0;color:#EAF2FF;line-height:1.45}
 .type{min-height:70px;font-size:28px;font-weight:1000;line-height:1.2;margin:10px 0 14px}.cursor{display:inline-block;width:3px;height:25px;background:var(--blue);animation:blink .8s infinite}@keyframes blink{50%{opacity:0}}
 input,select{width:100%;height:58px;border-radius:18px;border:1px solid rgba(255,255,255,.16);background:#07182F;color:#fff;font-size:17px;padding:0 16px;outline:none}input::placeholder{color:#7F8DA5}
@@ -124,10 +133,9 @@ body.map-expand-open{overflow:hidden}
 @keyframes brandPulseGlow{0%,100%{opacity:1;box-shadow:0 0 22px rgba(13,107,255,.28),0 0 10px rgba(13,107,255,.16);filter:brightness(1)}50%{opacity:1;box-shadow:0 0 36px rgba(13,107,255,.42),0 0 16px rgba(13,107,255,.28);filter:brightness(1.15)}}
 #welcome #welcomePulse{opacity:0;transform:scaleX(0)}
 #welcome .brand-pulse.sweep{animation:brandPulseSweep var(--animation-speed) cubic-bezier(.4,0,.2,1) .15s forwards}
-#welcome .welcome-headline{animation:brandHeadlineIn .55s ease 1.2s forwards;opacity:0}
 @keyframes brandPulseSweep{0%{transform:scaleX(0);opacity:0}50%{transform:scaleX(1);opacity:1}100%{transform:scaleX(1);opacity:1}}
 @keyframes brandHeadlineIn{to{opacity:1}}
-.welcome-headline{text-align:center;font-size:clamp(31px,7.8vw,37px);line-height:1.14;font-weight:700;letter-spacing:-0.03em;margin:0 0 var(--headline-spacing);-webkit-font-smoothing:antialiased}
+.welcome-headline{text-align:center;font-size:clamp(34px,8.6vw,42px);line-height:1.08;font-weight:700;letter-spacing:-0.035em;margin:0 0 18px;-webkit-font-smoothing:antialiased}
 .welcome-headline .blue{font-weight:700}
 #welcome,#knowYou,#experienceChoice,#businessProfile,#promise,#permissions,#notifications,#trackingMode,#emailSetup,#reportSchedule,#onboardReady{position:relative;overflow:hidden;background:linear-gradient(180deg,#050F22 0%,#020B1B 55%,#010810 100%)}
 #welcome.active,#knowYou.active,#experienceChoice.active,#businessProfile.active,#promise.active,#permissions.active,#notifications.active,#trackingMode.active,#emailSetup.active,#reportSchedule.active,#onboardReady.active{display:flex;flex-direction:column;min-height:100dvh;padding:max(32px,env(safe-area-inset-top)) 24px max(24px,env(safe-area-inset-bottom))}
@@ -135,7 +143,8 @@ body.map-expand-open{overflow:hidden}
 #knowYou .onboard-inner,#experienceChoice .onboard-inner,#businessProfile .onboard-inner,#promise .onboard-inner,#permissions .onboard-inner,#notifications .onboard-inner,#trackingMode .onboard-inner,#emailSetup .onboard-inner,#reportSchedule .onboard-inner,#onboardReady .onboard-inner{flex:1;display:flex;flex-direction:column;padding-top:4px;min-height:0}
 #knowYou .brand-bar.onboard-brand,#experienceChoice .brand-bar.onboard-brand,#businessProfile .brand-bar.onboard-brand,#promise .brand-bar.onboard-brand,#permissions .brand-bar.onboard-brand,#notifications .brand-bar.onboard-brand,#trackingMode .brand-bar.onboard-brand,#emailSetup .brand-bar.onboard-brand,#reportSchedule .brand-bar.onboard-brand,#onboardReady .brand-bar.onboard-brand{margin-bottom:24px}
 #welcome.active{justify-content:center}
-#welcome .onboard-inner{margin:auto 0}
+#welcome .onboard-inner{margin:auto 0;max-width:360px}
+#welcome .premium-btn.is-ready{opacity:1}
 #knowYou .onboard-inner{display:flex;flex-direction:column;min-height:0;overflow:hidden}
 #knowYou .brand-bar .wordmark,#experienceChoice .brand-bar .wordmark,#businessProfile .brand-bar .wordmark,#promise .brand-bar .wordmark,#permissions .brand-bar .wordmark,#notifications .brand-bar .wordmark{font-size:42px}
 #knowYou .brand-bar .brand-pulse,#experienceChoice .brand-bar .brand-pulse,#businessProfile .brand-bar .brand-pulse,#promise .brand-bar .brand-pulse,#permissions .brand-bar .brand-pulse,#notifications .brand-bar .brand-pulse{width:min(calc(100% + 32px),220px);margin:16px auto 0}
@@ -240,9 +249,9 @@ body.map-expand-open{overflow:hidden}
 #trackingMode .premium-btn.is-ready:active,#trackingModeSettings .premium-btn.is-ready:active{transform:scale(.985);filter:brightness(.98);box-shadow:0 4px 16px rgba(13,107,255,.22),inset 0 1px 0 rgba(255,255,255,.08)}
 @keyframes onboardNameAutofillStart{from{}to{}}
 .onboard-name-input:-webkit-autofill{animation-name:onboardNameAutofillStart;animation-duration:.01s}
-.knowYou-greeting{text-align:center;font-size:clamp(26px,6.5vw,30px);font-weight:700;letter-spacing:-0.03em;line-height:1.2;margin:0 0 12px;-webkit-font-smoothing:antialiased;animation:knowYouGreetIn .6s cubic-bezier(.22,1,.36,1) .15s both}
-.knowYou-kicker{text-align:center;font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:rgba(126,184,255,.88);margin:0 0 10px}
-.knowYou-support{text-align:center;font-size:14px;font-weight:500;color:rgba(159,180,208,.85);line-height:1.45;margin:0 0 18px}
+.knowYou-kicker{text-align:center;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(110,180,255,.78);margin:0 0 12px}
+.knowYou-greeting{text-align:center;font-size:clamp(27px,6.8vw,32px);font-weight:700;letter-spacing:-0.035em;line-height:1.15;margin:0 0 10px;-webkit-font-smoothing:antialiased;animation:knowYouGreetIn .6s cubic-bezier(.22,1,.36,1) .15s both}
+.knowYou-support{text-align:center;font-size:15px;font-weight:500;line-height:1.5;color:rgba(159,180,208,.88);margin:0 auto 24px;max-width:300px;letter-spacing:-.01em}
 .knowYou-section-title{text-align:center;font-size:clamp(20px,5vw,22px);font-weight:700;letter-spacing:-0.02em;line-height:1.25;margin:28px 0 8px;color:rgba(234,242,255,.96)}
 .knowYou-reassure{text-align:center;font-size:12px;font-weight:500;color:rgba(147,168,196,.78);line-height:1.4;margin:14px 0 0}
 .welcome-tagline{text-align:center;font-size:15px;font-weight:600;letter-spacing:.04em;color:rgba(126,184,255,.92);margin:0 0 10px}
@@ -292,7 +301,7 @@ body.map-expand-open{overflow:hidden}
 .brand-signature-text{margin:0;font-size:11px;font-weight:500;letter-spacing:.05em;line-height:1.35;color:rgba(143,168,201,.52);-webkit-font-smoothing:antialiased}
 .brand-signature-text .blue{color:rgba(126,184,255,.88);font-weight:500;text-shadow:0 0 18px rgba(13,107,255,.28)}
 @media(prefers-reduced-motion:reduce){.brand-signature-pulse{animation:none}}
-.welcome-support{text-align:center;color:rgba(159,180,208,.85);font-size:14px;font-weight:400;line-height:1.6;margin:0 auto 28px;max-width:300px;letter-spacing:.01em}
+.welcome-support{text-align:center;color:rgba(159,180,208,.85);font-size:15px;font-weight:500;line-height:1.55;margin:0 auto 28px;max-width:320px;letter-spacing:-.01em}
 .welcome-features{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin:0 0 36px;padding:0 4px}
 .welcome-feature{text-align:center;display:flex;flex-direction:column;align-items:center}
 .welcome-icon{width:54px;height:54px;margin:0 0 9px;-webkit-tap-highlight-color:transparent}
@@ -319,14 +328,14 @@ body.map-expand-open{overflow:hidden}
 .premium-btn{height:50px;border-radius:14px;font-size:16px;margin-top:0;background:linear-gradient(180deg,#1A8AFF 0%,#0D6BFF 48%,#0057E7 100%);box-shadow:0 12px 32px rgba(13,107,255,.3);transition:transform .15s ease,box-shadow .15s ease,filter .15s ease}
 .premium-btn:hover{filter:brightness(1.05);box-shadow:0 16px 36px rgba(13,107,255,.36);transform:translateY(-1px)}
 .premium-btn:active{transform:translateY(1px);box-shadow:0 8px 20px rgba(13,107,255,.26)}
-@media(max-width:360px){.welcome-features{gap:12px}.welcome-feature strong{font-size:10px}.welcome-feature span{font-size:9px;max-width:68px}.welcome-icon{width:48px;height:48px}.vehicle-card{min-height:78px;padding:14px 44px 14px 16px}}
+@media(prefers-reduced-motion:reduce){#welcome .welcome-brand-compact,#welcome .welcome-headline,#welcome .welcome-value-line,#welcome .welcome-get-started{animation:none!important;opacity:1!important;transform:none!important}}
 /* MP-006 Command Centre */
 #home.cc-screen{background:linear-gradient(180deg,#0A2854 0%,#031126 82%);padding:24px 22px 108px;position:relative}
 #home.cc-screen.active{display:block}
 .cc-body{max-width:390px;margin:0 auto}
-.cc-greeting-wrap{margin:8px 0 28px;animation:ccFadeIn .55s cubic-bezier(.22,1,.36,1) both}
+.cc-greeting-wrap{margin:4px 0 32px;animation:ccFadeIn .55s cubic-bezier(.22,1,.36,1) both}
 .cc-greeting{font-size:clamp(26px,6.5vw,32px);font-weight:700;letter-spacing:-0.03em;line-height:1.15;margin:0 0 10px;-webkit-font-smoothing:antialiased}
-.cc-status{font-size:16px;font-weight:500;line-height:1.45;color:rgba(159,180,208,.92);margin:0;letter-spacing:.01em}
+.cc-status{font-size:16px;font-weight:500;line-height:1.5;color:rgba(159,180,208,.9);margin:0;letter-spacing:-.01em}
 .cc-tracking-bar{margin:0 0 20px;padding:16px 18px;border:1px solid rgba(32,215,129,.22);border-radius:20px;background:linear-gradient(180deg,rgba(32,215,129,.08),rgba(32,215,129,.02));animation:ccSlideIn .45s cubic-bezier(.22,1,.36,1) both}
 .cc-tracking-head{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;color:rgba(234,242,255,.94);letter-spacing:-0.01em;margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em;font-size:12px}
 .cc-dot{width:9px;height:9px;border-radius:50%;background:#20D781;box-shadow:0 0 12px rgba(32,215,129,.65);animation:ccPulseDot 2s ease-in-out infinite}
@@ -343,7 +352,7 @@ body.map-expand-open{overflow:hidden}
 .cc-primary-btn.is-end{background:linear-gradient(180deg,#FF4848 0%,#EF3333 48%,#D82323 100%);box-shadow:0 8px 28px rgba(239,51,51,.28),inset 0 1px 0 rgba(255,255,255,.1)}
 .cc-primary-btn.is-end:hover{box-shadow:0 12px 32px rgba(239,51,51,.34),inset 0 1px 0 rgba(255,255,255,.1)}
 .cc-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(110,180,255,.18) 20%,rgba(110,180,255,.18) 80%,transparent);margin:0 0 24px}
-.cc-card{border:1px solid rgba(110,180,255,.14);border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(13,107,255,.02));padding:20px 18px;margin:0 0 16px;box-shadow:0 4px 24px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,.04);animation:ccSlideIn .5s cubic-bezier(.22,1,.36,1) both}
+.cc-card{border:1px solid rgba(110,180,255,.14);border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(13,107,255,.02));padding:22px 20px;margin:0 0 16px;box-shadow:0 4px 24px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,.04);animation:ccSlideIn .5s cubic-bezier(.22,1,.36,1) both}
 .cc-card:nth-of-type(1){animation-delay:.16s}
 .cc-card:nth-of-type(2){animation-delay:.22s}
 .cc-card:nth-of-type(3){animation-delay:.28s}
@@ -691,14 +700,15 @@ body.map-expand-open{overflow:hidden}
 <div class="onboard-glow onboard-glow-2"></div>
 </div>
 <div class="onboard-inner">
-<div class="onboard-brand brand-bar center">
+<div class="welcome-brand-compact" aria-hidden="false">
 <div class="wordmark">Mile <span class="blue">Pilot</span></div>
-<div class="brand-pulse" id="welcomePulse"></div><p class="brand-tagline">Your business. On AutoPilot.</p>
+<div class="brand-pulse" id="welcomePulse"></div>
 </div>
-<h1 class="welcome-headline">Welcome to MilePilot</h1>
-<p class="welcome-tagline">The mileage assistant for the self-employed.</p>
-<p class="welcome-support">MilePilot tracks your full day, learns your habits, and prepares a clean business mileage record with minimal input.</p>
-<button type="button" class="btn premium-btn is-ready welcome-get-started" onclick="startOnboardingName()">Get started</button>
+<div class="welcome-message">
+<h1 class="welcome-headline">Run your business on <span class="blue">AutoPilot</span>.</h1>
+<p class="welcome-value-line">Business mileage without the admin.</p>
+</div>
+<button type="button" class="btn premium-btn is-ready welcome-get-started" onclick="startOnboardingName()">Get Started</button>
 </div>
 <div class="welcome-version" id="appVersion">MP-001 🔒 Locked · v2.8</div>
 </section>
@@ -713,9 +723,8 @@ body.map-expand-open{overflow:hidden}
 <div class="onboard-progress" id="onboardProgressName"><div class="onboard-progress-track"><div class="onboard-progress-fill" style="width:33%"></div></div><p class="onboard-progress-label">Step 2 of 6</p></div>
 <div class="knowYou-scroll">
 <div class="knowYou-body" id="onboardNamePanel">
-<p class="knowYou-kicker">Welcome aboard</p>
 <h1 class="knowYou-greeting">What should we call you?</h1>
-<p class="knowYou-support">We'll personalise MilePilot for you.</p>
+<p class="knowYou-support">We'll personalise your dashboard.</p>
 <div class="welcome-input-wrap" style="margin:0 0 8px">
 <svg class="welcome-input-icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M5 20c0-4 3-6 7-6s7 2 7 6"/></svg>
 <input id="onboardName" class="onboard-name-input" placeholder="Your first name" autocomplete="given-name">
@@ -898,7 +907,7 @@ body.map-expand-open{overflow:hidden}
 <header class="brand-bar onboard-brand center"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div><p class="brand-tagline">Your business. On AutoPilot.</p></header>
 <div class="onboard-progress"><div class="onboard-progress-track"><div class="onboard-progress-fill" style="width:83%"></div></div><p class="onboard-progress-label">Step 5 of 6</p></div>
 <h1 class="knowYou-greeting" style="margin-bottom:12px">Where should we email your business reports?</h1>
-<p class="knowYou-support" style="margin-bottom:20px">AutoPilot emails your business mileage report after each shift. Manual mode lets you generate reports yourself.</p>
+<p class="knowYou-support" style="margin-bottom:20px">AutoPilot emails your report after each shift. Manual mode — you send reports yourself.</p>
 <input id="emailInput" class="onboard-email-input" placeholder="you@example.com" inputmode="email" autocomplete="email">
 <div class="knowYou-foot"><button type="button" class="btn premium-btn is-ready" onclick="confirmEmailSetup()">Continue</button><button type="button" class="onboard-skip" onclick="skipEmailSetup()">Skip for now</button></div>
 </div>
@@ -912,7 +921,7 @@ body.map-expand-open{overflow:hidden}
 <div class="onboard-body" style="align-items:center;justify-content:center;text-align:center;padding:12px 0 24px">
 <div class="onboard-ready-icon" aria-hidden="true">✓</div>
 <h1 class="knowYou-greeting">You're ready to drive</h1>
-<p class="onboard-ready-sub" id="onboardReadyLead">MilePilot is set up and ready to track your mileage.</p>
+<p class="onboard-ready-sub" id="onboardReadyLead">Your business companion is set up.</p>
 <p class="onboard-ready-sub" id="onboardReadyMode" style="margin-top:4px"></p>
 </div>
 <div class="knowYou-foot"><button type="button" class="btn premium-btn is-ready" onclick="openDashboard()">Go to dashboard</button></div>
@@ -1108,7 +1117,7 @@ body.map-expand-open{overflow:hidden}
 <script src="js/app-copy.js"></script>
 <script src="js/beta-feedback.js"></script>
 <script>
-const APP_VERSION='8.35.0';
+const APP_VERSION='8.36.0';
 const DEFAULT_WEEKLY_GOAL_MILES=400;
 const BUSINESS_PROFILE_KEY='mp_business_profile';
 const PRODUCT_VISION_LOCK='2026-06-vision-v1';
@@ -1213,7 +1222,7 @@ async function continueSetup(){const btn=q('permSetupBtn');if(btn){btn.disabled=
 function goToEmailSetup(){localStorage.setItem('mp_onboard_step','email');initEmailSetup();showScreen('emailSetup')}
 function applyModeReportPrefs(){const mode=(typeof MPTrackingMode!=='undefined'&&MPTrackingMode.getMode())||selectedTrackingMode||'autopilot';localStorage.setItem('mp_operating_mode',mode);setReportFrequency('off');if(mode==='manual')saveReportPrefs({emailReports:false,pdfAttachment:true});else{saveReportPrefs({emailReports:true,pdfAttachment:true});markStayUpdatedPromptSeen()}}
 function saveOnboardReportPrefs(){applyModeReportPrefs()}
-function initOnboardReady(){const mode=(typeof MPTrackingMode!=='undefined'&&MPTrackingMode.getMode())||selectedTrackingMode||'autopilot';const lead=q('onboardReadyLead'),sub=q('onboardReadyMode');if(lead)lead.textContent='Your intelligent business assistant is ready.';if(sub){if(mode==='manual')sub.textContent='Manual Mode — review journeys when you\u2019re ready, then generate reports yourself.';else{const loc=localStorage.getItem('mp_location_choice');sub.textContent=loc==='granted'?'AutoPilot — we track, review uncertain journeys, and email your business report after each shift.':'AutoPilot selected. Enable location in Settings to start.'}}}
+function initOnboardReady(){const mode=(typeof MPTrackingMode!=='undefined'&&MPTrackingMode.getMode())||selectedTrackingMode||'autopilot';const lead=q('onboardReadyLead'),sub=q('onboardReadyMode');if(lead)lead.textContent='Your business on AutoPilot — ready when you are.';if(sub){if(mode==='manual')sub.textContent='Manual Mode — you control tracking and reports.';else{const loc=localStorage.getItem('mp_location_choice');sub.textContent=loc==='granted'?'AutoPilot will track, review journeys, and email your business report after each shift.':'AutoPilot selected. Enable location in Settings to start.'}}}
 async function enableOnboardNotifications(){if(typeof MPExpoBridge!=='undefined'&&MPExpoBridge.request){try{const res=await MPExpoBridge.request('expo:notification:request');localStorage.setItem('mp_notifications_choice',res&&(res.granted||res.status==='granted')?'granted':'skipped');return}catch(e){}}enableNotificationPermission();await new Promise(r=>setTimeout(r,400))}
 function initEmailSetup(){const email=q('emailInput');if(email)email.value=localStorage.getItem('mp_email')||''}
 function confirmEmailSetup(){const e=q('emailInput')?.value.trim();if(e)localStorage.setItem('mp_email',e);saveOnboardReportPrefs();localStorage.setItem('mp_onboard_step','ready');initOnboardReady();showScreen('onboardReady')}
@@ -1255,7 +1264,7 @@ let welcomeTypingTimers=[];
 function clearWelcomeTyping(){welcomeTypingTimers.forEach(t=>clearTimeout(t));welcomeTypingTimers=[]}
 function startWelcomeTyping(){const el=q('typed');if(!el)return;clearWelcomeTyping();let idx=0;const fadeMs=480,pauseMs=1300,revealMs=320,cursor='<span class="typing-cursor"></span>';function schedule(fn,ms){welcomeTypingTimers.push(setTimeout(fn,ms))}function showLine(){if(idx>=FIRST_IMPRESSION_LINES.length)return;const text=FIRST_IMPRESSION_LINES[idx],isLast=idx===FIRST_IMPRESSION_LINES.length-1;el.style.transition='opacity '+fadeMs+'ms ease';el.style.opacity='0';schedule(()=>{el.innerHTML=isLast?text+cursor:text;el.style.transition='opacity '+revealMs+'ms ease';el.style.opacity='1';if(isLast)return;schedule(()=>{el.style.transition='opacity '+fadeMs+'ms ease';el.style.opacity='0';schedule(()=>{idx++;showLine()},fadeMs)},pauseMs)},idx?fadeMs:0)}showLine()}
 function syncWelcomeContinue(){const btn=q('welcomeContinue'),name=q('name');if(!btn||!name)return;const ready=name.value.trim().length>0;btn.disabled=!ready;btn.classList.toggle('is-ready',ready)}
-function replayFirstImpressionIntro(){playBrandPulse();const headline=document.querySelector('#welcome .welcome-headline');if(headline){headline.style.animation='none';headline.style.opacity='0';void headline.offsetWidth;headline.style.animation=''}}
+function replayFirstImpressionIntro(){playBrandPulse();['.welcome-headline','.welcome-value-line','.welcome-get-started'].forEach(function(sel){const el=document.querySelector('#welcome '+sel);if(!el)return;el.style.animation='none';el.style.opacity='0';void el.offsetWidth;el.style.animation=''})}
 function playBrandPulse(){const pulse=q('welcomePulse');if(!pulse)return;pulse.classList.remove('sweep','alive');pulse.onanimationend=null;void pulse.offsetWidth;pulse.classList.add('sweep');pulse.onanimationend=()=>{pulse.classList.remove('sweep');pulse.classList.add('alive')}}
 function initFirstImpression(){updateAppVersionBadge();replayFirstImpressionIntro()}
 function updateAppVersionBadge(){const el=q('appVersion');if(el)el.textContent='MP-001 🔒 Locked · App v'+APP_VERSION;const cc=q('ccVersion');if(cc)cc.textContent='MilePilot v'+APP_VERSION}
