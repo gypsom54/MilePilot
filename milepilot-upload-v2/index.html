@@ -227,8 +227,9 @@ body.map-expand-open{overflow:hidden}
 .tm-autopilot-perm p{margin:0 0 10px;font-size:14px;line-height:1.45;color:rgba(159,180,208,.9)}
 .mode-card-desc{margin:4px 0 0;font-size:13px;font-weight:400;color:rgba(147,168,196,.88);line-height:1.45}
 .mode-switch-note{margin:16px 0 0;text-align:center;font-size:13px;font-weight:500;color:rgba(147,168,196,.85);line-height:1.45}
+/* ONBOARDING v1.0 LOCK — progress bar (5px track). Bug fixes only. */
 .onboard-progress{margin:0 0 22px;flex-shrink:0}
-.onboard-progress-track{height:3px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;margin:0 0 8px}
+.onboard-progress-track{height:5px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;margin:0 0 8px}
 .onboard-progress-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#0D6BFF,#7EC0FF);transition:width .45s cubic-bezier(.22,1,.36,1);width:0}
 .onboard-progress-label{margin:0;text-align:center;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(110,180,255,.72)}
 .onboard-setup-lead{margin:0 0 18px;padding:14px 16px;border-radius:16px;background:rgba(13,107,255,.1);border:1px solid rgba(110,180,255,.2);font-size:14px;font-weight:500;line-height:1.45;color:rgba(180,210,245,.95);text-align:center}
@@ -260,6 +261,20 @@ body.map-expand-open{overflow:hidden}
 .knowYou-support{text-align:center;font-size:15px;font-weight:500;line-height:1.5;color:rgba(159,180,208,.88);margin:0 auto 24px;max-width:300px;letter-spacing:-.01em}
 .knowYou-section-title{text-align:center;font-size:clamp(20px,5vw,22px);font-weight:700;letter-spacing:-0.02em;line-height:1.25;margin:28px 0 8px;color:rgba(234,242,255,.96)}
 .knowYou-reassure{text-align:center;font-size:12px;font-weight:500;color:rgba(147,168,196,.78);line-height:1.4;margin:14px 0 0}
+/* ONBOARDING v1.0 LOCK — #knowYou approved elements. Do not modify unless bug reported. See docs/ONBOARDING_V1_LOCK.md */
+/* Locked: logo, header, progress bar, name field, name icon, vehicle layout, overall spacing, bottom helper text */
+#knowYou #vehicleSelectPanel .knowYou-section-title{margin-top:40px}
+#knowYou #onboardVehicleGrid .vehicle-copy{gap:2px}
+#knowYou #onboardVehicleGrid .vehicle-card{padding-right:40px}
+#knowYou #onboardVehicleGrid .vehicle-desc{font-size:11px;line-height:1.1;letter-spacing:-.015em}
+#knowYou .knowYou-reassure{color:rgba(147,168,196,.88)}
+#knowYou .brand-bar.onboard-brand{margin-top:-12px}
+#knowYou #onboardVehicleGrid .vehicle-icon{width:56px;height:56px}
+#knowYou #onboardVehicleGrid .vehicle-icon svg{width:26px;height:26px}
+#knowYou .knowYou-foot .premium-btn:not(.is-ready){opacity:.52;color:rgba(147,168,196,.68);background:linear-gradient(180deg,#152a45 0%,#0f2035 100%);box-shadow:none;cursor:not-allowed}
+#knowYou .knowYou-foot .premium-btn.is-ready{background:linear-gradient(180deg,#1E88FF 0%,#0D6BFF 48%,#0057E7 100%);color:#fff;box-shadow:0 12px 32px rgba(13,107,255,.36),0 0 0 1px rgba(126,200,255,.1),inset 0 1px 0 rgba(255,255,255,.16);cursor:pointer}
+#knowYou .knowYou-foot .premium-btn.is-ready:hover{filter:brightness(1.05);box-shadow:0 14px 38px rgba(13,107,255,.42),0 0 0 1px rgba(126,200,255,.14),inset 0 1px 0 rgba(255,255,255,.16)}
+#knowYou .knowYou-foot .premium-btn.is-ready:active{transform:scale(.985);filter:brightness(.98);box-shadow:0 6px 20px rgba(13,107,255,.28),inset 0 1px 0 rgba(255,255,255,.1)}
 .welcome-tagline{text-align:center;font-size:15px;font-weight:600;letter-spacing:.04em;color:rgba(126,184,255,.92);margin:0 0 10px}
 .onboard-skip{display:block;width:100%;margin-top:12px;padding:10px;background:none;border:none;color:rgba(147,168,196,.88);font-size:14px;font-weight:500;cursor:pointer;text-align:center;font-family:inherit}
 .onboard-skip:hover{color:rgba(180,210,245,.95)}
@@ -320,7 +335,13 @@ body.map-expand-open{overflow:hidden}
 @keyframes welcomeCursorBlink{50%{opacity:0}}
 .welcome-input-wrap{position:relative;margin:0 0 18px}
 .welcome-input-icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);width:17px;height:17px;stroke:rgba(110,180,255,.75);fill:none;stroke-width:1.6;pointer-events:none;transition:stroke .25s ease}
-#knowYou .welcome-input-wrap:focus-within .welcome-input-icon{stroke:rgba(110,180,255,.95)}
+/* ONBOARDING v1.0 LOCK — name field + name icon (#knowYou). Bug fixes only. */
+#knowYou .welcome-input-wrap{margin:0 0 8px;display:flex;align-items:center;gap:10px;height:52px;padding:0 14px 0 16px;border-radius:var(--button-radius);border:1px solid rgba(110,180,255,.38);background:rgba(18,36,62,.92);box-shadow:inset 0 1px 0 rgba(255,255,255,.08);box-sizing:border-box;transition:border-color .28s ease,box-shadow .28s ease}
+#knowYou .welcome-input-wrap:focus-within{border-color:rgba(13,107,255,.62);box-shadow:0 0 0 3px rgba(13,107,255,.14),inset 0 0 14px rgba(13,107,255,.07)}
+#knowYou .welcome-input-icon{position:static;flex-shrink:0;width:16px;height:16px;transform:none;stroke:rgba(110,180,255,.52);stroke-width:1.25}
+#knowYou .onboard-name-input{margin:0;flex:1;min-width:0;height:auto;padding:0;border:0;background:transparent;box-shadow:none;line-height:1.2;font-size:17px}
+#knowYou .onboard-name-input:focus{outline:none;box-shadow:none;border:0}
+#knowYou .welcome-input-wrap:focus-within .welcome-input-icon{stroke:rgba(110,180,255,.78)}
 #welcome input#name{height:52px;border-radius:var(--button-radius);border:1px solid rgba(110,180,255,.38);background:rgba(18,36,62,.92);color:rgba(248,251,255,.98);box-shadow:inset 0 1px 0 rgba(255,255,255,.08);font-size:17px;font-weight:500;padding:0 16px 0 44px;transition:border-color .28s ease,box-shadow .28s ease;-webkit-font-smoothing:antialiased}
 #welcome input#name::placeholder{color:rgba(186,204,228,.78);font-weight:400}
 @media(hover:hover){.welcome-icon:hover{transform:scale(1.05);border-color:rgba(110,180,255,.36);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),inset 0 -10px 22px rgba(13,107,255,.14),0 8px 26px rgba(13,107,255,.14)}.welcome-icon:hover svg{stroke:#C8E6FF;fill:rgba(13,107,255,.22)}}
@@ -782,8 +803,9 @@ body.always-modal-open .nav{display:none!important}
 </div>
 <div class="welcome-version" id="appVersion">MP-001 🔒 Locked · v2.8</div>
 </section>
-<!-- MP-002 Personalising MilePilot — ✅ COMPLETE · 🔒 Do not modify layout/cards. -->
-<section id="knowYou" class="screen" data-mp="MP-002" data-locked="true" data-complete="true">
+<!-- ONBOARDING v1.0 FROZEN — MP-002 knowYou. Production-ready 2026-06-29. Bug fixes only. See docs/ONBOARDING_V1_LOCK.md -->
+<!-- Locked: logo | header | progress bar | name field | name icon | vehicle layout | overall spacing | bottom helper text -->
+<section id="knowYou" class="screen" data-mp="MP-002" data-locked="true" data-complete="true" data-onboard-lock="v1.0" data-onboard-frozen="true">
 <div class="onboard-bg" aria-hidden="true">
 <div class="onboard-glow onboard-glow-1"></div>
 <div class="onboard-glow onboard-glow-2"></div>
@@ -794,19 +816,19 @@ body.always-modal-open .nav{display:none!important}
 <div class="knowYou-scroll">
 <div class="knowYou-body" id="onboardNamePanel">
 <h1 class="knowYou-greeting">What should we call you?</h1>
-<p class="knowYou-support">We'll personalise your dashboard.</p>
-<div class="welcome-input-wrap" style="margin:0 0 8px">
-<svg class="welcome-input-icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M5 20c0-4 3-6 7-6s7 2 7 6"/></svg>
+<p class="knowYou-support">Let's personalise MilePilot for your business.</p>
+<div class="welcome-input-wrap">
+<svg class="welcome-input-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="10" r="3.5"/><path d="M5.5 19.5c0-3.6 2.9-6.5 6.5-6.5s6.5 2.9 6.5 6.5"/></svg>
 <input id="onboardName" class="onboard-name-input" placeholder="Your first name" autocomplete="given-name">
 </div>
 </div>
 <div class="knowYou-body" id="vehicleSelectPanel">
-<h2 class="knowYou-section-title">What do you drive most?</h2>
-<p class="knowYou-support" style="margin-bottom:16px">We use this to calculate your HMRC mileage correctly.</p>
+<h2 class="knowYou-section-title">Which vehicle do you use most for work?</h2>
+<p class="knowYou-support" style="margin-bottom:16px">Used to calculate your HMRC mileage.</p>
 <div class="knowYou-cards"><div class="vehicle-grid" id="onboardVehicleGrid">
-<button type="button" class="vehicle-card" data-vehicle="car" onclick="selectVehicle('car')"><div class="vehicle-icon"><svg viewBox="0 0 24 24"><path d="M4 13h16l-1.2-3.8a1 1 0 00-.95-.7H6.15a1 1 0 00-.95.7L4 13z"/><path d="M5 13v2.5a1 1 0 001 1h.8a1 1 0 001-1V13M5 13h14M17 13v2.5a1 1 0 01-1 1h-.8a1 1 0 01-1-1V13"/><circle cx="7.5" cy="16.5" r="1.6"/><circle cx="16.5" cy="16.5" r="1.6"/><path d="M8.5 13V10h7v3M10 10l1-2h2l1 2"/></svg></div><div class="vehicle-copy"><strong>Car</strong><span class="vehicle-tag">Most common</span><span class="vehicle-desc">Business travel &amp; client visits</span></div><span class="vehicle-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"/></svg></span></button>
-<button type="button" class="vehicle-card" data-vehicle="van" onclick="selectVehicle('van')"><div class="vehicle-icon"><svg viewBox="0 0 24 24"><path d="M3 14h13V8H3v6z"/><path d="M16 14h4.2l-2.4-4H16v4z"/><path d="M3 14v2h1.2a1 1 0 001-1V14M16 14v2h1.2a1 1 0 001-1V14"/><circle cx="7" cy="17" r="1.6"/><circle cx="17" cy="17" r="1.6"/><path d="M6 8V6.5h7V8M8 6.5V5h3v1.5"/></svg></div><div class="vehicle-copy"><strong>Van</strong><span class="vehicle-tag">Trades &amp; delivery</span></div><span class="vehicle-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"/></svg></span></button>
-<button type="button" class="vehicle-card" data-vehicle="motorcycle" onclick="selectVehicle('motorcycle')"><div class="vehicle-icon"><svg viewBox="0 0 24 24"><circle cx="6.5" cy="17" r="2.2"/><circle cx="17.5" cy="17" r="2.2"/><path d="M6.5 17h11M8.5 17l2.2-4.5 2.3 1.5 2-3.5H16l1.5 2.5"/><path d="M10.7 12.5l1.3-2.2 1.8.8"/></svg></div><div class="vehicle-copy"><strong>Motorcycle</strong><span class="vehicle-tag">Mobile business travel</span></div><span class="vehicle-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"/></svg></span></button>
+<button type="button" class="vehicle-card" data-vehicle="car" onclick="selectVehicle('car')"><div class="vehicle-icon"><svg viewBox="0 0 24 24"><path d="M4 13h16l-1.2-3.8a1 1 0 00-.95-.7H6.15a1 1 0 00-.95.7L4 13z"/><path d="M5 13v2.5a1 1 0 001 1h.8a1 1 0 001-1V13M5 13h14M17 13v2.5a1 1 0 01-1 1h-.8a1 1 0 01-1-1V13"/><circle cx="7.5" cy="16.5" r="1.6"/><circle cx="16.5" cy="16.5" r="1.6"/><path d="M8.5 13V10h7v3M10 10l1-2h2l1 2"/></svg></div><div class="vehicle-copy"><strong>Car</strong><span class="vehicle-desc">Everyday business travel</span></div><span class="vehicle-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"/></svg></span></button>
+<button type="button" class="vehicle-card" data-vehicle="van" onclick="selectVehicle('van')"><div class="vehicle-icon"><svg viewBox="0 0 24 24"><path d="M3 14h13V8H3v6z"/><path d="M16 14h4.2l-2.4-4H16v4z"/><path d="M3 14v2h1.2a1 1 0 001-1V14M16 14v2h1.2a1 1 0 001-1V14"/><circle cx="7" cy="17" r="1.6"/><circle cx="17" cy="17" r="1.6"/><path d="M6 8V6.5h7V8M8 6.5V5h3v1.5"/></svg></div><div class="vehicle-copy"><strong>Van</strong><span class="vehicle-desc">Trades, deliveries &amp; commercial work</span></div><span class="vehicle-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"/></svg></span></button>
+<button type="button" class="vehicle-card" data-vehicle="motorcycle" onclick="selectVehicle('motorcycle')"><div class="vehicle-icon"><svg viewBox="0 0 24 24"><circle cx="6.5" cy="17" r="2.2"/><circle cx="17.5" cy="17" r="2.2"/><path d="M6.5 17h11M8.5 17l2.2-4.5 2.3 1.5 2-3.5H16l1.5 2.5"/><path d="M10.7 12.5l1.3-2.2 1.8.8"/></svg></div><div class="vehicle-copy"><strong>Motorcycle</strong><span class="vehicle-desc">Couriers, food delivery &amp; rapid transport</span></div><span class="vehicle-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"/></svg></span></button>
 </div></div>
 <p class="knowYou-reassure">You can always change this later.</p>
 </div>
@@ -1180,10 +1202,10 @@ body.always-modal-open .nav{display:none!important}
 <div class="native-always-modal" id="nativeAlwaysModal" hidden role="dialog" aria-modal="true" aria-labelledby="nativeAlwaysTitle">
 <div class="native-always-card">
 <h2 id="nativeAlwaysTitle">Background location needed</h2>
-<p>For miles while your phone is locked, set Location to <strong>Always</strong> in iPhone Settings.</p>
+<p>To record mileage while your phone is locked, MilePilot needs your Location set to <strong>Always</strong>.</p>
 <div class="native-always-actions">
 <button type="button" class="btn premium-btn is-ready" id="nativeAlwaysOpen">Open Settings</button>
-<button type="button" class="btn outline" id="nativeAlwaysDismiss">Got it</button>
+<button type="button" class="btn outline" id="nativeAlwaysDismiss">Not now</button>
 </div>
 </div>
 </div>
