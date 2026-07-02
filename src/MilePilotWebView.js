@@ -67,14 +67,25 @@ true;
 export default function MilePilotWebView() {
   const webViewRef = useRef(null);
   const [ready, setReady] = useState(false);
+  const appStateRef = useRef(AppState.currentState);
+  const injectedKeysRef = useRef(new Set());
 
   const sendToWebView = useCallback((payload) => {
+    if (!payload) return;
+    const key = `${payload.type || 'loc'}:${payload.timestamp || 0}:${payload.coords?.latitude || ''}`;
+    if (injectedKeysRef.current.has(key)) return;
+    injectedKeysRef.current.add(key);
+    if (injectedKeysRef.current.size > 600) {
+      injectedKeysRef.current = new Set(Array.from(injectedKeysRef.current).slice(-400));
+    }
     injectLocationIntoWebView(webViewRef, payload);
   }, []);
 
   useEffect(() => {
     setBackgroundLocationForwarder((payload) => {
-      sendToWebView(payload);
+      if (appStateRef.current === 'active') {
+        sendToWebView(payload);
+      }
     });
     setNativeAutoEndInjector(() => {
       injectLocationIntoWebView(webViewRef, { type: 'expo:autoend:trigger', timestamp: Date.now() });
@@ -87,11 +98,15 @@ export default function MilePilotWebView() {
 
   useEffect(() => {
     const flushBufferedLocations = () => {
-      takePendingBackgroundLocations().forEach((payload) => {
+      const buffered = takePendingBackgroundLocations();
+      if (!buffered.length) return;
+      console.log('[MilePilot BG GPS] flushing', buffered.length, 'buffered points to WebView');
+      buffered.forEach((payload) => {
         sendToWebView(payload);
       });
     };
     const sub = AppState.addEventListener('change', (nextState) => {
+      appStateRef.current = nextState;
       if (nextState === 'active') {
         flushBufferedLocations();
         flushPendingNativeAutoEnd();

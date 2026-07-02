@@ -1,75 +1,62 @@
 # TestFlight Native App — Background GPS
 
-## Why TestFlight broke on 8.26.2
+## Why background miles failed
 
-The TestFlight app is a **native shell** that loads the PWA from `app.milepilot.uk`. Version 8.26.2 was missing:
+The TestFlight app is a **native shell** that loads the PWA from `app.milepilot.uk`. Background mileage needs **both** layers working:
 
-1. **Native GPS bridge** (`native-platform.js`, `tracking-provider.js`) — without these, the app used browser geolocation inside a WebView, which **stops in background**
-2. **Native speed gate** — fast GPS bursts caused miles to stay at 0 even when the route drew
-3. **PWA background resilience** — fixed in 8.28.0 but not deployed to Cloudflare
+1. **PWA** (`tracking-provider.js`, `index.html`) — must use the native GPS bridge, not browser geolocation
+2. **Native shell** (`expo-location` + `expo-task-manager`) — records GPS when the phone is locked
+3. **iOS permission** — Location must be set to **Always** (not just "While Using")
 
-## Fix in v8.28.1
+### v8.40.0 fixes (build 6)
 
-| Layer | Fix |
+| Issue | Fix |
 |-------|-----|
-| PWA | MP-043 background GPS + native bridge restored |
-| Native shell | `expo-location` + `expo-task-manager` background task |
-| Speed gate | `nativeGps` + `movementSpeedMps()` for TestFlight bursts |
-| iOS build | `buildNumber: 3` |
+| "When In Use" reported as granted | Native bridge returns `foreground-only` when background denied |
+| Background task never started | `expo:tracking:start` reports `backgroundActive`; task only starts with Always permission |
+| Miles lost while locked | Buffered background GPS points flush to WebView on app resume |
+| No user guidance | Banner prompts to open Settings → MilePilot → Location → Always |
+| PWA poll on native | Skips useless `startBackgroundGpsPoll()` on Expo native (uses task-manager instead) |
 
-## Production TestFlight (v8.39.0+)
+## Production TestFlight (v8.40.0)
 
-Before building, confirm Cloudflare serves the matching PWA:
+### Step 1 — Cloudflare (required first)
 
-- https://app.milepilot.uk/version.txt → `8.39.0`
+Upload `MilePilot-v8.40.0-CLOUDFLARE-UPLOAD.zip` to Cloudflare Pages.
 
-Then from repo root (requires `EXPO_TOKEN` or `eas login`):
+Verify: https://app.milepilot.uk/version.txt → `8.40.0`
+
+### Step 2 — EAS build + TestFlight
+
+From repo root (requires `EXPO_TOKEN` in Cursor secrets or local `eas login`):
 
 ```bash
+git checkout cursor/background-gps-fix-testflight-4c0e
 npm install
+npm run release:ios
+```
+
+Pins: `app.config.js` `buildNumber: 6`, `eas.json` `WEB_APP_URL` `v=8.40.0`.
+
+Or separately:
+
+```bash
 npm run build:ios:production -- --non-interactive
 npm run submit:ios -- --non-interactive
 ```
 
-Or one command:
-
-```bash
-npm run release:ios
-```
-
-Pins: `app.config.js` `buildNumber`, `eas.json` `WEB_APP_URL` `v=8.39.0`, production profile.
-
-## Deploy (two steps required)
-
-### Step 1 — Cloudflare (immediate)
-
-Upload `MilePilot-v8.28.1-CLOUDFLARE-UPLOAD.zip` to Cloudflare Pages.
-
-Verify: https://app.milepilot.uk/version.txt shows `8.28.1`
-
-### Step 2 — New TestFlight build (required for full background GPS)
-
-The native shell must be rebuilt — uploading Cloudflare alone fixes the WebView code, but **true background location** needs the Expo native layer:
-
-```bash
-npm install
-eas build --platform ios --profile preview
-eas submit --platform ios --latest
-```
-
-iOS build **3** loads `?runtime=expo&v=8.28.1`.
-
 ## Device test checklist
 
-1. Install new TestFlight build (build 3+)
-2. Grant **Always Allow** location when prompted during a shift
-3. Start shift → confirm miles increase while app visible
-4. Lock phone / switch apps for 3+ minutes while driving
-5. Return → miles should continue (may briefly show reconnecting)
-6. End shift → miles saved in history
+1. Install TestFlight build **6** (v8.40.0)
+2. Start a shift in AutoPilot mode
+3. When prompted, grant location — then set **Always** in Settings → MilePilot → Location
+4. Confirm miles increase while app is visible
+5. Lock phone / switch apps for 3+ minutes while driving
+6. Unlock → miles should catch up (may briefly show reconnecting)
+7. End shift → miles saved in history
 
 ## Permissions on iPhone
 
 Settings → MilePilot → Location → **Always**
 
-Without Always, background mileage will not record when the phone is locked.
+Without Always, background mileage will not record when the phone is locked. The app shows a banner if only foreground permission is granted.

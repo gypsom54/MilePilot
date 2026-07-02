@@ -62,9 +62,15 @@ TaskManager.defineTask(BACKGROUND_LOCATION_TASK, ({ data, error }) => {
   const payload = locationToPayload(latest);
   if (!payload) return;
 
-  pendingBackgroundLocations.push(payload);
-  if (pendingBackgroundLocations.length > 500) {
-    pendingBackgroundLocations.splice(0, pendingBackgroundLocations.length - 500);
+  const dedupeKey = `${payload.timestamp}:${payload.coords.latitude.toFixed(5)}:${payload.coords.longitude.toFixed(5)}`;
+  const isDuplicate = pendingBackgroundLocations.some(
+    (p) => `${p.timestamp}:${p.coords.latitude.toFixed(5)}:${p.coords.longitude.toFixed(5)}` === dedupeKey
+  );
+  if (!isDuplicate) {
+    pendingBackgroundLocations.push(payload);
+    if (pendingBackgroundLocations.length > 500) {
+      pendingBackgroundLocations.splice(0, pendingBackgroundLocations.length - 500);
+    }
   }
 
   // BACKGROUND GPS TEST POINT — log to Metro / Xcode console during device tests
