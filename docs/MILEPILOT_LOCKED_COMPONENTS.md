@@ -148,6 +148,13 @@ Commit and screenshot on each approved screen; upload **one final zip** when the
 - **Detail:** [UI_LOCK_NAVIGATION.md](./UI_LOCK_NAVIGATION.md)
 - **Version:** v8.43.21 — flex shell dock; content scrolls above nav
 
+### Reports — IN REVIEW
+
+- **File:** `frontend/index.html` → `#reports`
+- **Marker:** `data-locked="true"` `data-mp="MP-008"`
+- **Detail:** [UI_LOCK_REPORTS.md](./UI_LOCK_REPORTS.md)
+- **Version:** v8.43.22 — visual polish only; awaiting final approval
+
 ---
 
 ## Pending screens (not yet locked)
@@ -155,7 +162,7 @@ Commit and screenshot on each approved screen; upload **one final zip** when the
 | Screen | ID | MP code | Notes |
 | --- | --- | --- | --- |
 | Email Reports Screen | `#emailSetup` | email | 🟡 In review |
-| Reports | `#reports` | MP-008 | |
+| Reports | `#reports` | MP-008 | 🟡 In review — see [UI_LOCK_REPORTS.md](./UI_LOCK_REPORTS.md) |
 | History | `#history` | — | |
 | Settings | `#settings` | — | |
 | Live tracking / shift | — | — | UI only in Phase 1 |

@@ -31,7 +31,7 @@
 ⬜ **Start Shift**  
 ⬜ **Live Tracking**  
 ⬜ **AI Review**  
-⬜ **Reports**  
+🟡 **Reports** (In Review — polish complete, awaiting approval)  
 ⬜ **History**  
 ⬜ **Settings**  
 ⬜ **Subscription**
@@ -63,7 +63,7 @@
 | Start Shift | ⬜ Pending | `#home` → `#ccPrimaryBtn` | Dashboard idle CTA — frozen with Dashboard |
 | Live Tracking | ⬜ Pending | `#tracking` | |
 | AI Review | ⬜ Pending | `#home` → `#ccSummary` / `#journeyReviewPanel` | |
-| Reports | ⬜ Pending | `#reports` `data-mp="MP-008"` | |
+| Reports | 🟡 In Review | `#reports` `data-mp="MP-008"` `data-locked="true"` | See [UI_LOCK_REPORTS.md](./UI_LOCK_REPORTS.md) |
 | History | ⬜ Pending | `#history` | |
 | Settings | ⬜ Pending | `#settings` | |
 | Subscription | ⬜ Pending | `#subscriptionPaywall` | |
