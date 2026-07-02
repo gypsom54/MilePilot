@@ -827,13 +827,12 @@ body.always-modal-open .nav{display:none!important}
 .settings-card-headcopy{flex:1;min-width:0}
 .settings-card-title{margin:0 0 10px;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(110,180,255,.82)}
 .settings-card-head .settings-card-title{margin:0 0 8px}
-#settingsEmailReportsCard .settings-card-title{font-size:14px;font-weight:700}
 .settings-hero-mode{margin:0 0 8px;font-size:20px;font-weight:600;letter-spacing:-0.02em;color:rgba(234,242,255,.96);line-height:1.2}
 .settings-hero-lead{margin:0 0 6px;font-size:15px;font-weight:500;line-height:1.45;color:rgba(180,210,245,.9)}
 .settings-hero-desc{margin:0;font-size:14px;font-weight:500;line-height:1.45;color:rgba(147,168,196,.82)}
 .settings-hero-reassure{margin:8px 0 0;font-size:13px;font-weight:500;line-height:1.4;color:rgba(147,168,196,.72)}
 .settings-value-line{margin:0 0 4px;font-size:18px;font-weight:600;letter-spacing:-0.02em;color:rgba(234,242,255,.96);line-height:1.25}
-.settings-value-desc{margin:0;font-size:14px;font-weight:500;line-height:1.45;color:rgba(147,168,196,.82)}
+.settings-value-desc{margin:0 0 14px;font-size:14px;font-weight:500;line-height:1.45;color:rgba(147,168,196,.82)}
 .settings-checklist{margin:4px 0 0;padding:0;list-style:none}
 .settings-checklist li{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:14px;font-weight:500;line-height:1.35;color:rgba(234,242,255,.92)}
 .settings-checklist li:last-child{border-bottom:0;padding-bottom:0}
@@ -1312,7 +1311,8 @@ body.always-modal-open .nav{display:none!important}
 <span class="settings-card-icon" aria-hidden="true">📧</span>
 <div class="settings-card-headcopy">
 <h2 class="settings-card-title">Email Reports</h2>
-<p class="sub" id="settingsReportModeCopy" style="margin:0 0 14px">Your mileage reports are automatically emailed after each completed business shift.</p>
+<p class="settings-value-line" id="settingsReportModeLabel">Automatic Reports</p>
+<p class="settings-value-desc" id="settingsReportModeCopy">Your mileage reports are automatically emailed after each completed business shift.</p>
 <label for="settingsEmail">Email address</label>
 <input id="settingsEmail" placeholder="you@example.com" inputmode="email">
 </div>
@@ -1340,6 +1340,7 @@ body.always-modal-open .nav{display:none!important}
 <span class="settings-card-icon" aria-hidden="true">⚡</span>
 <div class="settings-card-headcopy">
 <h2 class="settings-card-title">Automatic Tracking</h2>
+<p class="settings-value-line" id="settingsAutopilotLabel">Active</p>
 <ul class="settings-checklist" id="settingsAutopilotChecklist" aria-label="Automatic tracking status"></ul>
 </div>
 </div>
@@ -1349,6 +1350,7 @@ body.always-modal-open .nav{display:none!important}
 <span class="settings-card-icon" aria-hidden="true">👤</span>
 <div class="settings-card-headcopy">
 <h2 class="settings-card-title">Business Details</h2>
+<p class="settings-value-line" id="settingsBusinessProfileLabel">—</p>
 <div class="settings-profile-row" style="padding:0;margin:0 0 14px">
 <div><span class="settings-profile-label">Experience</span><strong class="settings-profile-value" id="settingsProfileExperience">—</strong></div>
 <button type="button" class="settings-profile-change" onclick="openExperienceSelector()">Change →</button>
@@ -1456,7 +1458,7 @@ body.always-modal-open .nav{display:none!important}
 <script src="js/app-copy.js"></script>
 <script src="js/beta-feedback.js"></script>
 <script>
-const APP_VERSION='8.43.26';
+const APP_VERSION='8.43.27';
 const DEFAULT_WEEKLY_GOAL_MILES=400;
 const BUSINESS_PROFILE_KEY='mp_business_profile';
 const PRODUCT_VISION_LOCK='2026-06-vision-v1';
@@ -1527,7 +1529,7 @@ function getProfileTerms(){return getProfessionMeta().terms}
 function getProfileInsight(week){const p=getProfession(),n=week.list.length;if(n<2)return null;if(p==='driver'){const busiest=getBusiestDayInPeriod('week');return busiest?busiest+' was your busiest driving day.':null}if(p==='tradesperson')return 'You recorded '+n+' work journey'+(n===1?'':'s')+' this week.';if(p==='mobile')return 'You visited '+n+' business location'+(n===1?'':'s')+' this week.';if(p==='professional')return 'You recorded '+n+' client visit'+(n===1?'':'s')+' this week.';return 'You tracked '+n+' business journey'+(n===1?'':'s')+' this week.'}
 function getWorkTypeReady(){const exp=getUserExperience(),prof=getProfession();if(exp==='tracker'&&prof==='driver')return "Ready to start today's shift?";if(exp==='tracker'&&prof==='tradesperson')return "Ready to track today's client visits?";if(exp==='business'&&prof==='tradesperson')return "Ready to track mileage and business expenses?";if(exp==='business'&&prof==='driver')return "Ready to manage your driving business?";return getProfessionMeta().ready}
 function applyProfileTerms(){const t=getProfileTerms();setText('ccTodayTitle',t.todaySection);setText('ccMilesLabel',t.miles);setText('ccJourneysLabel',t.journeys);setText('ccTravelLabel',t.travel);setText('ccHmrcLabel',t.allowance);const rp=q('reportPreviewLabel');if(rp)rp.textContent=t.miles;const rm=q('reportMetrics');if(rm){const spans=rm.querySelectorAll('.cc-metric span');if(spans[0])spans[0].textContent=t.miles;if(spans[1])spans[1].textContent=t.travel;if(spans[2])spans[2].textContent=t.journeys;if(spans[3])spans[3].textContent=t.allowance}}
-function renderBusinessProfileSettings(){const expLabel=q('settingsProfileExperience'),profLabel=q('settingsProfileProfession');if(expLabel)expLabel.textContent=hasExperienceSelected()?getExperienceLabel():'—';if(profLabel)profLabel.textContent=getProfessionMeta().label}
+function renderBusinessProfileSettings(){const expLabel=q('settingsProfileExperience'),profLabel=q('settingsProfileProfession'),profileLabel=q('settingsBusinessProfileLabel');if(profileLabel)profileLabel.textContent=localStorage.getItem('mp_driver')||driver||'—';if(expLabel)expLabel.textContent=hasExperienceSelected()?getExperienceLabel():'—';if(profLabel)profLabel.textContent=getProfessionMeta().label}
 function openExperienceSelector(){experienceChoiceMode='settings';initExperienceChoice();showScreen('experienceChoice')}
 function initExperienceChoice(){selectedExperience=getBusinessProfile().experience||null;document.querySelectorAll('[data-experience]').forEach(c=>c.classList.toggle('selected',c.dataset.experience===selectedExperience));syncExperienceContinue()}
 function selectExperience(key){if(!EXPERIENCES[key])return;selectedExperience=key;document.querySelectorAll('[data-experience]').forEach(c=>c.classList.toggle('selected',c.dataset.experience===key));syncExperienceContinue()}
@@ -1580,7 +1582,7 @@ function skipEmailSetup(){saveOnboardReportPrefs();localStorage.setItem('mp_onbo
 function openDashboard(){finishOnboarding()}
 function openVehicleSelector(){knowYouMode='vehicle';const namePanel=q('onboardNamePanel'),vehiclePanel=q('vehicleSelectPanel'),nameBtn=q('knowYouContinue'),vehicleBtn=q('vehicleContinue');if(namePanel)namePanel.hidden=true;if(vehiclePanel)vehiclePanel.hidden=false;if(nameBtn)nameBtn.hidden=true;if(vehicleBtn){vehicleBtn.hidden=false;syncKnowYouContinue()}selectedVehicle=localStorage.getItem('mp_vehicle')||null;document.querySelectorAll('.vehicle-card[data-vehicle]').forEach(c=>c.classList.toggle('selected',c.dataset.vehicle===selectedVehicle));showScreen('knowYou')}
 function renderVehicleSettingsSummary(){const el=q('settingsVehicleLabel');const v=vehicles[localStorage.getItem('mp_vehicle')||vehicle||'car'];if(el)el.textContent=v?.label||'Car'}
-function renderAutopilotStatusChecklist(){const list=q('settingsAutopilotChecklist');if(!list)return;const locOk=localStorage.getItem('mp_location_choice')==='granted';const notifOk=localStorage.getItem('mp_notifications_choice')==='granted';const emailOk=!!(localStorage.getItem('mp_email')||'').trim()&&getReportPrefs().emailReports;const autoEndOk=typeof MPTrackingMode!=='undefined'&&!MPTrackingMode.isManual()&&typeof MPTripAutoEnd!=='undefined';const items=[{label:'Location Always Allowed',ok:locOk},{label:'Notifications Enabled',ok:notifOk},{label:'Email Reports Enabled',ok:emailOk},{label:'Auto End Trip Enabled',ok:autoEndOk}];list.innerHTML=items.map(function(i){return '<li class="'+(i.ok?'is-on':'is-off')+'"><span class="mark" aria-hidden="true">'+(i.ok?'✓':'○')+'</span><span>'+i.label+'</span></li>'}).join('')}
+function renderAutopilotStatusChecklist(){const list=q('settingsAutopilotChecklist'),autoLabel=q('settingsAutopilotLabel');if(!list)return;const locOk=localStorage.getItem('mp_location_choice')==='granted';const notifOk=localStorage.getItem('mp_notifications_choice')==='granted';const emailOk=!!(localStorage.getItem('mp_email')||'').trim()&&getReportPrefs().emailReports;const autoEndOk=typeof MPTrackingMode!=='undefined'&&!MPTrackingMode.isManual()&&typeof MPTripAutoEnd!=='undefined';const items=[{label:'Location Always Allowed',ok:locOk},{label:'Notifications Enabled',ok:notifOk},{label:'Email Reports Enabled',ok:emailOk},{label:'Auto End Trip Enabled',ok:autoEndOk}];if(autoLabel)autoLabel.textContent=items.every(function(i){return i.ok})?'All set':'Review items below';list.innerHTML=items.map(function(i){return '<li class="'+(i.ok?'is-on':'is-off')+'"><span class="mark" aria-hidden="true">'+(i.ok?'✓':'○')+'</span><span>'+i.label+'</span></li>'}).join('')}
 async function confirmTrackingMode(){if(!selectedTrackingMode)return;if(typeof MPTrackingMode!=='undefined')MPTrackingMode.setMode(selectedTrackingMode,{frequency:selectedDrivingFrequency||undefined});if(trackingModeChoiceMode==='settings'){if(selectedTrackingMode==='autopilot')await enableAutopilotBackgroundPermission();saveTrackingModeSettings();return}}
 function openTrackingModeSettings(){trackingModeChoiceMode='settings';initTrackingMode(true);showScreen('trackingModeSettings')}
 function saveTrackingModeSettings(){if(!selectedTrackingMode)return;const prev=typeof MPTrackingMode!=='undefined'?MPTrackingMode.getMode():null;if(typeof MPTrackingMode!=='undefined')MPTrackingMode.setMode(selectedTrackingMode,{frequency:selectedDrivingFrequency||undefined});applyModeReportPrefs();if(prev&&prev!==selectedTrackingMode&&ccState==='active'){if(selectedTrackingMode==='manual'){stopBackgroundGpsPoll();if(typeof MPTrackingProvider!=='undefined')MPTrackingProvider.stopTracking()}else enableTrackingGps(false)}trackingModeChoiceMode='onboard';renderTrackingModeSettingsSummary();renderReportModeUI();showSettings();toast(copyMsg('trackingModeSaved','Tracking mode updated ✓'))}
@@ -1605,7 +1607,7 @@ function maybeShowStayUpdatedPrompt(){}
 function tryShowPendingStayUpdated(){}
 function isManualOperatingMode(){return typeof MPTrackingMode!=='undefined'&&MPTrackingMode.isManual()}
 function getOperatingModeLabel(){return isManualOperatingMode()?'Manual Mode':'AutoPilot'}
-function renderReportModeUI(){const manual=isManualOperatingMode();const sendCard=q('reportSendCard'),heading=q('reportModeHeading'),desc=q('reportAutoDesc'),status=q('reportAutoStatus'),sub=q('reportsSub'),settingsCopy=q('settingsReportModeCopy');if(sub)sub.textContent=manual?'Your business documents — generate, download, or email HMRC summaries when you need them.':'Your business documents — HMRC-ready summaries emailed after each shift.';if(heading)heading.textContent='How reports work';if(desc)desc.textContent=manual?'You are in complete control. Review journeys, then generate and send reports yourself.':'MilePilot takes care of everything. After each shift, uncertain journeys are reviewed, then your business report is emailed and saved here.';if(status){status.textContent=manual?'Manual Mode — generate reports yourself':'AutoPilot — emailed after each shift';status.classList.add('is-on')}if(sendCard)sendCard.hidden=!manual;if(settingsCopy)settingsCopy.textContent=manual?'Generate and email reports from Report Centre when you are ready.':'Your mileage reports are automatically emailed after each completed business shift.'}
+function renderReportModeUI(){const manual=isManualOperatingMode();const sendCard=q('reportSendCard'),heading=q('reportModeHeading'),desc=q('reportAutoDesc'),status=q('reportAutoStatus'),sub=q('reportsSub'),settingsLabel=q('settingsReportModeLabel'),settingsCopy=q('settingsReportModeCopy');if(sub)sub.textContent=manual?'Your business documents — generate, download, or email HMRC summaries when you need them.':'Your business documents — HMRC-ready summaries emailed after each shift.';if(heading)heading.textContent='How reports work';if(desc)desc.textContent=manual?'You are in complete control. Review journeys, then generate and send reports yourself.':'MilePilot takes care of everything. After each shift, uncertain journeys are reviewed, then your business report is emailed and saved here.';if(status){status.textContent=manual?'Manual Mode — generate reports yourself':'AutoPilot — emailed after each shift';status.classList.add('is-on')}if(sendCard)sendCard.hidden=!manual;if(settingsLabel)settingsLabel.textContent=manual?'Manual Reports':'Automatic Reports';if(settingsCopy)settingsCopy.textContent=manual?'Generate and email reports from Report Centre when you are ready.':'Your mileage reports are automatically emailed after each completed business shift.'}
 function renderReportSettings(){const prefs=getReportPrefs();q('togglePdfAttachment')?.classList.toggle('is-on',prefs.pdfAttachment);renderReportModeUI();renderBusinessProfileSettings();renderAutopilotStatusChecklist()}
 function setSettingsFrequency(freq){applyModeReportPrefs();renderReportSettings();toast('Report behaviour follows your operating mode ('+getOperatingModeLabel()+')')}
 function toggleReportPref(key){const prefs=getReportPrefs();prefs[key]=!prefs[key];saveReportPrefs(prefs);renderReportSettings()}

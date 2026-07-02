@@ -2,7 +2,7 @@
 
 **Status:** 🔒 **UI LOCKED** — Officially frozen (2 July 2026)  
 **Component:** `#settings` `.screen` — premium control centre  
-**Version locked:** v8.43.26 (final)
+**Version locked:** v8.43.27 (final)
 
 > **Rule:** No visual changes. No wording changes. No spacing tweaks. Revisit only if users are confused during testing, or a new feature genuinely requires another setting.
 
@@ -27,20 +27,35 @@ Settings is a **premium control centre**, not a technical configuration page.
 6. Beta Feedback (compact)
 7. Reset / clear (compact)
 
+### Card header pattern (locked)
+
+Every medium and hero card uses the same three-line header structure:
+
+| Line | Role | Style |
+| --- | --- | --- |
+| 1 | Section title (uppercase) | `settings-card-title` + icon |
+| 2 | Value / mode name | `settings-value-line` or `settings-hero-mode` |
+| 3 | Supporting copy | `settings-value-desc`, `settings-hero-lead`, or checklist rows |
+
+Examples: **Tracking Mode** → AutoPilot · **Email Reports** → Automatic Reports · **Vehicle** → Car · **Business Details** → driver name.
+
 ### Locked copy
 
 | Card | Content |
 | --- | --- |
-| Tracking Mode | Hero: mode line, lead, description; Change → retained |
+| Tracking Mode | Hero: TRACKING MODE → mode line → lead → description; Change → retained |
 | AutoPilot lead | You're using MilePilot's smartest tracking mode. |
 | AutoPilot desc | Automatically detects journeys and prepares your mileage reports. |
 | AutoPilot reassure | You can switch to Manual Tracking anytime. |
 | Mode row label | Current Mode |
-| Email Reports | Your mileage reports are automatically emailed after each completed business shift. |
+| Email Reports value | Automatic Reports (Manual Reports in manual mode) |
+| Email Reports desc | Your mileage reports are automatically emailed after each completed business shift. |
 | Vehicle value | Car (icon only — no duplicate emoji in text) |
 | Vehicle desc | Used for HMRC mileage calculations. |
+| Automatic Tracking value | All set / Review items below (from checklist state) |
 | Automatic Tracking | ✓ Location · ✓ Notifications · ✓ Email Reports · ✓ Auto End Trip |
-| Business Details | Experience + Business Type (renamed from Work Type) |
+| Business Details value | Driver name |
+| Business Details rows | Experience + Business Type |
 
 ### Card hierarchy
 
@@ -60,11 +75,25 @@ Settings is a **premium control centre**, not a technical configuration page.
 ### Allowed
 
 - Displaying live checklist state from existing stored values
-- Bug fixes for safe-area or scroll
+- Bug fixes for safe-area or scroll (genuine usability issues only)
 
 ---
 
-## Agent checklist
+## Post-launch backlog (do not build in Phase 1)
+
+| Item | Notes |
+| --- | --- |
+| **App Version** section | e.g. *MilePilot v1.0.0 · Built for UK self-employed drivers.* — confidence signal; reserve UI slot when ready |
+| AI Assistant | Settings entry — future |
+| Subscription | Settings entry — future |
+
+---
+
+## Phase 1 milestone
+
+Settings completes the core customer-journey UI foundation alongside Welcome, Personalisation, Vehicle, Tracking Mode, Permissions, Email Reports, Success, Dashboard, and Navigation.
+
+**Next engineering focus (not UI):** rock-solid mileage tracking · reliable background behaviour · professional reports · AI learning.
 
 Before editing `#settings`:
 
