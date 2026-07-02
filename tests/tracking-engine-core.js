@@ -16,6 +16,12 @@ export const ENGINE = {
   GPS_STALE_MS: 35000,
   BG_GPS_POLL_MS: 12000,
   NATIVE_SPEED_GATE_DT: 2,
+  AUTO_END_MIN_MOVE_M: 40,
+  AUTO_END_MIN_SPEED_MPS: 1.8,
+  AUTO_END_SOFT_MOVE_M: 22,
+  AUTO_END_SOFT_SPEED_MPS: 1.0,
+  AUTO_END_MAX_ACC_M: 65,
+  AUTO_END_MILE_GRACE_MS: 1200000,
 };
 
 export function distanceMeters(a, b) {
@@ -31,15 +37,37 @@ export function distanceMeters(a, b) {
 
 export function movementSpeedMps(d, p, prev, deviceSpeedMps) {
   const dtSec = Math.max(0.001, (p.t - prev.t) / 1000);
-  if (deviceSpeedMps != null && deviceSpeedMps >= 0) return deviceSpeedMps;
-  if (p.speedMps != null && p.speedMps >= 0) return p.speedMps;
   const gateDt = p.nativeGps || deviceSpeedMps != null ? Math.max(dtSec, ENGINE.NATIVE_SPEED_GATE_DT) : dtSec;
+  const calcSpeed = d / gateDt;
+  if (deviceSpeedMps != null && deviceSpeedMps >= 0.5) return deviceSpeedMps;
+  if (p.speedMps != null && p.speedMps >= 0.5) return p.speedMps;
+  return calcSpeed;
+}
+
+export function calcSpeedMps(d, p, prev) {
+  const dtSec = Math.max(0.001, (p.t - prev.t) / 1000);
+  const gateDt = p.nativeGps ? Math.max(dtSec, ENGINE.NATIVE_SPEED_GATE_DT) : dtSec;
   return d / gateDt;
+}
+
+export function shouldResetAutoEndIdle(d, calcSpeedMps, deviceSpeedMps, acc) {
+  const minMove = ENGINE.AUTO_END_MIN_MOVE_M || 40;
+  const minSpeed = ENGINE.AUTO_END_MIN_SPEED_MPS || 1.8;
+  const softMove = ENGINE.AUTO_END_SOFT_MOVE_M || 22;
+  const softSpeed = ENGINE.AUTO_END_SOFT_SPEED_MPS || 1.0;
+  const maxAcc = ENGINE.AUTO_END_MAX_ACC_M || 65;
+  if (acc != null && acc > maxAcc) return false;
+  const devicePos = deviceSpeedMps != null && deviceSpeedMps > 0.3 ? deviceSpeedMps : null;
+  const effectiveSpeed = devicePos != null ? Math.max(devicePos, calcSpeedMps) : calcSpeedMps;
+  if (d >= minMove && effectiveSpeed >= minSpeed) return true;
+  if (d >= softMove && effectiveSpeed >= softSpeed) return true;
+  return false;
 }
 
 export function createShiftState(overrides = {}) {
   return {
     miles: 0,
+    pendingMeters: 0,
     movingSeconds: 0,
     routePoints: [],
     lastPoint: null,
@@ -52,30 +80,35 @@ export function createShiftState(overrides = {}) {
 }
 
 export function processGpsPoint(state, p, deviceSpeedMps = null) {
-  const next = { ...state, routePoints: [...state.routePoints, p] };
+  const next = { ...state, routePoints: [...state.routePoints, p], pendingMeters: state.pendingMeters || 0 };
   const prev = state.lastPoint;
   if (prev) {
     const d = distanceMeters(prev, p);
     const dt = Math.max(0.001, (p.t - prev.t) / 1000);
     const speed = movementSpeedMps(d, p, prev, deviceSpeedMps);
-    if (d >= ENGINE.MIN_MOVE_M && d < ENGINE.MAX_JUMP_M && speed < ENGINE.MAX_SPEED_MPS) {
-      if (next.stopCandidateAt) {
-        recordStop(next, p);
-      }
-      next.miles += d / 1609.344;
-      next.movingSeconds += Math.min(dt, 120);
-    } else if (speed < ENGINE.STOP_SPEED_MPS && d < ENGINE.MIN_MOVE_M * 2) {
+    if (d >= ENGINE.MAX_JUMP_M) {
+      next.pendingMeters = 0;
+      next.stopCandidateAt = null;
+      next.stopCandidatePoint = null;
+      next.lastPoint = p;
+      return next;
+    }
+    const isStopped = d < ENGINE.MIN_MOVE_M * 2 && (d === 0 || speed < ENGINE.STOP_SPEED_MPS);
+    if (isStopped) {
       if (!next.stopCandidateAt) {
         next.stopCandidateAt = p.t;
         next.stopCandidatePoint = p;
       } else if (p.t - next.stopCandidateAt >= ENGINE.STOP_AFTER_MS) {
         recordStop(next, p);
       }
-    } else if (d >= ENGINE.MAX_JUMP_M) {
-      next.stopCandidateAt = null;
-      next.stopCandidatePoint = null;
-      next.lastPoint = p;
-      return next;
+    } else if (d > 0 && speed < ENGINE.MAX_SPEED_MPS) {
+      if (next.stopCandidateAt) recordStop(next, p);
+      next.pendingMeters += d;
+      if (next.pendingMeters >= ENGINE.MIN_MOVE_M) {
+        next.miles += next.pendingMeters / 1609.344;
+        next.movingSeconds += Math.min(dt, 120);
+        next.pendingMeters = 0;
+      }
     }
   }
   next.lastPoint = p;
@@ -99,6 +132,7 @@ export function buildActiveShiftPayload(state) {
     engineVersion: 2,
     startedAt: state.startedAt || Date.now() - 3600000,
     miles: state.miles,
+    pendingMeters: state.pendingMeters || 0,
     elapsed: state.elapsed || 3600,
     movingSeconds: state.movingSeconds,
     routePoints: state.routePoints,
@@ -111,6 +145,7 @@ export function buildActiveShiftPayload(state) {
 export function restoreShiftState(payload) {
   return createShiftState({
     miles: Number(payload.miles) || 0,
+    pendingMeters: Number(payload.pendingMeters) || 0,
     movingSeconds: Number(payload.movingSeconds) || 0,
     routePoints: payload.routePoints || [],
     lastPoint: payload.lastPoint || null,

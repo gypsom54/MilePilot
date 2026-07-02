@@ -4,6 +4,7 @@
  * Do not modify without reading docs/TRACKING_CONTRACT.md
  * Do NOT claim background tracking works until confirmed on device.
  */
+import { onNativeBackgroundLocation } from './nativeAutoEnd';
 import * as TaskManager from 'expo-task-manager';
 import * as Location from 'expo-location';
 
@@ -62,6 +63,8 @@ TaskManager.defineTask(BACKGROUND_LOCATION_TASK, ({ data, error }) => {
   if (typeof forwardLocationToWebView === 'function') {
     forwardLocationToWebView(payload);
   }
+
+  onNativeBackgroundLocation(payload);
 });
 
 /**

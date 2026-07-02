@@ -189,7 +189,9 @@
     };
     try {
       const res = await expoBridgeRequest('expo:tracking:start', {
-        background: isShiftActive(),
+        background:
+          isShiftActive() &&
+          (!global.MPTrackingMode || global.MPTrackingMode.usesBackgroundTracking()),
       });
       if (res && res.ok !== false) {
         log('expo watch started');

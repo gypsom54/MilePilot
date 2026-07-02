@@ -9,6 +9,9 @@ import {
   startBackgroundLocationUpdates,
   stopBackgroundLocationUpdates,
 } from './locationTask';
+import { syncNativeAutoEnd, setNativeAutoEndInjector } from './nativeAutoEnd';
+
+export { setNativeAutoEndInjector, syncNativeAutoEnd };
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -153,6 +156,11 @@ export async function handleWebViewMessage(raw, sendToWebView) {
         status = requested.status;
       }
       reply({ type: 'expo:notification:result', status });
+      break;
+    }
+    case 'expo:autoend:sync': {
+      syncNativeAutoEnd(msg.payload || {});
+      reply({ type: 'expo:autoend:sync:ok', ok: true });
       break;
     }
     default:
