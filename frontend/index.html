@@ -265,6 +265,13 @@ body.map-expand-open{overflow:hidden}
 #knowYou #onboardVehicleGrid .vehicle-card{padding-right:40px}
 #knowYou #onboardVehicleGrid .vehicle-desc{font-size:11px;line-height:1.1;letter-spacing:-.015em}
 #knowYou .knowYou-reassure{color:rgba(147,168,196,.88)}
+#knowYou .brand-bar.onboard-brand{margin-top:-12px}
+#knowYou #onboardVehicleGrid .vehicle-icon{width:56px;height:56px}
+#knowYou #onboardVehicleGrid .vehicle-icon svg{width:26px;height:26px}
+#knowYou .knowYou-foot .premium-btn:not(.is-ready){opacity:.52;color:rgba(147,168,196,.68);background:linear-gradient(180deg,#152a45 0%,#0f2035 100%);box-shadow:none;cursor:not-allowed}
+#knowYou .knowYou-foot .premium-btn.is-ready{background:linear-gradient(180deg,#1E88FF 0%,#0D6BFF 48%,#0057E7 100%);color:#fff;box-shadow:0 12px 32px rgba(13,107,255,.36),0 0 0 1px rgba(126,200,255,.1),inset 0 1px 0 rgba(255,255,255,.16);cursor:pointer}
+#knowYou .knowYou-foot .premium-btn.is-ready:hover{filter:brightness(1.05);box-shadow:0 14px 38px rgba(13,107,255,.42),0 0 0 1px rgba(126,200,255,.14),inset 0 1px 0 rgba(255,255,255,.16)}
+#knowYou .knowYou-foot .premium-btn.is-ready:active{transform:scale(.985);filter:brightness(.98);box-shadow:0 6px 20px rgba(13,107,255,.28),inset 0 1px 0 rgba(255,255,255,.1)}
 .welcome-tagline{text-align:center;font-size:15px;font-weight:600;letter-spacing:.04em;color:rgba(126,184,255,.92);margin:0 0 10px}
 .onboard-skip{display:block;width:100%;margin-top:12px;padding:10px;background:none;border:none;color:rgba(147,168,196,.88);font-size:14px;font-weight:500;cursor:pointer;text-align:center;font-family:inherit}
 .onboard-skip:hover{color:rgba(180,210,245,.95)}
@@ -792,8 +799,8 @@ body.always-modal-open .nav{display:none!important}
 </div>
 <div class="welcome-version" id="appVersion">MP-001 🔒 Locked · v2.8</div>
 </section>
-<!-- MP-002 Personalising MilePilot — ✅ COMPLETE · 🔒 Do not modify layout/cards. -->
-<section id="knowYou" class="screen" data-mp="MP-002" data-locked="true" data-complete="true">
+<!-- Onboarding v1.0 Locked — MP-002 knowYou. Production quality. Do not change wording/spacing unless bug fix. -->
+<section id="knowYou" class="screen" data-mp="MP-002" data-locked="true" data-complete="true" data-onboard-lock="v1.0">
 <div class="onboard-bg" aria-hidden="true">
 <div class="onboard-glow onboard-glow-1"></div>
 <div class="onboard-glow onboard-glow-2"></div>
@@ -812,9 +819,9 @@ body.always-modal-open .nav{display:none!important}
 </div>
 <div class="knowYou-body" id="vehicleSelectPanel">
 <h2 class="knowYou-section-title">Which vehicle do you use most for work?</h2>
-<p class="knowYou-support" style="margin-bottom:16px">This helps calculate your HMRC mileage accurately.</p>
+<p class="knowYou-support" style="margin-bottom:16px">Used to calculate your HMRC mileage.</p>
 <div class="knowYou-cards"><div class="vehicle-grid" id="onboardVehicleGrid">
-<button type="button" class="vehicle-card" data-vehicle="car" onclick="selectVehicle('car')"><div class="vehicle-icon"><svg viewBox="0 0 24 24"><path d="M4 13h16l-1.2-3.8a1 1 0 00-.95-.7H6.15a1 1 0 00-.95.7L4 13z"/><path d="M5 13v2.5a1 1 0 001 1h.8a1 1 0 001-1V13M5 13h14M17 13v2.5a1 1 0 01-1 1h-.8a1 1 0 01-1-1V13"/><circle cx="7.5" cy="16.5" r="1.6"/><circle cx="16.5" cy="16.5" r="1.6"/><path d="M8.5 13V10h7v3M10 10l1-2h2l1 2"/></svg></div><div class="vehicle-copy"><strong>Car</strong><span class="vehicle-desc">Everyday self-employed business travel</span></div><span class="vehicle-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"/></svg></span></button>
+<button type="button" class="vehicle-card" data-vehicle="car" onclick="selectVehicle('car')"><div class="vehicle-icon"><svg viewBox="0 0 24 24"><path d="M4 13h16l-1.2-3.8a1 1 0 00-.95-.7H6.15a1 1 0 00-.95.7L4 13z"/><path d="M5 13v2.5a1 1 0 001 1h.8a1 1 0 001-1V13M5 13h14M17 13v2.5a1 1 0 01-1 1h-.8a1 1 0 01-1-1V13"/><circle cx="7.5" cy="16.5" r="1.6"/><circle cx="16.5" cy="16.5" r="1.6"/><path d="M8.5 13V10h7v3M10 10l1-2h2l1 2"/></svg></div><div class="vehicle-copy"><strong>Car</strong><span class="vehicle-desc">Everyday business travel</span></div><span class="vehicle-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"/></svg></span></button>
 <button type="button" class="vehicle-card" data-vehicle="van" onclick="selectVehicle('van')"><div class="vehicle-icon"><svg viewBox="0 0 24 24"><path d="M3 14h13V8H3v6z"/><path d="M16 14h4.2l-2.4-4H16v4z"/><path d="M3 14v2h1.2a1 1 0 001-1V14M16 14v2h1.2a1 1 0 001-1V14"/><circle cx="7" cy="17" r="1.6"/><circle cx="17" cy="17" r="1.6"/><path d="M6 8V6.5h7V8M8 6.5V5h3v1.5"/></svg></div><div class="vehicle-copy"><strong>Van</strong><span class="vehicle-desc">Trades, deliveries &amp; commercial work</span></div><span class="vehicle-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"/></svg></span></button>
 <button type="button" class="vehicle-card" data-vehicle="motorcycle" onclick="selectVehicle('motorcycle')"><div class="vehicle-icon"><svg viewBox="0 0 24 24"><circle cx="6.5" cy="17" r="2.2"/><circle cx="17.5" cy="17" r="2.2"/><path d="M6.5 17h11M8.5 17l2.2-4.5 2.3 1.5 2-3.5H16l1.5 2.5"/><path d="M10.7 12.5l1.3-2.2 1.8.8"/></svg></div><div class="vehicle-copy"><strong>Motorcycle</strong><span class="vehicle-desc">Couriers, food delivery &amp; rapid transport</span></div><span class="vehicle-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"/></svg></span></button>
 </div></div>
