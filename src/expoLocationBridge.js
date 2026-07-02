@@ -1,14 +1,28 @@
 /**
- * VITAL — BUSINESS CRITICAL (MP-043)
- * Expo native location bridge — routes GPS to WebView handlePos.
- * Do not modify without reading docs/TRACKING_CONTRACT.md
+ * CRITICAL MILEAGE ENGINE FILE — MP-043
+ * Native GPS bridge. Mileage is calculated in nativeTrackingEngine, not WebView.
  */
+import { Linking } from 'react-native';
 import * as Location from 'expo-location';
 import * as Notifications from 'expo-notifications';
 import {
   startBackgroundLocationUpdates,
   stopBackgroundLocationUpdates,
 } from './locationTask';
+import { syncNativeAutoEnd, setNativeAutoEndInjector } from './nativeAutoEnd';
+import {
+  ingestNativeLocation,
+  startNativeTrip,
+  stopNativeTrip,
+  restoreNativeTrip,
+  getTripSyncPayload,
+  getNativeDebugSnapshot,
+  setNativeDebugMeta,
+  loadPersistedState,
+  isNativeTripActive,
+} from './nativeTrackingEngine';
+
+export { setNativeAutoEndInjector, syncNativeAutoEnd };
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -19,6 +33,7 @@ Notifications.setNotificationHandler({
 });
 
 let foregroundSubscription = null;
+let lastBackgroundActive = false;
 
 function locationToPayload(loc) {
   return {
@@ -36,24 +51,34 @@ function locationToPayload(loc) {
   };
 }
 
+function pushLocationAndSync(payload, source, sendToWebView) {
+  const sync = ingestNativeLocation(payload, { source });
+  if (typeof sendToWebView === 'function') {
+    if (sync) sendToWebView(sync);
+    // Foreground GPS also feeds WebView handlePos for live map/miles while app is open.
+    if (source === 'foreground') {
+      sendToWebView({ type: 'expo:location', ...payload });
+    }
+  }
+  return sync;
+}
+
 export async function queryLocationPermission() {
   const fg = await Location.getForegroundPermissionsAsync();
   if (fg.status !== 'granted') return fg.status;
   const bg = await Location.getBackgroundPermissionsAsync();
-  return bg.status === 'granted' ? 'granted' : fg.status;
+  if (bg.status === 'granted') return 'granted';
+  return 'foreground-only';
 }
 
 export async function requestLocationPermission(includeBackground) {
   const fg = await Location.requestForegroundPermissionsAsync();
   if (fg.status !== 'granted') return fg.status;
-  if (!includeBackground) return 'granted';
+  if (!includeBackground) return 'foreground-only';
   const bg = await Location.requestBackgroundPermissionsAsync();
-  return bg.status === 'granted' ? 'granted' : fg.status;
+  return bg.status === 'granted' ? 'granted' : 'foreground-only';
 }
 
-/**
- * FOREGROUND GPS — expo-location watch while app is open.
- */
 export async function startForegroundWatch(onLocation) {
   if (foregroundSubscription) {
     foregroundSubscription.remove();
@@ -82,25 +107,34 @@ export async function stopAllTracking() {
     foregroundSubscription = null;
   }
   await stopBackgroundLocationUpdates();
+  lastBackgroundActive = false;
 }
 
-/**
- * Start tracking — foreground watch + optional background task.
- * BACKGROUND GPS TEST POINT: background:true starts expo-task-manager updates.
- */
 export async function startTracking(onLocation, { background = false } = {}) {
   await startForegroundWatch(onLocation);
 
+  let backgroundActive = false;
   if (background) {
     const bgPerm = await Location.getBackgroundPermissionsAsync();
     if (bgPerm.status === 'granted') {
       await startBackgroundLocationUpdates();
+      backgroundActive = true;
     } else {
       console.warn('[MilePilot] background permission not granted — foreground only');
     }
   }
 
-  return { ok: true };
+  lastBackgroundActive = backgroundActive;
+  setNativeDebugMeta({ backgroundActive, permissionStatus: await queryLocationPermission() });
+  return { ok: true, backgroundActive };
+}
+
+export async function initNativeTracking() {
+  await loadPersistedState();
+}
+
+export function getLastBackgroundActive() {
+  return lastBackgroundActive;
 }
 
 export async function handleWebViewMessage(raw, sendToWebView) {
@@ -120,23 +154,79 @@ export async function handleWebViewMessage(raw, sendToWebView) {
   switch (msg.type) {
     case 'expo:permission:query': {
       const status = await queryLocationPermission();
+      setNativeDebugMeta({ permissionStatus: status });
       reply({ type: 'expo:permission:result', status });
       break;
     }
     case 'expo:permission:request': {
       const status = await requestLocationPermission(!!msg.payload?.background);
+      setNativeDebugMeta({ permissionStatus: status });
       reply({ type: 'expo:permission:result', status });
       break;
     }
     case 'expo:tracking:start': {
-      const onLocation = (payload) => sendToWebView(payload);
-      await startTracking(onLocation, { background: !!msg.payload?.background });
-      reply({ type: 'expo:tracking:result', ok: true });
+      const onLocation = (payload) => pushLocationAndSync(payload, 'foreground', sendToWebView);
+      const result = await startTracking(onLocation, { background: !!msg.payload?.background });
+      reply({ type: 'expo:tracking:result', ok: result.ok, backgroundActive: !!result.backgroundActive });
       break;
     }
     case 'expo:tracking:stop': {
       await stopAllTracking();
       reply({ type: 'expo:tracking:result', ok: true });
+      break;
+    }
+    case 'expo:trip:start': {
+      const onLocation = (payload) => pushLocationAndSync(payload, 'foreground', sendToWebView);
+      const result = await startTracking(onLocation, { background: !!msg.payload?.background });
+      const sync = startNativeTrip(msg.payload || {});
+      if (msg.payload?.autoEnd) syncNativeAutoEnd(msg.payload.autoEnd);
+      reply({
+        type: 'expo:trip:result',
+        ok: true,
+        sync,
+        backgroundActive: !!result.backgroundActive,
+      });
+      if (sync) sendToWebView(sync);
+      break;
+    }
+    case 'expo:trip:stop': {
+      await stopAllTracking();
+      const sync = stopNativeTrip();
+      syncNativeAutoEnd({ active: false });
+      reply({ type: 'expo:trip:result', ok: true, sync });
+      break;
+    }
+    case 'expo:trip:restore': {
+      const sync = restoreNativeTrip(msg.payload || {});
+      if (sync) {
+        const onLocation = (payload) => pushLocationAndSync(payload, 'foreground', sendToWebView);
+        await startTracking(onLocation, { background: !!msg.payload?.background });
+        sendToWebView(sync);
+      }
+      reply({ type: 'expo:trip:result', ok: !!sync, sync });
+      break;
+    }
+    case 'expo:trip:sync:request': {
+      const sync = getTripSyncPayload();
+      reply({ type: 'expo:trip:sync:result', ok: true, sync });
+      if (sync?.active) sendToWebView(sync);
+      break;
+    }
+    case 'expo:debug:query': {
+      const perm = await queryLocationPermission();
+      const bgStarted = await Location.hasStartedLocationUpdatesAsync(
+        'MILEPILOT_BACKGROUND_LOCATION'
+      ).catch(() => false);
+      const snap = getNativeDebugSnapshot({
+        permissionStatus: perm,
+        backgroundActive: lastBackgroundActive || bgStarted,
+        backgroundTaskRunning: bgStarted,
+        tripActiveNative: isNativeTripActive(),
+        buildNumber: msg.payload?.buildNumber,
+        appVersion: msg.payload?.appVersion,
+        webAppUrl: msg.payload?.webAppUrl,
+      });
+      reply({ type: 'expo:debug:result', snapshot: snap });
       break;
     }
     case 'expo:notification:request': {
@@ -153,6 +243,19 @@ export async function handleWebViewMessage(raw, sendToWebView) {
         status = requested.status;
       }
       reply({ type: 'expo:notification:result', status });
+      break;
+    }
+    case 'expo:autoend:sync': {
+      syncNativeAutoEnd(msg.payload || {});
+      reply({ type: 'expo:autoend:sync:ok', ok: true });
+      break;
+    }
+    case 'expo:settings:open': {
+      // Reply before opening — iOS may background the app before injectJavaScript runs.
+      reply({ type: 'expo:settings:result', ok: true });
+      Linking.openSettings().catch((e) => {
+        console.warn('[MilePilot] openSettings failed', e.message);
+      });
       break;
     }
     default:

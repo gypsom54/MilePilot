@@ -1,30 +1,40 @@
 /**
- * VITAL — BUSINESS CRITICAL (MP-043)
- * Expo WebView shell — loads PWA and bridges native GPS.
- * Do not modify without reading docs/TRACKING_CONTRACT.md
+ * CRITICAL MILEAGE ENGINE FILE — MP-043
+ * Expo WebView shell. Native engine owns background mileage; WebView displays synced state.
  */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, AppState, Platform, SafeAreaView, StatusBar, StyleSheet, View } from 'react-native';
 import { WebView } from 'react-native-webview';
 import Constants from 'expo-constants';
 import { setBackgroundLocationForwarder, takePendingBackgroundLocations } from './locationTask';
-import { handleWebViewMessage, injectLocationIntoWebView } from './expoLocationBridge';
+import {
+  handleWebViewMessage,
+  injectLocationIntoWebView,
+  initNativeTracking,
+} from './expoLocationBridge';
+import { setNativeAutoEndInjector, flushPendingNativeAutoEnd } from './nativeAutoEnd';
+import { getTripSyncPayload, setNativeDebugMeta } from './nativeTrackingEngine';
 
 const WEB_APP_URL = Constants.expoConfig?.extra?.webAppUrl || 'https://app.milepilot.uk/?runtime=expo';
+const BUILD_NUMBER = Constants.expoConfig?.ios?.buildNumber || '?';
 
-/**
- * Injected before MilePilot HTML loads — exposes bridge to tracking-provider.js
- */
 const BRIDGE_BOOT_SCRIPT = `
 (function(){
   window.__MILEPILOT_EXPO__ = true;
   window.__MILEPILOT_RUNTIME__ = 'expo';
+  window.__MILEPILOT_BUILD__ = '${BUILD_NUMBER}';
   document.documentElement.classList.add('mp-expo');
   window.__expoBridgeCallbacks = {};
   window.__expoBridgeReceive = function(msg) {
     try {
+      if (msg && msg.type === 'expo:trip:sync' && typeof window.__onNativeTripSync === 'function') {
+        window.__onNativeTripSync(msg);
+      }
       if (msg && msg.type === 'expo:location' && window.__onExpoNativeLocation) {
         window.__onExpoNativeLocation(msg);
+      }
+      if (msg && msg.type === 'expo:autoend:trigger' && typeof window.__onExpoAutoEnd === 'function') {
+        window.__onExpoAutoEnd(msg);
       }
       if (msg && msg.id && window.__expoBridgeCallbacks[msg.id]) {
         window.__expoBridgeCallbacks[msg.id](msg);
@@ -53,27 +63,47 @@ true;
 export default function MilePilotWebView() {
   const webViewRef = useRef(null);
   const [ready, setReady] = useState(false);
+  const appStateRef = useRef(AppState.currentState);
 
   const sendToWebView = useCallback((payload) => {
+    if (!payload) return;
     injectLocationIntoWebView(webViewRef, payload);
   }, []);
 
   useEffect(() => {
-    setBackgroundLocationForwarder((payload) => {
-      sendToWebView(payload);
+    initNativeTracking().catch((e) => console.warn('[MilePilot] initNativeTracking', e.message));
+  }, []);
+
+  useEffect(() => {
+    setBackgroundLocationForwarder((sync) => {
+      setNativeDebugMeta({ appState: appStateRef.current });
+      sendToWebView(sync);
     });
-    return () => setBackgroundLocationForwarder(null);
+    setNativeAutoEndInjector(() => {
+      injectLocationIntoWebView(webViewRef, { type: 'expo:autoend:trigger', timestamp: Date.now() });
+    });
+    return () => {
+      setBackgroundLocationForwarder(null);
+      setNativeAutoEndInjector(null);
+    };
   }, [sendToWebView]);
 
   useEffect(() => {
-    const flushBufferedLocations = () => {
-      takePendingBackgroundLocations().forEach((payload) => {
-        sendToWebView(payload);
-      });
+    const pushNativeState = () => {
+      const buffered = takePendingBackgroundLocations();
+      buffered.forEach((sync) => sendToWebView(sync));
+      const current = getTripSyncPayload();
+      if (current?.active) {
+        console.log('[MilePilot] pushing native trip sync on resume', current.miles, 'mi');
+        sendToWebView(current);
+      }
     };
     const sub = AppState.addEventListener('change', (nextState) => {
+      appStateRef.current = nextState;
+      setNativeDebugMeta({ appState: nextState });
       if (nextState === 'active') {
-        flushBufferedLocations();
+        pushNativeState();
+        flushPendingNativeAutoEnd();
       }
     });
     return () => sub.remove();
@@ -108,7 +138,6 @@ export default function MilePilotWebView() {
         sharedCookiesEnabled
         originWhitelist={['*']}
         setSupportMultipleWindows={false}
-        // iOS: allow geolocation prompt from WebView content
         {...(Platform.OS === 'ios' ? { allowsBackForwardNavigationGestures: false } : {})}
       />
     </SafeAreaView>
