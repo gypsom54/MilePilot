@@ -129,14 +129,14 @@ body.map-expand-open{overflow:hidden}
 @keyframes brandHeadlineIn{to{opacity:1}}
 .welcome-headline{text-align:center;font-size:clamp(31px,7.8vw,37px);line-height:1.14;font-weight:700;letter-spacing:-0.03em;margin:0 0 var(--headline-spacing);-webkit-font-smoothing:antialiased}
 .welcome-headline .blue{font-weight:700}
-#welcome,#knowYou,#experienceChoice,#businessProfile,#promise,#permissions,#notifications,#trackingMode,#workSchedule,#emailSetup,#reportSchedule,#onboardReady{position:relative;overflow:hidden;background:linear-gradient(180deg,#050F22 0%,#020B1B 55%,#010810 100%)}
-#welcome.active,#knowYou.active,#experienceChoice.active,#businessProfile.active,#promise.active,#permissions.active,#notifications.active,#trackingMode.active,#workSchedule.active,#emailSetup.active,#reportSchedule.active,#onboardReady.active{display:flex;flex-direction:column;min-height:100dvh;padding:max(32px,env(safe-area-inset-top)) 24px max(24px,env(safe-area-inset-bottom))}
+#welcome,#knowYou,#experienceChoice,#businessProfile,#promise,#permissions,#notifications,#trackingMode,#emailSetup,#reportSchedule,#onboardReady{position:relative;overflow:hidden;background:linear-gradient(180deg,#050F22 0%,#020B1B 55%,#010810 100%)}
+#welcome.active,#knowYou.active,#experienceChoice.active,#businessProfile.active,#promise.active,#permissions.active,#notifications.active,#trackingMode.active,#emailSetup.active,#reportSchedule.active,#onboardReady.active{display:flex;flex-direction:column;min-height:100dvh;padding:max(32px,env(safe-area-inset-top)) 24px max(24px,env(safe-area-inset-bottom))}
+#knowYou.active,#experienceChoice.active,#businessProfile.active,#promise.active,#permissions.active,#notifications.active,#trackingMode.active,#emailSetup.active,#reportSchedule.active,#onboardReady.active{justify-content:flex-start}
+#knowYou .onboard-inner,#experienceChoice .onboard-inner,#businessProfile .onboard-inner,#promise .onboard-inner,#permissions .onboard-inner,#notifications .onboard-inner,#trackingMode .onboard-inner,#emailSetup .onboard-inner,#reportSchedule .onboard-inner,#onboardReady .onboard-inner{flex:1;display:flex;flex-direction:column;padding-top:4px;min-height:0}
+#knowYou .brand-bar.onboard-brand,#experienceChoice .brand-bar.onboard-brand,#businessProfile .brand-bar.onboard-brand,#promise .brand-bar.onboard-brand,#permissions .brand-bar.onboard-brand,#notifications .brand-bar.onboard-brand,#trackingMode .brand-bar.onboard-brand,#emailSetup .brand-bar.onboard-brand,#reportSchedule .brand-bar.onboard-brand,#onboardReady .brand-bar.onboard-brand{margin-bottom:24px}
 #welcome.active{justify-content:center}
 #welcome .onboard-inner{margin:auto 0}
 #knowYou .onboard-inner{display:flex;flex-direction:column;min-height:0;overflow:hidden}
-#knowYou.active,#experienceChoice.active,#businessProfile.active,#promise.active,#permissions.active,#notifications.active,#trackingMode.active,#workSchedule.active,#emailSetup.active,#reportSchedule.active,#onboardReady.active{justify-content:flex-start}
-#knowYou .onboard-inner,#experienceChoice .onboard-inner,#businessProfile .onboard-inner,#promise .onboard-inner,#permissions .onboard-inner,#notifications .onboard-inner,#trackingMode .onboard-inner,#workSchedule .onboard-inner,#emailSetup .onboard-inner,#reportSchedule .onboard-inner,#onboardReady .onboard-inner{flex:1;display:flex;flex-direction:column;padding-top:4px;min-height:0}
-#knowYou .brand-bar.onboard-brand,#experienceChoice .brand-bar.onboard-brand,#businessProfile .brand-bar.onboard-brand,#promise .brand-bar.onboard-brand,#permissions .brand-bar.onboard-brand,#notifications .brand-bar.onboard-brand,#trackingMode .brand-bar.onboard-brand,#workSchedule .brand-bar.onboard-brand,#emailSetup .brand-bar.onboard-brand,#reportSchedule .brand-bar.onboard-brand,#onboardReady .brand-bar.onboard-brand{margin-bottom:24px}
 #knowYou .brand-bar .wordmark,#experienceChoice .brand-bar .wordmark,#businessProfile .brand-bar .wordmark,#promise .brand-bar .wordmark,#permissions .brand-bar .wordmark,#notifications .brand-bar .wordmark{font-size:42px}
 #knowYou .brand-bar .brand-pulse,#experienceChoice .brand-bar .brand-pulse,#businessProfile .brand-bar .brand-pulse,#promise .brand-bar .brand-pulse,#permissions .brand-bar .brand-pulse,#notifications .brand-bar .brand-pulse{width:min(calc(100% + 32px),220px);margin:16px auto 0}
 .onboard-greeting{text-align:center;font-size:clamp(26px,6.5vw,30px);font-weight:700;letter-spacing:-0.03em;line-height:1.2;margin:0 0 12px;-webkit-font-smoothing:antialiased;animation:knowYouGreetIn .6s cubic-bezier(.22,1,.36,1) .15s both}
@@ -253,6 +253,7 @@ body.map-expand-open{overflow:hidden}
 .knowYou-message-wrap{height:40px;min-height:40px;max-height:40px;margin:0 0 32px;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:0 4px}
 .knowYou-message{text-align:center;font-size:clamp(17px,4.6vw,20px);font-weight:600;letter-spacing:-0.02em;color:rgba(255,255,255,.96);line-height:1.25;margin:0 auto;max-width:none;width:100%;transition:opacity .38s cubic-bezier(.22,1,.36,1);opacity:0;-webkit-font-smoothing:antialiased}
 .knowYou-body{flex:1;min-height:0;display:flex;flex-direction:column}
+.knowYou-scroll{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px}
 .knowYou-cards{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:2px 0;margin:0 0 20px}
 .vehicle-grid{display:grid;grid-template-columns:1fr;gap:14px;margin:0}
 .vehicle-card{position:relative;display:flex;flex-direction:row;align-items:center;gap:16px;width:100%;min-height:88px;border:1px solid rgba(110,180,255,.16);border-radius:20px;background:linear-gradient(180deg,rgba(255,255,255,.085),rgba(13,107,255,.025));padding:18px 48px 18px 18px;text-align:left;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,.05);transition:border-color .28s ease,box-shadow .28s ease,transform .28s cubic-bezier(.22,1,.36,1),background .28s ease;-webkit-tap-highlight-color:transparent;color:inherit}
@@ -643,7 +644,7 @@ body.map-expand-open{overflow:hidden}
 </div>
 <div class="onboard-inner">
 <header class="brand-bar onboard-brand center"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div><p class="brand-tagline">Your business. On AutoPilot.</p></header>
-<div class="onboard-progress" id="onboardProgressName"><div class="onboard-progress-track"><div class="onboard-progress-fill" style="width:14%"></div></div><p class="onboard-progress-label">Step 2 of 7</p></div>
+<div class="onboard-progress" id="onboardProgressName"><div class="onboard-progress-track"><div class="onboard-progress-fill" style="width:33%"></div></div><p class="onboard-progress-label">Step 2 of 6</p></div>
 <div class="knowYou-scroll">
 <div class="knowYou-body" id="onboardNamePanel">
 <p class="knowYou-kicker">Welcome aboard</p>
@@ -751,7 +752,7 @@ body.map-expand-open{overflow:hidden}
 </div>
 <div class="onboard-inner">
 <header class="brand-bar onboard-brand center"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div><p class="brand-tagline">Your business. On AutoPilot.</p></header>
-<div class="onboard-progress"><div class="onboard-progress-track"><div class="onboard-progress-fill" style="width:57%"></div></div><p class="onboard-progress-label">Step 4 of 7</p></div>
+<div class="onboard-progress"><div class="onboard-progress-track"><div class="onboard-progress-fill" style="width:67%"></div></div><p class="onboard-progress-label">Step 4 of 6</p></div>
 <div class="onboard-body">
 <div class="perm-scroll">
 <div class="perm-section" id="permLocation" style="opacity:1">
@@ -778,7 +779,7 @@ body.map-expand-open{overflow:hidden}
 </div>
 <div class="onboard-inner">
 <header class="brand-bar onboard-brand center"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div><p class="brand-tagline">You choose how you track.</p></header>
-<div class="onboard-progress"><div class="onboard-progress-track"><div class="onboard-progress-fill" style="width:42%"></div></div><p class="onboard-progress-label">Step 3 of 7</p></div>
+<div class="onboard-progress"><div class="onboard-progress-track"><div class="onboard-progress-fill" style="width:33%"></div></div><p class="onboard-progress-label">Step 3 of 6</p></div>
 <div class="knowYou-body">
 <h1 class="knowYou-greeting">How would you like MilePilot to work?</h1>
 <div class="knowYou-cards">
@@ -798,26 +799,6 @@ body.map-expand-open{overflow:hidden}
 </div>
 </div>
 <div class="knowYou-foot"><button type="button" class="btn premium-btn" id="tmContinueBtn" onclick="handleTrackingModeContinueClick()">Continue</button></div>
-</div>
-</section>
-<section id="workSchedule" class="screen" data-mp="MP-047">
-<div class="onboard-bg" aria-hidden="true">
-<div class="onboard-glow onboard-glow-1"></div>
-<div class="onboard-glow onboard-glow-2"></div>
-</div>
-<div class="onboard-inner">
-<header class="brand-bar onboard-brand center"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div><p class="brand-tagline">Your business. On AutoPilot.</p></header>
-<div class="onboard-progress"><div class="onboard-progress-track"><div class="onboard-progress-fill" style="width:71%"></div></div><p class="onboard-progress-label">Step 5 of 7</p></div>
-<div class="knowYou-body">
-<h1 class="knowYou-greeting">When do you usually drive for work?</h1>
-<p class="knowYou-support">This helps MilePilot classify trips more accurately.</p>
-<div class="freq-grid" id="workScheduleGrid">
-<button type="button" class="freq-btn" data-schedule="weekdays" onclick="selectWorkSchedule('weekdays')">Weekdays</button>
-<button type="button" class="freq-btn" data-schedule="weekends" onclick="selectWorkSchedule('weekends')">Weekends</button>
-<button type="button" class="freq-btn" data-schedule="custom" onclick="selectWorkSchedule('custom')">Custom days</button>
-</div>
-</div>
-<div class="knowYou-foot"><button type="button" class="btn premium-btn is-ready" onclick="confirmWorkSchedule()">Continue</button><button type="button" class="onboard-skip" onclick="skipWorkSchedule()">Skip for now</button></div>
 </div>
 </section>
 <!-- MP-005 Notification Permission — legacy -->
@@ -849,7 +830,7 @@ body.map-expand-open{overflow:hidden}
 <div class="onboard-bg" aria-hidden="true"><div class="onboard-glow onboard-glow-1"></div><div class="onboard-glow onboard-glow-2"></div></div>
 <div class="onboard-inner">
 <header class="brand-bar onboard-brand center"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div><p class="brand-tagline">Your business. On AutoPilot.</p></header>
-<div class="onboard-progress"><div class="onboard-progress-track"><div class="onboard-progress-fill" style="width:85%"></div></div><p class="onboard-progress-label">Step 6 of 7</p></div>
+<div class="onboard-progress"><div class="onboard-progress-track"><div class="onboard-progress-fill" style="width:83%"></div></div><p class="onboard-progress-label">Step 5 of 6</p></div>
 <h1 class="knowYou-greeting" style="margin-bottom:12px">Where should we send your mileage reports?</h1>
 <p class="knowYou-support" style="margin-bottom:20px">You can receive daily, weekly, or monthly summaries.</p>
 <input id="emailInput" class="onboard-email-input" placeholder="you@example.com" inputmode="email" autocomplete="email">
@@ -867,7 +848,7 @@ body.map-expand-open{overflow:hidden}
 <div class="onboard-bg" aria-hidden="true"><div class="onboard-glow onboard-glow-1"></div><div class="onboard-glow onboard-glow-2"></div></div>
 <div class="onboard-inner">
 <header class="brand-bar onboard-brand center"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div><p class="brand-tagline">Your business. On AutoPilot.</p></header>
-<div class="onboard-progress"><div class="onboard-progress-track"><div class="onboard-progress-fill" style="width:85%"></div></div><p class="onboard-progress-label">Step 6 of 7</p></div>
+<div class="onboard-progress"><div class="onboard-progress-track"><div class="onboard-progress-fill" style="width:83%"></div></div><p class="onboard-progress-label">Step 5 of 6</p></div>
 <h1 class="knowYou-greeting" style="margin-bottom:20px">Choose your report schedule.</h1>
 <div class="freq-grid" id="onboardFreqGrid">
 <button type="button" class="freq-btn" data-freq="daily" onclick="selectOnboardFrequency('daily')">Daily</button>
@@ -884,7 +865,7 @@ body.map-expand-open{overflow:hidden}
 <div class="onboard-bg" aria-hidden="true"><div class="onboard-glow onboard-glow-1"></div><div class="onboard-glow onboard-glow-2"></div></div>
 <div class="onboard-inner">
 <header class="brand-bar onboard-brand center"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div><p class="brand-tagline">Your business. On AutoPilot.</p></header>
-<div class="onboard-progress"><div class="onboard-progress-track"><div class="onboard-progress-fill" style="width:100%"></div></div><p class="onboard-progress-label">Step 7 of 7</p></div>
+<div class="onboard-progress"><div class="onboard-progress-track"><div class="onboard-progress-fill" style="width:100%"></div></div><p class="onboard-progress-label">Step 6 of 6</p></div>
 <div class="onboard-body" style="align-items:center;justify-content:center;text-align:center;padding:12px 0 24px">
 <div class="onboard-ready-icon" aria-hidden="true">✓</div>
 <h1 class="knowYou-greeting">You're ready to drive</h1>
@@ -1076,7 +1057,7 @@ body.map-expand-open{overflow:hidden}
 <script src="js/app-copy.js"></script>
 <script src="js/beta-feedback.js"></script>
 <script>
-const APP_VERSION='8.31.0';
+const APP_VERSION='8.31.1';
 const DEFAULT_WEEKLY_GOAL_MILES=400;
 const BUSINESS_PROFILE_KEY='mp_business_profile';
 const PRODUCT_VISION_LOCK='2026-06-vision-v1';
@@ -1110,9 +1091,9 @@ const MP_003_LOCKED=true;
 const MP_004_LOCKED=true;
 const MP_005_LOCKED=true;
 const ONBOARDING_COMPLETE=true;
-const ONBOARD_SCREENS=['welcome','knowYou','trackingMode','permissions','workSchedule','emailSetup','onboardReady'];
-const ONBOARD_STEP_PROGRESS={welcome:0,name:14,trackingMode:28,enableSetup:42,workSchedule:57,email:71,ready:100};
-let knowYouMode='combined',onboardReportFrequency='weekly',onboardWorkSchedule=null;
+const ONBOARD_SCREENS=['welcome','knowYou','trackingMode','permissions','emailSetup','onboardReady'];
+const ONBOARD_STEP_PROGRESS={welcome:0,name:17,trackingMode:33,enableSetup:50,email:83,ready:100};
+let knowYouMode='combined',onboardReportFrequency='weekly';
 const KNOW_YOU_QUESTION='What are you driving today?';
 const PROMISE_PROGRESS=PROMISE_PURPOSE;
 function getApiBase(){const s=localStorage.getItem('mp_api_base');if(s)return s.replace(/\/$/,'');if(location.hostname==='localhost'||location.hostname==='127.0.0.1')return 'http://localhost:8787';return 'https://milepilot-production.up.railway.app'}
@@ -1174,15 +1155,11 @@ function handleKnowYouContinueClick(){syncOnboardNameContinue();const n=q('onboa
 function handleVehicleContinueClick(){syncKnowYouContinue();if(knowYouMode!=='vehicle'||!selectedVehicle){toast('Please select your vehicle');return}confirmVehicle()}
 function handleTrackingModeContinueClick(){syncTrackingModeUI(false);if(!selectedTrackingMode){toast('Please choose how MilePilot should work');return}confirmTrackingModeOnboard()}
 function confirmOnboardName(){const n=q('onboardName')?.value.trim();if(!n||!selectedVehicle)return;driver=n;vehicle=selectedVehicle;localStorage.setItem('mp_driver',driver);localStorage.setItem('mp_vehicle',vehicle);localStorage.setItem('mp_onboard_step','trackingMode');initTrackingMode(false);showScreen('trackingMode')}
-function confirmTrackingModeOnboard(){if(!selectedTrackingMode)return;if(typeof MPTrackingMode!=='undefined')MPTrackingMode.setMode(selectedTrackingMode);if(selectedTrackingMode==='manual'){localStorage.setItem('mp_onboard_step','workSchedule');goToWorkSchedule();return}localStorage.setItem('mp_onboard_step','enableSetup');initEnableSetup();showScreen('permissions')}
+function confirmTrackingModeOnboard(){if(!selectedTrackingMode)return;if(typeof MPTrackingMode!=='undefined')MPTrackingMode.setMode(selectedTrackingMode);if(selectedTrackingMode==='manual'){goToEmailSetup();return}localStorage.setItem('mp_onboard_step','enableSetup');initEnableSetup();showScreen('permissions')}
 function initEnableSetup(){clearOnboardTimers();const btn=q('permSetupBtn');if(btn){btn.disabled=false;btn.textContent='Enable AutoPilot'}}
-function skipPermissions(){if(!localStorage.getItem('mp_location_choice'))localStorage.setItem('mp_location_choice','skipped');goToWorkSchedule()}
-async function continueSetup(){const btn=q('permSetupBtn');if(btn){btn.disabled=true;btn.textContent='Configuring…'}const isAuto=selectedTrackingMode==='autopilot'||(typeof MPTrackingMode!=='undefined'&&MPTrackingMode.isAutoPilot());try{await enableGpsPermission()}catch(e){}if(isAuto){try{await enableAutopilotBackgroundPermission()}catch(e){}}try{await enableOnboardNotifications()}catch(e){}if(btn){btn.disabled=false;btn.textContent='Enable AutoPilot'}goToWorkSchedule()}
-function goToWorkSchedule(){localStorage.setItem('mp_onboard_step','workSchedule');initWorkSchedule();showScreen('workSchedule')}
-function initWorkSchedule(){onboardWorkSchedule=localStorage.getItem('mp_work_schedule')||null;document.querySelectorAll('#workScheduleGrid .freq-btn').forEach(b=>b.classList.toggle('selected',b.dataset.schedule===onboardWorkSchedule))}
-function selectWorkSchedule(schedule){onboardWorkSchedule=schedule;document.querySelectorAll('#workScheduleGrid .freq-btn').forEach(b=>b.classList.toggle('selected',b.dataset.schedule===schedule))}
-function confirmWorkSchedule(){if(onboardWorkSchedule)localStorage.setItem('mp_work_schedule',onboardWorkSchedule);else localStorage.removeItem('mp_work_schedule');localStorage.setItem('mp_onboard_step','email');initEmailSetup();showScreen('emailSetup')}
-function skipWorkSchedule(){localStorage.removeItem('mp_work_schedule');onboardWorkSchedule=null;localStorage.setItem('mp_onboard_step','email');initEmailSetup();showScreen('emailSetup')}
+function skipPermissions(){if(!localStorage.getItem('mp_location_choice'))localStorage.setItem('mp_location_choice','skipped');goToEmailSetup()}
+async function continueSetup(){const btn=q('permSetupBtn');if(btn){btn.disabled=true;btn.textContent='Configuring…'}const isAuto=selectedTrackingMode==='autopilot'||(typeof MPTrackingMode!=='undefined'&&MPTrackingMode.isAutoPilot());try{await enableGpsPermission()}catch(e){}if(isAuto){try{await enableAutopilotBackgroundPermission()}catch(e){}}try{await enableOnboardNotifications()}catch(e){}if(btn){btn.disabled=false;btn.textContent='Enable AutoPilot'}goToEmailSetup()}
+function goToEmailSetup(){localStorage.setItem('mp_onboard_step','email');initEmailSetup();showScreen('emailSetup')}
 function saveOnboardReportPrefs(){if(onboardReportFrequency==='off'){setReportFrequency('off');saveReportPrefs({emailReports:false})}else if(onboardReportFrequency){setReportFrequency(onboardReportFrequency);saveReportPrefs({emailReports:true});markStayUpdatedPromptSeen()}}
 function initOnboardReady(){const mode=(typeof MPTrackingMode!=='undefined'&&MPTrackingMode.getMode())||selectedTrackingMode||'autopilot';const lead=q('onboardReadyLead'),sub=q('onboardReadyMode');if(lead)lead.textContent='MilePilot is set up and ready to track your mileage.';if(sub){if(mode==='manual')sub.textContent='Manual Mode is ready. Start and stop trips whenever you choose.';else{const loc=localStorage.getItem('mp_location_choice');sub.textContent=loc==='granted'?'AutoPilot is ready. We\u2019ll detect journeys in the background and ask only when needed.':'AutoPilot is selected. Finish location setup in Settings when you\u2019re ready.'}}}
 async function enableOnboardNotifications(){if(typeof MPExpoBridge!=='undefined'&&MPExpoBridge.request){try{const res=await MPExpoBridge.request('expo:notification:request');localStorage.setItem('mp_notifications_choice',res&&(res.granted||res.status==='granted')?'granted':'skipped');return}catch(e){}}enableNotificationPermission();await new Promise(r=>setTimeout(r,400))}
@@ -1282,7 +1259,7 @@ function loadShifts(){try{return JSON.parse(localStorage.getItem('mp_shifts')||'
 function normaliseShift(s){let v=s.vehicle||vehicle||'car',mi=Number(s.miles)||0,sec=Number(s.seconds)||0;return{id:s.id||('shift_'+Date.now()+Math.random()),miles:mi,seconds:sec,movingSeconds:Number(s.movingSeconds)||0,vehicle:v,hmrc:Number(s.hmrc)||Number(claim(mi,v).toFixed(2)),date:s.date||new Date(s.startISO||Date.now()).toLocaleDateString('en-GB'),startISO:s.startISO||new Date().toISOString(),endISO:s.endISO||s.startISO||new Date().toISOString(),route:s.route||s.routePoints||[],stops:s.stops||[],engineVersion:s.engineVersion||TRACKING_ENGINE_V}}
 function showPersonal(){startOnboardingName()}
 function saveEmailSetup(){confirmEmailSetup()}
-function resetOnboarding(){localStorage.removeItem('mp_driver');localStorage.removeItem('mp_vehicle');localStorage.removeItem('mp_work_schedule');localStorage.removeItem('userWorkType');localStorage.removeItem(BUSINESS_PROFILE_KEY);localStorage.removeItem('mp_location_choice');localStorage.removeItem('mp_notifications_choice');localStorage.removeItem('mp_onboard_step');localStorage.removeItem('mp_onboard_complete');localStorage.removeItem('mp_report_frequency');localStorage.removeItem('mp_report_prefs');localStorage.removeItem('mp_stay_updated_prompted');localStorage.removeItem('mp_tracking_mode');localStorage.removeItem('mp_driving_frequency');driver='';vehicle='car';selectedVehicle=null;selectedProfession=null;selectedExperience=null;experienceChoiceMode='onboard';businessProfileMode='onboard';trackingModeChoiceMode='onboard';selectedTrackingMode=null;selectedDrivingFrequency=null;pendingStayUpdatedAfterShift=false;knowYouMode='combined';onboardReportFrequency='weekly';onboardWorkSchedule=null;const onboardName=q('onboardName');if(onboardName)onboardName.value='';clearWelcomeTyping();clearKnowYouMessaging();clearOnboardTimers();document.querySelectorAll('.vehicle-card[data-vehicle]').forEach(c=>c.classList.remove('selected'));document.querySelectorAll('[data-experience]').forEach(c=>c.classList.remove('selected'));syncOnboardNameContinue();syncExperienceContinue();localStorage.setItem('mp_onboard_step','welcome');showScreen('welcome');q('nav').classList.remove('show');initFirstImpression()}
+function resetOnboarding(){localStorage.removeItem('mp_driver');localStorage.removeItem('mp_vehicle');localStorage.removeItem('mp_work_schedule');localStorage.removeItem('userWorkType');localStorage.removeItem(BUSINESS_PROFILE_KEY);localStorage.removeItem('mp_location_choice');localStorage.removeItem('mp_notifications_choice');localStorage.removeItem('mp_onboard_step');localStorage.removeItem('mp_onboard_complete');localStorage.removeItem('mp_report_frequency');localStorage.removeItem('mp_report_prefs');localStorage.removeItem('mp_stay_updated_prompted');localStorage.removeItem('mp_tracking_mode');localStorage.removeItem('mp_driving_frequency');driver='';vehicle='car';selectedVehicle=null;selectedProfession=null;selectedExperience=null;experienceChoiceMode='onboard';businessProfileMode='onboard';trackingModeChoiceMode='onboard';selectedTrackingMode=null;selectedDrivingFrequency=null;pendingStayUpdatedAfterShift=false;knowYouMode='combined';onboardReportFrequency='weekly';const onboardName=q('onboardName');if(onboardName)onboardName.value='';clearWelcomeTyping();clearKnowYouMessaging();clearOnboardTimers();document.querySelectorAll('.vehicle-card[data-vehicle]').forEach(c=>c.classList.remove('selected'));document.querySelectorAll('[data-experience]').forEach(c=>c.classList.remove('selected'));syncOnboardNameContinue();syncExperienceContinue();localStorage.setItem('mp_onboard_step','welcome');showScreen('welcome');q('nav').classList.remove('show');initFirstImpression()}
 function clearData(){localStorage.removeItem('mp_shifts');localStorage.removeItem('mp_trips');localStorage.removeItem('mp_active_shift');localStorage.removeItem('mp_work_done');shifts=[];trips=[];ccState='idle';shiftJustCompleted=false;resetShiftEngine();shiftId=null;stopBackgroundGpsPoll();if(gpsReconnectTimer){clearTimeout(gpsReconnectTimer);gpsReconnectTimer=null}releaseWakeLock();destroyLiveMaps();clearActiveShift();toast(copyMsg('testShiftsCleared','Test shifts cleared'));renderCommandCentre()}
 function goHome(){if(ccState==='active'){setNav('Home');showScreen('tracking');renderTrackingScreen();return}setNav('Home');renderCommandCentre();showScreen('home')}
 function fmtShort(s){s=Number(s)||0;if(s<60)return '0h';let m=Math.floor(s/60),h=Math.floor(m/60);return h?h+'h '+String(m%60).padStart(2,'0')+'m':m+'m'}
@@ -1433,7 +1410,7 @@ async function emailReport(ev){await emailArchiveReport('syn_today',ev)}
 function printReportFallback(){let t=periodTotals(),driver=localStorage.getItem('mp_driver')||'',meta=periodMeta(),rate=Math.round((vehicles[vehicle]?.rate||0.55)*100),rows=t.list.length?t.list.slice().sort((a,b)=>new Date(a.startISO)-new Date(b.startISO)).map(s=>`<tr><td>${fmtClock(s.startISO)}</td><td>${fmtClock(s.endISO)}</td><td>${s.miles.toFixed(1)}</td><td>${fmtShort(s.seconds)}</td><td>Business</td></tr>`).join(''):`<tr><td colspan="5">No journeys recorded in this period.</td></tr>`;q('printReport').innerHTML=`<div class="pdfHeaderBand"><div class="pdfLogo">Mile <span class="blue">Pilot</span></div><div class="pdfPulse"></div><p class="pdfTag">${BRAND_TAGLINE}</p></div><div class="pdfBody"><p class="pdfPeriod">${meta.sub}</p><p class="pdfMeta">${driver?'Prepared for '+driver+' · ':''}${new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}</p><p class="pdfHeroLabel">Business Miles</p><p class="pdfHeroMiles">${t.mi.toFixed(1)}</p><div class="pdfSupportRow"><div class="pdfSupportItem"><small>Travel Time</small><b>${t.sec<60?'0h 00m':fmtShort(t.sec)}</b></div><div class="pdfSupportItem"><small>Business Journeys</small><b>${t.list.length}</b></div><div class="pdfSupportItem"><small>Mileage Allowance</small><b>${money(t.hmrc)}</b></div></div><h2 class="printSection">Journey Breakdown</h2><table class="printTable"><thead><tr><th>Start</th><th>Finish</th><th>Miles</th><th>Duration</th><th>Type</th></tr></thead><tbody>${rows}</tbody></table><div class="pdfHmrcBox"><div class="pdfHmrcLeft"><strong>HMRC Summary</strong><p>Current HMRC rate: ${rate}p per mile</p><p>Business miles: ${t.mi.toFixed(1)}</p></div><div class="pdfHmrcRight"><small>Estimated mileage allowance</small><b>${money(t.hmrc)}</b></div></div><div class="printFoot"><strong>Your business. On AutoPilot.</strong>Generated automatically by MilePilot · HMRC figures are estimates for record keeping.</div></div>`;setTimeout(()=>window.print(),200)}
 function printReport(){printReportFallback()}
 function migrateOnboardingVersion(){const stored=localStorage.getItem('mp_app_version');if(stored===APP_VERSION)return false;localStorage.setItem('mp_app_version',APP_VERSION);if(localStorage.getItem('mp_onboard_complete')==='true')return false;const d=localStorage.getItem('mp_driver'),v=localStorage.getItem('mp_vehicle'),step=localStorage.getItem('mp_onboard_step');if(d&&v&&!step)return false;localStorage.removeItem('mp_driver');localStorage.removeItem('mp_vehicle');localStorage.removeItem('mp_onboard_step');localStorage.removeItem('mp_location_choice');localStorage.removeItem('mp_notifications_choice');driver='';vehicle='car';selectedVehicle=null;if(q('name'))q('name').value='';return true}
-function resumeOnboardingStep(step){driver=localStorage.getItem('mp_driver')||'';vehicle=localStorage.getItem('mp_vehicle')||'car';selectedVehicle=localStorage.getItem('mp_vehicle')||selectedVehicle;if(step==='name'||step==='knowYou'){initOnboardName();showScreen('knowYou');return true}if(step==='trackingMode'){initTrackingMode(false);showScreen('trackingMode');return true}if(step==='enableSetup'||step==='location'||step==='permissions'){selectedTrackingMode=(typeof MPTrackingMode!=='undefined'&&MPTrackingMode.getMode())||selectedTrackingMode;if(selectedTrackingMode==='manual'){initWorkSchedule();showScreen('workSchedule');return true}initEnableSetup();showScreen('permissions');return true}if(step==='workSchedule'){initWorkSchedule();showScreen('workSchedule');return true}if(step==='email'||step==='emailSetup'||step==='reportSchedule'){initEmailSetup();showScreen('emailSetup');return true}if(step==='ready'||step==='onboardReady'){initOnboardReady();showScreen('onboardReady');return true}if(step==='notifications'){initEmailSetup();showScreen('emailSetup');return true}if(step==='experience'||step==='experienceChoice'){initExperienceChoice();showScreen('experienceChoice');return true}if(step==='businessProfile'||step==='profession'){initBusinessProfile();showScreen('businessProfile');return true}if(step==='promise'){initOnboardReady();showScreen('onboardReady');return true}if(step==='welcome'){initFirstImpression();showScreen('welcome');return true}return false}
+function resumeOnboardingStep(step){driver=localStorage.getItem('mp_driver')||'';vehicle=localStorage.getItem('mp_vehicle')||'car';selectedVehicle=localStorage.getItem('mp_vehicle')||selectedVehicle;if(step==='name'||step==='knowYou'){initOnboardName();showScreen('knowYou');return true}if(step==='trackingMode'){initTrackingMode(false);showScreen('trackingMode');return true}if(step==='enableSetup'||step==='location'||step==='permissions'){selectedTrackingMode=(typeof MPTrackingMode!=='undefined'&&MPTrackingMode.getMode())||selectedTrackingMode;if(selectedTrackingMode==='manual'){initEmailSetup();showScreen('emailSetup');return true}initEnableSetup();showScreen('permissions');return true}if(step==='workSchedule'){initEmailSetup();showScreen('emailSetup');return true}if(step==='email'||step==='emailSetup'||step==='reportSchedule'){initEmailSetup();showScreen('emailSetup');return true}if(step==='ready'||step==='onboardReady'){initOnboardReady();showScreen('onboardReady');return true}if(step==='notifications'){initEmailSetup();showScreen('emailSetup');return true}if(step==='experience'||step==='experienceChoice'){initExperienceChoice();showScreen('experienceChoice');return true}if(step==='businessProfile'||step==='profession'){initBusinessProfile();showScreen('businessProfile');return true}if(step==='promise'){initOnboardReady();showScreen('onboardReady');return true}if(step==='welcome'){initFirstImpression();showScreen('welcome');return true}return false}
 function initSummaryReports(){if(typeof MPSummaryReports==='undefined')return;MPSummaryReports.init({getEmail:()=>localStorage.getItem('mp_email')||'',getDriver:()=>localStorage.getItem('mp_driver')||driver||'',getFrequency:()=>getReportFrequency(),getTrips:()=>{refreshTripStore();return trips.slice()},getShifts:()=>shifts.slice(),fmt,apiPost:(body)=>apiPost('/reports/send',body),getHmrcRate:()=>vehicles[vehicle]?.rate||0.55,onSent:function(type,payload){saveReportToArchive(payload,'auto-'+type);toast(copyMsg('autoReportSent','Your automatic business summary has been emailed.'))}});MPSummaryReports.checkScheduledReports();setInterval(()=>MPSummaryReports.checkScheduledReports(),60*1000)}
 function initBetaFeedback(){if(typeof MPBetaFeedback==='undefined')return;MPBetaFeedback.init({getEmail:()=>localStorage.getItem('mp_email')||'',getDriver:()=>localStorage.getItem('mp_driver')||driver||'',getVersion:()=>APP_VERSION,apiPost:(body)=>apiPost('/feedback',body),toast})}
 function assertTrackingResilience(){const required=['startBackgroundGpsPoll','stopBackgroundGpsPoll','checkGpsStale','scheduleGpsReconnect','bindMotionGpsNudge','onGpsWatchError','ensureMotionAccess','movementSpeedMps'];const missing=required.filter(n=>typeof globalThis[n]!=='function');if(missing.length)console.error('[MilePilot] TRACKING CONTRACT BROKEN ('+TRACKING_CONTRACT_ID+'): missing '+missing.join(', ')+'. See docs/TRACKING_CONTRACT.md');else if(typeof MPTrackingProvider!=='undefined'&&!MPTrackingProvider.isNative()&&typeof console!=='undefined'&&console.debug)console.debug('[MilePilot] Tracking resilience OK ('+TRACKING_CONTRACT_ID+')');else if(typeof MPTrackingProvider!=='undefined'&&MPTrackingProvider.isNative()&&typeof console!=='undefined'&&console.debug)console.debug('[MilePilot] Native tracking bridge OK ('+TRACKING_CONTRACT_ID+')')}
