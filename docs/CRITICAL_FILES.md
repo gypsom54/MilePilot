@@ -130,7 +130,29 @@ Trip **ends** when the driver taps End Shift **or** after 90 minutes without GPS
 
 ---
 
-## 10. Protection infrastructure
+## 10. MilePilot Intelligence Engine (MIE) — product layer (not mileage engine)
+
+| File | Responsibility |
+|------|----------------|
+| `frontend/js/mie-intelligence-engine.js` | Confidence model, habit learning, `prepareDailyReview`, explanations |
+| `frontend/js/journey-review.js` | Swipe review UI (consumes MIE; does not control GPS) |
+| `frontend/js/ai-mileage-review.js` | Backward-compatible alias → `MPMIE` |
+
+**Rules:** MIE must never import or call GPS handlers, `MPSummaryReports.send*`, or subscription gates directly. UI wires MIE at the application layer (`index.html` orchestration only).
+
+**Docs:** `docs/MIE-ARCHITECTURE.md` · **Tests:** `tests/ai-mileage-review.test.js`, `tests/journey-review.test.js`
+
+---
+
+## 11. Onboarding boundary (UI-only)
+
+Onboarding lives in `frontend/index.html` (screens + preference handlers only). It must **not** call shift start/stop, GPS handlers, or report send logic.
+
+See `docs/MILEAGE_REGRESSION_CHECKLIST.md` for the full regression checklist and onboarding rules.
+
+---
+
+## 12. Protection infrastructure
 
 | File | Role |
 |------|------|
