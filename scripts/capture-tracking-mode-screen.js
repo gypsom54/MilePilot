@@ -49,7 +49,7 @@ async function main() {
   await page.waitForSelector('#trackingMode.active', { timeout: 15000 });
   await page.waitForTimeout(500);
   const file = path.join(OUT, 'onboarding-tracking-mode-screen3.png');
-  await page.screenshot({ path: file, fullPage: false });
+  await page.screenshot({ path: file, fullPage: true });
   console.log('Saved:', file);
   await browser.close();
   server.close();
