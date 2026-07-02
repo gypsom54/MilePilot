@@ -6,10 +6,24 @@
 > **Rule:** Locked screens must not be changed again unless there is a genuine bug.
 
 **Related docs:**
-- [ONBOARDING_V1_LOCK.md](./ONBOARDING_V1_LOCK.md) — `#knowYou` detail
+- [ONBOARDING_V1_LOCK.md](./ONBOARDING_V1_LOCK.md) — Vehicle Selection detail
 - [MILEPILOT-DESIGN-BIBLE.md](./MILEPILOT-DESIGN-BIBLE.md) — copy, UI, animation standards
 - [TRACKING_RELIABILITY_LOCKDOWN.md](./TRACKING_RELIABILITY_LOCKDOWN.md) — Phase 2 engine rules
 - [DEVELOPMENT_PRIORITIES.md](./DEVELOPMENT_PRIORITIES.md) — sprint focus
+
+---
+
+## Onboarding — locked (approved)
+
+| | Screen | ID | MP code |
+| --- | --- | --- | --- |
+| ✓ | **Welcome Screen** | `#welcome` | MP-001 |
+| ✓ | **Vehicle Selection** | `#knowYou` | MP-002 |
+| ✓ | **Tracking Mode** | `#trackingMode` | MP-046 |
+| ✓ | **AutoPilot Permission** | `#permissions` | MP-004 |
+| ✓ | **Success Screen** | `#onboardReady` | onboard-ready |
+
+All five screens above are **🔒 LOCKED**. Do not change unless a genuine bug is reported.
 
 ---
 
@@ -59,38 +73,37 @@ Commit and screenshot on each approved screen; upload **one final zip** when the
 
 ---
 
-## Locked screens (approved)
+## Locked screen detail
 
-| Screen | ID / marker | MP code | Status | Locked |
-| --- | --- | --- | --- | --- |
-| **Welcome** | `#welcome` | MP-001 | Approved | 🔒 LOCKED |
-| **Name + vehicle** | `#knowYou` | MP-002 | Approved | 🔒 LOCKED |
-| **Tracking mode** | `#trackingMode` | MP-046 | Approved / near approved | 🔒 LOCKED |
-| **Onboarding final success** | `#onboardReady` | onboard-ready | Approved | 🔒 LOCKED |
-
-### Welcome screen — LOCKED
+### Welcome Screen — LOCKED
 
 - **File:** `frontend/index.html` → `#welcome`
 - **Marker:** `data-locked="true"` `data-mp="MP-001"`
 - **Policy:** Visual and copy frozen unless bug fix.
 
-### Name + vehicle screen — LOCKED
+### Vehicle Selection — LOCKED
 
 - **File:** `frontend/index.html` → `#knowYou`
-- **Marker:** `data-locked="true"` `data-onboard-lock="v1.0"` `data-onboard-frozen="true"`
+- **Marker:** `data-locked="true"` `data-onboard-lock="v1.0"` `data-onboard-frozen="true"` `data-mp="MP-002"`
 - **Detail:** [ONBOARDING_V1_LOCK.md](./ONBOARDING_V1_LOCK.md)
 
-### Tracking mode screen — LOCKED
+### Tracking Mode — LOCKED
 
 - **File:** `frontend/index.html` → `#trackingMode`
-- **Marker:** `data-mp="MP-046"`
+- **Marker:** `data-locked="true"` `data-mp="MP-046"`
 - **Policy:** AutoPilot vs Manual cards, copy, and layout frozen unless bug fix.
 
-### Onboarding final success screen — LOCKED
+### AutoPilot Permission — LOCKED
+
+- **File:** `frontend/index.html` → `#permissions`
+- **Marker:** `data-locked="true"` `data-mp="MP-004"`
+- **Policy:** Benefit-focused copy, privacy block, Enable AutoPilot CTA, and Manual Mode skip frozen unless bug fix.
+
+### Success Screen — LOCKED
 
 - **File:** `frontend/index.html` → `#onboardReady`
 - **Marker:** `data-locked="true"` `data-mp="onboard-ready"`
-- **Approved copy (June 2026):**
+- **Approved copy:**
   - Headline: `Welcome aboard, {name}.`
   - Intro: MilePilot is ready to track your business mileage automatically.
   - Brand: Your business is now on AutoPilot.
@@ -106,12 +119,9 @@ Commit and screenshot on each approved screen; upload **one final zip** when the
 
 ## Pending screens (not yet locked)
 
-Work through these **one at a time** after onboarding is complete:
-
 | Screen | ID | MP code | Notes |
 | --- | --- | --- | --- |
-| Permissions | `#permissions` | MP-004 | Benefit-focused copy done; await final approval |
-| Email setup | `#emailSetup` | — | Step 5 of 6 |
+| Email setup | `#emailSetup` | email | Step 5 of 6 — next onboarding polish |
 | Command Centre (Dashboard) | `#home` | MP-006 | |
 | Reports | `#reports` | MP-008 | |
 | History | `#history` | — | |
