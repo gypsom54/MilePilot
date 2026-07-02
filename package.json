@@ -19,6 +19,7 @@
     "build:android:production": "eas build --platform android --profile production",
     "submit:ios": "eas submit --platform ios --latest --profile production",
     "release:ios": "eas build --platform ios --profile production --non-interactive && eas submit --platform ios --latest --profile production --non-interactive",
+    "verify:stabilisation": "node scripts/verify-stabilisation-checklist.js",
     "verify:release": "node scripts/verify-release.js",
     "verify:tracking": "node scripts/verify-tracking-contract.js",
     "test:native-tracking": "node tests/native-tracking-engine.test.js",

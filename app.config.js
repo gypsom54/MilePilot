@@ -83,7 +83,7 @@ module.exports = {
       },
       webAppUrl:
         process.env.WEB_APP_URL ||
-        'https://app.milepilot.uk/?runtime=expo&v=8.42.1',
+        'https://app.milepilot.uk/?runtime=expo&v=8.43.0',
     },
   },
 };
