@@ -285,19 +285,15 @@ html.mp-expo #welcome.active{padding-top:max(52px,calc(env(safe-area-inset-top,0
 .onboard-oauth-btn{height:50px;border-radius:14px;border:1px solid rgba(110,180,255,.22);background:rgba(255,255,255,.06);color:rgba(234,242,255,.94);font-size:16px;font-weight:600;width:100%;margin:0 0 10px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:10px;transition:background .22s ease,border-color .22s ease}
 .onboard-oauth-btn:active{transform:scale(.985)}
 .onboard-or{margin:14px 0;text-align:center;font-size:13px;font-weight:500;color:rgba(147,168,196,.78);letter-spacing:.04em}
-.onboard-ready-icon{width:64px;height:64px;margin:0 auto 20px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(32,215,129,.2),rgba(13,107,255,.12));border:1px solid rgba(32,215,129,.35);box-shadow:0 0 32px rgba(32,215,129,.15),0 0 48px rgba(13,107,255,.08);font-size:28px;font-weight:700;color:#20D781}
-@keyframes onboardReadySuccessPulse{0%{transform:scale(1);box-shadow:0 0 32px rgba(32,215,129,.15),0 0 48px rgba(13,107,255,.08)}45%{transform:scale(1.05);box-shadow:0 0 40px rgba(13,107,255,.32),0 0 56px rgba(32,215,129,.22)}100%{transform:scale(1);box-shadow:0 0 36px rgba(13,107,255,.2),0 0 44px rgba(32,215,129,.16)}}
+.onboard-ready-icon{width:64px;height:64px;margin:0 auto 34px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(32,215,129,.2),rgba(13,107,255,.12));border:1px solid rgba(32,215,129,.35);box-shadow:0 0 35px rgba(32,215,129,.165),0 0 53px rgba(13,107,255,.088);font-size:28px;font-weight:700;color:#20D781}
+@keyframes onboardReadySuccessPulse{0%{transform:scale(1);box-shadow:0 0 35px rgba(32,215,129,.165),0 0 53px rgba(13,107,255,.088)}45%{transform:scale(1.05);box-shadow:0 0 44px rgba(13,107,255,.35),0 0 62px rgba(32,215,129,.24)}100%{transform:scale(1);box-shadow:0 0 40px rgba(13,107,255,.22),0 0 48px rgba(32,215,129,.18)}}
 #onboardReady .onboard-ready-icon.is-animated{animation:onboardReadySuccessPulse 1.15s cubic-bezier(.22,1,.36,1) .25s 1 both}
 @media(prefers-reduced-motion:reduce){#onboardReady .onboard-ready-icon.is-animated{animation:none}}
-#onboardReady .onboard-ready-brand{margin:0 auto 6px;max-width:300px;font-size:16px;font-weight:600;line-height:1.4;color:rgba(234,242,255,.96);letter-spacing:-.02em}
-#onboardReady .onboard-ready-tagline{margin:0 auto 18px;max-width:300px;font-size:14px;font-weight:500;line-height:1.45;color:rgba(126,184,255,.9)}
-#onboardReady .onboard-ready-steps{margin:0 auto 16px;padding:0;max-width:280px;list-style:none;text-align:left}
-#onboardReady .onboard-ready-steps li{position:relative;margin:0 0 9px;padding-left:22px;font-size:14px;font-weight:500;line-height:1.4;color:rgba(180,210,245,.92)}
-#onboardReady .onboard-ready-steps li:last-child{margin-bottom:0}
-#onboardReady .onboard-ready-steps li::before{content:'✓';position:absolute;left:0;top:0;color:#20D781;font-size:13px;font-weight:700}
-#onboardReady .onboard-ready-payoff{margin:0 auto 14px;max-width:300px;font-size:14px;font-weight:500;line-height:1.45;color:rgba(159,180,208,.88)}
-#onboardReady .onboard-ready-cta-line{margin:0 auto 4px;max-width:300px;font-size:14px;font-weight:600;line-height:1.4;color:rgba(180,210,245,.94)}
+#onboardReady .onboard-ready-feature{margin:0 auto 16px;max-width:300px;font-size:15px;font-weight:500;line-height:1.5;color:rgba(159,180,208,.9)}
+#onboardReady .onboard-ready-payoff{margin:0 auto 20px;max-width:300px;font-size:14px;font-weight:700;line-height:1.4;color:rgba(126,184,255,.95);letter-spacing:-.01em}
 #onboardReady .onboard-ready-hint{margin:10px 0 0;text-align:center;font-size:12px;font-weight:500;line-height:1.35;color:rgba(147,168,196,.78)}
+#onboardReady .onboard-progress-fill{transition:width .65s cubic-bezier(.22,1,.36,1)}
+@media(prefers-reduced-motion:reduce){#onboardReady .onboard-progress-fill{transition:none}}
 .onboard-summary-note{margin:0 0 20px;padding:14px 16px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid rgba(110,180,255,.12);font-size:13px;line-height:1.5;color:rgba(159,180,208,.9)}
 .onboard-summary-note strong{display:block;margin:0 0 8px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(126,184,255,.88)}
 #welcome .welcome-get-started{margin-top:8px}
@@ -1089,21 +1085,13 @@ body.always-modal-open .nav{display:none!important}
 <div class="onboard-bg" aria-hidden="true"><div class="onboard-glow onboard-glow-1"></div><div class="onboard-glow onboard-glow-2"></div></div>
 <div class="onboard-inner">
 <header class="brand-bar onboard-brand center"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div><p class="brand-tagline">Your business. On AutoPilot.</p></header>
-<div class="onboard-progress"><div class="onboard-progress-track"><div class="onboard-progress-fill" style="width:100%"></div></div><p class="onboard-progress-label">Step 6 of 6</p></div>
+<div class="onboard-progress"><div class="onboard-progress-track"><div class="onboard-progress-fill" id="onboardReadyProgressFill" style="width:83%"></div></div><p class="onboard-progress-label">Step 6 of 6</p></div>
 <div class="onboard-body" style="align-items:center;justify-content:center;text-align:center;padding:12px 0 20px">
 <div class="onboard-ready-icon" id="onboardReadyIcon" aria-hidden="true">✓</div>
-<h1 class="knowYou-greeting" id="onboardReadyGreeting">Welcome aboard.</h1>
+<h1 class="knowYou-greeting" id="onboardReadyGreeting">Welcome aboard!</h1>
 <p class="onboard-ready-sub" id="onboardReadyLead">MilePilot is ready to track your business mileage automatically.</p>
-<p class="onboard-ready-brand" id="onboardReadyBrand">Your business is now on <span class="blue">AutoPilot</span>.</p>
-<p class="onboard-ready-tagline" id="onboardReadyTagline">Business mileage without the paperwork.</p>
-<ul class="onboard-ready-steps" id="onboardReadySteps" aria-label="What happens next">
-<li>Start your shift</li>
-<li>Drive normally</li>
-<li>Review today's journeys</li>
-<li>Download your mileage report</li>
-</ul>
+<p class="onboard-ready-feature" id="onboardReadyFeature">Start your first shift and MilePilot will automatically record your journeys, review them and prepare your mileage report.</p>
 <p class="onboard-ready-payoff" id="onboardReadyPayoff">Every business mile now counts.</p>
-<p class="onboard-ready-cta-line" id="onboardReadyCtaLine">Let's put MilePilot to work.</p>
 </div>
 <div class="knowYou-foot"><button type="button" class="btn premium-btn is-ready" onclick="openDashboard()">Start My First Shift</button><p class="onboard-ready-hint">You can change these settings any time.</p></div>
 </div>
@@ -1346,7 +1334,7 @@ body.always-modal-open .nav{display:none!important}
 <script src="js/app-copy.js"></script>
 <script src="js/beta-feedback.js"></script>
 <script>
-const APP_VERSION='8.43.11';
+const APP_VERSION='8.43.12';
 const DEFAULT_WEEKLY_GOAL_MILES=400;
 const BUSINESS_PROFILE_KEY='mp_business_profile';
 const PRODUCT_VISION_LOCK='2026-06-vision-v1';
@@ -1462,7 +1450,7 @@ async function continueSetup(){const btn=q('permSetupBtn');if(btn){btn.disabled=
 function goToEmailSetup(){localStorage.setItem('mp_onboard_step','email');initEmailSetup();showScreen('emailSetup')}
 function applyModeReportPrefs(){const mode=(typeof MPTrackingMode!=='undefined'&&MPTrackingMode.getMode())||selectedTrackingMode||'autopilot';localStorage.setItem('mp_operating_mode',mode);setReportFrequency('off');if(mode==='manual')saveReportPrefs({emailReports:false,pdfAttachment:true});else{saveReportPrefs({emailReports:true,pdfAttachment:true});markStayUpdatedPromptSeen()}}
 function saveOnboardReportPrefs(){applyModeReportPrefs()}
-function initOnboardReady(){driver=localStorage.getItem('mp_driver')||driver||'';const name=driver.trim(),greet=q('onboardReadyGreeting');if(greet)greet.textContent=name?`Welcome aboard, ${name}.`:'Welcome aboard.';const icon=q('onboardReadyIcon');if(icon){icon.classList.remove('is-animated');void icon.offsetWidth;icon.classList.add('is-animated')}}
+function initOnboardReady(){const icon=q('onboardReadyIcon');if(icon){icon.classList.remove('is-animated');void icon.offsetWidth;icon.classList.add('is-animated')}const fill=q('onboardReadyProgressFill');if(fill){fill.style.width='83%';requestAnimationFrame(()=>{fill.style.width='100%'})}}
 async function enableOnboardNotifications(){if(typeof MPExpoBridge!=='undefined'&&MPExpoBridge.request){try{const res=await MPExpoBridge.request('expo:notification:request');localStorage.setItem('mp_notifications_choice',res&&(res.granted||res.status==='granted')?'granted':'skipped');return}catch(e){}}enableNotificationPermission();await new Promise(r=>setTimeout(r,400))}
 function initEmailSetup(){const email=q('emailInput'),hint=q('emailSetupPrefillHint'),stored=(localStorage.getItem('mp_email')||'').trim();if(email)email.value=stored;if(hint)hint.hidden=!stored}
 function confirmEmailSetup(){const e=q('emailInput')?.value.trim();if(e)localStorage.setItem('mp_email',e);saveOnboardReportPrefs();localStorage.setItem('mp_onboard_step','ready');initOnboardReady();showScreen('onboardReady')}
