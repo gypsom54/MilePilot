@@ -149,6 +149,14 @@ See also: [DESIGN_LOCKED.md](./DESIGN_LOCKED.md)
 
 ---
 
+## Product principle (every new feature) 🔒
+
+> **Every new feature must save the user time, money or stress. If it does not achieve at least one of those outcomes, it does not belong in MilePilot.**
+
+This applies to UI, intelligence, and future Business-tier modules. When scoping work, name which outcome(s) the feature delivers.
+
+---
+
 ## Golden rule (every future feature)
 
 Before building, answer **yes** to all:

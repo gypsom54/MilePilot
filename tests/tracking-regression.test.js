@@ -11,6 +11,9 @@ import {
   simulateDrive,
   point,
   movementSpeedMps,
+  calcSpeedMps,
+  shouldResetAutoEndIdle,
+  distanceMeters,
 } from "./tracking-engine-core.js";
 
 function test(name, fn) {
@@ -145,6 +148,69 @@ run("BG_GPS_POLL_MS is 12 seconds", () => {
 run("ACC_SOFT_MAX allows weak signal in handlePos layer", () => {
   assert.equal(ENGINE.ACC_SOFT_MAX, 220);
   assert.ok(ENGINE.ACC_SOFT_MAX > ENGINE.ACC_MAX, "soft max is more permissive than hard max");
+});
+
+run("indoor GPS drift does not reset auto-end idle timer", () => {
+  const t0 = Date.now();
+  const home = point(51.5, -0.12, t0, { acc: 22 });
+  const drift = point(51.50003, -0.11997, t0 + 12000, { acc: 28, speedMps: 0 });
+  const d = distanceMeters(home, drift);
+  const calc = calcSpeedMps(d, drift, home);
+  assert.ok(d < ENGINE.AUTO_END_SOFT_MOVE_M, "drift distance stays below auto-end threshold");
+  assert.equal(shouldResetAutoEndIdle(d, calc, 0, drift.acc), false);
+});
+
+run("slow traffic still resets auto-end idle timer", () => {
+  const t0 = Date.now();
+  const start = point(51.5, -0.12, t0, { acc: 18, nativeGps: true });
+  const creep = point(51.5002, -0.12, t0 + 12000, { acc: 18, nativeGps: true, speedMps: 0 });
+  const d = distanceMeters(start, creep);
+  const calc = calcSpeedMps(d, creep, start);
+  assert.ok(d >= ENGINE.AUTO_END_SOFT_MOVE_M);
+  assert.equal(shouldResetAutoEndIdle(d, calc, 0, creep.acc), true);
+});
+
+run("real driving movement resets auto-end idle timer", () => {
+  const t0 = Date.now();
+  const start = point(51.5, -0.12, t0, { acc: 12 });
+  const drive = point(51.5005, -0.12, t0 + 10000, { acc: 12, speedMps: 8 });
+  const d = distanceMeters(start, drive);
+  const calc = calcSpeedMps(d, drive, start);
+  assert.ok(d >= ENGINE.AUTO_END_MIN_MOVE_M);
+  assert.equal(shouldResetAutoEndIdle(d, calc, 8, drive.acc), true);
+});
+
+run("poor GPS accuracy blocks auto-end idle reset", () => {
+  const t0 = Date.now();
+  const start = point(51.5, -0.12, t0, { acc: 80 });
+  const jump = point(51.5005, -0.12, t0 + 10000, { acc: 90, speedMps: 8 });
+  const d = distanceMeters(start, jump);
+  const calc = calcSpeedMps(d, jump, start);
+  assert.equal(shouldResetAutoEndIdle(d, calc, 8, jump.acc), false);
+});
+
+run("movementSpeedMps uses calculated speed when device reports zero", () => {
+  const t0 = Date.now();
+  const prev = point(51.5, -0.12, t0, { nativeGps: true });
+  const p = point(51.5002, -0.12, t0 + 12000, { nativeGps: true, speedMps: 0 });
+  const d = distanceMeters(prev, p);
+  const speed = movementSpeedMps(d, p, prev, 0);
+  assert.ok(speed > 0.5, "should not trust device zero when distance shows movement");
+});
+
+run("small GPS segments accumulate via pendingMeters odometer", () => {
+  const t0 = Date.now();
+  const segmentM = 3.5;
+  const segmentLat = segmentM / 111000;
+  const nSegments = Math.round(4828 / segmentM);
+  const pts = [point(51.5, -0.12, t0, { nativeGps: true, speedMps: 0 })];
+  for (let i = 1; i <= nSegments; i++) {
+    pts.push(point(51.5 + i * segmentLat, -0.12, t0 + i * 2000, { nativeGps: true, speedMps: 0 }));
+  }
+  const state = simulateDrive(pts);
+  const expectedMiles = (nSegments * segmentM) / 1609.344;
+  assert.ok(state.miles > expectedMiles * 0.9, `expected ~${expectedMiles.toFixed(2)} mi, got ${state.miles.toFixed(2)}`);
+  assert.ok(state.miles < expectedMiles * 1.1, `expected ~${expectedMiles.toFixed(2)} mi, got ${state.miles.toFixed(2)}`);
 });
 
 console.log(`\nTracking regression: ${passed} passed, ${failed} failed\n`);
