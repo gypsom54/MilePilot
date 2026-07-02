@@ -10,9 +10,11 @@ globs:
   - src/locationTask.js
   - src/expoLocationBridge.js
   - src/MilePilotWebView.js
+  - src/nativeTrackingEngine.js
   - scripts/tracking-contract.json
   - scripts/verify-tracking-contract.js
   - docs/TRACKING_CONTRACT.md
+  - docs/TRACKING_BACKGROUND_VITAL_LOCK.md
   - .github/workflows/tracking-guard.yml
 alwaysApply: false
 ---
@@ -35,6 +37,7 @@ alwaysApply: false
 - `MPTrackingProvider` / `MPPlatform` native bridge
 - `nativeGps`, `movementSpeedMps` speed gate
 - `src/locationTask.js` background buffer for TestFlight
+- **v8.43.31 locked:** `handoffToNativeEngine`, `nativeBgFallbackActive`, `evaluateNativeSyncHealth`, `burstNativeTripSync` — see `docs/TRACKING_BACKGROUND_VITAL_LOCK.md`
 
 ## CI
 

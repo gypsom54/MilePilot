@@ -1,15 +1,18 @@
 {
   "id": "MP-043",
-  "version": 2,
+  "version": 3,
+  "lockedAt": "8.43.31",
   "vital": true,
   "businessCritical": "Without background GPS mileage recording, MilePilot has no product. Do not modify without explicit sign-off and device testing.",
-  "description": "Background GPS resilience — required for MilePilot mileage recording. Do not remove without explicit product sign-off.",
+  "description": "Background GPS resilience + locked-screen handoff — field-validated v8.43.31. Do not remove without explicit product sign-off.",
   "files": ["frontend/index.html", "milepilot-upload-v2/index.html"],
   "companionFiles": [
     "frontend/js/native-platform.js",
     "frontend/js/tracking-provider.js",
+    "frontend/js/tracking-debug.js",
     "milepilot-upload-v2/js/native-platform.js",
     "milepilot-upload-v2/js/tracking-provider.js",
+    "milepilot-upload-v2/js/tracking-debug.js",
     "src/locationTask.js",
     "src/expoLocationBridge.js",
     "src/MilePilotWebView.js",
@@ -19,6 +22,10 @@
   "companionExports": [
     { "file": "frontend/js/native-platform.js", "symbol": "MPPlatform" },
     { "file": "frontend/js/tracking-provider.js", "symbol": "MPTrackingProvider" }
+  ],
+  "companionSymbols": [
+    { "file": "src/nativeTrackingEngine.js", "symbol": "setNativeAppBackground" },
+    { "file": "src/expoLocationBridge.js", "symbol": "expo:native:background" }
   ],
   "minTrackingEngineVersion": 2,
   "requiredConstants": [
@@ -38,7 +45,16 @@
     "bindMotionGpsNudge",
     "onGpsWatchError",
     "ensureMotionAccess",
-    "movementSpeedMps"
+    "movementSpeedMps",
+    "handoffToNativeEngine",
+    "evaluateNativeSyncHealth",
+    "requestNativeTripSync",
+    "burstNativeTripSync",
+    "getNativeHandoffPayload",
+    "nativeOdometerMeters",
+    "ensureNativeBgFallback",
+    "startNativeSyncPoll",
+    "applyNativeTripSync"
   ],
   "requiredPatterns": [
     "enableHighAccuracy:true,maximumAge:0,timeout:12000",
@@ -50,6 +66,13 @@
     "nativeGps",
     "MPTrackingProvider.init",
     "deviceSpeedMps",
-    "ACC_SOFT_MAX:220"
+    "ACC_SOFT_MAX:220",
+    "nativeBgFallbackActive",
+    "evaluateNativeSyncHealth",
+    "handoffToNativeEngine",
+    "burstNativeTripSync",
+    "expo:native:background",
+    "nativeOdometerMeters",
+    "__nativeEngineAuthoritative"
   ]
 }

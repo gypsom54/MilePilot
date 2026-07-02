@@ -5,7 +5,7 @@
 **Without background GPS mileage recording, MilePilot has no business.**
 
 This code is marked `VITAL` in the codebase, protected by CI, CODEOWNERS, and Cursor agent rules.  
-Validated working: foreground, background, and locked-screen recording (v8.28.1).
+Validated working: foreground, background, and locked-screen recording (**v8.43.31** — field drive, July 2026).
 
 ---
 
@@ -71,6 +71,7 @@ Mirrored in `milepilot-upload-v2/` for Cloudflare deploys.
 
 | Version | Date | Change |
 |---------|------|--------|
+| MP-043 v3 | 2026-07-02 | Background/locked handoff + web fallback — **field-validated v8.43.31** — see `TRACKING_BACKGROUND_VITAL_LOCK.md` |
 | MP-043 v2 | 2026-06-30 | Native TestFlight bridge + vital protection markers |
 | MP-043 v1 | 2026-06-30 | PWA background GPS restored after consolidation regression |
 

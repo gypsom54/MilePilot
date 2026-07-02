@@ -1,5 +1,6 @@
 /**
  * MilePilot Report Email Layout — premium, spacious briefing design.
+ * Uses light outer shell + dark card for reliable rendering in iOS/Gmail dark mode.
  */
 import {
   buildRouteMapContext,
@@ -9,6 +10,48 @@ import {
 
 const EMAIL_CONTENT_W = 440;
 const EMAIL_MAP_H = 272;
+
+/** Wraps report body for consistent colour in Apple Mail / Gmail dark mode. */
+export function buildEmailDocumentShell(innerHtml) {
+  return `<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark">
+<title>MilePilot Report</title>
+<style type="text/css">
+  :root { color-scheme: light dark; supported-color-schemes: light dark; }
+  body { margin:0 !important; padding:0 !important; width:100% !important; -webkit-text-size-adjust:100%; }
+  .mp-outer { background-color:#E8EEF7 !important; }
+  .mp-card { background-color:#0A2854 !important; }
+  .mp-body-text { color:#EAF2FF !important; }
+  .mp-muted { color:#B9C8DD !important; }
+  .mp-accent { color:#6EB4FF !important; }
+  .mp-white { color:#FFFFFF !important; }
+  @media (prefers-color-scheme: dark) {
+    .mp-outer { background-color:#020B1B !important; }
+    .mp-card { background-color:#0A2854 !important; }
+    .mp-body-text { color:#EAF2FF !important; }
+    .mp-muted { color:#B9C8DD !important; }
+    .mp-accent { color:#6EB4FF !important; }
+    .mp-white { color:#FFFFFF !important; }
+  }
+</style>
+</head>
+<body class="mp-outer" style="margin:0;padding:0;background-color:#E8EEF7;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="mp-outer" bgcolor="#E8EEF7" style="background-color:#E8EEF7;padding:40px 16px 48px;">
+<tr><td align="center">
+<table role="presentation" width="480" cellpadding="0" cellspacing="0" border="0" class="mp-card" bgcolor="#0A2854" style="max-width:480px;width:100%;background-color:#0A2854;border-radius:24px;border:1px solid #1A4A8C;">
+<tr><td style="padding:32px 24px 28px;">
+${innerHtml}
+</td></tr>
+</table>
+</td></tr>
+</table>
+</body></html>`;
+}
 
 function money(v) {
   return `£${Number(v || 0).toFixed(2)}`;
