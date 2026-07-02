@@ -268,6 +268,16 @@ html.mp-expo #welcome.active{padding-top:max(52px,calc(env(safe-area-inset-top,0
 .enable-mode-block strong{display:block;margin:0 0 6px;font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:rgba(126,184,255,.92)}
 .enable-mode-block p{margin:0;font-size:14px;line-height:1.45;color:rgba(159,180,208,.9)}
 #emailSetup .onboard-inner,#reportSchedule .onboard-inner{max-width:340px;margin:0 auto;width:100%}
+#emailSetup .knowYou-body{flex:1;display:flex;flex-direction:column;min-height:0}
+#emailSetup .knowYou-greeting{margin:0 0 10px}
+#emailSetup .email-setup-copy{margin:0 0 24px}
+#emailSetup .email-setup-support{margin:0 auto 12px;max-width:300px}
+#emailSetup .email-setup-support:last-child{margin-bottom:0}
+#emailSetup .email-setup-prefill{margin:0 0 10px;text-align:center;font-size:12px;font-weight:500;line-height:1.4;color:rgba(126,184,255,.85)}
+#emailSetup .email-setup-prefill[hidden]{display:none}
+#emailSetup .onboard-email-input{margin:0 0 8px;padding:0 16px;height:52px;box-sizing:border-box;line-height:52px;-webkit-appearance:none;appearance:none}
+#emailSetup .email-setup-privacy{margin:0 0 28px;text-align:center;font-size:12px;font-weight:500;line-height:1.4;color:rgba(147,168,196,.78)}
+#emailSetup .knowYou-foot{margin-top:auto;padding-top:8px}
 .onboard-name-input{height:52px;border-radius:var(--button-radius);border:1px solid rgba(110,180,255,.38);background:rgba(18,36,62,.92);color:rgba(248,251,255,.98);box-shadow:inset 0 1px 0 rgba(255,255,255,.08);font-size:17px;font-weight:500;padding:0 16px 0 44px;width:100%;margin:0 0 18px;transition:border-color .28s ease,box-shadow .28s ease;-webkit-font-smoothing:antialiased}
 .onboard-name-input::placeholder{color:rgba(186,204,228,.78)}
 .onboard-name-input:focus{border-color:rgba(13,107,255,.62);box-shadow:0 0 0 3px rgba(13,107,255,.14),inset 0 0 14px rgba(13,107,255,.07);outline:none}
@@ -1061,10 +1071,17 @@ body.always-modal-open .nav{display:none!important}
 <div class="onboard-inner">
 <header class="brand-bar onboard-brand center"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div><p class="brand-tagline">Your business. On AutoPilot.</p></header>
 <div class="onboard-progress"><div class="onboard-progress-track"><div class="onboard-progress-fill" style="width:83%"></div></div><p class="onboard-progress-label">Step 5 of 6</p></div>
-<h1 class="knowYou-greeting" style="margin-bottom:12px">Where should we email your business reports?</h1>
-<p class="knowYou-support" style="margin-bottom:20px">AutoPilot emails your report after each shift. Manual mode — you send reports yourself.</p>
+<div class="knowYou-body">
+<h1 class="knowYou-greeting">Where should we send your mileage reports?</h1>
+<div class="email-setup-copy">
+<p class="knowYou-support email-setup-support">AutoPilot automatically emails your mileage reports after each completed shift.</p>
+<p class="knowYou-support email-setup-support">Manual Mode keeps your reports safely in your dashboard until you're ready to send or download them.</p>
+</div>
+<p class="email-setup-prefill" id="emailSetupPrefillHint" hidden>We've pre-filled this using your account email.</p>
 <input id="emailInput" class="onboard-email-input" placeholder="you@example.com" inputmode="email" autocomplete="email">
-<div class="knowYou-foot"><button type="button" class="btn premium-btn is-ready" onclick="confirmEmailSetup()">Continue</button><button type="button" class="onboard-skip" onclick="skipEmailSetup()">Skip for now</button></div>
+<p class="email-setup-privacy">Your email is only used for reports and important account updates.</p>
+</div>
+<div class="knowYou-foot"><button type="button" class="btn premium-btn is-ready" onclick="confirmEmailSetup()">Continue</button><button type="button" class="onboard-skip" onclick="skipEmailSetup()">I'll add this later</button></div>
 </div>
 </section>
 <section id="reportSchedule" class="screen" hidden aria-hidden="true" data-mp="report-schedule-removed"></section>
@@ -1329,7 +1346,7 @@ body.always-modal-open .nav{display:none!important}
 <script src="js/app-copy.js"></script>
 <script src="js/beta-feedback.js"></script>
 <script>
-const APP_VERSION='8.43.10';
+const APP_VERSION='8.43.11';
 const DEFAULT_WEEKLY_GOAL_MILES=400;
 const BUSINESS_PROFILE_KEY='mp_business_profile';
 const PRODUCT_VISION_LOCK='2026-06-vision-v1';
@@ -1447,7 +1464,7 @@ function applyModeReportPrefs(){const mode=(typeof MPTrackingMode!=='undefined'&
 function saveOnboardReportPrefs(){applyModeReportPrefs()}
 function initOnboardReady(){driver=localStorage.getItem('mp_driver')||driver||'';const name=driver.trim(),greet=q('onboardReadyGreeting');if(greet)greet.textContent=name?`Welcome aboard, ${name}.`:'Welcome aboard.';const icon=q('onboardReadyIcon');if(icon){icon.classList.remove('is-animated');void icon.offsetWidth;icon.classList.add('is-animated')}}
 async function enableOnboardNotifications(){if(typeof MPExpoBridge!=='undefined'&&MPExpoBridge.request){try{const res=await MPExpoBridge.request('expo:notification:request');localStorage.setItem('mp_notifications_choice',res&&(res.granted||res.status==='granted')?'granted':'skipped');return}catch(e){}}enableNotificationPermission();await new Promise(r=>setTimeout(r,400))}
-function initEmailSetup(){const email=q('emailInput');if(email)email.value=localStorage.getItem('mp_email')||''}
+function initEmailSetup(){const email=q('emailInput'),hint=q('emailSetupPrefillHint'),stored=(localStorage.getItem('mp_email')||'').trim();if(email)email.value=stored;if(hint)hint.hidden=!stored}
 function confirmEmailSetup(){const e=q('emailInput')?.value.trim();if(e)localStorage.setItem('mp_email',e);saveOnboardReportPrefs();localStorage.setItem('mp_onboard_step','ready');initOnboardReady();showScreen('onboardReady')}
 function skipEmailSetup(){saveOnboardReportPrefs();localStorage.setItem('mp_onboard_step','ready');initOnboardReady();showScreen('onboardReady')}
 function openDashboard(){finishOnboarding()}
