@@ -161,7 +161,7 @@ Commit and screenshot on each approved screen; upload **one final zip** when the
 - **File:** `frontend/index.html` → `#settings`
 - **Marker:** `data-locked="true"` `data-mp="MP-009"`
 - **Detail:** [UI_LOCK_SETTINGS.md](./UI_LOCK_SETTINGS.md)
-- **Version:** v8.43.25 — final micro polish; frozen
+- **Version:** v8.43.26 — final micro adjustment (Email Reports title weight); **frozen — no further changes**
 
 ---
 
