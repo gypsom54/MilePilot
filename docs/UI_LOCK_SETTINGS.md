@@ -1,8 +1,8 @@
 # Settings Screen UI Lock
 
-**Status:** DESIGN COMPLETE — Frozen (July 2026)  
+**Status:** APPROVED — Frozen (2 July 2026)  
 **Component:** `#settings` `.screen` — premium control centre  
-**Version locked:** v8.43.24
+**Version locked:** v8.43.25
 
 > **Rule:** Visual polish only. No tracking, permissions, report, navigation, or state logic changes unless a genuine usability issue is discovered.
 
@@ -34,7 +34,10 @@ Settings is a **premium control centre**, not a technical configuration page.
 | Tracking Mode | Hero: mode line, lead, description; Change → retained |
 | AutoPilot lead | You're using MilePilot's smartest tracking mode. |
 | AutoPilot desc | Automatically detects journeys and prepares your mileage reports. |
-| Vehicle value | 🚗 {type} |
+| AutoPilot reassure | You can switch to Manual Tracking anytime. |
+| Mode row label | Current Mode |
+| Email Reports | Your mileage reports are automatically emailed after each completed business shift. |
+| Vehicle value | Car (icon only — no duplicate emoji in text) |
 | Vehicle desc | Used for HMRC mileage calculations. |
 | Automatic Tracking | ✓ Location · ✓ Notifications · ✓ Email Reports · ✓ Auto End Trip |
 | Business Details | Experience + Business Type (renamed from Work Type) |

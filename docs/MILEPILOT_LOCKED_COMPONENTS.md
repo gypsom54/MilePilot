@@ -156,12 +156,12 @@ Commit and screenshot on each approved screen; upload **one final zip** when the
 - **Detail:** [UI_LOCK_REPORTS.md](./UI_LOCK_REPORTS.md)
 - **Version:** v8.43.22 — visual polish frozen
 
-### Settings — IN REVIEW
+### Settings — LOCKED
 
 - **File:** `frontend/index.html` → `#settings`
 - **Marker:** `data-locked="true"` `data-mp="MP-009"`
 - **Detail:** [UI_LOCK_SETTINGS.md](./UI_LOCK_SETTINGS.md)
-- **Version:** v8.43.24 — premium control centre polish; awaiting approval
+- **Version:** v8.43.25 — final micro polish; frozen
 
 ---
 
@@ -171,8 +171,8 @@ Commit and screenshot on each approved screen; upload **one final zip** when the
 | --- | --- | --- | --- |
 | Email Reports Screen | `#emailSetup` | email | 🟡 In review |
 | Reports | `#reports` | MP-008 | ✅ Locked — [UI_LOCK_REPORTS.md](./UI_LOCK_REPORTS.md) |
-| Settings | `#settings` | MP-009 | 🟡 In review — [UI_LOCK_SETTINGS.md](./UI_LOCK_SETTINGS.md) |
-| History | `#history` | — | ⬜ Next up |
+| Settings | `#settings` | MP-009 | ✅ Locked — [UI_LOCK_SETTINGS.md](./UI_LOCK_SETTINGS.md) |
+| History | `#history` | — | 🟡 Next up |
 | Settings | `#settings` | — | |
 | Live tracking / shift | — | — | UI only in Phase 1 |
 | Paywall / subscription | — | — | If in scope |
