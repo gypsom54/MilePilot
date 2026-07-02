@@ -140,7 +140,8 @@ Commit and screenshot on each approved screen; upload **one final zip** when the
 - **File:** `frontend/index.html` → `#home`
 - **Marker:** `data-locked="true"` `data-mp="MP-006"`
 - **Detail:** [UI_LOCK_DASHBOARD.md](./UI_LOCK_DASHBOARD.md)
-- **Permanent hero message:** MilePilot is ready when you are.
+- **Permanent hero message:** Removed v8.43.23 — greeting + *Ready for another shift?* only
+- **Version:** v8.43.23 — final Phase 1 micro polish; **frozen**
 
 ### Bottom Navigation — LOCKED
 
