@@ -118,7 +118,7 @@ export default function MilePilotWebView() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#031126" />
+      <StatusBar barStyle="light-content" backgroundColor="#020B1B" />
       {!ready && (
         <View style={styles.loading}>
           <ActivityIndicator size="large" color="#0D6BFF" />
@@ -147,11 +147,11 @@ export default function MilePilotWebView() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#031126',
+    backgroundColor: '#020B1B',
   },
   webview: {
     flex: 1,
-    backgroundColor: '#031126',
+    backgroundColor: '#020B1B',
   },
   hidden: {
     opacity: 0,
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#031126',
+    backgroundColor: '#020B1B',
     zIndex: 2,
   },
 });

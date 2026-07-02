@@ -146,8 +146,9 @@ body.map-expand-open{overflow:hidden}
 #welcome,#knowYou,#experienceChoice,#businessProfile,#promise,#permissions,#notifications,#trackingMode,#emailSetup,#reportSchedule,#onboardReady{position:relative;overflow:hidden;background:linear-gradient(180deg,#050F22 0%,#020B1B 55%,#010810 100%)}
 #welcome{background:#020B1B}
 #welcome.active{background:#020B1B}
-.app:has(#welcome.active){background:#020B1B}
+html:has(#welcome.active),body:has(#welcome.active),.app:has(#welcome.active){background:#020B1B}
 #welcome .onboard-bg{display:none}
+#welcome .onboard-inner,#welcome .welcome-brand-compact,#welcome .welcome-message{background:transparent}
 #welcome.active,#knowYou.active,#experienceChoice.active,#businessProfile.active,#promise.active,#permissions.active,#notifications.active,#trackingMode.active,#emailSetup.active,#reportSchedule.active,#onboardReady.active{display:flex;flex-direction:column;min-height:100dvh;padding:max(32px,env(safe-area-inset-top)) 24px max(24px,env(safe-area-inset-bottom))}
 #knowYou.active,#experienceChoice.active,#businessProfile.active,#promise.active,#permissions.active,#notifications.active,#trackingMode.active,#emailSetup.active,#reportSchedule.active,#onboardReady.active{justify-content:flex-start}
 #knowYou .onboard-inner,#experienceChoice .onboard-inner,#businessProfile .onboard-inner,#promise .onboard-inner,#permissions .onboard-inner,#notifications .onboard-inner,#trackingMode .onboard-inner,#emailSetup .onboard-inner,#reportSchedule .onboard-inner,#onboardReady .onboard-inner{flex:1;display:flex;flex-direction:column;padding-top:4px;min-height:0}
@@ -1263,7 +1264,7 @@ body.always-modal-open .nav{display:none!important}
 <script src="js/app-copy.js"></script>
 <script src="js/beta-feedback.js"></script>
 <script>
-const APP_VERSION='8.43.3';
+const APP_VERSION='8.43.4';
 const DEFAULT_WEEKLY_GOAL_MILES=400;
 const BUSINESS_PROFILE_KEY='mp_business_profile';
 const PRODUCT_VISION_LOCK='2026-06-vision-v1';
