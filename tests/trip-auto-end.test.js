@@ -30,6 +30,10 @@ function loadTripAutoEnd(ls) {
   const sandbox = {
     console,
     Date,
+    setInterval,
+    clearInterval,
+    setTimeout,
+    clearTimeout,
     localStorage: ls,
     window: {},
     globalThis: {},
@@ -63,9 +67,10 @@ run('timer starts when trip begins', () => {
   assert.equal(dbg.tripStatus, 'active');
   assert.equal(dbg.lastMovementAt, t0);
   assert.ok(dbg.countdownMs >= 89 * 60 * 1000);
+  assert.equal(dbg.watchdogActive, true);
 });
 
-run('movement resets inactivity timer', () => {
+run('movement resets deadline', () => {
   const ls = createMockLocalStorage();
   ls.setItem('mp_debug_auto_end_ms', '60000');
   const M = loadTripAutoEnd(ls);
@@ -81,9 +86,10 @@ run('inactivity reaches threshold and triggers auto-end', () => {
   ls.setItem('mp_debug_auto_end_ms', '60000');
   const M = loadTripAutoEnd(ls);
   let ended = null;
+  M.setTickCallback((r) => { ended = r; });
   const t0 = 1_700_000_000_000;
   M.onTripStarted('shift_1', t0);
-  assert.equal(M.checkInactivity(t0 + 61001, (r) => { ended = r; }), true);
+  assert.equal(M.checkInactivity(t0 + 61001), true);
   assert.equal(ended, 'auto');
 });
 
@@ -92,10 +98,11 @@ run('auto-end performs callback exactly once', () => {
   ls.setItem('mp_debug_auto_end_ms', '5000');
   const M = loadTripAutoEnd(ls);
   let count = 0;
+  M.setTickCallback(() => { count++; });
   const t0 = 1_700_000_000_000;
   M.onTripStarted('s', t0);
-  M.checkInactivity(t0 + 5001, () => { count++; });
-  M.checkInactivity(t0 + 10000, () => { count++; });
+  M.checkInactivity(t0 + 5001);
+  M.checkInactivity(t0 + 10000);
   assert.equal(count, 1);
 });
 
@@ -111,6 +118,7 @@ run('trip end clears auto-end state', () => {
   M.onTripStarted('s', 1);
   M.onTripEnded('manual');
   assert.equal(M.getDebugState(false).shiftId, null);
+  assert.equal(M.getDebugState(false).watchdogActive, false);
 });
 
 console.log(`\nTrip auto-end: ${passed} passed, ${failed} failed\n`);
