@@ -6,7 +6,7 @@
 > **Rule:** Locked screens must not be changed again unless there is a genuine bug.
 
 **Related docs:**
-- [UI_LOCK_DASHBOARD.md](./UI_LOCK_DASHBOARD.md) — Dashboard design complete
+- [UI_LOCK_NAVIGATION.md](./UI_LOCK_NAVIGATION.md) — bottom navigation dock
 - [MILEPILOT_LOCKED_COMPONENTS.md](./MILEPILOT_LOCKED_COMPONENTS.md) — full lock policy, phases, agent checklist
 - [MILEPILOT-DESIGN-BIBLE.md](./MILEPILOT-DESIGN-BIBLE.md) — copy, UI, animation standards
 - [ONBOARDING_V1_LOCK.md](./ONBOARDING_V1_LOCK.md) — Name & Vehicle detail
@@ -27,6 +27,7 @@
 ### App
 
 ✅ **Dashboard** (Locked)  
+✅ **Bottom Navigation** (Locked)  
 ⬜ **Start Shift**  
 ⬜ **Live Tracking**  
 ⬜ **AI Review**  
@@ -58,6 +59,7 @@
 | Email Reports Screen | 🟡 In Review | `#emailSetup` `data-mp="email"` | Step 5 of 6 |
 | Success Screen | ✅ Locked | `#onboardReady` `data-mp="onboard-ready"` `data-locked="true"` | |
 | Dashboard | ✅ Locked | `#home` `data-mp="MP-006"` `data-locked="true"` | See [UI_LOCK_DASHBOARD.md](./UI_LOCK_DASHBOARD.md) |
+| Bottom Navigation | ✅ Locked | `.nav` `#nav` | See [UI_LOCK_NAVIGATION.md](./UI_LOCK_NAVIGATION.md) |
 | Start Shift | ⬜ Pending | `#home` → `#ccPrimaryBtn` | Dashboard idle CTA — frozen with Dashboard |
 | Live Tracking | ⬜ Pending | `#tracking` | |
 | AI Review | ⬜ Pending | `#home` → `#ccSummary` / `#journeyReviewPanel` | |

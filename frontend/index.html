@@ -22,13 +22,14 @@
   --ease-premium:cubic-bezier(.22,1,.36,1);
   --card-shadow:0 4px 24px rgba(0,0,0,.12),inset 0 1px 0 rgba(255,255,255,.05);
   --card-shadow-lg:0 8px 32px rgba(0,0,0,.14),0 2px 8px rgba(13,107,255,.06),inset 0 1px 0 rgba(255,255,255,.06);
-  --animation-speed:1s;--transition-duration:.5s
+  --animation-speed:1s;--transition-duration:.5s;
+  --nav-dock-inner:64px;--nav-dock-pad:calc(var(--nav-dock-inner) + env(safe-area-inset-bottom,0px) + 24px)
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;min-height:100%;background:#020B1B;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
 body{display:flex;justify-content:center}
 .app{width:min(430px,100vw);min-height:100dvh;background:linear-gradient(180deg,#0A2854 0%,#031126 82%);position:relative}
-.screen{display:none;min-height:100dvh;padding:24px 22px 108px}.screen.active{display:block}
+.screen{display:none;min-height:100dvh;padding:24px 22px var(--nav-dock-pad)}.screen.active{display:block}
 #home.cc-screen.active,#reports.reports-screen.active,#settings.screen.active,#history.screen.active{animation:appScreenIn .38s var(--ease-premium) both}
 @keyframes appScreenIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
 .logoRow{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:18px}
@@ -64,7 +65,7 @@ body{display:flex;justify-content:center}
 input,select{width:100%;height:58px;border-radius:18px;border:1px solid rgba(255,255,255,.16);background:#07182F;color:#fff;font-size:17px;padding:0 16px;outline:none}input::placeholder{color:#7F8DA5}
 button{font-family:inherit}.btn{width:100%;height:var(--btn-height);border-radius:var(--button-radius);border:0;background:linear-gradient(180deg,#1882FF,#0057E7);color:white;font-weight:1000;font-size:17px;margin-top:14px;box-shadow:0 12px 32px rgba(13,107,255,.24),inset 0 1px 0 rgba(255,255,255,.1);transition:transform .24s var(--ease-premium),filter .24s ease,box-shadow .24s ease}.btn:active{transform:scale(.985)}.btn.red{background:linear-gradient(180deg,#FF3838,#D82323);box-shadow:0 12px 32px rgba(239,51,51,.24),inset 0 1px 0 rgba(255,255,255,.08)}.btn.outline{background:transparent;border:1px solid var(--blue);color:#6EADFF;box-shadow:none}.btn.small{height:var(--btn-height-sm);font-size:14px;font-weight:600}
 /* MP-007 Premium Navigation */
-.nav{position:fixed;left:50%;bottom:max(16px,env(safe-area-inset-bottom));transform:translateX(-50%);width:min(398px,calc(100vw - 32px));height:72px;padding:8px 10px;display:none;grid-template-columns:repeat(4,1fr);gap:6px;z-index:20;background:linear-gradient(180deg,rgba(10,40,84,.96) 0%,rgba(3,17,38,.98) 100%);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(110,180,255,.08);border-radius:20px;box-shadow:0 4px 24px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.04)}.nav.show{display:grid}
+.nav{position:fixed;left:0;right:0;bottom:0;width:100%;max-width:none;transform:none;height:auto;min-height:calc(var(--nav-dock-inner) + env(safe-area-inset-bottom,0px));padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));display:none;grid-template-columns:repeat(4,1fr);gap:4px;z-index:30;background:linear-gradient(180deg,#0A2854 0%,#031126 100%);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:0;border-top:1px solid rgba(110,180,255,.14);border-radius:0;box-shadow:0 -8px 32px rgba(0,0,0,.32),inset 0 1px 0 rgba(255,255,255,.04)}.nav.show{display:grid}
 .nav-item{position:relative;border:0;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:6px 4px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .22s ease-out}
 .nav-item:active{opacity:.82}
 .nav-icon-wrap{position:relative;display:flex;align-items:center;justify-content:center;width:34px;height:30px}
@@ -399,7 +400,7 @@ html.mp-expo #welcome.active{padding-top:max(52px,calc(env(safe-area-inset-top,0
 .premium-btn:active{transform:translateY(1px);box-shadow:0 8px 20px rgba(13,107,255,.26)}
 @media(prefers-reduced-motion:reduce){#welcome .welcome-brand-compact,#welcome .welcome-headline,#welcome .welcome-value-line,#welcome .welcome-get-started{animation:none!important;opacity:1!important;transform:none!important}}
 /* MP-006 Command Centre */
-#home.cc-screen{background:linear-gradient(180deg,#0A2854 0%,#031126 82%);padding:24px 22px 108px;position:relative}
+#home.cc-screen{background:linear-gradient(180deg,#0A2854 0%,#031126 82%);padding:24px 22px var(--nav-dock-pad);position:relative}
 #home.cc-screen.active{display:block}
 .cc-body{max-width:390px;margin:0 auto}
 .cc-greeting-wrap{margin:4px 0 28px;animation:ccFadeIn .55s var(--ease-premium) both}
@@ -586,7 +587,7 @@ body.summary-open .nav{display:none!important}
 .cc-body.is-active .cc-card{display:none}
 .cc-body.is-active .cc-divider{display:none}
 .cc-body.is-post-work .cc-greeting-wrap{margin-bottom:20px}
-.cc-version{position:absolute;left:0;right:0;bottom:max(88px,env(safe-area-inset-bottom));text-align:center;font-size:9px;font-weight:500;letter-spacing:.08em;color:rgba(143,168,201,.35)}
+.cc-version{position:absolute;left:0;right:0;bottom:calc(var(--nav-dock-inner) + env(safe-area-inset-bottom,0px) + 10px);text-align:center;font-size:9px;font-weight:500;letter-spacing:.08em;color:rgba(143,168,201,.35);pointer-events:none}
 .cc-gps-banner{margin:0 0 16px;padding:16px 18px;border-radius:20px;border:1px solid rgba(239,180,80,.28);background:linear-gradient(180deg,rgba(239,180,80,.1),rgba(239,180,80,.03));animation:ccSlideIn .45s cubic-bezier(.22,1,.36,1) both}
 .cc-gps-banner[hidden]{display:none!important}
 .cc-gps-banner p{margin:0 0 12px;font-size:14px;font-weight:500;line-height:1.45;color:rgba(234,220,180,.92)}
@@ -605,7 +606,7 @@ body.always-modal-open .nav{display:none!important}
 @keyframes ccSlideUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.cc-greeting-wrap,.cc-hero,.cc-primary-btn,.cc-card,.cc-summary,.cc-summary-panel,.cc-dot{animation:none!important;transition:none!important}}
 /* MP-008 Reports — premium consistency */
-#reports.reports-screen{background:linear-gradient(180deg,#0A2854 0%,#031126 82%);padding:24px 22px 108px}
+#reports.reports-screen{background:linear-gradient(180deg,#0A2854 0%,#031126 82%);padding:24px 22px var(--nav-dock-pad)}
 #reports.reports-screen.active{display:block}
 .reports-body{max-width:390px;margin:0 auto}
 .reports-header{margin:4px 0 24px}
@@ -679,7 +680,7 @@ body.always-modal-open .nav{display:none!important}
 .report-option-desc{display:block;font-size:14px;font-weight:500;line-height:1.4;color:rgba(159,180,208,.88)}
 .report-option-badge{display:inline-block;margin-bottom:6px;padding:3px 8px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:linear-gradient(180deg,#1E88FF,#0D6BFF);color:#fff;box-shadow:0 2px 10px rgba(13,107,255,.28)}
 .report-option-chevron{flex-shrink:0;font-size:22px;font-weight:300;line-height:1;color:rgba(126,184,255,.9)}
-#customReport.custom-report-screen{background:linear-gradient(180deg,#0A2854 0%,#031126 82%);padding:max(20px,env(safe-area-inset-top)) 22px 108px;min-height:100dvh}
+#customReport.custom-report-screen{background:linear-gradient(180deg,#0A2854 0%,#031126 82%);padding:max(20px,env(safe-area-inset-top)) 22px var(--nav-dock-pad);min-height:100dvh}
 #customReport.custom-report-screen.active{display:block;animation:customReportIn .4s cubic-bezier(.22,1,.36,1) both}
 @keyframes customReportIn{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
 .custom-report-top{margin:0 0 20px}
@@ -807,7 +808,7 @@ body.always-modal-open .nav{display:none!important}
 .su-skip:hover{color:rgba(159,180,208,.96)}
 .su-badge-inline{display:inline-block;margin-left:8px;font-size:10px;font-weight:600;letter-spacing:.04em;padding:3px 8px;border-radius:999px;background:rgba(13,107,255,.22);color:rgba(126,184,255,.95);vertical-align:middle}
 .settings-section-title{margin:0 0 12px;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(110,180,255,.82)}
-#settings.screen{background:linear-gradient(180deg,#0A2854 0%,#031126 82%);padding:24px 22px 108px}
+#settings.screen{background:linear-gradient(180deg,#0A2854 0%,#031126 82%);padding:24px 22px var(--nav-dock-pad)}
 #settings.screen.active{display:block}
 #settings .title{margin:8px 0 22px;font-size:clamp(26px,6.5vw,34px)}
 #settings .card .sub{margin-top:0}
@@ -815,7 +816,7 @@ body.always-modal-open .nav{display:none!important}
 #settings .card input{height:var(--btn-height);border-radius:var(--button-radius);margin:0 0 4px}
 #settings .card .btn{margin-top:12px}
 #settings .card .btn.small{margin-top:10px}
-#history.screen{background:linear-gradient(180deg,#0A2854 0%,#031126 82%);padding:24px 22px 108px}
+#history.screen{background:linear-gradient(180deg,#0A2854 0%,#031126 82%);padding:24px 22px var(--nav-dock-pad)}
 #history.screen .title{margin:8px 0 10px;font-size:clamp(26px,6.5vw,34px)}
 #history.screen .sub{margin:0 0 20px;font-size:15px;color:rgba(147,168,196,.88)}
 .settings-freq{display:flex;flex-direction:column;gap:8px;margin:0 0 18px}
@@ -1333,7 +1334,7 @@ body.always-modal-open .nav{display:none!important}
 <script src="js/app-copy.js"></script>
 <script src="js/beta-feedback.js"></script>
 <script>
-const APP_VERSION='8.43.19';
+const APP_VERSION='8.43.20';
 const DEFAULT_WEEKLY_GOAL_MILES=400;
 const BUSINESS_PROFILE_KEY='mp_business_profile';
 const PRODUCT_VISION_LOCK='2026-06-vision-v1';

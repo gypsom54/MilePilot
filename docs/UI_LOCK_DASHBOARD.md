@@ -2,11 +2,10 @@
 
 **Status:** DESIGN COMPLETE — Frozen (July 2026)  
 **Screen:** Command Centre — `#home` `data-mp="MP-006"` `data-locked="true"`  
-**Version locked:** v8.43.19
-
-> **Rule:** No further cosmetic redesigns unless a genuine usability issue is discovered.
+**Version locked:** v8.43.19 (nav dock v8.43.20 — see [UI_LOCK_NAVIGATION.md](./UI_LOCK_NAVIGATION.md))
 
 **Related docs:**
+- [UI_LOCK_NAVIGATION.md](./UI_LOCK_NAVIGATION.md) — bottom navigation dock
 - [MILEPILOT_UI_LOCK.md](./MILEPILOT_UI_LOCK.md) — screen status board
 - [MILEPILOT_LOCKED_COMPONENTS.md](./MILEPILOT_LOCKED_COMPONENTS.md) — Phase 1 lock policy
 - [MILEPILOT-DESIGN-BIBLE.md](./MILEPILOT-DESIGN-BIBLE.md) — visual standard for remaining screens
