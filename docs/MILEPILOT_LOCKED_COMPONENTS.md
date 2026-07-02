@@ -24,7 +24,15 @@
 | ✓ | **Background Permission Screen** | `#permissions` | MP-004 |
 | ✓ | **Success Screen** | `#onboardReady` | onboard-ready |
 
-All five screens above are **🔒 LOCKED**. Do not change unless a genuine bug is reported.
+All onboarding screens above are **🔒 LOCKED** except Email Reports (in review).
+
+**App — locked:**
+
+| | Screen | ID | MP code |
+| --- | --- | --- | --- |
+| ✓ | **Dashboard** | `#home` | MP-006 |
+
+See [UI_LOCK_DASHBOARD.md](./UI_LOCK_DASHBOARD.md).
 
 **In review:** Email Reports Screen (`#emailSetup`) — see [MILEPILOT_UI_LOCK.md](./MILEPILOT_UI_LOCK.md).
 

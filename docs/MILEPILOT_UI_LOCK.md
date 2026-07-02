@@ -6,6 +6,7 @@
 > **Rule:** Locked screens must not be changed again unless there is a genuine bug.
 
 **Related docs:**
+- [UI_LOCK_DASHBOARD.md](./UI_LOCK_DASHBOARD.md) — Dashboard design complete
 - [MILEPILOT_LOCKED_COMPONENTS.md](./MILEPILOT_LOCKED_COMPONENTS.md) — full lock policy, phases, agent checklist
 - [MILEPILOT-DESIGN-BIBLE.md](./MILEPILOT-DESIGN-BIBLE.md) — copy, UI, animation standards
 - [ONBOARDING_V1_LOCK.md](./ONBOARDING_V1_LOCK.md) — Name & Vehicle detail
@@ -25,7 +26,7 @@
 
 ### App
 
-⬜ **Dashboard** (In Review)  
+✅ **Dashboard** (Locked)  
 ⬜ **Start Shift**  
 ⬜ **Live Tracking**  
 ⬜ **AI Review**  
@@ -53,17 +54,17 @@
 | Welcome Screen | ✅ Locked | `#welcome` `data-mp="MP-001"` `data-locked="true"` | |
 | Name & Vehicle | ✅ Locked | `#knowYou` `data-mp="MP-002"` `data-locked="true"` | See [ONBOARDING_V1_LOCK.md](./ONBOARDING_V1_LOCK.md) |
 | Tracking Mode | ✅ Locked | `#trackingMode` `data-mp="MP-046"` `data-locked="true"` | |
-| Background Permission Screen | ✅ Locked | `#permissions` `data-mp="MP-004"` `data-locked="true"` | Frozen — UI lock complete |
-| Email Reports Screen | 🟡 In Review | `#emailSetup` `data-mp="email"` | Step 5 of 6 — **current focus** |
-| Success Screen | ✅ Locked | `#onboardReady` `data-mp="onboard-ready"` `data-locked="true"` | Frozen — UI lock complete |
-| Dashboard | 🟡 In Review | `#home` `data-mp="MP-006"` | Phase 1 polish — awaiting approval |
-| Start Shift | ⬜ Pending | `#home` → `#ccPrimaryBtn` | Dashboard idle / active CTA state |
-| Live Tracking | ⬜ Pending | `#tracking` | Live shift map + metrics |
-| AI Review | ⬜ Pending | `#home` → `#ccSummary` / `#journeyReviewPanel` | Post-shift journey review |
-| Reports | ⬜ Pending | `#reports` `data-mp="MP-008"` | Report Centre |
+| Background Permission Screen | ✅ Locked | `#permissions` `data-mp="MP-004"` `data-locked="true"` | |
+| Email Reports Screen | 🟡 In Review | `#emailSetup` `data-mp="email"` | Step 5 of 6 |
+| Success Screen | ✅ Locked | `#onboardReady` `data-mp="onboard-ready"` `data-locked="true"` | |
+| Dashboard | ✅ Locked | `#home` `data-mp="MP-006"` `data-locked="true"` | See [UI_LOCK_DASHBOARD.md](./UI_LOCK_DASHBOARD.md) |
+| Start Shift | ⬜ Pending | `#home` → `#ccPrimaryBtn` | Dashboard idle CTA — frozen with Dashboard |
+| Live Tracking | ⬜ Pending | `#tracking` | |
+| AI Review | ⬜ Pending | `#home` → `#ccSummary` / `#journeyReviewPanel` | |
+| Reports | ⬜ Pending | `#reports` `data-mp="MP-008"` | |
 | History | ⬜ Pending | `#history` | |
 | Settings | ⬜ Pending | `#settings` | |
-| Subscription | ⬜ Pending | `#subscriptionPaywall` | Paywall overlay |
+| Subscription | ⬜ Pending | `#subscriptionPaywall` | |
 
 ---
 
@@ -83,4 +84,6 @@
 
 ## Next up
 
-**Dashboard** (`#home`) — Phase 1 polish screenshot sent; awaiting approval.
+**Email Reports Screen** (`#emailSetup`) — remaining onboarding polish.
+
+**Dashboard** is frozen. See [UI_LOCK_DASHBOARD.md](./UI_LOCK_DASHBOARD.md).
