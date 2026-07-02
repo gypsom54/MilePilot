@@ -21,7 +21,7 @@
 ✅ **Tracking Mode** (Locked)  
 ✅ **AutoPilot Permission** (Locked)  
 🟡 **Email Reports Screen** (In Review)  
-🟡 **Success Screen** (In Review)
+✅ **Success Screen** (Locked)
 
 ### App
 
@@ -54,8 +54,8 @@
 | Name & Vehicle | ✅ Locked | `#knowYou` `data-mp="MP-002"` `data-locked="true"` | See [ONBOARDING_V1_LOCK.md](./ONBOARDING_V1_LOCK.md) |
 | Tracking Mode | ✅ Locked | `#trackingMode` `data-mp="MP-046"` `data-locked="true"` | |
 | AutoPilot Permission | ✅ Locked | `#permissions` `data-mp="MP-004"` `data-locked="true"` | |
-| Email Reports Screen | 🟡 In Review | `#emailSetup` `data-mp="email"` | Step 5 of 6 |
-| Success Screen | 🟡 In Review | `#onboardReady` `data-mp="onboard-ready"` `data-locked="true"` | Final polish — awaiting approval |
+| Email Reports Screen | 🟡 In Review | `#emailSetup` `data-mp="email"` | Step 5 of 6 — **current focus** |
+| Success Screen | ✅ Locked | `#onboardReady` `data-mp="onboard-ready"` `data-locked="true"` | Frozen — UI lock complete |
 | Dashboard | ⬜ Pending | `#home` `data-mp="MP-006"` | Command Centre |
 | Start Shift | ⬜ Pending | `#home` → `#ccPrimaryBtn` | Dashboard idle / active CTA state |
 | Live Tracking | ⬜ Pending | `#tracking` | Live shift map + metrics |
@@ -83,4 +83,6 @@
 
 ## Next up
 
-**Success Screen** (`#onboardReady`) — final polish screenshot sent; awaiting approval to lock.
+**Email Reports Screen** (`#emailSetup`) — polish and screenshot for approval.
+
+**Success Screen** is frozen. Future work should focus on tracking reliability, AI journey detection, reports, exports, and performance — not further UI changes unless a genuine usability issue is found.

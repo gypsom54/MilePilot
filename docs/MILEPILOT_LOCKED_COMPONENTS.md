@@ -106,17 +106,15 @@ Commit and screenshot on each approved screen; upload **one final zip** when the
 
 - **File:** `frontend/index.html` → `#onboardReady`
 - **Marker:** `data-locked="true"` `data-mp="onboard-ready"`
+- **Frozen:** June 2026 — no further UI changes unless genuine bug
 - **Approved copy:**
-  - Headline: `Welcome aboard, {name}.`
+  - Headline: `Welcome aboard!`
   - Intro: MilePilot is ready to track your business mileage automatically.
-  - Brand: Your business is now on AutoPilot.
-  - Tagline: Business mileage without the paperwork.
-  - Steps: Start your shift · Drive normally · Review today's journeys · Download your mileage report
+  - Feature: Start your first shift. MilePilot will automatically record your journeys and prepare your mileage reports.
   - Payoff: Every business mile now counts.
-  - CTA line: Let's put MilePilot to work.
   - Button: Start My First Shift
   - Helper: You can change these settings any time.
-- **Animation:** Green tick single pulse + soft blue glow (`prefers-reduced-motion` respected)
+- **Animation:** Green tick single pulse + soft blue glow; progress bar 83% → 100% on arrival (`prefers-reduced-motion` respected)
 
 ---
 
