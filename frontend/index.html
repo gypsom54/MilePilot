@@ -320,7 +320,12 @@ body.map-expand-open{overflow:hidden}
 @keyframes welcomeCursorBlink{50%{opacity:0}}
 .welcome-input-wrap{position:relative;margin:0 0 18px}
 .welcome-input-icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);width:17px;height:17px;stroke:rgba(110,180,255,.75);fill:none;stroke-width:1.6;pointer-events:none;transition:stroke .25s ease}
-#knowYou .welcome-input-wrap:focus-within .welcome-input-icon{stroke:rgba(110,180,255,.95)}
+#knowYou .welcome-input-wrap{margin:0 0 8px;display:flex;align-items:center;gap:10px;height:52px;padding:0 14px 0 16px;border-radius:var(--button-radius);border:1px solid rgba(110,180,255,.38);background:rgba(18,36,62,.92);box-shadow:inset 0 1px 0 rgba(255,255,255,.08);box-sizing:border-box;transition:border-color .28s ease,box-shadow .28s ease}
+#knowYou .welcome-input-wrap:focus-within{border-color:rgba(13,107,255,.62);box-shadow:0 0 0 3px rgba(13,107,255,.14),inset 0 0 14px rgba(13,107,255,.07)}
+#knowYou .welcome-input-icon{position:static;flex-shrink:0;width:16px;height:16px;transform:none;stroke:rgba(110,180,255,.52);stroke-width:1.25}
+#knowYou .onboard-name-input{margin:0;flex:1;min-width:0;height:auto;padding:0;border:0;background:transparent;box-shadow:none;line-height:1.2;font-size:17px}
+#knowYou .onboard-name-input:focus{outline:none;box-shadow:none;border:0}
+#knowYou .welcome-input-wrap:focus-within .welcome-input-icon{stroke:rgba(110,180,255,.78)}
 #welcome input#name{height:52px;border-radius:var(--button-radius);border:1px solid rgba(110,180,255,.38);background:rgba(18,36,62,.92);color:rgba(248,251,255,.98);box-shadow:inset 0 1px 0 rgba(255,255,255,.08);font-size:17px;font-weight:500;padding:0 16px 0 44px;transition:border-color .28s ease,box-shadow .28s ease;-webkit-font-smoothing:antialiased}
 #welcome input#name::placeholder{color:rgba(186,204,228,.78);font-weight:400}
 @media(hover:hover){.welcome-icon:hover{transform:scale(1.05);border-color:rgba(110,180,255,.36);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),inset 0 -10px 22px rgba(13,107,255,.14),0 8px 26px rgba(13,107,255,.14)}.welcome-icon:hover svg{stroke:#C8E6FF;fill:rgba(13,107,255,.22)}}
@@ -795,8 +800,8 @@ body.always-modal-open .nav{display:none!important}
 <div class="knowYou-body" id="onboardNamePanel">
 <h1 class="knowYou-greeting">What should we call you?</h1>
 <p class="knowYou-support">We'll personalise your dashboard.</p>
-<div class="welcome-input-wrap" style="margin:0 0 8px">
-<svg class="welcome-input-icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M5 20c0-4 3-6 7-6s7 2 7 6"/></svg>
+<div class="welcome-input-wrap">
+<svg class="welcome-input-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="10" r="3.5"/><path d="M5.5 19.5c0-3.6 2.9-6.5 6.5-6.5s6.5 2.9 6.5 6.5"/></svg>
 <input id="onboardName" class="onboard-name-input" placeholder="Your first name" autocomplete="given-name">
 </div>
 </div>
