@@ -209,7 +209,7 @@
       normaliseTrip(
         {
           id: 'trip_legacy_' + shift.id,
-          status: TRIP_STATUS.BUSINESS,
+          status: TRIP_STATUS.PENDING,
           miles: shift.miles,
           seconds: shift.seconds,
           movingSeconds: shift.movingSeconds,
@@ -218,7 +218,7 @@
           endISO: shift.endISO,
           route: shift.route || shift.routePoints || [],
           shiftId: shift.id,
-          classifiedAt: shift.endISO,
+          classifiedAt: null,
         },
         shift.vehicle,
         claimFn
