@@ -233,6 +233,12 @@ body.map-expand-open{overflow:hidden}
 #welcome .welcome-get-started{margin-top:8px}
 #welcome .welcome-features,#welcome .welcome-form{display:none}
 #trackingMode .premium-btn,#trackingModeSettings .premium-btn,#knowYou .premium-btn.is-ready{height:52px}
+#trackingMode .premium-btn,#trackingModeSettings .premium-btn{height:52px;border-radius:var(--button-radius);font-size:17px;font-weight:600;letter-spacing:-0.01em;margin:0;background:linear-gradient(180deg,#1a3a5c 0%,#122a45 100%);color:rgba(159,180,208,.82);box-shadow:none;opacity:1;transition:background .36s cubic-bezier(.22,1,.36,1),box-shadow .36s cubic-bezier(.22,1,.36,1),color .36s ease,transform .24s cubic-bezier(.22,1,.36,1);cursor:not-allowed}
+#trackingMode .premium-btn.is-ready,#trackingModeSettings .premium-btn.is-ready{background:linear-gradient(180deg,#1E88FF 0%,#0D6BFF 50%,#005FE8 100%);color:#fff;box-shadow:0 8px 24px rgba(13,107,255,.26),inset 0 1px 0 rgba(255,255,255,.12);cursor:pointer}
+#trackingMode .premium-btn.is-ready:hover,#trackingModeSettings .premium-btn.is-ready:hover{filter:brightness(1.03);box-shadow:0 10px 28px rgba(13,107,255,.3),inset 0 1px 0 rgba(255,255,255,.12)}
+#trackingMode .premium-btn.is-ready:active,#trackingModeSettings .premium-btn.is-ready:active{transform:scale(.985);filter:brightness(.98);box-shadow:0 4px 16px rgba(13,107,255,.22),inset 0 1px 0 rgba(255,255,255,.08)}
+@keyframes onboardNameAutofillStart{from{}to{}}
+.onboard-name-input:-webkit-autofill{animation-name:onboardNameAutofillStart;animation-duration:.01s}
 .knowYou-greeting{text-align:center;font-size:clamp(26px,6.5vw,30px);font-weight:700;letter-spacing:-0.03em;line-height:1.2;margin:0 0 20px;-webkit-font-smoothing:antialiased;animation:knowYouGreetIn .6s cubic-bezier(.22,1,.36,1) .15s both}
 @keyframes knowYouGreetIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .knowYou-message-wrap{height:40px;min-height:40px;max-height:40px;margin:0 0 32px;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:0 4px}
@@ -262,7 +268,7 @@ body.map-expand-open{overflow:hidden}
 .vehicle-card.selected:active{transform:scale(.982);box-shadow:0 0 0 3px rgba(13,107,255,.1),0 8px 28px rgba(13,107,255,.16),inset 0 1px 0 rgba(255,255,255,.08)}
 @media(hover:hover){.vehicle-card:hover{transform:translateY(-1px);border-color:rgba(110,180,255,.28);box-shadow:0 8px 28px rgba(13,107,255,.1),0 4px 20px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,.06)}.vehicle-card:hover .vehicle-icon{border-color:rgba(110,180,255,.28);transform:scale(1.02);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),inset 0 -8px 16px rgba(13,107,255,.08),0 5px 18px rgba(13,107,255,.08)}.vehicle-card.selected:hover{transform:translateY(-1px);box-shadow:0 0 0 3px rgba(13,107,255,.14),0 16px 48px rgba(13,107,255,.22),inset 0 1px 0 rgba(255,255,255,.1)}.vehicle-card.selected:hover .vehicle-icon{transform:scale(1.02)}}
 @media(prefers-reduced-motion:reduce){.vehicle-card,.vehicle-card .vehicle-icon,.vehicle-card .vehicle-check{transition:none!important;animation:none!important}.vehicle-card.selected .vehicle-check{opacity:1;transform:translateY(-50%) scale(1)}}
-.knowYou-foot{margin-top:auto;padding-top:8px;padding-bottom:4px;width:100%;flex-shrink:0}
+.knowYou-foot{margin-top:auto;padding-top:8px;padding-bottom:4px;width:100%;flex-shrink:0;position:relative;z-index:2}
 #knowYou .premium-btn,#experienceChoice .premium-btn,#businessProfile .premium-btn{height:52px;border-radius:var(--button-radius);font-size:17px;font-weight:600;letter-spacing:-0.01em;margin:0;background:linear-gradient(180deg,#1a3a5c 0%,#122a45 100%);color:rgba(159,180,208,.82);box-shadow:none;opacity:1;transition:background .36s cubic-bezier(.22,1,.36,1),box-shadow .36s cubic-bezier(.22,1,.36,1),color .36s ease,transform .24s cubic-bezier(.22,1,.36,1);cursor:not-allowed}
 #knowYou .premium-btn.is-ready,#experienceChoice .premium-btn.is-ready,#businessProfile .premium-btn.is-ready{background:linear-gradient(180deg,#1E88FF 0%,#0D6BFF 50%,#005FE8 100%);color:#fff;box-shadow:0 8px 24px rgba(13,107,255,.26),inset 0 1px 0 rgba(255,255,255,.12);cursor:pointer}
 #knowYou .premium-btn.is-ready:hover,#experienceChoice .premium-btn.is-ready:hover,#businessProfile .premium-btn.is-ready:hover{filter:brightness(1.03);box-shadow:0 10px 28px rgba(13,107,255,.3),inset 0 1px 0 rgba(255,255,255,.12)}
@@ -645,7 +651,7 @@ body.map-expand-open{overflow:hidden}
 <button type="button" class="vehicle-card" data-vehicle="bicycle" onclick="selectVehicle('bicycle')"><div class="vehicle-icon"><svg viewBox="0 0 24 24"><circle cx="6.5" cy="17" r="2"/><circle cx="17.5" cy="17" r="2"/><path d="M6.5 17l3.5-7 2.5 2 2-3.5 3 8.5"/><path d="M10 10l1.5-1.5"/><circle cx="13" cy="8.5" r=".8" fill="#0D6BFF" stroke="none"/></svg></div><div class="vehicle-copy"><strong>Bicycle</strong><span class="vehicle-tag">Local business travel</span></div><span class="vehicle-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"/></svg></span></button>
 </div></div>
 </div>
-<div class="knowYou-foot"><button class="btn premium-btn" id="knowYouContinue" onclick="confirmOnboardName()" disabled>Continue</button><button class="btn premium-btn" id="vehicleContinue" onclick="confirmVehicle()" hidden disabled>Select your vehicle</button></div>
+<div class="knowYou-foot"><button type="button" class="btn premium-btn" id="knowYouContinue" onclick="handleKnowYouContinueClick()">Continue</button><button type="button" class="btn premium-btn" id="vehicleContinue" onclick="handleVehicleContinueClick()" hidden>Select your vehicle</button></div>
 </div>
 <div class="onboard-version">MP-002 ✅ Complete · v3.5</div>
 </section>
@@ -785,7 +791,7 @@ body.map-expand-open{overflow:hidden}
 <p class="mode-switch-note">You can switch between AutoPilot and Manual at any time.</p>
 </div>
 </div>
-<div class="knowYou-foot"><button class="btn premium-btn" id="tmContinueBtn" onclick="confirmTrackingModeOnboard()" disabled>Continue</button></div>
+<div class="knowYou-foot"><button type="button" class="btn premium-btn" id="tmContinueBtn" onclick="handleTrackingModeContinueClick()">Continue</button></div>
 </div>
 </section>
 <!-- MP-005 Notification Permission — 🔒 LOCKED. Copy final. See VOICE_GUIDE.md -->
@@ -1039,7 +1045,7 @@ body.map-expand-open{overflow:hidden}
 <script src="js/app-copy.js"></script>
 <script src="js/beta-feedback.js"></script>
 <script>
-const APP_VERSION='8.30.4';
+const APP_VERSION='8.30.5';
 const DEFAULT_WEEKLY_GOAL_MILES=400;
 const BUSINESS_PROFILE_KEY='mp_business_profile';
 const PRODUCT_VISION_LOCK='2026-06-vision-v1';
@@ -1121,15 +1127,19 @@ function completeBusinessProfile(){if(!selectedProfession)return;saveBusinessPro
 function hasTrackingModeSelected(){return typeof MPTrackingMode!=='undefined'&&MPTrackingMode.hasModeSelected()}
 function getTrackingActionLabels(){if(typeof MPTrackingMode!=='undefined')return{start:MPTrackingMode.getStartButtonLabel(),end:MPTrackingMode.getEndButtonLabel()};return{start:'Start Shift',end:'End Shift'}}
 function isAutoPilotTracking(){return typeof MPTrackingMode==='undefined'||MPTrackingMode.isAutoPilot()}
-function initTrackingMode(fromSettings){selectedDrivingFrequency=(typeof MPTrackingMode!=='undefined'&&MPTrackingMode.getDrivingFrequency())||null;selectedTrackingMode=(typeof MPTrackingMode!=='undefined'&&MPTrackingMode.getMode())||null;syncTrackingModeUI(fromSettings)}
+function initTrackingMode(fromSettings){selectedDrivingFrequency=(typeof MPTrackingMode!=='undefined'&&MPTrackingMode.getDrivingFrequency())||null;selectedTrackingMode=(typeof MPTrackingMode!=='undefined'&&MPTrackingMode.getMode())||selectedTrackingMode;if(!fromSettings&&trackingModeChoiceMode==='onboard'&&!selectedTrackingMode)selectedTrackingMode='autopilot';syncTrackingModeUI(fromSettings)}
 function selectDrivingFrequency(freq,fromSettings){if(typeof MPTrackingMode==='undefined')return;selectedDrivingFrequency=freq;MPTrackingMode.setDrivingFrequency(freq);syncTrackingModeUI(fromSettings)}
-function selectTrackingMode(mode,fromSettings){if(typeof MPTrackingMode==='undefined')return;selectedTrackingMode=mode;syncTrackingModeUI(fromSettings)}
-function syncTrackingModeUI(fromSettings){document.querySelectorAll('#'+(fromSettings?'tmsModeGrid':'tmModeGrid')+' .mode-card').forEach(c=>c.classList.toggle('selected',c.dataset.mode===selectedTrackingMode));const perm=fromSettings?q('tmsAutopilotPerm'):null;if(perm)perm.hidden=selectedTrackingMode!=='autopilot';const btn=q(fromSettings?null:'tmContinueBtn');if(btn){const ready=!!selectedTrackingMode;btn.disabled=!ready;btn.classList.toggle('is-ready',ready)}if(fromSettings){const cur=q('tmSettingsCurrent'),ex=q('tmsSwitchExplain');if(cur&&typeof MPTrackingMode!=='undefined'&&selectedTrackingMode)cur.textContent='Current mode: '+MPTrackingMode.getModeMeta(selectedTrackingMode).label;if(ex&&typeof MPTrackingMode!=='undefined'){const from=MPTrackingMode.getMode(),to=selectedTrackingMode||from;ex.textContent=MPTrackingMode.getSwitchExplanation(from,to)}}}
+function selectTrackingMode(mode,fromSettings){selectedTrackingMode=mode;syncTrackingModeUI(fromSettings)}
+function syncTrackingModeUI(fromSettings){document.querySelectorAll('#'+(fromSettings?'tmsModeGrid':'tmModeGrid')+' .mode-card').forEach(c=>c.classList.toggle('selected',c.dataset.mode===selectedTrackingMode));const perm=fromSettings?q('tmsAutopilotPerm'):null;if(perm)perm.hidden=selectedTrackingMode!=='autopilot';const btn=q(fromSettings?null:'tmContinueBtn');if(btn){const ready=!!selectedTrackingMode;btn.setAttribute('aria-disabled',ready?'false':'true');btn.classList.toggle('is-ready',ready)}if(fromSettings){const cur=q('tmSettingsCurrent'),ex=q('tmsSwitchExplain');if(cur&&typeof MPTrackingMode!=='undefined'&&selectedTrackingMode)cur.textContent='Current mode: '+MPTrackingMode.getModeMeta(selectedTrackingMode).label;if(ex&&typeof MPTrackingMode!=='undefined'){const from=MPTrackingMode.getMode(),to=selectedTrackingMode||from;ex.textContent=MPTrackingMode.getSwitchExplanation(from,to)}}}
 function updateTrackingModeRecommendHint(){}
 async function enableAutopilotBackgroundPermission(){if(typeof MPTrackingProvider!=='undefined'&&MPTrackingProvider.isNative()){const status=await MPTrackingProvider.requestPermissions();return status==='granted'}if(typeof MPExpoBridge!=='undefined'&&MPExpoBridge.request){try{const res=await MPExpoBridge.request('expo:notification:request');if(res&&res.granted!==false)return true}catch(e){}}return false}
 function startOnboardingName(){localStorage.setItem('mp_onboard_step','name');initOnboardName();showScreen('knowYou')}
-function initOnboardName(){knowYouMode='name';const namePanel=q('onboardNamePanel'),vehiclePanel=q('vehicleSelectPanel'),nameBtn=q('knowYouContinue'),vehicleBtn=q('vehicleContinue');if(namePanel)namePanel.hidden=false;if(vehiclePanel)vehiclePanel.hidden=true;if(nameBtn){nameBtn.hidden=false;nameBtn.onclick=confirmOnboardName}if(vehicleBtn)vehicleBtn.hidden=true;const input=q('onboardName');if(input){input.value=localStorage.getItem('mp_driver')||'';input.oninput=syncOnboardNameContinue}syncOnboardNameContinue()}
-function syncOnboardNameContinue(){const btn=q('knowYouContinue'),input=q('onboardName');if(!btn||!input)return;const ready=input.value.trim().length>0;btn.disabled=!ready;btn.classList.toggle('is-ready',ready)}
+function bindOnboardNameInput(input){if(!input||input.dataset.mpBound==='1')return;const sync=()=>syncOnboardNameContinue();['input','change','keyup','paste','blur','focus'].forEach(ev=>input.addEventListener(ev,sync));input.addEventListener('animationstart',e=>{if(e.animationName==='onboardNameAutofillStart')sync()});input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();handleKnowYouContinueClick()}});input.dataset.mpBound='1'}
+function initOnboardName(){knowYouMode='name';const namePanel=q('onboardNamePanel'),vehiclePanel=q('vehicleSelectPanel'),nameBtn=q('knowYouContinue'),vehicleBtn=q('vehicleContinue');if(namePanel)namePanel.hidden=false;if(vehiclePanel)vehiclePanel.hidden=true;if(nameBtn){nameBtn.hidden=false;nameBtn.onclick=handleKnowYouContinueClick}if(vehicleBtn){vehicleBtn.hidden=true;vehicleBtn.onclick=handleVehicleContinueClick}const input=q('onboardName');if(input){input.value=localStorage.getItem('mp_driver')||'';bindOnboardNameInput(input)}syncOnboardNameContinue()}
+function syncOnboardNameContinue(){const btn=q('knowYouContinue'),input=q('onboardName');if(!btn||!input)return;const ready=input.value.trim().length>0;btn.setAttribute('aria-disabled',ready?'false':'true');btn.classList.toggle('is-ready',ready)}
+function handleKnowYouContinueClick(){syncOnboardNameContinue();const n=q('onboardName')?.value.trim();if(!n){q('onboardName')?.focus();toast('Please enter your first name');return}confirmOnboardName()}
+function handleVehicleContinueClick(){syncKnowYouContinue();if(knowYouMode!=='vehicle'||!selectedVehicle){toast('Please select your vehicle');return}confirmVehicle()}
+function handleTrackingModeContinueClick(){syncTrackingModeUI(false);if(!selectedTrackingMode){toast('Please choose a tracking style');return}confirmTrackingModeOnboard()}
 function confirmOnboardName(){const n=q('onboardName')?.value.trim();if(!n)return;driver=n;localStorage.setItem('mp_driver',driver);if(!localStorage.getItem('mp_vehicle')){localStorage.setItem('mp_vehicle','car');vehicle='car'}localStorage.setItem('mp_onboard_step','trackingMode');initTrackingMode(false);showScreen('trackingMode')}
 function confirmTrackingModeOnboard(){if(!selectedTrackingMode)return;if(typeof MPTrackingMode!=='undefined')MPTrackingMode.setMode(selectedTrackingMode);localStorage.setItem('mp_onboard_step','enableSetup');initEnableSetup();showScreen('permissions')}
 function initEnableSetup(){clearOnboardTimers();const isAuto=selectedTrackingMode==='autopilot'||(typeof MPTrackingMode!=='undefined'&&MPTrackingMode.isAutoPilot());const manual=q('enableManualBlock'),auto=q('enableAutopilotBlock'),btn=q('permSetupBtn');if(manual)manual.hidden=isAuto;if(auto)auto.hidden=!isAuto;if(btn){btn.disabled=false;btn.textContent='Continue Setup'}}
@@ -1192,7 +1202,7 @@ function clearKnowYouMessaging(){knowYouTimers.forEach(t=>clearTimeout(t));knowY
 function startKnowYouMessaging(){const el=q('knowYouMessage');if(!el)return;clearKnowYouMessaging();el.textContent=KNOW_YOU_QUESTION;el.style.transition='opacity .38s cubic-bezier(.22,1,.36,1)';el.style.opacity='0';knowYouTimers.push(setTimeout(()=>{el.style.opacity='1'},50))}
 function initKnowYou(){driver=driver||localStorage.getItem('mp_driver')||'';q('knowYouGreeting').textContent=`Great to meet you, ${driver} 👋`;selectedVehicle=localStorage.getItem('mp_vehicle')||null;document.querySelectorAll('.vehicle-card').forEach(c=>c.classList.toggle('selected',c.dataset.vehicle===selectedVehicle));syncKnowYouContinue();clearKnowYouMessaging();const msg=q('knowYouMessage');if(msg){msg.textContent='';msg.style.opacity='0'}setTimeout(startKnowYouMessaging,850)}
 function selectVehicle(v){selectedVehicle=v;document.querySelectorAll('.vehicle-card').forEach(c=>c.classList.toggle('selected',c.dataset.vehicle===v));syncKnowYouContinue()}
-function syncKnowYouContinue(){const btn=knowYouMode==='vehicle'?q('vehicleContinue'):q('knowYouContinue');if(!btn)return;const ready=knowYouMode==='vehicle'?!!selectedVehicle:!!q('onboardName')?.value.trim();btn.disabled=!ready;btn.classList.toggle('is-ready',ready);btn.textContent=knowYouMode==='vehicle'?(ready?'Continue':'Select your vehicle'):'Continue'}
+function syncKnowYouContinue(){const btn=knowYouMode==='vehicle'?q('vehicleContinue'):q('knowYouContinue');if(!btn)return;const ready=knowYouMode==='vehicle'?!!selectedVehicle:!!q('onboardName')?.value.trim();btn.setAttribute('aria-disabled',ready?'false':'true');btn.classList.toggle('is-ready',ready);btn.textContent=knowYouMode==='vehicle'?(ready?'Continue':'Select your vehicle'):'Continue'}
 function confirmVehicle(){if(!selectedVehicle)return;vehicle=selectedVehicle;localStorage.setItem('mp_vehicle',vehicle);if(knowYouMode==='vehicle'){knowYouMode='name';showSettings();renderVehicleSettingsSummary();toast(copyMsg('vehicleUpdated','Vehicle updated ✓'));return}}
 let onboardTimers=[];
 function clearOnboardTimers(){onboardTimers.forEach(t=>clearTimeout(t));onboardTimers=[]}
