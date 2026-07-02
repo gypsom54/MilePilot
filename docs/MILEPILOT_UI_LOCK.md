@@ -33,7 +33,7 @@
 ⬜ **AI Review**  
 ✅ **Reports** (Locked)  
 ⬜ **History** (Next up)  
-⬜ **Settings**  
+🟡 **Settings** (In Review — polish complete, awaiting approval)  
 ⬜ **Subscription**
 
 ---
@@ -64,8 +64,8 @@
 | Live Tracking | ⬜ Pending | `#tracking` | |
 | AI Review | ⬜ Pending | `#home` → `#ccSummary` / `#journeyReviewPanel` | |
 | Reports | ✅ Locked | `#reports` `data-mp="MP-008"` `data-locked="true"` | See [UI_LOCK_REPORTS.md](./UI_LOCK_REPORTS.md) |
-| History | 🟡 In Review | `#history` | Next up — Phase 1 polish |
-| Settings | ⬜ Pending | `#settings` | |
+| Settings | 🟡 In Review | `#settings` `data-mp="MP-009"` `data-locked="true"` | See [UI_LOCK_SETTINGS.md](./UI_LOCK_SETTINGS.md) |
+| History | ⬜ Pending | `#history` | Next up |
 | Subscription | ⬜ Pending | `#subscriptionPaywall` | |
 
 ---
@@ -86,6 +86,6 @@
 
 ## Next up
 
-**History** (`#history`) — Phase 1 polish (dashboard visual standard).
+**History** (`#history`) — Phase 1 polish.
 
-**Locked:** Dashboard v8.43.23 · Reports v8.43.22 · Navigation v8.43.21. See [UI_LOCK_DASHBOARD.md](./UI_LOCK_DASHBOARD.md) and [UI_LOCK_REPORTS.md](./UI_LOCK_REPORTS.md).
+**Settings** polish complete (v8.43.24) — awaiting approval. See [UI_LOCK_SETTINGS.md](./UI_LOCK_SETTINGS.md).

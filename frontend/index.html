@@ -816,12 +816,36 @@ body.always-modal-open .nav{display:none!important}
 .settings-section-title{margin:0 0 12px;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(110,180,255,.82)}
 #settings.screen{background:linear-gradient(180deg,#0A2854 0%,#031126 82%);padding:24px 22px var(--nav-dock-pad)}
 #settings.screen.active{display:block}
-#settings .title{margin:8px 0 22px;font-size:clamp(26px,6.5vw,34px)}
-#settings .card .sub{margin-top:0}
-#settings .card label{display:block;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(110,180,255,.82);margin:0 0 10px}
-#settings .card input{height:var(--btn-height);border-radius:var(--button-radius);margin:0 0 4px}
-#settings .card .btn{margin-top:12px}
-#settings .card .btn.small{margin-top:10px}
+#settings .title{margin:8px 0 20px;font-size:clamp(26px,6.5vw,34px)}
+.settings-body{max-width:390px;margin:0 auto}
+#settings .settings-card{border:1px solid rgba(110,180,255,.14);border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(13,107,255,.02));box-shadow:var(--card-shadow);margin:0 0 12px;padding:18px 18px 16px}
+#settings .settings-card--hero{padding:22px 20px 20px;margin-bottom:14px;background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(13,107,255,.05));border-color:rgba(110,180,255,.2);box-shadow:var(--card-shadow-lg)}
+#settings .settings-card--medium{padding:18px 18px 16px}
+#settings .settings-card--compact{padding:14px 16px}
+.settings-card-head{display:flex;align-items:flex-start;gap:12px}
+.settings-card-icon{flex-shrink:0;width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;line-height:1;background:linear-gradient(145deg,rgba(13,107,255,.22),rgba(13,107,255,.08));border:1px solid rgba(110,180,255,.2);box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
+.settings-card-headcopy{flex:1;min-width:0}
+.settings-card-title{margin:0 0 10px;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(110,180,255,.82)}
+.settings-card-head .settings-card-title{margin:0 0 8px}
+.settings-hero-mode{margin:0 0 8px;font-size:20px;font-weight:600;letter-spacing:-0.02em;color:rgba(234,242,255,.96);line-height:1.2}
+.settings-hero-lead{margin:0 0 6px;font-size:15px;font-weight:500;line-height:1.45;color:rgba(180,210,245,.9)}
+.settings-hero-desc{margin:0;font-size:14px;font-weight:500;line-height:1.45;color:rgba(147,168,196,.82)}
+.settings-value-line{margin:0 0 4px;font-size:18px;font-weight:600;letter-spacing:-0.02em;color:rgba(234,242,255,.96);line-height:1.25}
+.settings-value-desc{margin:0;font-size:14px;font-weight:500;line-height:1.45;color:rgba(147,168,196,.82)}
+.settings-checklist{margin:4px 0 0;padding:0;list-style:none}
+.settings-checklist li{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:14px;font-weight:500;line-height:1.35;color:rgba(234,242,255,.92)}
+.settings-checklist li:last-child{border-bottom:0;padding-bottom:0}
+.settings-checklist .mark{flex-shrink:0;width:18px;text-align:center;font-size:14px;font-weight:700;color:rgba(32,215,129,.92)}
+.settings-checklist li.is-off{color:rgba(147,168,196,.72)}
+.settings-checklist li.is-off .mark{color:rgba(147,168,196,.45)}
+#settings .settings-card .sub{margin-top:0}
+#settings .settings-card label{display:block;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(110,180,255,.82);margin:0 0 10px}
+#settings .settings-card input{height:var(--btn-height);border-radius:var(--button-radius);margin:0 0 4px}
+#settings .settings-card .btn{margin-top:12px}
+#settings .settings-card .btn.small{margin-top:10px}
+#settings .settings-card .btn.outline.small{margin-top:8px}
+.settings-stack-actions{display:flex;flex-direction:column;gap:8px}
+.settings-stack-actions .btn{margin-top:0}
 #history.screen{background:linear-gradient(180deg,#0A2854 0%,#031126 82%);padding:24px 22px var(--nav-dock-pad)}
 #history.screen .title{margin:8px 0 10px;font-size:clamp(26px,6.5vw,34px)}
 #history.screen .sub{margin:0 0 20px;font-size:15px;color:rgba(147,168,196,.88)}
@@ -1261,7 +1285,97 @@ body.always-modal-open .nav{display:none!important}
 <button type="button" class="btn outline" onclick="showSettings()">Back to Settings</button>
 </div>
 </section>
-<section id="settings" class="screen"><header class="brand-bar"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div><p class="brand-tagline">Your business. On AutoPilot.</p></header><h1 class="title">Settings</h1><div class="card" id="settingsTrackingModeCard"><h2 class="settings-section-title">Tracking Mode</h2><p class="sub" style="margin:-6px 0 8px">You choose how you track. MilePilot handles the paperwork.</p><div class="settings-profile-row"><div><span class="settings-profile-label">Current mode</span><strong class="settings-profile-value" id="settingsTrackingModeLabel">AutoPilot</strong></div><button type="button" class="settings-profile-change" onclick="openTrackingModeSettings()">Change →</button></div><p class="settings-req-note" id="settingsTrackingModeSummary" style="margin-top:14px">AutoPilot records in the background. Manual lets you start and end each journey yourself.</p></div><div class="card" id="settingsVehicleCard"><h2 class="settings-section-title">Vehicle</h2><div class="settings-profile-row"><div><span class="settings-profile-label">Vehicle type</span><strong class="settings-profile-value" id="settingsVehicleLabel">Car</strong></div><button type="button" class="settings-profile-change" onclick="openVehicleSelector()">Change →</button></div></div><div class="card" id="settingsAutopilotCard" hidden><h2 class="settings-section-title">Automatic tracking</h2><p class="sub" style="margin:-6px 0 12px">For mileage recording without opening the app:</p><ul class="settings-req-list"><li>Location set to <strong>Always Allow</strong> (iPhone Settings → MilePilot → Location)</li><li>Start a <strong>shift</strong> before driving</li><li><strong>Notifications</strong> allowed — trip auto-end and report alerts</li><li><strong>Email</strong> saved below with reports turned on</li></ul><p class="settings-req-note">Trips end automatically after <strong>90 minutes</strong> without movement, then your report is emailed. Force-quitting the app or using Low Power Mode for long periods may delay this until you reopen MilePilot.</p></div><div class="card" id="settingsBusinessProfileCard"><h2 class="settings-section-title">Business Profile</h2><div class="settings-profile-row"><div><span class="settings-profile-label">Experience</span><strong class="settings-profile-value" id="settingsProfileExperience">—</strong></div><button type="button" class="settings-profile-change" onclick="openExperienceSelector()">Change →</button></div><div class="settings-profile-row" style="margin-top:18px;padding-top:18px;border-top:1px solid rgba(255,255,255,.1)"><div><span class="settings-profile-label">Work Type</span><strong class="settings-profile-value" id="settingsProfileProfession">—</strong></div><button type="button" class="settings-profile-change" onclick="openBusinessProfileSelector()">Change →</button></div></div><div class="card"><label>Email</label><input id="settingsEmail" placeholder="you@example.com" inputmode="email"><p class="sub" style="margin:8px 0 12px">Used for automatic report delivery.</p><button type="button" class="btn outline small" onclick="sendTestReportEmail(event)">Send test report email</button></div><div class="card" id="settingsReportsCard"><h2 class="settings-section-title">Reports</h2><p class="sub" id="settingsReportModeCopy" style="margin:-6px 0 14px">AutoPilot emails your business report after each shift. Manual mode — you generate and send when ready.</p><div class="settings-toggle-row"><span>PDF attachment</span><button type="button" class="settings-toggle" id="togglePdfAttachment" onclick="toggleReportPref('pdfAttachment')" aria-label="PDF attachment"></button></div><button type="button" class="btn small" onclick="saveSettings()">Save Settings</button></div><div class="card"><h2 class="settings-section-title">Beta Feedback</h2><p class="sub" style="margin:-6px 0 14px">Help shape MilePilot with specific answers — your feedback becomes our roadmap.</p><button type="button" class="btn outline" onclick="MPBetaFeedback.open()">Share beta feedback →</button></div><div class="card"><button class="btn outline" onclick="resetOnboarding()">Reset onboarding</button><button class="btn outline" onclick="clearData()">Clear test shifts</button></div><div class="card" id="debugPanelCard" hidden><h2 class="settings-section-title">Developer debug</h2><p class="sub" style="margin-top:0">Auto-end trip + email pipeline (enable with <code>localStorage.setItem('mp_debug','1')</code>)</p><pre id="debugPanelBody" class="debug-panel-body">Loading…</pre><button type="button" class="btn outline small" onclick="renderDebugPanel()">Refresh</button><button type="button" class="btn outline small" onclick="toggleDebugAutoEnd()">Simulate auto-end check</button><button type="button" class="btn outline small" onclick="MPTrackingDebug.open()">Open Tracking Debug →</button></div></section>
+<section id="settings" class="screen" data-mp="MP-009" data-locked="true">
+<header class="brand-bar"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div><p class="brand-tagline">Your business. On AutoPilot.</p></header>
+<h1 class="title">Settings</h1>
+<div class="settings-body">
+<div class="settings-card settings-card--hero" id="settingsTrackingModeCard">
+<div class="settings-card-head">
+<span class="settings-card-icon" id="settingsTrackingModeIcon" aria-hidden="true">🚀</span>
+<div class="settings-card-headcopy">
+<h2 class="settings-card-title">Tracking Mode</h2>
+<p class="settings-hero-mode" id="settingsTrackingModeLabel">🚀 AutoPilot</p>
+<p class="settings-hero-lead" id="settingsTrackingModeLead">You're using MilePilot's smartest tracking mode.</p>
+<p class="settings-hero-desc" id="settingsTrackingModeDesc">Automatically detects journeys and prepares your mileage reports.</p>
+</div>
+</div>
+<div class="settings-profile-row" style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,.08)">
+<span class="settings-profile-label" style="margin:0">Mode</span>
+<button type="button" class="settings-profile-change" onclick="openTrackingModeSettings()">Change →</button>
+</div>
+</div>
+<div class="settings-card settings-card--medium" id="settingsEmailReportsCard">
+<div class="settings-card-head">
+<span class="settings-card-icon" aria-hidden="true">📧</span>
+<div class="settings-card-headcopy">
+<h2 class="settings-card-title">Email Reports</h2>
+<p class="sub" id="settingsReportModeCopy" style="margin:0 0 14px">AutoPilot emails your business report after each shift.</p>
+<label for="settingsEmail">Email address</label>
+<input id="settingsEmail" placeholder="you@example.com" inputmode="email">
+</div>
+</div>
+<div class="settings-toggle-row"><span>PDF attachment</span><button type="button" class="settings-toggle" id="togglePdfAttachment" onclick="toggleReportPref('pdfAttachment')" aria-label="PDF attachment"></button></div>
+<button type="button" class="btn outline small" onclick="sendTestReportEmail(event)">Send test report email</button>
+<button type="button" class="btn small" onclick="saveSettings()">Save Settings</button>
+</div>
+<div class="settings-card settings-card--medium" id="settingsVehicleCard">
+<div class="settings-card-head">
+<span class="settings-card-icon" aria-hidden="true">🚗</span>
+<div class="settings-card-headcopy">
+<h2 class="settings-card-title">Vehicle</h2>
+<p class="settings-value-line" id="settingsVehicleLabel">🚗 Car</p>
+<p class="settings-value-desc">Used for HMRC mileage calculations.</p>
+</div>
+</div>
+<div class="settings-profile-row" style="margin-top:12px">
+<span class="settings-profile-label" style="margin:0">Vehicle type</span>
+<button type="button" class="settings-profile-change" onclick="openVehicleSelector()">Change →</button>
+</div>
+</div>
+<div class="settings-card settings-card--medium" id="settingsAutopilotCard" hidden>
+<div class="settings-card-head">
+<span class="settings-card-icon" aria-hidden="true">⚡</span>
+<div class="settings-card-headcopy">
+<h2 class="settings-card-title">Automatic Tracking</h2>
+<ul class="settings-checklist" id="settingsAutopilotChecklist" aria-label="Automatic tracking status"></ul>
+</div>
+</div>
+</div>
+<div class="settings-card settings-card--medium" id="settingsBusinessProfileCard">
+<div class="settings-card-head">
+<span class="settings-card-icon" aria-hidden="true">👤</span>
+<div class="settings-card-headcopy">
+<h2 class="settings-card-title">Business Details</h2>
+<div class="settings-profile-row" style="padding:0;margin:0 0 14px">
+<div><span class="settings-profile-label">Experience</span><strong class="settings-profile-value" id="settingsProfileExperience">—</strong></div>
+<button type="button" class="settings-profile-change" onclick="openExperienceSelector()">Change →</button>
+</div>
+<div class="settings-profile-row" style="padding:14px 0 0;margin:0;border-top:1px solid rgba(255,255,255,.08)">
+<div><span class="settings-profile-label">Business Type</span><strong class="settings-profile-value" id="settingsProfileProfession">—</strong></div>
+<button type="button" class="settings-profile-change" onclick="openBusinessProfileSelector()">Change →</button>
+</div>
+</div>
+</div>
+</div>
+<div class="settings-card settings-card--compact">
+<h2 class="settings-card-title">Beta Feedback</h2>
+<p class="sub" style="margin:-4px 0 12px">Help shape MilePilot — your feedback becomes our roadmap.</p>
+<button type="button" class="btn outline small" onclick="MPBetaFeedback.open()">Share beta feedback →</button>
+</div>
+<div class="settings-card settings-card--compact settings-stack-actions">
+<button class="btn outline small" onclick="resetOnboarding()">Reset onboarding</button>
+<button class="btn outline small" onclick="clearData()">Clear test shifts</button>
+</div>
+<div class="settings-card settings-card--compact" id="debugPanelCard" hidden>
+<h2 class="settings-card-title">Developer debug</h2>
+<p class="sub" style="margin-top:0">Auto-end trip + email pipeline (enable with <code>localStorage.setItem('mp_debug','1')</code>)</p>
+<pre id="debugPanelBody" class="debug-panel-body">Loading…</pre>
+<button type="button" class="btn outline small" onclick="renderDebugPanel()">Refresh</button>
+<button type="button" class="btn outline small" onclick="toggleDebugAutoEnd()">Simulate auto-end check</button>
+<button type="button" class="btn outline small" onclick="MPTrackingDebug.open()">Open Tracking Debug →</button>
+</div>
+</div>
+</section>
 </div>
 <nav class="nav" id="nav" aria-label="Main">
 <button type="button" class="nav-item" id="navHome" onclick="goHome()" aria-label="Dashboard"><span class="nav-icon-wrap"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5L12 4l8 6.5V20a1 1 0 01-1 1h-5v-6H10v6H5a1 1 0 01-1-1v-9.5z"/></svg><span class="nav-pulse"></span></span><span class="nav-label">Dashboard</span></button>
@@ -1339,7 +1453,7 @@ body.always-modal-open .nav{display:none!important}
 <script src="js/app-copy.js"></script>
 <script src="js/beta-feedback.js"></script>
 <script>
-const APP_VERSION='8.43.23';
+const APP_VERSION='8.43.24';
 const DEFAULT_WEEKLY_GOAL_MILES=400;
 const BUSINESS_PROFILE_KEY='mp_business_profile';
 const PRODUCT_VISION_LOCK='2026-06-vision-v1';
@@ -1462,11 +1576,12 @@ function confirmEmailSetup(){const e=q('emailInput')?.value.trim();if(e)localSto
 function skipEmailSetup(){saveOnboardReportPrefs();localStorage.setItem('mp_onboard_step','ready');initOnboardReady();showScreen('onboardReady')}
 function openDashboard(){finishOnboarding()}
 function openVehicleSelector(){knowYouMode='vehicle';const namePanel=q('onboardNamePanel'),vehiclePanel=q('vehicleSelectPanel'),nameBtn=q('knowYouContinue'),vehicleBtn=q('vehicleContinue');if(namePanel)namePanel.hidden=true;if(vehiclePanel)vehiclePanel.hidden=false;if(nameBtn)nameBtn.hidden=true;if(vehicleBtn){vehicleBtn.hidden=false;syncKnowYouContinue()}selectedVehicle=localStorage.getItem('mp_vehicle')||null;document.querySelectorAll('.vehicle-card[data-vehicle]').forEach(c=>c.classList.toggle('selected',c.dataset.vehicle===selectedVehicle));showScreen('knowYou')}
-function renderVehicleSettingsSummary(){const el=q('settingsVehicleLabel');if(el)el.textContent=vehicles[localStorage.getItem('mp_vehicle')||vehicle||'car']?.label||'Car'}
+function renderVehicleSettingsSummary(){const el=q('settingsVehicleLabel');const v=vehicles[localStorage.getItem('mp_vehicle')||vehicle||'car'];if(el)el.textContent='🚗 '+(v?.label||'Car')}
+function renderAutopilotStatusChecklist(){const list=q('settingsAutopilotChecklist');if(!list)return;const locOk=localStorage.getItem('mp_location_choice')==='granted';const notifOk=localStorage.getItem('mp_notifications_choice')==='granted';const emailOk=!!(localStorage.getItem('mp_email')||'').trim()&&getReportPrefs().emailReports;const autoEndOk=typeof MPTrackingMode!=='undefined'&&!MPTrackingMode.isManual()&&typeof MPTripAutoEnd!=='undefined';const items=[{label:'Location Always Allowed',ok:locOk},{label:'Notifications Enabled',ok:notifOk},{label:'Email Reports Enabled',ok:emailOk},{label:'Auto End Trip Enabled',ok:autoEndOk}];list.innerHTML=items.map(function(i){return '<li class="'+(i.ok?'is-on':'is-off')+'"><span class="mark" aria-hidden="true">'+(i.ok?'✓':'○')+'</span><span>'+i.label+'</span></li>'}).join('')}
 async function confirmTrackingMode(){if(!selectedTrackingMode)return;if(typeof MPTrackingMode!=='undefined')MPTrackingMode.setMode(selectedTrackingMode,{frequency:selectedDrivingFrequency||undefined});if(trackingModeChoiceMode==='settings'){if(selectedTrackingMode==='autopilot')await enableAutopilotBackgroundPermission();saveTrackingModeSettings();return}}
 function openTrackingModeSettings(){trackingModeChoiceMode='settings';initTrackingMode(true);showScreen('trackingModeSettings')}
 function saveTrackingModeSettings(){if(!selectedTrackingMode)return;const prev=typeof MPTrackingMode!=='undefined'?MPTrackingMode.getMode():null;if(typeof MPTrackingMode!=='undefined')MPTrackingMode.setMode(selectedTrackingMode,{frequency:selectedDrivingFrequency||undefined});applyModeReportPrefs();if(prev&&prev!==selectedTrackingMode&&ccState==='active'){if(selectedTrackingMode==='manual'){stopBackgroundGpsPoll();if(typeof MPTrackingProvider!=='undefined')MPTrackingProvider.stopTracking()}else enableTrackingGps(false)}trackingModeChoiceMode='onboard';renderTrackingModeSettingsSummary();renderReportModeUI();showSettings();toast(copyMsg('trackingModeSaved','Tracking mode updated ✓'))}
-function renderTrackingModeSettingsSummary(){const label=q('settingsTrackingModeLabel'),sum=q('settingsTrackingModeSummary'),autoCard=q('settingsAutopilotCard');if(typeof MPTrackingMode==='undefined')return;const meta=MPTrackingMode.getModeMeta(MPTrackingMode.getMode());if(label)label.textContent=meta.shortLabel||meta.label;let text=meta.id==='manual'?meta.label+' — you start and end each journey. Professional reports work the same.':meta.label+' — background recording, lock-screen support, and automatic trip end after 90 minutes stopped.';if(meta.id!=='manual'&&localStorage.getItem('mp_location_choice')!=='granted')text+=' Setup incomplete — enable background location in Settings.';if(sum)sum.textContent=text;if(autoCard)autoCard.hidden=MPTrackingMode.isManual()}
+function renderTrackingModeSettingsSummary(){const label=q('settingsTrackingModeLabel'),lead=q('settingsTrackingModeLead'),desc=q('settingsTrackingModeDesc'),icon=q('settingsTrackingModeIcon'),autoCard=q('settingsAutopilotCard');if(typeof MPTrackingMode==='undefined')return;const meta=MPTrackingMode.getModeMeta(MPTrackingMode.getMode());const isManual=meta.id==='manual';const emoji=isManual?'✋':'🚀';if(icon)icon.textContent=emoji;if(label)label.textContent=emoji+' '+(meta.shortLabel||meta.label);if(lead)lead.textContent=isManual?"You're in full control of every journey.":"You're using MilePilot's smartest tracking mode.";if(desc)desc.textContent=isManual?'You start and end each trip yourself. Professional reports work the same.':'Automatically detects journeys and prepares your mileage reports.';if(autoCard)autoCard.hidden=isManual;renderAutopilotStatusChecklist()}
 function q(id){return document.getElementById(id)}function toast(msg){q('toast').textContent=msg;q('toast').classList.add('show');setTimeout(()=>q('toast').classList.remove('show'),3000)}
 function copyMsg(key,fallback){return(typeof MPCopy!=='undefined'&&MPCopy[key])?(typeof MPCopy[key]==='function'?MPCopy[key]:MPCopy[key]):fallback}
 function renderEmptyIllustration(el){if(!el||typeof MPCopy==='undefined')return;el.innerHTML=MPCopy.emptyIllustrationSvg()}
@@ -1488,7 +1603,7 @@ function tryShowPendingStayUpdated(){}
 function isManualOperatingMode(){return typeof MPTrackingMode!=='undefined'&&MPTrackingMode.isManual()}
 function getOperatingModeLabel(){return isManualOperatingMode()?'Manual Mode':'AutoPilot'}
 function renderReportModeUI(){const manual=isManualOperatingMode();const sendCard=q('reportSendCard'),heading=q('reportModeHeading'),desc=q('reportAutoDesc'),status=q('reportAutoStatus'),sub=q('reportsSub'),settingsCopy=q('settingsReportModeCopy');if(sub)sub.textContent=manual?'Your business documents — generate, download, or email HMRC summaries when you need them.':'Your business documents — HMRC-ready summaries emailed after each shift.';if(heading)heading.textContent='How reports work';if(desc)desc.textContent=manual?'You are in complete control. Review journeys, then generate and send reports yourself.':'MilePilot takes care of everything. After each shift, uncertain journeys are reviewed, then your business report is emailed and saved here.';if(status){status.textContent=manual?'Manual Mode — generate reports yourself':'AutoPilot — emailed after each shift';status.classList.add('is-on')}if(sendCard)sendCard.hidden=!manual;if(settingsCopy)settingsCopy.textContent=manual?'Manual Mode — generate and email reports from Report Centre when you need them.':'AutoPilot — business reports are emailed automatically after each shift. No scheduling required.'}
-function renderReportSettings(){const prefs=getReportPrefs();q('togglePdfAttachment')?.classList.toggle('is-on',prefs.pdfAttachment);renderReportModeUI();renderBusinessProfileSettings()}
+function renderReportSettings(){const prefs=getReportPrefs();q('togglePdfAttachment')?.classList.toggle('is-on',prefs.pdfAttachment);renderReportModeUI();renderBusinessProfileSettings();renderAutopilotStatusChecklist()}
 function setSettingsFrequency(freq){applyModeReportPrefs();renderReportSettings();toast('Report behaviour follows your operating mode ('+getOperatingModeLabel()+')')}
 function toggleReportPref(key){const prefs=getReportPrefs();prefs[key]=!prefs[key];saveReportPrefs(prefs);renderReportSettings()}
 function renderReportAutoBanner(){renderReportModeUI()}
@@ -1709,7 +1824,7 @@ async function previewReport(){await openReport()}
 function scrollToReportEmail(){showReports();setTimeout(()=>q('reportSendCard')?.scrollIntoView({behavior:'smooth',block:'start'}),200)}
 function shareReport(){let t=periodTotals();if(!t.list.length){toast(copyMsg('reportShareNoData','No report data to share yet'));return}const labels={day:'daily',week:'weekly',month:'monthly',year:'annual'};const text='My MilePilot '+labels[period]+' report: '+t.mi.toFixed(1)+' business miles · '+money(t.hmrc)+' estimated allowance · '+t.list.length+' journeys';if(navigator.share){navigator.share({title:'MilePilot Report',text,url:location.origin+'/?reports='+period}).catch(()=>{})}else if(navigator.clipboard){navigator.clipboard.writeText(text).then(()=>toast(copyMsg('shareCopied','Report summary copied ✓'))).catch(()=>toast(text))}else toast(text)}
 function showHistory(){setNav('History');let list=shifts.slice().reverse();q('historyList').innerHTML=list.length?list.map(s=>{const stops=s.stops?.length?` · ${s.stops.length} stop${s.stops.length===1?'':'s'}`:'';return `<div class="historyItem"><div class="historyTop"><span>${s.date}</span><span>${s.miles.toFixed(2)} mi</span></div><div class="historySub">${vehicles[s.vehicle]?.label||s.vehicle} • ${fmt(s.seconds)} • ${money(s.hmrc)}${stops}</div></div>`}).join(''):'<div class="history-empty"><div class="icon" aria-hidden="true">'+((typeof MPCopy!=='undefined')?MPCopy.emptyIllustrationSvg():'📋')+'</div><p class="history-empty-title">'+(typeof MPCopy!=='undefined'?MPCopy.historyEmptyTitle:'Your journey history starts here')+'</p><p class="history-empty-sub">'+(typeof MPCopy!=='undefined'?MPCopy.historyEmptySub:'End your first shift and every business mile will be saved automatically.')+'</p></div>';showScreen('history')}
-function showSettings(){setNav('Settings');q('settingsEmail').value=localStorage.getItem('mp_email')||'';renderReportSettings();renderTrackingModeSettingsSummary();renderVehicleSettingsSummary();const dbg=q('debugPanelCard');if(dbg)dbg.hidden=localStorage.getItem('mp_debug')!=='1';if(!dbg?.hidden)renderDebugPanel();showScreen('settings')}
+function showSettings(){setNav('Settings');q('settingsEmail').value=localStorage.getItem('mp_email')||'';renderReportSettings();renderTrackingModeSettingsSummary();renderVehicleSettingsSummary();renderAutopilotStatusChecklist();const dbg=q('debugPanelCard');if(dbg)dbg.hidden=localStorage.getItem('mp_debug')!=='1';if(!dbg?.hidden)renderDebugPanel();showScreen('settings')}
 function renderDebugPanel(){const el=q('debugPanelBody');if(!el)return;const auto=typeof MPTripAutoEnd!=='undefined'?MPTripAutoEnd.getDebugState(ccState==='active'):{};const email=typeof MPSummaryReports!=='undefined'&&MPSummaryReports.getLastEmailResult?MPSummaryReports.getLastEmailResult():null;const pending=typeof MPSummaryReports!=='undefined'&&MPSummaryReports.getPendingReport?MPSummaryReports.getPendingReport():null;const lines=['Trip status: '+(ccState==='active'?'ACTIVE':'idle'),'Inactivity threshold: '+(auto.inactivityThresholdMin||'?')+' min','Last movement: '+(auto.lastMovementISO||'—'),'Idle for: '+(auto.lastMovementAgoSec!=null?auto.lastMovementAgoSec+' sec':'—'),'Countdown to auto-end: '+(auto.countdownMin!=null?auto.countdownMin+' min':'—'),'Auto-end fired: '+(auto.autoEndFired?'yes':'no'),'Shift id: '+(auto.shiftId||shiftId||'—'),'','Email queue pending: '+(pending?pending.type+' @ '+new Date(pending.fireAt).toISOString():'none'),'Last email result: '+(email?JSON.stringify(email):'none'),'','Recent auto-end logs:'];(auto.recentLogs||[]).slice(-6).forEach(l=>lines.push(new Date(l.t).toISOString()+' '+l.msg));el.textContent=lines.join('\n')}
 function toggleDebugAutoEnd(){checkTripAutoEnd();renderDebugPanel();toast('Auto-end check run — see debug panel')}function saveSettings(){let e=q('settingsEmail').value.trim();if(e)localStorage.setItem('mp_email',e);syncReportSubscription();toast(copyMsg('settingsSaved','Settings saved ✓'))}function createTestShift(){let s=normaliseShift({miles:.1,seconds:300,vehicle,startISO:new Date().toISOString(),endISO:new Date().toISOString()});shifts.push(s);saveShifts();toast(copyMsg('testShiftAdded','Test shift added ✓'));showHistory()}
 async function emailArchiveReport(id,ev){if(!requireActiveAccess('Subscribe to send reports'))return;const entry=getArchiveEntryById(id);if(!entry?.payload){toast(copyMsg('reportNoData','No report data yet'));return}let email=localStorage.getItem('mp_email')||'';if(id==='syn_today'){const quick=q('reportQuickEmail')?.value?.trim();if(quick)email=quick}if(!email){toast(copyMsg('emailRequired','Add an email address first'));showReports();return}localStorage.setItem('mp_email',email);const payload={...entry.payload,email,driver:entry.payload.driver||localStorage.getItem('mp_driver')||''};const btn=ev?.target;if(btn){btn.dataset.label=btn.dataset.label||btn.textContent;btn.textContent='Sending…';btn.disabled=true}try{const{res,data}=await apiPost('/reports/send',payload);if(!res.ok||!data.sent)throw new Error(data.message||'Email failed');saveReportToArchive(payload,'email');toast(typeof MPCopy!=='undefined'?MPCopy.reportSent(email):'Report sent to '+email+' ✓')}catch(e){toast(copyMsg('reportEmailFailed','Email failed — try downloading your PDF instead.'))}finally{if(btn){btn.textContent=btn.dataset.label||'Email';btn.disabled=false}}}
