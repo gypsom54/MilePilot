@@ -55,12 +55,18 @@
     const time = formatTripTime(trip.startISO);
     const mi = (Number(trip.miles) || 0).toFixed(1);
     const sug = suggestion || {};
-    const sugStatus = sug.status === 'personal' ? 'Personal' : 'Business';
-    const conf = sug.confidenceLabel || 'Uncertain';
+    const title = sug.likelyLabel || (sug.status === 'personal' ? 'Likely Personal' : 'Likely Business');
+    const confPct = sug.confidencePercent != null ? sug.confidencePercent : Math.round((sug.confidence || 0) * 100);
     const reason = sug.reason || 'Please confirm this journey';
     const startArea = sug.startArea || 'Unknown area';
     const endArea = sug.endArea || 'Unknown area';
-  const stackClass = index === 0 ? ' is-top' : '';
+    const titleClass =
+      title === 'Likely Personal'
+        ? 'is-personal'
+        : title === 'Needs Review'
+          ? 'is-review'
+          : 'is-business';
+    const stackClass = index === 0 ? ' is-top' : '';
     return (
       '<div class="ai-card' +
       stackClass +
@@ -91,22 +97,19 @@
       endArea +
       '</span>' +
       '</div>' +
-      '<div class="ai-card-suggest">' +
-      '<span class="ai-suggest-label">Suggested</span>' +
-      '<strong class="ai-suggest-value ai-suggest-' +
-      (sug.status || 'business') +
+      '<div class="ai-explain">' +
+      '<strong class="ai-explain-title ai-explain-' +
+      titleClass +
       '">' +
-      sugStatus +
+      title +
       '</strong>' +
-      '<span class="ai-conf ai-conf-' +
-      conf.toLowerCase() +
-      '">' +
-      conf +
-      ' confidence</span>' +
-      '</div>' +
-      '<p class="ai-card-reason">' +
+      '<p class="ai-explain-reason"><span>Reason:</span> ' +
       reason +
       '</p>' +
+      '<p class="ai-explain-conf"><span>Confidence:</span> ' +
+      (title === 'Needs Review' ? 'Needs review' : confPct + '%') +
+      '</p>' +
+      '</div>' +
       '<div class="ai-swipe-hints" aria-hidden="true">' +
       '<span class="ai-hint-left">← Personal</span>' +
       '<span class="ai-hint-right">Business →</span>' +
