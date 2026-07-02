@@ -8,7 +8,7 @@
   global.MPCopy = {
     shiftStarted: "You're on the road — MilePilot is tracking your shift.",
     journeyStarted: "Journey started — MilePilot is recording your miles.",
-    shiftSaved: "Today's journeys are ready for review.",
+    shiftSaved: "Today's journeys are ready for your AI mileage review.",
     reportSent: function (email) {
       return 'Your business summary is on its way to ' + email + '.';
     },

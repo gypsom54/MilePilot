@@ -1,5 +1,5 @@
 /**
- * MilePilot Journey Review — Business / Personal classification UI layer.
+ * MilePilot Journey Review — AI-assisted swipe review UI layer.
  * Separate from GPS tracking and report generation engines.
  */
 (function (global) {
@@ -49,6 +49,95 @@
         classifyTripInStore(trips, t.id, status, claimFn, vehicle);
       }
     });
+  }
+
+  function renderSwipeCardHtml(trip, suggestion, index, total) {
+    const time = formatTripTime(trip.startISO);
+    const mi = (Number(trip.miles) || 0).toFixed(1);
+    const sug = suggestion || {};
+    const sugStatus = sug.status === 'personal' ? 'Personal' : 'Business';
+    const conf = sug.confidenceLabel || 'Uncertain';
+    const reason = sug.reason || 'Please confirm this journey';
+    const startArea = sug.startArea || 'Unknown area';
+    const endArea = sug.endArea || 'Unknown area';
+  const stackClass = index === 0 ? ' is-top' : '';
+    return (
+      '<div class="ai-card' +
+      stackClass +
+      '" data-trip-id="' +
+      trip.id +
+      '" data-index="' +
+      index +
+      '" style="z-index:' +
+      (total - index) +
+      '">' +
+      '<div class="ai-card-inner">' +
+      '<div class="ai-card-progress">' +
+      (index + 1) +
+      ' of ' +
+      total +
+      ' to review</div>' +
+      '<div class="ai-card-time">' +
+      time +
+      '</div>' +
+      '<div class="ai-card-miles">' +
+      mi +
+      ' miles</div>' +
+      '<div class="ai-card-route">' +
+      '<span class="ai-card-area"><em>From</em> ' +
+      startArea +
+      '</span>' +
+      '<span class="ai-card-area"><em>To</em> ' +
+      endArea +
+      '</span>' +
+      '</div>' +
+      '<div class="ai-card-suggest">' +
+      '<span class="ai-suggest-label">Suggested</span>' +
+      '<strong class="ai-suggest-value ai-suggest-' +
+      (sug.status || 'business') +
+      '">' +
+      sugStatus +
+      '</strong>' +
+      '<span class="ai-conf ai-conf-' +
+      conf.toLowerCase() +
+      '">' +
+      conf +
+      ' confidence</span>' +
+      '</div>' +
+      '<p class="ai-card-reason">' +
+      reason +
+      '</p>' +
+      '<div class="ai-swipe-hints" aria-hidden="true">' +
+      '<span class="ai-hint-left">← Personal</span>' +
+      '<span class="ai-hint-right">Business →</span>' +
+      '</div>' +
+      '</div>' +
+      '<div class="ai-card-actions">' +
+      '<button type="button" class="ai-act ai-act-personal" data-action="personal" data-trip-id="' +
+      trip.id +
+      '">Personal</button>' +
+      '<button type="button" class="ai-act ai-act-skip" data-action="skip" data-trip-id="' +
+      trip.id +
+      '">Review later</button>' +
+      '<button type="button" class="ai-act ai-act-business" data-action="business" data-trip-id="' +
+      trip.id +
+      '">Business</button>' +
+      '</div>' +
+      '</div>'
+    );
+  }
+
+  function renderSwipeStackHtml(uncertainList) {
+    if (!uncertainList || !uncertainList.length) {
+      return '<div class="ai-all-sorted"><p>All journeys sorted for today.</p><p class="ai-all-sub">Your business mileage record is ready.</p></div>';
+    }
+    const show = uncertainList.slice(0, 3);
+    let html = '<div class="ai-stack" id="aiSwipeStack">';
+    show.forEach(function (item, i) {
+      html += renderSwipeCardHtml(item.trip, item.suggestion, i, uncertainList.length);
+    });
+    html += '</div>';
+    return html;
   }
 
   function renderReviewListHtml(trips, date) {
@@ -131,6 +220,66 @@
     };
   }
 
+  function bindSwipeStack(el, onClassify, onSkip) {
+    if (!el) return;
+    const cards = el.querySelectorAll('.ai-card.is-top');
+    cards.forEach(function (card) {
+      let startX = 0;
+      let currentX = 0;
+      let dragging = false;
+      const tripId = card.getAttribute('data-trip-id');
+
+      function reset() {
+        card.style.transform = '';
+        card.classList.remove('is-swiping-left', 'is-swiping-right');
+      }
+
+      function finishSwipe(direction) {
+        if (direction === 'left' && onClassify) onClassify(tripId, 'personal');
+        else if (direction === 'right' && onClassify) onClassify(tripId, 'business');
+        reset();
+      }
+
+      card.addEventListener(
+        'touchstart',
+        function (e) {
+          if (!card.classList.contains('is-top')) return;
+          startX = e.touches[0].clientX;
+          dragging = true;
+        },
+        { passive: true }
+      );
+      card.addEventListener(
+        'touchmove',
+        function (e) {
+          if (!dragging || !card.classList.contains('is-top')) return;
+          currentX = e.touches[0].clientX - startX;
+          card.style.transform = 'translateX(' + currentX + 'px) rotate(' + currentX * 0.04 + 'deg)';
+          card.classList.toggle('is-swiping-left', currentX < -40);
+          card.classList.toggle('is-swiping-right', currentX > 40);
+        },
+        { passive: true }
+      );
+      card.addEventListener('touchend', function () {
+        if (!dragging) return;
+        dragging = false;
+        if (currentX > 80) finishSwipe('right');
+        else if (currentX < -80) finishSwipe('left');
+        else reset();
+        currentX = 0;
+      });
+
+      card.querySelectorAll('.ai-act[data-action]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          const action = btn.getAttribute('data-action');
+          const id = btn.getAttribute('data-trip-id');
+          if (action === 'skip' && onSkip) onSkip(id);
+          else if (onClassify) onClassify(id, action);
+        });
+      });
+    });
+  }
+
   global.MPJourneyReview = {
     formatTripTime: formatTripTime,
     tripsForReviewDate: tripsForReviewDate,
@@ -138,6 +287,8 @@
     classifyTripInStore: classifyTripInStore,
     classifyAllForDate: classifyAllForDate,
     renderReviewListHtml: renderReviewListHtml,
+    renderSwipeStackHtml: renderSwipeStackHtml,
+    bindSwipeStack: bindSwipeStack,
     businessTotalsForDate: businessTotalsForDate,
   };
 })(typeof window !== 'undefined' ? window : global);

@@ -430,6 +430,39 @@ body.map-expand-open{overflow:hidden}
 .jr-btn.is-selected.is-personal{border-color:rgba(147,168,196,.35);background:rgba(147,168,196,.12);color:rgba(200,214,232,.95)}
 .jr-bulk{display:flex;gap:8px;margin:0 0 14px}
 .jr-bulk .jr-btn{flex:1}
+.ai-review-kicker{margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(126,200,255,.9);text-align:center}
+.ai-stack{position:relative;height:min(420px,58vh);margin:0 0 16px;touch-action:pan-y}
+.ai-card{position:absolute;inset:0 auto auto 0;width:100%;border-radius:22px;border:1px solid rgba(110,180,255,.2);background:linear-gradient(180deg,rgba(18,40,72,.95),rgba(8,22,48,.98));box-shadow:0 16px 40px rgba(0,0,0,.35);transition:transform .22s ease,opacity .22s ease;will-change:transform}
+.ai-card:not(.is-top){pointer-events:none;transform:scale(.96) translateY(12px);opacity:.55}
+.ai-card.is-swiping-left{border-color:rgba(200,160,120,.45);box-shadow:0 0 24px rgba(200,120,80,.2)}
+.ai-card.is-swiping-right{border-color:rgba(32,215,129,.45);box-shadow:0 0 24px rgba(32,215,129,.18)}
+.ai-card-inner{padding:20px 20px 12px}
+.ai-card-progress{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(147,168,196,.85);margin-bottom:12px}
+.ai-card-time{font-size:28px;font-weight:700;letter-spacing:-0.03em;color:#fff;margin-bottom:4px}
+.ai-card-miles{font-size:16px;font-weight:600;color:rgba(159,180,208,.92);margin-bottom:16px}
+.ai-card-route{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.ai-card-area{font-size:14px;font-weight:500;line-height:1.4;color:rgba(234,242,255,.92)}
+.ai-card-area em{font-style:normal;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(110,180,255,.75);display:block;margin-bottom:2px}
+.ai-card-suggest{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:10px}
+.ai-suggest-label{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(147,168,196,.85)}
+.ai-suggest-value{font-size:15px;font-weight:700}
+.ai-suggest-business{color:#9ef0c8}
+.ai-suggest-personal{color:rgba(200,214,232,.95)}
+.ai-conf{font-size:11px;font-weight:600;padding:4px 8px;border-radius:999px;background:rgba(255,255,255,.06)}
+.ai-conf-high{color:#9ef0c8;background:rgba(32,215,129,.12)}
+.ai-conf-medium{color:rgba(200,220,255,.9)}
+.ai-conf-low,.ai-conf-uncertain{color:rgba(239,200,140,.95);background:rgba(239,180,80,.1)}
+.ai-card-reason{margin:0 0 8px;font-size:14px;font-weight:500;line-height:1.45;color:rgba(200,220,248,.9)}
+.ai-swipe-hints{display:flex;justify-content:space-between;font-size:11px;font-weight:600;color:rgba(147,168,196,.65);padding-top:4px}
+.ai-card-actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:0 16px 16px}
+.ai-act{height:42px;border-radius:12px;border:1px solid rgba(110,180,255,.2);background:rgba(255,255,255,.04);color:rgba(234,242,255,.92);font-size:13px;font-weight:600;font-family:inherit;cursor:pointer}
+.ai-act-business{border-color:rgba(32,215,129,.35);color:#9ef0c8}
+.ai-act-personal{border-color:rgba(147,168,196,.3)}
+.ai-act-skip{font-size:12px;color:rgba(147,168,196,.85)}
+.ai-all-sorted{text-align:center;padding:28px 12px;border-radius:18px;border:1px solid rgba(32,215,129,.25);background:rgba(32,215,129,.08)}
+.ai-all-sorted p{margin:0;font-size:16px;font-weight:600;color:rgba(234,242,255,.95)}
+.ai-all-sub{margin-top:8px!important;font-size:14px!important;font-weight:500!important;color:rgba(159,180,208,.88)!important}
+.ai-sorted-note{margin:0 0 14px;padding:12px 14px;border-radius:14px;background:rgba(13,107,255,.1);border:1px solid rgba(110,180,255,.16);font-size:13px;font-weight:500;line-height:1.45;color:rgba(200,220,248,.9);text-align:center}
 .cc-sub-banner{margin:0 0 18px;padding:14px 16px;border-radius:16px;border:1px solid rgba(110,180,255,.18);background:rgba(13,107,255,.08);font-size:13px;font-weight:600;line-height:1.45;color:rgba(200,220,248,.92);cursor:pointer}
 .cc-sub-banner.is-expired{border-color:rgba(239,180,80,.28);background:rgba(239,180,80,.08);color:rgba(255,220,170,.95)}
 .cc-sub-banner[hidden]{display:none!important}
@@ -656,8 +689,8 @@ body.map-expand-open{overflow:hidden}
 <div class="brand-pulse" id="welcomePulse"></div><p class="brand-tagline">Your business. On AutoPilot.</p>
 </div>
 <h1 class="welcome-headline">Welcome to MilePilot</h1>
-<p class="welcome-tagline">Drive. Track. Claim.</p>
-<p class="welcome-support">Let's get your mileage tracking set up in under a minute.</p>
+<p class="welcome-tagline">The mileage assistant for the self-employed.</p>
+<p class="welcome-support">MilePilot tracks your full day, learns your habits, and prepares a clean business mileage record with minimal input.</p>
 <button type="button" class="btn premium-btn is-ready welcome-get-started" onclick="startOnboardingName()">Get started</button>
 </div>
 <div class="welcome-version" id="appVersion">MP-001 🔒 Locked · v2.8</div>
@@ -954,13 +987,11 @@ body.map-expand-open{overflow:hidden}
 <p class="cc-snapshot-kicker is-complete" id="ccSumKicker">Nice work</p>
 <p class="cc-snapshot-period" id="ccSumSubtitle">Today's journeys are ready for review.</p>
 <div class="jr-panel" id="journeyReviewPanel">
+<p class="ai-review-kicker">AI Daily Mileage Review</p>
 <h2 class="jr-title" id="jrTitle">Today's driving</h2>
-<p class="jr-sub" id="jrSubtitle">Classify each journey for your claim-ready report.</p>
+<p class="jr-sub" id="jrSubtitle">MilePilot learns your habits and sorts most journeys automatically.</p>
+<p class="ai-sorted-note" id="aiReviewHeadline" hidden></p>
 <div id="journeyReviewList"></div>
-<div class="jr-bulk">
-<button type="button" class="jr-btn" onclick="markAllJourneysBusiness()">Mark all as Business</button>
-<button type="button" class="jr-btn" onclick="markAllJourneysPersonal()">Mark all as Personal</button>
-</div>
 </div>
 <div class="cc-snapshot-actions">
 <button type="button" class="btn premium-btn is-ready" onclick="saveJourneyReview()">Save review</button>
@@ -1094,6 +1125,7 @@ body.map-expand-open{overflow:hidden}
 </div>
 </div>
 <div class="toast" id="toast"></div><div id="printReport"></div>
+<script src="js/ai-mileage-review.js"></script>
 <script src="js/subscription.js"></script>
 <script src="js/journey-review.js"></script>
 <script src="js/tracking-mode.js"></script>
@@ -1108,7 +1140,7 @@ body.map-expand-open{overflow:hidden}
 <script src="js/app-copy.js"></script>
 <script src="js/beta-feedback.js"></script>
 <script>
-const APP_VERSION='8.32.0';
+const APP_VERSION='8.33.0';
 const DEFAULT_WEEKLY_GOAL_MILES=400;
 const BUSINESS_PROFILE_KEY='mp_business_profile';
 const PRODUCT_VISION_LOCK='2026-06-vision-v1';
@@ -1135,7 +1167,7 @@ let suSelectedFrequency='weekly',pendingStayUpdatedAfterShift=false;
 const BRAND_MESSAGE='Your business. On AutoPilot.';
 const BRAND_TAGLINE='Your business. On AutoPilot.';
 const PROMISE_PURPOSE='Your business. On AutoPilot.';
-const VALUE_LINE='Never miss another business mile.';
+const VALUE_LINE='The mileage assistant for the self-employed.';
 const MP_001_LOCKED=true;
 const MP_002_LOCKED=true;
 const MP_003_LOCKED=true;
@@ -1357,7 +1389,7 @@ function getContextCopy(mode,today){driver=localStorage.getItem('mp_driver')||dr
 async function fetchWeather(){const today=new Date().toDateString();try{const cached=localStorage.getItem('mp_weather');if(cached){const j=JSON.parse(cached);if(j.date===today){ccWeather=j.temp;return j.temp}}}catch(e){}if(!navigator.geolocation)return null;return new Promise(resolve=>{navigator.geolocation.getCurrentPosition(async pos=>{try{const url='https://api.open-meteo.com/v1/forecast?latitude='+pos.coords.latitude+'&longitude='+pos.coords.longitude+'&current=temperature_2m';const r=await fetch(url);const d=await r.json();const temp=Math.round(d.current.temperature_2m);localStorage.setItem('mp_weather',JSON.stringify({date:today,temp}));ccWeather=temp;resolve(temp)}catch(e){resolve(null)}},()=>resolve(null),{maximumAge:900000,timeout:8000})})}
 function renderRecentActivity(){const el=q('ccActivity');if(!el)return;let html='';for(let i=1;i<=3;i++){const d=new Date();d.setDate(d.getDate()-i);const label=i===1?'Yesterday':d.toLocaleDateString('en-GB',{weekday:'long'});const t=dayTotals(d);if(t.list.length)html+='<div class="cc-activity-item"><div class="cc-activity-day">'+label+'</div><div class="cc-activity-detail">'+t.mi.toFixed(1)+' miles · '+fmtShort(t.sec)+'</div></div>';else html+='<div class="cc-activity-item"><div class="cc-activity-day">'+label+'</div><div class="cc-activity-detail cc-activity-empty">'+(typeof MPCopy!=='undefined'?MPCopy.activityEmpty:'No journeys recorded')+'</div></div>'}el.innerHTML=html}
 function setText(id,val){const el=q(id);if(el)el.textContent=val}
-function renderCommandCentre(){driver=localStorage.getItem('mp_driver')||driver||'there';vehicle=localStorage.getItem('mp_vehicle')||vehicle||'car';renderSubscriptionBanner();if(ccState==='active'){renderTrackingScreen();return}const today=getTodayTotals(),mode=getCommandMode(),copy=getContextCopy(mode,today),body=q('ccBody'),hero=q('ccHero'),track=q('ccTrackingBar'),btn=q('ccPrimaryBtn'),reportBtn=q('ccReportBtn'),ctxRow=q('ccContextRow');if(body){body.classList.toggle('is-weekend',mode==='day_off');body.classList.toggle('is-post-work',false);body.classList.toggle('is-active',false)}setText('ccGreeting',copy.greeting);setText('ccStatus',copy.status);if(track)track.hidden=true;if(hero){hero.classList.toggle('is-live',false);hero.classList.toggle('is-goal',mode==='monday_morning')}const heroLabel=hero?.querySelector('.cc-hero-label');if(heroLabel)heroLabel.textContent=copy.heroLabel;const heroUnit=hero?.querySelector('.cc-hero-unit');if(heroUnit)heroUnit.textContent=copy.heroUnit;const heroVal=mode==='day_off'?periodTotals('week').mi:today.mi;setText('ccHeroMiles',heroVal.toFixed(1));setText('ccMiles',today.mi.toFixed(1));setText('ccTime',today.sec<60?'0h':fmtShort(today.sec));setText('ccJourneys',String(today.journeys));setText('ccHmrc',money(today.hmrc));setBusinessInsightCard(mode);if(btn){btn.textContent=copy.primary||'Start Shift';btn.classList.toggle('is-end',false);btn.hidden=!copy.primary}if(reportBtn)reportBtn.hidden=true;if(ctxRow){const showCtx=mode==='monday_morning';ctxRow.hidden=!showCtx;if(showCtx){setText('ccGoalValue',today.mi.toFixed(1)+' miles');fetchWeather().then(t=>{if(t!==null)setText('ccWeatherValue',t+'°C')})}}renderRecentActivity();renderIntelligenceLayer(mode);applyProfileTerms()}
+function renderCommandCentre(){driver=localStorage.getItem('mp_driver')||driver||'there';vehicle=localStorage.getItem('mp_vehicle')||vehicle||'car';renderSubscriptionBanner();if(ccState==='active'){renderTrackingScreen();return}const today=getTodayTotals(),mode=getCommandMode(),copy=getContextCopy(mode,today),body=q('ccBody'),hero=q('ccHero'),track=q('ccTrackingBar'),btn=q('ccPrimaryBtn'),reportBtn=q('ccReportBtn'),ctxRow=q('ccContextRow');if(body){body.classList.toggle('is-weekend',mode==='day_off');body.classList.toggle('is-post-work',false);body.classList.toggle('is-active',false)}setText('ccGreeting',copy.greeting);setText('ccStatus',copy.status);if(track)track.hidden=true;if(hero){hero.classList.toggle('is-live',false);hero.classList.toggle('is-goal',mode==='monday_morning')}const heroLabel=hero?.querySelector('.cc-hero-label');if(heroLabel)heroLabel.textContent=copy.heroLabel;const heroUnit=hero?.querySelector('.cc-hero-unit');if(heroUnit)heroUnit.textContent=copy.heroUnit;const heroVal=mode==='day_off'?periodTotals('week').mi:today.mi;setText('ccHeroMiles',heroVal.toFixed(1));setText('ccMiles',today.mi.toFixed(1));setText('ccTime',today.sec<60?'0h':fmtShort(today.sec));setText('ccJourneys',String(today.journeys));setText('ccHmrc',money(today.hmrc));setBusinessInsightCard(mode);if(btn){btn.textContent=copy.primary||'Start Shift';btn.classList.toggle('is-end',false);btn.hidden=!copy.primary}if(reportBtn){const pendingReview=(today.pending||0)>0;if(pendingReview){reportBtn.hidden=false;reportBtn.textContent='Review today\u2019s journeys \u2192';reportBtn.onclick=function(){openDailyAiReview()}}else{reportBtn.hidden=true;reportBtn.onclick=viewTodayReport}}if(ctxRow){const showCtx=mode==='monday_morning';ctxRow.hidden=!showCtx;if(showCtx){setText('ccGoalValue',today.mi.toFixed(1)+' miles');fetchWeather().then(t=>{if(t!==null)setText('ccWeatherValue',t+'°C')})}}renderRecentActivity();renderIntelligenceLayer(mode);applyProfileTerms()}
 function viewTodayReport(){setArchiveFilter('daily');showReports()}
 function generateTodayReport(){showReports();setTimeout(function(){downloadArchiveReport('syn_today')},350)}
 function downsampleRoute(pts,max=ENGINE.ROUTE_MAX){if(!pts?.length)return[];if(pts.length<=max)return pts;const step=Math.ceil(pts.length/max);return pts.filter((_,i)=>i%step===0||i===pts.length-1)}
@@ -1379,20 +1411,23 @@ function saveActiveShift(){if(ccState!=='active')return;try{localStorage.setItem
 function clearActiveShift(){localStorage.removeItem('mp_active_shift')}
 function restoreActiveShift(){try{const raw=localStorage.getItem('mp_active_shift');if(!raw)return;const s=JSON.parse(raw);if(!s?.startedAt)return;ccState='active';shiftStartedAt=s.startedAt;miles=Number(s.miles)||0;elapsed=Math.floor((Date.now()-shiftStartedAt)/1000);routePoints=s.routePoints||[];lastPoint=s.lastPoint||null;vehicle=s.vehicle||vehicle;restoreShiftEngine(s);if(routePoints.length){const last=routePoints[routePoints.length-1];lastGpsAccuracy=last.acc||null;lastGpsAt=last.t||null}if(timer)clearInterval(timer);timer=setInterval(()=>{elapsed=Math.floor((Date.now()-shiftStartedAt)/1000);checkGpsStale();checkTripAutoEnd();renderTrackingScreen();saveActiveShift()},1000);acquireWakeLock();if(isAutoPilotTracking())bindMotionGpsNudge();if(isAutoPilotTracking()&&document.visibilityState==='hidden')startBackgroundGpsPoll();queryGeoPermission().then(perm=>{if(perm==='granted')enableTrackingGps(false);else updateGpsUi(perm==='denied'?geoErrorMessage({code:1}):'Tap Enable Location to resume tracking your shift.')});showScreen('tracking');renderTrackingScreen();if(window.MPTripAutoEnd){const lm=window.MPTripAutoEnd.getLastMovementAt();MPTripAutoEnd.onRestore(shiftId||s.shiftId,lm);checkTripAutoEnd()}}catch(e){clearActiveShift()}}
 function canUseActiveFeatures(){return typeof MPSubscription==='undefined'||MPSubscription.hasFullAccess()}
+function openDailyAiReview(){setNav('Home');showScreen('home');renderJourneyReview(new Date());const sum=q('ccSummary');if(sum)sum.hidden=false}
 function openPaywall(){const overlay=q('subscriptionPaywall');if(!overlay)return;if(typeof MPSubscription!=='undefined'){const copy=MPSubscription.getPaywallCopy();setText('paywallTitle',copy.title);setText('paywallBody',copy.body);setText('paywallPrice',copy.price);setText('paywallNote',copy.note)}overlay.hidden=false}
 function closePaywall(){const overlay=q('subscriptionPaywall');if(overlay)overlay.hidden=true}
 function activateMilePilotSubscription(){if(typeof MPSubscription!=='undefined')MPSubscription.activateSubscription();closePaywall();renderSubscriptionBanner();renderCommandCentre();toast('MilePilot subscription active — tracking and reports unlocked')}
 function renderSubscriptionBanner(){const el=q('ccSubBanner');if(!el||typeof MPSubscription==='undefined'){if(el)el.hidden=true;return}const banner=MPSubscription.getStatusBanner();if(!banner){el.hidden=true;return}el.hidden=false;el.textContent=banner.message;el.classList.toggle('is-expired',banner.type==='expired')}
 function requireActiveAccess(featureLabel){if(canUseActiveFeatures())return true;openPaywall();if(featureLabel)toast(featureLabel);return false}
-function renderJourneyReview(date){const panel=q('journeyReviewPanel'),listEl=q('journeyReviewList');if(!panel||!listEl||typeof MPJourneyReview==='undefined')return;const reviewDate=date||new Date();const dayTrips=MPJourneyReview.tripsForReviewDate(trips,reviewDate);if(!dayTrips.length){panel.hidden=true;return}panel.hidden=false;setText('jrTitle',"Today's driving");const pending=MPJourneyReview.tripsNeedingReview(trips,reviewDate).length;setText('jrSubtitle',pending?pending+' journey'+(pending===1?'':'s')+' awaiting review · only Business miles count toward reports':'All journeys classified for today');listEl.innerHTML=MPJourneyReview.renderReviewListHtml(trips,reviewDate);listEl.querySelectorAll('.jr-btn[data-action]').forEach(btn=>{btn.onclick=function(){const tripId=btn.getAttribute('data-trip-id'),action=btn.getAttribute('data-action');if(!tripId||!action)return;MPJourneyReview.classifyTripInStore(trips,tripId,action,claim,vehicle);MPTrips.saveTrips(trips);renderJourneyReview(reviewDate);renderCommandCentre()}})}
-function markAllJourneysBusiness(){if(typeof MPJourneyReview==='undefined')return;MPJourneyReview.classifyAllForDate(trips,new Date(),'business',claim,vehicle);renderJourneyReview(new Date());renderCommandCentre()}
-function markAllJourneysPersonal(){if(typeof MPJourneyReview==='undefined')return;MPJourneyReview.classifyAllForDate(trips,new Date(),'personal',claim,vehicle);renderJourneyReview(new Date());renderCommandCentre()}
-function saveJourneyReview(){MPTrips.saveTrips(trips);toast('Journey review saved');dismissSummary()}
+function aiClassifyTrip(tripId,status,suggestion,userCorrected){const trip=trips.find(function(t){return t.id===tripId});if(!trip)return;const sug=suggestion||(typeof MPAiReview!=='undefined'?MPAiReview.suggestTrip(trip):null);MPJourneyReview.classifyTripInStore(trips,tripId,status,claim,vehicle);if(typeof MPAiReview!=='undefined')MPAiReview.onUserClassification(trip,status,sug,!!userCorrected);MPTrips.saveTrips(trips)}
+function runAiDailyReview(date){const reviewDate=date||new Date();if(typeof MPAiReview==='undefined'||typeof MPJourneyReview==='undefined')return null;return MPAiReview.prepareDailyReview(trips,reviewDate,function(tripId,status,suggestion){aiClassifyTrip(tripId,status,suggestion,false)})}
+function renderJourneyReview(date){const panel=q('journeyReviewPanel'),listEl=q('journeyReviewList'),headlineEl=q('aiReviewHeadline');if(!panel||!listEl||typeof MPJourneyReview==='undefined')return;const reviewDate=date||new Date();const review=runAiDailyReview(reviewDate);const dayTrips=MPJourneyReview.tripsForReviewDate(trips,reviewDate);if(!dayTrips.length){panel.hidden=true;return}panel.hidden=false;setText('jrTitle','AI Daily Mileage Review');if(review&&headlineEl){headlineEl.hidden=false;headlineEl.textContent=review.headline}else if(headlineEl)headlineEl.hidden=true;const pending=MPJourneyReview.tripsNeedingReview(trips,reviewDate).length;if(pending)setText('jrSubtitle','Swipe right for Business · left for Personal · or tap Review later');else setText('jrSubtitle','All journeys sorted — your business mileage record is ready.');const uncertain=review?review.uncertain:MPJourneyReview.tripsNeedingReview(trips,reviewDate).map(function(t){return{trip:t,suggestion:typeof MPAiReview!=='undefined'?MPAiReview.suggestTrip(t):null}});listEl.innerHTML=MPJourneyReview.renderSwipeStackHtml(uncertain);MPJourneyReview.bindSwipeStack(listEl,function(tripId,action){const trip=trips.find(function(t){return t.id===tripId});const sug=typeof MPAiReview!=='undefined'&&trip?MPAiReview.suggestTrip(trip):null;const corrected=sug&&sug.status!==action;aiClassifyTrip(tripId,action,sug,corrected);renderJourneyReview(reviewDate);renderCommandCentre()},function(){toast('Saved for later review')})}
+function markAllJourneysBusiness(){if(typeof MPJourneyReview==='undefined')return;MPJourneyReview.classifyAllForDate(trips,new Date(),'business',claim,vehicle);trips.forEach(function(t){if(t.status==='business'&&typeof MPAiReview!=='undefined')MPAiReview.onUserClassification(t,'business',null,false)});MPTrips.saveTrips(trips);renderJourneyReview(new Date());renderCommandCentre()}
+function markAllJourneysPersonal(){if(typeof MPJourneyReview==='undefined')return;MPJourneyReview.classifyAllForDate(trips,new Date(),'personal',claim,vehicle);trips.forEach(function(t){if(t.status==='personal'&&typeof MPAiReview!=='undefined')MPAiReview.onUserClassification(t,'personal',null,false)});MPTrips.saveTrips(trips);renderJourneyReview(new Date());renderCommandCentre()}
+function saveJourneyReview(){MPTrips.saveTrips(trips);toast('Mileage review saved');dismissSummary()}
 function toggleShift(){if(ccState==='active')endShiftCommandCentre();else{if(!requireActiveAccess('Subscribe to start tracking'))return;startShiftCommandCentre();showScreen('tracking')}}
 function startShiftCommandCentre(){localStorage.removeItem('mp_day_off');miles=0;elapsed=0;routePoints=[];lastPoint=null;gpsLocked=false;mapTrailPoints=[];lastGpsAccuracy=null;lastGpsAt=null;destroyLiveMaps();resetShiftEngine();if(gpsReconnectTimer){clearTimeout(gpsReconnectTimer);gpsReconnectTimer=null}stopBackgroundGpsPoll();shiftId='shift_'+Date.now();shiftStartedAt=Date.now();ccState='active';shiftJustCompleted=false;lastMileRecordedAt=shiftStartedAt;if(isAutoPilotTracking()&&window.MPTripAutoEnd)MPTripAutoEnd.onTripStarted(shiftId,shiftStartedAt);if(isAutoPilotTracking()&&window.MPExpoBridge&&MPExpoBridge.request)MPExpoBridge.request('expo:notification:request').catch(function(){});if(timer)clearInterval(timer);timer=setInterval(()=>{elapsed=Math.floor((Date.now()-shiftStartedAt)/1000);checkGpsStale();checkTripAutoEnd();renderTrackingScreen();saveActiveShift()},1000);renderTrackingScreen();saveActiveShift();acquireWakeLock();enableTrackingGps(true);if(isAutoPilotTracking())ensureMotionAccess().then(()=>bindMotionGpsNudge());if(isAutoPilotTracking()&&document.visibilityState==='hidden')startBackgroundGpsPoll();toast(copyMsg(isAutoPilotTracking()?'shiftStarted':'journeyStarted',isAutoPilotTracking()?'Shift started — GPS tracking active':'Journey started — recording your miles'))}
-function showShiftCompleteSummary(shift){const s=shift||summaryShift;setText('ccSumKicker','Shift complete');const recorded=s&&Number(s.miles)>0?s.miles.toFixed(1)+' miles recorded · classify for your claim-ready report':copyMsg('shiftSaved','Today\'s journeys are ready for review.');setText('ccSumSubtitle',recorded);renderJourneyReview(s?new Date(s.startISO):new Date());const sum=q('ccSummary');if(sum)sum.hidden=false}
+function showShiftCompleteSummary(shift){const s=shift||summaryShift;setText('ccSumKicker','AI Daily Mileage Review');const recorded=s&&Number(s.miles)>0?s.miles.toFixed(1)+' miles recorded today':copyMsg('shiftSaved','Today\'s journeys are ready for review.');setText('ccSumSubtitle',recorded);renderJourneyReview(s?new Date(s.startISO):new Date());const sum=q('ccSummary');if(sum)sum.hidden=false}
 function queueShiftEndedReport(shift,endReason){if(!shift||typeof MPSummaryReports==='undefined')return;if(!canUseActiveFeatures())return;const reason=endReason||'manual';setTimeout(function(){if(typeof MPSummaryReports.onShiftEnded==='function')MPSummaryReports.onShiftEnded(shift,reason).catch(function(e){console.error('[MilePilot] shift report failed',e)});else if(typeof MPSummaryReports.scheduleDailyAfterShift==='function')MPSummaryReports.scheduleDailyAfterShift(shift.endISO)},0)}
-function presentShiftEndedUI(endReason,shift){setNav('Home');showScreen('home');showShiftCompleteSummary(shift);try{renderCommandCentre()}catch(e){console.error('[MilePilot] renderCommandCentre failed',e)}if(endReason==='auto')toast('Shift ended automatically — your summary is being prepared.')}
+function presentShiftEndedUI(endReason,shift){setNav('Home');showScreen('home');showShiftCompleteSummary(shift);try{renderCommandCentre()}catch(e){console.error('[MilePilot] renderCommandCentre failed',e)}if(endReason==='auto')toast('Shift ended — your AI mileage review is ready.')}
 function endShiftCommandCentre(endReason){if(ccState!=='active')return;if(endReason==='auto'&&typeof MPTripAutoEnd!=='undefined')MPTripAutoEnd.log('Auto-ending trip via endShiftCommandCentre',{});let shift=null;try{if(stopCandidateAt&&lastPoint)recordStop(lastPoint);if(pendingMeters>0){miles+=pendingMeters/1609.344;pendingMeters=0}closeLiveMapExpand();stopGpsWatch();stopBackgroundGpsPoll();if(gpsReconnectTimer){clearTimeout(gpsReconnectTimer);gpsReconnectTimer=null}releaseWakeLock();gpsLocked=false;if(timer){clearInterval(timer);timer=null}shift=normaliseShift({id:shiftId||('shift_'+Date.now()),miles:Number(miles.toFixed(2)),seconds:elapsed,movingSeconds:Math.round(movingSeconds),vehicle,hmrc:Number(claim(miles).toFixed(2)),date:new Date().toLocaleDateString('en-GB'),startISO:new Date(shiftStartedAt).toISOString(),endISO:new Date().toISOString(),route:downsampleRoute(routePoints),stops:shiftStops.slice(),engineVersion:TRACKING_ENGINE_V});shifts.push(shift);saveShifts();refreshTripStore();if(window.MPIntelligence&&typeof MPIntelligence.recordJourneyCompleted==='function')MPIntelligence.recordJourneyCompleted(shift);queueShiftEndedReport(shift,endReason);if(window.MPBetaFeedback&&typeof MPBetaFeedback.maybePromptAfterShift==='function')MPBetaFeedback.maybePromptAfterShift(shifts.length);if(shifts.length===1)maybeShowStayUpdatedPrompt('first_shift');summaryShift=shift;ccState='idle';shiftJustCompleted=true;clearActiveShift();localStorage.removeItem('mp_work_done');driver=localStorage.getItem('mp_driver')||driver||'there';miles=0;elapsed=0;routePoints=[];lastPoint=null;mapTrailPoints=[];lastGpsAccuracy=null;lastGpsAt=null;resetShiftEngine();shiftId=null}catch(e){console.error('[MilePilot] endShiftCommandCentre error',e);ccState='idle'}finally{try{destroyLiveMaps()}catch(e){}if(window.MPTripAutoEnd)MPTripAutoEnd.onTripEnded(endReason||'manual');presentShiftEndedUI(endReason,shift)}}
 function dismissSummary(){summaryShift=null;shiftJustCompleted=false;const sum=q('ccSummary');if(sum)sum.hidden=true;localStorage.removeItem('mp_work_done');goHome();setTimeout(tryShowPendingStayUpdated,400)}
 function updateLive(){if(q('liveMiles'))q('liveMiles').textContent=miles.toFixed(1);if(q('liveClaim'))q('liveClaim').textContent=money(claim(miles));if(q('trackTimer'))q('trackTimer').textContent=fmtLong(elapsed)}
