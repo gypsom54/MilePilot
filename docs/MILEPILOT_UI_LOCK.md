@@ -25,7 +25,7 @@
 
 ### App
 
-⬜ **Dashboard**  
+⬜ **Dashboard** (In Review)  
 ⬜ **Start Shift**  
 ⬜ **Live Tracking**  
 ⬜ **AI Review**  
@@ -56,7 +56,7 @@
 | Background Permission Screen | ✅ Locked | `#permissions` `data-mp="MP-004"` `data-locked="true"` | Frozen — UI lock complete |
 | Email Reports Screen | 🟡 In Review | `#emailSetup` `data-mp="email"` | Step 5 of 6 — **current focus** |
 | Success Screen | ✅ Locked | `#onboardReady` `data-mp="onboard-ready"` `data-locked="true"` | Frozen — UI lock complete |
-| Dashboard | ⬜ Pending | `#home` `data-mp="MP-006"` | Command Centre |
+| Dashboard | 🟡 In Review | `#home` `data-mp="MP-006"` | Phase 1 polish — awaiting approval |
 | Start Shift | ⬜ Pending | `#home` → `#ccPrimaryBtn` | Dashboard idle / active CTA state |
 | Live Tracking | ⬜ Pending | `#tracking` | Live shift map + metrics |
 | AI Review | ⬜ Pending | `#home` → `#ccSummary` / `#journeyReviewPanel` | Post-shift journey review |
@@ -83,6 +83,4 @@
 
 ## Next up
 
-**Email Reports Screen** (`#emailSetup`) — polish and screenshot for approval.
-
-**Success Screen** is frozen. Future work should focus on tracking reliability, AI journey detection, reports, exports, and performance — not further UI changes unless a genuine usability issue is found.
+**Dashboard** (`#home`) — Phase 1 polish screenshot sent; awaiting approval.

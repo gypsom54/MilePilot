@@ -411,10 +411,12 @@ html.mp-expo #welcome.active{padding-top:max(52px,calc(env(safe-area-inset-top,0
 @keyframes ccPulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.7;transform:scale(.92)}}
 .cc-timer{font-size:clamp(36px,9vw,44px);font-weight:700;letter-spacing:-0.03em;line-height:1;font-variant-numeric:tabular-nums;color:#fff;-webkit-font-smoothing:antialiased}
 .cc-hero{text-align:center;margin:0 0 24px;padding:12px 0 8px;animation:ccFadeIn .55s var(--ease-premium) .08s both}
-.cc-hero-label{display:block;font-size:11px;font-weight:600;letter-spacing:.14em;color:rgba(110,180,255,.78);margin-bottom:8px}
+.cc-hero-label{display:block;font-size:15px;font-weight:600;letter-spacing:-.02em;text-transform:none;color:rgba(159,180,208,.92);margin-bottom:12px;line-height:1.3}
 .cc-hero-value{font-size:clamp(68px,19vw,92px);font-weight:700;letter-spacing:-0.045em;line-height:.95;color:#fff;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums;transition:transform .35s var(--ease-premium);text-shadow:0 4px 32px rgba(13,107,255,.18)}
 .cc-hero.is-live .cc-hero-value{color:rgba(234,242,255,.98)}
-.cc-hero-unit{display:block;margin-top:10px;font-size:15px;font-weight:500;color:rgba(159,180,208,.9);letter-spacing:.02em}
+.cc-hero-unit{display:none}
+#home .cc-primary-btn:not(.is-end){height:58px;box-shadow:0 10px 36px rgba(13,107,255,.34),0 0 28px rgba(13,107,255,.12),inset 0 1px 0 rgba(255,255,255,.12)}
+#home .cc-primary-btn:not(.is-end):hover{box-shadow:0 14px 40px rgba(13,107,255,.38),0 0 32px rgba(13,107,255,.14),inset 0 1px 0 rgba(255,255,255,.12)}
 .cc-primary-btn{width:100%;height:var(--btn-height);border:0;border-radius:var(--button-radius);background:linear-gradient(180deg,#1E88FF 0%,#0D6BFF 50%,#005FE8 100%);color:#fff;font-size:17px;font-weight:600;letter-spacing:-0.01em;margin:0 0 28px;box-shadow:0 8px 28px rgba(13,107,255,.28),inset 0 1px 0 rgba(255,255,255,.12);cursor:pointer;transition:transform .24s var(--ease-premium),box-shadow .36s ease,filter .24s ease;animation:ccFadeIn .55s var(--ease-premium) .12s both}
 .cc-primary-btn:hover{filter:brightness(1.04);box-shadow:0 12px 32px rgba(13,107,255,.32),inset 0 1px 0 rgba(255,255,255,.12)}
 .cc-primary-btn:active{transform:scale(.985)}
@@ -427,6 +429,14 @@ html.mp-expo #welcome.active{padding-top:max(52px,calc(env(safe-area-inset-top,0
 .cc-card:nth-of-type(3){animation-delay:.28s}
 .cc-card-title{margin:0 0 16px;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(110,180,255,.82)}
 .cc-metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cc-metrics--three{grid-template-columns:repeat(3,1fr);gap:8px}
+.cc-metrics--three .cc-metric{padding:12px 8px}
+.cc-metrics--three .cc-metric span{font-size:10px;letter-spacing:.04em}
+.cc-metrics--three .cc-metric strong{font-size:clamp(18px,4.8vw,22px)}
+.cc-empty-state{margin:0 0 16px;padding:16px 18px;border-radius:16px;border:1px dashed rgba(110,180,255,.14);background:rgba(255,255,255,.02);text-align:center}
+.cc-empty-state[hidden]{display:none!important}
+.cc-empty-title{margin:0 0 6px;font-size:14px;font-weight:600;color:rgba(180,210,245,.9);line-height:1.35}
+.cc-empty-sub{margin:0;font-size:13px;font-weight:500;line-height:1.45;color:rgba(147,168,196,.78)}
 .cc-metric{padding:14px 12px;border-radius:16px;border:1px solid rgba(110,180,255,.1);background:rgba(255,255,255,.035);transition:border-color .28s var(--ease-premium),background .28s var(--ease-premium)}
 .cc-metric span{display:block;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:rgba(147,168,196,.82);margin-bottom:6px}
 .cc-metric strong{display:block;font-size:clamp(21px,5.2vw,25px);font-weight:700;letter-spacing:-0.03em;color:rgba(234,242,255,.96);font-variant-numeric:tabular-nums;line-height:1.1}
@@ -550,6 +560,13 @@ body.summary-open .nav{display:none!important}
 .ai-all-sorted p{margin:0;font-size:16px;font-weight:600;color:rgba(234,242,255,.95)}
 .ai-all-sub{margin-top:8px!important;font-size:14px!important;font-weight:500!important;color:rgba(159,180,208,.88)!important}
 .ai-sorted-note{margin:0 0 14px;padding:12px 14px;border-radius:14px;background:rgba(13,107,255,.1);border:1px solid rgba(110,180,255,.16);font-size:13px;font-weight:500;line-height:1.45;color:rgba(200,220,248,.9);text-align:center}
+.cc-positioning{margin:6px 0 0;font-size:12px;font-weight:600;letter-spacing:.04em;color:rgba(126,184,255,.72)}
+.cc-trial-pill{display:flex;align-items:center;justify-content:center;gap:6px;width:fit-content;max-width:100%;margin:0 auto 14px;padding:8px 14px;border-radius:999px;border:1px solid rgba(110,180,255,.14);background:rgba(13,107,255,.06);font-family:inherit;font-size:12px;font-weight:500;line-height:1.35;color:rgba(180,210,245,.88);cursor:pointer;transition:background .22s ease,border-color .22s ease}
+.cc-trial-pill:hover{background:rgba(13,107,255,.1);border-color:rgba(110,180,255,.22)}
+.cc-trial-pill.is-expired{border-color:rgba(239,180,80,.22);background:rgba(239,180,80,.07);color:rgba(255,220,170,.92)}
+.cc-trial-pill[hidden]{display:none!important}
+.cc-trial-pill-chevron{font-size:14px;line-height:1;color:rgba(126,184,255,.72)}
+.cc-trial-pill.is-expired .cc-trial-pill-chevron{color:rgba(255,200,140,.75)}
 .cc-sub-banner{margin:0 0 18px;padding:14px 16px;border-radius:16px;border:1px solid rgba(110,180,255,.18);background:rgba(13,107,255,.08);font-size:13px;font-weight:600;line-height:1.45;color:rgba(200,220,248,.92);cursor:pointer}
 .cc-sub-banner.is-expired{border-color:rgba(239,180,80,.28);background:rgba(239,180,80,.08);color:rgba(255,220,170,.95)}
 .cc-sub-banner[hidden]{display:none!important}
@@ -1079,10 +1096,11 @@ body.always-modal-open .nav{display:none!important}
 <section id="home" class="screen cc-screen" data-mp="MP-006">
 <header class="brand-bar"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div><p class="brand-tagline">Your business. On AutoPilot.</p></header>
 <div class="cc-body" id="ccBody">
-<div class="cc-sub-banner" id="ccSubBanner" hidden onclick="openPaywall()"></div>
+<button type="button" class="cc-trial-pill" id="ccSubBanner" hidden onclick="openPaywall()"><span id="ccSubBannerText">7 days left in your free trial</span><span class="cc-trial-pill-chevron" aria-hidden="true">›</span></button>
 <div class="cc-greeting-wrap">
 <h1 class="cc-greeting" id="ccGreeting">Good afternoon</h1>
-<p class="cc-status" id="ccStatus">Start a shift when you're ready.</p>
+<p class="cc-status" id="ccStatus">Ready for another shift?</p>
+<p class="cc-positioning" id="ccPositioning">Drive. Track. Claim.</p>
 </div>
 <div class="cc-context-row" id="ccContextRow" hidden>
 <div class="cc-context-chip"><span class="cc-context-chip-label">Today's goal</span><span class="cc-context-chip-value" id="ccGoalValue">0 miles</span></div>
@@ -1097,21 +1115,23 @@ body.always-modal-open .nav{display:none!important}
 <button type="button" class="cc-gps-btn" onclick="enableTrackingGps(true)">Enable Location</button>
 </div>
 <div class="cc-hero" id="ccHero">
-<span class="cc-hero-label">TODAY</span>
+<span class="cc-hero-label" id="ccHeroLabel">Today's Business Miles</span>
 <div class="cc-hero-value" id="ccHeroMiles">0.0</div>
-<span class="cc-hero-unit">Business Miles</span>
 </div>
 <button type="button" class="cc-primary-btn" id="ccPrimaryBtn" onclick="toggleShift()">Start Shift</button>
 <button type="button" class="cc-report-btn" id="ccReportBtn" hidden onclick="viewTodayReport()">View Report →</button>
 <div class="cc-divider" aria-hidden="true"></div>
 <div class="cc-card">
 <h2 class="cc-card-title" id="ccTodayTitle">Today's Business</h2>
-<div class="cc-metrics">
+<div class="cc-metrics cc-metrics--three">
 <div class="cc-metric"><span id="ccMilesLabel">Business Miles</span><strong id="ccMiles">0.0</strong></div>
-<div class="cc-metric"><span id="ccTravelLabel">Travel Time</span><strong id="ccTime">0h</strong></div>
-<div class="cc-metric"><span id="ccJourneysLabel">Business Journeys</span><strong id="ccJourneys">0</strong></div>
-<div class="cc-metric"><span id="ccHmrcLabel">Mileage Allowance</span><strong id="ccHmrc">£0.00</strong></div>
+<div class="cc-metric"><span id="ccTravelLabel">Drive Time</span><strong id="ccTime">0h</strong></div>
+<div class="cc-metric"><span id="ccJourneysLabel">Journeys</span><strong id="ccJourneys">0</strong></div>
 </div>
+</div>
+<div class="cc-empty-state" id="ccEmptyState" hidden>
+<p class="cc-empty-title">Your first business journey starts here.</p>
+<p class="cc-empty-sub">Press Start Shift to begin tracking.</p>
 </div>
 <div class="cc-card">
 <h2 class="cc-card-title">Business Insight</h2>
@@ -1313,7 +1333,7 @@ body.always-modal-open .nav{display:none!important}
 <script src="js/app-copy.js"></script>
 <script src="js/beta-feedback.js"></script>
 <script>
-const APP_VERSION='8.43.16';
+const APP_VERSION='8.43.17';
 const DEFAULT_WEEKLY_GOAL_MILES=400;
 const BUSINESS_PROFILE_KEY='mp_business_profile';
 const PRODUCT_VISION_LOCK='2026-06-vision-v1';
@@ -1570,7 +1590,7 @@ function getContextCopy(mode,today){driver=localStorage.getItem('mp_driver')||dr
 async function fetchWeather(){const today=new Date().toDateString();try{const cached=localStorage.getItem('mp_weather');if(cached){const j=JSON.parse(cached);if(j.date===today){ccWeather=j.temp;return j.temp}}}catch(e){}if(!navigator.geolocation)return null;return new Promise(resolve=>{navigator.geolocation.getCurrentPosition(async pos=>{try{const url='https://api.open-meteo.com/v1/forecast?latitude='+pos.coords.latitude+'&longitude='+pos.coords.longitude+'&current=temperature_2m';const r=await fetch(url);const d=await r.json();const temp=Math.round(d.current.temperature_2m);localStorage.setItem('mp_weather',JSON.stringify({date:today,temp}));ccWeather=temp;resolve(temp)}catch(e){resolve(null)}},()=>resolve(null),{maximumAge:900000,timeout:8000})})}
 function renderRecentActivity(){const el=q('ccActivity');if(!el)return;let html='';for(let i=1;i<=3;i++){const d=new Date();d.setDate(d.getDate()-i);const label=i===1?'Yesterday':d.toLocaleDateString('en-GB',{weekday:'long'});const t=dayTotals(d);if(t.list.length)html+='<div class="cc-activity-item"><div class="cc-activity-day">'+label+'</div><div class="cc-activity-detail">'+t.mi.toFixed(1)+' miles · '+fmtShort(t.sec)+'</div></div>';else html+='<div class="cc-activity-item"><div class="cc-activity-day">'+label+'</div><div class="cc-activity-detail cc-activity-empty">'+(typeof MPCopy!=='undefined'?MPCopy.activityEmpty:'No journeys recorded')+'</div></div>'}el.innerHTML=html}
 function setText(id,val){const el=q(id);if(el)el.textContent=val}
-function renderCommandCentre(){driver=localStorage.getItem('mp_driver')||driver||'there';vehicle=localStorage.getItem('mp_vehicle')||vehicle||'car';renderSubscriptionBanner();if(ccState==='active'){renderTrackingScreen();return}const today=getTodayTotals(),mode=getCommandMode(),copy=getContextCopy(mode,today),body=q('ccBody'),hero=q('ccHero'),track=q('ccTrackingBar'),btn=q('ccPrimaryBtn'),reportBtn=q('ccReportBtn'),ctxRow=q('ccContextRow');if(body){body.classList.toggle('is-weekend',mode==='day_off');body.classList.toggle('is-post-work',false);body.classList.toggle('is-active',false)}setText('ccGreeting',copy.greeting);setText('ccStatus',copy.status);if(track)track.hidden=true;if(hero){hero.classList.toggle('is-live',false);hero.classList.toggle('is-goal',mode==='monday_morning')}const heroLabel=hero?.querySelector('.cc-hero-label');if(heroLabel)heroLabel.textContent=copy.heroLabel;const heroUnit=hero?.querySelector('.cc-hero-unit');if(heroUnit)heroUnit.textContent=copy.heroUnit;const heroVal=mode==='day_off'?periodTotals('week').mi:today.mi;setText('ccHeroMiles',heroVal.toFixed(1));setText('ccMiles',today.mi.toFixed(1));setText('ccTime',today.sec<60?'0h':fmtShort(today.sec));setText('ccJourneys',String(today.journeys));setText('ccHmrc',money(today.hmrc));setBusinessInsightCard(mode);if(btn){btn.textContent=copy.primary||'Start Shift';btn.classList.toggle('is-end',false);btn.hidden=!copy.primary}if(reportBtn){const pendingReview=(today.pending||0)>0;if(pendingReview){reportBtn.hidden=false;reportBtn.textContent='Review today\u2019s journeys \u2192';reportBtn.onclick=function(){openDailyAiReview()}}else{reportBtn.hidden=true;reportBtn.onclick=viewTodayReport}}if(ctxRow){const showCtx=mode==='monday_morning';ctxRow.hidden=!showCtx;if(showCtx){setText('ccGoalValue',today.mi.toFixed(1)+' miles');fetchWeather().then(t=>{if(t!==null)setText('ccWeatherValue',t+'°C')})}}renderRecentActivity();renderIntelligenceLayer(mode);applyProfileTerms()}
+function renderCommandCentre(){driver=localStorage.getItem('mp_driver')||driver||'there';vehicle=localStorage.getItem('mp_vehicle')||vehicle||'car';renderSubscriptionBanner();if(ccState==='active'){renderTrackingScreen();return}const today=getTodayTotals(),mode=getCommandMode(),copy=getContextCopy(mode,today),body=q('ccBody'),hero=q('ccHero'),track=q('ccTrackingBar'),btn=q('ccPrimaryBtn'),reportBtn=q('ccReportBtn'),ctxRow=q('ccContextRow');if(body){body.classList.toggle('is-weekend',mode==='day_off');body.classList.toggle('is-post-work',false);body.classList.toggle('is-active',false)}setText('ccGreeting',copy.greeting);if(mode==='day_off'||mode==='active')setText('ccStatus',copy.status);else setText('ccStatus','Ready for another shift?');if(track)track.hidden=true;if(hero){hero.classList.toggle('is-live',false);hero.classList.toggle('is-goal',mode==='monday_morning')}const heroLabel=q('ccHeroLabel')||hero?.querySelector('.cc-hero-label');if(heroLabel){if(mode==='day_off')heroLabel.textContent="This Week's Business Miles";else if(mode==='active')heroLabel.textContent='LIVE';else heroLabel.textContent="Today's Business Miles"}const heroVal=mode==='day_off'?periodTotals('week').mi:today.mi;setText('ccHeroMiles',heroVal.toFixed(1));setText('ccMiles',today.mi.toFixed(1));setText('ccTime',today.sec<60?'0h':fmtShort(today.sec));setText('ccJourneys',String(today.journeys));setBusinessInsightCard(mode);if(btn){btn.textContent=copy.primary||'Start Shift';btn.classList.toggle('is-end',false);btn.hidden=!copy.primary}if(reportBtn){const pendingReview=(today.pending||0)>0;if(pendingReview){reportBtn.hidden=false;reportBtn.textContent='Review today\u2019s journeys \u2192';reportBtn.onclick=function(){openDailyAiReview()}}else{reportBtn.hidden=true;reportBtn.onclick=viewTodayReport}}if(ctxRow){const showCtx=mode==='monday_morning';ctxRow.hidden=!showCtx;if(showCtx){setText('ccGoalValue',today.mi.toFixed(1)+' miles');fetchWeather().then(t=>{if(t!==null)setText('ccWeatherValue',t+'°C')})}}renderRecentActivity();renderIntelligenceLayer(mode);applyProfileTerms();setText('ccMilesLabel','Business Miles');setText('ccTravelLabel','Drive Time');setText('ccJourneysLabel','Journeys');const empty=q('ccEmptyState');if(empty)empty.hidden=!(today.mi===0&&today.journeys===0&&shifts.length===0&&mode!=='day_off')}
 function viewTodayReport(){setArchiveFilter('daily');showReports()}
 function generateTodayReport(){showReports();setTimeout(function(){downloadArchiveReport('syn_today')},350)}
 function downsampleRoute(pts,max=ENGINE.ROUTE_MAX){if(!pts?.length)return[];if(pts.length<=max)return pts;const step=Math.ceil(pts.length/max);return pts.filter((_,i)=>i%step===0||i===pts.length-1)}
@@ -1601,7 +1621,7 @@ function openDailyAiReview(){hideNativeAlwaysLocationModal();setNav('Home');show
 function openPaywall(){const overlay=q('subscriptionPaywall');if(!overlay)return;if(typeof MPSubscription!=='undefined'){const copy=MPSubscription.getPaywallCopy();setText('paywallTitle',copy.title);setText('paywallBody',copy.body);setText('paywallPrice',copy.price);setText('paywallNote',copy.note)}overlay.hidden=false}
 function closePaywall(){const overlay=q('subscriptionPaywall');if(overlay)overlay.hidden=true}
 function activateMilePilotSubscription(){if(typeof MPSubscription!=='undefined')MPSubscription.activateSubscription();closePaywall();renderSubscriptionBanner();renderCommandCentre();toast('MilePilot subscription active — tracking and reports unlocked')}
-function renderSubscriptionBanner(){const el=q('ccSubBanner');if(!el||typeof MPSubscription==='undefined'){if(el)el.hidden=true;return}const banner=MPSubscription.getStatusBanner();if(!banner){el.hidden=true;return}el.hidden=false;el.textContent=banner.message;el.classList.toggle('is-expired',banner.type==='expired')}
+function renderSubscriptionBanner(){const el=q('ccSubBanner');if(!el||typeof MPSubscription==='undefined'){if(el)el.hidden=true;return}const banner=MPSubscription.getStatusBanner();if(!banner){el.hidden=true;return}el.hidden=false;el.classList.toggle('is-expired',banner.type==='expired');const textEl=q('ccSubBannerText');let msg=banner.message;if(banner.type==='trial'){const days=MPSubscription.getTrialDaysRemaining();msg=days+' day'+(days===1?'':'s')+' left in your free trial'}if(textEl)textEl.textContent=msg;else el.textContent=msg}
 function requireActiveAccess(featureLabel){if(canUseActiveFeatures())return true;openPaywall();if(featureLabel)toast(featureLabel);return false}
 function aiClassifyTrip(tripId,status,suggestion,userCorrected){const trip=trips.find(function(t){return t.id===tripId});if(!trip)return;const sug=suggestion||(typeof MPMIE!=='undefined'?MPMIE.analyseTrip(trip):null);MPJourneyReview.classifyTripInStore(trips,tripId,status,claim,vehicle);if(typeof MPMIE!=='undefined')MPMIE.onUserClassification(trip,status,sug,!!userCorrected);MPTrips.saveTrips(trips)}
 function runAiDailyReview(date){const reviewDate=date||new Date();if(typeof MPMIE==='undefined'||typeof MPJourneyReview==='undefined')return null;return MPMIE.prepareDailyReview(trips,reviewDate,function(tripId,status,suggestion){aiClassifyTrip(tripId,status,suggestion,false)})}
