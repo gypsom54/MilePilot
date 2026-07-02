@@ -26,7 +26,8 @@
     "test:trips": "node tests/trip-persistence.test.js",
     "test:auto-end": "node tests/trip-auto-end.test.js",
     "test:tracking-mode": "node tests/tracking-mode.test.js",
-    "test:vital": "npm run verify:tracking && npm run verify:reports && npm run test:tracking && npm run test:reports && npm run test:summary-collect && npm run test:trips && npm run test:auto-end && npm run test:tracking-mode"
+    "test:mileage-checklist": "node tests/mileage-vital-checklist.test.js",
+    "test:vital": "npm run verify:tracking && npm run verify:reports && npm run test:mileage-checklist && npm run test:tracking && npm run test:reports && npm run test:summary-collect && npm run test:trips && npm run test:auto-end && npm run test:tracking-mode"
   },
   "dependencies": {
     "expo": "~56.0.12",

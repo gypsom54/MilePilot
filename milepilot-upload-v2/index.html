@@ -129,13 +129,14 @@ body.map-expand-open{overflow:hidden}
 @keyframes brandHeadlineIn{to{opacity:1}}
 .welcome-headline{text-align:center;font-size:clamp(31px,7.8vw,37px);line-height:1.14;font-weight:700;letter-spacing:-0.03em;margin:0 0 var(--headline-spacing);-webkit-font-smoothing:antialiased}
 .welcome-headline .blue{font-weight:700}
-#welcome,#knowYou,#experienceChoice,#businessProfile,#promise,#permissions,#notifications,#trackingMode,#emailSetup,#reportSchedule,#onboardReady{position:relative;overflow:hidden;background:linear-gradient(180deg,#050F22 0%,#020B1B 55%,#010810 100%)}
-#welcome.active,#knowYou.active,#experienceChoice.active,#businessProfile.active,#promise.active,#permissions.active,#notifications.active,#trackingMode.active,#emailSetup.active,#reportSchedule.active,#onboardReady.active{display:flex;flex-direction:column;min-height:100dvh;padding:max(32px,env(safe-area-inset-top)) 24px max(24px,env(safe-area-inset-bottom))}
+#welcome,#knowYou,#experienceChoice,#businessProfile,#promise,#permissions,#notifications,#trackingMode,#workSchedule,#emailSetup,#reportSchedule,#onboardReady{position:relative;overflow:hidden;background:linear-gradient(180deg,#050F22 0%,#020B1B 55%,#010810 100%)}
+#welcome.active,#knowYou.active,#experienceChoice.active,#businessProfile.active,#promise.active,#permissions.active,#notifications.active,#trackingMode.active,#workSchedule.active,#emailSetup.active,#reportSchedule.active,#onboardReady.active{display:flex;flex-direction:column;min-height:100dvh;padding:max(32px,env(safe-area-inset-top)) 24px max(24px,env(safe-area-inset-bottom))}
 #welcome.active{justify-content:center}
-#knowYou.active,#experienceChoice.active,#businessProfile.active,#promise.active,#permissions.active,#notifications.active,#trackingMode.active,#emailSetup.active,#reportSchedule.active,#onboardReady.active{justify-content:flex-start}
 #welcome .onboard-inner{margin:auto 0}
-#knowYou .onboard-inner,#experienceChoice .onboard-inner,#businessProfile .onboard-inner,#promise .onboard-inner,#permissions .onboard-inner,#notifications .onboard-inner,#trackingMode .onboard-inner,#emailSetup .onboard-inner,#reportSchedule .onboard-inner,#onboardReady .onboard-inner{flex:1;display:flex;flex-direction:column;padding-top:4px;min-height:0}
-#knowYou .brand-bar.onboard-brand,#experienceChoice .brand-bar.onboard-brand,#businessProfile .brand-bar.onboard-brand,#promise .brand-bar.onboard-brand,#permissions .brand-bar.onboard-brand,#notifications .brand-bar.onboard-brand,#trackingMode .brand-bar.onboard-brand,#emailSetup .brand-bar.onboard-brand,#reportSchedule .brand-bar.onboard-brand,#onboardReady .brand-bar.onboard-brand{margin-bottom:24px}
+#knowYou .onboard-inner{display:flex;flex-direction:column;min-height:0;overflow:hidden}
+#knowYou.active,#experienceChoice.active,#businessProfile.active,#promise.active,#permissions.active,#notifications.active,#trackingMode.active,#workSchedule.active,#emailSetup.active,#reportSchedule.active,#onboardReady.active{justify-content:flex-start}
+#knowYou .onboard-inner,#experienceChoice .onboard-inner,#businessProfile .onboard-inner,#promise .onboard-inner,#permissions .onboard-inner,#notifications .onboard-inner,#trackingMode .onboard-inner,#workSchedule .onboard-inner,#emailSetup .onboard-inner,#reportSchedule .onboard-inner,#onboardReady .onboard-inner{flex:1;display:flex;flex-direction:column;padding-top:4px;min-height:0}
+#knowYou .brand-bar.onboard-brand,#experienceChoice .brand-bar.onboard-brand,#businessProfile .brand-bar.onboard-brand,#promise .brand-bar.onboard-brand,#permissions .brand-bar.onboard-brand,#notifications .brand-bar.onboard-brand,#trackingMode .brand-bar.onboard-brand,#workSchedule .brand-bar.onboard-brand,#emailSetup .brand-bar.onboard-brand,#reportSchedule .brand-bar.onboard-brand,#onboardReady .brand-bar.onboard-brand{margin-bottom:24px}
 #knowYou .brand-bar .wordmark,#experienceChoice .brand-bar .wordmark,#businessProfile .brand-bar .wordmark,#promise .brand-bar .wordmark,#permissions .brand-bar .wordmark,#notifications .brand-bar .wordmark{font-size:42px}
 #knowYou .brand-bar .brand-pulse,#experienceChoice .brand-bar .brand-pulse,#businessProfile .brand-bar .brand-pulse,#promise .brand-bar .brand-pulse,#permissions .brand-bar .brand-pulse,#notifications .brand-bar .brand-pulse{width:min(calc(100% + 32px),220px);margin:16px auto 0}
 .onboard-greeting{text-align:center;font-size:clamp(26px,6.5vw,30px);font-weight:700;letter-spacing:-0.03em;line-height:1.2;margin:0 0 12px;-webkit-font-smoothing:antialiased;animation:knowYouGreetIn .6s cubic-bezier(.22,1,.36,1) .15s both}
@@ -239,7 +240,15 @@ body.map-expand-open{overflow:hidden}
 #trackingMode .premium-btn.is-ready:active,#trackingModeSettings .premium-btn.is-ready:active{transform:scale(.985);filter:brightness(.98);box-shadow:0 4px 16px rgba(13,107,255,.22),inset 0 1px 0 rgba(255,255,255,.08)}
 @keyframes onboardNameAutofillStart{from{}to{}}
 .onboard-name-input:-webkit-autofill{animation-name:onboardNameAutofillStart;animation-duration:.01s}
-.knowYou-greeting{text-align:center;font-size:clamp(26px,6.5vw,30px);font-weight:700;letter-spacing:-0.03em;line-height:1.2;margin:0 0 20px;-webkit-font-smoothing:antialiased;animation:knowYouGreetIn .6s cubic-bezier(.22,1,.36,1) .15s both}
+.knowYou-greeting{text-align:center;font-size:clamp(26px,6.5vw,30px);font-weight:700;letter-spacing:-0.03em;line-height:1.2;margin:0 0 12px;-webkit-font-smoothing:antialiased;animation:knowYouGreetIn .6s cubic-bezier(.22,1,.36,1) .15s both}
+.knowYou-kicker{text-align:center;font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:rgba(126,184,255,.88);margin:0 0 10px}
+.knowYou-support{text-align:center;font-size:14px;font-weight:500;color:rgba(159,180,208,.85);line-height:1.45;margin:0 0 18px}
+.knowYou-section-title{text-align:center;font-size:clamp(20px,5vw,22px);font-weight:700;letter-spacing:-0.02em;line-height:1.25;margin:28px 0 8px;color:rgba(234,242,255,.96)}
+.knowYou-reassure{text-align:center;font-size:12px;font-weight:500;color:rgba(147,168,196,.78);line-height:1.4;margin:14px 0 0}
+.welcome-tagline{text-align:center;font-size:15px;font-weight:600;letter-spacing:.04em;color:rgba(126,184,255,.92);margin:0 0 10px}
+.onboard-skip{display:block;width:100%;margin-top:12px;padding:10px;background:none;border:none;color:rgba(147,168,196,.88);font-size:14px;font-weight:500;cursor:pointer;text-align:center;font-family:inherit}
+.onboard-skip:hover{color:rgba(180,210,245,.95)}
+.onboard-ready-sub{margin:0 auto 10px;max-width:300px;font-size:15px;font-weight:500;line-height:1.5;color:rgba(159,180,208,.9)}
 @keyframes knowYouGreetIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .knowYou-message-wrap{height:40px;min-height:40px;max-height:40px;margin:0 0 32px;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:0 4px}
 .knowYou-message{text-align:center;font-size:clamp(17px,4.6vw,20px);font-weight:600;letter-spacing:-0.02em;color:rgba(255,255,255,.96);line-height:1.25;margin:0 auto;max-width:none;width:100%;transition:opacity .38s cubic-bezier(.22,1,.36,1);opacity:0;-webkit-font-smoothing:antialiased}
@@ -619,9 +628,10 @@ body.map-expand-open{overflow:hidden}
 <div class="wordmark">Mile <span class="blue">Pilot</span></div>
 <div class="brand-pulse" id="welcomePulse"></div><p class="brand-tagline">Your business. On AutoPilot.</p>
 </div>
-<h1 class="welcome-headline">Stop thinking about <span class="blue">mileage.</span></h1>
-<p class="welcome-support">Your business. On AutoPilot.</p>
-<button type="button" class="btn premium-btn is-ready welcome-get-started" onclick="startOnboardingName()">Get Started</button>
+<h1 class="welcome-headline">Welcome to MilePilot</h1>
+<p class="welcome-tagline">Drive. Track. Claim.</p>
+<p class="welcome-support">Let's get your mileage tracking set up in under a minute.</p>
+<button type="button" class="btn premium-btn is-ready welcome-get-started" onclick="startOnboardingName()">Get started</button>
 </div>
 <div class="welcome-version" id="appVersion">MP-001 🔒 Locked · v2.8</div>
 </section>
@@ -634,22 +644,26 @@ body.map-expand-open{overflow:hidden}
 <div class="onboard-inner">
 <header class="brand-bar onboard-brand center"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div><p class="brand-tagline">Your business. On AutoPilot.</p></header>
 <div class="onboard-progress" id="onboardProgressName"><div class="onboard-progress-track"><div class="onboard-progress-fill" style="width:14%"></div></div><p class="onboard-progress-label">Step 2 of 7</p></div>
+<div class="knowYou-scroll">
 <div class="knowYou-body" id="onboardNamePanel">
+<p class="knowYou-kicker">Welcome aboard</p>
 <h1 class="knowYou-greeting">What should we call you?</h1>
-<div class="welcome-input-wrap" style="margin:0 0 18px">
+<p class="knowYou-support">We'll personalise MilePilot for you.</p>
+<div class="welcome-input-wrap" style="margin:0 0 8px">
 <svg class="welcome-input-icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M5 20c0-4 3-6 7-6s7 2 7 6"/></svg>
 <input id="onboardName" class="onboard-name-input" placeholder="Your first name" autocomplete="given-name">
 </div>
 </div>
-<div class="knowYou-body" id="vehicleSelectPanel" hidden>
-<h1 class="knowYou-greeting" id="knowYouGreeting">Choose your vehicle</h1>
-<div class="knowYou-message-wrap"><p class="knowYou-message" id="knowYouMessage" style="opacity:1">Used for HMRC mileage rates.</p></div>
-<div class="knowYou-cards"><div class="vehicle-grid">
+<div class="knowYou-body" id="vehicleSelectPanel">
+<h2 class="knowYou-section-title">What do you drive most?</h2>
+<p class="knowYou-support" style="margin-bottom:16px">We use this to calculate your HMRC mileage correctly.</p>
+<div class="knowYou-cards"><div class="vehicle-grid" id="onboardVehicleGrid">
 <button type="button" class="vehicle-card" data-vehicle="car" onclick="selectVehicle('car')"><div class="vehicle-icon"><svg viewBox="0 0 24 24"><path d="M4 13h16l-1.2-3.8a1 1 0 00-.95-.7H6.15a1 1 0 00-.95.7L4 13z"/><path d="M5 13v2.5a1 1 0 001 1h.8a1 1 0 001-1V13M5 13h14M17 13v2.5a1 1 0 01-1 1h-.8a1 1 0 01-1-1V13"/><circle cx="7.5" cy="16.5" r="1.6"/><circle cx="16.5" cy="16.5" r="1.6"/><path d="M8.5 13V10h7v3M10 10l1-2h2l1 2"/></svg></div><div class="vehicle-copy"><strong>Car</strong><span class="vehicle-tag">Most common</span><span class="vehicle-desc">Business travel &amp; client visits</span></div><span class="vehicle-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"/></svg></span></button>
 <button type="button" class="vehicle-card" data-vehicle="van" onclick="selectVehicle('van')"><div class="vehicle-icon"><svg viewBox="0 0 24 24"><path d="M3 14h13V8H3v6z"/><path d="M16 14h4.2l-2.4-4H16v4z"/><path d="M3 14v2h1.2a1 1 0 001-1V14M16 14v2h1.2a1 1 0 001-1V14"/><circle cx="7" cy="17" r="1.6"/><circle cx="17" cy="17" r="1.6"/><path d="M6 8V6.5h7V8M8 6.5V5h3v1.5"/></svg></div><div class="vehicle-copy"><strong>Van</strong><span class="vehicle-tag">Trades &amp; delivery</span></div><span class="vehicle-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"/></svg></span></button>
 <button type="button" class="vehicle-card" data-vehicle="motorcycle" onclick="selectVehicle('motorcycle')"><div class="vehicle-icon"><svg viewBox="0 0 24 24"><circle cx="6.5" cy="17" r="2.2"/><circle cx="17.5" cy="17" r="2.2"/><path d="M6.5 17h11M8.5 17l2.2-4.5 2.3 1.5 2-3.5H16l1.5 2.5"/><path d="M10.7 12.5l1.3-2.2 1.8.8"/></svg></div><div class="vehicle-copy"><strong>Motorcycle</strong><span class="vehicle-tag">Mobile business travel</span></div><span class="vehicle-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"/></svg></span></button>
-<button type="button" class="vehicle-card" data-vehicle="bicycle" onclick="selectVehicle('bicycle')"><div class="vehicle-icon"><svg viewBox="0 0 24 24"><circle cx="6.5" cy="17" r="2"/><circle cx="17.5" cy="17" r="2"/><path d="M6.5 17l3.5-7 2.5 2 2-3.5 3 8.5"/><path d="M10 10l1.5-1.5"/><circle cx="13" cy="8.5" r=".8" fill="#0D6BFF" stroke="none"/></svg></div><div class="vehicle-copy"><strong>Bicycle</strong><span class="vehicle-tag">Local business travel</span></div><span class="vehicle-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12l4 4 8-8"/></svg></span></button>
 </div></div>
+<p class="knowYou-reassure">You can always change this later.</p>
+</div>
 </div>
 <div class="knowYou-foot"><button type="button" class="btn premium-btn" id="knowYouContinue" onclick="handleKnowYouContinueClick()">Continue</button><button type="button" class="btn premium-btn" id="vehicleContinue" onclick="handleVehicleContinueClick()" hidden>Select your vehicle</button></div>
 </div>
@@ -741,24 +755,17 @@ body.map-expand-open{overflow:hidden}
 <div class="onboard-body">
 <div class="perm-scroll">
 <div class="perm-section" id="permLocation" style="opacity:1">
-<h2>Let's enable MilePilot.</h2>
-<p class="onboard-setup-lead">We'll now configure MilePilot for the way you want to work. This takes about 20 seconds.</p>
-<p>To create accurate mileage reports, MilePilot needs access to your location.</p>
-<div class="enable-mode-block" id="enableManualBlock" hidden>
-<strong>Manual Mode</strong>
-<p>Uses location only while you're tracking.</p>
-</div>
-<div class="enable-mode-block" id="enableAutopilotBlock" hidden>
-<strong>AutoPilot</strong>
-<p>Uses background location so journeys continue even when your phone is locked.</p>
-</div>
+<h2>Enable background tracking</h2>
+<p class="onboard-setup-lead">To automatically detect journeys, MilePilot needs access to your location while you drive.</p>
+<p>This lets MilePilot track mileage even when the app is not open.</p>
 <p class="perm-privacy">Your location is never sold. It is only used to create your mileage reports.</p>
 <p class="perm-privacy perm-gps-help" id="permGpsHelp" hidden></p>
 </div>
 </div>
 </div>
 <div class="onboard-foot">
-<button class="btn premium-btn is-ready" id="permSetupBtn" onclick="continueSetup()">Continue Setup</button>
+<button type="button" class="btn premium-btn is-ready" id="permSetupBtn" onclick="continueSetup()">Enable AutoPilot</button>
+<button type="button" class="onboard-skip" onclick="skipPermissions()">I'll do this later</button>
 </div>
 </div>
 <div class="onboard-version">MP-004 🔒 Locked · Final</div>
@@ -773,28 +780,47 @@ body.map-expand-open{overflow:hidden}
 <header class="brand-bar onboard-brand center"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div><p class="brand-tagline">You choose how you track.</p></header>
 <div class="onboard-progress"><div class="onboard-progress-track"><div class="onboard-progress-fill" style="width:42%"></div></div><p class="onboard-progress-label">Step 3 of 7</p></div>
 <div class="knowYou-body">
-<h1 class="knowYou-greeting">Choose your tracking style.</h1>
+<h1 class="knowYou-greeting">How would you like MilePilot to work?</h1>
 <div class="knowYou-cards">
 <div class="mode-card-grid" id="tmModeGrid">
 <button type="button" class="mode-card is-recommended" data-mode="autopilot" onclick="selectTrackingMode('autopilot')">
-<span class="mode-badge">RECOMMENDED</span>
+<span class="mode-badge">Recommended</span>
 <div class="mode-card-head"><span class="mode-card-emoji" aria-hidden="true">🚗</span><h2 class="mode-card-title">AutoPilot</h2></div>
-<p class="mode-card-tagline">Drive normally.</p>
-<p class="mode-card-desc">MilePilot detects journeys automatically while your phone is locked. Perfect for regular business drivers.</p>
+<p class="mode-card-desc">MilePilot automatically detects journeys in the background and helps classify them as Business or Personal.</p>
+<p class="mode-card-tagline">Best if you want mileage handled with minimal effort.</p>
 </button>
 <button type="button" class="mode-card" data-mode="manual" onclick="selectTrackingMode('manual')">
-<div class="mode-card-head"><span class="mode-card-emoji" aria-hidden="true">✋</span><h2 class="mode-card-title">Manual</h2></div>
-<p class="mode-card-tagline">Start and stop journeys yourself.</p>
-<p class="mode-card-desc">Perfect if you prefer complete control or only drive occasionally.</p>
+<div class="mode-card-head"><span class="mode-card-emoji" aria-hidden="true">✋</span><h2 class="mode-card-title">Manual Mode</h2></div>
+<p class="mode-card-desc">Start and stop trips yourself whenever you choose.</p>
+<p class="mode-card-tagline">Best if you prefer full control over every journey.</p>
 </button>
 </div>
-<p class="mode-switch-note">You can switch between AutoPilot and Manual at any time.</p>
 </div>
 </div>
 <div class="knowYou-foot"><button type="button" class="btn premium-btn" id="tmContinueBtn" onclick="handleTrackingModeContinueClick()">Continue</button></div>
 </div>
 </section>
-<!-- MP-005 Notification Permission — 🔒 LOCKED. Copy final. See VOICE_GUIDE.md -->
+<section id="workSchedule" class="screen" data-mp="MP-047">
+<div class="onboard-bg" aria-hidden="true">
+<div class="onboard-glow onboard-glow-1"></div>
+<div class="onboard-glow onboard-glow-2"></div>
+</div>
+<div class="onboard-inner">
+<header class="brand-bar onboard-brand center"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div><p class="brand-tagline">Your business. On AutoPilot.</p></header>
+<div class="onboard-progress"><div class="onboard-progress-track"><div class="onboard-progress-fill" style="width:71%"></div></div><p class="onboard-progress-label">Step 5 of 7</p></div>
+<div class="knowYou-body">
+<h1 class="knowYou-greeting">When do you usually drive for work?</h1>
+<p class="knowYou-support">This helps MilePilot classify trips more accurately.</p>
+<div class="freq-grid" id="workScheduleGrid">
+<button type="button" class="freq-btn" data-schedule="weekdays" onclick="selectWorkSchedule('weekdays')">Weekdays</button>
+<button type="button" class="freq-btn" data-schedule="weekends" onclick="selectWorkSchedule('weekends')">Weekends</button>
+<button type="button" class="freq-btn" data-schedule="custom" onclick="selectWorkSchedule('custom')">Custom days</button>
+</div>
+</div>
+<div class="knowYou-foot"><button type="button" class="btn premium-btn is-ready" onclick="confirmWorkSchedule()">Continue</button><button type="button" class="onboard-skip" onclick="skipWorkSchedule()">Skip for now</button></div>
+</div>
+</section>
+<!-- MP-005 Notification Permission — legacy -->
 <section id="notifications" class="screen" data-mp="MP-005" data-locked="true">
 <div class="onboard-bg" aria-hidden="true">
 <div class="onboard-glow onboard-glow-1"></div>
@@ -823,13 +849,18 @@ body.map-expand-open{overflow:hidden}
 <div class="onboard-bg" aria-hidden="true"><div class="onboard-glow onboard-glow-1"></div><div class="onboard-glow onboard-glow-2"></div></div>
 <div class="onboard-inner">
 <header class="brand-bar onboard-brand center"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div><p class="brand-tagline">Your business. On AutoPilot.</p></header>
-<div class="onboard-progress"><div class="onboard-progress-track"><div class="onboard-progress-fill" style="width:71%"></div></div><p class="onboard-progress-label">Step 5 of 7</p></div>
-<h1 class="knowYou-greeting" style="margin-bottom:24px">Where should we send your reports?</h1>
-<button type="button" class="onboard-oauth-btn" onclick="onboardSignInApple()"><span aria-hidden="true">&#63743;</span> Continue with Apple</button>
-<button type="button" class="onboard-oauth-btn" onclick="onboardSignInGoogle()"><span aria-hidden="true">G</span> Continue with Google</button>
-<p class="onboard-or">or email</p>
+<div class="onboard-progress"><div class="onboard-progress-track"><div class="onboard-progress-fill" style="width:85%"></div></div><p class="onboard-progress-label">Step 6 of 7</p></div>
+<h1 class="knowYou-greeting" style="margin-bottom:12px">Where should we send your mileage reports?</h1>
+<p class="knowYou-support" style="margin-bottom:20px">You can receive daily, weekly, or monthly summaries.</p>
 <input id="emailInput" class="onboard-email-input" placeholder="you@example.com" inputmode="email" autocomplete="email">
-<div class="knowYou-foot"><button class="btn premium-btn is-ready" onclick="confirmEmailSetup()">Continue</button><button type="button" class="onboard-skip" onclick="skipEmailSetup()">Skip for now</button></div>
+<p class="knowYou-section-title" style="margin-top:8px;margin-bottom:12px;font-size:16px">Report frequency</p>
+<div class="freq-grid" id="onboardFreqGrid">
+<button type="button" class="freq-btn" data-freq="off" onclick="selectOnboardFrequency('off')">Manual only</button>
+<button type="button" class="freq-btn selected" data-freq="weekly" onclick="selectOnboardFrequency('weekly')">Weekly</button>
+<button type="button" class="freq-btn" data-freq="monthly" onclick="selectOnboardFrequency('monthly')">Monthly</button>
+</div>
+<p class="settings-schedule" id="onboardScheduleCopy"></p>
+<div class="knowYou-foot"><button type="button" class="btn premium-btn is-ready" onclick="confirmEmailSetup()">Continue</button><button type="button" class="onboard-skip" onclick="skipEmailSetup()">Skip for now</button></div>
 </div>
 </section>
 <section id="reportSchedule" class="screen" data-mp="report-schedule">
@@ -856,11 +887,11 @@ body.map-expand-open{overflow:hidden}
 <div class="onboard-progress"><div class="onboard-progress-track"><div class="onboard-progress-fill" style="width:100%"></div></div><p class="onboard-progress-label">Step 7 of 7</p></div>
 <div class="onboard-body" style="align-items:center;justify-content:center;text-align:center;padding:12px 0 24px">
 <div class="onboard-ready-icon" aria-hidden="true">✓</div>
-<h1 class="knowYou-greeting">You're ready.</h1>
-<p class="onboard-message" style="opacity:1;margin:0 auto 8px">Everything is configured.</p>
-<p class="onboard-support" style="opacity:1;margin:0 auto">Your business. On AutoPilot.</p>
+<h1 class="knowYou-greeting">You're ready to drive</h1>
+<p class="onboard-ready-sub" id="onboardReadyLead">MilePilot is set up and ready to track your mileage.</p>
+<p class="onboard-ready-sub" id="onboardReadyMode" style="margin-top:4px"></p>
 </div>
-<div class="knowYou-foot"><button class="btn premium-btn is-ready" onclick="openDashboard()">Open Dashboard</button></div>
+<div class="knowYou-foot"><button type="button" class="btn premium-btn is-ready" onclick="openDashboard()">Go to dashboard</button></div>
 </div>
 </section>
 <!-- MP-006 The Command Centre -->
@@ -1045,7 +1076,7 @@ body.map-expand-open{overflow:hidden}
 <script src="js/app-copy.js"></script>
 <script src="js/beta-feedback.js"></script>
 <script>
-const APP_VERSION='8.30.5';
+const APP_VERSION='8.31.0';
 const DEFAULT_WEEKLY_GOAL_MILES=400;
 const BUSINESS_PROFILE_KEY='mp_business_profile';
 const PRODUCT_VISION_LOCK='2026-06-vision-v1';
@@ -1056,16 +1087,18 @@ const PROFESSIONS={driver:{label:'Professional Driver',tagline:'Taxi • Private
 const MAP_TILE_URL='https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
 const UI_LOCKED=true;
 /** =====================================================================
- *  VITAL — MILEAGE TRACKING SYSTEM (BUSINESS CRITICAL — DO NOT MODIFY)
- *  Contract MP-043 · docs/TRACKING_CONTRACT.md · CI: tracking-guard.yml
- *  Without background GPS recording, MilePilot has no product.
- *  Do not refactor, consolidate, or remove without device-tested sign-off.
+ *  CRITICAL MILEAGE ENGINE FILE (inline in index.html)
+ *  Do not edit this block for UI-only / onboarding changes.
+ *  Any change here requires regression testing for:
+ *  - GPS tracking, background tracking, auto trip ending
+ *  - mileage calculation, report generation, email delivery
+ *  Contract MP-043 · docs/TRACKING_CONTRACT.md · docs/MILEAGE_REGRESSION_CHECKLIST.md
  *  ====================================================================== */
 const VITAL_TRACKING_SYSTEM='MP-043-v2';
 const TRACKING_ENGINE_V=2;
 const TRACKING_CONTRACT_ID='MP-043-v2';
 const ENGINE={MIN_MOVE_M:6,MAX_JUMP_M:400,MAX_SPEED_MPS:67,STOP_SPEED_MPS:0.9,STOP_AFTER_MS:90000,ROUTE_MAX:500,ACC_MAX:120,ACC_SOFT_MAX:220,GPS_RECONNECT_MS:15000,GPS_STALE_MS:35000,BG_GPS_POLL_MS:12000,NATIVE_SPEED_GATE_DT:2,AUTO_END_MIN_MOVE_M:40,AUTO_END_MIN_SPEED_MPS:1.8,AUTO_END_SOFT_MOVE_M:22,AUTO_END_SOFT_SPEED_MPS:1.0,AUTO_END_MAX_ACC_M:65,AUTO_END_MILE_GRACE_MS:1200000};
-const REPORT_FREQ_OPTIONS={daily:{label:'Every day',schedule:"Daily summary at 11:59pm, or 90 minutes after your shift ends if you finish late at night — plus Weekly Insights every Sunday at 11:59pm and Monthly Insights on the last day of each month."},weekly:{label:'Every week',schedule:"Every Sunday we'll email your weekly business report, plus a Monthly Insights Summary on the last day of each month at 11:59pm."},monthly:{label:'Every month',schedule:"On the last day of each month at 11:59pm we'll email your monthly business report."},custom:{label:'Custom date range',schedule:'Request any date range from Report Centre. Weekly Summary every Sunday at 11:59 PM and Monthly Summary on the final day of every month are still included automatically.'}};
+const REPORT_FREQ_OPTIONS={off:{label:'Manual only',schedule:'Generate reports yourself from Report Centre whenever you need them.'},daily:{label:'Every day',schedule:"Daily summary at 11:59pm, or 90 minutes after your shift ends if you finish late at night — plus Weekly Insights every Sunday at 11:59pm and Monthly Insights on the last day of each month."},weekly:{label:'Every week',schedule:"Every Sunday we'll email your weekly business report, plus a Monthly Insights Summary on the last day of each month at 11:59pm."},monthly:{label:'Every month',schedule:"On the last day of each month at 11:59pm we'll email your monthly business report."},custom:{label:'Custom date range',schedule:'Request any date range from Report Centre. Weekly Summary every Sunday at 11:59 PM and Monthly Summary on the final day of every month are still included automatically.'}};
 let suSelectedFrequency='weekly',pendingStayUpdatedAfterShift=false;
 const BRAND_MESSAGE='Your business. On AutoPilot.';
 const BRAND_TAGLINE='Your business. On AutoPilot.';
@@ -1077,9 +1110,9 @@ const MP_003_LOCKED=true;
 const MP_004_LOCKED=true;
 const MP_005_LOCKED=true;
 const ONBOARDING_COMPLETE=true;
-const ONBOARD_SCREENS=['welcome','knowYou','trackingMode','permissions','emailSetup','reportSchedule','onboardReady'];
-const ONBOARD_STEP_PROGRESS={welcome:0,name:14,trackingMode:42,enableSetup:57,email:71,reportSchedule:85,ready:100};
-let knowYouMode='name',onboardReportFrequency='weekly';
+const ONBOARD_SCREENS=['welcome','knowYou','trackingMode','permissions','workSchedule','emailSetup','onboardReady'];
+const ONBOARD_STEP_PROGRESS={welcome:0,name:14,trackingMode:28,enableSetup:42,workSchedule:57,email:71,ready:100};
+let knowYouMode='combined',onboardReportFrequency='weekly',onboardWorkSchedule=null;
 const KNOW_YOU_QUESTION='What are you driving today?';
 const PROMISE_PROGRESS=PROMISE_PURPOSE;
 function getApiBase(){const s=localStorage.getItem('mp_api_base');if(s)return s.replace(/\/$/,'');if(location.hostname==='localhost'||location.hostname==='127.0.0.1')return 'http://localhost:8787';return 'https://milepilot-production.up.railway.app'}
@@ -1135,31 +1168,37 @@ function updateTrackingModeRecommendHint(){}
 async function enableAutopilotBackgroundPermission(){if(typeof MPTrackingProvider!=='undefined'&&MPTrackingProvider.isNative()){const status=await MPTrackingProvider.requestPermissions();return status==='granted'}if(typeof MPExpoBridge!=='undefined'&&MPExpoBridge.request){try{const res=await MPExpoBridge.request('expo:notification:request');if(res&&res.granted!==false)return true}catch(e){}}return false}
 function startOnboardingName(){localStorage.setItem('mp_onboard_step','name');initOnboardName();showScreen('knowYou')}
 function bindOnboardNameInput(input){if(!input||input.dataset.mpBound==='1')return;const sync=()=>syncOnboardNameContinue();['input','change','keyup','paste','blur','focus'].forEach(ev=>input.addEventListener(ev,sync));input.addEventListener('animationstart',e=>{if(e.animationName==='onboardNameAutofillStart')sync()});input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();handleKnowYouContinueClick()}});input.dataset.mpBound='1'}
-function initOnboardName(){knowYouMode='name';const namePanel=q('onboardNamePanel'),vehiclePanel=q('vehicleSelectPanel'),nameBtn=q('knowYouContinue'),vehicleBtn=q('vehicleContinue');if(namePanel)namePanel.hidden=false;if(vehiclePanel)vehiclePanel.hidden=true;if(nameBtn){nameBtn.hidden=false;nameBtn.onclick=handleKnowYouContinueClick}if(vehicleBtn){vehicleBtn.hidden=true;vehicleBtn.onclick=handleVehicleContinueClick}const input=q('onboardName');if(input){input.value=localStorage.getItem('mp_driver')||'';bindOnboardNameInput(input)}syncOnboardNameContinue()}
-function syncOnboardNameContinue(){const btn=q('knowYouContinue'),input=q('onboardName');if(!btn||!input)return;const ready=input.value.trim().length>0;btn.setAttribute('aria-disabled',ready?'false':'true');btn.classList.toggle('is-ready',ready)}
-function handleKnowYouContinueClick(){syncOnboardNameContinue();const n=q('onboardName')?.value.trim();if(!n){q('onboardName')?.focus();toast('Please enter your first name');return}confirmOnboardName()}
+function initOnboardName(){knowYouMode='combined';const namePanel=q('onboardNamePanel'),vehiclePanel=q('vehicleSelectPanel'),nameBtn=q('knowYouContinue'),vehicleBtn=q('vehicleContinue');if(namePanel)namePanel.hidden=false;if(vehiclePanel)vehiclePanel.hidden=false;if(nameBtn){nameBtn.hidden=false;nameBtn.onclick=handleKnowYouContinueClick}if(vehicleBtn)vehicleBtn.hidden=true;selectedVehicle=localStorage.getItem('mp_vehicle')||null;document.querySelectorAll('#onboardVehicleGrid .vehicle-card[data-vehicle]').forEach(c=>c.classList.toggle('selected',c.dataset.vehicle===selectedVehicle));const input=q('onboardName');if(input){input.value=localStorage.getItem('mp_driver')||'';bindOnboardNameInput(input)}syncOnboardNameContinue()}
+function syncOnboardNameContinue(){const btn=q('knowYouContinue'),input=q('onboardName');if(!btn||!input)return;const ready=input.value.trim().length>0&&!!selectedVehicle;btn.setAttribute('aria-disabled',ready?'false':'true');btn.classList.toggle('is-ready',ready)}
+function handleKnowYouContinueClick(){syncOnboardNameContinue();const n=q('onboardName')?.value.trim();if(!n){q('onboardName')?.focus();toast('Please enter your first name');return}if(!selectedVehicle){toast('Please select your vehicle');return}confirmOnboardName()}
 function handleVehicleContinueClick(){syncKnowYouContinue();if(knowYouMode!=='vehicle'||!selectedVehicle){toast('Please select your vehicle');return}confirmVehicle()}
-function handleTrackingModeContinueClick(){syncTrackingModeUI(false);if(!selectedTrackingMode){toast('Please choose a tracking style');return}confirmTrackingModeOnboard()}
-function confirmOnboardName(){const n=q('onboardName')?.value.trim();if(!n)return;driver=n;localStorage.setItem('mp_driver',driver);if(!localStorage.getItem('mp_vehicle')){localStorage.setItem('mp_vehicle','car');vehicle='car'}localStorage.setItem('mp_onboard_step','trackingMode');initTrackingMode(false);showScreen('trackingMode')}
-function confirmTrackingModeOnboard(){if(!selectedTrackingMode)return;if(typeof MPTrackingMode!=='undefined')MPTrackingMode.setMode(selectedTrackingMode);localStorage.setItem('mp_onboard_step','enableSetup');initEnableSetup();showScreen('permissions')}
-function initEnableSetup(){clearOnboardTimers();const isAuto=selectedTrackingMode==='autopilot'||(typeof MPTrackingMode!=='undefined'&&MPTrackingMode.isAutoPilot());const manual=q('enableManualBlock'),auto=q('enableAutopilotBlock'),btn=q('permSetupBtn');if(manual)manual.hidden=isAuto;if(auto)auto.hidden=!isAuto;if(btn){btn.disabled=false;btn.textContent='Continue Setup'}}
-async function continueSetup(){const btn=q('permSetupBtn');if(btn){btn.disabled=true;btn.textContent='Configuring…'}const isAuto=selectedTrackingMode==='autopilot'||(typeof MPTrackingMode!=='undefined'&&MPTrackingMode.isAutoPilot());try{await enableGpsPermission()}catch(e){}if(isAuto){try{await enableAutopilotBackgroundPermission()}catch(e){}}try{await enableOnboardNotifications()}catch(e){}if(btn){btn.disabled=false;btn.textContent='Continue Setup'}localStorage.setItem('mp_onboard_step','email');initEmailSetup();showScreen('emailSetup')}
+function handleTrackingModeContinueClick(){syncTrackingModeUI(false);if(!selectedTrackingMode){toast('Please choose how MilePilot should work');return}confirmTrackingModeOnboard()}
+function confirmOnboardName(){const n=q('onboardName')?.value.trim();if(!n||!selectedVehicle)return;driver=n;vehicle=selectedVehicle;localStorage.setItem('mp_driver',driver);localStorage.setItem('mp_vehicle',vehicle);localStorage.setItem('mp_onboard_step','trackingMode');initTrackingMode(false);showScreen('trackingMode')}
+function confirmTrackingModeOnboard(){if(!selectedTrackingMode)return;if(typeof MPTrackingMode!=='undefined')MPTrackingMode.setMode(selectedTrackingMode);if(selectedTrackingMode==='manual'){localStorage.setItem('mp_onboard_step','workSchedule');goToWorkSchedule();return}localStorage.setItem('mp_onboard_step','enableSetup');initEnableSetup();showScreen('permissions')}
+function initEnableSetup(){clearOnboardTimers();const btn=q('permSetupBtn');if(btn){btn.disabled=false;btn.textContent='Enable AutoPilot'}}
+function skipPermissions(){if(!localStorage.getItem('mp_location_choice'))localStorage.setItem('mp_location_choice','skipped');goToWorkSchedule()}
+async function continueSetup(){const btn=q('permSetupBtn');if(btn){btn.disabled=true;btn.textContent='Configuring…'}const isAuto=selectedTrackingMode==='autopilot'||(typeof MPTrackingMode!=='undefined'&&MPTrackingMode.isAutoPilot());try{await enableGpsPermission()}catch(e){}if(isAuto){try{await enableAutopilotBackgroundPermission()}catch(e){}}try{await enableOnboardNotifications()}catch(e){}if(btn){btn.disabled=false;btn.textContent='Enable AutoPilot'}goToWorkSchedule()}
+function goToWorkSchedule(){localStorage.setItem('mp_onboard_step','workSchedule');initWorkSchedule();showScreen('workSchedule')}
+function initWorkSchedule(){onboardWorkSchedule=localStorage.getItem('mp_work_schedule')||null;document.querySelectorAll('#workScheduleGrid .freq-btn').forEach(b=>b.classList.toggle('selected',b.dataset.schedule===onboardWorkSchedule))}
+function selectWorkSchedule(schedule){onboardWorkSchedule=schedule;document.querySelectorAll('#workScheduleGrid .freq-btn').forEach(b=>b.classList.toggle('selected',b.dataset.schedule===schedule))}
+function confirmWorkSchedule(){if(onboardWorkSchedule)localStorage.setItem('mp_work_schedule',onboardWorkSchedule);else localStorage.removeItem('mp_work_schedule');localStorage.setItem('mp_onboard_step','email');initEmailSetup();showScreen('emailSetup')}
+function skipWorkSchedule(){localStorage.removeItem('mp_work_schedule');onboardWorkSchedule=null;localStorage.setItem('mp_onboard_step','email');initEmailSetup();showScreen('emailSetup')}
+function saveOnboardReportPrefs(){if(onboardReportFrequency==='off'){setReportFrequency('off');saveReportPrefs({emailReports:false})}else if(onboardReportFrequency){setReportFrequency(onboardReportFrequency);saveReportPrefs({emailReports:true});markStayUpdatedPromptSeen()}}
+function initOnboardReady(){const mode=(typeof MPTrackingMode!=='undefined'&&MPTrackingMode.getMode())||selectedTrackingMode||'autopilot';const lead=q('onboardReadyLead'),sub=q('onboardReadyMode');if(lead)lead.textContent='MilePilot is set up and ready to track your mileage.';if(sub){if(mode==='manual')sub.textContent='Manual Mode is ready. Start and stop trips whenever you choose.';else{const loc=localStorage.getItem('mp_location_choice');sub.textContent=loc==='granted'?'AutoPilot is ready. We\u2019ll detect journeys in the background and ask only when needed.':'AutoPilot is selected. Finish location setup in Settings when you\u2019re ready.'}}}
 async function enableOnboardNotifications(){if(typeof MPExpoBridge!=='undefined'&&MPExpoBridge.request){try{const res=await MPExpoBridge.request('expo:notification:request');localStorage.setItem('mp_notifications_choice',res&&(res.granted||res.status==='granted')?'granted':'skipped');return}catch(e){}}enableNotificationPermission();await new Promise(r=>setTimeout(r,400))}
-function initEmailSetup(){const email=q('emailInput');if(email)email.value=localStorage.getItem('mp_email')||''}
-function onboardSignInApple(){toast('Apple sign-in coming soon — enter your email below for now')}
-function onboardSignInGoogle(){toast('Google sign-in coming soon — enter your email below for now')}
-function confirmEmailSetup(){const e=q('emailInput')?.value.trim();if(e)localStorage.setItem('mp_email',e);localStorage.setItem('mp_onboard_step','reportSchedule');initReportSchedule();showScreen('reportSchedule')}
-function skipEmailSetup(){localStorage.setItem('mp_onboard_step','reportSchedule');initReportSchedule();showScreen('reportSchedule')}
+function initEmailSetup(){const email=q('emailInput');if(email)email.value=localStorage.getItem('mp_email')||'';onboardReportFrequency=getReportFrequency()||'weekly';if(onboardReportFrequency==='daily'||onboardReportFrequency==='custom')onboardReportFrequency='weekly';selectOnboardFrequency(onboardReportFrequency)}
+function confirmEmailSetup(){const e=q('emailInput')?.value.trim();if(e)localStorage.setItem('mp_email',e);saveOnboardReportPrefs();localStorage.setItem('mp_onboard_step','ready');initOnboardReady();showScreen('onboardReady')}
+function skipEmailSetup(){saveOnboardReportPrefs();localStorage.setItem('mp_onboard_step','ready');initOnboardReady();showScreen('onboardReady')}
 function initReportSchedule(){onboardReportFrequency=getReportFrequency()||'weekly';selectOnboardFrequency(onboardReportFrequency)}
-function selectOnboardFrequency(freq){onboardReportFrequency=freq;document.querySelectorAll('#onboardFreqGrid .freq-btn').forEach(b=>b.classList.toggle('selected',b.dataset.freq===freq));const sched=q('onboardScheduleCopy');if(sched)sched.textContent=getFrequencyScheduleCopy(freq==='custom'?'custom':freq)}
-function confirmReportSchedule(){if(onboardReportFrequency&&onboardReportFrequency!=='custom'){setReportFrequency(onboardReportFrequency);saveReportPrefs({emailReports:true});markStayUpdatedPromptSeen()}else if(onboardReportFrequency==='custom'){setReportFrequency('weekly');saveReportPrefs({emailReports:true});markStayUpdatedPromptSeen()}localStorage.setItem('mp_onboard_step','ready');showScreen('onboardReady')}
+function selectOnboardFrequency(freq){onboardReportFrequency=freq;document.querySelectorAll('#onboardFreqGrid .freq-btn').forEach(b=>b.classList.toggle('selected',b.dataset.freq===freq));const sched=q('onboardScheduleCopy');if(sched)sched.textContent=freq==='off'?'':getFrequencyScheduleCopy(freq)}
+function confirmReportSchedule(){saveOnboardReportPrefs();localStorage.setItem('mp_onboard_step','ready');initOnboardReady();showScreen('onboardReady')}
 function openDashboard(){finishOnboarding()}
 function openVehicleSelector(){knowYouMode='vehicle';const namePanel=q('onboardNamePanel'),vehiclePanel=q('vehicleSelectPanel'),nameBtn=q('knowYouContinue'),vehicleBtn=q('vehicleContinue');if(namePanel)namePanel.hidden=true;if(vehiclePanel)vehiclePanel.hidden=false;if(nameBtn)nameBtn.hidden=true;if(vehicleBtn){vehicleBtn.hidden=false;syncKnowYouContinue()}selectedVehicle=localStorage.getItem('mp_vehicle')||null;document.querySelectorAll('.vehicle-card[data-vehicle]').forEach(c=>c.classList.toggle('selected',c.dataset.vehicle===selectedVehicle));showScreen('knowYou')}
 function renderVehicleSettingsSummary(){const el=q('settingsVehicleLabel');if(el)el.textContent=vehicles[localStorage.getItem('mp_vehicle')||vehicle||'car']?.label||'Car'}
 async function confirmTrackingMode(){if(!selectedTrackingMode)return;if(typeof MPTrackingMode!=='undefined')MPTrackingMode.setMode(selectedTrackingMode,{frequency:selectedDrivingFrequency||undefined});if(trackingModeChoiceMode==='settings'){if(selectedTrackingMode==='autopilot')await enableAutopilotBackgroundPermission();saveTrackingModeSettings();return}}
 function openTrackingModeSettings(){trackingModeChoiceMode='settings';initTrackingMode(true);showScreen('trackingModeSettings')}
 function saveTrackingModeSettings(){if(!selectedTrackingMode)return;const prev=typeof MPTrackingMode!=='undefined'?MPTrackingMode.getMode():null;if(typeof MPTrackingMode!=='undefined')MPTrackingMode.setMode(selectedTrackingMode,{frequency:selectedDrivingFrequency||undefined});if(prev&&prev!==selectedTrackingMode&&ccState==='active'){if(selectedTrackingMode==='manual'){stopBackgroundGpsPoll();if(typeof MPTrackingProvider!=='undefined')MPTrackingProvider.stopTracking()}else enableTrackingGps(false)}trackingModeChoiceMode='onboard';renderTrackingModeSettingsSummary();showSettings();toast(copyMsg('trackingModeSaved','Tracking mode updated ✓'))}
-function renderTrackingModeSettingsSummary(){const label=q('settingsTrackingModeLabel'),sum=q('settingsTrackingModeSummary'),autoCard=q('settingsAutopilotCard');if(typeof MPTrackingMode==='undefined')return;const meta=MPTrackingMode.getModeMeta(MPTrackingMode.getMode());if(label)label.textContent=meta.shortLabel||meta.label;if(sum)sum.textContent=meta.id==='manual'?meta.label+' — you start and end each journey. Professional reports work the same.':meta.label+' — background recording, lock-screen support, and automatic trip end after 90 minutes stopped.';if(autoCard)autoCard.hidden=MPTrackingMode.isManual()}
+function renderTrackingModeSettingsSummary(){const label=q('settingsTrackingModeLabel'),sum=q('settingsTrackingModeSummary'),autoCard=q('settingsAutopilotCard');if(typeof MPTrackingMode==='undefined')return;const meta=MPTrackingMode.getModeMeta(MPTrackingMode.getMode());if(label)label.textContent=meta.shortLabel||meta.label;let text=meta.id==='manual'?meta.label+' — you start and end each journey. Professional reports work the same.':meta.label+' — background recording, lock-screen support, and automatic trip end after 90 minutes stopped.';if(meta.id!=='manual'&&localStorage.getItem('mp_location_choice')!=='granted')text+=' Setup incomplete — enable background location in Settings.';if(sum)sum.textContent=text;if(autoCard)autoCard.hidden=MPTrackingMode.isManual()}
 function q(id){return document.getElementById(id)}function toast(msg){q('toast').textContent=msg;q('toast').classList.add('show');setTimeout(()=>q('toast').classList.remove('show'),3000)}
 function copyMsg(key,fallback){return(typeof MPCopy!=='undefined'&&MPCopy[key])?(typeof MPCopy[key]==='function'?MPCopy[key]:MPCopy[key]):fallback}
 function renderEmptyIllustration(el){if(!el||typeof MPCopy==='undefined')return;el.innerHTML=MPCopy.emptyIllustrationSvg()}
@@ -1201,8 +1240,8 @@ let knowYouTimers=[];
 function clearKnowYouMessaging(){knowYouTimers.forEach(t=>clearTimeout(t));knowYouTimers=[]}
 function startKnowYouMessaging(){const el=q('knowYouMessage');if(!el)return;clearKnowYouMessaging();el.textContent=KNOW_YOU_QUESTION;el.style.transition='opacity .38s cubic-bezier(.22,1,.36,1)';el.style.opacity='0';knowYouTimers.push(setTimeout(()=>{el.style.opacity='1'},50))}
 function initKnowYou(){driver=driver||localStorage.getItem('mp_driver')||'';q('knowYouGreeting').textContent=`Great to meet you, ${driver} 👋`;selectedVehicle=localStorage.getItem('mp_vehicle')||null;document.querySelectorAll('.vehicle-card').forEach(c=>c.classList.toggle('selected',c.dataset.vehicle===selectedVehicle));syncKnowYouContinue();clearKnowYouMessaging();const msg=q('knowYouMessage');if(msg){msg.textContent='';msg.style.opacity='0'}setTimeout(startKnowYouMessaging,850)}
-function selectVehicle(v){selectedVehicle=v;document.querySelectorAll('.vehicle-card').forEach(c=>c.classList.toggle('selected',c.dataset.vehicle===v));syncKnowYouContinue()}
-function syncKnowYouContinue(){const btn=knowYouMode==='vehicle'?q('vehicleContinue'):q('knowYouContinue');if(!btn)return;const ready=knowYouMode==='vehicle'?!!selectedVehicle:!!q('onboardName')?.value.trim();btn.setAttribute('aria-disabled',ready?'false':'true');btn.classList.toggle('is-ready',ready);btn.textContent=knowYouMode==='vehicle'?(ready?'Continue':'Select your vehicle'):'Continue'}
+function selectVehicle(v){selectedVehicle=v;document.querySelectorAll('.vehicle-card[data-vehicle]').forEach(c=>c.classList.toggle('selected',c.dataset.vehicle===v));if(knowYouMode==='combined')syncOnboardNameContinue();else syncKnowYouContinue()}
+function syncKnowYouContinue(){const btn=knowYouMode==='vehicle'?q('vehicleContinue'):q('knowYouContinue');if(!btn)return;const ready=knowYouMode==='vehicle'?!!selectedVehicle:knowYouMode==='combined'?(!!q('onboardName')?.value.trim()&&!!selectedVehicle):!!q('onboardName')?.value.trim();btn.setAttribute('aria-disabled',ready?'false':'true');btn.classList.toggle('is-ready',ready);btn.textContent=knowYouMode==='vehicle'?(ready?'Continue':'Select your vehicle'):'Continue'}
 function confirmVehicle(){if(!selectedVehicle)return;vehicle=selectedVehicle;localStorage.setItem('mp_vehicle',vehicle);if(knowYouMode==='vehicle'){knowYouMode='name';showSettings();renderVehicleSettingsSummary();toast(copyMsg('vehicleUpdated','Vehicle updated ✓'));return}}
 let onboardTimers=[];
 function clearOnboardTimers(){onboardTimers.forEach(t=>clearTimeout(t));onboardTimers=[]}
@@ -1243,7 +1282,7 @@ function loadShifts(){try{return JSON.parse(localStorage.getItem('mp_shifts')||'
 function normaliseShift(s){let v=s.vehicle||vehicle||'car',mi=Number(s.miles)||0,sec=Number(s.seconds)||0;return{id:s.id||('shift_'+Date.now()+Math.random()),miles:mi,seconds:sec,movingSeconds:Number(s.movingSeconds)||0,vehicle:v,hmrc:Number(s.hmrc)||Number(claim(mi,v).toFixed(2)),date:s.date||new Date(s.startISO||Date.now()).toLocaleDateString('en-GB'),startISO:s.startISO||new Date().toISOString(),endISO:s.endISO||s.startISO||new Date().toISOString(),route:s.route||s.routePoints||[],stops:s.stops||[],engineVersion:s.engineVersion||TRACKING_ENGINE_V}}
 function showPersonal(){startOnboardingName()}
 function saveEmailSetup(){confirmEmailSetup()}
-function resetOnboarding(){localStorage.removeItem('mp_driver');localStorage.removeItem('mp_vehicle');localStorage.removeItem('userWorkType');localStorage.removeItem(BUSINESS_PROFILE_KEY);localStorage.removeItem('mp_location_choice');localStorage.removeItem('mp_notifications_choice');localStorage.removeItem('mp_onboard_step');localStorage.removeItem('mp_onboard_complete');localStorage.removeItem('mp_report_frequency');localStorage.removeItem('mp_report_prefs');localStorage.removeItem('mp_stay_updated_prompted');localStorage.removeItem('mp_tracking_mode');localStorage.removeItem('mp_driving_frequency');driver='';vehicle='car';selectedVehicle=null;selectedProfession=null;selectedExperience=null;experienceChoiceMode='onboard';businessProfileMode='onboard';trackingModeChoiceMode='onboard';selectedTrackingMode=null;selectedDrivingFrequency=null;pendingStayUpdatedAfterShift=false;knowYouMode='name';onboardReportFrequency='weekly';const onboardName=q('onboardName');if(onboardName)onboardName.value='';clearWelcomeTyping();clearKnowYouMessaging();clearOnboardTimers();document.querySelectorAll('.vehicle-card[data-vehicle]').forEach(c=>c.classList.remove('selected'));document.querySelectorAll('[data-experience]').forEach(c=>c.classList.remove('selected'));syncOnboardNameContinue();syncExperienceContinue();localStorage.setItem('mp_onboard_step','welcome');showScreen('welcome');q('nav').classList.remove('show');initFirstImpression()}
+function resetOnboarding(){localStorage.removeItem('mp_driver');localStorage.removeItem('mp_vehicle');localStorage.removeItem('mp_work_schedule');localStorage.removeItem('userWorkType');localStorage.removeItem(BUSINESS_PROFILE_KEY);localStorage.removeItem('mp_location_choice');localStorage.removeItem('mp_notifications_choice');localStorage.removeItem('mp_onboard_step');localStorage.removeItem('mp_onboard_complete');localStorage.removeItem('mp_report_frequency');localStorage.removeItem('mp_report_prefs');localStorage.removeItem('mp_stay_updated_prompted');localStorage.removeItem('mp_tracking_mode');localStorage.removeItem('mp_driving_frequency');driver='';vehicle='car';selectedVehicle=null;selectedProfession=null;selectedExperience=null;experienceChoiceMode='onboard';businessProfileMode='onboard';trackingModeChoiceMode='onboard';selectedTrackingMode=null;selectedDrivingFrequency=null;pendingStayUpdatedAfterShift=false;knowYouMode='combined';onboardReportFrequency='weekly';onboardWorkSchedule=null;const onboardName=q('onboardName');if(onboardName)onboardName.value='';clearWelcomeTyping();clearKnowYouMessaging();clearOnboardTimers();document.querySelectorAll('.vehicle-card[data-vehicle]').forEach(c=>c.classList.remove('selected'));document.querySelectorAll('[data-experience]').forEach(c=>c.classList.remove('selected'));syncOnboardNameContinue();syncExperienceContinue();localStorage.setItem('mp_onboard_step','welcome');showScreen('welcome');q('nav').classList.remove('show');initFirstImpression()}
 function clearData(){localStorage.removeItem('mp_shifts');localStorage.removeItem('mp_trips');localStorage.removeItem('mp_active_shift');localStorage.removeItem('mp_work_done');shifts=[];trips=[];ccState='idle';shiftJustCompleted=false;resetShiftEngine();shiftId=null;stopBackgroundGpsPoll();if(gpsReconnectTimer){clearTimeout(gpsReconnectTimer);gpsReconnectTimer=null}releaseWakeLock();destroyLiveMaps();clearActiveShift();toast(copyMsg('testShiftsCleared','Test shifts cleared'));renderCommandCentre()}
 function goHome(){if(ccState==='active'){setNav('Home');showScreen('tracking');renderTrackingScreen();return}setNav('Home');renderCommandCentre();showScreen('home')}
 function fmtShort(s){s=Number(s)||0;if(s<60)return '0h';let m=Math.floor(s/60),h=Math.floor(m/60);return h?h+'h '+String(m%60).padStart(2,'0')+'m':m+'m'}
@@ -1394,7 +1433,7 @@ async function emailReport(ev){await emailArchiveReport('syn_today',ev)}
 function printReportFallback(){let t=periodTotals(),driver=localStorage.getItem('mp_driver')||'',meta=periodMeta(),rate=Math.round((vehicles[vehicle]?.rate||0.55)*100),rows=t.list.length?t.list.slice().sort((a,b)=>new Date(a.startISO)-new Date(b.startISO)).map(s=>`<tr><td>${fmtClock(s.startISO)}</td><td>${fmtClock(s.endISO)}</td><td>${s.miles.toFixed(1)}</td><td>${fmtShort(s.seconds)}</td><td>Business</td></tr>`).join(''):`<tr><td colspan="5">No journeys recorded in this period.</td></tr>`;q('printReport').innerHTML=`<div class="pdfHeaderBand"><div class="pdfLogo">Mile <span class="blue">Pilot</span></div><div class="pdfPulse"></div><p class="pdfTag">${BRAND_TAGLINE}</p></div><div class="pdfBody"><p class="pdfPeriod">${meta.sub}</p><p class="pdfMeta">${driver?'Prepared for '+driver+' · ':''}${new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}</p><p class="pdfHeroLabel">Business Miles</p><p class="pdfHeroMiles">${t.mi.toFixed(1)}</p><div class="pdfSupportRow"><div class="pdfSupportItem"><small>Travel Time</small><b>${t.sec<60?'0h 00m':fmtShort(t.sec)}</b></div><div class="pdfSupportItem"><small>Business Journeys</small><b>${t.list.length}</b></div><div class="pdfSupportItem"><small>Mileage Allowance</small><b>${money(t.hmrc)}</b></div></div><h2 class="printSection">Journey Breakdown</h2><table class="printTable"><thead><tr><th>Start</th><th>Finish</th><th>Miles</th><th>Duration</th><th>Type</th></tr></thead><tbody>${rows}</tbody></table><div class="pdfHmrcBox"><div class="pdfHmrcLeft"><strong>HMRC Summary</strong><p>Current HMRC rate: ${rate}p per mile</p><p>Business miles: ${t.mi.toFixed(1)}</p></div><div class="pdfHmrcRight"><small>Estimated mileage allowance</small><b>${money(t.hmrc)}</b></div></div><div class="printFoot"><strong>Your business. On AutoPilot.</strong>Generated automatically by MilePilot · HMRC figures are estimates for record keeping.</div></div>`;setTimeout(()=>window.print(),200)}
 function printReport(){printReportFallback()}
 function migrateOnboardingVersion(){const stored=localStorage.getItem('mp_app_version');if(stored===APP_VERSION)return false;localStorage.setItem('mp_app_version',APP_VERSION);if(localStorage.getItem('mp_onboard_complete')==='true')return false;const d=localStorage.getItem('mp_driver'),v=localStorage.getItem('mp_vehicle'),step=localStorage.getItem('mp_onboard_step');if(d&&v&&!step)return false;localStorage.removeItem('mp_driver');localStorage.removeItem('mp_vehicle');localStorage.removeItem('mp_onboard_step');localStorage.removeItem('mp_location_choice');localStorage.removeItem('mp_notifications_choice');driver='';vehicle='car';selectedVehicle=null;if(q('name'))q('name').value='';return true}
-function resumeOnboardingStep(step){driver=localStorage.getItem('mp_driver')||'';vehicle=localStorage.getItem('mp_vehicle')||'car';if(step==='name'||step==='knowYou'){initOnboardName();showScreen('knowYou');return true}if(step==='trackingMode'){initTrackingMode(false);showScreen('trackingMode');return true}if(step==='enableSetup'||step==='location'||step==='permissions'){selectedTrackingMode=(typeof MPTrackingMode!=='undefined'&&MPTrackingMode.getMode())||selectedTrackingMode;initEnableSetup();showScreen('permissions');return true}if(step==='email'||step==='emailSetup'){initEmailSetup();showScreen('emailSetup');return true}if(step==='reportSchedule'){initReportSchedule();showScreen('reportSchedule');return true}if(step==='ready'||step==='onboardReady'){showScreen('onboardReady');return true}if(step==='notifications'){initEmailSetup();showScreen('emailSetup');return true}if(step==='experience'||step==='experienceChoice'){initExperienceChoice();showScreen('experienceChoice');return true}if(step==='businessProfile'||step==='profession'){initBusinessProfile();showScreen('businessProfile');return true}if(step==='promise'){showScreen('onboardReady');return true}if(step==='welcome'){initFirstImpression();showScreen('welcome');return true}return false}
+function resumeOnboardingStep(step){driver=localStorage.getItem('mp_driver')||'';vehicle=localStorage.getItem('mp_vehicle')||'car';selectedVehicle=localStorage.getItem('mp_vehicle')||selectedVehicle;if(step==='name'||step==='knowYou'){initOnboardName();showScreen('knowYou');return true}if(step==='trackingMode'){initTrackingMode(false);showScreen('trackingMode');return true}if(step==='enableSetup'||step==='location'||step==='permissions'){selectedTrackingMode=(typeof MPTrackingMode!=='undefined'&&MPTrackingMode.getMode())||selectedTrackingMode;if(selectedTrackingMode==='manual'){initWorkSchedule();showScreen('workSchedule');return true}initEnableSetup();showScreen('permissions');return true}if(step==='workSchedule'){initWorkSchedule();showScreen('workSchedule');return true}if(step==='email'||step==='emailSetup'||step==='reportSchedule'){initEmailSetup();showScreen('emailSetup');return true}if(step==='ready'||step==='onboardReady'){initOnboardReady();showScreen('onboardReady');return true}if(step==='notifications'){initEmailSetup();showScreen('emailSetup');return true}if(step==='experience'||step==='experienceChoice'){initExperienceChoice();showScreen('experienceChoice');return true}if(step==='businessProfile'||step==='profession'){initBusinessProfile();showScreen('businessProfile');return true}if(step==='promise'){initOnboardReady();showScreen('onboardReady');return true}if(step==='welcome'){initFirstImpression();showScreen('welcome');return true}return false}
 function initSummaryReports(){if(typeof MPSummaryReports==='undefined')return;MPSummaryReports.init({getEmail:()=>localStorage.getItem('mp_email')||'',getDriver:()=>localStorage.getItem('mp_driver')||driver||'',getFrequency:()=>getReportFrequency(),getTrips:()=>{refreshTripStore();return trips.slice()},getShifts:()=>shifts.slice(),fmt,apiPost:(body)=>apiPost('/reports/send',body),getHmrcRate:()=>vehicles[vehicle]?.rate||0.55,onSent:function(type,payload){saveReportToArchive(payload,'auto-'+type);toast(copyMsg('autoReportSent','Your automatic business summary has been emailed.'))}});MPSummaryReports.checkScheduledReports();setInterval(()=>MPSummaryReports.checkScheduledReports(),60*1000)}
 function initBetaFeedback(){if(typeof MPBetaFeedback==='undefined')return;MPBetaFeedback.init({getEmail:()=>localStorage.getItem('mp_email')||'',getDriver:()=>localStorage.getItem('mp_driver')||driver||'',getVersion:()=>APP_VERSION,apiPost:(body)=>apiPost('/feedback',body),toast})}
 function assertTrackingResilience(){const required=['startBackgroundGpsPoll','stopBackgroundGpsPoll','checkGpsStale','scheduleGpsReconnect','bindMotionGpsNudge','onGpsWatchError','ensureMotionAccess','movementSpeedMps'];const missing=required.filter(n=>typeof globalThis[n]!=='function');if(missing.length)console.error('[MilePilot] TRACKING CONTRACT BROKEN ('+TRACKING_CONTRACT_ID+'): missing '+missing.join(', ')+'. See docs/TRACKING_CONTRACT.md');else if(typeof MPTrackingProvider!=='undefined'&&!MPTrackingProvider.isNative()&&typeof console!=='undefined'&&console.debug)console.debug('[MilePilot] Tracking resilience OK ('+TRACKING_CONTRACT_ID+')');else if(typeof MPTrackingProvider!=='undefined'&&MPTrackingProvider.isNative()&&typeof console!=='undefined'&&console.debug)console.debug('[MilePilot] Native tracking bridge OK ('+TRACKING_CONTRACT_ID+')')}

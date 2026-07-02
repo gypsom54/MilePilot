@@ -130,7 +130,15 @@ Trip **ends** when the driver taps End Shift **or** after 90 minutes without GPS
 
 ---
 
-## 10. Protection infrastructure
+## 11. Onboarding boundary (UI-only)
+
+Onboarding lives in `frontend/index.html` (screens + preference handlers only). It must **not** call shift start/stop, GPS handlers, or report send logic.
+
+See `docs/MILEAGE_REGRESSION_CHECKLIST.md` for the full regression checklist and onboarding rules.
+
+---
+
+## 12. Protection infrastructure
 
 | File | Role |
 |------|------|
