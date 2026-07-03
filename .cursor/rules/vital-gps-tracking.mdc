@@ -15,6 +15,7 @@ globs:
   - scripts/verify-tracking-contract.js
   - docs/TRACKING_CONTRACT.md
   - docs/TRACKING_BACKGROUND_VITAL_LOCK.md
+  - docs/CORE_TRACKING_ENGINE_V1_LOCKED.md
   - .github/workflows/tracking-guard.yml
 alwaysApply: false
 ---
@@ -29,7 +30,7 @@ alwaysApply: false
 2. **Do NOT remove** any function, constant, or file listed in `scripts/tracking-contract.json`.
 3. **Do NOT inline** tracking logic elsewhere without updating the contract and running `node scripts/verify-tracking-contract.js`.
 4. If a task touches nearby code (UI, reports, onboarding), **leave the tracking block untouched**.
-5. Before any intentional tracking change: read `docs/TRACKING_CONTRACT.md`, bump `TRACKING_ENGINE_V`, run the verifier, test on a real device (foreground + background + locked screen).
+5. Before any intentional tracking change: read `docs/TRACKING_CONTRACT.md` and `docs/CORE_TRACKING_ENGINE_V1_LOCKED.md`, bump `TRACKING_ENGINE_V`, run the verifier, test on a real device (foreground + background + locked screen).
 
 ## Protected capabilities
 

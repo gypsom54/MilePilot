@@ -1,8 +1,9 @@
 # Background & Locked-Screen Mileage — VITAL LOCK
 
-**Status:** 🔒 **FROZEN** — Field-validated 2 July 2026  
+**Status:** 🔒 **FROZEN** — Part of Core Tracking Engine v1.0 LOCKED  
 **Version locked:** v8.43.31  
-**Contract:** MP-043 v3 (`scripts/tracking-contract.json`)
+**Contract:** MP-043 v3 (`scripts/tracking-contract.json`)  
+**Manifest:** [CORE_TRACKING_ENGINE_V1_LOCKED.md](./CORE_TRACKING_ENGINE_V1_LOCKED.md)
 
 > **Do not edit.** This code path was validated on a real drive (foreground + locked screen + background). Treat it like a newborn — CI will fail if these symbols are removed.
 

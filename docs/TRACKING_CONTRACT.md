@@ -7,6 +7,8 @@
 This code is marked `VITAL` in the codebase, protected by CI, CODEOWNERS, and Cursor agent rules.  
 Validated working: foreground, background, and locked-screen recording (**v8.43.31** — field drive, July 2026).
 
+**Core engine:** Version **1.0 LOCKED** — see [CORE_TRACKING_ENGINE_V1_LOCKED.md](./CORE_TRACKING_ENGINE_V1_LOCKED.md).
+
 ---
 
 ## Protected files
@@ -51,7 +53,7 @@ Mirrored in `milepilot-upload-v2/` for Cloudflare deploys.
 3. **Build guard** — `build-upload.sh` won't zip unless verifier passes
 4. **Runtime guard** — `assertTrackingResilience()` errors at app boot if functions missing
 5. **CODEOWNERS** — `.github/CODEOWNERS` requires review on protected paths
-6. **Cursor rule** — `.cursor/rules/vital-gps-tracking.mdc` instructs agents not to touch this code
+6. **Cursor rule** — `.cursor/rules/vital-gps-tracking.mdc` and `.cursor/rules/core-tracking-engine-v1-locked.mdc` instruct agents not to touch this code
 
 **Related:** `docs/CRITICAL_FILES.md` · `docs/PRODUCTION_MONITORING_PLAN.md` · `docs/BRANCH_PROTECTION.md` · `npm run test:vital`
 
@@ -71,6 +73,7 @@ Mirrored in `milepilot-upload-v2/` for Cloudflare deploys.
 
 | Version | Date | Change |
 |---------|------|--------|
+| **Core Engine v1.0 LOCKED** | 2026-07-03 | Production sign-off — see `CORE_TRACKING_ENGINE_V1_LOCKED.md` |
 | MP-043 v3 | 2026-07-02 | Background/locked handoff + web fallback — **field-validated v8.43.31** — see `TRACKING_BACKGROUND_VITAL_LOCK.md` |
 | MP-043 v2 | 2026-06-30 | Native TestFlight bridge + vital protection markers |
 | MP-043 v1 | 2026-06-30 | PWA background GPS restored after consolidation regression |

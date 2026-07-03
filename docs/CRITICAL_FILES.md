@@ -2,6 +2,8 @@
 
 **Goal:** MilePilot must never silently break background mileage tracking, trip persistence, or automatic report delivery.
 
+**Core Tracking Engine:** Version **1.0 LOCKED** — [CORE_TRACKING_ENGINE_V1_LOCKED.md](./CORE_TRACKING_ENGINE_V1_LOCKED.md)
+
 Every file below is business-critical. Changes require explicit review, device testing (for tracking), and passing CI (`production-guard.yml`).
 
 ---
@@ -168,6 +170,7 @@ See `docs/MILEAGE_REGRESSION_CHECKLIST.md` for the full regression checklist and
 | `.cursor/rules/vital-gps-tracking.mdc` | Agent guardrail for tracking |
 | `.cursor/rules/vital-reports-pipeline.mdc` | Agent guardrail for reports |
 | `docs/TRACKING_CONTRACT.md` | Human-readable tracking contract |
+| `docs/CORE_TRACKING_ENGINE_V1_LOCKED.md` | Core engine v1.0 production sign-off |
 | `docs/PRODUCTION_MONITORING_PLAN.md` | Monitoring + health dashboard plan |
 | `docs/BRANCH_PROTECTION.md` | GitHub branch protection setup |
 

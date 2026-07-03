@@ -9,7 +9,8 @@
 - [MILEPILOT_UI_LOCK.md](./MILEPILOT_UI_LOCK.md) — screen status board (canonical checklist)
 - [ONBOARDING_V1_LOCK.md](./ONBOARDING_V1_LOCK.md) — Name & Vehicle detail
 - [MILEPILOT-DESIGN-BIBLE.md](./MILEPILOT-DESIGN-BIBLE.md) — copy, UI, animation standards
-- [TRACKING_RELIABILITY_LOCKDOWN.md](./TRACKING_RELIABILITY_LOCKDOWN.md) — Phase 2 engine rules
+- [TRACKING_RELIABILITY_LOCKDOWN.md](./TRACKING_RELIABILITY_LOCKDOWN.md) — Core engine v1.0 LOCKED
+- [CORE_TRACKING_ENGINE_V1_LOCKED.md](./CORE_TRACKING_ENGINE_V1_LOCKED.md) — Production sign-off manifest
 - [DEVELOPMENT_PRIORITIES.md](./DEVELOPMENT_PRIORITIES.md) — sprint focus
 
 ---
@@ -179,24 +180,28 @@ Commit and screenshot on each approved screen; upload **one final zip** when the
 
 ---
 
-## Phase 2 — Core engine (after UI locked)
+## Phase 2 — Core engine (LOCKED v1.0)
 
-Only after **all** Phase 1 screens are locked:
+**Status:** 🔒 **LOCKED** — July 2026. Real-world validation passed.
+
+See [CORE_TRACKING_ENGINE_V1_LOCKED.md](./CORE_TRACKING_ENGINE_V1_LOCKED.md).
+
+Frozen:
 
 - Background GPS
 - Mileage accuracy
-- AutoPilot
-- Manual Tracking
+- AutoPilot / Manual Tracking modes
 - Trip ending
 - Reports
 - Email delivery
 
-See [TRACKING_RELIABILITY_LOCKDOWN.md](./TRACKING_RELIABILITY_LOCKDOWN.md).
+Future engine work must **extend** v1.0 — not replace it. See change policy in the manifest.
 
 ---
 
-## Phase 3 — AI layer (after tracking reliable)
+## Phase 3 — AI layer (extends v1.0 engine)
 
+Build on the locked tracking foundation — do not modify core GPS or mileage logic:
 - Habit learning
 - Business / Personal prediction
 - Confidence scores
