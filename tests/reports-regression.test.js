@@ -66,6 +66,8 @@ await run("buildReportEmailHtml includes metrics from trip", async () => {
   assert.ok(html.includes("Download PDF") || html.includes("Download PDF Report"));
   assert.ok(html.includes("color-scheme"));
   assert.ok(html.includes("bgcolor=\"#031126\""));
+  assert.ok(html.includes("mp-gmail-screen"), "Gmail text shield required");
+  assert.ok(html.includes("color:#EAF2FF !important"), "light text must be locked");
   assert.ok(!html.includes("#E8EEF7"), "light blue shell must not appear");
   assert.ok(html.includes("data:image/png;base64,"), "route map must be PNG img for Gmail");
 });

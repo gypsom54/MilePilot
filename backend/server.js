@@ -93,6 +93,8 @@ app.post("/reports/send", async (req, res) => {
 
     const subject = buildReportSubject(report) || "Your MilePilot Business Mileage Report";
 
+    const pdfBuffer = Buffer.isBuffer(pdf) ? pdf : Buffer.from(pdf);
+
     const result = await resend.emails.send({
       from: process.env.EMAIL_FROM || "MilePilot <reports@milepilot.uk>",
       to: report.email,
@@ -102,7 +104,8 @@ app.post("/reports/send", async (req, res) => {
       attachments: [
         {
           filename: attachmentFilename,
-          content: pdf,
+          content: pdfBuffer,
+          contentType: "application/pdf",
         },
       ],
     });
@@ -121,6 +124,8 @@ app.post("/reports/send", async (req, res) => {
       sent: true,
       messageId: result.data?.id || null,
       reportVersion: REPORT_VERSION,
+      pdfAttached: true,
+      pdfFilename: attachmentFilename,
     });
   } catch (err) {
     console.error("Email send failed:", err);
@@ -215,7 +220,8 @@ app.get("/reports/download/:token", async (req, res) => {
       return res.status(404).send("This download link has expired. Open MilePilot to download your report again.");
     }
     res.setHeader("Content-Type", "application/pdf");
-    res.setHeader("Content-Disposition", `inline; filename="${entry.filename}"`);
+    res.setHeader("Content-Disposition", `attachment; filename="${entry.filename}"`);
+    res.setHeader("Content-Length", String(entry.pdfBuffer.length));
     res.send(entry.pdfBuffer);
   } catch (err) {
     console.error("Download failed:", err);

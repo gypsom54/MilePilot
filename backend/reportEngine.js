@@ -31,6 +31,8 @@ import {
   buildEmailDocumentShell,
   renderEmailCtaSection,
 } from "./reportEmailLayout.js";
+import { EMAIL, c } from "./emailTokens.js";
+import { gmailTextShield } from "./emailDarkMode.js";
 
 export const BRAND = {
   navy: "#031126",
@@ -58,7 +60,7 @@ export const VEHICLE_LABELS = {
   motorcycle: "Motorcycle",
 };
 
-export const REPORT_VERSION = "MP-020-premium-email-v3";
+export const REPORT_VERSION = "MP-020-premium-email-v4";
 const APP_URL = "https://app.milepilot.uk";
 
 /** Locked brand lockup — must match app `.brand-bar` exactly */
@@ -79,9 +81,9 @@ export function buildReportArchiveDeepLink() {
 export function buildBrandEmailHeader() {
   return `<table width="100%" cellpadding="0" cellspacing="0">
 <tr><td style="padding:0 8px 28px;text-align:center;">
-  <div style="font-size:34px;font-weight:700;color:#FFFFFF;letter-spacing:-0.04em;line-height:1;-webkit-font-smoothing:antialiased;">Mile <span style="color:#0D6BFF;">Pilot</span></div>
+  <div style="font-size:34px;font-weight:700;${c(EMAIL.textWhite)}letter-spacing:-0.04em;line-height:1;-webkit-font-smoothing:antialiased;" class="mp-text-white">Mile <span style="${c(EMAIL.textBrand)}">Pilot</span></div>
   <div style="height:2px;width:200px;max-width:100%;margin:12px auto 0;border-radius:999px;background:linear-gradient(90deg,rgba(13,107,255,.5) 0%,rgba(110,180,255,.92) 50%,rgba(13,107,255,.5) 100%);box-shadow:0 0 22px rgba(13,107,255,.28),0 0 10px rgba(13,107,255,.16);"></div>
-  <p style="margin:10px 0 0;font-size:11px;font-weight:600;letter-spacing:0.12em;color:rgba(110,180,255,.82);">${BRAND_TAGLINE}</p>
+  <p style="margin:10px 0 0;font-size:11px;font-weight:600;letter-spacing:0.12em;${c(EMAIL.textTagline)}" class="mp-text-accent">${BRAND_TAGLINE}</p>
 </td></tr></table>`;
 }
 
@@ -994,8 +996,8 @@ export function buildReportEmailHtml(report, options = {}) {
   const comparison =
     isSummary && (a.weekComparePct !== null || a.monthComparePct !== null)
       ? `<div style="margin:0 0 36px;padding:22px 24px;border-radius:18px;background:rgba(13,107,255,.1);border:1px solid rgba(13,107,255,.24);">
-          <div style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#6EB4FF;margin-bottom:10px;">Period Insight</div>
-          <div style="font-size:15px;color:#EAF2FF;line-height:1.6;">${comparisonLine(a, a.period === "MonthlySummary" || a.period === "Monthly")}</div>
+          <div style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;${c(EMAIL.textAccent)}margin-bottom:10px;" class="mp-text-accent">Period Insight</div>
+          <div style="font-size:15px;${c(EMAIL.textPrimary)}line-height:1.6;" class="mp-text">${comparisonLine(a, a.period === "MonthlySummary" || a.period === "Monthly")}</div>
         </div>`
       : "";
 
@@ -1003,18 +1005,18 @@ export function buildReportEmailHtml(report, options = {}) {
   const archiveUrl = options.archiveUrl || buildReportArchiveDeepLink();
 
   const inner = `${buildBrandEmailHeader()}
-  <p style="margin:0 0 32px;font-size:22px;font-weight:600;color:#EAF2FF;line-height:1.35;letter-spacing:-0.02em;" class="mp-body-text">${greeting}, ${name}</p>
+  ${gmailTextShield(`<p style="margin:0 0 32px;font-size:22px;font-weight:600;${c(EMAIL.textPrimary)}line-height:1.35;letter-spacing:-0.02em;" class="mp-text">${greeting}, ${name}</p>`)}
   ${email.mapHero}
   ${email.metricGrid}
   ${comparison}
-  ${a.pendingNotice ? `<p style="margin:0 0 32px;font-size:14px;color:#F0C35A;line-height:1.55;padding:16px 18px;border-radius:14px;background:rgba(240,195,90,.1);border:1px solid rgba(240,195,90,.28);">${a.pendingNotice}</p>` : ""}
+  ${a.pendingNotice ? `<p style="margin:0 0 32px;font-size:14px;${c(EMAIL.amber)}line-height:1.55;padding:16px 18px;border-radius:14px;background:rgba(240,195,90,.1);border:1px solid rgba(240,195,90,.28);">${a.pendingNotice}</p>` : ""}
   ${renderEmailCtaSection(pdfDownloadUrl, archiveUrl)}
   ${email.dailySummary}
   ${email.automationNotes}
   <div style="border-top:1px solid rgba(255,255,255,.08);padding-top:32px;text-align:center;">
-    <p style="margin:0 0 10px;font-size:12px;font-weight:600;letter-spacing:0.14em;color:#0D6BFF;">${BRAND_TAGLINE}</p>
-    <p style="margin:0 0 8px;font-size:14px;color:#B9C8DD;line-height:1.6;" class="mp-muted">Thank you for choosing MilePilot.</p>
-    <p style="margin:0;font-size:11px;color:#93A8C4;line-height:1.55;" class="mp-muted">HMRC figures are estimates for record keeping. Verify against official guidance before filing.<br>MilePilot · app.milepilot.uk</p>
+    ${gmailTextShield(`<p style="margin:0 0 10px;font-size:12px;font-weight:600;letter-spacing:0.14em;${c(EMAIL.textBrand)}">${BRAND_TAGLINE}</p>
+    <p style="margin:0 0 8px;font-size:14px;${c(EMAIL.textMuted)}line-height:1.6;" class="mp-text-muted">Thank you for choosing MilePilot.</p>
+    <p style="margin:0;font-size:11px;${c(EMAIL.textLegal)}line-height:1.55;" class="mp-text-soft">HMRC figures are estimates for record keeping. Verify against official guidance before filing.<br>MilePilot · app.milepilot.uk</p>`)}
   </div>`;
 
   return buildEmailDocumentShell(inner);

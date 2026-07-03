@@ -1,7 +1,7 @@
 /**
- * MilePilot Report Email Layout — premium, spacious briefing design.
- * Full dark-navy gradient shell (matches docs/report-email-preview.html).
- * Route maps are rasterised to PNG — Gmail strips inline SVG.
+ * MilePilot Report Email Layout — premium briefing design.
+ * Canonical reference: docs/report-email-preview.html
+ * Gmail: PNG route maps + blend-mode text shields + locked light colours on dark navy.
  */
 import {
   buildRouteMapContext,
@@ -9,35 +9,26 @@ import {
   generateEmptyStateSvg,
 } from "./routeMapService.js";
 import { svgToEmailImgTag } from "./emailMapImage.js";
+import { EMAIL, c } from "./emailTokens.js";
+import { emailDarkModeStyles, gmailTextShield } from "./emailDarkMode.js";
 
 const EMAIL_CONTENT_W = 440;
 const EMAIL_MAP_H = 272;
 
-/** Wraps report body — dark premium gradient, Gmail/iOS dark-mode safe. */
+/** Document shell — dark navy gradient, light text locked for Gmail/iOS. */
 export function buildEmailDocumentShell(innerHtml) {
   return `<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="color-scheme" content="light dark">
-<meta name="supported-color-schemes" content="light dark">
+<meta name="color-scheme" content="dark">
+<meta name="supported-color-schemes" content="dark">
 <title>MilePilot Report</title>
-<style type="text/css">
-  :root { color-scheme: light dark; supported-color-schemes: light dark; }
-  body { margin:0 !important; padding:0 !important; width:100% !important; -webkit-text-size-adjust:100%; }
-  .mp-outer { background-color:#031126 !important; }
-  .mp-body-text { color:#EAF2FF !important; }
-  .mp-muted { color:#B9C8DD !important; }
-  @media (prefers-color-scheme: dark) {
-    .mp-outer { background-color:#020B1B !important; }
-    .mp-body-text { color:#EAF2FF !important; }
-    .mp-muted { color:#B9C8DD !important; }
-  }
-</style>
+${emailDarkModeStyles()}
 </head>
-<body class="mp-outer" style="margin:0;padding:0;background-color:#031126;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased;">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="mp-outer" bgcolor="#031126" style="background-color:#031126;background:linear-gradient(180deg,#0A2854 0%,#031126 55%,#020B1B 100%);padding:52px 20px 60px;">
+<body class="body mp-outer" style="margin:0;padding:0;background-color:${EMAIL.bgDeep};font-family:${EMAIL.fontStack};-webkit-font-smoothing:antialiased;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="mp-outer" bgcolor="${EMAIL.bgDeep}" style="background-color:${EMAIL.bgDeep};background-image:${EMAIL.shellGradient};padding:52px 20px 60px;">
 <tr><td align="center">
 <table role="presentation" width="480" cellpadding="0" cellspacing="0" border="0" style="max-width:480px;width:100%;">
 <tr><td style="padding:0 24px;">
@@ -83,13 +74,13 @@ export function renderEmailMapHero(ctx) {
   }
 
   const captionHtml = caption
-    ? `<p style="margin:0;padding:0 4px 4px;font-size:13px;line-height:1.5;color:#93A8C4;text-align:center;">${caption}</p>`
+    ? `<p style="margin:0;padding:0 4px 4px;font-size:13px;line-height:1.5;${c(EMAIL.textSoft)}text-align:center;" class="mp-text-soft">${caption}</p>`
     : "";
 
   const mapImg = svgToEmailImgTag(mapInner, title) || mapInner;
   return `<div style="margin:0 0 36px;">
-    <p style="margin:0 0 14px;font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#6EB4FF;">${title}</p>
-    <div style="border-radius:20px;overflow:hidden;border:1px solid rgba(13,107,255,.32);background:linear-gradient(180deg,#0A2854 0%,#061A38 100%);box-shadow:0 16px 48px rgba(13,107,255,.18),inset 0 1px 0 rgba(255,255,255,.06);line-height:0;font-size:0;">
+    ${gmailTextShield(`<p style="margin:0 0 14px;font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;${c(EMAIL.textAccent)}" class="mp-text-accent">${title}</p>`)}
+    <div style="border-radius:20px;overflow:hidden;border:1px solid rgba(13,107,255,.32);background:linear-gradient(180deg,${EMAIL.bgNavy} 0%,${EMAIL.bgMap} 100%);box-shadow:0 16px 48px rgba(13,107,255,.18),inset 0 1px 0 rgba(255,255,255,.06);line-height:0;font-size:0;">
       ${mapImg}
     </div>
     ${captionHtml}
@@ -99,8 +90,8 @@ export function renderEmailMapHero(ctx) {
 function metricCell(label, value) {
   return `<td width="50%" style="padding:6px;vertical-align:top;">
     <div style="background:linear-gradient(180deg,rgba(13,107,255,.14) 0%,rgba(13,107,255,.05) 100%);border:1px solid rgba(13,107,255,.26);border-radius:18px;padding:26px 22px;box-shadow:0 10px 32px rgba(13,107,255,.12),inset 0 1px 0 rgba(255,255,255,.06);min-height:88px;box-sizing:border-box;">
-      <div style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#6EB4FF;margin-bottom:14px;">${label}</div>
-      <div style="font-size:34px;font-weight:700;color:#FFFFFF;letter-spacing:-0.04em;line-height:1;">${value}</div>
+      <div style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;${c(EMAIL.textAccent)}margin-bottom:14px;" class="mp-text-accent">${label}</div>
+      <div style="font-size:34px;font-weight:700;${c(EMAIL.textWhite)}letter-spacing:-0.04em;line-height:1;" class="mp-text-white">${value}</div>
     </div>
   </td>`;
 }
@@ -115,8 +106,8 @@ export function renderEmailMetricGrid(stats, helpers = {}) {
 }
 
 function summaryLine(text) {
-  return `<div style="margin:0 0 12px;font-size:15px;line-height:1.55;color:#C8D8EF;">
-    <span style="color:#20D781;font-weight:700;margin-right:8px;">✓</span>${text}
+  return `<div style="margin:0 0 12px;font-size:15px;line-height:1.55;${c(EMAIL.textBody)}" class="mp-text-body">
+    <span style="${c(EMAIL.green)}font-weight:700;margin-right:8px;">✓</span>${text}
   </div>`;
 }
 
@@ -149,8 +140,7 @@ export function renderEmailDailySummary(ctx, analysis, helpers = {}) {
   ].filter(Boolean);
 
   return `<div style="margin:0 0 36px;padding:28px 24px;border-radius:20px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);box-shadow:0 8px 28px rgba(0,0,0,.12);">
-    <div style="font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#6EB4FF;margin-bottom:18px;">${title}</div>
-    ${lines.join("")}
+    ${gmailTextShield(`<div style="font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;${c(EMAIL.textAccent)}margin-bottom:18px;" class="mp-text-accent">${title}</div>${lines.join("")}`)}
   </div>`;
 }
 
@@ -169,21 +159,25 @@ export function renderEmailAutomationNotes(period) {
     notes.push("MilePilot keeps your business mileage totals up to date automatically.");
   }
 
+  const body = notes
+    .map((n) => `<p style="margin:0 0 10px;font-size:14px;line-height:1.6;${c("#B9D4FF")}" class="mp-text-body">${n}</p>`)
+    .join("");
+
   return `<div style="margin:0 0 40px;padding:22px 24px;border-radius:16px;background:rgba(13,107,255,.08);border:1px solid rgba(13,107,255,.2);">
-    ${notes.map((n) => `<p style="margin:0 0 10px;font-size:14px;line-height:1.6;color:#B9D4FF;">${n}</p>`).join("")}
+    ${gmailTextShield(body)}
   </div>`;
 }
 
 export function renderEmailCtaSection(pdfDownloadUrl, archiveUrl) {
   return `<table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 12px;">
     <tr><td align="center" style="padding-bottom:14px;">
-      <a href="${pdfDownloadUrl}" style="display:inline-block;width:100%;max-width:320px;background:linear-gradient(180deg,#1E88FF 0%,#0D6BFF 55%,#005FE8 100%);color:#FFFFFF;font-size:17px;font-weight:600;text-decoration:none;padding:18px 28px;border-radius:16px;letter-spacing:-0.01em;box-sizing:border-box;box-shadow:0 12px 32px rgba(13,107,255,.32),inset 0 1px 0 rgba(255,255,255,.12);">Download PDF Report</a>
+      <a href="${pdfDownloadUrl}" style="display:inline-block;width:100%;max-width:320px;background:${EMAIL.btnGradient};${c(EMAIL.textWhite)}font-size:17px;font-weight:600;text-decoration:none;padding:18px 28px;border-radius:16px;letter-spacing:-0.01em;box-sizing:border-box;box-shadow:0 12px 32px rgba(13,107,255,.32),inset 0 1px 0 rgba(255,255,255,.12);">Download PDF Report</a>
     </td></tr>
     <tr><td align="center" style="padding-bottom:8px;">
-      <a href="${archiveUrl}" style="display:inline-block;color:#93A8C4;font-size:15px;font-weight:600;text-decoration:none;padding:10px 18px;">Open MilePilot →</a>
+      <a href="${archiveUrl}" style="display:inline-block;${c(EMAIL.textSoft)}font-size:15px;font-weight:600;text-decoration:none;padding:10px 18px;" class="mp-text-soft">Open MilePilot →</a>
     </td></tr>
   </table>
-  <p style="margin:0 0 36px;font-size:13px;color:#93A8C4;line-height:1.6;text-align:center;">Your professional PDF is also attached to this email.</p>`;
+  <p style="margin:0 0 36px;font-size:13px;${c(EMAIL.textSoft)}line-height:1.6;text-align:center;" class="mp-text-soft">Your professional PDF is also attached to this email.</p>`;
 }
 
 export function buildEmailRouteSection(shifts, analysis, helpers = {}) {
