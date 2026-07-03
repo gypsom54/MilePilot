@@ -49,7 +49,11 @@ export function buildPremiumPdf(a, options = {}) {
     addPremiumPage(doc, a, margin, contentW, 1, theme, (d, analysis, m, w, y, t) => {
       y = drawSectionTitle(d, m, y, "Executive Summary", "Business Mileage Dashboard", analysis.periodRangeLabel, t);
       y = drawKpiGrid(d, m, y, w, executiveKpis(analysis, analysis.periodRangeLabel), t, 2);
-      d.fillColor(t.textMuted).font("Helvetica").fontSize(9).text(`Generated ${fmtDateLong()} · ${analysis.reportId}`, m, y + 4);
+      d.fillColor(t.textMuted).font("Helvetica").fontSize(9).text(
+        `Generated ${fmtDateLong(new Date(analysis.generatedAtISO || Date.now()))} · ${analysis.reportId}`,
+        m,
+        y + 4
+      );
       return y + 24;
     });
 

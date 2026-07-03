@@ -1,7 +1,7 @@
 {
   "version": "1.0",
   "status": "LOCKED",
-  "capturedAt": "2026-07-03T13:02:07.039Z",
+  "capturedAt": "2026-07-03T13:11:26.748Z",
   "periods": {
     "Daily": {
       "emailFingerprint": "228dd10460c4b33cac2a724ec3149e85c6806cee764ab97b8a9b39b0f7e9fd3f",
@@ -61,7 +61,7 @@
     },
     "Weekly": {
       "emailFingerprint": "556eac1ef1fa09c0041303f1790a02e7e44dc73a8c54a71760e80898cbf38114",
-      "pdfFingerprint": "50752afeeeb9e7daa6a1068df2c1a24051ee3212f905f3b9b8e1a0997f5a7f18",
+      "pdfFingerprint": "95e379fcbd73f2394de8794345147ef4af914c0cc9af046e35e3e8445e523828",
       "emailMarkers": {
         "markers": [
           {
@@ -113,7 +113,7 @@
         "size": "A4",
         "validPdf": true
       },
-      "pdfBytes": 38744
+      "pdfBytes": 38745
     },
     "Monthly": {
       "emailFingerprint": "dbf91f785a96608b6ac08a2049845cfbc0e8533866b64a656c943916d31810a4",

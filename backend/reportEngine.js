@@ -301,11 +301,11 @@ function emailStatusLine(period, periodLabel) {
   return `AutoPilot Active · ${label}`;
 }
 
-function generateReportId(report, a) {
-  const raw = `${a.period}|${a.driver}|${new Date().toISOString().slice(0, 10)}|${a.totals.mi}`;
+function generateReportId(report, a, now = new Date()) {
+  const raw = `${a.period}|${a.driver}|${now.toISOString().slice(0, 10)}|${a.totals.mi}`;
   const hash = createHash("sha256").update(raw).digest("hex").slice(0, 8).toUpperCase();
   const prefix = { Daily: "DY", Weekly: "WK", Monthly: "MO", Quarterly: "QT", WeeklySummary: "WS", MonthlySummary: "MS", Annual: "YR", Accountant: "AX", Custom: "CP" }[a.period] || "RP";
-  return `MP-${new Date().toISOString().slice(0, 10).replace(/-/g, "")}-${prefix}-${hash}`;
+  return `MP-${now.toISOString().slice(0, 10).replace(/-/g, "")}-${prefix}-${hash}`;
 }
 
 export function analyseReport(report) {
@@ -352,9 +352,9 @@ export function analyseReport(report) {
   const hmrcDiff = totals.hmrc - prevTotals.hmrc;
   const avgSpeedMph = totals.sec > 0 ? totals.mi / (totals.sec / 3600) : 0;
 
-  const now = new Date();
+  const now = report.generatedAtISO ? new Date(report.generatedAtISO) : new Date();
   const generatedAt = fmtDateLong(now);
-  const generatedAtTime = now.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
+  const generatedAtTime = report.generatedAtTime || now.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
 
   const analysis = {
     totals,
@@ -388,7 +388,8 @@ export function analyseReport(report) {
     generatedAtTime,
   };
 
-  analysis.reportId = generateReportId(report, analysis);
+  analysis.reportId = report.reportId || generateReportId(report, analysis, now);
+  analysis.generatedAtISO = (report.generatedAtISO ? new Date(report.generatedAtISO) : now).toISOString();
   analysis.waitingSec =
     Number(report.waitingSeconds) ||
     shifts.reduce((acc, s) => acc + Number(s.waitingSeconds || 0), 0);
@@ -764,7 +765,7 @@ export function buildReportEmailHtml(report, options = {}) {
   const archiveUrl = options.archiveUrl || buildReportArchiveDeepLink();
 
   return renderEmailFromTemplate({
-    greeting: timeGreeting(),
+    greeting: report.greeting || timeGreeting(),
     name,
     period: a.period,
     emailPeriodTitle: emailPeriodTitle(a.period, a.periodLabel),

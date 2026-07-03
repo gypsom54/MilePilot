@@ -35,4 +35,20 @@ export {
   fingerprintPdfBuffer,
   compareFingerprints,
 } from "./verification/layoutFingerprint.js";
-export { PERIOD_FIXTURES, buildFixtureReport } from "./verification/snapshotFixtures.js";
+export { buildFixtureReport, PERIOD_FIXTURES } from "./verification/snapshotFixtures.js";
+export {
+  buildGoldenReport,
+  buildGoldenShifts,
+  GOLDEN_KPI,
+  verifyGoldenTotals,
+} from "./verification/goldenReport.js";
+export {
+  normalizeGoldenEmail,
+  normalizeGoldenPdf,
+  fingerprintGoldenEmail,
+  fingerprintGoldenPdf,
+  extractGoldenPdfStructure,
+  assertGoldenKpiInEmail,
+  compareGoldenArtifacts,
+  compareToReferencePdf,
+} from "./verification/goldenCompare.js";

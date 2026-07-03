@@ -27,7 +27,7 @@
     "test:tracking": "node tests/tracking-regression.test.js",
     "test:reports": "node tests/reports-regression.test.js",
     "test:email-golden": "node tests/email-template-golden.test.js",
-    "test:reporting-lock": "node tests/email-template-golden.test.js && node tests/reporting-snapshot.test.js",
+    "test:reporting-lock": "node tests/email-template-golden.test.js && node tests/reporting-snapshot.test.js && node tests/golden-report.test.js",
     "test:summary-collect": "node tests/summary-reports-collect.test.js",
     "test:trips": "node tests/trip-persistence.test.js",
     "test:auto-end": "node tests/trip-auto-end.test.js",

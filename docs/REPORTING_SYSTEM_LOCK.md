@@ -142,10 +142,45 @@ npm run test:reporting-lock
 | `tests/reports-regression.test.js` | Pipeline smoke tests |
 | `tests/email-template-golden.test.js` | Email placeholder + layout checks |
 | `tests/reporting-snapshot.test.js` | Daily/Weekly/Monthly/Annual fingerprints |
+| `tests/golden-report.test.js` | **Golden Report** — permanent reference standard |
 
 Approved baselines: `tests/reporting-baselines/`
 
-Update baselines only after deliberate approved design change:
+---
+
+## Golden Report (reference standard)
+
+One perfect report with known values — kept forever:
+
+| Field | Value |
+|-------|-------|
+| Driver | Jonathan O'Neill |
+| Business Miles | 487.4 |
+| Trips | 38 |
+| Driving Time | 31h 48m |
+| HMRC | £219.33 |
+
+**Artifacts:** `tests/reporting-baselines/golden/`
+
+```
+golden/
+├── manifest.json    ← layout fingerprints + structure metrics
+├── email.html       ← approved golden email
+└── report.pdf       ← approved golden PDF (7 pages)
+```
+
+Every reporting engine change must regenerate the same report and compare. If fonts, spacing, page breaks, colours, or alignment differ unexpectedly → **investigate before releasing**.
+
+```bash
+node tests/golden-report.test.js
+node scripts/capture-reporting-baselines.js --golden --update  # approved changes only
+```
+
+---
+
+## Snapshot baselines
+
+Update period baselines only after deliberate approved design change:
 
 ```bash
 node scripts/capture-reporting-baselines.js --update

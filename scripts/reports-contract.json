@@ -28,7 +28,9 @@
     "docs/REPORTING_SYSTEM_LOCK.md",
     "backend/emailTemplate.js",
     "tests/reporting-snapshot.test.js",
-    "tests/reporting-baselines/fingerprints.json"
+    "tests/golden-report.test.js",
+    "tests/reporting-baselines/fingerprints.json",
+    "tests/reporting-baselines/golden/manifest.json"
   ],
   "requiredExports": [
     { "file": "backend/reportEngine.js", "symbol": "analyseReport" },
@@ -45,6 +47,7 @@
     { "file": "backend/server.js", "pattern": "buildPdfBuffer" },
     { "file": "backend/server.js", "pattern": "resend.emails.send" },
     { "file": "backend/reporting/VERSION.js", "pattern": "REPORTING_SYSTEM_STATUS" },
+    { "file": "backend/reporting/verification/goldenReport.js", "pattern": "GOLDEN_KPI" },
     { "file": "frontend/js/summary-reports.js", "pattern": "scheduleDailyAfterShift" },
     { "file": "frontend/js/summary-reports.js", "pattern": "checkScheduledReports" },
     { "file": "frontend/js/summary-reports.js", "pattern": "MPSummaryReports" },
