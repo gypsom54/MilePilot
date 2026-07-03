@@ -1042,7 +1042,48 @@ ${BRAND_TAGLINE}
 HMRC figures are estimates for record keeping. Verify against official guidance before filing.`;
 }
 
+export function buildDemoTestReport(email, driver = "") {
+  const now = new Date();
+  const start = new Date(now);
+  start.setHours(8, 30, 0, 0);
+  const end = new Date(start);
+  end.setMinutes(end.getMinutes() + 47);
+  const miles = 12.4;
+  const seconds = 47 * 60;
+  const hmrc = Math.round(miles * 0.55 * 100) / 100;
+
+  return {
+    email,
+    driver: (driver || "").trim() || "MilePilot Driver",
+    period: "Daily",
+    periodLabel: `Test report · ${now.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}`,
+    totals: { miles, time: "47m", hmrc },
+    shifts: [
+      {
+        miles,
+        seconds,
+        hmrc,
+        vehicle: "car",
+        startISO: start.toISOString(),
+        endISO: end.toISOString(),
+        route: [
+          { lat: 51.5074, lon: -0.1278 },
+          { lat: 51.515, lon: -0.12 },
+          { lat: 51.52, lon: -0.1 },
+        ],
+      },
+    ],
+    hmrcRate: 0.55,
+    isTest: true,
+  };
+}
+
+export function buildTestReportSubject() {
+  return "MilePilot test report — your email delivery is working";
+}
+
 export function buildReportSubject(report) {
+  if (report.isTest) return buildTestReportSubject();
   const period = report.period || "Daily";
   const title = periodReportTitle(period, report.periodLabel);
   return `Your MilePilot ${title}`;

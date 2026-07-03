@@ -2,7 +2,7 @@
  * VITAL — Report pipeline regression tests
  */
 import assert from "node:assert/strict";
-import { analyseReport, buildPdfBuffer, buildReportEmailHtml, buildReportSubject } from "../backend/reportEngine.js";
+import { analyseReport, buildPdfBuffer, buildReportEmailHtml, buildReportSubject, buildDemoTestReport } from "../backend/reportEngine.js";
 
 let passed = 0;
 let failed = 0;
@@ -79,6 +79,18 @@ await run("buildReportEmailHtml includes metrics from trip", async () => {
 await run("buildReportSubject formats daily report", async () => {
   const subject = buildReportSubject(sampleReport);
   assert.ok(subject.includes("MilePilot"));
+});
+
+await run("buildDemoTestReport produces sendable daily report", async () => {
+  const report = buildDemoTestReport("test@example.com", "Jonathan");
+  assert.equal(report.isTest, true);
+  assert.equal(report.period, "Daily");
+  const a = analyseReport(report);
+  assert.equal(a.totals.journeys, 1);
+  const subject = buildReportSubject(report);
+  assert.ok(subject.includes("test report"));
+  const pdf = await buildPdfBuffer(report);
+  assert.equal(pdf.slice(0, 4).toString(), "%PDF");
 });
 
 console.log(`\nReports regression: ${passed} passed, ${failed} failed\n`);

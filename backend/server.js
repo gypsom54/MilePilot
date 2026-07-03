@@ -14,6 +14,7 @@ import {
   buildReportEmailText,
   buildReportSubject,
   buildReportArchiveDeepLink,
+  buildDemoTestReport,
   REPORT_VERSION,
 } from "./reportEngine.js";
 import { storeReportDownload, getStoredDownload } from "./reportDownload.js";
@@ -32,14 +33,16 @@ const ALLOWED_ORIGINS = [
   "http://127.0.0.1:8787",
 ];
 
+function isAllowedOrigin(origin) {
+  if (!origin || ALLOWED_ORIGINS.includes(origin)) return true;
+  if (origin.endsWith(".pages.dev") || origin.endsWith(".milepilot.uk")) return true;
+  return false;
+}
+
 app.use(
   cors({
     origin(origin, callback) {
-      if (!origin || ALLOWED_ORIGINS.includes(origin)) {
-        callback(null, true);
-        return;
-      }
-      callback(null, false);
+      callback(null, isAllowedOrigin(origin));
     },
   })
 );
@@ -65,6 +68,83 @@ app.get("/health", (req, res) => {
   });
 });
 
+async function deliverReportEmail(report, attachmentFilename) {
+  const pdf = await buildPdfBuffer(report);
+  const pdfBuffer = Buffer.isBuffer(pdf) ? pdf : Buffer.from(pdf);
+  const { downloadUrl } = storeReportDownload(report, pdfBuffer);
+  const emailOptions = {
+    pdfDownloadUrl: downloadUrl,
+    archiveUrl: buildReportArchiveDeepLink(),
+  };
+  const subject = buildReportSubject(report) || "Your MilePilot Business Mileage Report";
+
+  const result = await resend.emails.send({
+    from: process.env.EMAIL_FROM || "MilePilot <reports@milepilot.uk>",
+    to: report.email,
+    subject,
+    text: buildReportEmailText(report, emailOptions),
+    html: buildReportEmailHtml(report, emailOptions),
+    attachments: [
+      {
+        filename: attachmentFilename,
+        content: pdfBuffer,
+        contentType: "application/pdf",
+      },
+    ],
+  });
+
+  if (result.error) {
+    throw new Error(result.error.message || "Resend failed");
+  }
+
+  return {
+    messageId: result.data?.id || null,
+    pdfFilename: attachmentFilename,
+  };
+}
+
+app.post("/reports/send-test", async (req, res) => {
+  try {
+    const { email, driver } = req.body || {};
+
+    if (!process.env.RESEND_API_KEY) {
+      return res.status(500).json({
+        sent: false,
+        message: "RESEND_API_KEY is missing in Railway variables",
+      });
+    }
+
+    if (!email) {
+      return res.status(400).json({
+        sent: false,
+        message: "Email is required",
+      });
+    }
+
+    const report = buildDemoTestReport(email, driver);
+    const dateSlug = new Date().toISOString().slice(0, 10);
+    const delivery = await deliverReportEmail(report, `MilePilot-test-report-${dateSlug}.pdf`);
+
+    console.log("Test email sent:", delivery.messageId, "to", email);
+
+    return res.json({
+      sent: true,
+      test: true,
+      messageId: delivery.messageId,
+      reportVersion: REPORT_VERSION,
+      pdfAttached: true,
+      pdfFilename: delivery.pdfFilename,
+      message: `Test report sent to ${email}`,
+    });
+  } catch (err) {
+    console.error("Test email send failed:", err);
+    return res.status(500).json({
+      sent: false,
+      message: err.message || "Test email send failed",
+    });
+  }
+});
+
 app.post("/reports/send", async (req, res) => {
   try {
     const report = req.body;
@@ -83,7 +163,6 @@ app.post("/reports/send", async (req, res) => {
       });
     }
 
-    const pdf = await buildPdfBuffer(report);
     const periodLabel = report.period || "Daily";
     const dateSlug = new Date().toISOString().slice(0, 10);
     const attachmentNames = {
@@ -93,47 +172,16 @@ app.post("/reports/send", async (req, res) => {
     const attachmentFilename =
       attachmentNames[periodLabel] || `MilePilot-${String(periodLabel).toLowerCase()}-report-${dateSlug}.pdf`;
 
-    const { downloadUrl } = storeReportDownload(report, pdf);
-    const emailOptions = {
-      pdfDownloadUrl: downloadUrl,
-      archiveUrl: buildReportArchiveDeepLink(),
-    };
+    const delivery = await deliverReportEmail(report, attachmentFilename);
 
-    const subject = buildReportSubject(report) || "Your MilePilot Business Mileage Report";
-
-    const pdfBuffer = Buffer.isBuffer(pdf) ? pdf : Buffer.from(pdf);
-
-    const result = await resend.emails.send({
-      from: process.env.EMAIL_FROM || "MilePilot <reports@milepilot.uk>",
-      to: report.email,
-      subject,
-      text: buildReportEmailText(report, emailOptions),
-      html: buildReportEmailHtml(report, emailOptions),
-      attachments: [
-        {
-          filename: attachmentFilename,
-          content: pdfBuffer,
-          contentType: "application/pdf",
-        },
-      ],
-    });
-
-    if (result.error) {
-      console.error("Resend error:", result.error);
-      return res.status(500).json({
-        sent: false,
-        message: result.error.message || "Resend failed",
-      });
-    }
-
-    console.log("Email sent:", result.data?.id);
+    console.log("Email sent:", delivery.messageId);
 
     return res.json({
       sent: true,
-      messageId: result.data?.id || null,
+      messageId: delivery.messageId,
       reportVersion: REPORT_VERSION,
       pdfAttached: true,
-      pdfFilename: attachmentFilename,
+      pdfFilename: delivery.pdfFilename,
     });
   } catch (err) {
     console.error("Email send failed:", err);
