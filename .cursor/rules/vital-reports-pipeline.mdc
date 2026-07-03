@@ -33,6 +33,8 @@ alwaysApply: false
 
 - `MPSummaryReports` automatic scheduling
 - `buildPdfBuffer`, `buildReportEmailHtml`, Resend integration
+- `templates/email.html` — **locked** light email master (data injection only)
+- `templates/pdf-spec.md` — **locked** white PDF specification
 - `storeReportDownload` for email PDF links
 - Trip store persistence (`MPTrips`)
 
