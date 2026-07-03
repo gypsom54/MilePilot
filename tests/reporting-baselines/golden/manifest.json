@@ -1,0 +1,22 @@
+{
+  "id": "GOLDEN-REPORT-v1",
+  "driver": "Jonathan O'Neill",
+  "kpi": {
+    "miles": "487.4",
+    "trips": 38,
+    "drivingTime": "31h 48m",
+    "hmrc": "£219.33"
+  },
+  "capturedAt": "2026-07-03T13:11:26.746Z",
+  "emailFingerprint": "a506c05ee780d730f65a0b64110662b86ff08ed32044fc3000419bcca69d261f",
+  "pdfFingerprint": "47251819d89b071292a9cb89404142760988ec65027967a547a772813335a6ff",
+  "pdfStructure": {
+    "pageCount": 7,
+    "helveticaRefs": 2,
+    "fontSizeRefs": 0,
+    "colorRefs": 0,
+    "streamCount": 7,
+    "byteLength": 48529
+  },
+  "byteLengthTolerance": 0
+}

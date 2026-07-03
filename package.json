@@ -26,6 +26,8 @@
     "verify:reports": "node scripts/verify-reports-contract.js",
     "test:tracking": "node tests/tracking-regression.test.js",
     "test:reports": "node tests/reports-regression.test.js",
+    "test:email-golden": "node tests/email-template-golden.test.js",
+    "test:reporting-lock": "node tests/email-template-golden.test.js && node tests/reporting-snapshot.test.js && node tests/golden-report.test.js",
     "test:summary-collect": "node tests/summary-reports-collect.test.js",
     "test:trips": "node tests/trip-persistence.test.js",
     "test:auto-end": "node tests/trip-auto-end.test.js",
@@ -34,7 +36,7 @@
     "test:subscription": "node tests/subscription.test.js",
     "test:journey-review": "node tests/journey-review.test.js",
     "test:ai-review": "node tests/ai-mileage-review.test.js",
-    "test:vital": "npm run verify:tracking && npm run verify:reports && npm run test:mileage-checklist && npm run test:tracking && npm run test:reports && npm run test:summary-collect && npm run test:trips && npm run test:auto-end && npm run test:tracking-mode && npm run test:subscription && npm run test:journey-review && npm run test:ai-review"
+    "test:vital": "npm run verify:tracking && npm run verify:reports && npm run test:mileage-checklist && npm run test:tracking && npm run test:reports && npm run test:reporting-lock && npm run test:summary-collect && npm run test:trips && npm run test:auto-end && npm run test:tracking-mode && npm run test:subscription && npm run test:journey-review && npm run test:ai-review"
   },
   "dependencies": {
     "expo": "~56.0.12",

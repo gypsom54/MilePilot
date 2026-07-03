@@ -25,7 +25,7 @@ export function drawVerificationCertificate(doc, a, margin, y, contentW, theme) 
 
   const meta = [
     ["Report ID", a.reportId],
-    ["Generated", `${fmtDateLong()} at ${a.generatedAtTime}`],
+    ["Generated", `${fmtDateLong(new Date(a.generatedAtISO || Date.now()))} at ${a.generatedAtTime}`],
     ["Tracking Mode", a.trackingMode || "AutoPilot"],
     ["GPS Confidence", a.gpsConfidence || `${a.gpsConfidencePct || 92}%`],
     ["Reporting Period", a.periodLabel || a.period],

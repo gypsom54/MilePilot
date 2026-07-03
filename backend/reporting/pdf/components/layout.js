@@ -1,7 +1,7 @@
 /**
  * Page layout — background, header, footer, section titles.
  */
-import { TOTAL_PAGES, PDF_FOOTER_TAGLINE } from "../theme.js";
+import { TOTAL_PAGES, PDF_FOOTER_TAGLINE } from "../../styles/reportTheme.js";
 
 export function drawPageBackground(doc, theme) {
   const w = doc.page.width;

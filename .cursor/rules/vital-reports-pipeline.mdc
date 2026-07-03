@@ -1,45 +1,58 @@
 ---
-description: BUSINESS CRITICAL — report scheduling, PDF generation, email delivery. Do not modify without explicit user approval.
+description: BUSINESS CRITICAL — report scheduling, PDF generation, email delivery. Reporting System v1.0 LOCKED. Do not modify without explicit user approval.
 globs:
   - frontend/js/summary-reports.js
   - frontend/js/trip-store.js
   - milepilot-upload-v2/js/summary-reports.js
   - milepilot-upload-v2/js/trip-store.js
   - backend/reportEngine.js
-  - backend/approvedPdfLayout.js
-  - backend/server.js
+  - backend/reporting/**
+  - backend/emailTemplate.js
   - backend/reportDownload.js
+  - backend/reports/**
+  - backend/templates/email.html
+  - backend/server.js
   - backend/routeMapService.js
   - scripts/reports-contract.json
   - scripts/verify-reports-contract.js
+  - scripts/capture-reporting-baselines.js
+  - tests/reporting-snapshot.test.js
+  - tests/reporting-baselines/**
+  - tests/email-template-golden.test.js
+  - docs/REPORTING_SYSTEM_LOCK.md
   - docs/PRODUCTION_MONITORING_PLAN.md
   - docs/CRITICAL_FILES.md
   - .github/workflows/production-guard.yml
 alwaysApply: false
 ---
 
-# VITAL: Report Pipeline (MP-044)
+# VITAL: Report Pipeline (MP-044) — Reporting System v1.0 LOCKED
 
 **Drivers rely on automatic HMRC summaries after every shift.**
 
 ## Rules for agents and developers
 
-1. **Do NOT modify** report scheduling, PDF, or email code unless the user explicitly requests it.
-2. **Do NOT remove** endpoints `/reports/send`, `/reports/pdf`, or `/health`.
-3. **Do NOT change** `scheduleDailyAfterShift` or `checkScheduledReports` timing without product sign-off.
-4. **Do NOT alter** `mp_trips` / `mp_active_trip` storage keys without migration plan.
-5. Before intentional changes: run `npm run test:vital` and send a test report email.
+1. **Do NOT redesign** reports — layout, components, colours, spacing are frozen.
+2. **Do NOT restructure** the reporting module without explicit approval.
+3. **Do NOT replace** locked components — extend only.
+4. **Do NOT refactor** working reporting code for preference.
+5. Before intentional changes: run `npm run test:reporting-lock` and send a test report email.
+6. Layout fingerprint changes require baseline update via `node scripts/capture-reporting-baselines.js --update` — only after approved design change.
+
+## Protected module
+
+`backend/reporting/` — isolated production module. See `docs/REPORTING_SYSTEM_LOCK.md`.
 
 ## Protected capabilities
 
 - `MPSummaryReports` automatic scheduling
 - `buildPdfBuffer`, `buildReportEmailHtml`, Resend integration
-- `templates/email.html` — **locked** light email master (data injection only)
-- `templates/pdf-spec.md` — **MASTER SPECIFICATION** — white PDF, UI locked (data injection only)
-- `backend/approvedPdfLayout.js` — **locked** daily PDF generator — do not redesign
+- `backend/reporting/email/templates/email.html` — **locked** dark email master
+- `backend/reporting/styles/reportTheme.js` — **locked** design tokens
+- `backend/reporting/pdf/` — **locked** 7-page premium PDF
 - `storeReportDownload` for email PDF links
 - Trip store persistence (`MPTrips`)
 
 ## CI
 
-`.github/workflows/production-guard.yml` runs contract verifiers and regression tests on every PR.
+`.github/workflows/production-guard.yml` runs contract verifiers, regression tests, and snapshot lock tests on every PR.

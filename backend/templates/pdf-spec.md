@@ -1,7 +1,9 @@
 # MilePilot PDF — Phase 5 Premium Specification 🔒
 
 **Authority:** Phase 5 product lock  
-**Generator:** `backend/reports/premiumPdf.js`  
+**Generator:** `backend/reporting/pdf/premiumPdf.js`  
+**Design tokens:** `backend/reporting/styles/reportTheme.js`  
+**Lockdown:** `docs/REPORTING_SYSTEM_LOCK.md`  
 **Version:** `REPORT_VERSION` in `reportEngine.js`
 
 See `docs/PHASE-5-PREMIUM-REPORTING.md` for full specification.

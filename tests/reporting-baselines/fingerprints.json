@@ -1,0 +1,231 @@
+{
+  "version": "1.0",
+  "status": "LOCKED",
+  "capturedAt": "2026-07-03T13:11:26.748Z",
+  "periods": {
+    "Daily": {
+      "emailFingerprint": "228dd10460c4b33cac2a724ec3149e85c6806cee764ab97b8a9b39b0f7e9fd3f",
+      "pdfFingerprint": "c4c2600c06b44168700777e48e09d32273bdc6a22e93b144b89ba0fe80c4758d",
+      "emailMarkers": {
+        "markers": [
+          {
+            "marker": "background-color:#020B1B",
+            "present": true
+          },
+          {
+            "marker": "height:108px",
+            "present": true
+          },
+          {
+            "marker": "max-width:560px",
+            "present": true
+          },
+          {
+            "marker": "Download Full PDF Report",
+            "present": true
+          },
+          {
+            "marker": "Drive • Track • Claim",
+            "present": true
+          },
+          {
+            "marker": "Mile ",
+            "present": true
+          },
+          {
+            "marker": "Pilot",
+            "present": true
+          },
+          {
+            "marker": "border-radius:16px",
+            "present": true
+          },
+          {
+            "marker": "border-radius:14px",
+            "present": true
+          }
+        ],
+        "kpiHeight": true,
+        "containerWidth": true,
+        "darkTheme": true,
+        "cta": true
+      },
+      "pdfMarkers": {
+        "pageCount": 7,
+        "expectedPages": 7,
+        "margin": 48,
+        "size": "A4",
+        "validPdf": true
+      },
+      "pdfBytes": 37712
+    },
+    "Weekly": {
+      "emailFingerprint": "556eac1ef1fa09c0041303f1790a02e7e44dc73a8c54a71760e80898cbf38114",
+      "pdfFingerprint": "95e379fcbd73f2394de8794345147ef4af914c0cc9af046e35e3e8445e523828",
+      "emailMarkers": {
+        "markers": [
+          {
+            "marker": "background-color:#020B1B",
+            "present": true
+          },
+          {
+            "marker": "height:108px",
+            "present": true
+          },
+          {
+            "marker": "max-width:560px",
+            "present": true
+          },
+          {
+            "marker": "Download Full PDF Report",
+            "present": true
+          },
+          {
+            "marker": "Drive • Track • Claim",
+            "present": true
+          },
+          {
+            "marker": "Mile ",
+            "present": true
+          },
+          {
+            "marker": "Pilot",
+            "present": true
+          },
+          {
+            "marker": "border-radius:16px",
+            "present": true
+          },
+          {
+            "marker": "border-radius:14px",
+            "present": true
+          }
+        ],
+        "kpiHeight": true,
+        "containerWidth": true,
+        "darkTheme": true,
+        "cta": true
+      },
+      "pdfMarkers": {
+        "pageCount": 7,
+        "expectedPages": 7,
+        "margin": 48,
+        "size": "A4",
+        "validPdf": true
+      },
+      "pdfBytes": 38745
+    },
+    "Monthly": {
+      "emailFingerprint": "dbf91f785a96608b6ac08a2049845cfbc0e8533866b64a656c943916d31810a4",
+      "pdfFingerprint": "47e54a5da04970112f49b8d23816b89fd129b58f6ff9ab3c5c4944f0f51ffcfb",
+      "emailMarkers": {
+        "markers": [
+          {
+            "marker": "background-color:#020B1B",
+            "present": true
+          },
+          {
+            "marker": "height:108px",
+            "present": true
+          },
+          {
+            "marker": "max-width:560px",
+            "present": true
+          },
+          {
+            "marker": "Download Full PDF Report",
+            "present": true
+          },
+          {
+            "marker": "Drive • Track • Claim",
+            "present": true
+          },
+          {
+            "marker": "Mile ",
+            "present": true
+          },
+          {
+            "marker": "Pilot",
+            "present": true
+          },
+          {
+            "marker": "border-radius:16px",
+            "present": true
+          },
+          {
+            "marker": "border-radius:14px",
+            "present": true
+          }
+        ],
+        "kpiHeight": true,
+        "containerWidth": true,
+        "darkTheme": true,
+        "cta": true
+      },
+      "pdfMarkers": {
+        "pageCount": 7,
+        "expectedPages": 7,
+        "margin": 48,
+        "size": "A4",
+        "validPdf": true
+      },
+      "pdfBytes": 39091
+    },
+    "Annual": {
+      "emailFingerprint": "6cbf357c219e31233ce6960c99439e285298614bacb2fcf4acd0af7ec87e0413",
+      "pdfFingerprint": "4e9aa69033dc9c7b90cf4edb2992e5de78071481ad92a62b256bd04fea1e7963",
+      "emailMarkers": {
+        "markers": [
+          {
+            "marker": "background-color:#020B1B",
+            "present": true
+          },
+          {
+            "marker": "height:108px",
+            "present": true
+          },
+          {
+            "marker": "max-width:560px",
+            "present": true
+          },
+          {
+            "marker": "Download Full PDF Report",
+            "present": true
+          },
+          {
+            "marker": "Drive • Track • Claim",
+            "present": true
+          },
+          {
+            "marker": "Mile ",
+            "present": true
+          },
+          {
+            "marker": "Pilot",
+            "present": true
+          },
+          {
+            "marker": "border-radius:16px",
+            "present": true
+          },
+          {
+            "marker": "border-radius:14px",
+            "present": true
+          }
+        ],
+        "kpiHeight": true,
+        "containerWidth": true,
+        "darkTheme": true,
+        "cta": true
+      },
+      "pdfMarkers": {
+        "pageCount": 7,
+        "expectedPages": 7,
+        "margin": 48,
+        "size": "A4",
+        "validPdf": true
+      },
+      "pdfBytes": 38755
+    }
+  }
+}

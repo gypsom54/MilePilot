@@ -1,9 +1,6 @@
-# MilePilot Report Templates — 🔒 LOCKED
+# MilePilot Report Templates — LOCKED v1.0
 
-**Source of truth:**
-- `templates/MilePilot_APPROVED_Report_Template.pdf` — approved daily PDF
-- `templates/email.html` — approved light email structure
-- `Cursor_Report_Email_Lockdown_Prompt` — agent rules
+**Superseded detail:** See [REPORTING_SYSTEM_LOCK.md](./REPORTING_SYSTEM_LOCK.md) for the authoritative lockdown contract.
 
 ---
 
@@ -11,19 +8,21 @@
 
 | Surface | Theme | Template |
 |---------|-------|----------|
-| 📱 App | Dark navy | UI locked |
-| 📄 PDF | **White professional** | `approvedPdfLayout.js` → 5-page daily |
-| 📧 Email | **Light summary** | `templates/email.html` |
+| App | Dark navy | UI locked (`docs/UI_LOCK_REPORTS.md`) |
+| PDF | Dark premium | `backend/reporting/pdf/premiumPdf.js` — 7-page A4 |
+| Email | Dark premium | `backend/reporting/email/templates/email.html` |
 
 ---
 
-## PDF locked structure (Daily)
+## PDF locked structure (7 pages)
 
-1. Daily Business Summary
-2. MilePilot Intelligence
-3. Business Journey Log + HMRC Summary
-4. Weekly Performance
-5. MilePilot AI Summary
+1. Executive Dashboard
+2. Journey Timeline
+3. Journey Breakdown
+4. Journey Map
+5. HMRC Summary
+6. AI Business Insights
+7. Verification Certificate
 
 Footer on all PDF pages: **Drive • Track • Claim**
 
@@ -31,12 +30,14 @@ Footer on all PDF pages: **Drive • Track • Claim**
 
 ## Email locked structure
 
-- MilePilot header (navy band)
-- Daily Business Report greeting
-- Summary metrics (4 tiles)
-- Download PDF Report button
+- MilePilot header (navy band + blue glow divider)
+- Greeting hero (`Good morning/afternoon/evening,` + driver name)
+- Title case period title
+- KPI grid (108px equal-height cards)
+- AI insight sentence
+- Summary card
+- **Download Full PDF Report** CTA
 - Open MilePilot link
-- Compliance disclaimer
 - **Drive • Track • Claim** footer
 
 ---
@@ -44,6 +45,15 @@ Footer on all PDF pages: **Drive • Track • Claim**
 ## Rules
 
 - Do NOT redesign email or PDF
-- Do NOT make email dark
+- Do NOT restructure layout
 - Only inject live data
-- Run tests before deploy: `node tests/reports-regression.test.js` && `node tests/email-template-golden.test.js`
+- Run before deploy: `npm run test:reporting-lock`
+
+---
+
+## Tests
+
+```bash
+npm run test:reporting-lock
+node scripts/capture-reporting-baselines.js --update  # after approved design change only
+```
