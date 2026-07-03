@@ -11,7 +11,8 @@ const BRAND_TAGLINE = "Your business. On AutoPilot.";
 const FOOTER_TAGLINE = "Drive • Track • Claim";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const TEMPLATE_PATH = path.join(__dirname, "..", "templates", "email.html");
+// Railway root directory is backend/ — template lives at backend/templates/email.html
+const TEMPLATE_PATH = path.join(__dirname, "templates", "email.html");
 
 let cachedTemplate = null;
 
