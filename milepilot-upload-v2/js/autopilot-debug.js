@@ -24,7 +24,12 @@
 
   function render() {
     const body = q('autopilotDebugBody');
-    if (!body || typeof global.MPAutoPilotMotion === 'undefined') return;
+    if (!body) return;
+    if (typeof global.MPAutoPilotMotion === 'undefined') {
+      body.textContent =
+        'AutoPilot motion module not loaded.\n\nUpload the latest Cloudflare zip (v8.43.32+) and hard-refresh the app.';
+      return;
+    }
 
     const dbg = global.MPAutoPilotMotion.getDebugState();
     const logs = global.MPAutoPilotMotion.getLog().slice(-12);
@@ -69,7 +74,7 @@
   }
 
   function open() {
-    showScreen('autopilotDebug');
+    if (typeof global.showScreen === 'function') global.showScreen('autopilotDebug');
     render();
     if (refreshTimer) clearInterval(refreshTimer);
     refreshTimer = setInterval(render, 2000);
@@ -78,7 +83,7 @@
   function close() {
     if (refreshTimer) clearInterval(refreshTimer);
     refreshTimer = null;
-    showSettings();
+    if (typeof global.showSettings === 'function') global.showSettings();
   }
 
   function refresh() {

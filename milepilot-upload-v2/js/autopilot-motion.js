@@ -376,7 +376,7 @@
       return;
     }
 
-    const now = Date.now();
+    const now = sample.t || Date.now();
     if (!candidateStartedAt) {
       candidateStartedAt = now;
       candidateSamples = 1;

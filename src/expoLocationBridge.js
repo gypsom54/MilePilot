@@ -259,7 +259,8 @@ export async function handleWebViewMessage(raw, sendToWebView) {
     case 'expo:autopilot:arm': {
       const onLocation = (payload) => {
         if (typeof sendToWebView === 'function') {
-          sendToWebView({ type: 'expo:autopilot:location', ...payload });
+          // Keep type last — locationToPayload includes type: 'expo:location'.
+          sendToWebView({ ...payload, type: 'expo:autopilot:location' });
         }
         if (!isNativeTripActive()) {
           onNativeBackgroundLocation(payload);
