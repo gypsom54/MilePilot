@@ -48,7 +48,10 @@ for (const entry of contract.requiredExports || []) {
     continue;
   }
   const src = fs.readFileSync(filePath, "utf8");
-  const exportPattern = new RegExp(`export\\s+(async\\s+)?function\\s+${entry.symbol}\\b`);
+  const exportPattern = new RegExp(
+    `(export\\s+(async\\s+)?function\\s+${entry.symbol}\\b|export\\s*\\{[^}]*\\b${entry.symbol}\\b|export\\s*\\*\\s+from)`
+  );
+
   if (!exportPattern.test(src)) fail(`${entry.file}: missing export ${entry.symbol}`);
   else pass(`${entry.file}: ${entry.symbol}`);
 }

@@ -1,8 +1,8 @@
 /**
  * Journey map panel — blue route with start/finish markers.
  */
-import { buildRouteMapContext } from "../../routeMapService.js";
-import { drawPdfRouteHero } from "../../routeMapService.js";
+import { buildRouteMapContext } from "../../../routeMapService.js";
+import { drawPdfRouteHero } from "../../../routeMapService.js";
 import { fmtShiftTime, money } from "../format.js";
 
 export function drawJourneyMapPage(doc, a, margin, y, contentW, theme) {

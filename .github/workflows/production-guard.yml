@@ -32,6 +32,9 @@ jobs:
       - name: Reports regression tests
         run: node tests/reports-regression.test.js
 
+      - name: Reporting system lock tests (snapshots + email golden)
+        run: npm run test:reporting-lock
+
       - name: Trip persistence tests
         run: node tests/trip-persistence.test.js
 

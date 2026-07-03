@@ -1,9 +1,9 @@
 {
   "id": "MP-044",
-  "version": 1,
+  "version": 2,
   "vital": true,
   "businessCritical": "Automatic report scheduling, email delivery, and PDF generation must not silently break. Drivers rely on HMRC summaries after every shift.",
-  "description": "Report pipeline contract — scheduling, PDF, email, and download endpoints.",
+  "description": "Report pipeline contract — scheduling, PDF, email, and download endpoints. Reporting system v1.0 LOCKED.",
   "files": [
     "backend/reportEngine.js",
     "backend/server.js",
@@ -13,13 +13,22 @@
   "companionFiles": [
     "milepilot-upload-v2/js/summary-reports.js",
     "backend/routeMapService.js",
+    "backend/reporting/index.js",
+    "backend/reporting/styles/reportTheme.js",
+    "backend/reporting/pdf/premiumPdf.js",
+    "backend/reporting/email/template.js",
+    "backend/reporting/email/templates/email.html",
+    "backend/reporting/verification/componentRegistry.js",
     "backend/reports/premiumPdf.js",
     "backend/reports/theme.js",
     "backend/reports/insightsEngine.js",
     "backend/templates/email.html",
     "templates/email.html",
     "docs/PHASE-5-PREMIUM-REPORTING.md",
-    "backend/emailTemplate.js"
+    "docs/REPORTING_SYSTEM_LOCK.md",
+    "backend/emailTemplate.js",
+    "tests/reporting-snapshot.test.js",
+    "tests/reporting-baselines/fingerprints.json"
   ],
   "requiredExports": [
     { "file": "backend/reportEngine.js", "symbol": "analyseReport" },
@@ -35,6 +44,7 @@
     { "file": "backend/server.js", "pattern": "app.post(\"/reports/pdf\"" },
     { "file": "backend/server.js", "pattern": "buildPdfBuffer" },
     { "file": "backend/server.js", "pattern": "resend.emails.send" },
+    { "file": "backend/reporting/VERSION.js", "pattern": "REPORTING_SYSTEM_STATUS" },
     { "file": "frontend/js/summary-reports.js", "pattern": "scheduleDailyAfterShift" },
     { "file": "frontend/js/summary-reports.js", "pattern": "checkScheduledReports" },
     { "file": "frontend/js/summary-reports.js", "pattern": "MPSummaryReports" },

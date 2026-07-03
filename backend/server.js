@@ -19,6 +19,7 @@ import {
 } from "./reportEngine.js";
 import { storeReportDownload, getStoredDownload } from "./reportDownload.js";
 import { loadEmailTemplate } from "./emailTemplate.js";
+import { REPORTING_SYSTEM_VERSION, REPORTING_SYSTEM_STATUS } from "./reporting/VERSION.js";
 
 dotenv.config();
 
@@ -64,6 +65,8 @@ app.get("/health", (req, res) => {
     emailTemplateOk,
     from: process.env.EMAIL_FROM || "MilePilot <reports@milepilot.uk>",
     reportVersion: REPORT_VERSION,
+    reportingSystemVersion: REPORTING_SYSTEM_VERSION,
+    reportingSystemStatus: REPORTING_SYSTEM_STATUS,
     timestamp: new Date().toISOString(),
   });
 });
