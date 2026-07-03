@@ -30,7 +30,9 @@ const BRIDGE_BOOT_SCRIPT = `
       if (msg && msg.type === 'expo:trip:sync' && typeof window.__onNativeTripSync === 'function') {
         window.__onNativeTripSync(msg);
       }
-      if (msg && (msg.type === 'expo:location' || msg.type === 'expo:autopilot:location') && window.__onExpoNativeLocation) {
+      if (msg && msg.type === 'expo:autopilot:location' && typeof window.__onAutopilotLocation === 'function') {
+        window.__onAutopilotLocation(msg);
+      } else if (msg && (msg.type === 'expo:location' || msg.type === 'expo:autopilot:location') && window.__onExpoNativeLocation) {
         window.__onExpoNativeLocation(msg);
       }
       if (msg && msg.type === 'expo:autoend:trigger' && typeof window.__onExpoAutoEnd === 'function') {

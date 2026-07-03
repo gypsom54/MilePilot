@@ -9,7 +9,7 @@ import {
   startBackgroundLocationUpdates,
   stopBackgroundLocationUpdates,
 } from './locationTask';
-import { syncNativeAutoEnd, setNativeAutoEndInjector } from './nativeAutoEnd';
+import { syncNativeAutoEnd, setNativeAutoEndInjector, onNativeBackgroundLocation } from './nativeAutoEnd';
 import {
   ingestNativeLocation,
   startNativeTrip,

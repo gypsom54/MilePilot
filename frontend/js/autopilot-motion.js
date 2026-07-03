@@ -118,6 +118,15 @@
     return DEFAULTS.IDLE_MS;
   }
 
+  function getSustainedMs() {
+    try {
+      if (global.localStorage && global.localStorage.getItem('mp_debug') === '1') {
+        return 30000;
+      }
+    } catch (e) {}
+    return DEFAULTS.SUSTAINED_MS;
+  }
+
   function setIdleMs(ms) {
     try {
       localStorage.setItem(STORAGE.IDLE_MS, String(ms));
@@ -181,8 +190,9 @@
     else if (speedMps >= DEFAULTS.DRIVING_SPEED_MPS * 0.85) score += 0.25;
     if (!isPoorGps(acc)) score += 0.25;
     else score -= 0.2;
-    if (sustainedMs >= DEFAULTS.SUSTAINED_MS) score += 0.25;
-    else score += (sustainedMs / DEFAULTS.SUSTAINED_MS) * 0.15;
+    const sustainedTarget = getSustainedMs();
+    if (sustainedMs >= sustainedTarget) score += 0.25;
+    else score += (sustainedMs / sustainedTarget) * 0.15;
     if (motionActivity === 'automotive' || motionActivity === 'driving') score += 0.1;
     if (isWalkingSpeed(speedMps)) score -= 0.35;
     return Math.max(0, Math.min(1, score));
@@ -389,7 +399,7 @@
     candidateConfidence = computeConfidence(speedMps, lastSample.acc, sustainedMs);
 
     if (
-      sustainedMs >= DEFAULTS.SUSTAINED_MS &&
+      sustainedMs >= getSustainedMs() &&
       candidateSamples >= DEFAULTS.MIN_CANDIDATE_SAMPLES &&
       candidateConfidence >= DEFAULTS.CONFIDENCE_THRESHOLD
     ) {
