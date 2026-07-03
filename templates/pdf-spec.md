@@ -1,44 +1,37 @@
 # MilePilot PDF Template — 🔒 LOCKED
 
-**Status:** Frozen master specification  
-**Generator:** `backend/reportEngine.js` → `buildPdfBuffer()`  
-**Version token:** `REPORT_VERSION` in `reportEngine.js`
+**Reference:** `templates/MilePilot_APPROVED_Report_Template.pdf`  
+**Generator:** `backend/approvedPdfLayout.js` → `buildApprovedDailyPdf()`  
+**Version:** `REPORT_VERSION` in `reportEngine.js`
 
 ---
 
 ## Design intent
 
-| Surface | Theme | Purpose |
-|---------|-------|---------|
-| 📱 App | Dark navy | Phone UI |
-| 📄 PDF | **White professional** | HMRC, accountants, printing |
-| 📧 Email | **Light summary** | 30-second preview + PDF attached |
-
-The PDF does **not** share the app's dark background. That is intentional.
+White professional document for HMRC, accountants, and printing.  
+**Not** the app's dark theme.
 
 ---
 
-## Locked layout
+## Daily report — 5 locked pages
 
-1. **Navy brand band** (top) — Mile Pilot wordmark, tagline, period title, date, driver name
-2. **White body** — hero miles, metric cards, route map panel, intelligence section
-3. **Journey table** (page 2+) — trip timeline for accountants
-4. **Footer** — tagline, HMRC disclaimer, report ID
+| Page | Section |
+|------|---------|
+| 1 | Daily Business Summary — hero miles, stats, today's highlights |
+| 2 | MilePilot Intelligence — pattern bullets |
+| 3 | Business Journey Log + HMRC Summary |
+| 4 | Weekly Performance — week totals, trend, insights |
+| 5 | MilePilot AI Summary — narrative + guidance bullets |
 
-## Locked colours (body)
+Each page header: Mile Pilot, driver name, **Drive • Track • Claim**, auto-generated line, milepilot.uk, date · report ID.
 
-| Token | Value | Use |
-|-------|-------|-----|
-| Page background | White (default) | Print-friendly |
-| Body text | `#06112A` | Primary copy |
-| Muted | `#64748B` | Labels |
-| Accent | `#0D6BFF` | Brand rules |
-| Cards | `#FFFFFF` + `#DDE6F2` border | Metric tiles |
-| Header band | `#031126` | Brand only |
+Page footer: `— X of 5 —`
+
+---
 
 ## Rules
 
-- **Do not** change PDF to dark theme
-- **Do not** redesign layout without explicit product sign-off
-- **Only inject** live data: miles, time, journeys, HMRC, routes, driver, period
-- Regression: `node tests/reports-regression.test.js`
+- PDF body stays **white**
+- Do not revert to dark navy full-page PDF
+- Do not change page order or section names without sign-off
+- Weekly/Monthly/Custom reports use legacy generator until separately approved

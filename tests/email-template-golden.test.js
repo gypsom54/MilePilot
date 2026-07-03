@@ -55,5 +55,6 @@ assert.ok(!html.includes("data:image/png;base64"), "route map belongs in PDF onl
 
 // Navy band is allowed (brand header only)
 assert.ok(html.includes("bgcolor=\"#031126\""), "navy brand band at top");
+assert.ok(html.includes("Drive • Track • Claim"), "locked footer tagline");
 
 console.log("✓ Light email template golden checks passed\n");

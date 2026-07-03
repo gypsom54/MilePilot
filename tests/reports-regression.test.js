@@ -57,6 +57,14 @@ await run("buildPdfBuffer generates PDF from completed trip", async () => {
   assert.equal(pdf.slice(0, 4).toString(), "%PDF");
 });
 
+await run("buildPdfBuffer daily report has 5 pages (approved template)", async () => {
+  const pdf = await buildPdfBuffer(sampleReport);
+  const text = pdf.toString("latin1");
+  const pageCount = (text.match(/\/Type\s*\/Page[^s]/g) || []).length;
+  assert.equal(pageCount, 5, `expected 5 pages, got ${pageCount}`);
+  assert.ok(pdf.length > 3000, "PDF should have substantive content");
+});
+
 await run("buildReportEmailHtml includes metrics from trip", async () => {
   const html = buildReportEmailHtml(sampleReport, {
     pdfDownloadUrl: "https://example.com/dl",
