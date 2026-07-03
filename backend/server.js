@@ -17,6 +17,7 @@ import {
   REPORT_VERSION,
 } from "./reportEngine.js";
 import { storeReportDownload, getStoredDownload } from "./reportDownload.js";
+import { loadEmailTemplate } from "./emailTemplate.js";
 
 dotenv.config();
 
@@ -47,10 +48,17 @@ app.use(express.json({ limit: "2mb" }));
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 app.get("/health", (req, res) => {
+  let emailTemplateOk = false;
+  try {
+    emailTemplateOk = loadEmailTemplate().length > 100;
+  } catch {
+    emailTemplateOk = false;
+  }
   res.json({
     ok: true,
     service: "milepilot-api",
     resendConfigured: !!process.env.RESEND_API_KEY,
+    emailTemplateOk,
     from: process.env.EMAIL_FROM || "MilePilot <reports@milepilot.uk>",
     reportVersion: REPORT_VERSION,
     timestamp: new Date().toISOString(),
