@@ -35,7 +35,9 @@ Users can switch at any time in Settings → Tracking Mode.
 
 ## Intelligence (future)
 
-`frontend/js/intelligence-recommendations.js` records signals and exposes stub hooks:
+`frontend/js/intelligence-recommendations.js` records signals and exposes stub hooks.
+
+**AutoPilot motion detection (MP-047):** `frontend/js/autopilot-motion.js` — see [AUTOPILOT_MOTION.md](./AUTOPILOT_MOTION.md)
 
 - `getPendingRecommendations()` — returns `[]` until AI ships
 - `evaluateModeRecommendation()` — returns `null`
