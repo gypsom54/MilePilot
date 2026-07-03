@@ -5,6 +5,7 @@
 
 | File | Purpose |
 |------|---------|
+| [MILEPILOT-DESIGN-BIBLE.md](../MILEPILOT-DESIGN-BIBLE.md) | **Agent checklist** — read before any new screen or UI change |
 | [MILEPILOT-BRAND-SYSTEM-v1.0.md](../MILEPILOT-BRAND-SYSTEM-v1.0.md) | Full brand language — read this first |
 | [tokens.css](./tokens.css) | Canonical design tokens (import or mirror) |
 | [COMPONENT-SPECS.md](./COMPONENT-SPECS.md) | Component specs with code references |

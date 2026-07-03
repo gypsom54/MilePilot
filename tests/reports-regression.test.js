@@ -64,6 +64,8 @@ await run("buildReportEmailHtml includes metrics from trip", async () => {
   });
   assert.ok(html.includes("24.5") || html.includes("24.50"));
   assert.ok(html.includes("Download PDF") || html.includes("Download PDF Report"));
+  assert.ok(html.includes("color-scheme"));
+  assert.ok(html.includes("bgcolor"));
 });
 
 await run("buildReportSubject formats daily report", async () => {

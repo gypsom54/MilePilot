@@ -53,7 +53,13 @@ localStorage.setItem('mp_debug_auto_end_ms', '120000'); // 2 minutes
 
 **Bottom line:** Auto-end is **production-ready** when the app process runs or when the user returns to the app. It is **not** a server-side cron — a killed PWA cannot end a trip until reopened.
 
-Native iOS/Android (TestFlight) is **more reliable** than browser PWA because the location task keeps the process alive longer.
+Native iOS/Android (TestFlight) uses a **native idle watchdog** (`src/nativeAutoEnd.js`) that runs alongside background GPS. When the WebView is suspended, the native layer still tracks wall-clock idle time and triggers auto-end via `expo:autoend:trigger`. A local notification is scheduled as backup.
+
+| Scenario | Auto-end reliable? |
+|----------|-------------------|
+| TestFlight, screen locked, background GPS active | **Yes** — native watchdog + BG location wake |
+| TestFlight, app force-quit | **Partial** — catch-up on next open |
+| Browser PWA, tab discarded | **No live timer** until reopen; then catch-up |
 
 ## Email after auto-end
 

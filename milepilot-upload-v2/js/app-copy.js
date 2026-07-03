@@ -7,7 +7,8 @@
 
   global.MPCopy = {
     shiftStarted: "You're on the road — MilePilot is tracking your shift.",
-    shiftSaved: "Today's journeys are ready for review.",
+    journeyStarted: "Journey started — MilePilot is recording your miles.",
+    shiftSaved: "Today's journeys are ready for your AI mileage review.",
     reportSent: function (email) {
       return 'Your business summary is on its way to ' + email + '.';
     },
@@ -37,17 +38,24 @@
     autoReportSent: 'Your automatic business summary has been emailed.',
     historyEmptyTitle: 'Your journey history starts here',
     historyEmptySub: 'End your first shift and every business mile will be saved automatically.',
-    reportEmptyTitle: 'Your reports are waiting for you',
-    reportEmptySub: 'Your first professional report will appear here after your first working day.',
+    reportEmptyTitle: 'Your reports will appear here',
+    reportEmptySub: 'After each completed business shift, MilePilot automatically prepares your professional mileage report.',
+    reportEmptySupport: 'Ready to share with HMRC or your accountant.',
     activityEmpty: 'No journeys recorded',
     insightEmpty: 'Start your first shift to unlock personalised business insights.',
     betaThanks: 'Thank you — your feedback shapes MilePilot.',
     betaSubmitFailed: 'Could not send feedback — try again in a moment.',
     experienceUpdated: 'Experience updated.',
     profileUpdated: 'Business profile updated.',
+    trackingModeSaved: 'Tracking mode updated.',
     testShiftAdded: 'Test shift added.',
     testShiftsCleared: 'Test shifts cleared.',
     shareCopied: 'Report summary copied.',
+    autopilotRequirementsTitle: 'Tracking without opening the app',
+    autopilotRequirementsIntro:
+      'For automatic mileage while your phone is locked, please accept the permissions below.',
+    autopilotRequirementsFooter:
+      'Trips end after 90 minutes without movement. Force-quitting the app or denying background location may pause tracking until you open MilePilot again.',
   };
 
   global.MPCopy.getReportEmpty = function (period, hasAnyShifts) {

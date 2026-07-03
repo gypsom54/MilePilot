@@ -81,6 +81,17 @@ for (const entry of contract.companionExports || []) {
   }
 }
 
+for (const entry of contract.companionSymbols || []) {
+  const filePath = path.join(root, entry.file);
+  if (!fs.existsSync(filePath)) continue;
+  const src = fs.readFileSync(filePath, "utf8");
+  if (!src.includes(entry.symbol)) {
+    fail(`${entry.file}: missing symbol ${entry.symbol}`);
+  } else {
+    pass(`${entry.file}: ${entry.symbol}`);
+  }
+}
+
 if (failed) {
   console.error("\nTRACKING CONTRACT VIOLATION — background GPS resilience may be broken.");
   console.error("See docs/TRACKING_CONTRACT.md before changing tracking code.\n");

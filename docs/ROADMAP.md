@@ -3,7 +3,7 @@
 **Vision locked:** See [VISION_LOCK.md](./VISION_LOCK.md) — Tracker vs Business platform direction.
 
 **Phase 1 complete:** Design, onboarding, dashboard foundation (~90%)  
-**Phase 2 focus:** Make MilePilot a working product, not a UI project.
+**Phase 2 focus:** Core product — tracking reliability, AutoPilot, classification, reports. Onboarding is frozen; see [DEVELOPMENT_PRIORITIES.md](./DEVELOPMENT_PRIORITIES.md).
 
 ---
 
@@ -12,7 +12,7 @@
 | Area | Status |
 |------|--------|
 | Design & branding | ~90% 🔒 Locked |
-| Onboarding flow | ~95% 🔒 Locked (MP-020 experience choice added) |
+| Onboarding flow (`#knowYou` MP-002) | **100% 🔒 Frozen** — production-ready; bug fixes only |
 | Dashboard foundation | ~90% 🔒 Locked |
 | **Core tracking engine** | Sprint 1 → in progress |
 | Reports | ~10% |

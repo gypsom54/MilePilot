@@ -6,6 +6,18 @@
 
 ---
 
+## Related documents
+
+| Doc | Role |
+|-----|------|
+| [MILEPILOT-DESIGN-BIBLE.md](./MILEPILOT-DESIGN-BIBLE.md) | **UI & copy checklist for every new screen** |
+| [MILEPILOT-BRAND-SYSTEM-v1.0.md](./MILEPILOT-BRAND-SYSTEM-v1.0.md) | Visual identity & tokens |
+| [brand/COMPONENT-SPECS.md](./brand/COMPONENT-SPECS.md) | Component implementation refs |
+| [DESIGN_LOCKED.md](./DESIGN_LOCKED.md) | Frozen app screens |
+| [ONBOARDING_V1_LOCK.md](./ONBOARDING_V1_LOCK.md) | Frozen knowYou onboarding |
+
+---
+
 ## 1. North star
 
 ### The promise
