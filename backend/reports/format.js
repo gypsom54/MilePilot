@@ -14,6 +14,16 @@ export function fmtShiftTime(sec) {
   return `${h}h ${String(m % 60).padStart(2, "0")}m`;
 }
 
+/** Single-line compact driving time for KPI cards (email + PDF). */
+export function fmtDrivingTimeCompact(sec) {
+  sec = Number(sec) || 0;
+  const totalMin = Math.floor(sec / 60);
+  const h = Math.floor(totalMin / 60);
+  const m = totalMin % 60;
+  if (h <= 0) return `0h ${String(m).padStart(2, "0")}m`;
+  return `${h}h ${String(m).padStart(2, "0")}m`;
+}
+
 export function fmtDurationShort(sec) {
   sec = Number(sec) || 0;
   const m = Math.round(sec / 60);

@@ -1,17 +1,16 @@
 /**
- * MilePilot Email Template Engine — LOCKED
- * Master template: templates/email.html
- * Only data is injected. Design changes require explicit sign-off.
+ * MilePilot Email Template Engine — Phase 5 visual polish
+ * Master template: backend/templates/email.html
  */
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import { fmtDrivingTimeCompact } from "./reports/format.js";
 
 const BRAND_TAGLINE = "Your business. On AutoPilot.";
 const FOOTER_TAGLINE = "Drive • Track • Claim";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-// Railway root directory is backend/ — template lives at backend/templates/email.html
 const TEMPLATE_PATH = path.join(__dirname, "templates", "email.html");
 
 let cachedTemplate = null;
@@ -35,9 +34,9 @@ function fill(template, vars) {
   return out;
 }
 
-function summaryLine(text) {
-  return `<div style="margin:0 0 10px;font-size:14px;line-height:1.55;color:#9FB4D0;">
-    <span style="color:#20D781;font-weight:700;margin-right:8px;">✓</span>${text}
+function summaryLine(icon, text) {
+  return `<div style="margin:0 0 12px;font-size:14px;line-height:1.5;color:#9FB4D0;">
+    <span style="display:inline-block;width:24px;font-size:15px;line-height:1;opacity:0.82;vertical-align:-1px;">${icon}</span>${text}
   </div>`;
 }
 
@@ -50,26 +49,31 @@ function summaryTitle(period) {
   return "Period Summary";
 }
 
-function buildSummaryLines(stats, period, fmtMoney) {
+function buildSummaryLines(stats, period, fmtMoney, gpsConfidence) {
   const isDaily = period === "Daily";
   const milesLine = isDaily
     ? `${stats.miles.toFixed(1)} business miles recorded`
     : `${stats.miles.toFixed(1)} business miles in this period`;
 
-  return [
-    stats.journeys > 0
-      ? summaryLine(`${stats.journeys} business ${stats.journeys === 1 ? "journey" : "journeys"} completed`)
-      : summaryLine("No business mileage recorded yet"),
-    stats.journeys > 0 ? summaryLine(milesLine) : null,
-    stats.hmrc > 0 ? summaryLine(`Estimated HMRC claim ${fmtMoney(stats.hmrc)}`) : null,
-    summaryLine("Full route map and journey timeline in your attached PDF"),
-    isDaily || period === "Weekly" || period === "Monthly"
-      ? summaryLine("Included in this week's automatic summary")
-      : null,
-    isDaily || period === "Monthly" ? summaryLine("Included in this month's automatic summary") : null,
-  ]
-    .filter(Boolean)
-    .join("");
+  const lines = [];
+  if (stats.journeys > 0) {
+    lines.push(
+      summaryLine(
+        "🛣",
+        `${stats.journeys} business ${stats.journeys === 1 ? "journey" : "journeys"} completed`
+      )
+    );
+    lines.push(summaryLine("🚗", milesLine));
+  } else {
+    lines.push(summaryLine("🛣", "No business journeys recorded yet"));
+  }
+  if (stats.hmrc > 0) {
+    lines.push(summaryLine("💷", `Estimated HMRC claim ${fmtMoney(stats.hmrc)}`));
+  }
+  if (gpsConfidence) {
+    lines.push(summaryLine("📍", `GPS confidence ${gpsConfidence}`));
+  }
+  return lines.join("");
 }
 
 function buildAutomationBlock(period) {
@@ -90,30 +94,39 @@ function pendingBlock(notice) {
   return `<p style="margin:0 0 20px;font-size:13px;color:#7A5B12;line-height:1.55;padding:14px 16px;border-radius:10px;background:#FFF8E8;border:1px solid #F0C35A;">${notice}</p>`;
 }
 
+function periodDateValue(data) {
+  if (data.periodDate) return data.periodDate;
+  if (data.reportingPeriod && !String(data.reportingPeriod).includes("Report")) return data.reportingPeriod;
+  return new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+}
+
 /**
- * Fill the locked master email template with report data.
- * @param {object} data — pre-analysed fields from reportEngine
+ * Fill the master email template with report data.
  */
 export function renderEmailFromTemplate(data) {
   const template = loadEmailTemplate();
   const period = data.period || "Daily";
+  const drivingCompact = fmtDrivingTimeCompact(data.drivingSeconds ?? 0);
 
   return fill(template, {
     BRAND_TAGLINE,
     FOOTER_TAGLINE,
-    GREETING: `${data.greeting}, ${data.name}`,
+    GREETING_HEAD: data.greeting || "Hello",
+    GREETING_NAME: data.name ? `${data.name} 👋` : "there 👋",
     PERIOD_TITLE: data.periodTitle || "Business Mileage Report",
-    REPORTING_PERIOD: data.reportingPeriod || data.periodTitle || "Current period",
+    PERIOD_LABEL: "Report period",
+    PERIOD_VALUE: periodDateValue(data),
     PENDING_NOTICE: pendingBlock(data.pendingNotice),
     MILES: data.miles,
-    DRIVING_TIME: data.drivingTime,
+    DRIVING_TIME: data.drivingTimeCompact || drivingCompact,
     JOURNEYS: data.journeys,
     HMRC_ESTIMATE: data.hmrcEstimate,
     SUMMARY_TITLE: summaryTitle(period),
     SUMMARY_LINES: buildSummaryLines(
       { miles: data.milesNum, journeys: data.journeysNum, hmrc: data.hmrcNum },
       period,
-      data.fmtMoney
+      data.fmtMoney,
+      data.gpsConfidence
     ),
     PDF_DOWNLOAD_URL: data.pdfDownloadUrl,
     ARCHIVE_URL: data.archiveUrl,
