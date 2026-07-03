@@ -12,7 +12,9 @@
   ],
   "companionFiles": [
     "milepilot-upload-v2/js/summary-reports.js",
-    "backend/routeMapService.js"
+    "backend/routeMapService.js",
+    "templates/email.html",
+    "backend/emailTemplate.js"
   ],
   "requiredExports": [
     { "file": "backend/reportEngine.js", "symbol": "analyseReport" },
