@@ -1,5 +1,5 @@
 /**
- * MilePilot Email Template Engine — Phase 5 visual polish
+ * MilePilot Email Template Engine — Luxury polish pass
  * Master template: backend/templates/email.html
  */
 import fs from "fs";
@@ -49,6 +49,88 @@ function summaryTitle(period) {
   return "Period Summary";
 }
 
+export function emailPeriodTitle(period, periodLabel) {
+  if (period === "Custom" && periodLabel) return periodLabel;
+  const map = {
+    Daily: "Today's Mileage Report",
+    Weekly: "This Week's Mileage Report",
+    Monthly: "This Month's Mileage Report",
+    Quarterly: "Quarterly Business Report",
+    Annual: "Annual Mileage Report",
+    Accountant: "Accountant Export",
+    WeeklySummary: "Weekly Insights",
+    MonthlySummary: "Monthly Insights",
+  };
+  return map[period] || "Business Mileage Report";
+}
+
+function periodShortLabel(period) {
+  const map = {
+    Daily: "Daily Report",
+    Weekly: "Weekly Report",
+    Monthly: "Monthly Report",
+    Quarterly: "Quarterly Report",
+    Annual: "Annual Report",
+    Accountant: "Accountant Export",
+    Custom: "Custom Report",
+    WeeklySummary: "Weekly Insights",
+    MonthlySummary: "Monthly Insights",
+  };
+  return map[period] || "Report";
+}
+
+function periodDateValue(data) {
+  if (data.periodDate) return data.periodDate;
+  if (data.reportingPeriod && !String(data.reportingPeriod).toLowerCase().includes("report")) {
+    return data.reportingPeriod;
+  }
+  return new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+}
+
+function buildPeriodLine(period, date) {
+  return `${periodShortLabel(period)} • ${date}`;
+}
+
+export function buildEmailAiSummary({ name, period, journeys, miles, hmrc, gpsConfidence, fmtMoney, verifiedJourneys }) {
+  const first = name && name !== "there" ? name : null;
+  const when =
+    period === "Daily"
+      ? "today"
+      : period === "Weekly"
+        ? "this week"
+        : period === "Monthly"
+          ? "this month"
+          : "in this period";
+
+  if (!journeys || journeys <= 0) {
+    return first
+      ? `${first}, no business journeys were recorded ${when}. MilePilot will keep tracking automatically when you're next on the road.`
+      : `No business journeys were recorded ${when}. MilePilot will keep tracking automatically when you're next on the road.`;
+  }
+
+  const verified = verifiedJourneys ?? journeys;
+  const claim = hmrc > 0 && fmtMoney ? fmtMoney(hmrc) : null;
+  const allVerified = gpsConfidence === "100%" || verified >= journeys;
+
+  if (allVerified && journeys > 0) {
+    if (claim && period === "Daily") {
+      return `You completed ${journeys} verified business ${journeys === 1 ? "journey" : "journeys"} today and can claim an estimated ${claim} based on current HMRC mileage rates.`;
+    }
+    if (claim) {
+      return `You completed ${journeys} verified business ${journeys === 1 ? "journey" : "journeys"} ${when} — an estimated ${claim} in HMRC mileage allowance based on current rates.`;
+    }
+    return first
+      ? `Great work, ${first}! Every detected business journey ${when} has been successfully recorded.`
+      : `Great work! Every detected business journey ${when} has been successfully recorded.`;
+  }
+
+  if (claim) {
+    return `You recorded ${journeys} business ${journeys === 1 ? "journey" : "journeys"} ${when} covering ${Number(miles || 0).toFixed(1)} miles — an estimated ${claim} in HMRC allowance.`;
+  }
+
+  return `You recorded ${journeys} business ${journeys === 1 ? "journey" : "journeys"} ${when} covering ${Number(miles || 0).toFixed(1)} miles.`;
+}
+
 function buildSummaryLines(stats, period, fmtMoney, gpsConfidence) {
   const isDaily = period === "Daily";
   const milesLine = isDaily
@@ -91,13 +173,12 @@ function buildAutomationBlock(period) {
 
 function pendingBlock(notice) {
   if (!notice) return "";
-  return `<p style="margin:0 0 20px;font-size:13px;color:#7A5B12;line-height:1.55;padding:14px 16px;border-radius:10px;background:#FFF8E8;border:1px solid #F0C35A;">${notice}</p>`;
+  return `<p style="margin:0 0 24px;font-size:13px;color:#7A5B12;line-height:1.55;padding:14px 16px;border-radius:10px;background:#FFF8E8;border:1px solid #F0C35A;">${notice}</p>`;
 }
 
-function periodDateValue(data) {
-  if (data.periodDate) return data.periodDate;
-  if (data.reportingPeriod && !String(data.reportingPeriod).includes("Report")) return data.reportingPeriod;
-  return new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+function aiInsightBlock(sentence) {
+  if (!sentence) return "";
+  return `<p style="margin:0 0 32px;font-size:15px;font-weight:500;line-height:1.6;color:rgba(159,180,208,0.92);letter-spacing:-0.01em;">${sentence}</p>`;
 }
 
 /**
@@ -107,15 +188,26 @@ export function renderEmailFromTemplate(data) {
   const template = loadEmailTemplate();
   const period = data.period || "Daily";
   const drivingCompact = fmtDrivingTimeCompact(data.drivingSeconds ?? 0);
+  const periodDate = periodDateValue(data);
+  const aiSummary = buildEmailAiSummary({
+    name: data.name,
+    period,
+    journeys: data.journeysNum ?? 0,
+    miles: data.milesNum ?? 0,
+    hmrc: data.hmrcNum ?? 0,
+    gpsConfidence: data.gpsConfidence,
+    fmtMoney: data.fmtMoney,
+    verifiedJourneys: data.verifiedJourneys,
+  });
 
   return fill(template, {
     BRAND_TAGLINE,
     FOOTER_TAGLINE,
     GREETING_HEAD: data.greeting || "Hello",
     GREETING_NAME: data.name ? `${data.name} 👋` : "there 👋",
-    PERIOD_TITLE: data.periodTitle || "Business Mileage Report",
-    PERIOD_LABEL: "Report period",
-    PERIOD_VALUE: periodDateValue(data),
+    PERIOD_TITLE: data.emailPeriodTitle || emailPeriodTitle(period, data.periodLabel),
+    PERIOD_LINE: buildPeriodLine(period, periodDate),
+    AI_INSIGHT: aiInsightBlock(aiSummary),
     PENDING_NOTICE: pendingBlock(data.pendingNotice),
     MILES: data.miles,
     DRIVING_TIME: data.drivingTimeCompact || drivingCompact,
