@@ -57,11 +57,11 @@ await run("buildPdfBuffer generates PDF from completed trip", async () => {
   assert.equal(pdf.slice(0, 4).toString(), "%PDF");
 });
 
-await run("buildPdfBuffer daily report has 5 pages (approved template)", async () => {
+await run("buildPdfBuffer daily report has 7 pages (Phase 5 premium template)", async () => {
   const pdf = await buildPdfBuffer(sampleReport);
   const text = pdf.toString("latin1");
   const pageCount = (text.match(/\/Type\s*\/Page[^s]/g) || []).length;
-  assert.equal(pageCount, 5, `expected 5 pages, got ${pageCount}`);
+  assert.equal(pageCount, 7, `expected 7 pages, got ${pageCount}`);
   assert.ok(pdf.length > 3000, "PDF should have substantive content");
 });
 
@@ -71,9 +71,9 @@ await run("buildReportEmailHtml includes metrics from trip", async () => {
     archiveUrl: "https://app.milepilot.uk",
   });
   assert.ok(html.includes("24.5") || html.includes("24.50"));
-  assert.ok(html.includes("Download PDF") || html.includes("Download PDF Report"));
-  assert.ok(html.includes("bgcolor=\"#FFFFFF\""), "email must use white body");
-  assert.ok(!html.includes("#020B1B"), "email must not use dark app theme");
+  assert.ok(html.includes("Download Report") || html.includes("Download PDF"));
+  assert.ok(html.includes("background-color:#020B1B") || html.includes('bgcolor="#031126"'), "email must use dark premium theme");
+  assert.ok(html.includes("#EAF2FF") || html.includes("HMRC Estimate"), "email KPI tiles required");
 });
 
 await run("buildReportSubject formats daily report", async () => {
