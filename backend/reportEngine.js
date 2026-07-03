@@ -58,7 +58,7 @@ export const VEHICLE_LABELS = {
   motorcycle: "Motorcycle",
 };
 
-export const REPORT_VERSION = "MP-020-premium-email-v2";
+export const REPORT_VERSION = "MP-020-premium-email-v3";
 const APP_URL = "https://app.milepilot.uk";
 
 /** Locked brand lockup — must match app `.brand-bar` exactly */
