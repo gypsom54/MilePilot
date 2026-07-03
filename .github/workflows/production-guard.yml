@@ -32,6 +32,9 @@ jobs:
       - name: Reports regression tests
         run: node tests/reports-regression.test.js
 
+      - name: AutoPilot motion tests
+        run: node tests/autopilot-motion.test.js
+
       - name: Trip persistence tests
         run: node tests/trip-persistence.test.js
 

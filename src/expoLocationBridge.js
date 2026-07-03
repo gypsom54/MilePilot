@@ -256,6 +256,41 @@ export async function handleWebViewMessage(raw, sendToWebView) {
       reply({ type: 'expo:native:background:ok', ok: true });
       break;
     }
+    case 'expo:autopilot:arm': {
+      const onLocation = (payload) => {
+        if (typeof sendToWebView === 'function') {
+          sendToWebView({ type: 'expo:autopilot:location', ...payload });
+        }
+        if (!isNativeTripActive()) {
+          onNativeBackgroundLocation(payload);
+        }
+      };
+      const result = await startTracking(onLocation, { background: !!msg.payload?.background });
+      reply({ type: 'expo:autopilot:result', ok: result.ok, backgroundActive: !!result.backgroundActive });
+      break;
+    }
+    case 'expo:autopilot:disarm': {
+      if (!isNativeTripActive()) {
+        await stopAllTracking();
+      }
+      reply({ type: 'expo:autopilot:result', ok: true });
+      break;
+    }
+    case 'expo:notification:local': {
+      try {
+        await Notifications.scheduleNotificationAsync({
+          content: {
+            title: msg.payload?.title || 'MilePilot AutoPilot',
+            body: msg.payload?.body || '',
+          },
+          trigger: null,
+        });
+        reply({ type: 'expo:notification:local:ok', ok: true });
+      } catch (e) {
+        reply({ type: 'expo:notification:local:ok', ok: false, error: e.message });
+      }
+      break;
+    }
     case 'expo:settings:open': {
       // Reply before opening — iOS may background the app before injectJavaScript runs.
       reply({ type: 'expo:settings:result', ok: true });
