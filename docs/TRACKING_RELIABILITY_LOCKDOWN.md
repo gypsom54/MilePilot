@@ -1,8 +1,8 @@
 # Tracking Reliability Lockdown (MP-043)
 
-**Status:** ACTIVE — UI frozen. Only tracking reliability work permitted.
+**Status:** 🔒 **LOCKED** — Core Tracking Engine v1.0 production-ready (July 2026)
 
-**Branch:** `cursor/tracking-reliability-lockdown-4c0e`
+**Manifest:** [CORE_TRACKING_ENGINE_V1_LOCKED.md](./CORE_TRACKING_ENGINE_V1_LOCKED.md)
 
 ---
 
@@ -139,4 +139,4 @@ npm run build:ios:production
 | Bundled PWA for TestFlight | **Recommended next** | Eliminates half the fragility |
 | Automated tests | Good for math | Cannot replace device test |
 
-**Verdict:** Not production-safe until device test gate passes on build 7+ with Tracking Debug confirming background GPS timestamps during a real drive.
+**Verdict:** Core Tracking Engine v1.0 is **production-ready** after real-world validation (background, locked screen, calls, media playback). Device test gate remains required for each new native build.

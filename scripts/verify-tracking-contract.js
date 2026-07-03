@@ -15,6 +15,26 @@ if (contract.vital) {
   console.log("\n⚠️  VITAL SYSTEM — " + (contract.businessCritical || "Business critical tracking code") + "\n");
 }
 
+if (contract.lockManifest) {
+  const manifestPath = path.join(root, contract.lockManifest);
+  if (!fs.existsSync(manifestPath)) {
+    fail(`Missing lock manifest: ${contract.lockManifest}`);
+  } else {
+    pass(`lock manifest ${contract.lockManifest}`);
+    const manifest = fs.readFileSync(manifestPath, "utf8");
+    if (contract.coreEngineVersion && !manifest.includes(`Version ${contract.coreEngineVersion}`)) {
+      fail(`${contract.lockManifest}: must declare Version ${contract.coreEngineVersion}`);
+    } else if (contract.coreEngineVersion) {
+      pass(`core engine v${contract.coreEngineVersion} manifest`);
+    }
+    if (contract.coreEngineStatus === "LOCKED" && !manifest.includes("LOCKED")) {
+      fail(`${contract.lockManifest}: must declare LOCKED status`);
+    } else if (contract.coreEngineStatus === "LOCKED") {
+      pass("core engine LOCKED status");
+    }
+  }
+}
+
 let failed = false;
 
 function fail(msg) {

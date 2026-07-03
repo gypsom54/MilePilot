@@ -1,8 +1,11 @@
 {
   "id": "MP-043",
   "version": 3,
+  "coreEngineVersion": "1.0",
+  "coreEngineStatus": "LOCKED",
   "lockedAt": "8.43.31",
   "vital": true,
+  "lockManifest": "docs/CORE_TRACKING_ENGINE_V1_LOCKED.md",
   "businessCritical": "Without background GPS mileage recording, MilePilot has no product. Do not modify without explicit sign-off and device testing.",
   "description": "Background GPS resilience + locked-screen handoff — field-validated v8.43.31. Do not remove without explicit product sign-off.",
   "files": ["frontend/index.html", "milepilot-upload-v2/index.html"],

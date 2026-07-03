@@ -1,0 +1,37 @@
+---
+description: Core Tracking Engine v1.0 LOCKED — extend, do not replace.
+globs:
+  - frontend/index.html
+  - milepilot-upload-v2/index.html
+  - src/nativeTrackingEngine.js
+  - src/locationTask.js
+  - src/expoLocationBridge.js
+  - src/nativeAutoEnd.js
+  - frontend/js/trip-store.js
+  - frontend/js/trip-auto-end.js
+  - frontend/js/summary-reports.js
+  - scripts/tracking-contract.json
+  - docs/CORE_TRACKING_ENGINE_V1_LOCKED.md
+alwaysApply: false
+---
+
+# Core Tracking Engine v1.0 — LOCKED
+
+**Status:** Production-ready. Real-world validated July 2026.
+
+## Non-negotiable rules
+
+1. **Do NOT rewrite, refactor, or optimise** GPS tracking logic, distance calculations, background tasks, shift lifecycle, mileage math, or report/email triggers unless the user explicitly requests an engine change with sign-off.
+2. **Extend, do not replace.** New features (AutoPilot motion, AI learning, classification, auto-shift, confidence) must hook at the application or MIE layer — see `docs/MIE-ARCHITECTURE.md`.
+3. **Preserve manual tracking behaviour.** Any intentional engine change must leave manual mode identical from the driver's perspective.
+4. **Regression tests required** before merging any engine change: `npm run test:vital` + device drive gate.
+
+## Frozen at v1.0
+
+- GPS tracking logic · Distance calculations · Background task handling
+- Location update configuration · Shift lifecycle · Mileage calculations
+- Report generation trigger · Email generation trigger
+
+## Before any engine change
+
+Read `docs/CORE_TRACKING_ENGINE_V1_LOCKED.md` and follow the four-step change policy. Bump contract version only when behaviour intentionally changes.

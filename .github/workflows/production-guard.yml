@@ -23,6 +23,9 @@ jobs:
       - name: Verify tracking contract (MP-043)
         run: node scripts/verify-tracking-contract.js
 
+      - name: Verify core engine v1.0 lock manifest
+        run: node tests/core-engine-v1-lock.test.js
+
       - name: Verify reports contract (MP-044)
         run: node scripts/verify-reports-contract.js
 
