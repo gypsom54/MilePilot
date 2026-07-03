@@ -28,6 +28,7 @@ import {
 } from "./routeMapService.js";
 import { renderEmailFromTemplate } from "./emailTemplate.js";
 import { buildPremiumPdfFromReport } from "./reports/premiumPdf.js";
+import { fmtDrivingTimeCompact } from "./reports/format.js";
 
 export const BRAND = {
   navy: "#031126",
@@ -755,6 +756,8 @@ export function buildPdfBuffer(report) {
 export function buildReportEmailHtml(report, options = {}) {
   const a = analyseReport(report);
   const name = firstName(a.driver) || "there";
+  const routes = (a.shifts || []).filter((s) => (s.route || s.routePoints || []).length >= 2);
+  const gpsPct = a.shifts.length ? Math.round((routes.length / a.shifts.length) * 100) : null;
 
   const pdfDownloadUrl = options.pdfDownloadUrl || buildReportDeepLink(report, true);
   const archiveUrl = options.archiveUrl || buildReportArchiveDeepLink();
@@ -764,14 +767,18 @@ export function buildReportEmailHtml(report, options = {}) {
     name,
     period: a.period,
     periodTitle: periodReportTitle(a.period, a.periodLabel),
+    periodDate: a.periodLabel || new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }),
     pendingNotice: a.pendingNotice || "",
     miles: a.totals.mi.toFixed(1),
     milesNum: a.totals.mi,
     drivingTime: fmtShiftTime(a.totals.sec),
+    drivingTimeCompact: fmtDrivingTimeCompact(a.totals.sec),
+    drivingSeconds: a.totals.sec,
     journeys: String(a.totals.journeys),
     journeysNum: a.totals.journeys,
     hmrcEstimate: money(a.totals.hmrc),
     hmrcNum: a.totals.hmrc,
+    gpsConfidence: gpsPct != null && a.totals.journeys > 0 ? `${gpsPct}%` : null,
     fmtMoney: money,
     pdfDownloadUrl,
     archiveUrl,

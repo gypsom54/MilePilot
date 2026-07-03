@@ -39,7 +39,10 @@ assert.ok(html.includes("Download Report"), "Download Report CTA required");
 assert.ok(html.includes("premium 7-page PDF") || html.includes("attached"), "attachment note required");
 assert.ok(html.includes("42.6"), "live miles injected");
 assert.ok(html.includes("Good "), "greeting injected");
-assert.ok(html.includes("Reporting period"), "reporting period line required");
+assert.ok(html.includes("Report period"), "report period label required");
+assert.ok(html.includes("👋"), "greeting name with wave required");
+assert.ok(html.includes("GPS confidence") || html.includes("100%"), "GPS confidence in summary when routes present");
+assert.ok(html.includes("height:104px"), "KPI cards use fixed equal height");
 assert.ok(html.includes("Drive • Track • Claim"), "locked footer tagline");
 
 console.log("✓ Phase 5 premium email template golden checks passed\n");

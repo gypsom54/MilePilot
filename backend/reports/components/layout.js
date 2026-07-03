@@ -18,7 +18,10 @@ export function drawPageHeader(doc, a, margin, contentW, theme) {
   doc.fillColor(theme.blue).text("Pilot", { continued: false });
 
   const pulseY = y + 28;
-  const pulseW = Math.min(contentW * 0.42, 180);
+  const pulseW = Math.min(contentW * 0.42, 200);
+  doc.save();
+  doc.roundedRect(margin - 2, pulseY - 3, pulseW + 4, 8, 4).fill(theme.blueGlow || theme.cardBorder);
+  doc.restore();
   const pulseGrad = doc.linearGradient(margin, pulseY, margin + pulseW, pulseY);
   pulseGrad.stop(0, "#020B1B").stop(0.2, theme.blueSoft).stop(0.5, theme.blue).stop(0.8, theme.blueSoft).stop(1, "#020B1B");
   doc.rect(margin, pulseY, pulseW, 2).fill(pulseGrad);
@@ -37,7 +40,9 @@ export function drawPageHeader(doc, a, margin, contentW, theme) {
   doc.text(metaRight, margin, y, { width: contentW, align: "right" });
   y += 18;
 
-  doc.moveTo(margin, y).lineTo(margin + contentW, y).strokeColor(theme.cardBorder).lineWidth(0.6).stroke();
+  doc.moveTo(margin, y).lineTo(margin + contentW, y).strokeColor(theme.cardBorder).lineWidth(0.8).stroke();
+  doc.moveTo(margin, y + 1).lineTo(margin + contentW, y + 1).strokeColor(theme.blueSoft).lineWidth(0.3).opacity(0.35).stroke();
+  doc.opacity(1);
   return y + 22;
 }
 
