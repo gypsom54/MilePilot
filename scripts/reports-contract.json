@@ -13,9 +13,12 @@
   "companionFiles": [
     "milepilot-upload-v2/js/summary-reports.js",
     "backend/routeMapService.js",
-    "backend/approvedPdfLayout.js",
+    "backend/reports/premiumPdf.js",
+    "backend/reports/theme.js",
+    "backend/reports/insightsEngine.js",
+    "backend/templates/email.html",
     "templates/email.html",
-    "templates/MilePilot_APPROVED_Report_Template.pdf",
+    "docs/PHASE-5-PREMIUM-REPORTING.md",
     "backend/emailTemplate.js"
   ],
   "requiredExports": [

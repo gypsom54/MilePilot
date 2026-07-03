@@ -36,8 +36,8 @@ function fill(template, vars) {
 }
 
 function summaryLine(text) {
-  return `<div style="margin:0 0 10px;font-size:14px;line-height:1.55;color:#334155;">
-    <span style="color:#10B981;font-weight:700;margin-right:8px;">✓</span>${text}
+  return `<div style="margin:0 0 10px;font-size:14px;line-height:1.55;color:#9FB4D0;">
+    <span style="color:#20D781;font-weight:700;margin-right:8px;">✓</span>${text}
   </div>`;
 }
 
@@ -103,6 +103,7 @@ export function renderEmailFromTemplate(data) {
     FOOTER_TAGLINE,
     GREETING: `${data.greeting}, ${data.name}`,
     PERIOD_TITLE: data.periodTitle || "Business Mileage Report",
+    REPORTING_PERIOD: data.reportingPeriod || data.periodTitle || "Current period",
     PENDING_NOTICE: pendingBlock(data.pendingNotice),
     MILES: data.miles,
     DRIVING_TIME: data.drivingTime,
