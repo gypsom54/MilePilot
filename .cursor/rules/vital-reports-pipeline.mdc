@@ -6,6 +6,7 @@ globs:
   - milepilot-upload-v2/js/summary-reports.js
   - milepilot-upload-v2/js/trip-store.js
   - backend/reportEngine.js
+  - backend/approvedPdfLayout.js
   - backend/server.js
   - backend/reportDownload.js
   - backend/routeMapService.js
@@ -34,7 +35,8 @@ alwaysApply: false
 - `MPSummaryReports` automatic scheduling
 - `buildPdfBuffer`, `buildReportEmailHtml`, Resend integration
 - `templates/email.html` — **locked** light email master (data injection only)
-- `templates/pdf-spec.md` — **locked** white PDF specification
+- `templates/pdf-spec.md` — **MASTER SPECIFICATION** — white PDF, UI locked (data injection only)
+- `backend/approvedPdfLayout.js` — **locked** daily PDF generator — do not redesign
 - `storeReportDownload` for email PDF links
 - Trip store persistence (`MPTrips`)
 

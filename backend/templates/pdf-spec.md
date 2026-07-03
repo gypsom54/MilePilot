@@ -1,8 +1,25 @@
-# MilePilot PDF Template — 🔒 LOCKED
+# MilePilot PDF — MASTER SPECIFICATION 🔒 UI LOCKED
 
-**Reference:** `templates/MilePilot_APPROVED_Report_Template.pdf`  
+**Authority:** CTO directive — this document governs all MilePilot PDF reports.  
+**Reference PDF:** `templates/MilePilot_APPROVED_Report_Template.pdf`  
 **Generator:** `backend/approvedPdfLayout.js` → `buildApprovedDailyPdf()`  
 **Version:** `REPORT_VERSION` in `reportEngine.js`
+
+---
+
+## Agent and developer rules (non-negotiable)
+
+- **DO NOT** design your own PDF
+- **DO NOT** improvise
+- **DO NOT** change layouts
+- **DO NOT** change typography
+- **DO NOT** add extra sections
+
+The report must be implemented **exactly** as specified.  
+The PDF is part of the MilePilot brand and is **UI LOCKED**.
+
+**Permitted without approval:** replacing placeholder values with live data only.  
+**Forbidden without approval:** any redesign.
 
 ---
 
