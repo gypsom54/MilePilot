@@ -251,7 +251,8 @@
     lastError = null;
     if (deps && typeof deps.armNative === 'function') {
       try {
-        await deps.armNative();
+        const armed = await deps.armNative();
+        if (!armed) log('armNative returned false', 'native_gps_not_started');
       } catch (e) {
         log('armNative failed', e.message || String(e));
       }
@@ -300,7 +301,10 @@
 
   function tryAutoStart(confidence) {
     if (isShiftActive()) return false;
-    if (!deps || typeof deps.canStartTrip !== 'function' || !deps.canStartTrip()) return false;
+    if (!deps || typeof deps.canStartTrip !== 'function' || !deps.canStartTrip()) {
+      log('Auto-start blocked', 'subscription_or_access');
+      return false;
+    }
     if (confidence < DEFAULTS.CONFIDENCE_THRESHOLD) return false;
     if (deps && typeof deps.isDuplicateStart === 'function' && deps.isDuplicateStart()) return false;
 
@@ -320,6 +324,7 @@
     }
 
     if (!started) {
+      log('Auto-start declined', 'onAutoStart returned false');
       setState(STATES.ARMED, 'start_declined');
       return false;
     }
@@ -529,6 +534,7 @@
     setAutoBusiness: setAutoBusiness,
     getIdleMs: getIdleMs,
     setIdleMs: setIdleMs,
+    getSustainedMs: getSustainedMs,
     getTripStatusForSave: getTripStatusForSave,
     isDrivingSpeed: isDrivingSpeed,
     computeConfidence: computeConfidence,
