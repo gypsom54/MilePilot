@@ -91,10 +91,12 @@ app.post("/reports/send", async (req, res) => {
       archiveUrl: buildReportArchiveDeepLink(),
     };
 
+    const subject = buildReportSubject(report) || "Your MilePilot Business Mileage Report";
+
     const result = await resend.emails.send({
       from: process.env.EMAIL_FROM || "MilePilot <reports@milepilot.uk>",
       to: report.email,
-      subject: buildReportSubject(report),
+      subject,
       text: buildReportEmailText(report, emailOptions),
       html: buildReportEmailHtml(report, emailOptions),
       attachments: [

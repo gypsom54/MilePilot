@@ -65,7 +65,9 @@ await run("buildReportEmailHtml includes metrics from trip", async () => {
   assert.ok(html.includes("24.5") || html.includes("24.50"));
   assert.ok(html.includes("Download PDF") || html.includes("Download PDF Report"));
   assert.ok(html.includes("color-scheme"));
-  assert.ok(html.includes("bgcolor"));
+  assert.ok(html.includes("bgcolor=\"#031126\""));
+  assert.ok(!html.includes("#E8EEF7"), "light blue shell must not appear");
+  assert.ok(html.includes("data:image/png;base64,"), "route map must be PNG img for Gmail");
 });
 
 await run("buildReportSubject formats daily report", async () => {

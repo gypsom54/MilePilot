@@ -1,17 +1,19 @@
 /**
  * MilePilot Report Email Layout — premium, spacious briefing design.
- * Uses light outer shell + dark card for reliable rendering in iOS/Gmail dark mode.
+ * Full dark-navy gradient shell (matches docs/report-email-preview.html).
+ * Route maps are rasterised to PNG — Gmail strips inline SVG.
  */
 import {
   buildRouteMapContext,
   generateRouteSvg,
   generateEmptyStateSvg,
 } from "./routeMapService.js";
+import { svgToEmailImgTag } from "./emailMapImage.js";
 
 const EMAIL_CONTENT_W = 440;
 const EMAIL_MAP_H = 272;
 
-/** Wraps report body for consistent colour in Apple Mail / Gmail dark mode. */
+/** Wraps report body — dark premium gradient, Gmail/iOS dark-mode safe. */
 export function buildEmailDocumentShell(innerHtml) {
   return `<!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
@@ -24,27 +26,21 @@ export function buildEmailDocumentShell(innerHtml) {
 <style type="text/css">
   :root { color-scheme: light dark; supported-color-schemes: light dark; }
   body { margin:0 !important; padding:0 !important; width:100% !important; -webkit-text-size-adjust:100%; }
-  .mp-outer { background-color:#E8EEF7 !important; }
-  .mp-card { background-color:#0A2854 !important; }
+  .mp-outer { background-color:#031126 !important; }
   .mp-body-text { color:#EAF2FF !important; }
   .mp-muted { color:#B9C8DD !important; }
-  .mp-accent { color:#6EB4FF !important; }
-  .mp-white { color:#FFFFFF !important; }
   @media (prefers-color-scheme: dark) {
     .mp-outer { background-color:#020B1B !important; }
-    .mp-card { background-color:#0A2854 !important; }
     .mp-body-text { color:#EAF2FF !important; }
     .mp-muted { color:#B9C8DD !important; }
-    .mp-accent { color:#6EB4FF !important; }
-    .mp-white { color:#FFFFFF !important; }
   }
 </style>
 </head>
-<body class="mp-outer" style="margin:0;padding:0;background-color:#E8EEF7;">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="mp-outer" bgcolor="#E8EEF7" style="background-color:#E8EEF7;padding:40px 16px 48px;">
+<body class="mp-outer" style="margin:0;padding:0;background-color:#031126;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="mp-outer" bgcolor="#031126" style="background-color:#031126;background:linear-gradient(180deg,#0A2854 0%,#031126 55%,#020B1B 100%);padding:52px 20px 60px;">
 <tr><td align="center">
-<table role="presentation" width="480" cellpadding="0" cellspacing="0" border="0" class="mp-card" bgcolor="#0A2854" style="max-width:480px;width:100%;background-color:#0A2854;border-radius:24px;border:1px solid #1A4A8C;">
-<tr><td style="padding:32px 24px 28px;">
+<table role="presentation" width="480" cellpadding="0" cellspacing="0" border="0" style="max-width:480px;width:100%;">
+<tr><td style="padding:0 24px;">
 ${innerHtml}
 </td></tr>
 </table>
@@ -90,10 +86,11 @@ export function renderEmailMapHero(ctx) {
     ? `<p style="margin:0;padding:0 4px 4px;font-size:13px;line-height:1.5;color:#93A8C4;text-align:center;">${caption}</p>`
     : "";
 
+  const mapImg = svgToEmailImgTag(mapInner, title) || mapInner;
   return `<div style="margin:0 0 36px;">
     <p style="margin:0 0 14px;font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#6EB4FF;">${title}</p>
-    <div style="border-radius:20px;overflow:hidden;border:1px solid rgba(13,107,255,.32);background:linear-gradient(180deg,#0A2854 0%,#061A38 100%);box-shadow:0 16px 48px rgba(13,107,255,.18),inset 0 1px 0 rgba(255,255,255,.06);">
-      ${mapInner}
+    <div style="border-radius:20px;overflow:hidden;border:1px solid rgba(13,107,255,.32);background:linear-gradient(180deg,#0A2854 0%,#061A38 100%);box-shadow:0 16px 48px rgba(13,107,255,.18),inset 0 1px 0 rgba(255,255,255,.06);line-height:0;font-size:0;">
+      ${mapImg}
     </div>
     ${captionHtml}
   </div>`;
