@@ -1,54 +1,49 @@
-# Report Templates — 🔒 LOCKED
+# MilePilot Report Templates — 🔒 LOCKED
 
-**Status:** Frozen as of MP-021 (July 2026)  
-**Rule:** The app injects data only. No redesigns without explicit product sign-off.
-
----
-
-## Three surfaces, three jobs
-
-| Surface | Theme | Template | Purpose |
-|---------|-------|----------|---------|
-| 📱 **App** | Dark navy | `frontend/index.html` (UI locked) | Phone use |
-| 📄 **PDF** | White professional | `templates/pdf-spec.md` + `buildPdfBuffer()` | HMRC, accountants, printing |
-| 📧 **Email** | Light branded summary | `templates/email.html` | 30-second preview + PDF attached |
-
-**The app and reports do not share the same background colour. That is intentional.**
+**Source of truth:**
+- `templates/MilePilot_APPROVED_Report_Template.pdf` — approved daily PDF
+- `templates/email.html` — approved light email structure
+- `Cursor_Report_Email_Lockdown_Prompt` — agent rules
 
 ---
 
-## Locked files
+## Three surfaces
 
-| File | Role |
-|------|------|
-| `templates/email.html` | Master HTML email — **do not edit layout/colours** |
-| `templates/pdf-spec.md` | PDF design specification |
-| `backend/emailTemplate.js` | Data injection only (`{{PLACEHOLDERS}}`) |
-| `backend/reportEngine.js` | `buildPdfBuffer()` — white PDF generator |
-
----
-
-## Email placeholders
-
-Only these values change per report:
-
-- `{{GREETING}}`, `{{PERIOD_TITLE}}`, `{{MILES}}`, `{{DRIVING_TIME}}`
-- `{{JOURNEYS}}`, `{{HMRC_ESTIMATE}}`, `{{SUMMARY_LINES}}`
-- `{{PDF_DOWNLOAD_URL}}`, `{{ARCHIVE_URL}}`
-- `{{PENDING_NOTICE}}`, `{{AUTOMATION_NOTES}}`
+| Surface | Theme | Template |
+|---------|-------|----------|
+| 📱 App | Dark navy | UI locked |
+| 📄 PDF | **White professional** | `approvedPdfLayout.js` → 5-page daily |
+| 📧 Email | **Light summary** | `templates/email.html` |
 
 ---
 
-## Agent rules
+## PDF locked structure (Daily)
 
-1. **Never** switch email to dark theme
-2. **Never** switch PDF to dark theme  
-3. **Never** inline-generate email HTML in `reportEngine.js` — use `templates/email.html`
-4. Changes to design require updating the template file + this doc + golden tests
-5. Run `node tests/email-template-golden.test.js` before deploy
+1. Daily Business Summary
+2. MilePilot Intelligence
+3. Business Journey Log + HMRC Summary
+4. Weekly Performance
+5. MilePilot AI Summary
+
+Footer on all PDF pages: **Drive • Track • Claim**
 
 ---
 
-## Preview
+## Email locked structure
 
-Open `docs/report-email-preview.html` in a browser to see the approved light email with sample data.
+- MilePilot header (navy band)
+- Daily Business Report greeting
+- Summary metrics (4 tiles)
+- Download PDF Report button
+- Open MilePilot link
+- Compliance disclaimer
+- **Drive • Track • Claim** footer
+
+---
+
+## Rules
+
+- Do NOT redesign email or PDF
+- Do NOT make email dark
+- Only inject live data
+- Run tests before deploy: `node tests/reports-regression.test.js` && `node tests/email-template-golden.test.js`

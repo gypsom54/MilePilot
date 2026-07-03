@@ -8,6 +8,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 const BRAND_TAGLINE = "Your business. On AutoPilot.";
+const FOOTER_TAGLINE = "Drive • Track • Claim";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const TEMPLATE_PATH = path.join(__dirname, "..", "templates", "email.html");
@@ -98,6 +99,7 @@ export function renderEmailFromTemplate(data) {
 
   return fill(template, {
     BRAND_TAGLINE,
+    FOOTER_TAGLINE,
     GREETING: `${data.greeting}, ${data.name}`,
     PERIOD_TITLE: data.periodTitle || "Business Mileage Report",
     PENDING_NOTICE: pendingBlock(data.pendingNotice),
