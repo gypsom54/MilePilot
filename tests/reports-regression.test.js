@@ -71,7 +71,7 @@ await run("buildReportEmailHtml includes metrics from trip", async () => {
     archiveUrl: "https://app.milepilot.uk",
   });
   assert.ok(html.includes("24.5") || html.includes("24.50"));
-  assert.ok(html.includes("Download Report") || html.includes("Download PDF"));
+  assert.ok(html.includes("Download Full PDF Report") || html.includes("Download Report"));
   assert.ok(html.includes("background-color:#020B1B") || html.includes('bgcolor="#031126"'), "email must use dark premium theme");
   assert.ok(html.includes("#EAF2FF") || html.includes("HMRC Estimate"), "email KPI tiles required");
 });

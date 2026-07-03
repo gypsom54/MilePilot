@@ -26,7 +26,7 @@ import {
   drawPdfMiniRoute,
   extractRoutePoints,
 } from "./routeMapService.js";
-import { renderEmailFromTemplate } from "./emailTemplate.js";
+import { renderEmailFromTemplate, emailPeriodTitle } from "./emailTemplate.js";
 import { buildPremiumPdfFromReport } from "./reports/premiumPdf.js";
 import { fmtDrivingTimeCompact } from "./reports/format.js";
 
@@ -758,6 +758,7 @@ export function buildReportEmailHtml(report, options = {}) {
   const name = firstName(a.driver) || "there";
   const routes = (a.shifts || []).filter((s) => (s.route || s.routePoints || []).length >= 2);
   const gpsPct = a.shifts.length ? Math.round((routes.length / a.shifts.length) * 100) : null;
+  const verifiedJourneys = routes.length;
 
   const pdfDownloadUrl = options.pdfDownloadUrl || buildReportDeepLink(report, true);
   const archiveUrl = options.archiveUrl || buildReportArchiveDeepLink();
@@ -766,6 +767,7 @@ export function buildReportEmailHtml(report, options = {}) {
     greeting: timeGreeting(),
     name,
     period: a.period,
+    emailPeriodTitle: emailPeriodTitle(a.period, a.periodLabel),
     periodTitle: periodReportTitle(a.period, a.periodLabel),
     periodDate: a.periodLabel || new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }),
     pendingNotice: a.pendingNotice || "",
@@ -779,6 +781,7 @@ export function buildReportEmailHtml(report, options = {}) {
     hmrcEstimate: money(a.totals.hmrc),
     hmrcNum: a.totals.hmrc,
     gpsConfidence: gpsPct != null && a.totals.journeys > 0 ? `${gpsPct}%` : null,
+    verifiedJourneys,
     fmtMoney: money,
     pdfDownloadUrl,
     archiveUrl,
