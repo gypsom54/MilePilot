@@ -305,12 +305,6 @@ export function ingestNativeLocation(payload, { source = 'unknown' } = {}) {
     trip.lastForegroundUpdateAt = Date.now();
   }
 
-  // Foreground watch: count miles when app is backgrounded/locked (WebView suspended).
-  if (source === 'foreground' && !appInBackground) {
-    persistState();
-    return null;
-  }
-
   if (p.acc > ENGINE.ACC_SOFT_MAX) {
     persistState();
     return getTripSyncPayload();

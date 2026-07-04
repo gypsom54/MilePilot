@@ -21,7 +21,6 @@ import {
   setNativeAppBackground,
   loadPersistedState,
   isNativeTripActive,
-  isNativeAppBackground,
 } from './nativeTrackingEngine';
 
 export { setNativeAutoEndInjector, syncNativeAutoEnd };
@@ -94,13 +93,14 @@ function locationToPayload(loc) {
 
 function pushLocationAndSync(payload, source, sendToWebView) {
   const sync = ingestNativeLocation(payload, { source });
-  if (typeof sendToWebView === 'function') {
+  if (typeof sendToWebView !== 'function') return sync;
+  if (isNativeTripActive()) {
     if (sync) sendToWebView(sync);
-    const skipWebForward =
-      isNativeTripActive() && (isNativeAppBackground() || source === 'background');
-    if (source === 'foreground' && !skipWebForward) {
-      sendToWebView({ type: 'expo:location', ...payload });
-    }
+    return sync;
+  }
+  if (sync) sendToWebView(sync);
+  if (source === 'foreground') {
+    sendToWebView({ type: 'expo:location', ...payload });
   }
   return sync;
 }
@@ -220,9 +220,9 @@ export async function handleWebViewMessage(raw, sendToWebView) {
     }
     case 'expo:trip:start': {
       const onLocation = (payload) => pushLocationAndSync(payload, 'foreground', sendToWebView);
-      const result = await startTracking(onLocation, { background: !!msg.payload?.background });
       const sync = startNativeTrip(msg.payload || {});
       if (msg.payload?.autoEnd) syncNativeAutoEnd(msg.payload.autoEnd);
+      const result = await startTracking(onLocation, { background: !!msg.payload?.background });
       reply({
         type: 'expo:trip:result',
         ok: true,
