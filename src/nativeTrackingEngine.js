@@ -186,6 +186,7 @@ async function persistState() {
 
 export async function loadPersistedState() {
   try {
+    if (!FileSystem.documentDirectory) return false;
     const info = await FileSystem.getInfoAsync(STATE_PATH);
     if (!info.exists) return false;
     const raw = await FileSystem.readAsStringAsync(STATE_PATH);
@@ -195,7 +196,11 @@ export async function loadPersistedState() {
       return true;
     }
   } catch (e) {
-    logError('load failed', e.message);
+    if (trip.active && trip.miles > 0) {
+      console.warn('[MilePilot NativeEngine] load skipped — using in-memory trip', e.message);
+    } else {
+      logError('load failed', e.message);
+    }
   }
   return false;
 }

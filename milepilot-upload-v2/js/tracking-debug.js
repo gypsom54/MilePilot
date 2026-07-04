@@ -39,20 +39,20 @@
         : {};
     return {
       tripStatus: tripActive ? 'ACTIVE' : 'idle',
-      miles: typeof global.miles === 'number' ? global.miles : null,
+      miles: typeof global.__mpMiles === 'number' ? global.__mpMiles : typeof global.miles === 'number' ? global.miles : null,
       lastGpsAt: global.lastGpsAt || null,
       lastGpsLat: global.lastPoint?.lat ?? null,
       lastGpsLon: global.lastPoint?.lon ?? null,
-      gpsPoints: global.routePoints?.length || 0,
+      gpsPoints: global.__mpRoutePointCount != null ? global.__mpRoutePointCount : global.routePoints?.length || 0,
       lastSave: global.lastActiveShiftSaveAt || null,
       autoEndCountdown: auto.countdownSec,
       autoEndIdle: auto.lastMovementAgoSec,
       nativeAuthoritative: !!global.__nativeEngineAuthoritative,
       nativeBgFallback: !!(global.nativeBgFallbackActive),
-      lastWebGpsAt: global.lastWebGpsAt || null,
+      lastWebGpsAt: global.__mpLastWebGpsAt || global.lastWebGpsAt || null,
       webGpsWatch: global.gpsWatchId != null ? 'ON' : 'OFF',
-      pendingMeters: typeof global.pendingMeters === 'number' ? global.pendingMeters : null,
-      lastNativeMiles: global.lastNativeMilesSeen,
+      pendingMeters: typeof global.__mpPendingMeters === 'number' ? global.__mpPendingMeters : typeof global.pendingMeters === 'number' ? global.pendingMeters : null,
+      lastNativeMiles: global.__mpLastNativeMilesSeen != null ? global.__mpLastNativeMilesSeen : global.lastNativeMilesSeen,
       lastNativeBg: global.lastNativeBgAt || null,
       permission:
         typeof global.MPTrackingProvider !== 'undefined'
@@ -143,6 +143,9 @@
           webAppUrl: location.href.split('?')[0],
         });
         nativeSnap = res && res.snapshot ? res.snapshot : null;
+        if (nativeSnap && typeof global.mergeNativeTripSync === 'function') {
+          global.mergeNativeTripSync({ ...nativeSnap, engine: 'native' });
+        }
       } catch (e) {
         nativeSnap = { lastError: e.message || String(e) };
       }
@@ -167,6 +170,9 @@
         ? global.isShiftTracking()
         : global.ccState === 'active';
     if (tripActive && typeof global.goHome === 'function') {
+      if (typeof global.burstNativeTripSync === 'function') {
+        global.burstNativeTripSync();
+      }
       global.goHome();
       return;
     }
