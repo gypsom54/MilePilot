@@ -148,6 +148,11 @@
     return isAutoPilot();
   }
 
+  function getIdlePrimaryLabel() {
+    if (isManual()) return getModeMeta(MODE_MANUAL).startLabel;
+    return 'Start manually';
+  }
+
   function getStartButtonLabel() {
     return getModeMeta(getMode() || MODE_AUTOPILOT).startLabel;
   }
@@ -182,6 +187,7 @@
     usesBackgroundTracking: usesBackgroundTracking,
     usesAutoEnd: usesAutoEnd,
     getStartButtonLabel: getStartButtonLabel,
+    getIdlePrimaryLabel: getIdlePrimaryLabel,
     getEndButtonLabel: getEndButtonLabel,
     getSwitchExplanation: getSwitchExplanation,
   };
