@@ -13,6 +13,8 @@
  * Must stay aligned with frontend/index.html ENGINE + processGpsPoint.
  * Do not change without updating tests and docs/TRACKING_CONTRACT.md
  */
+import { shouldResetIdleTimer } from '../src/nativeIdlePolicy.js';
+
 export const ENGINE = {
   MIN_MOVE_M: 6,
   MAX_JUMP_M: 400,
@@ -28,8 +30,7 @@ export const ENGINE = {
   NATIVE_SPEED_GATE_DT: 2,
   AUTO_END_MIN_MOVE_M: 40,
   AUTO_END_MIN_SPEED_MPS: 1.8,
-  AUTO_END_SOFT_MOVE_M: 22,
-  AUTO_END_SOFT_SPEED_MPS: 1.0,
+  AUTO_END_WALKING_MAX_MPS: 1.5,
   AUTO_END_MAX_ACC_M: 65,
   AUTO_END_MILE_GRACE_MS: 1200000,
 };
@@ -61,17 +62,9 @@ export function calcSpeedMps(d, p, prev) {
 }
 
 export function shouldResetAutoEndIdle(d, calcSpeedMps, deviceSpeedMps, acc) {
-  const minMove = ENGINE.AUTO_END_MIN_MOVE_M || 40;
-  const minSpeed = ENGINE.AUTO_END_MIN_SPEED_MPS || 1.8;
-  const softMove = ENGINE.AUTO_END_SOFT_MOVE_M || 22;
-  const softSpeed = ENGINE.AUTO_END_SOFT_SPEED_MPS || 1.0;
-  const maxAcc = ENGINE.AUTO_END_MAX_ACC_M || 65;
-  if (acc != null && acc > maxAcc) return false;
   const devicePos = deviceSpeedMps != null && deviceSpeedMps > 0.3 ? deviceSpeedMps : null;
   const effectiveSpeed = devicePos != null ? Math.max(devicePos, calcSpeedMps) : calcSpeedMps;
-  if (d >= minMove && effectiveSpeed >= minSpeed) return true;
-  if (d >= softMove && effectiveSpeed >= softSpeed) return true;
-  return false;
+  return shouldResetIdleTimer({ distanceM: d, speedMps: effectiveSpeed, accuracyM: acc });
 }
 
 export function createShiftState(overrides = {}) {

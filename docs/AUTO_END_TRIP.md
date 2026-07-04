@@ -4,7 +4,9 @@
 
 When a shift is **active**, MilePilot tracks `lastMovementAt` (timestamp of last GPS movement ≥ 6 m).
 
-If **no movement** is detected for **90 minutes**, the app calls `endShiftCommandCentre('auto')` — the same path as tapping **End Shift**:
+If **no driving movement** is detected for **90 minutes**, the app calls `endShiftCommandCentre('auto')` — the same path as tapping **End Shift**:
+
+**Phase 0 idle policy (MP-047):** Only **driving-speed** movement resets the 90-minute clock — ≥40 m at ≥1.8 m/s (~6.5 km/h). Walking, jogging, and GPS drift without speed do **not** reset the timer. Shared policy: `src/nativeIdlePolicy.js`.
 
 - Saves the trip to shift history
 - Clears active shift state
