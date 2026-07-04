@@ -11,6 +11,7 @@ import {
   handleWebViewMessage,
   injectLocationIntoWebView,
   initNativeTracking,
+  ensureBackgroundLocationForTrip,
 } from './expoLocationBridge';
 import { setNativeAutoEndInjector, flushPendingNativeAutoEnd } from './nativeAutoEnd';
 import { getTripSyncPayload, setNativeDebugMeta, setNativeAppBackground } from './nativeTrackingEngine';
@@ -106,6 +107,16 @@ export default function MilePilotWebView() {
       setNativeAppBackground(nextState !== 'active');
       if (nextState === 'background' || nextState === 'inactive') {
         sendToWebView({ type: 'expo:appstate', state: nextState });
+        const tripNow = getTripSyncPayload();
+        if (tripNow?.active) {
+          ensureBackgroundLocationForTrip()
+            .then((res) => {
+              if (res?.backgroundActive) {
+                console.log('[MilePilot] background GPS ensured on lock');
+              }
+            })
+            .catch((e) => console.warn('[MilePilot] bg ensure on lock', e.message));
+        }
       }
       if (nextState === 'active') {
         sendToWebView({ type: 'expo:appstate', state: 'active' });

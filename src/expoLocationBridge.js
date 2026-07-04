@@ -156,17 +156,35 @@ export async function stopAllTracking() {
   lastBackgroundActive = false;
 }
 
+export async function ensureBackgroundLocationForTrip() {
+  if (!isNativeTripActive()) {
+    return { ok: false, reason: 'no_trip', backgroundActive: false };
+  }
+  const bgPerm = await Location.getBackgroundPermissionsAsync();
+  if (bgPerm.status !== 'granted') {
+    console.warn('[MilePilot] background permission not granted — locked-phone miles need Always');
+    return { ok: false, reason: 'no_bg_permission', backgroundActive: false };
+  }
+  try {
+    await startBackgroundLocationUpdates();
+    lastBackgroundActive = true;
+    setNativeDebugMeta({ backgroundActive: true });
+    return { ok: true, backgroundActive: true };
+  } catch (e) {
+    console.warn('[MilePilot] ensureBackgroundLocationForTrip failed', e.message);
+    return { ok: false, error: e.message, backgroundActive: false };
+  }
+}
+
 export async function startTracking(onLocation, { background = false } = {}) {
   await startForegroundWatch(onLocation);
 
   let backgroundActive = false;
   if (background) {
-    const bgPerm = await Location.getBackgroundPermissionsAsync();
-    if (bgPerm.status === 'granted') {
-      await startBackgroundLocationUpdates();
-      backgroundActive = true;
-    } else {
-      console.warn('[MilePilot] background permission not granted — foreground only');
+    const ensured = await ensureBackgroundLocationForTrip();
+    backgroundActive = !!ensured.backgroundActive;
+    if (!backgroundActive) {
+      console.warn('[MilePilot] background location not active — foreground only');
     }
   }
 
@@ -297,8 +315,27 @@ export async function handleWebViewMessage(raw, sendToWebView) {
       break;
     }
     case 'expo:native:background': {
-      setNativeAppBackground(!!msg.payload?.active);
-      reply({ type: 'expo:native:background:ok', ok: true });
+      const goingBackground = !!msg.payload?.active;
+      setNativeAppBackground(goingBackground);
+      let bgEnsure = { ok: false, backgroundActive: lastBackgroundActive };
+      if (goingBackground && isNativeTripActive()) {
+        bgEnsure = await ensureBackgroundLocationForTrip();
+      }
+      reply({
+        type: 'expo:native:background:ok',
+        ok: true,
+        backgroundActive: !!bgEnsure.backgroundActive,
+      });
+      break;
+    }
+    case 'expo:trip:bg:ensure': {
+      const bgEnsure = await ensureBackgroundLocationForTrip();
+      reply({
+        type: 'expo:trip:bg:result',
+        ok: bgEnsure.ok !== false,
+        backgroundActive: !!bgEnsure.backgroundActive,
+        reason: bgEnsure.reason || null,
+      });
       break;
     }
     case 'expo:location:current': {

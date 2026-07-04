@@ -45,7 +45,10 @@
       autoEndIdle: auto.lastMovementAgoSec,
       nativeAuthoritative: !!global.__nativeEngineAuthoritative,
       nativeBgFallback: !!(global.nativeBgFallbackActive),
-      lastNativeSync: global.lastNativeSyncAt || null,
+      lastWebGpsAt: global.lastWebGpsAt || null,
+      webGpsWatch: global.gpsWatchId != null ? 'ON' : 'OFF',
+      pendingMeters: typeof global.pendingMeters === 'number' ? global.pendingMeters : null,
+      lastNativeMiles: global.lastNativeMilesSeen,
       lastNativeBg: global.lastNativeBgAt || null,
       permission:
         typeof global.MPTrackingProvider !== 'undefined'
@@ -76,7 +79,11 @@
       '',
       '--- GPS ---',
       'Miles (web display): ' + (webDbg.miles != null ? webDbg.miles.toFixed(4) : '—'),
+      'Pending meters (web): ' + (webDbg.pendingMeters != null ? Math.round(webDbg.pendingMeters) + 'm' : '—'),
       'Miles (native): ' + (nativeSnap?.miles != null ? Number(nativeSnap.miles).toFixed(4) : '—'),
+      'Last native miles seen: ' + (webDbg.lastNativeMiles != null ? Number(webDbg.lastNativeMiles).toFixed(4) : '—'),
+      'Web GPS watch: ' + (webDbg.webGpsWatch || 'OFF'),
+      'Last web GPS: ' + fmtAgo(webDbg.lastWebGpsAt),
       'GPS points (web): ' + webDbg.gpsPoints,
       'GPS points (native): ' + (nativeSnap?.gpsPointCount ?? '—'),
       'Last GPS: ' + fmtTime(nativeSnap?.lastGpsAt || webDbg.lastGpsAt),
