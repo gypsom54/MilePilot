@@ -156,18 +156,28 @@ run("indoor GPS drift does not reset auto-end idle timer", () => {
   const drift = point(51.50003, -0.11997, t0 + 12000, { acc: 28, speedMps: 0 });
   const d = distanceMeters(home, drift);
   const calc = calcSpeedMps(d, drift, home);
-  assert.ok(d < ENGINE.AUTO_END_SOFT_MOVE_M, "drift distance stays below auto-end threshold");
+  assert.ok(d < ENGINE.AUTO_END_MIN_MOVE_M, "drift distance stays below auto-end threshold");
   assert.equal(shouldResetAutoEndIdle(d, calc, 0, drift.acc), false);
+});
+
+run("walking after parking does not reset auto-end idle timer", () => {
+  const t0 = Date.now();
+  const start = point(51.5, -0.12, t0, { acc: 18 });
+  const walk = point(51.50027, -0.12, t0 + 20000, { acc: 18, speedMps: 1.2 });
+  const d = distanceMeters(start, walk);
+  const calc = calcSpeedMps(d, walk, start);
+  assert.ok(d >= 25, "walk distance is meaningful");
+  assert.equal(shouldResetAutoEndIdle(d, calc, 1.2, walk.acc), false);
 });
 
 run("slow traffic still resets auto-end idle timer", () => {
   const t0 = Date.now();
   const start = point(51.5, -0.12, t0, { acc: 18, nativeGps: true });
-  const creep = point(51.5002, -0.12, t0 + 12000, { acc: 18, nativeGps: true, speedMps: 0 });
+  const creep = point(51.5004, -0.12, t0 + 25000, { acc: 18, nativeGps: true, speedMps: 2 });
   const d = distanceMeters(start, creep);
   const calc = calcSpeedMps(d, creep, start);
-  assert.ok(d >= ENGINE.AUTO_END_SOFT_MOVE_M);
-  assert.equal(shouldResetAutoEndIdle(d, calc, 0, creep.acc), true);
+  assert.ok(d >= ENGINE.AUTO_END_MIN_MOVE_M);
+  assert.equal(shouldResetAutoEndIdle(d, calc, 2, creep.acc), true);
 });
 
 run("real driving movement resets auto-end idle timer", () => {

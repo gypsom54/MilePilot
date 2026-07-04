@@ -3,12 +3,8 @@
  * Tracks wall-clock deadline; triggers auto-end via WebView injection.
  */
 import * as Notifications from 'expo-notifications';
+import { shouldResetIdleTimer } from './nativeIdlePolicy.js';
 
-const MOVEMENT_METERS = 50;
-const SOFT_MOVEMENT_METERS = 22;
-const MIN_SPEED_MPS = 1.8;
-const SOFT_SPEED_MPS = 1.0;
-const MAX_ACC_M = 65;
 const NOTIF_ID = 'milepilot-auto-end';
 
 let state = {
@@ -131,18 +127,18 @@ export function onNativeBackgroundLocation(payload) {
 
   if (state.lastLat != null && state.lastLon != null) {
     const d = distanceMeters({ lat: state.lastLat, lon: state.lastLon }, { lat, lon });
-    const accOk = acc == null || acc <= MAX_ACC_M;
     const speedVal = speed != null && speed >= 0 ? speed : null;
-    const speedOk = speedVal != null ? speedVal >= MIN_SPEED_MPS : true;
-    const softSpeedOk = speedVal != null ? speedVal >= SOFT_SPEED_MPS : true;
-    const hardMove = d >= MOVEMENT_METERS && accOk && speedOk;
-    const softMove = d >= SOFT_MOVEMENT_METERS && accOk && softSpeedOk;
-    if (hardMove || softMove) {
+    const drivingMove = shouldResetIdleTimer({
+      distanceM: d,
+      speedMps: speedVal,
+      accuracyM: acc,
+    });
+    if (drivingMove) {
       state.lastMovementAt = now;
       state.autoEndDeadlineAt = now + state.inactivityMs;
       state.pendingAutoEnd = false;
       scheduleAutoEndNotification(state.autoEndDeadlineAt);
-      console.log('[MilePilot NativeAutoEnd] movement — deadline reset', { meters: Math.round(d) });
+      console.log('[MilePilot NativeAutoEnd] driving movement — deadline reset', { meters: Math.round(d) });
     }
   }
 
