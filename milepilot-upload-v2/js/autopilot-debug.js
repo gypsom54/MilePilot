@@ -33,6 +33,10 @@
 
     const dbg = global.MPAutoPilotMotion.getDebugState();
     const logs = global.MPAutoPilotMotion.getLog().slice(-12);
+    const sustainedNeed = dbg.sustainedThresholdSec || 10;
+    const sustainedLeft = Math.max(0, sustainedNeed - (dbg.candidateSustainedSec || 0));
+    const canStart =
+      typeof global.canUseActiveFeatures === 'function' ? global.canUseActiveFeatures() : true;
 
     const lines = [
       '=== MilePilot AutoPilot Debug ===',
@@ -47,7 +51,13 @@
       'GPS accuracy: ' + (dbg.lastAccuracyM != null ? Math.round(dbg.lastAccuracyM) + ' m' : '—'),
       'Motion activity: ' + dbg.motionActivity,
       'Confidence: ' + (dbg.candidateConfidence ? dbg.candidateConfidence.toFixed(2) : '—'),
-      'Candidate sustained: ' + dbg.candidateSustainedSec + 's',
+      'Candidate sustained: ' + dbg.candidateSustainedSec + 's / ' + sustainedNeed + 's needed',
+      'Auto-start ETA: ' +
+        (dbg.state === 'MOVING_CANDIDATE' && sustainedLeft > 0
+          ? '~' + sustainedLeft + 's at current speed'
+          : dbg.state === 'MOVING_CANDIDATE'
+            ? 'ready — should start now'
+            : '—'),
       'Last GPS: ' + fmtAgo(dbg.lastGpsAt) + ' (' + fmtTime(dbg.lastGpsAt) + ')',
       '',
       '--- Trip ---',
@@ -58,8 +68,10 @@
       'Idle since movement: ' + (dbg.idleAgoSec != null ? dbg.idleAgoSec + 's' : '—'),
       '',
       '--- System ---',
+      'Subscription OK: ' + (canStart ? 'YES' : 'NO — paywall blocks auto-start'),
       'Permissions OK: ' + (dbg.permissionsOk ? 'YES' : 'NO'),
       'Battery OK: ' + (dbg.batteryOk ? 'YES' : 'NO'),
+      'Auto-start block: ' + (dbg.lastAutoStartBlock || '—'),
       'Report sent: ' + fmtTime(dbg.reportSentAt),
       'Last error: ' + (dbg.lastError || '—'),
       '',

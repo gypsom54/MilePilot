@@ -53,6 +53,7 @@
   let syncTimer = null;
   let motionActivity = 'unknown';
   let lastError = null;
+  let lastAutoStartBlock = null;
   let autopilotTripId = null;
 
   function log(msg, detail) {
@@ -120,11 +121,6 @@
   }
 
   function getSustainedMs() {
-    try {
-      if (global.localStorage && global.localStorage.getItem('mp_debug') === '1') {
-        return 30000;
-      }
-    } catch (e) {}
     return DEFAULTS.SUSTAINED_MS;
   }
 
@@ -319,13 +315,24 @@
   }
 
   function tryAutoStart(confidence) {
-    if (isShiftActive()) return false;
-    if (!deps || typeof deps.canStartTrip !== 'function' || !deps.canStartTrip()) {
-      log('Auto-start blocked', 'subscription_or_access');
+    if (isShiftActive()) {
+      lastAutoStartBlock = 'shift_already_active';
       return false;
     }
-    if (confidence < DEFAULTS.CONFIDENCE_THRESHOLD) return false;
-    if (deps && typeof deps.isDuplicateStart === 'function' && deps.isDuplicateStart()) return false;
+    if (!deps || typeof deps.canStartTrip !== 'function' || !deps.canStartTrip()) {
+      lastAutoStartBlock = 'subscription_or_access';
+      log('Auto-start blocked', lastAutoStartBlock);
+      return false;
+    }
+    if (confidence < DEFAULTS.CONFIDENCE_THRESHOLD) {
+      lastAutoStartBlock = 'confidence_low';
+      return false;
+    }
+    if (deps && typeof deps.isDuplicateStart === 'function' && deps.isDuplicateStart()) {
+      lastAutoStartBlock = 'duplicate_start';
+      return false;
+    }
+    lastAutoStartBlock = null;
 
     setState(STATES.ENDING, 'starting_trip');
     const startMeta = {
@@ -350,11 +357,13 @@
     }
 
     if (!started) {
-      log('Auto-start declined', 'onAutoStart returned false');
+      lastAutoStartBlock = 'onAutoStart_declined';
+      log('Auto-start declined', lastAutoStartBlock);
       setState(STATES.ARMED, 'start_declined');
       return false;
     }
 
+    lastAutoStartBlock = null;
     autopilotTripId = 'autopilot_' + Date.now();
     tripStartedAt = Date.now();
     tripEndedAt = null;
@@ -388,13 +397,14 @@
 
     if (state === STATES.OFF || state === STATES.COMPLETED) {
       syncLifecycle();
-      return;
     }
 
     if (state === STATES.PERMISSION_REQUIRED) {
       if (permissionsOk()) armMonitoring();
-      return;
+      else return;
     }
+
+    if (state === STATES.OFF || state === STATES.COMPLETED) return;
 
     if (state !== STATES.ARMED && state !== STATES.MOVING_CANDIDATE) return;
 
@@ -500,6 +510,10 @@
       tripEndedAt: tripEndedAt,
       reportSentAt: reportSentAt,
       lastError: lastError,
+      lastAutoStartBlock: lastAutoStartBlock,
+      sustainedThresholdSec: Math.round(getSustainedMs() / 1000),
+      minCandidateSamples: DEFAULTS.MIN_CANDIDATE_SAMPLES,
+      confidenceThreshold: DEFAULTS.CONFIDENCE_THRESHOLD,
       autopilotTripId: autopilotTripId,
     };
   }
