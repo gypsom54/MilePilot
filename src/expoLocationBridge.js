@@ -318,8 +318,11 @@ export async function handleWebViewMessage(raw, sendToWebView) {
       const goingBackground = !!msg.payload?.active;
       setNativeAppBackground(goingBackground);
       let bgEnsure = { ok: false, backgroundActive: lastBackgroundActive };
-      if (goingBackground && isNativeTripActive()) {
-        bgEnsure = await ensureBackgroundLocationForTrip();
+      if (goingBackground) {
+        await loadPersistedState();
+        if (isNativeTripActive()) {
+          bgEnsure = await ensureBackgroundLocationForTrip();
+        }
       }
       reply({
         type: 'expo:native:background:ok',

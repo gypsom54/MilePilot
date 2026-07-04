@@ -14,7 +14,12 @@ import {
   ensureBackgroundLocationForTrip,
 } from './expoLocationBridge';
 import { setNativeAutoEndInjector, flushPendingNativeAutoEnd } from './nativeAutoEnd';
-import { getTripSyncPayload, setNativeDebugMeta, setNativeAppBackground } from './nativeTrackingEngine';
+import {
+  getTripSyncPayload,
+  setNativeDebugMeta,
+  setNativeAppBackground,
+  loadPersistedState,
+} from './nativeTrackingEngine';
 
 const WEB_APP_URL = Constants.expoConfig?.extra?.webAppUrl || 'https://app.milepilot.uk/?runtime=expo';
 const BUILD_NUMBER = Constants.expoConfig?.ios?.buildNumber || '?';
@@ -107,16 +112,21 @@ export default function MilePilotWebView() {
       setNativeAppBackground(nextState !== 'active');
       if (nextState === 'background' || nextState === 'inactive') {
         sendToWebView({ type: 'expo:appstate', state: nextState });
-        const tripNow = getTripSyncPayload();
-        if (tripNow?.active) {
-          ensureBackgroundLocationForTrip()
-            .then((res) => {
-              if (res?.backgroundActive) {
-                console.log('[MilePilot] background GPS ensured on lock');
-              }
-            })
-            .catch((e) => console.warn('[MilePilot] bg ensure on lock', e.message));
-        }
+        loadPersistedState()
+          .catch((e) => console.warn('[MilePilot] loadPersistedState on lock', e.message))
+          .then(() => {
+            const tripNow = getTripSyncPayload();
+            if (!tripNow?.active) return null;
+            return ensureBackgroundLocationForTrip();
+          })
+          .then((res) => {
+            if (res?.backgroundActive) {
+              console.log('[MilePilot] background GPS ensured on lock');
+            } else if (res) {
+              console.warn('[MilePilot] bg ensure on lock failed', res.reason || res.error || 'unknown');
+            }
+          })
+          .catch((e) => console.warn('[MilePilot] bg ensure on lock', e.message));
       }
       if (nextState === 'active') {
         sendToWebView({ type: 'expo:appstate', state: 'active' });
