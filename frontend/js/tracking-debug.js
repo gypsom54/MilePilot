@@ -29,12 +29,16 @@
   }
 
   function getWebDebug() {
+    const tripActive =
+      typeof global.isShiftTracking === 'function'
+        ? global.isShiftTracking()
+        : global.ccState === 'active';
     const auto =
       typeof global.MPTripAutoEnd !== 'undefined'
-        ? global.MPTripAutoEnd.getDebugState(global.ccState === 'active')
+        ? global.MPTripAutoEnd.getDebugState(tripActive)
         : {};
     return {
-      tripStatus: global.ccState === 'active' ? 'ACTIVE' : 'idle',
+      tripStatus: tripActive ? 'ACTIVE' : 'idle',
       miles: typeof global.miles === 'number' ? global.miles : null,
       lastGpsAt: global.lastGpsAt || null,
       lastGpsLat: global.lastPoint?.lat ?? null,
@@ -157,6 +161,14 @@
     if (refreshTimer) {
       clearInterval(refreshTimer);
       refreshTimer = null;
+    }
+    const tripActive =
+      typeof global.isShiftTracking === 'function'
+        ? global.isShiftTracking()
+        : global.ccState === 'active';
+    if (tripActive && typeof global.goHome === 'function') {
+      global.goHome();
+      return;
     }
     if (typeof global.showSettings === 'function') global.showSettings();
   }
