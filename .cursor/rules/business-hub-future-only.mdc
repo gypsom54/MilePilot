@@ -1,0 +1,40 @@
+---
+description: Business Hub + AI Assistant — vision locked, do not implement without explicit instruction
+globs:
+  - "**/*"
+alwaysApply: true
+---
+
+# Business Hub — Future Only
+
+Read `docs/BUSINESS_HUB_VISION_LOCK.md` before any Business Hub, receipt scanner, expense, AI Assistant, or Business Inbox work.
+
+## Do NOT implement unless the user explicitly asks
+
+- AI receipt scanner
+- Expense storage / Business Hub modules
+- Business dashboard redesign
+- AI business assistant or briefing
+- Business Health Score
+- Business Inbox
+- Accountant Pack (beyond existing mileage reports)
+- Business-tier subscription UI
+
+## Current engineering priority (unchanged)
+
+1. AutoPilot testing and reliability
+2. Background mileage / native tracking
+3. Auto-start detection
+4. 90-minute idle auto-end
+5. Locked PDF/email reporting stability
+
+## Locked systems — never touch without explicit approval
+
+- `backend/reporting/**`, PDF templates, email templates
+- Reporting contract and golden report tests
+
+## When Business Hub work IS authorised
+
+- Extend existing systems; do not rewrite tracking or reporting
+- One phase, one objective, test, approve, lock
+- Gate Business features behind tier/experience flags per `VISION_LOCK.md`

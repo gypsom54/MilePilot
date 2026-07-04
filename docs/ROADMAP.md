@@ -69,7 +69,7 @@ Daily / weekly / monthly, HMRC-ready PDFs, maps, timeline, one-click share.
 - [x] Driver Score (record keeping habits)
 - [ ] Driver health reminders (Phase 9)
 - [ ] Pulse AI companion tab (Phase 6)
-- [ ] Business Hub / Pro tier (Phase 5)
+- [ ] Business Hub / Pro tier (Phase 5) — see [BUSINESS_HUB_VISION_LOCK.md](./BUSINESS_HUB_VISION_LOCK.md) 🔒 vision only
 
 Earning patterns, best hours, year-to-date savings — business coach.
 
