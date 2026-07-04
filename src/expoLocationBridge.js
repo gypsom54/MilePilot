@@ -21,6 +21,7 @@ import {
   setNativeAppBackground,
   loadPersistedState,
   isNativeTripActive,
+  isNativeAppBackground,
 } from './nativeTrackingEngine';
 
 export { setNativeAutoEndInjector, syncNativeAutoEnd };
@@ -95,8 +96,9 @@ function pushLocationAndSync(payload, source, sendToWebView) {
   const sync = ingestNativeLocation(payload, { source });
   if (typeof sendToWebView === 'function') {
     if (sync) sendToWebView(sync);
-    // Foreground GPS also feeds WebView handlePos for live map/miles while app is open.
-    if (source === 'foreground') {
+    const skipWebForward =
+      isNativeTripActive() && (isNativeAppBackground() || source === 'background');
+    if (source === 'foreground' && !skipWebForward) {
       sendToWebView({ type: 'expo:location', ...payload });
     }
   }

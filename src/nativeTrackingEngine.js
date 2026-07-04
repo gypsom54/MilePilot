@@ -230,21 +230,54 @@ export function stopNativeTrip() {
 
 export function restoreNativeTrip(payload) {
   if (!payload?.startedAt) return null;
+  const existing = trip.active ? trip : null;
+  const incomingMiles = Number(payload.miles) || 0;
+  const incomingPending = Number(payload.pendingMeters) || 0;
+  const existingOdo = existing ? existing.miles * 1609.344 + existing.pendingMeters : 0;
+  const incomingOdo = incomingMiles * 1609.344 + incomingPending;
+  const keepExistingOdo = existing && existingOdo > incomingOdo + 0.5;
+
+  function pickNewerPoint(a, b) {
+    if (!a) return b || null;
+    if (!b) return a;
+    return (b.t || 0) >= (a.t || 0) ? b : a;
+  }
+
+  function pickLongerRoute(a, b) {
+    const ra = a || [];
+    const rb = b || [];
+    return rb.length > ra.length ? rb : ra;
+  }
+
   trip = {
     ...emptyTrip(),
     active: true,
-    shiftId: payload.shiftId || `shift_${payload.startedAt}`,
+    shiftId: payload.shiftId || existing?.shiftId || `shift_${payload.startedAt}`,
     startedAt: payload.startedAt,
-    vehicle: payload.vehicle || 'car',
-    miles: Number(payload.miles) || 0,
-    movingSeconds: Number(payload.movingSeconds) || 0,
-    pendingMeters: Number(payload.pendingMeters) || 0,
-    routePoints: payload.routePoints || [],
-    lastPoint: payload.lastPoint || null,
-    shiftStops: payload.stops || [],
-    lastMileRecordedAt: payload.lastMileRecordedAt || payload.startedAt,
-    gpsPointCount: payload.gpsPointCount || (payload.routePoints?.length || 0),
-    lastGpsAt: payload.lastGpsAt || payload.lastPoint?.t || null,
+    vehicle: payload.vehicle || existing?.vehicle || 'car',
+    miles: keepExistingOdo ? existing.miles : incomingMiles,
+    pendingMeters: keepExistingOdo ? existing.pendingMeters : incomingPending,
+    movingSeconds: Math.max(Number(payload.movingSeconds) || 0, existing?.movingSeconds || 0),
+    routePoints: pickLongerRoute(existing?.routePoints, payload.routePoints),
+    lastPoint: pickNewerPoint(existing?.lastPoint, payload.lastPoint),
+    shiftStops: payload.stops?.length ? payload.stops : existing?.shiftStops || [],
+    lastMileRecordedAt: Math.max(
+      Number(payload.lastMileRecordedAt) || 0,
+      Number(existing?.lastMileRecordedAt) || 0
+    ) || payload.startedAt,
+    gpsPointCount: Math.max(
+      existing?.gpsPointCount || 0,
+      payload.gpsPointCount || payload.routePoints?.length || 0
+    ),
+    lastGpsAt: Math.max(existing?.lastGpsAt || 0, payload.lastGpsAt || payload.lastPoint?.t || 0) || null,
+    lastBackgroundUpdateAt: existing?.lastBackgroundUpdateAt || null,
+    lastForegroundUpdateAt: existing?.lastForegroundUpdateAt || null,
+    lastGpsLat: pickNewerPoint(
+      existing?.lastPoint,
+      payload.lastPoint || (payload.lastGpsLat != null ? { lat: payload.lastGpsLat, t: payload.lastGpsAt } : null)
+    )?.lat ?? existing?.lastGpsLat ?? null,
+    lastGpsLon: pickNewerPoint(existing?.lastPoint, payload.lastPoint)?.lon ?? existing?.lastGpsLon ?? null,
+    lastGpsAcc: pickNewerPoint(existing?.lastPoint, payload.lastPoint)?.acc ?? existing?.lastGpsAcc ?? null,
   };
   persistState();
   return getTripSyncPayload();
