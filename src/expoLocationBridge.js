@@ -334,7 +334,8 @@ export async function handleWebViewMessage(raw, sendToWebView) {
     }
     case 'expo:autopilot:disarm': {
       stopAutopilotPoll();
-      if (!isNativeTripActive()) {
+      // Trip start calls disarm before native trip is active — never kill GPS then.
+      if (msg.payload?.stopTracking && !isNativeTripActive()) {
         await stopAllTracking();
       }
       reply({ type: 'expo:autopilot:result', ok: true });
