@@ -77,6 +77,7 @@
     "burstNativeTripSync",
     "expo:native:background",
     "nativeOdometerMeters",
-    "__nativeEngineAuthoritative"
+    "__nativeEngineAuthoritative",
+    "feedAutopilotGps(pos);lastGpsAccuracy"
   ]
 }
