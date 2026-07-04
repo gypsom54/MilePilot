@@ -96,6 +96,9 @@ function pushLocationAndSync(payload, source, sendToWebView) {
   if (typeof sendToWebView !== 'function') return sync;
   if (isNativeTripActive()) {
     if (sync) sendToWebView(sync);
+    if (source === 'foreground') {
+      sendToWebView({ type: 'expo:location', ...payload });
+    }
     return sync;
   }
   if (sync) sendToWebView(sync);
