@@ -1,0 +1,9 @@
+# Keep EAS upload tarball small and avoid scanning unrelated paths on Windows.
+.git
+node_modules
+*.zip
+milepilot-upload-v2
+.cursor
+terminals
+**/.DS_Store
+**/Thumbs.db
