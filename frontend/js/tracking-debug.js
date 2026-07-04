@@ -74,6 +74,7 @@
       'Background location enabled: ' + (nativeSnap?.backgroundActive ? 'YES' : 'NO'),
       'Last background GPS: ' + fmtAgo(nativeSnap?.lastBackgroundUpdateAt),
       'Trip required for locked miles: YES (AutoPilot watching alone does not count)',
+      'AutoPilot armed (native): ' + (nativeSnap?.autopilotArmedNative ? 'YES' : 'NO'),
       nativeSnap?.backgroundTaskRunning ? '' : '>>> Upload zip + install TestFlight build 10 <<<',
       '',
       '--- Permissions ---',

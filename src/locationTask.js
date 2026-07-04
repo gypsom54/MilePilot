@@ -3,6 +3,7 @@
  * Expo background location task. GPS points feed nativeTrackingEngine immediately.
  */
 import { onNativeBackgroundLocation } from './nativeAutoEnd';
+import { onAutopilotBackgroundLocation } from './nativeAutopilot';
 import { ingestNativeLocation } from './nativeTrackingEngine';
 import * as TaskManager from 'expo-task-manager';
 import * as Location from 'expo-location';
@@ -73,7 +74,12 @@ TaskManager.defineTask(BACKGROUND_LOCATION_TASK, ({ data, error }) => {
     if (sync) {
       queueSync(sync);
     } else {
-      onNativeBackgroundLocation(payload);
+      const autoTrip = onAutopilotBackgroundLocation(payload);
+      if (autoTrip) {
+        queueSync(autoTrip);
+      } else {
+        onNativeBackgroundLocation(payload);
+      }
     }
   }
 });

@@ -11,6 +11,13 @@ import {
 } from './locationTask';
 import { syncNativeAutoEnd, setNativeAutoEndInjector, onNativeBackgroundLocation } from './nativeAutoEnd';
 import {
+  setNativeAutopilotArmed,
+  isNativeAutopilotArmed,
+  ensureAutopilotBackgroundLocation,
+  loadNativeAutopilotState,
+  onAutopilotBackgroundLocation,
+} from './nativeAutopilot';
+import {
   ingestNativeLocation,
   startNativeTrip,
   stopNativeTrip,
@@ -101,6 +108,13 @@ function pushLocationAndSync(payload, source, sendToWebView) {
     }
     return sync;
   }
+  if (isNativeAutopilotArmed()) {
+    const autoTrip = onAutopilotBackgroundLocation(payload);
+    if (autoTrip) {
+      sendToWebView(autoTrip);
+      return autoTrip;
+    }
+  }
   if (sync) sendToWebView(sync);
   if (source === 'foreground') {
     sendToWebView({ type: 'expo:location', ...payload });
@@ -181,7 +195,12 @@ export async function startTracking(onLocation, { background = false } = {}) {
 
   let backgroundActive = false;
   if (background) {
-    const ensured = await ensureBackgroundLocationForTrip();
+    let ensured = { backgroundActive: false };
+    if (isNativeTripActive()) {
+      ensured = await ensureBackgroundLocationForTrip();
+    } else if (isNativeAutopilotArmed()) {
+      ensured = await ensureAutopilotBackgroundLocation();
+    }
     backgroundActive = !!ensured.backgroundActive;
     if (!backgroundActive) {
       console.warn('[MilePilot] background location not active — foreground only');
@@ -195,6 +214,7 @@ export async function startTracking(onLocation, { background = false } = {}) {
 
 export async function initNativeTracking() {
   await loadPersistedState();
+  await loadNativeAutopilotState();
 }
 
 export function getLastBackgroundActive() {
@@ -286,6 +306,7 @@ export async function handleWebViewMessage(raw, sendToWebView) {
         backgroundActive: lastBackgroundActive || bgStarted,
         backgroundTaskRunning: bgStarted,
         tripActiveNative: isNativeTripActive(),
+        autopilotArmedNative: isNativeAutopilotArmed(),
         buildNumber: msg.payload?.buildNumber,
         appVersion: msg.payload?.appVersion,
         webAppUrl: msg.payload?.webAppUrl,
@@ -362,26 +383,42 @@ export async function handleWebViewMessage(raw, sendToWebView) {
       break;
     }
     case 'expo:autopilot:arm': {
+      await setNativeAutopilotArmed(true);
       const onLocation = (payload) => {
         if (typeof sendToWebView === 'function') {
-          // Keep type last — locationToPayload includes type: 'expo:location'.
           sendToWebView({ ...payload, type: 'expo:autopilot:location' });
         }
         if (!isNativeTripActive()) {
-          onNativeBackgroundLocation(payload);
+          const autoTrip = onAutopilotBackgroundLocation(payload);
+          if (autoTrip) {
+            sendToWebView(autoTrip);
+          }
         }
       };
-      const result = await startTracking(onLocation, { background: !!msg.payload?.background });
+      await startForegroundWatch(onLocation);
+      const bgEnsure = await ensureAutopilotBackgroundLocation();
       await sendAutopilotSeed(onLocation);
       startAutopilotPoll(onLocation);
-      reply({ type: 'expo:autopilot:result', ok: result.ok, backgroundActive: !!result.backgroundActive });
+      lastBackgroundActive = !!bgEnsure.backgroundActive;
+      setNativeDebugMeta({
+        backgroundActive: lastBackgroundActive,
+        permissionStatus: await queryLocationPermission(),
+      });
+      reply({
+        type: 'expo:autopilot:result',
+        ok: true,
+        backgroundActive: !!bgEnsure.backgroundActive,
+      });
       break;
     }
     case 'expo:autopilot:disarm': {
+      await setNativeAutopilotArmed(false);
       stopAutopilotPoll();
-      // Trip start calls disarm before native trip is active — never kill GPS then.
       if (msg.payload?.stopTracking && !isNativeTripActive()) {
         await stopAllTracking();
+      } else if (!isNativeTripActive()) {
+        await stopBackgroundLocationUpdates();
+        lastBackgroundActive = false;
       }
       reply({ type: 'expo:autopilot:result', ok: true });
       break;
