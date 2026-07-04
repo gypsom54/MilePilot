@@ -31,7 +31,7 @@ import {
   isNativeTripActive,
 } from './nativeTrackingEngine';
 
-export { setNativeAutoEndInjector, syncNativeAutoEnd, setNativeAutoStartNotifier, maybeArmNativeAutopilot };
+export { setNativeAutoEndInjector, syncNativeAutoEnd, setNativeAutoStartNotifier };
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
