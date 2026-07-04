@@ -249,18 +249,24 @@
     }
     setState(STATES.ARMED, 'monitoring_armed');
     lastError = null;
-    if (deps && typeof deps.armNative === 'function') {
-      try {
-        const armed = await deps.armNative();
-        if (!armed) log('armNative returned false', 'native_gps_not_started');
-      } catch (e) {
-        log('armNative failed', e.message || String(e));
-      }
-    }
     if (deps && typeof deps.startArmedWatch === 'function') {
       armedWatchId = deps.startArmedWatch(function (sample) {
         onGpsSample(sample);
       });
+    }
+    if (deps && typeof deps.seedArmedGps === 'function') {
+      try {
+        deps.seedArmedGps();
+      } catch (e) {}
+    }
+    if (deps && typeof deps.armNative === 'function') {
+      deps.armNative()
+        .then(function (armed) {
+          if (!armed) log('armNative returned false', 'native_gps_not_started');
+        })
+        .catch(function (e) {
+          log('armNative failed', e.message || String(e));
+        });
     }
   }
 

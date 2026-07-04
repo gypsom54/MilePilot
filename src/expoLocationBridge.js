@@ -35,6 +35,45 @@ Notifications.setNotificationHandler({
 
 let foregroundSubscription = null;
 let lastBackgroundActive = false;
+let autopilotPollTimer = null;
+let autopilotPollHandler = null;
+
+function stopAutopilotPoll() {
+  if (autopilotPollTimer) {
+    clearInterval(autopilotPollTimer);
+    autopilotPollTimer = null;
+  }
+  autopilotPollHandler = null;
+}
+
+function startAutopilotPoll(onLocation) {
+  stopAutopilotPoll();
+  if (typeof onLocation !== 'function') return;
+  autopilotPollHandler = onLocation;
+  autopilotPollTimer = setInterval(async () => {
+    if (!autopilotPollHandler || isNativeTripActive()) return;
+    try {
+      const loc = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.BestForNavigation,
+      });
+      autopilotPollHandler(locationToPayload(loc));
+    } catch (e) {
+      console.warn('[MilePilot] autopilot poll fix failed', e.message);
+    }
+  }, 8000);
+}
+
+async function sendAutopilotSeed(onLocation) {
+  if (typeof onLocation !== 'function') return;
+  try {
+    const loc = await Location.getCurrentPositionAsync({
+      accuracy: Location.Accuracy.BestForNavigation,
+    });
+    onLocation(locationToPayload(loc));
+  } catch (e) {
+    console.warn('[MilePilot] autopilot seed fix failed', e.message);
+  }
+}
 
 function locationToPayload(loc) {
   return {
@@ -107,6 +146,7 @@ export async function stopAllTracking() {
     foregroundSubscription.remove();
     foregroundSubscription = null;
   }
+  stopAutopilotPoll();
   await stopBackgroundLocationUpdates();
   lastBackgroundActive = false;
 }
@@ -256,6 +296,26 @@ export async function handleWebViewMessage(raw, sendToWebView) {
       reply({ type: 'expo:native:background:ok', ok: true });
       break;
     }
+    case 'expo:location:current': {
+      try {
+        const loc = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.BestForNavigation,
+        });
+        const payload = locationToPayload(loc);
+        if (typeof sendToWebView === 'function') {
+          sendToWebView({ ...payload, type: 'expo:autopilot:location' });
+        }
+        reply({
+          type: 'expo:location:current:result',
+          ok: true,
+          coords: payload.coords,
+          timestamp: payload.timestamp,
+        });
+      } catch (e) {
+        reply({ type: 'expo:location:current:result', ok: false, error: e.message });
+      }
+      break;
+    }
     case 'expo:autopilot:arm': {
       const onLocation = (payload) => {
         if (typeof sendToWebView === 'function') {
@@ -267,10 +327,13 @@ export async function handleWebViewMessage(raw, sendToWebView) {
         }
       };
       const result = await startTracking(onLocation, { background: !!msg.payload?.background });
+      await sendAutopilotSeed(onLocation);
+      startAutopilotPoll(onLocation);
       reply({ type: 'expo:autopilot:result', ok: result.ok, backgroundActive: !!result.backgroundActive });
       break;
     }
     case 'expo:autopilot:disarm': {
+      stopAutopilotPoll();
       if (!isNativeTripActive()) {
         await stopAllTracking();
       }
