@@ -43,6 +43,7 @@
   let candidateStartedAt = 0;
   let candidateSamples = 0;
   let candidateConfidence = 0;
+  let candidateRoute = [];
   let lastSample = null;
   let tripStartedAt = null;
   let tripEndedAt = null;
@@ -202,7 +203,19 @@
     candidateStartedAt = 0;
     candidateSamples = 0;
     candidateConfidence = 0;
+    candidateRoute = [];
     if (state === STATES.MOVING_CANDIDATE) setState(STATES.ARMED, reason || 'candidate_reset');
+  }
+
+  function pushCandidateSample(sample, speedMps) {
+    if (!sample || sample.lat == null || sample.lon == null) return;
+    candidateRoute.push({
+      lat: sample.lat,
+      lon: sample.lon,
+      acc: sample.acc != null ? sample.acc : 999,
+      t: sample.t || Date.now(),
+      speedMps: speedMps != null ? speedMps : sample.speedMps,
+    });
   }
 
   function permissionsOk() {
@@ -315,13 +328,20 @@
     if (deps && typeof deps.isDuplicateStart === 'function' && deps.isDuplicateStart()) return false;
 
     setState(STATES.ENDING, 'starting_trip');
+    const startMeta = {
+      confidence: confidence,
+      sample: lastSample,
+      candidateStartedAt: candidateStartedAt,
+      candidateRoute: candidateRoute.slice(),
+    };
     candidateStartedAt = 0;
     candidateSamples = 0;
+    candidateRoute = [];
 
     let started = false;
     try {
       if (typeof deps.onAutoStart === 'function') {
-        started = !!deps.onAutoStart({ confidence: confidence, sample: lastSample });
+        started = !!deps.onAutoStart(startMeta);
       }
     } catch (e) {
       lastError = e.message || String(e);
@@ -401,9 +421,12 @@
     if (!candidateStartedAt) {
       candidateStartedAt = now;
       candidateSamples = 1;
+      candidateRoute = [];
+      pushCandidateSample(lastSample, speedMps);
       setState(STATES.MOVING_CANDIDATE, 'driving_detected');
     } else {
       candidateSamples += 1;
+      pushCandidateSample(lastSample, speedMps);
     }
 
     const sustainedMs = now - candidateStartedAt;

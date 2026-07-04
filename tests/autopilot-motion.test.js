@@ -162,6 +162,30 @@ run('driving speed threshold ~10 mph', () => {
   assert.equal(M.isDrivingSpeed(2), false);
 });
 
+run('auto-start passes candidate route meta', () => {
+  const ls = createMockLocalStorage();
+  const M = loadMotion(ls);
+  let meta = null;
+  M.init({
+    isEnabled: () => true,
+    isShiftActive: () => false,
+    hasPermissions: () => true,
+    canStartTrip: () => true,
+    onAutoStart: (m) => {
+      meta = m;
+      return true;
+    },
+  });
+  const base = Date.now() - 140000;
+  for (let i = 0; i < 10; i++) {
+    M.onGpsSample(drivingSample(base + i * 15000, 6));
+  }
+  assert.ok(meta);
+  assert.ok(meta.candidateStartedAt > 0);
+  assert.ok(Array.isArray(meta.candidateRoute));
+  assert.ok(meta.candidateRoute.length >= 4);
+});
+
 run('manual shift active keeps TRACKING state', () => {
   const ls = createMockLocalStorage();
   const M = loadMotion(ls);
