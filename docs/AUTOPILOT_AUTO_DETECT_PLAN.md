@@ -3,7 +3,25 @@
 **Status:** Draft · July 2026  
 **Scope:** Tracking only — reports locked, no PDF/email changes  
 **Audience:** Product + engineering  
-**Builds on:** MP-043 (tracking engine), MP-045 (auto-end), MP-046 (AutoPilot mode), field validation v8.43.31
+**Builds on:** MP-043 (tracking engine), MP-045 (auto-end), MP-046 (AutoPilot mode), **MP-047** (autopilot-motion.js — landed on main), field validation v8.43.31
+
+---
+
+## Current state on `main` (MP-047)
+
+Substantial auto-detect work **already exists**:
+
+| Piece | Status |
+|-------|--------|
+| `frontend/js/autopilot-motion.js` | State machine (ARMED → MOVING_CANDIDATE → auto-start) |
+| `expo:autopilot:arm` / `disarm` | Background GPS while monitoring (not on active trip) |
+| Start rule | ~10 mph sustained **2 min**, confidence ≥ 0.72 |
+| Unit tests | `tests/autopilot-motion.test.js` |
+| Docs | `docs/AUTOPILOT_MOTION.md` |
+
+**Remaining gap for “never open the app”:** `tryAutoStart()` calls `startShiftCommandCentre()` in the **WebView**. When the app is killed or WebView is suspended, the state machine cannot fire. Phase 1 of this plan moves trip start to **native** (`startNativeTrip`) when driving is confirmed — same thresholds, native orchestrator.
+
+See also: `docs/AUTOPILOT_MOTION.md` for MP-047 settings keys and debug screen.
 
 ---
 
