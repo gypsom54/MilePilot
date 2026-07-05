@@ -451,7 +451,40 @@ html.mp-expo #welcome.active{padding-top:max(52px,calc(env(safe-area-inset-top,0
 .cc-empty-state[hidden]{display:none!important}
 .cc-empty-title{margin:0 0 6px;font-size:14px;font-weight:600;color:rgba(180,210,245,.9);line-height:1.35}
 .cc-empty-sub{margin:0;font-size:13px;font-weight:500;line-height:1.45;color:rgba(147,168,196,.78)}
-.cc-autopilot-bar{display:flex;align-items:flex-start;gap:10px;margin:0 0 14px;padding:12px 14px;border-radius:14px;border:1px solid rgba(110,180,255,.18);background:rgba(13,107,255,.08);cursor:default}
+.cc-today{border:1px solid rgba(110,180,255,.16);border-radius:22px;background:linear-gradient(180deg,rgba(13,107,255,.1),rgba(13,107,255,.02));padding:18px 18px 16px;margin:0 0 16px;box-shadow:var(--card-shadow);animation:ccSlideIn .5s var(--ease-premium) both}
+.cc-today-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;min-height:24px}
+.cc-today-kicker{font-size:13px;font-weight:600;letter-spacing:.02em;color:rgba(159,180,208,.9)}
+.cc-today-hero{display:flex;align-items:baseline;gap:8px;margin:2px 0 14px}
+.cc-today-miles{font-size:clamp(44px,12vw,58px);font-weight:700;letter-spacing:-.04em;line-height:.95;color:#fff;font-variant-numeric:tabular-nums;text-shadow:0 4px 28px rgba(13,107,255,.18)}
+.cc-today-unit{font-size:16px;font-weight:600;color:rgba(159,180,208,.85)}
+.cc-today-metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cc-today-metric{padding:11px 12px;border-radius:14px;border:1px solid rgba(110,180,255,.1);background:rgba(255,255,255,.035)}
+.cc-today-metric span{display:block;font-size:10.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:rgba(147,168,196,.82);margin-bottom:4px}
+.cc-today-metric strong{display:block;font-size:20px;font-weight:700;letter-spacing:-.02em;color:rgba(234,242,255,.96);font-variant-numeric:tabular-nums;line-height:1.1}
+.cc-choices{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 0 16px}
+.cc-choice{display:flex;flex-direction:column;border:1px solid rgba(110,180,255,.14);border-radius:20px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(13,107,255,.02));padding:15px 14px;box-shadow:var(--card-shadow);transition:border-color .28s var(--ease-premium),box-shadow .28s var(--ease-premium)}
+.cc-choice.is-active{border-color:rgba(30,136,255,.5);box-shadow:0 10px 30px rgba(13,107,255,.2),inset 0 1px 0 rgba(255,255,255,.06)}
+.cc-choice-head{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:10px}
+.cc-choice-icon{font-size:22px;line-height:1}
+.cc-choice-tag{font-size:9.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;padding:4px 8px;border-radius:999px;color:rgba(180,220,255,.95);border:1px solid rgba(110,180,255,.28);background:rgba(13,107,255,.12);white-space:nowrap}
+.cc-choice-manual .cc-choice-tag{color:rgba(200,214,236,.9);border-color:rgba(147,168,196,.28);background:rgba(147,168,196,.1)}
+.cc-choice-title{margin:0 0 4px;font-size:16px;font-weight:700;letter-spacing:-.02em;color:#fff}
+.cc-choice-copy{margin:0 0 12px;font-size:12px;line-height:1.4;color:rgba(159,180,208,.88);flex:1}
+.cc-choice-cta{margin-top:auto;height:42px;border-radius:12px;border:1px solid rgba(110,180,255,.3);background:rgba(13,107,255,.1);color:#8FC0FF;font-size:13.5px;font-weight:600;cursor:pointer;transition:filter .2s ease,transform .15s ease}
+.cc-choice-cta.is-solid{border:0;background:linear-gradient(180deg,#1E88FF 0%,#0D6BFF 50%,#005FE8 100%);color:#fff;box-shadow:0 6px 18px rgba(13,107,255,.28)}
+.cc-choice-cta:active{transform:scale(.98)}
+.cc-hub{position:relative;overflow:hidden;display:block;width:100%;text-align:left;border:1px solid rgba(126,192,255,.28);border-radius:24px;background:linear-gradient(155deg,#0E3A78 0%,#0A244B 55%,#08203F 100%);padding:20px 18px;margin:0 0 20px;box-shadow:0 16px 44px rgba(8,30,70,.5),inset 0 1px 0 rgba(255,255,255,.08);cursor:pointer;transition:transform .2s var(--ease-premium),box-shadow .28s var(--ease-premium);animation:ccSlideIn .5s var(--ease-premium) both}
+.cc-hub:active{transform:scale(.99)}
+.cc-hub-glow{position:absolute;top:-40%;right:-20%;width:70%;height:120%;background:radial-gradient(circle,rgba(30,136,255,.35),transparent 70%);pointer-events:none}
+.cc-hub-head{display:flex;align-items:center;justify-content:space-between;position:relative}
+.cc-hub-title{font-size:20px;font-weight:700;letter-spacing:-.02em;color:#fff}
+.cc-hub-chevron{font-size:24px;color:rgba(180,220,255,.7);line-height:1}
+.cc-hub-sub{display:block;margin:6px 0 14px;font-size:13px;line-height:1.45;color:rgba(198,220,248,.9);position:relative}
+.cc-hub-chips{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 16px;position:relative}
+.cc-hub-chips span{font-size:11px;font-weight:600;color:rgba(198,220,248,.92);padding:5px 10px;border-radius:999px;border:1px solid rgba(126,192,255,.24);background:rgba(255,255,255,.05)}
+.cc-hub-cta{display:inline-block;padding:10px 18px;border-radius:12px;background:linear-gradient(180deg,#1E88FF 0%,#0D6BFF 50%,#005FE8 100%);color:#fff;font-size:14.5px;font-weight:600;box-shadow:0 8px 22px rgba(13,107,255,.32);position:relative}
+.cc-hub-tagline{display:block;margin-top:12px;font-size:12.5px;font-weight:500;color:rgba(160,190,225,.78);position:relative}
+.cc-autopilot-bar{display:flex;align-items:flex-start;gap:10px;margin:0 0 12px;padding:10px 12px;border-radius:12px;border:1px solid rgba(110,180,255,.18);background:rgba(13,107,255,.08);cursor:default}
 .cc-autopilot-bar.is-retry{cursor:pointer;border-color:rgba(255,176,32,.35);background:rgba(255,176,32,.08)}
 .cc-autopilot-bar[hidden]{display:none!important}
 .cc-autopilot-dot{flex-shrink:0;width:10px;height:10px;border-radius:50%;margin-top:4px;background:rgba(147,168,196,.5)}
@@ -1165,8 +1198,6 @@ body.always-modal-open .nav{display:none!important}
 <header class="brand-bar"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div><p class="brand-tagline">Your business. On AutoPilot.</p></header>
 <div class="cc-body" id="ccBody">
 <button type="button" class="cc-trial-pill" id="ccSubBanner" hidden onclick="openPaywall()"><span id="ccSubBannerText">7 days left in your free trial</span><span class="cc-trial-pill-chevron" aria-hidden="true">›</span></button>
-<div class="cc-mode-badge is-autopilot" id="ccModeBadge" hidden aria-live="polite">AutoPilot</div>
-<button type="button" class="cc-mode-banner" id="ccManualBanner" hidden onclick="openTrackingModeSettings()">Manual mode — trips won&apos;t start automatically. Tap to switch to AutoPilot →</button>
 <div class="cc-greeting-wrap">
 <h1 class="cc-greeting" id="ccGreeting">Good afternoon</h1>
 <p class="cc-status" id="ccStatus">Ready for another shift?</p>
@@ -1183,25 +1214,58 @@ body.always-modal-open .nav{display:none!important}
 <p id="ccGpsBannerText">Enable location to track your business miles.</p>
 <button type="button" class="cc-gps-btn" onclick="enableTrackingGps(true)">Enable Location</button>
 </div>
+<!-- Today summary -->
+<section class="cc-today" aria-label="Today summary">
+<div class="cc-today-top">
+<span class="cc-today-kicker">Today</span>
+<div class="cc-mode-badge is-autopilot" id="ccModeBadge" hidden aria-live="polite">AutoPilot</div>
+</div>
+<div class="cc-today-hero"><span class="cc-today-miles" id="ccHeroMiles">0.0</span><span class="cc-today-unit">miles</span></div>
+<div class="cc-today-metrics">
+<div class="cc-today-metric"><span>HMRC estimate</span><strong id="ccTodayHmrc">£0.00</strong></div>
+<div class="cc-today-metric"><span>Trips</span><strong id="ccJourneys">0</strong></div>
+</div>
+</section>
+<button type="button" class="cc-mode-banner" id="ccManualBanner" hidden onclick="openTrackingModeSettings()">Manual mode — trips won&apos;t start automatically. Tap to switch to AutoPilot →</button>
+<!-- Auto / Manual choice cards -->
+<div class="cc-choices">
+<div class="cc-choice cc-choice-auto" id="ccAutoCard">
+<div class="cc-choice-head"><span class="cc-choice-icon" aria-hidden="true">🛰️</span><span class="cc-choice-tag" id="ccAutoTag">Ready</span></div>
+<h3 class="cc-choice-title">Auto Track</h3>
+<p class="cc-choice-copy">MilePilot detects driving and records mileage automatically.</p>
 <div class="cc-autopilot-bar" id="ccAutopilotBar" hidden onclick="retryAutopilotGps()" role="button" tabindex="0" aria-label="AutoPilot GPS status — tap to reconnect">
 <span class="cc-autopilot-dot" id="ccAutopilotDot" aria-hidden="true"></span>
 <p class="cc-autopilot-text" id="ccAutopilotText">AutoPilot watching</p>
 </div>
-<button type="button" class="track-debug-open" id="homeOpenDebugBtn" hidden onclick="openTrackingDebugFromTrip()" style="margin:12px 0 0">Open Tracking Debug →</button>
-<div class="cc-hero" id="ccHero">
-<span class="cc-hero-label" id="ccHeroLabel">Today's Business Miles</span>
-<div class="cc-hero-value" id="ccHeroMiles">0.0</div>
+<button type="button" class="cc-choice-cta" onclick="manageAutoPilot()">Manage AutoPilot</button>
+<button type="button" class="track-debug-open" id="homeOpenDebugBtn" hidden onclick="openTrackingDebugFromTrip()" style="margin:10px 0 0">Open Tracking Debug →</button>
 </div>
-<button type="button" class="cc-primary-btn" id="ccPrimaryBtn" onclick="toggleShift()">Start Shift</button>
+<div class="cc-choice cc-choice-manual" id="ccManualCard">
+<div class="cc-choice-head"><span class="cc-choice-icon" aria-hidden="true">✋</span><span class="cc-choice-tag" id="ccManualTag">Ready</span></div>
+<h3 class="cc-choice-title">Manual Track</h3>
+<p class="cc-choice-copy">Start and stop trips yourself when you want full control.</p>
+<button type="button" class="cc-choice-cta is-solid" onclick="startManualTrip()">Start Manual Trip</button>
+</div>
+</div>
+<!-- Business Hub -->
+<button type="button" class="cc-hub" onclick="openBusinessHub()">
+<span class="cc-hub-glow" aria-hidden="true"></span>
+<span class="cc-hub-head"><span class="cc-hub-title">Business Hub</span><span class="cc-hub-chevron" aria-hidden="true">›</span></span>
+<span class="cc-hub-sub">Mileage, receipts, expenses, VAT, tax and accountant-ready reports in one place.</span>
+<span class="cc-hub-chips"><span>Mileage</span><span>Receipts</span><span>Expenses</span><span>VAT</span><span>Reports</span><span>Accountant</span><span>AI Bookkeeper</span></span>
+<span class="cc-hub-cta">Open Business Hub</span>
+<span class="cc-hub-tagline">Run your business with less admin.</span>
+</button>
 <button type="button" class="cc-report-btn" id="ccReportBtn" hidden onclick="viewTodayReport()">View Report →</button>
 <div class="cc-divider" aria-hidden="true"></div>
-<div class="cc-card">
-<h2 class="cc-card-title" id="ccTodayTitle">Today's Business</h2>
-<div class="cc-metrics cc-metrics--three">
-<div class="cc-metric"><span id="ccMilesLabel">Business Miles</span><strong id="ccMiles">0.0</strong></div>
-<div class="cc-metric"><span id="ccTravelLabel">Drive Time</span><strong id="ccTime">0h</strong></div>
-<div class="cc-metric"><span id="ccJourneysLabel">Journeys</span><strong id="ccJourneys">0</strong></div>
-</div>
+<!-- Hidden holders retained for tracking JS + contract (do not remove) -->
+<div hidden aria-hidden="true">
+<div class="cc-hero" id="ccHero"><span class="cc-hero-label" id="ccHeroLabel">Today's Business Miles</span></div>
+<span id="ccTodayTitle">Today's Business</span>
+<span id="ccMilesLabel">Business Miles</span><strong id="ccMiles">0.0</strong>
+<span id="ccTravelLabel">Drive Time</span><strong id="ccTime">0h</strong>
+<span id="ccJourneysLabel">Journeys</span>
+<button type="button" class="cc-primary-btn" id="ccPrimaryBtn" onclick="toggleShift()">Start Shift</button>
 </div>
 <div class="cc-empty-state" id="ccEmptyState" hidden>
 <p class="cc-empty-title">Your first business journey starts here.</p>
@@ -1517,7 +1581,7 @@ body.always-modal-open .nav{display:none!important}
 <script src="js/app-copy.js"></script>
 <script src="js/beta-feedback.js"></script>
 <script>
-const APP_VERSION='8.43.60';
+const APP_VERSION='8.43.61';
 window.APP_VERSION=APP_VERSION;
 const DEFAULT_WEEKLY_GOAL_MILES=400;
 const BUSINESS_PROFILE_KEY='mp_business_profile';
@@ -1813,8 +1877,12 @@ function renderHomeTrackingModeUI(mode,today,copy,btn){const badge=q('ccModeBadg
 async function fetchWeather(){const today=new Date().toDateString();try{const cached=localStorage.getItem('mp_weather');if(cached){const j=JSON.parse(cached);if(j.date===today){ccWeather=j.temp;return j.temp}}}catch(e){}if(!navigator.geolocation)return null;return new Promise(resolve=>{navigator.geolocation.getCurrentPosition(async pos=>{try{const url='https://api.open-meteo.com/v1/forecast?latitude='+pos.coords.latitude+'&longitude='+pos.coords.longitude+'&current=temperature_2m';const r=await fetch(url);const d=await r.json();const temp=Math.round(d.current.temperature_2m);localStorage.setItem('mp_weather',JSON.stringify({date:today,temp}));ccWeather=temp;resolve(temp)}catch(e){resolve(null)}},()=>resolve(null),{maximumAge:900000,timeout:8000})})}
 function renderRecentActivity(){const el=q('ccActivity');if(!el)return;let html='',hasActivity=false;for(let i=0;i<=3;i++){const d=new Date();d.setDate(d.getDate()-i);const label=i===0?'Today':i===1?'Yesterday':d.toLocaleDateString('en-GB',{weekday:'long'});const t=dayTotals(d);if(t.list.length){hasActivity=true;html+='<div class="cc-activity-item"><div class="cc-activity-day">'+label+'</div><div class="cc-activity-detail">'+t.mi.toFixed(1)+' miles · '+fmtShort(t.sec)+'</div></div>'}}if(!hasActivity){el.innerHTML='<div class="cc-activity-empty-state"><p class="cc-activity-empty-title">No journeys yet</p><p class="cc-activity-empty-sub">Your completed trips will appear here.</p></div>';return}el.innerHTML=html}
 function setText(id,val){const el=q(id);if(el)el.textContent=val}
-function renderCommandCentre(){driver=localStorage.getItem('mp_driver')||driver||'there';vehicle=localStorage.getItem('mp_vehicle')||vehicle||'car';renderSubscriptionBanner();if(ccState==='active'){renderTrackingScreen();return}const today=getTodayTotals(),mode=getCommandMode(),copy=getContextCopy(mode,today),body=q('ccBody'),hero=q('ccHero'),track=q('ccTrackingBar'),btn=q('ccPrimaryBtn'),reportBtn=q('ccReportBtn'),ctxRow=q('ccContextRow');if(body){body.classList.toggle('is-weekend',mode==='day_off');body.classList.toggle('is-post-work',false);body.classList.toggle('is-active',false)}setText('ccGreeting',copy.greeting);if(mode==='day_off'||mode==='active')setText('ccStatus',copy.status);renderHomeTrackingModeUI(mode,today,copy,btn);if(track)track.hidden=true;if(hero){hero.classList.toggle('is-live',false);hero.classList.toggle('is-goal',mode==='monday_morning')}const heroLabel=q('ccHeroLabel')||hero?.querySelector('.cc-hero-label');if(heroLabel){if(mode==='day_off')heroLabel.textContent="This Week's Business Miles";else if(mode==='active')heroLabel.textContent='LIVE';else heroLabel.textContent="Today's Business Miles"}const heroVal=mode==='day_off'?periodTotals('week').mi:today.mi;setText('ccHeroMiles',heroVal.toFixed(1));setText('ccMiles',today.mi.toFixed(1));setText('ccTime',today.sec<60?'0h':fmtShort(today.sec));setText('ccJourneys',String(today.journeys));if(reportBtn){const pendingReview=(today.pending||0)>0;if(pendingReview){reportBtn.hidden=false;reportBtn.textContent='Review today\u2019s journeys \u2192';reportBtn.onclick=function(){openDailyAiReview()}}else{reportBtn.hidden=true;reportBtn.onclick=viewTodayReport}}if(ctxRow){const showCtx=mode==='monday_morning';ctxRow.hidden=!showCtx;if(showCtx){setText('ccGoalValue',today.mi.toFixed(1)+' miles');fetchWeather().then(t=>{if(t!==null)setText('ccWeatherValue',t+'°C')})}}renderRecentActivity();renderIntelligenceLayer(mode);applyProfileTerms();setText('ccMilesLabel','Business Miles');setText('ccTravelLabel','Drive Time');setText('ccJourneysLabel','Journeys');const empty=q('ccEmptyState');if(empty){empty.hidden=!(today.mi===0&&today.journeys===0&&shifts.length===0&&mode!=='day_off');const emptySub=empty.querySelector('.cc-empty-sub');if(emptySub)emptySub.textContent=isAutoPilotTracking()?'AutoPilot is watching for your next journey — just drive.':'Press Start Shift to begin tracking.'}renderAutopilotStatusBar();renderHomeDebugButton()}
+function renderCommandCentre(){driver=localStorage.getItem('mp_driver')||driver||'there';vehicle=localStorage.getItem('mp_vehicle')||vehicle||'car';renderSubscriptionBanner();if(ccState==='active'){renderTrackingScreen();return}const today=getTodayTotals(),mode=getCommandMode(),copy=getContextCopy(mode,today),body=q('ccBody'),hero=q('ccHero'),track=q('ccTrackingBar'),btn=q('ccPrimaryBtn'),reportBtn=q('ccReportBtn'),ctxRow=q('ccContextRow');if(body){body.classList.toggle('is-weekend',mode==='day_off');body.classList.toggle('is-post-work',false);body.classList.toggle('is-active',false)}setText('ccGreeting',copy.greeting);if(mode==='day_off'||mode==='active')setText('ccStatus',copy.status);renderHomeTrackingModeUI(mode,today,copy,btn);if(track)track.hidden=true;if(hero){hero.classList.toggle('is-live',false);hero.classList.toggle('is-goal',mode==='monday_morning')}const heroLabel=q('ccHeroLabel')||hero?.querySelector('.cc-hero-label');if(heroLabel){if(mode==='day_off')heroLabel.textContent="This Week's Business Miles";else if(mode==='active')heroLabel.textContent='LIVE';else heroLabel.textContent="Today's Business Miles"}const heroVal=mode==='day_off'?periodTotals('week').mi:today.mi;setText('ccHeroMiles',heroVal.toFixed(1));setText('ccMiles',today.mi.toFixed(1));setText('ccTime',today.sec<60?'0h':fmtShort(today.sec));setText('ccJourneys',String(today.journeys));if(reportBtn){const pendingReview=(today.pending||0)>0;if(pendingReview){reportBtn.hidden=false;reportBtn.textContent='Review today\u2019s journeys \u2192';reportBtn.onclick=function(){openDailyAiReview()}}else{reportBtn.hidden=true;reportBtn.onclick=viewTodayReport}}if(ctxRow){const showCtx=mode==='monday_morning';ctxRow.hidden=!showCtx;if(showCtx){setText('ccGoalValue',today.mi.toFixed(1)+' miles');fetchWeather().then(t=>{if(t!==null)setText('ccWeatherValue',t+'°C')})}}renderRecentActivity();renderIntelligenceLayer(mode);applyProfileTerms();setText('ccMilesLabel','Business Miles');setText('ccTravelLabel','Drive Time');setText('ccJourneysLabel','Journeys');const empty=q('ccEmptyState');if(empty){empty.hidden=!(today.mi===0&&today.journeys===0&&shifts.length===0&&mode!=='day_off');const emptySub=empty.querySelector('.cc-empty-sub');if(emptySub)emptySub.textContent=isAutoPilotTracking()?'AutoPilot is watching for your next journey — just drive.':'Press Start Shift to begin tracking.'}renderAutopilotStatusBar();renderHomeDebugButton();renderHomeModeCards();setText('ccTodayHmrc',money(claim(today.mi)))}
 function renderHomeDebugButton(){const btn=q('homeOpenDebugBtn');if(!btn)return;const show=typeof MPTrackingProvider!=='undefined'&&MPTrackingProvider.isNative()&&isAutoPilotTracking()&&ccState!=='active';btn.hidden=!show}
+function renderHomeModeCards(){const auto=isAutoPilotTracking(),autoCard=q('ccAutoCard'),manualCard=q('ccManualCard'),autoTag=q('ccAutoTag'),manualTag=q('ccManualTag');if(autoCard)autoCard.classList.toggle('is-active',auto);if(manualCard)manualCard.classList.toggle('is-active',!auto);if(autoTag){let t='Ready';if(!auto)t='Tap to enable';else if(typeof MPAutoPilotMotion!=='undefined'){const d=MPAutoPilotMotion.getDebugState();if(ccState==='active')t='Tracking';else if(d.state==='MOVING_CANDIDATE')t='Motion detected';else if(d.state==='PERMISSION_REQUIRED')t='Needs permission';else if(!d.lastGpsAt)t='Connecting…';else t='Ready'}autoTag.textContent=t}if(manualTag)manualTag.textContent=ccState==='active'?'Trip active':'Ready'}
+function manageAutoPilot(){if(typeof openTrackingModeSettings==='function')openTrackingModeSettings()}
+function startManualTrip(){if(!requireActiveAccess('Subscribe to start tracking'))return;autopilotStartedShift=false;startShiftCommandCentre();showScreen('tracking')}
+function openBusinessHub(){toast('Business Hub is coming next ✨')}
 function viewTodayReport(){setArchiveFilter('daily');showReports()}
 function generateTodayReport(){showReports();setTimeout(function(){downloadArchiveReport('syn_today')},350)}
 function downsampleRoute(pts,max=ENGINE.ROUTE_MAX){if(!pts?.length)return[];if(pts.length<=max)return pts;const step=Math.ceil(pts.length/max);return pts.filter((_,i)=>i%step===0||i===pts.length-1)}
