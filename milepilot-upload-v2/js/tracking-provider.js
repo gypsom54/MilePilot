@@ -296,8 +296,10 @@
     if (!deps) return false;
     if (!isNative()) return false;
 
-    if (deps.updateGpsUi) deps.updateGpsUi('Finding GPS…');
-    if (deps.showStatus) deps.showStatus('Finding GPS…');
+    const showGpsBanner =
+      fromUserGesture || (deps.isShiftTracking && deps.isShiftTracking());
+    if (showGpsBanner && deps.updateGpsUi) deps.updateGpsUi('Finding GPS…');
+    if (showGpsBanner && deps.showStatus) deps.showStatus('Finding GPS…');
 
     const perm = fromUserGesture ? await requestPermissions() : await queryPermissionStatus();
     if (perm !== 'granted' && perm !== 'foreground-only' && fromUserGesture) {
@@ -325,8 +327,10 @@
       } catch (e) {}
       if (global.gpsLocked !== undefined) global.gpsLocked = true;
       if (perm === 'foreground-only' || !watchResult.backgroundActive) {
-        if (deps.updateGpsUi) {
+        if (showGpsBanner && deps.updateGpsUi) {
           deps.updateGpsUi('Allow Always location in Settings for background miles.');
+        } else if (deps.updateGpsUi) {
+          deps.updateGpsUi(null);
         }
       } else if (deps.updateGpsUi) {
         deps.updateGpsUi(null);
