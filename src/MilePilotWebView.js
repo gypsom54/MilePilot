@@ -13,6 +13,11 @@ import {
   initNativeTracking,
   ensureBackgroundLocationForTrip,
 } from './expoLocationBridge';
+import {
+  loadNativeAutopilotState,
+  isNativeAutopilotArmed,
+  ensureAutopilotBackgroundLocation,
+} from './nativeAutopilot';
 import { setNativeAutoEndInjector, flushPendingNativeAutoEnd } from './nativeAutoEnd';
 import {
   getTripSyncPayload,
@@ -114,10 +119,12 @@ export default function MilePilotWebView() {
         sendToWebView({ type: 'expo:appstate', state: nextState });
         loadPersistedState()
           .catch((e) => console.warn('[MilePilot] loadPersistedState on lock', e.message))
+          .then(() => loadNativeAutopilotState())
           .then(() => {
             const tripNow = getTripSyncPayload();
-            if (!tripNow?.active) return null;
-            return ensureBackgroundLocationForTrip();
+            if (tripNow?.active) return ensureBackgroundLocationForTrip();
+            if (isNativeAutopilotArmed()) return ensureAutopilotBackgroundLocation();
+            return null;
           })
           .then((res) => {
             if (res?.backgroundActive) {

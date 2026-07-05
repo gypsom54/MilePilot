@@ -3,7 +3,7 @@
  * Expo background location task. GPS points feed nativeTrackingEngine immediately.
  */
 import { onNativeBackgroundLocation } from './nativeAutoEnd';
-import { onAutopilotBackgroundLocation } from './nativeAutopilot';
+import { hydrateNativeAutopilot, onAutopilotBackgroundLocation } from './nativeAutopilot';
 import { ingestNativeLocation } from './nativeTrackingEngine';
 import * as TaskManager from 'expo-task-manager';
 import * as Location from 'expo-location';
@@ -58,30 +58,38 @@ TaskManager.defineTask(BACKGROUND_LOCATION_TASK, ({ data, error }) => {
   const locations = data?.locations;
   if (!locations || !locations.length) return;
 
-  for (const loc of locations) {
-    const payload = locationToPayload(loc);
-    if (!payload) continue;
+  (async () => {
+    await hydrateNativeAutopilot();
 
-    console.log(
-      '[MilePilot BG GPS] location',
-      payload.coords.latitude,
-      payload.coords.longitude,
-      'acc',
-      payload.coords.accuracy
-    );
+    for (const loc of locations) {
+      const payload = locationToPayload(loc);
+      if (!payload) continue;
 
-    const sync = ingestNativeLocation(payload, { source: 'background' });
-    if (sync) {
-      queueSync(sync);
-    } else {
-      const autoTrip = onAutopilotBackgroundLocation(payload);
-      if (autoTrip) {
-        queueSync(autoTrip);
+      console.log(
+        '[MilePilot BG GPS] location',
+        payload.coords.latitude,
+        payload.coords.longitude,
+        'acc',
+        payload.coords.accuracy,
+        'speed',
+        payload.coords.speed
+      );
+
+      const sync = ingestNativeLocation(payload, { source: 'background' });
+      if (sync) {
+        queueSync(sync);
       } else {
-        onNativeBackgroundLocation(payload);
+        const autoTrip = onAutopilotBackgroundLocation(payload);
+        if (autoTrip) {
+          queueSync(autoTrip);
+        } else {
+          onNativeBackgroundLocation(payload);
+        }
       }
     }
-  }
+  })().catch((e) => {
+    console.error('[MilePilot BG GPS] task handler failed', e.message || e);
+  });
 });
 
 export async function startBackgroundLocationUpdates() {

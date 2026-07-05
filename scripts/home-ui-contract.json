@@ -1,0 +1,25 @@
+{
+  "id": "MP-HOME-UI-1",
+  "version": 1,
+  "lockedAt": "8.43.57",
+  "vital": true,
+  "description": "Home dashboard AutoPilot/Manual mode UI + native debug entry — field-validated July 2026. Do not modify without explicit sign-off.",
+  "files": ["frontend/index.html", "milepilot-upload-v2/index.html"],
+  "requiredPatterns": [
+    "VITAL_HOME_UI_LOCK",
+    "id=\"homeOpenDebugBtn\"",
+    "function renderHomeDebugButton",
+    "function renderHomeTrackingModeUI",
+    "id=\"ccModeBadge\"",
+    "id=\"ccManualBanner\"",
+    "id=\"ccAutopilotBar\"",
+    "openTrackingDebugFromTrip",
+    "cc-mode-badge",
+    "cc-mode-banner",
+    "cc-primary-btn.is-manual-override"
+  ],
+  "requiredFunctions": [
+    "renderHomeDebugButton",
+    "renderHomeTrackingModeUI"
+  ]
+}

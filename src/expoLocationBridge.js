@@ -214,7 +214,15 @@ export async function startTracking(onLocation, { background = false } = {}) {
 
 export async function initNativeTracking() {
   await loadPersistedState();
-  await loadNativeAutopilotState();
+  const autopilotArmed = await loadNativeAutopilotState();
+  if (autopilotArmed) {
+    const bg = await ensureAutopilotBackgroundLocation();
+    if (bg.backgroundActive) {
+      console.log('[MilePilot] native AutoPilot re-armed background GPS on launch');
+    } else {
+      console.warn('[MilePilot] native AutoPilot armed but background GPS inactive', bg.reason || bg.error);
+    }
+  }
 }
 
 export function getLastBackgroundActive() {

@@ -17,7 +17,8 @@
     "src/expoLocationBridge.js",
     "src/MilePilotWebView.js",
     "src/nativeTrackingEngine.js",
-    "src/nativeAutoEnd.js"
+    "src/nativeAutoEnd.js",
+    "src/nativeAutopilot.js"
   ],
   "companionExports": [
     { "file": "frontend/js/native-platform.js", "symbol": "MPPlatform" },
@@ -25,7 +26,8 @@
   ],
   "companionSymbols": [
     { "file": "src/nativeTrackingEngine.js", "symbol": "setNativeAppBackground" },
-    { "file": "src/expoLocationBridge.js", "symbol": "expo:native:background" }
+    { "file": "src/expoLocationBridge.js", "symbol": "expo:native:background" },
+    { "file": "src/nativeAutopilot.js", "symbol": "hydrateNativeAutopilot" }
   ],
   "minTrackingEngineVersion": 2,
   "requiredConstants": [
