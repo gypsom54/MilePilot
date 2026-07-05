@@ -624,10 +624,14 @@ body.summary-open .nav{display:none!important}
 .cc-gps-banner p{margin:0 0 12px;font-size:14px;font-weight:500;line-height:1.45;color:rgba(234,220,180,.92)}
 .native-always-modal{position:fixed;inset:0;z-index:75;background:rgba(3,17,38,.92);display:flex;align-items:center;justify-content:center;padding:max(24px,env(safe-area-inset-top)) 22px max(28px,env(safe-area-inset-bottom));-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
 .native-always-modal[hidden]{display:none!important}
-.native-always-card{width:min(390px,100%);padding:24px 22px;border-radius:22px;border:1px solid rgba(239,180,80,.28);background:linear-gradient(180deg,rgba(239,180,80,.12),rgba(18,36,62,.96));box-shadow:0 16px 48px rgba(0,0,0,.35);animation:ccSlideUp .45s cubic-bezier(.22,1,.36,1) both}
-.native-always-card h2{margin:0 0 10px;font-size:clamp(20px,5vw,24px);font-weight:700;letter-spacing:-0.02em;color:#fff;text-align:center}
-.native-always-card p{margin:0 0 20px;font-size:15px;font-weight:500;line-height:1.5;color:rgba(234,220,180,.94);text-align:center}
+.native-always-card{width:min(390px,100%);padding:30px 24px 24px;border-radius:26px;border:1px solid rgba(126,175,255,.22);background:linear-gradient(180deg,#0C2954 0%,#08203F 100%);box-shadow:0 24px 64px rgba(0,0,0,.5),0 0 0 1px rgba(126,175,255,.06),inset 0 1px 0 rgba(255,255,255,.06);animation:ccSlideUp .45s cubic-bezier(.22,1,.36,1) both}
+.native-always-icon{width:60px;height:60px;margin:0 auto 18px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:28px;background:linear-gradient(180deg,rgba(30,136,255,.28),rgba(13,107,255,.14));border:1px solid rgba(126,175,255,.3);box-shadow:0 8px 24px rgba(13,107,255,.24),inset 0 1px 0 rgba(255,255,255,.14)}
+.native-always-card h2{margin:0 0 10px;font-size:clamp(20px,5vw,23px);font-weight:700;letter-spacing:-0.02em;color:#fff;text-align:center}
+.native-always-card p{margin:0 0 22px;font-size:14.5px;font-weight:500;line-height:1.55;color:rgba(206,222,245,.9);text-align:center}
+.native-always-card p strong{color:#7EC0FF;font-weight:700}
 .native-always-actions{display:flex;flex-direction:column;gap:10px}
+.native-always-actions .btn.premium-btn{margin-top:0}
+.native-always-actions .btn.outline{margin-top:0;border-color:rgba(126,175,255,.32);color:rgba(160,196,246,.86)}
 body.always-modal-open .nav{display:none!important}
 .cc-gps-btn{width:100%;height:46px;border:0;border-radius:14px;background:linear-gradient(180deg,#1E88FF 0%,#0D6BFF 50%,#005FE8 100%);color:#fff;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit}
 .perm-gps-help{margin-top:14px;font-size:13px;font-weight:500;line-height:1.45;color:rgba(239,180,80,.88)!important}
@@ -776,8 +780,10 @@ body.always-modal-open .nav{display:none!important}
 .beta-yn{flex:1;height:42px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);color:rgba(234,242,255,.9);font-size:15px;font-weight:600;cursor:pointer}
 .beta-yn.is-selected{background:rgba(13,107,255,.22);border-color:rgba(13,107,255,.55);color:#fff}
 .beta-text{width:100%;min-height:72px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.18);color:#EAF2FF;padding:12px 14px;font-size:15px;line-height:1.45;resize:vertical}
-.beta-actions{display:flex;gap:10px;margin-top:8px}
-.beta-actions .btn{flex:1}
+.beta-actions{display:flex;align-items:stretch;gap:10px;margin-top:8px}
+.beta-actions .btn{flex:1;height:50px;margin-top:0;display:flex;align-items:center;justify-content:center}
+#betaSubmit:disabled{opacity:.5;filter:saturate(.6);cursor:not-allowed;box-shadow:none;transform:none}
+.beta-actions-hint{margin:12px 2px 0;font-size:12.5px;color:rgba(160,184,214,.72);text-align:center;line-height:1.4}
 .report-recent{margin-top:20px;padding-top:18px;border-top:1px solid rgba(255,255,255,.08)}
 .report-recent[hidden]{display:none!important}
 .report-recent-title{margin:0 0 12px;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(110,180,255,.75)}
@@ -1444,14 +1450,16 @@ body.always-modal-open .nav{display:none!important}
 </div>
 <div class="native-always-modal" id="nativeAlwaysModal" hidden role="dialog" aria-modal="true" aria-labelledby="nativeAlwaysTitle">
 <div class="native-always-card" id="nativeAlwaysPrompt">
-<h2 id="nativeAlwaysTitle">Background location needed</h2>
-<p id="nativeAlwaysBody">To detect trips and record mileage while your phone is locked, MilePilot needs your Location set to <strong>Always</strong>.</p>
+<div class="native-always-icon" aria-hidden="true">📍</div>
+<h2 id="nativeAlwaysTitle">Keep tracking when locked</h2>
+<p id="nativeAlwaysBody">To record mileage while your phone is locked or the app is closed, set MilePilot Location to <strong>Always</strong>.</p>
 <div class="native-always-actions">
 <button type="button" class="btn premium-btn is-ready" id="nativeAlwaysOpen">Open Settings</button>
 <button type="button" class="btn outline" id="nativeAlwaysDismiss">Not now</button>
 </div>
 </div>
 <div class="native-always-card" id="nativeAlwaysSuccess" hidden>
+<div class="native-always-icon" aria-hidden="true">✓</div>
 <h2>Always location enabled ✓</h2>
 <p>AutoPilot can now detect and record trips when the app is closed or your phone is locked.</p>
 <button type="button" class="btn premium-btn is-ready" id="nativeAlwaysDone">Continue</button>
@@ -1468,6 +1476,7 @@ body.always-modal-open .nav{display:none!important}
 <button type="button" class="btn outline" onclick="MPBetaFeedback.close()">Not now</button>
 <button type="button" class="btn premium-btn" id="betaSubmit" onclick="MPBetaFeedback.submit()" disabled>Send feedback</button>
 </div>
+<p class="beta-actions-hint" id="betaActionsHint" hidden></p>
 </div>
 </div>
 <div class="cc-map-expand" id="ccMapExpand" hidden role="dialog" aria-label="Live route map">
@@ -1508,7 +1517,7 @@ body.always-modal-open .nav{display:none!important}
 <script src="js/app-copy.js"></script>
 <script src="js/beta-feedback.js"></script>
 <script>
-const APP_VERSION='8.43.59';
+const APP_VERSION='8.43.60';
 window.APP_VERSION=APP_VERSION;
 const DEFAULT_WEEKLY_GOAL_MILES=400;
 const BUSINESS_PROFILE_KEY='mp_business_profile';

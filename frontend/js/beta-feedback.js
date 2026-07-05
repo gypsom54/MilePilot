@@ -101,17 +101,35 @@
     syncSubmit();
   }
 
+  /** Only the yes/no questions are required — free-text is optional. */
   function isComplete() {
     return QUESTIONS.every(function (q) {
+      if (q.type !== 'yesno') return true;
       const v = answers[q.id];
-      if (q.type === 'yesno') return v === 'yes' || v === 'no';
-      return typeof v === 'string' && v.length >= 3;
+      return v === 'yes' || v === 'no';
     });
+  }
+
+  function unansweredYesNoCount() {
+    return QUESTIONS.filter(function (q) {
+      return q.type === 'yesno' && answers[q.id] !== 'yes' && answers[q.id] !== 'no';
+    }).length;
   }
 
   function syncSubmit() {
     const btn = global.document.getElementById('betaSubmit');
     if (btn) btn.disabled = !isComplete();
+    const hint = global.document.getElementById('betaActionsHint');
+    if (hint) {
+      const left = unansweredYesNoCount();
+      if (left > 0) {
+        hint.hidden = false;
+        hint.textContent =
+          'Answer ' + left + ' more question' + (left === 1 ? '' : 's') + ' to send. Comments are optional.';
+      } else {
+        hint.hidden = true;
+      }
+    }
   }
 
   async function submit() {

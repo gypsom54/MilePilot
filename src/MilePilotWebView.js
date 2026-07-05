@@ -156,6 +156,16 @@ export default function MilePilotWebView() {
     [sendToWebView]
   );
 
+  // iOS may kill the WebView content process under memory pressure (e.g. GPX
+  // tracker + Spotify running alongside). That leaves a blank blue screen.
+  // Reload immediately so the dashboard reappears; native trip state is
+  // persisted to disk and re-syncs on load, so no mileage is lost.
+  const onContentProcessDidTerminate = useCallback(() => {
+    console.warn('[MilePilot] WebView content process terminated — reloading');
+    setReady(false);
+    if (webViewRef.current) webViewRef.current.reload();
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#020B1B" />
@@ -170,6 +180,8 @@ export default function MilePilotWebView() {
         style={[styles.webview, !ready && styles.hidden]}
         onLoadEnd={() => setReady(true)}
         onMessage={onMessage}
+        onContentProcessDidTerminate={onContentProcessDidTerminate}
+        onRenderProcessGone={onContentProcessDidTerminate}
         injectedJavaScriptBeforeContentLoaded={BRIDGE_BOOT_SCRIPT}
         geolocationEnabled
         allowsInlineMediaPlayback
