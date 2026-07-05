@@ -3,6 +3,11 @@
 **Status:** 🔒 Locked — End of Day, June 2026  
 **Rule:** All future development must follow this document.
 
+> **Governed by [PRODUCT_VISION_MASTER.md](./PRODUCT_VISION_MASTER.md)** — the
+> top-level north star: *MilePilot is the AI Business Operating System for the
+> Self-Employed.* This document is the detailed platform/architecture lock that
+> implements that vision.
+
 ---
 
 ## What MilePilot is
