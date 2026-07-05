@@ -13,7 +13,37 @@
 
   const TRIAL_DAYS = 7;
   const TRIAL_MS = TRIAL_DAYS * 24 * 60 * 60 * 1000;
+  const PLANS = {
+    core: { id: 'core', label: 'MilePilot Core', priceLabel: '£4.99/month' },
+    business: { id: 'business', label: 'MilePilot Business', priceLabel: '£9.99/month' },
+    monthly: { id: 'core', label: 'MilePilot Core', priceLabel: '£4.99/month' },
+  };
   const PRICE_LABEL = '£4.99/month';
+
+  function getPlanTier() {
+    const sub = loadSubscription();
+    if (sub.plan === 'business' || sub.plan === 'core') return sub.plan;
+    try {
+      const setup = JSON.parse(global.localStorage.getItem('mp_business_setup') || '{}');
+      if (setup.selectedPlan) return setup.selectedPlan;
+    } catch (e) {}
+    return 'core';
+  }
+
+  function getPriceLabelForPlan(plan) {
+    const p = PLANS[plan] || PLANS.core;
+    return p.priceLabel;
+  }
+
+  function setPlanTier(planId) {
+    const sub = loadSubscription();
+    saveSubscription({
+      ...sub,
+      plan: planId === 'business' ? 'business' : 'core',
+      price: getPriceLabelForPlan(planId),
+    });
+    global.localStorage.setItem('mp_selected_plan', planId);
+  }
   const VALUE_PROP =
     'Try the full app free for 7 days. Then ' + PRICE_LABEL + ' to keep MilePilot running.';
 
@@ -79,17 +109,19 @@
     return new Date(started.getTime() + TRIAL_MS);
   }
 
-  function activateSubscription() {
+  function activateSubscription(planId) {
+    const plan = planId || getPlanTier();
     saveSubscription({
       status: 'active',
-      plan: 'monthly',
-      price: PRICE_LABEL,
+      plan: plan === 'business' ? 'business' : 'core',
+      price: getPriceLabelForPlan(plan),
       activatedAt: new Date().toISOString(),
     });
   }
 
   function getStatusBanner() {
     if (isPaidActive()) return null;
+    const price = getPriceLabelForPlan(getPlanTier());
     if (isTrialActive()) {
       const days = getTrialDaysRemaining();
       return {
@@ -99,7 +131,7 @@
           ' day' +
           (days === 1 ? '' : 's') +
           ' left in your free trial · then ' +
-          PRICE_LABEL,
+          price,
       };
     }
     return {
@@ -109,10 +141,11 @@
   }
 
   function getPaywallCopy() {
+    const price = getPriceLabelForPlan(getPlanTier());
     return {
       title: 'Keep MilePilot running',
-      body: VALUE_PROP,
-      price: PRICE_LABEL,
+      body: 'Try the full app free for 7 days. Then ' + price + ' to keep MilePilot running.',
+      price: price,
       note: 'Your previous trips and reports stay in your dashboard.',
     };
   }
@@ -132,6 +165,10 @@
     getTrialDaysRemaining: getTrialDaysRemaining,
     getTrialEndsAt: getTrialEndsAt,
     activateSubscription: activateSubscription,
+    getPlanTier: getPlanTier,
+    setPlanTier: setPlanTier,
+    getPriceLabelForPlan: getPriceLabelForPlan,
+    PLANS: PLANS,
     getStatusBanner: getStatusBanner,
     getPaywallCopy: getPaywallCopy,
   };
