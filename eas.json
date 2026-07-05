@@ -41,7 +41,7 @@
         "buildType": "app-bundle"
       },
       "env": {
-        "WEB_APP_URL": "https://app.milepilot.uk/?runtime=expo&build=production&v=8.43.58"
+        "WEB_APP_URL": "https://app.milepilot.uk/?runtime=expo&build=production&v=8.43.59"
       }
     }
   },

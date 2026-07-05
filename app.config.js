@@ -17,7 +17,7 @@ module.exports = {
     ios: {
       supportsTablet: false,
       bundleIdentifier: 'com.zipcab.milepilot',
-      buildNumber: '12',
+      buildNumber: '13',
       infoPlist: {
         NSLocationWhenInUseUsageDescription:
           'MilePilot uses your location to record business journeys while you are working.',

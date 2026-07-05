@@ -226,7 +226,7 @@
 
   function canNotify(kind) {
     const now = Date.now();
-    if (now - lastNotifAt < DEFAULTS.NOTIF_COOLDOWN_MS && kind !== 'started' && kind !== 'report') return false;
+    if (now - lastNotifAt < DEFAULTS.NOTIF_COOLDOWN_MS && kind !== 'started') return false;
     return true;
   }
 

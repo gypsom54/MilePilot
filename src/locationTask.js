@@ -12,11 +12,8 @@ export const BACKGROUND_LOCATION_TASK = 'MILEPILOT_BACKGROUND_LOCATION';
 
 let forwardLocationToWebView = null;
 const pendingSyncPayloads = [];
-
-export function takePendingBackgroundLocations() {
-  if (!pendingSyncPayloads.length) return [];
-  return pendingSyncPayloads.splice(0, pendingSyncPayloads.length);
-}
+/** Latest-only buffer — prevents 100+ stale sync injections when app reopens. */
+let latestPendingSync = null;
 
 export function setBackgroundLocationForwarder(fn) {
   forwardLocationToWebView = fn;
@@ -41,13 +38,19 @@ function locationToPayload(loc) {
 
 function queueSync(sync) {
   if (!sync) return;
+  latestPendingSync = sync;
+  pendingSyncPayloads.length = 0;
   pendingSyncPayloads.push(sync);
-  if (pendingSyncPayloads.length > 100) {
-    pendingSyncPayloads.splice(0, pendingSyncPayloads.length - 100);
-  }
   if (typeof forwardLocationToWebView === 'function') {
     forwardLocationToWebView(sync);
   }
+}
+
+export function takePendingBackgroundLocations() {
+  const out = latestPendingSync ? [latestPendingSync] : [];
+  pendingSyncPayloads.length = 0;
+  latestPendingSync = null;
+  return out;
 }
 
 TaskManager.defineTask(BACKGROUND_LOCATION_TASK, ({ data, error }) => {

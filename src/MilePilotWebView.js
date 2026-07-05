@@ -18,12 +18,13 @@ import {
   isNativeAutopilotArmed,
   ensureAutopilotBackgroundLocation,
 } from './nativeAutopilot';
-import { setNativeAutoEndInjector, flushPendingNativeAutoEnd } from './nativeAutoEnd';
+import { setNativeAutoEndInjector, flushPendingNativeAutoEnd, setNativeAutoEndTripStopHandler, syncNativeAutoEnd } from './nativeAutoEnd';
 import {
   getTripSyncPayload,
   setNativeDebugMeta,
   setNativeAppBackground,
   loadPersistedState,
+  stopNativeTrip,
 } from './nativeTrackingEngine';
 
 const WEB_APP_URL = Constants.expoConfig?.extra?.webAppUrl || 'https://app.milepilot.uk/?runtime=expo';
@@ -94,6 +95,10 @@ export default function MilePilotWebView() {
     });
     setNativeAutoEndInjector(() => {
       injectLocationIntoWebView(webViewRef, { type: 'expo:autoend:trigger', timestamp: Date.now() });
+    });
+    setNativeAutoEndTripStopHandler(() => {
+      stopNativeTrip();
+      syncNativeAutoEnd({ active: false });
     });
     return () => {
       setBackgroundLocationForwarder(null);

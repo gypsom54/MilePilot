@@ -10,6 +10,7 @@ const MIN_SPEED_MPS = 1.8;
 const SOFT_SPEED_MPS = 1.0;
 const MAX_ACC_M = 65;
 const NOTIF_ID = 'milepilot-auto-end';
+const RESCHEDULE_MIN_MS = 30000;
 
 let state = {
   active: false,
@@ -20,12 +21,20 @@ let state = {
   lastLat: null,
   lastLon: null,
   pendingAutoEnd: false,
+  autoEndCompleted: false,
 };
 
 let injectAutoEnd = null;
+let stopNativeTripHandler = null;
+let lastScheduledDeadlineAt = 0;
+let lastImmediateNotifAt = 0;
 
 export function setNativeAutoEndInjector(fn) {
   injectAutoEnd = typeof fn === 'function' ? fn : null;
+}
+
+export function setNativeAutoEndTripStopHandler(fn) {
+  stopNativeTripHandler = typeof fn === 'function' ? fn : null;
 }
 
 export function syncNativeAutoEnd(payload) {
@@ -40,11 +49,15 @@ export function syncNativeAutoEnd(payload) {
       lastLat: null,
       lastLon: null,
       pendingAutoEnd: false,
+      autoEndCompleted: false,
     };
+    lastScheduledDeadlineAt = 0;
     cancelAutoEndNotification();
     return;
   }
   state.active = true;
+  state.autoEndCompleted = false;
+  state.pendingAutoEnd = false;
   state.shiftId = payload.shiftId || state.shiftId;
   state.inactivityMs = payload.inactivityMs || state.inactivityMs || 90 * 60 * 1000;
   state.lastMovementAt = payload.lastMovementAt || Date.now();
@@ -79,6 +92,13 @@ async function cancelAutoEndNotification() {
 }
 
 async function scheduleAutoEndNotification(deadlineAt) {
+  if (!state.active || state.autoEndCompleted) return;
+  if (
+    lastScheduledDeadlineAt &&
+    Math.abs(deadlineAt - lastScheduledDeadlineAt) < RESCHEDULE_MIN_MS
+  ) {
+    return;
+  }
   const waitSec = Math.max(1, Math.floor((deadlineAt - Date.now()) / 1000));
   try {
     await cancelAutoEndNotification();
@@ -86,20 +106,49 @@ async function scheduleAutoEndNotification(deadlineAt) {
       identifier: NOTIF_ID,
       content: {
         title: 'MilePilot — shift ended',
-        body: 'Your trip finished after 90 minutes stopped. Your report is being sent.',
+        body: 'Your trip finished after 90 minutes stopped. Your report will be emailed shortly.',
         sound: true,
         data: { type: 'auto_end' },
       },
       trigger: { seconds: waitSec },
     });
+    lastScheduledDeadlineAt = deadlineAt;
   } catch (e) {
     console.warn('[MilePilot NativeAutoEnd] notification schedule failed', e.message);
   }
 }
 
-function triggerAutoEnd(reason) {
-  if (!state.active || state.pendingAutoEnd) return false;
+function completeNativeAutoEnd(reason) {
+  if (state.autoEndCompleted) return false;
+  state.autoEndCompleted = true;
+  state.active = false;
   state.pendingAutoEnd = true;
+  lastScheduledDeadlineAt = 0;
+  cancelAutoEndNotification();
+
+  if (typeof stopNativeTripHandler === 'function') {
+    try {
+      stopNativeTripHandler();
+    } catch (e) {
+      console.warn('[MilePilot NativeAutoEnd] stopNativeTrip failed', e.message);
+    }
+  }
+
+  const now = Date.now();
+  if (now - lastImmediateNotifAt > 60000) {
+    lastImmediateNotifAt = now;
+    Notifications.scheduleNotificationAsync({
+      identifier: NOTIF_ID + '-done',
+      content: {
+        title: 'MilePilot — shift ended',
+        body: 'Your trip finished. Open MilePilot to review your mileage report.',
+        sound: true,
+        data: { type: 'auto_end_done' },
+      },
+      trigger: null,
+    }).catch(() => {});
+  }
+
   console.log('[MilePilot NativeAutoEnd] triggering auto-end', { reason, shiftId: state.shiftId });
   if (typeof injectAutoEnd === 'function') {
     injectAutoEnd(reason || 'native_idle');
@@ -107,7 +156,13 @@ function triggerAutoEnd(reason) {
   return true;
 }
 
+function triggerAutoEnd(reason) {
+  if (!state.active || state.pendingAutoEnd || state.autoEndCompleted) return false;
+  return completeNativeAutoEnd(reason || 'native_idle');
+}
+
 export function flushPendingNativeAutoEnd() {
+  if (state.autoEndCompleted) return false;
   if (state.pendingAutoEnd && typeof injectAutoEnd === 'function') {
     injectAutoEnd('native_idle_resume');
     return true;
@@ -122,7 +177,7 @@ export function flushPendingNativeAutoEnd() {
  * Called from background location task on every GPS fix.
  */
 export function onNativeBackgroundLocation(payload) {
-  if (!state.active || !payload?.coords) return;
+  if (!state.active || state.autoEndCompleted || !payload?.coords) return;
   const now = Date.now();
   const lat = payload.coords.latitude;
   const lon = payload.coords.longitude;
