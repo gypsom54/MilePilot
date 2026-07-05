@@ -23,6 +23,7 @@
     "verify:release": "node scripts/verify-release.js",
     "verify:tracking": "node scripts/verify-tracking-contract.js",
     "test:native-autopilot": "node tests/native-autopilot.test.js",
+    "test:native-tracking": "node tests/native-tracking-engine.test.js",
     "verify:home-ui": "node scripts/verify-home-ui-contract.js",
     "verify:reports": "node scripts/verify-reports-contract.js",
     "test:tracking": "node tests/tracking-regression.test.js",
