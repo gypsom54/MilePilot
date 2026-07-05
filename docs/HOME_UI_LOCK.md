@@ -1,8 +1,8 @@
-# Home Dashboard UI Lock (MP-HOME-UI-1)
+# Home Dashboard UI Lock (MP-HOME-UI-2)
 
 ## DO NOT MODIFY WITHOUT SIGN-OFF
 
-Field-validated **July 2026** — AutoPilot vs Manual home indicators, status bar, and native **Open Tracking Debug** entry.
+Field-validated **July 2026** — calm Auto Track / Manual Track cards; technical diagnostics on AutoPilot Status page.
 
 This section is protected by CI (`scripts/verify-home-ui-contract.js`) and must not be changed casually.
 
@@ -10,16 +10,24 @@ This section is protected by CI (`scripts/verify-home-ui-contract.js`) and must 
 
 | Element | Purpose |
 |---------|---------|
-| `ccModeBadge` | "AutoPilot active" badge on home |
+| `ccAutoCard` / `ccManualCard` | Identical-structure track cards on home |
+| `cc-choice-sub` / `cc-choice-desc` | Subtitle + one-line description per card |
+| `cc-choice-badge` | Status badge (Ready / Tracking / Permission Needed) |
+| `ccModeBadge` | "AutoPilot active" badge on today summary |
 | `ccManualBanner` | Manual mode warning + link to Settings |
-| `ccAutopilotBar` | AutoPilot watching / GPS status strip |
-| `homeOpenDebugBtn` | Native **Open Tracking Debug →** on home |
-| `renderHomeTrackingModeUI()` | Mode badge, banner, manual override button styling |
-| `renderHomeDebugButton()` | Shows debug button on native + AutoPilot idle |
+| `#autopilotStatus` | AutoPilot Status page — GPS, timers, engine diagnostics |
+| `renderHomeTrackingModeUI()` | Mode badge, banner, calm home status line |
+| `renderHomeModeCards()` | Card active state + status badges |
+| `renderAutopilotStatusPage()` | Technical diagnostics (not on home) |
+
+## Home must NOT show
+
+- GPS confidence, motion thresholds, detection timers on idle home
+- `homeOpenDebugBtn` on home (debug entry lives on AutoPilot Status when `mp_debug=1`)
 
 ## Marker
 
-`VITAL_HOME_UI_LOCK='MP-HOME-UI-1'` in `frontend/index.html` — do not remove.
+`VITAL_HOME_UI_LOCK='MP-HOME-UI-2'` in `frontend/index.html` — do not remove.
 
 ## Related (separate lock)
 
