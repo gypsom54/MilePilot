@@ -7,3 +7,25 @@ milepilot-upload-v2
 terminals
 **/.DS_Store
 **/Thumbs.db
+
+# Windows — never upload user profile / temp paths (causes casing errors on EAS)
+AppData
+**/AppData/**
+**/Local/Temp/**
+**/Temp/**
+**/Packages/**
+*.log
+**/*.log
+
+# Build artefacts & local env
+.expo
+dist
+coverage
+*.ipa
+*.aab
+backend
+website
+docs
+tests
+scripts
+.github
