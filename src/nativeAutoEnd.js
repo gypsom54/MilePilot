@@ -63,6 +63,13 @@ export function syncNativeAutoEnd(payload) {
   state.lastMovementAt = payload.lastMovementAt || Date.now();
   state.autoEndDeadlineAt =
     payload.autoEndDeadlineAt || state.lastMovementAt + state.inactivityMs;
+  // Safety floor: never arm with an already-elapsed/near deadline (a stale seed
+  // from an old trip start would otherwise auto-end the trip almost instantly).
+  // Reopening/re-arming an active trip grants a fresh full idle window.
+  if (state.autoEndDeadlineAt <= Date.now() + 60000) {
+    state.lastMovementAt = Date.now();
+    state.autoEndDeadlineAt = Date.now() + state.inactivityMs;
+  }
   if (payload.lat != null && payload.lon != null) {
     state.lastLat = payload.lat;
     state.lastLon = payload.lon;

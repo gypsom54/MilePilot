@@ -467,7 +467,8 @@
     tripEndedAt = Date.now();
     setState(STATES.COMPLETED, endReason || 'ended');
     if (endReason === 'auto') {
-      notify('ended', 'AutoPilot', 'Journey ended automatically after 90 minutes idle.');
+      const idleMin = Math.round(getIdleMs() / 60000);
+      notify('ended', 'AutoPilot', 'Journey ended automatically after ' + idleMin + ' minutes idle.');
     }
     setTimeout(function () {
       syncLifecycle();

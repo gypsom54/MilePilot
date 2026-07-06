@@ -586,14 +586,11 @@
       return skip;
     }
 
-    const frequency = deps.getFrequency();
-    if (!frequency || frequency === 'off') {
-      const skip = { skipped: true, reason: 'reports_off' };
-      reportLog('Shift completion email skipped — reports off', { endReason: endReason });
-      saveLastEmailResult(skip);
-      return skip;
-    }
-
+    // Shift-completion emails are event-driven (AutoPilot sends after every
+    // shift). They must NOT be gated by the periodic `frequency` setting —
+    // AutoPilot deliberately sets frequency to 'off' (no scheduled digests) yet
+    // still emails per shift. The caller (triggerAutopilotShiftReport /
+    // finalizeAutopilotShiftReport) already gates on the emailReports preference.
     const sentKey = 'shift_completion_' + (shift && shift.id ? shift.id : Date.now());
     if (localStorage.getItem(SENT_PREFIX + sentKey) === '1') {
       return { skipped: true, reason: 'already_sent' };
