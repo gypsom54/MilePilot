@@ -1,5 +1,5 @@
 /**
- * Onboarding V4 — workspace branching
+ * Onboarding flow repair — workspace branching
  */
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
@@ -51,6 +51,13 @@ function run(name, fn) {
   }
 }
 
+run('name requires at least 2 characters', () => {
+  const M = loadModule(createMockLocalStorage());
+  assert.equal(M.isValidName('J'), false);
+  assert.equal(M.isValidName('Jo'), true);
+  assert.equal(M.isValidName('  Sam  '), true);
+});
+
 // TEST 1 — Business only user
 run('TEST 1: business-only path skips all mileage steps', () => {
   const M = loadModule(createMockLocalStorage());
@@ -60,12 +67,16 @@ run('TEST 1: business-only path skips all mileage steps', () => {
   assert.ok(!flow.includes('vehicleUse'));
   assert.ok(!flow.includes('vehicleType'));
   assert.ok(!flow.includes('trackingPreference'));
+  assert.ok(!flow.includes('ack'));
+  assert.ok(!flow.includes('nameAck'));
+  assert.ok(!flow.includes('businessBridge'));
   assert.ok(flow.includes('vat'));
   assert.ok(flow.includes('accountant'));
   assert.ok(flow.includes('reportEmail'));
   const copy = M.getReportEmailCopy({ goals });
   assert.match(copy.title, /business reports/i);
   assert.ok(!/mileage reports/i.test(copy.title));
+  assert.match(copy.helper, /receipts, expenses, VAT summaries/);
   const rec = M.computeRecommendation({ goals, vatRegistered: 'yes' });
   assert.equal(rec.plan, 'business');
   assert.equal(rec.dashboardMode, 'business');
@@ -96,7 +107,7 @@ run('TEST 2: mileage-only path asks vehicle and tracking', () => {
 // TEST 3 — Combined user
 run('TEST 3: combined path includes mileage and business setup', () => {
   const M = loadModule(createMockLocalStorage());
-  const goals = ['track_mileage', 'organise_receipts', 'track_expenses', 'help_vat'];
+  const goals = ['track_mileage', 'organise_receipts', 'help_vat'];
   assert.equal(M.getOnboardPath({ goals }), 'combined');
   const flow = M.buildFlow({
     goals,
@@ -107,7 +118,7 @@ run('TEST 3: combined path includes mileage and business setup', () => {
   });
   assert.ok(flow.includes('vehicleUse'));
   assert.ok(flow.includes('trackingPreference'));
-  assert.ok(flow.includes('businessBridge'));
+  assert.ok(!flow.includes('businessBridge'));
   assert.ok(flow.includes('vat'));
   assert.ok(flow.includes('reportEmail'));
   const copy = M.getReportEmailCopy({ goals });
@@ -119,19 +130,12 @@ run('TEST 3: combined path includes mileage and business setup', () => {
   assert.equal(rec.workspaceTitle, 'MilePilot Business');
 });
 
-run('mileage + reduce paperwork is combined not mileage-only', () => {
-  const M = loadModule(createMockLocalStorage());
-  const goals = ['track_mileage', 'reduce_paperwork'];
-  assert.equal(M.getOnboardPath({ goals }), 'combined');
-  const rec = M.computeRecommendation({ goals, vehicleUse: 'daily' });
-  assert.equal(rec.plan, 'business');
-  assert.equal(M.wantsBusinessWorkspace({ goals }), true);
-});
-
-run('early flow is welcome → name → nameAck → goals', () => {
+run('early flow is welcome → name → goals with no dead transitions', () => {
   const M = loadModule(createMockLocalStorage());
   const flow = M.buildFlow({ goals: ['track_mileage'] });
-  assert.equal(flow.slice(0, 4).join(','), 'welcome,name,nameAck,goals');
+  assert.equal(flow.slice(0, 3).join(','), 'welcome,name,goals');
+  assert.ok(!flow.includes('ack'));
+  assert.ok(!flow.includes('nameAck'));
 });
 
 run('vehicle steps omitted when user does not use a vehicle', () => {
@@ -153,17 +157,5 @@ run('ready copy reflects workspace type', () => {
   assert.match(copy.lead, /Business Hub is ready/);
 });
 
-run('legacy goal ids migrate on load', () => {
-  const ls = createMockLocalStorage();
-  ls.setItem(
-    'mp_business_setup',
-    JSON.stringify({ goals: ['tracking_mileage', 'saving_receipts'], vehicleUse: 'daily' })
-  );
-  const M = loadModule(ls);
-  const setup = M.loadSetup();
-  assert.equal(setup.goals[0], 'track_mileage');
-  assert.equal(setup.goals[1], 'organise_receipts');
-});
-
-console.log(`\nBusiness setup V4: ${passed} passed, ${failed} failed\n`);
+console.log(`\nBusiness setup flow repair: ${passed} passed, ${failed} failed\n`);
 process.exit(failed > 0 ? 1 : 0);

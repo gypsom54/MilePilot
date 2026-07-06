@@ -87,8 +87,7 @@
   };
 
   let typingTimer = null;
-  let pendingAfterAck = null;
-  let flowSteps = ['welcome', 'name'];
+  let flowSteps = ['welcome', 'name', 'goals'];
 
   function q(id) {
     return document.getElementById(id);
@@ -245,7 +244,7 @@
   function buildFlow(setup) {
     const s = setup || loadSetup();
     const path = getOnboardPath(s);
-    const steps = ['welcome', 'name', 'nameAck', 'goals', 'ack'];
+    const steps = ['welcome', 'name', 'goals'];
 
     if (needsMileageOnboarding(s)) {
       steps.push('vehicleUse');
@@ -255,9 +254,6 @@
     }
 
     if (needsBusinessOnboarding(s)) {
-      if (path === 'combined' && needsMileageOnboarding(s)) {
-        steps.push('businessBridge');
-      }
       if (selectedVatGoal(s)) steps.push('vat');
       if (selectedAccountantGoal(s)) steps.push('accountant');
     }
@@ -392,115 +388,6 @@
     tick();
   }
 
-  function formatAckList(items) {
-    if (!items.length) return '';
-    if (items.length === 1) return items[0];
-    if (items.length === 2) return items[0] + ' and ' + items[1];
-    return items.slice(0, -1).join(', ') + ' and ' + items[items.length - 1];
-  }
-
-  function getAckForGoals(goals) {
-    const g = goals || [];
-    const hasMileage = g.includes('track_mileage');
-    const hasReceipts = g.includes('organise_receipts');
-    const hasVat = g.includes('help_vat');
-    const hasAccountant = g.includes('accountant');
-    const hasExpenses = g.includes('track_expenses');
-    const hasBusiness = hasBusinessGoals({ goals: g });
-
-    if (!g.length) return ["Great — I'll build the right workspace around what you need."];
-    if (hasMileage && !hasBusiness) {
-      return ["Perfect — I'll make mileage tracking the centre of your workspace."];
-    }
-    if (!hasMileage && hasBusiness) {
-      if (hasReceipts && hasVat && hasAccountant) {
-        return [
-          "Great — I'll focus your setup on receipts, VAT summaries and accountant-ready records.",
-        ];
-      }
-      return ["Great — I'll focus your Business Workspace on receipts, expenses and records."];
-    }
-    if (hasMileage && hasBusiness) {
-      const focus = [];
-      if (hasMileage) focus.push('mileage');
-      if (hasReceipts) focus.push('receipts');
-      if (hasVat) focus.push('VAT');
-      if (hasAccountant) focus.push('accountant-ready records');
-      if (hasExpenses) focus.push('expenses');
-      return ["Perfect — I'll build your workspace around " + formatAckList(focus) + '.'];
-    }
-    return ["Great — I'll build the right workspace around what you need."];
-  }
-
-  function getAckForVat(vat) {
-    if (vat === 'yes') {
-      return ["Excellent — I'll prioritise VAT summaries and receipt automation."];
-    }
-    return ['No problem — you can still track expenses and accountant records.'];
-  }
-
-  function getValueAddsForGoals(goals) {
-    const g = goals || [];
-    const lines = [];
-    if (g.includes('track_mileage')) lines.push('✓ Mileage tracking added');
-    if (g.includes('organise_receipts')) lines.push('✓ Receipt Scanner added');
-    if (g.includes('track_expenses')) lines.push('✓ Expense tracking added');
-    if (g.includes('help_vat')) lines.push('✓ VAT summaries added');
-    if (g.includes('accountant')) lines.push('✓ Accountant Pack added');
-    return lines.slice(0, 4);
-  }
-
-  function revealValueAdds(lines, onDone) {
-    const ul = q('bsAckValues');
-    if (!ul || !lines.length) {
-      if (onDone) onDone();
-      return;
-    }
-    ul.hidden = false;
-    ul.innerHTML = '';
-    let i = 0;
-    function addNext() {
-      if (i >= lines.length) {
-        if (onDone) onDone();
-        return;
-      }
-      const li = document.createElement('li');
-      li.className = 'bs-value-add';
-      li.textContent = lines[i++];
-      ul.appendChild(li);
-      requestAnimationFrame(function () {
-        li.classList.add('is-visible');
-      });
-      setTimeout(addNext, 240);
-    }
-    addNext();
-  }
-
-  function showAck(lines, nextStep, valueLines) {
-    pendingAfterAck = nextStep;
-    document.querySelectorAll('.bs-step').forEach(function (el) {
-      el.hidden = el.dataset.step !== 'ack';
-    });
-    const valuesEl = q('bsAckValues');
-    if (valuesEl) {
-      valuesEl.hidden = true;
-      valuesEl.innerHTML = '';
-    }
-    showFooterFor('ack');
-    updateProgress('ack');
-    syncContinueBtn('bsAckContinue', false);
-    typeLines(
-      q('bsAckTyping'),
-      lines,
-      function () {
-        revealValueAdds(valueLines || [], function () {
-          syncContinueBtn('bsAckContinue', true);
-        });
-      },
-      22
-    );
-  }
-
   function renderOptionCards(container, options, selected, multi) {
     if (!container) return;
     container.innerHTML = options
@@ -548,13 +435,10 @@
   const FOOTER_BTNS = {
     welcome: 'bsWelcomeContinue',
     name: 'bsNameContinue',
-    nameAck: 'bsNameAckContinue',
-    ack: 'bsAckContinue',
     goals: 'bsGoalsContinue',
     vehicleUse: 'bsVehicleUseContinue',
     vehicleType: 'bsVehicleTypeContinue',
     trackingPreference: 'bsTrackingContinue',
-    businessBridge: 'bsBusinessBridgeContinue',
     vat: 'bsVatContinue',
     accountant: 'bsAccountantContinue',
     reportEmail: 'bsReportEmailContinue',
@@ -585,12 +469,10 @@
     updateProgress(step);
     if (step === 'welcome') initWelcomeStep();
     if (step === 'name') initNameStep();
-    if (step === 'nameAck') initNameAckStep();
     if (step === 'goals') initGoalsStep();
     if (step === 'vehicleUse') initVehicleUseStep();
     if (step === 'vehicleType') initVehicleTypeStep();
     if (step === 'trackingPreference') initTrackingPreferenceStep();
-    if (step === 'businessBridge') initBusinessBridgeStep();
     if (step === 'vat') initVatStep();
     if (step === 'accountant') initAccountantStep();
     if (step === 'reportEmail') initReportEmailStep();
@@ -619,26 +501,23 @@
     if (input) {
       if (!input.dataset.bound) {
         input.addEventListener('input', function () {
-          syncContinueBtn('bsNameContinue', input.value.trim().length > 0);
+          syncContinueBtn('bsNameContinue', isValidName(input.value));
         });
         input.addEventListener('keydown', function (e) {
-          if (e.key === 'Enter') nextFrom('name');
+          if (e.key === 'Enter' && isValidName(input.value)) nextFrom('name');
         });
         input.dataset.bound = '1';
       }
       input.value = setup.driverName || global.localStorage.getItem('mp_driver') || '';
     }
-    syncContinueBtn('bsNameContinue', !!(input && input.value.trim()));
-  }
-
-  function initNameAckStep() {
-    const name = loadSetup().driverName || 'there';
-    typeLines(q('bsNameAckTyping'), ['Nice to meet you, ' + name + '.'], null, 20);
-    syncContinueBtn('bsNameAckContinue', true);
+    syncContinueBtn('bsNameContinue', input ? isValidName(input.value) : false);
   }
 
   function initGoalsStep() {
     const setup = loadSetup();
+    const name = setup.driverName || 'there';
+    const greeting = q('bsGoalsGreeting');
+    if (greeting) greeting.textContent = 'Nice to meet you, ' + name + ' 👋';
     const grid = q('bsGoalsGrid');
     const goals = setup.goals || [];
     renderOptionCards(grid, GOALS, goals, true);
@@ -656,7 +535,8 @@
 
   function initVehicleUseStep() {
     const setup = loadSetup();
-    typeLines(q('bsVehicleBridge'), ["Because you'd like help with mileage..."], function () {}, 20);
+    const bridge = q('bsVehicleBridge');
+    if (bridge) bridge.hidden = true;
     function onSelect(id) {
       saveSetup({ vehicleUse: id });
       refreshSingleSelect(q('bsVehicleUseGrid'), VEHICLE_USE, id, onSelect);
@@ -679,7 +559,8 @@
 
   function initTrackingPreferenceStep() {
     const setup = loadSetup();
-    typeLines(q('bsTrackingBridge'), ['To capture journeys the right way...'], function () {}, 20);
+    const bridge = q('bsTrackingBridge');
+    if (bridge) bridge.hidden = true;
     function onSelect(id) {
       saveSetup({ trackingPreference: id });
       if (id !== 'later' && typeof global.MPTrackingMode !== 'undefined') {
@@ -695,14 +576,10 @@
     syncContinueBtn('bsTrackingContinue', !!setup.trackingPreference);
   }
 
-  function initBusinessBridgeStep() {
-    typeLines(q('bsBusinessBridge'), ['Now a few questions about your business records...'], function () {}, 20);
-    syncContinueBtn('bsBusinessBridgeContinue', true);
-  }
-
   function initVatStep() {
     const setup = loadSetup();
-    typeLines(q('bsVatBridge'), ['Since VAT matters to you...'], function () {}, 20);
+    const bridge = q('bsVatBridge');
+    if (bridge) bridge.hidden = true;
     function onSelect(id) {
       saveSetup({ vatRegistered: id });
       refreshSingleSelect(q('bsVatGrid'), VAT_OPTIONS, id, onSelect);
@@ -714,7 +591,8 @@
 
   function initAccountantStep() {
     const setup = loadSetup();
-    typeLines(q('bsAccountantBridge'), ['To prepare the right reports...'], function () {}, 20);
+    const bridge = q('bsAccountantBridge');
+    if (bridge) bridge.hidden = true;
     function onSelect(id) {
       saveSetup({ worksWithAccountant: id });
       refreshSingleSelect(q('bsAccountantGrid'), ACCOUNTANT_OPTIONS, id, onSelect);
@@ -747,6 +625,14 @@
     };
   }
 
+  function isValidName(value) {
+    return (value || '').trim().length >= 2;
+  }
+
+  function isValidEmail(value) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+  }
+
   function initReportEmailStep() {
     const setup = loadSetup();
     const copy = getReportEmailCopy(setup);
@@ -768,10 +654,6 @@
       'bsReportEmailContinue',
       input ? isValidEmail(input.value.trim()) : false
     );
-  }
-
-  function isValidEmail(value) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
   }
 
   function initScanReceiptStep() {
@@ -886,29 +768,16 @@
     if (step === 'name') {
       const input = q('bsNameInput');
       const name = input ? input.value.trim() : '';
-      if (!name) return;
+      if (!isValidName(name)) return;
       saveSetup({ driverName: name });
-      showStep('nameAck');
-      return;
-    }
-    if (step === 'nameAck') {
       showStep('goals');
-      return;
-    }
-    if (step === 'ack') {
-      if (pendingAfterAck) {
-        const next = pendingAfterAck;
-        pendingAfterAck = null;
-        showStep(next);
-      }
       return;
     }
     if (step === 'goals') {
       const path = getOnboardPath(setup);
       saveSetup({ onboardPath: path });
       buildFlow(setup);
-      const next = nextStepAfter('goals');
-      showAck(getAckForGoals(setup.goals || []), next, getValueAddsForGoals(setup.goals || []));
+      showStep(nextStepAfter('goals'));
       return;
     }
     if (step === 'vehicleUse') {
@@ -922,24 +791,11 @@
     }
     if (step === 'trackingPreference') {
       buildFlow(setup);
-      const next = nextStepAfter('trackingPreference');
-      if (wantsMileageWorkspace(setup) && setup.trackingPreference && setup.trackingPreference !== 'later') {
-        const value =
-          setup.trackingPreference === 'autopilot'
-            ? '✓ AutoPilot mileage tracking added'
-            : '✓ Manual mileage tracking added';
-        showAck(["Nice — I'll make sure that's included."], next, [value]);
-        return;
-      }
-      showStep(next);
-      return;
-    }
-    if (step === 'businessBridge') {
-      showStep(nextStepAfter('businessBridge'));
+      showStep(nextStepAfter('trackingPreference'));
       return;
     }
     if (step === 'vat') {
-      showAck(getAckForVat(setup.vatRegistered), nextStepAfter('vat'));
+      showStep(nextStepAfter('vat'));
       return;
     }
     if (step === 'accountant') {
@@ -1049,7 +905,7 @@
   }
 
   function start() {
-    flowSteps = ['welcome', 'name'];
+    flowSteps = ['welcome', 'name', 'goals'];
     if (typeof global.showScreen === 'function') global.showScreen('businessSetup');
     showStep('welcome');
   }
@@ -1115,7 +971,7 @@
         const p = mileageLater.querySelector('p');
         if (p) p.textContent = 'Need mileage later?';
         const btn = mileageLater.querySelector('button');
-        if (btn) btn.textContent = 'Enable Mileage Workspace anytime';
+        if (btn) btn.textContent = 'Enable AutoPilot anytime';
       }
     }
     updateHubPresentation(mode);
@@ -1210,7 +1066,7 @@
     getReadyCopy: getReadyCopy,
     getReportEmailCopy: getReportEmailCopy,
     buildFlow: buildFlow,
-    getAckForGoals: getAckForGoals,
+    isValidName: isValidName,
     getReadyChecklist: getReadyChecklist,
     renderReadyChecklist: renderReadyChecklist,
     routeToOnboardReady: routeToOnboardReady,

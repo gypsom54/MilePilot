@@ -950,8 +950,14 @@ body.always-modal-open .nav{display:none!important}
 #businessSetup .welcome-input-wrap{margin:0 0 16px;display:flex;align-items:center;gap:10px;height:52px;padding:0 14px 0 16px;border-radius:var(--button-radius);border:1px solid rgba(110,180,255,.38);background:rgba(18,36,62,.92);box-shadow:inset 0 1px 0 rgba(255,255,255,.08);box-sizing:border-box;transition:border-color .28s ease,box-shadow .28s ease}
 #businessSetup .welcome-input-wrap:focus-within{border-color:rgba(13,107,255,.62);box-shadow:0 0 0 3px rgba(13,107,255,.14),inset 0 0 14px rgba(13,107,255,.07)}
 #businessSetup .welcome-input-icon{position:static;flex-shrink:0;width:16px;height:16px;transform:none;stroke:rgba(110,180,255,.52);stroke-width:1.25}
-#businessSetup .onboard-name-input,#businessSetup .onboard-email-input{flex:1;min-width:0;border:0;background:transparent;color:#fff;font-size:17px;font-weight:500;outline:none}
+#businessSetup .onboard-name-input,#businessSetup .onboard-email-input{flex:1;min-width:0;border:0;background:transparent;color:#fff;font-size:17px;font-weight:500;outline:none;margin:0;padding:0;height:auto;box-shadow:none;line-height:1.2}
 #businessSetup .onboard-name-input::placeholder,#businessSetup .onboard-email-input::placeholder{color:rgba(147,168,196,.55)}
+.bs-goals-greeting{margin:0 0 6px;font-size:clamp(20px,5vw,24px);font-weight:600;line-height:1.35;color:rgba(234,242,255,.95)}
+.bs-goals-lead{margin:0 0 14px;font-size:15px;font-weight:500;line-height:1.45;color:rgba(159,180,208,.88)}
+#businessSetup .knowYou-foot .premium-btn:not(.is-ready){opacity:.52;color:rgba(147,168,196,.68);background:linear-gradient(180deg,#152a45 0%,#0f2035 100%);box-shadow:none;cursor:not-allowed;filter:none;transform:none}
+#businessSetup .knowYou-foot .premium-btn:disabled{pointer-events:none}
+#businessSetup .knowYou-foot .premium-btn.is-ready{background:linear-gradient(180deg,#1E88FF 0%,#0D6BFF 48%,#0057E7 100%);color:#fff;box-shadow:0 12px 32px rgba(13,107,255,.36),0 0 0 1px rgba(126,200,255,.1),inset 0 1px 0 rgba(255,255,255,.16);cursor:pointer}
+#businessSetup .knowYou-foot .premium-btn.is-ready:hover{filter:brightness(1.05);box-shadow:0 14px 38px rgba(13,107,255,.42),0 0 0 1px rgba(126,200,255,.14),inset 0 1px 0 rgba(255,255,255,.16)}
 .bs-options{display:grid;grid-template-columns:1fr;gap:10px}
 .bs-option{display:flex;align-items:center;width:100%;text-align:left;padding:14px 16px;border-radius:16px;border:1px solid rgba(110,180,255,.16);background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(13,107,255,.02));color:rgba(234,242,255,.94);font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;transition:border-color .22s ease,box-shadow .22s ease,background .22s ease}
 .bs-option.is-selected{border-color:rgba(30,136,255,.55);box-shadow:0 8px 24px rgba(13,107,255,.18),inset 0 1px 0 rgba(255,255,255,.06);background:linear-gradient(180deg,rgba(13,107,255,.14),rgba(13,107,255,.04))}
@@ -1063,23 +1069,17 @@ body.always-modal-open .nav{display:none!important}
 <h2 class="bs-headline">What should I call you?</h2>
 <div class="welcome-input-wrap">
 <svg class="welcome-input-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="10" r="3.5"/><path d="M5.5 19.5c0-3.6 2.9-6.5 6.5-6.5s6.5 2.9 6.5 6.5"/></svg>
-<input id="bsNameInput" class="onboard-name-input" placeholder="Your first name" autocomplete="given-name">
+<input id="bsNameInput" class="onboard-name-input" placeholder="Your first name" autocomplete="given-name" spellcheck="false">
 </div>
-</div>
-<div class="bs-step" data-step="nameAck" hidden>
-<p class="bs-typing" id="bsNameAckTyping" aria-live="polite"></p>
-</div>
-<div class="bs-step" data-step="ack" hidden>
-<p class="bs-typing" id="bsAckTyping" aria-live="polite"></p>
-<ul class="bs-value-adds" id="bsAckValues" hidden></ul>
 </div>
 <div class="bs-step" data-step="goals" hidden>
+<p class="bs-goals-greeting" id="bsGoalsGreeting"></p>
+<p class="bs-goals-lead" id="bsGoalsLead">Let&apos;s build your workspace.</p>
 <h2 class="bs-headline">What would you like MilePilot to take care of?</h2>
 <p class="bs-helper">Choose everything that applies.</p>
 <div class="bs-options" id="bsGoalsGrid"></div>
 </div>
 <div class="bs-step" data-step="vehicleUse" hidden>
-<p class="bs-bridge" id="bsVehicleBridge" aria-live="polite"></p>
 <h2 class="bs-headline">Do you use a vehicle for business?</h2>
 <div class="bs-options" id="bsVehicleUseGrid"></div>
 </div>
@@ -1088,20 +1088,14 @@ body.always-modal-open .nav{display:none!important}
 <div class="bs-options" id="bsVehicleTypeGrid"></div>
 </div>
 <div class="bs-step" data-step="trackingPreference" hidden>
-<p class="bs-bridge" id="bsTrackingBridge" aria-live="polite"></p>
-<h2 class="bs-headline">Would you like MilePilot to record journeys automatically?</h2>
+<h2 class="bs-headline">Would you like AutoPilot or Manual tracking?</h2>
 <div class="bs-options" id="bsTrackingGrid"></div>
 </div>
-<div class="bs-step" data-step="businessBridge" hidden>
-<p class="bs-bridge" id="bsBusinessBridge" aria-live="polite"></p>
-</div>
 <div class="bs-step" data-step="vat" hidden>
-<p class="bs-bridge" id="bsVatBridge" aria-live="polite"></p>
 <h2 class="bs-headline">Are you VAT registered?</h2>
 <div class="bs-options" id="bsVatGrid"></div>
 </div>
 <div class="bs-step" data-step="accountant" hidden>
-<p class="bs-bridge" id="bsAccountantBridge" aria-live="polite"></p>
 <h2 class="bs-headline">Do you work with an accountant?</h2>
 <div class="bs-options" id="bsAccountantGrid"></div>
 </div>
@@ -1151,13 +1145,10 @@ body.always-modal-open .nav{display:none!important}
 <div class="knowYou-foot">
 <button type="button" class="btn premium-btn is-ready" id="bsWelcomeContinue" onclick="MPBusinessSetup.nextFrom('welcome')">Get Started</button>
 <button type="button" class="btn premium-btn" id="bsNameContinue" onclick="MPBusinessSetup.nextFrom('name')" hidden disabled>Continue</button>
-<button type="button" class="btn premium-btn is-ready" id="bsNameAckContinue" onclick="MPBusinessSetup.nextFrom('nameAck')" hidden>Continue</button>
-<button type="button" class="btn premium-btn" id="bsAckContinue" onclick="MPBusinessSetup.nextFrom('ack')" hidden disabled>Continue</button>
 <button type="button" class="btn premium-btn" id="bsGoalsContinue" onclick="MPBusinessSetup.nextFrom('goals')" hidden disabled>Continue</button>
 <button type="button" class="btn premium-btn" id="bsVehicleUseContinue" onclick="MPBusinessSetup.nextFrom('vehicleUse')" hidden disabled>Continue</button>
 <button type="button" class="btn premium-btn" id="bsVehicleTypeContinue" onclick="MPBusinessSetup.nextFrom('vehicleType')" hidden disabled>Continue</button>
 <button type="button" class="btn premium-btn" id="bsTrackingContinue" onclick="MPBusinessSetup.nextFrom('trackingPreference')" hidden disabled>Continue</button>
-<button type="button" class="btn premium-btn is-ready" id="bsBusinessBridgeContinue" onclick="MPBusinessSetup.nextFrom('businessBridge')" hidden>Continue</button>
 <button type="button" class="btn premium-btn" id="bsVatContinue" onclick="MPBusinessSetup.nextFrom('vat')" hidden disabled>Continue</button>
 <button type="button" class="btn premium-btn" id="bsAccountantContinue" onclick="MPBusinessSetup.nextFrom('accountant')" hidden disabled>Continue</button>
 <button type="button" class="btn premium-btn" id="bsReportEmailContinue" onclick="MPBusinessSetup.nextFrom('reportEmail')" hidden disabled>Continue</button>
@@ -1836,7 +1827,7 @@ body.always-modal-open .nav{display:none!important}
 <script src="js/business-setup-onboard.js"></script>
 <script src="js/beta-feedback.js"></script>
 <script>
-const APP_VERSION='8.43.69';
+const APP_VERSION='8.43.70';
 window.APP_VERSION=APP_VERSION;
 const DEFAULT_WEEKLY_GOAL_MILES=400;
 const BUSINESS_PROFILE_KEY='mp_business_profile';
