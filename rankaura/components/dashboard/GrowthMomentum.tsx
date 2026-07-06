@@ -6,38 +6,40 @@ interface GrowthMomentumProps {
   momentum: GrowthMomentumType;
 }
 
-const trendLabels = {
-  up: "Trending up",
-  steady: "Holding steady",
-  down: "Needs attention",
-} as const;
-
 /**
- * Growth Momentum overview.
+ * Growth Momentum — plain-English business health signal.
  * Future: Architect + Analyst → AuraCore
  */
 export function GrowthMomentum({ momentum }: GrowthMomentumProps) {
   return (
-    <Card>
+    <Card delay={160}>
       <SectionHeader
-        title="Growth momentum"
-        description="How your business is doing online"
+        title="Growth Momentum"
+        description="Is your business growing?"
       />
-      <div className="flex items-end gap-4">
-        <p className="text-4xl font-semibold tracking-tight text-[var(--color-text-primary)]">
-          {momentum.score}
-        </p>
-        <p className="mb-1 text-sm font-medium text-[var(--color-emerald)]">
-          {trendLabels[momentum.trend]}
+
+      <div className="flex items-center gap-2">
+        <span className="h-2 w-2 rounded-full bg-[var(--color-emerald)] animate-pulse-soft" />
+        <p className="text-2xl font-semibold tracking-tight text-[var(--color-text-primary)]">
+          {momentum.label}
         </p>
       </div>
-      <div className="mt-4 h-2 overflow-hidden rounded-full bg-[var(--color-border-subtle)]">
+
+      <p className="mt-2 text-lg font-medium text-[var(--color-emerald)]">
+        +{momentum.changePercent}%
+      </p>
+
+      <div className="mt-5 h-1.5 overflow-hidden rounded-full bg-[var(--color-border-subtle)]">
         <div
-          className="h-full rounded-full bg-gradient-to-r from-[var(--color-aura)] to-[var(--color-emerald)]"
-          style={{ width: `${momentum.score}%` }}
+          className="h-full rounded-full bg-[var(--color-aura)] animate-progress-fill"
+          style={{ width: `${momentum.progress}%` }}
         />
       </div>
-      <p className="mt-4 text-sm text-[var(--color-text-secondary)]">{momentum.summary}</p>
+
+      <p className="mt-5 text-sm font-medium text-[var(--color-text-primary)]">
+        {momentum.summary}
+      </p>
+      <p className="mt-1 text-sm text-[var(--color-text-secondary)]">{momentum.detail}</p>
     </Card>
   );
 }

@@ -18,22 +18,22 @@ interface DashboardShellProps {
 export function DashboardShell({ data }: DashboardShellProps) {
   return (
     <div className="flex min-h-screen bg-[var(--color-background)]">
-      <Sidebar />
+      <Sidebar business={data.business} />
 
       <main className="flex-1 overflow-auto">
-        <div className="mx-auto max-w-6xl px-6 py-8 sm:px-8 sm:py-10">
-          <GreetingHeader greeting={data.greeting} subheading={data.subheading} />
+        <div className="mx-auto max-w-6xl px-8 py-10 sm:px-10 sm:py-12">
+          <GreetingHeader greeting={data.greeting} hero={data.hero} />
 
-          <div className="grid gap-6 lg:grid-cols-3">
+          <div className="grid gap-8 lg:grid-cols-3">
             {/* Primary column */}
-            <div className="space-y-6 lg:col-span-2">
+            <div className="space-y-8 lg:col-span-2">
               <AiTeamActivity activities={data.teamActivity} />
               <TodaysWins wins={data.wins} />
               <Opportunities opportunities={data.opportunities} />
             </div>
 
             {/* Secondary column */}
-            <div className="space-y-6">
+            <div className="space-y-8">
               <AutopilotStatus autopilot={data.autopilot} />
               <GrowthMomentum momentum={data.momentum} />
             </div>

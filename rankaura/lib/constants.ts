@@ -10,7 +10,15 @@ export const APP_TAGLINE = "Your AI Growth Employee";
  */
 export const PLACEHOLDER_USER = {
   firstName: "Jonathan",
-  businessName: "Your Business",
+};
+
+/**
+ * Placeholder business — will be replaced by multi-business support (AuraCore).
+ */
+export const PLACEHOLDER_BUSINESS = {
+  name: "RankAura Demo",
+  industry: "Digital Marketing",
+  logoInitial: "R",
 };
 
 /**
@@ -18,8 +26,10 @@ export const PLACEHOLDER_USER = {
  * Future routes will map to Scout, Writer, Optimiser, etc.
  */
 export const NAV_ITEMS = [
-  { label: "Home", href: "/", active: true },
-  { label: "Activity", href: "#", active: false },
-  { label: "Insights", href: "#", active: false },
-  { label: "Settings", href: "#", active: false },
+  { label: "Dashboard", icon: "🏠", href: "/", active: true },
+  { label: "AI Team", icon: "🤖", href: "#", active: false },
+  { label: "Growth", icon: "📈", href: "#", active: false },
+  { label: "Content", icon: "📝", href: "#", active: false },
+  { label: "Website", icon: "🌐", href: "#", active: false },
+  { label: "Settings", icon: "⚙️", href: "#", active: false },
 ] as const;

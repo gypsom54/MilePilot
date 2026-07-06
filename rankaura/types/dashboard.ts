@@ -3,44 +3,65 @@
  * These will be populated by AuraCore and module services.
  */
 
-export type ActivityStatus = "idle" | "working" | "complete";
+export type ActivityStatus = "working" | "idle" | "complete";
+
+export interface BusinessProfile {
+  name: string;
+  industry: string;
+  logoInitial: string;
+}
+
+export interface HeroSummary {
+  headline: string;
+  improvementsCount: number;
+  hoursSaved: number;
+}
 
 export interface TeamMemberActivity {
   id: string;
   name: string;
-  role: string;
+  task: string;
   status: ActivityStatus;
-  summary: string;
+  /** 0–100, shown as a subtle progress indicator when active */
+  progress?: number;
 }
 
 export interface Win {
   id: string;
+  icon: string;
   title: string;
   description: string;
+  impact: string;
 }
 
 export interface Opportunity {
   id: string;
   title: string;
   description: string;
+  estimatedVisitors: string;
+  potentialLeads: string;
+  confidence: number;
   priority: "low" | "medium" | "high";
 }
 
 export interface AutopilotState {
   enabled: boolean;
-  label: string;
-  description: string;
+  activities: string[];
+  lastCompletedTask: string;
 }
 
 export interface GrowthMomentum {
-  score: number;
-  trend: "up" | "steady" | "down";
+  label: string;
+  changePercent: number;
+  progress: number;
   summary: string;
+  detail: string;
 }
 
 export interface DashboardData {
+  business: BusinessProfile;
   greeting: string;
-  subheading: string;
+  hero: HeroSummary;
   teamActivity: TeamMemberActivity[];
   momentum: GrowthMomentum;
   wins: Win[];

@@ -11,7 +11,7 @@
  * - Analyst: performance metrics → Growth Momentum, Today's Wins
  */
 
-import { PLACEHOLDER_USER } from "@/lib/constants";
+import { PLACEHOLDER_BUSINESS, PLACEHOLDER_USER } from "@/lib/constants";
 import { getGreeting } from "@/lib/utils";
 import type { DashboardData } from "@/types/dashboard";
 
@@ -23,76 +23,126 @@ export async function getDashboardData(): Promise<DashboardData> {
   const greeting = getGreeting();
 
   return {
+    business: PLACEHOLDER_BUSINESS,
     greeting: `${greeting} ${PLACEHOLDER_USER.firstName} 👋`,
-    subheading: "Your AI team has been working while you were away.",
 
-    // Scout + Writer + Publisher activity feed (placeholder)
+    hero: {
+      headline: "Your business has been growing while you were away.",
+      improvementsCount: 17,
+      hoursSaved: 3.2,
+    },
+
+    // Scout, Writer, Optimiser, Architect, Publisher, Analyst → AuraCore
     teamActivity: [
       {
         id: "scout",
         name: "Scout",
-        role: "Finds opportunities",
+        task: "Researching customer demand...",
         status: "working",
-        summary: "Reviewing what customers are searching for in your area",
+        progress: 68,
       },
       {
         id: "writer",
         name: "Writer",
-        role: "Creates content",
+        task: "Creating a new service page...",
         status: "working",
-        summary: "Preparing a helpful page for your website",
+        progress: 45,
+      },
+      {
+        id: "architect",
+        name: "Architect",
+        task: "Strengthening internal links...",
+        status: "working",
+        progress: 82,
+      },
+      {
+        id: "optimiser",
+        name: "Optimiser",
+        task: "Improving existing pages...",
+        status: "working",
+        progress: 56,
+      },
+      {
+        id: "analyst",
+        name: "Analyst",
+        task: "Reviewing today's rankings...",
+        status: "working",
+        progress: 34,
       },
       {
         id: "publisher",
         name: "Publisher",
-        role: "Keeps you visible",
+        task: "Waiting for approval...",
         status: "idle",
-        summary: "Standing by for your approval",
       },
     ],
 
-    // Architect + Analyst momentum signal (placeholder)
+    // Architect + Analyst → AuraCore
     momentum: {
-      score: 72,
-      trend: "up",
-      summary: "Steady progress — your online presence is building momentum",
+      label: "Strong",
+      changePercent: 18,
+      progress: 78,
+      summary: "Momentum is increasing.",
+      detail: "Estimated organic visibility is improving.",
     },
 
-    // Optimiser + Analyst wins (placeholder)
+    // Optimiser + Analyst → AuraCore
     wins: [
       {
         id: "win-1",
-        title: "Your homepage reads clearer",
+        icon: "🎉",
+        title: "Homepage improved",
         description: "We simplified the welcome message so visitors know what you offer right away.",
+        impact: "+4%",
       },
       {
         id: "win-2",
-        title: "A new page is ready for review",
+        icon: "📄",
+        title: "New article prepared",
         description: "Writer drafted content about your most popular service.",
+        impact: "Ready for your review",
+      },
+      {
+        id: "win-3",
+        icon: "✨",
+        title: "Contact page refreshed",
+        description: "A warmer introduction helps more people reach out.",
+        impact: "+2%",
       },
     ],
 
-    // Scout opportunities (placeholder)
+    // Scout → AuraCore
     opportunities: [
       {
         id: "opp-1",
-        title: "More people are searching nearby",
-        description: "There's growing interest in your services — a good time to be visible.",
+        title: "Emergency Boiler Repair",
+        description: "High demand in your area — customers are actively looking for this service.",
+        estimatedVisitors: "420/month",
+        potentialLeads: "14/month",
+        confidence: 96,
         priority: "high",
       },
       {
         id: "opp-2",
-        title: "Your contact page could welcome visitors",
-        description: "A warmer introduction might help more people reach out.",
+        title: "Annual Service Plans",
+        description: "A growing number of homeowners prefer predictable maintenance packages.",
+        estimatedVisitors: "180/month",
+        potentialLeads: "6/month",
+        confidence: 84,
         priority: "medium",
       },
     ],
 
-    // AuraCore autopilot state (placeholder)
+    // AuraCore orchestration + Publisher
     autopilot: {
       enabled: true,
-      label: "Autopilot is on",
-      description: "Your AI team is quietly working in the background. We'll notify you when something needs your attention.",
+      activities: [
+        "Monitoring Google",
+        "Optimising your website",
+        "Creating new content",
+        "Watching competitors",
+      ],
+      lastCompletedTask: "2 minutes ago",
     },
   };
 }

@@ -3,15 +3,17 @@ import { cn } from "@/lib/utils";
 interface CardProps {
   children: React.ReactNode;
   className?: string;
+  delay?: number;
 }
 
-export function Card({ children, className }: CardProps) {
+export function Card({ children, className, delay = 0 }: CardProps) {
   return (
     <div
       className={cn(
-        "rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)] p-6 shadow-[var(--shadow-sm)]",
+        "animate-fade-in rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)] p-7 shadow-[var(--shadow-sm)] transition-shadow duration-300 hover:shadow-[var(--shadow-md)]",
         className,
       )}
+      style={{ animationDelay: `${delay}ms` }}
     >
       {children}
     </div>
