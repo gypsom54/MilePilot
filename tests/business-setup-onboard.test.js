@@ -84,8 +84,28 @@ run('mixed goals with vehicle gets Business mixed setup', () => {
   });
   assert.equal(rec.setup, 'mixed');
   assert.equal(rec.plan, 'business');
-  assert.ok(rec.items.includes('AutoPilot mileage tracking'));
+  assert.ok(rec.items.includes('AutoPilot'));
   assert.ok(rec.items.includes('Business Hub'));
+});
+
+run('combined goal ack is a single message for mileage only', () => {
+  const M = loadModule(createMockLocalStorage());
+  const ack = M.getAckForGoals(['track_mileage']);
+  assert.equal(ack.length, 1);
+  assert.match(ack[0], /mileage tracking the centre/);
+});
+
+run('combined goal ack for mileage plus business goals', () => {
+  const M = loadModule(createMockLocalStorage());
+  const ack = M.getAckForGoals(['track_mileage', 'organise_receipts', 'help_vat']);
+  assert.equal(ack.length, 1);
+  assert.match(ack[0], /mileage, receipts and VAT/);
+});
+
+run('six goal options only', () => {
+  const M = loadModule(createMockLocalStorage());
+  assert.equal(M.GOALS.length, 6);
+  assert.ok(!M.GOALS.some((g) => g.id === 'understand_business'));
 });
 
 run('no vehicle suppresses mileage workspace even with mileage goal', () => {

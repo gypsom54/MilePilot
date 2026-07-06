@@ -8,13 +8,11 @@
   const PROFILE_KEY = 'mp_business_profile';
 
   const GOALS = [
-    { id: 'track_mileage', label: 'Track my mileage' },
-    { id: 'organise_receipts', label: 'Organise my receipts' },
-    { id: 'track_expenses', label: 'Track my expenses' },
+    { id: 'track_mileage', label: 'Track mileage' },
+    { id: 'organise_receipts', label: 'Scan receipts' },
+    { id: 'track_expenses', label: 'Track expenses' },
     { id: 'help_vat', label: 'Help with VAT' },
-    { id: 'tax_records', label: 'Prepare tax records' },
-    { id: 'accountant', label: 'Get everything ready for my accountant' },
-    { id: 'understand_business', label: 'Understand my business better' },
+    { id: 'accountant', label: 'Prepare accountant records' },
     { id: 'reduce_paperwork', label: 'Reduce paperwork' },
   ];
 
@@ -56,7 +54,9 @@
     saving_receipts: 'organise_receipts',
     adding_vat: 'help_vat',
     tracking_expenses: 'track_expenses',
-    business_reports: 'understand_business',
+    business_reports: 'reduce_paperwork',
+    understand_business: 'reduce_paperwork',
+    tax_records: 'accountant',
     less_paperwork: 'reduce_paperwork',
   };
 
@@ -149,9 +149,7 @@
       g.includes('organise_receipts') ||
       g.includes('track_expenses') ||
       g.includes('help_vat') ||
-      g.includes('tax_records') ||
       g.includes('accountant') ||
-      g.includes('understand_business') ||
       g.includes('reduce_paperwork') ||
       s.vatRegistered === 'yes'
     );
@@ -181,13 +179,7 @@
       return {
         setup: 'mixed',
         dashboardMode: 'mixed',
-        items: [
-          'AutoPilot mileage tracking',
-          'Business Hub',
-          'AI Receipt Scanner',
-          'VAT summaries',
-          'Accountant Pack',
-        ],
+        items: ['AutoPilot', 'Business Hub', 'AI Receipt Scanner', 'VAT summaries', 'Accountant Pack'],
         plan: 'business',
         intro: "Here's what I recommend.",
       };
@@ -199,7 +191,7 @@
         items: [
           'Business Hub',
           'AI Receipt Scanner',
-          'Expense tracking',
+          'Expenses',
           'VAT summaries',
           'Accountant Pack',
         ],
@@ -210,11 +202,7 @@
     return {
       setup: 'mileage',
       dashboardMode: 'mileage',
-      items: [
-        'AutoPilot mileage tracking',
-        'HMRC mileage estimates',
-        'PDF/email reports',
-      ],
+      items: ['AutoPilot mileage tracking', 'HMRC estimates', 'PDF/email reports'],
       plan: 'core',
       intro: "Here's what I recommend.",
     };
@@ -273,34 +261,52 @@
     tick();
   }
 
-  function getAckForGoals(goals) {
-    const lines = [];
-    if (goals.includes('track_mileage')) {
-      lines.push('Perfect.', "I'll make sure mileage tracking is part of your workspace.");
-    }
-    if (goals.includes('organise_receipts') || goals.includes('track_expenses')) {
-      lines.push('Great.', "I'll prioritise Business Hub and receipt organisation.");
-    }
-    if (goals.includes('help_vat')) {
-      lines.push('Excellent.', "I'll include VAT summaries and receipt automation.");
-    }
-    if (goals.includes('accountant')) {
-      lines.push('No problem.', "I'll make sure accountant-ready reports are included.");
-    }
-    if (goals.includes('reduce_paperwork')) {
-      lines.push("That's exactly what MilePilot is built for.", "I'll keep things simple.");
-    }
-    if (!lines.length) {
-      lines.push('Great.', "Let's build the right workspace for you.");
-    }
-    return lines.slice(0, 6);
+  function formatAckList(items) {
+    if (!items.length) return '';
+    if (items.length === 1) return items[0];
+    if (items.length === 2) return items[0] + ' and ' + items[1];
+    return items.slice(0, -1).join(', ') + ' and ' + items[items.length - 1];
   }
 
-  function getAckForVat(vat) {
-    if (vat === 'yes') {
-      return ['Great.', "I'll prioritise VAT summaries, receipts and accountant reports."];
+  function getAckForGoals(goals) {
+    const g = goals || [];
+    const hasMileage = g.includes('track_mileage');
+    const hasReceipts = g.includes('organise_receipts');
+    const hasVat = g.includes('help_vat');
+    const hasAccountant = g.includes('accountant');
+    const hasExpenses = g.includes('track_expenses');
+    const hasBusiness =
+      hasReceipts || hasExpenses || hasVat || hasAccountant || g.includes('reduce_paperwork');
+
+    if (!g.length) {
+      return ["Great — I'll build the right workspace around what you need."];
     }
-    return ['Noted.', "We'll keep things simple for now."];
+    if (hasMileage && !hasBusiness) {
+      return ["Perfect — I'll make mileage tracking the centre of your workspace."];
+    }
+    if (!hasMileage && hasBusiness) {
+      if (hasReceipts && hasVat && hasAccountant) {
+        return [
+          "Great — I'll focus your setup on receipts, VAT summaries and accountant-ready records.",
+        ];
+      }
+      return [
+        "Great — I'll focus your workspace on Business Hub, receipts, expenses and tax records.",
+      ];
+    }
+    if (hasMileage && hasBusiness) {
+      const focus = [];
+      if (hasMileage) focus.push('mileage');
+      if (hasReceipts) focus.push('receipts');
+      if (hasVat) focus.push('VAT');
+      if (hasAccountant) focus.push('accountant-ready records');
+      if (hasExpenses) focus.push('expenses');
+      return ["Perfect — I'll build your workspace around " + formatAckList(focus) + '.'];
+    }
+    if (g.includes('reduce_paperwork')) {
+      return ["Great — I'll keep your workspace simple with less paperwork."];
+    }
+    return ["Great — I'll build the right workspace around what you need."];
   }
 
   function showAck(lines, nextStep) {
@@ -485,18 +491,14 @@
   function runBuildingSequence() {
     typeLines(
       q('bsBuildingTyping'),
-      [
-        'Looking at what you need...',
-        'Choosing the best MilePilot setup...',
-        'Almost ready...',
-      ],
+      ['Looking at what you need...', 'Almost ready...'],
       function () {
         setTimeout(function () {
           renderRecommendation();
           showStep('recommendation');
-        }, 450);
+        }, 380);
       },
-      32
+      30
     );
   }
 
@@ -528,10 +530,14 @@
     if (coreCard) {
       coreCard.classList.toggle('is-selected', selected === 'core');
       coreCard.classList.toggle('is-recommended', rec.plan === 'core');
+      const badge = coreCard.querySelector('.bs-plan-badge');
+      if (badge) badge.hidden = rec.plan !== 'core';
     }
     if (bizCard) {
       bizCard.classList.toggle('is-selected', selected === 'business');
       bizCard.classList.toggle('is-recommended', rec.plan === 'business');
+      const badge = bizCard.querySelector('.bs-plan-badge');
+      if (badge) badge.hidden = rec.plan !== 'business';
     }
   }
 
@@ -599,7 +605,7 @@
       return;
     }
     if (step === 'vat') {
-      showAck(getAckForVat(setup.vatRegistered), 'building');
+      showStep('building');
       return;
     }
     if (step === 'recommendation') {
@@ -723,6 +729,7 @@
     getReadyCopy: getReadyCopy,
     routeAfterSetupToKnowYou: routeAfterSetupToKnowYou,
     buildFlow: buildFlow,
+    getAckForGoals: getAckForGoals,
     reset: reset,
   };
 })(typeof window !== 'undefined' ? window : global);

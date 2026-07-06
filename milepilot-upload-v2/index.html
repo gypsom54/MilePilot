@@ -977,8 +977,8 @@ body.always-modal-open .nav{display:none!important}
 .bs-plan-card.is-selected{border-color:rgba(30,136,255,.55);box-shadow:0 10px 28px rgba(13,107,255,.2)}
 .bs-plan-name{margin:0 0 4px;font-size:18px;font-weight:700;color:#fff}
 .bs-plan-price{margin:0 0 8px;font-size:22px;font-weight:700;color:rgba(126,192,255,.95)}
-.bs-plan-tag{margin:0 0 12px;font-size:14px;line-height:1.4;color:rgba(159,180,208,.88)}
-.bs-plan-features{margin:0;padding:0 0 0 18px;font-size:13px;line-height:1.5;color:rgba(180,210,245,.88)}
+.bs-plan-tag{margin:0;font-size:14px;line-height:1.5;color:rgba(159,180,208,.88)}
+.bs-plan-features{display:none}
 .bs-plan-badge{display:inline-block;margin:0 0 10px;padding:4px 10px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:rgba(32,215,129,.95);border:1px solid rgba(32,215,129,.3);background:rgba(32,215,129,.1)}
 .bs-plan-badge[hidden]{display:none!important}
 .bs-track-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -1071,18 +1071,16 @@ body.always-modal-open .nav{display:none!important}
 <h2 class="bs-headline">Choose your plan</h2>
 <div class="bs-plan-grid">
 <button type="button" class="bs-plan-card" id="bsPlanCore" onclick="MPBusinessSetup.selectPlan('core')">
-<span class="bs-plan-badge" hidden>Recommended</span>
+<span class="bs-plan-badge" hidden>Recommended for you</span>
 <p class="bs-plan-name">MilePilot Core</p>
 <p class="bs-plan-price">£4.99/month</p>
-<p class="bs-plan-tag">Never miss another business mile.</p>
-<ul class="bs-plan-features"><li>AutoPilot</li><li>Manual tracking</li><li>Background tracking</li><li>HMRC mileage estimates</li><li>PDF reports</li><li>Email reports</li></ul>
+<p class="bs-plan-tag">Mileage tracking, HMRC estimates, PDF and email reports.</p>
 </button>
 <button type="button" class="bs-plan-card" id="bsPlanBusiness" onclick="MPBusinessSetup.selectPlan('business')">
-<span class="bs-plan-badge" hidden>Recommended</span>
+<span class="bs-plan-badge" hidden>Recommended for you</span>
 <p class="bs-plan-name">MilePilot Business</p>
 <p class="bs-plan-price">£9.99/month</p>
-<p class="bs-plan-tag">Run your business with less admin.</p>
-<ul class="bs-plan-features"><li>Everything in Core, plus:</li><li>Business Hub</li><li>AI Receipt Scanner</li><li>Expense tracking</li><li>VAT summaries</li><li>AI Bookkeeper</li><li>Business Health</li><li>Accountant Pack</li></ul>
+<p class="bs-plan-tag">Everything in Core plus receipts, expenses, VAT, AI Bookkeeper and Accountant Pack.</p>
 </button>
 </div>
 </div>
@@ -1765,7 +1763,7 @@ body.always-modal-open .nav{display:none!important}
 <script src="js/business-setup-onboard.js"></script>
 <script src="js/beta-feedback.js"></script>
 <script>
-const APP_VERSION='8.43.65';
+const APP_VERSION='8.43.66';
 window.APP_VERSION=APP_VERSION;
 const DEFAULT_WEEKLY_GOAL_MILES=400;
 const BUSINESS_PROFILE_KEY='mp_business_profile';
