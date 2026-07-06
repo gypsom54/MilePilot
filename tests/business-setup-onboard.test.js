@@ -76,7 +76,7 @@ run('TEST 1: business-only path skips all mileage steps', () => {
   const copy = M.getReportEmailCopy({ goals });
   assert.match(copy.title, /business reports/i);
   assert.ok(!/mileage reports/i.test(copy.title));
-  assert.match(copy.helper, /receipts, expenses, VAT summaries/);
+  assert.match(copy.helperHtml || copy.helper, /Expense summaries/);
   const rec = M.computeRecommendation({ goals, vatRegistered: 'yes' });
   assert.equal(rec.plan, 'business');
   assert.equal(rec.dashboardMode, 'business');
@@ -144,6 +144,16 @@ run('vehicle steps omitted when user does not use a vehicle', () => {
   assert.ok(flow.includes('vehicleUse'));
   assert.ok(!flow.includes('vehicleType'));
   assert.ok(!flow.includes('trackingPreference'));
+});
+
+run('business-only users never need mileage onboarding', () => {
+  const M = loadModule(createMockLocalStorage());
+  assert.equal(M.needsMileageOnboarding({ goals: ['organise_receipts', 'help_vat'] }), false);
+  assert.equal(M.getDashboardMode(), 'mileage');
+  const ls = createMockLocalStorage();
+  ls.setItem('mp_business_setup', JSON.stringify({ goals: ['organise_receipts'], dashboardMode: 'business' }));
+  const M2 = loadModule(ls);
+  assert.equal(M2.getDashboardMode(), 'business');
 });
 
 run('ready copy reflects workspace type', () => {

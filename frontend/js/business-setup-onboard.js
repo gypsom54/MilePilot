@@ -614,9 +614,11 @@
     }
     if (path === 'business') {
       return {
-        title: 'Where should we send your business reports?',
+        title: 'Where would you like us to send your business reports?',
         helper:
-          'Business reports include receipts, expenses, VAT summaries and accountant-ready records.',
+          'Reports include expense summaries, VAT summaries, receipt exports and accountant-ready records.',
+        helperHtml:
+          '<span>Reports include:</span><ul class="bs-report-list"><li>Expense summaries</li><li>VAT summaries</li><li>Receipt exports</li><li>Accountant-ready reports</li></ul>',
       };
     }
     return {
@@ -640,7 +642,13 @@
     const helper = q('bsReportEmailHelper');
     const input = q('bsReportEmailInput');
     if (title) title.textContent = copy.title;
-    if (helper) helper.textContent = copy.helper;
+    if (helper) {
+      if (copy.helperHtml) {
+        helper.innerHTML = copy.helperHtml;
+      } else {
+        helper.textContent = copy.helper;
+      }
+    }
     if (input) {
       input.value = setup.reportEmail || global.localStorage.getItem('mp_email') || '';
       if (!input.dataset.bound) {
@@ -847,7 +855,7 @@
 
   function toastScanLater() {
     if (typeof global.toast === 'function') {
-      global.toast('Receipt scanner opens from your Business Workspace.');
+      global.toast('Receipt scanner is coming soon — your Business Hub is ready.');
     }
   }
 
@@ -941,51 +949,90 @@
     if (chips) chips.hidden = mode === 'mileage';
   }
 
+  function getBusinessGreeting() {
+    const h = new Date().getHours();
+    const base = h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening';
+    const name = loadSetup().driverName || global.localStorage.getItem('mp_driver') || '';
+    return name ? base + ', ' + name : base;
+  }
+
+  function getBusinessStatusLine() {
+    const s = loadSetup();
+    const goals = s.goals || [];
+    if (goals.includes('help_vat') && goals.includes('accountant')) {
+      return 'VAT summaries and accountant-ready records are set up for you.';
+    }
+    if (goals.includes('organise_receipts')) {
+      return 'Your receipts, expenses and business records live here.';
+    }
+    return 'Your Business Hub is ready — less admin, more business.';
+  }
+
+  function getBusinessInsight() {
+    const s = loadSetup();
+    if (s.goals.includes('help_vat')) {
+      return 'VAT summaries will appear here once you start adding receipts and expenses.';
+    }
+    if (s.goals.includes('accountant')) {
+      return 'Accountant-ready reports will build automatically as you add business records.';
+    }
+    return 'Business insights will appear as you add expenses and receipts.';
+  }
+
+  function renderBusinessHubDashboard() {
+    const mode = getDashboardMode();
+    if (mode === 'mileage') return;
+    setElText('bhGreeting', getBusinessGreeting());
+    setElText('bhStatus', getBusinessStatusLine());
+    const dash = q('ccBusinessHubDashboard');
+    if (dash) dash.classList.toggle('bh-compact', mode === 'mixed');
+
+    const activity = q('bhRecentActivity');
+    if (activity) {
+      activity.innerHTML =
+        '<p class="bh-empty">Your recent receipts and expenses will appear here.</p>';
+    }
+
+    const reports = q('bhRecentReports');
+    if (reports) {
+      const email = loadSetup().reportEmail || global.localStorage.getItem('mp_email') || '';
+      reports.innerHTML = email
+        ? '<div class="bh-activity-item"><div class="bh-activity-day">Business reports</div><div class="bh-activity-detail">Sent to ' +
+          email +
+          '</div></div><p class="bh-empty">New VAT and expense reports will appear here.</p>'
+        : '<p class="bh-empty">Your business reports will appear here once delivery is set up.</p>';
+    }
+
+    const insights = q('bhBusinessInsights');
+    if (insights) {
+      insights.innerHTML = '<div class="bh-insight">' + getBusinessInsight() + '</div>';
+    }
+  }
+
   function applyDashboardLayout() {
     const mode = getDashboardMode();
     const body = q('ccBody');
+    const mileageDash = q('ccMileageDashboard');
+    const businessDash = q('ccBusinessHubDashboard');
     const mileageBlock = q('ccMileageBlock');
     const hub = q('ccBusinessHubBlock');
     const businessPanel = q('ccBusinessPanel');
-    const mileageLater = q('ccMileageLaterCard');
-    const todayKicker = q('ccTodayKicker');
     if (body) {
       body.classList.toggle('cc-layout-mileage', mode === 'mileage');
       body.classList.toggle('cc-layout-business', mode === 'business');
       body.classList.toggle('cc-layout-mixed', mode === 'mixed');
     }
-    if (todayKicker) {
-      todayKicker.textContent =
-        mode === 'mixed' ? "Today's Overview" : mode === 'business' ? "Today's Business" : 'Today';
-    }
-    setElText(
-      'ccBusinessPanelTitle',
-      mode === 'mixed' ? "Today's Overview" : 'Business Hub'
-    );
+    if (mileageDash) mileageDash.hidden = mode === 'business';
+    if (businessDash) businessDash.hidden = mode === 'mileage';
     if (mileageBlock) mileageBlock.hidden = mode === 'business';
-    if (businessPanel) businessPanel.hidden = mode === 'mileage';
-    if (hub) hub.hidden = false;
-    if (mileageLater) {
-      mileageLater.hidden = mode !== 'business';
-      if (mode === 'business') {
-        const p = mileageLater.querySelector('p');
-        if (p) p.textContent = 'Need mileage later?';
-        const btn = mileageLater.querySelector('button');
-        if (btn) btn.textContent = 'Enable AutoPilot anytime';
-      }
-    }
-    updateHubPresentation(mode);
-    const parent = mileageBlock && mileageBlock.parentNode;
-    if (mode === 'business' && businessPanel && hub && parent) {
-      parent.insertBefore(businessPanel, hub);
-      parent.insertBefore(hub, mileageBlock);
-    }
-    if (mode === 'mixed' && parent && mileageBlock && businessPanel && hub) {
-      parent.insertBefore(mileageBlock, businessPanel);
-      parent.insertBefore(businessPanel, hub);
-    }
-    if (mode === 'mileage' && parent && mileageBlock && hub) {
-      parent.insertBefore(mileageBlock, hub);
+    if (businessPanel) businessPanel.hidden = true;
+    if (hub) hub.hidden = mode !== 'mileage';
+    if (mode === 'mileage') updateHubPresentation('mileage');
+    if (mode === 'business') renderBusinessHubDashboard();
+    if (mode === 'mixed') {
+      const todayKicker = q('ccTodayKicker');
+      if (todayKicker) todayKicker.textContent = "Today's Overview";
+      renderBusinessHubDashboard();
     }
   }
 
@@ -995,7 +1042,7 @@
     const items = [];
     if (path === 'mileage' || path === 'combined') items.push('Mileage tracking ready');
     if (path === 'business' || path === 'combined') items.push('Business Hub ready');
-    if (s.goals.includes('organise_receipts')) items.push('Receipt Scanner ready');
+    if (s.goals.includes('organise_receipts')) items.push('Receipt scanner — coming soon');
     if (s.goals.includes('track_expenses')) items.push('Expense tracking ready');
     if (s.goals.includes('help_vat') || s.vatRegistered === 'yes') items.push('VAT summaries ready');
     if (s.goals.includes('accountant')) items.push('Accountant Pack ready');
@@ -1069,6 +1116,7 @@
     isValidName: isValidName,
     getReadyChecklist: getReadyChecklist,
     renderReadyChecklist: renderReadyChecklist,
+    renderBusinessHubDashboard: renderBusinessHubDashboard,
     routeToOnboardReady: routeToOnboardReady,
     reset: reset,
   };
