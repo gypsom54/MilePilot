@@ -958,7 +958,21 @@ body.always-modal-open .nav{display:none!important}
 .bs-recommend-list{margin:0 0 14px;padding:0;list-style:none;color:rgba(198,220,248,.92);font-size:15px;line-height:1.5}
 .bs-recommend-list li{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px}
 .bs-check{color:#20D781;font-weight:700;flex-shrink:0}
-.bs-bridge{min-height:0;margin:0 0 12px;font-size:15px;font-weight:500;line-height:1.45;color:rgba(147,168,196,.88)}
+.bs-value-adds{margin:12px 0 0;padding:0;list-style:none}
+.bs-value-adds[hidden]{display:none!important}
+.bs-value-add{opacity:0;transform:translateY(6px);margin:0 0 8px;font-size:15px;font-weight:600;color:rgba(32,215,129,.95);transition:opacity .28s ease,transform .28s ease}
+.bs-value-add.is-visible{opacity:1;transform:translateY(0)}
+.bs-recommend-sub{margin:0 0 14px;font-size:14px;font-weight:500;line-height:1.45;color:rgba(147,168,196,.85)}
+.bs-plan-headline{margin:0 0 6px}
+.bs-plan-sub{margin:0 0 16px;font-size:14px;font-weight:500;color:rgba(147,168,196,.82)}
+.bs-plan-kicker{margin:0 0 6px;font-size:13px;font-weight:600;color:rgba(159,180,208,.88)}
+.bs-plan-grid.is-compare .bs-plan-card{opacity:1}
+.bs-plan-grid:not(.is-compare) .bs-plan-card:not(.is-recommended){opacity:.82}
+.bs-skip-wrap{margin-top:10px;text-align:center}
+.bs-skip-wrap[hidden]{display:none!important}
+.onboard-ready-checklist{margin:0 auto 18px;padding:0;list-style:none;max-width:300px;text-align:left}
+.onboard-ready-checklist li{display:flex;align-items:center;gap:8px;padding:7px 0;font-size:14px;font-weight:600;color:rgba(198,220,248,.92)}
+.onboard-ready-checklist .mark{color:#20D781;font-weight:700}
 .bs-building-head{margin:0 0 12px;font-size:clamp(22px,5.8vw,28px);font-weight:700;color:#fff}
 .cc-hub-upgrade{opacity:.92}
 .cc-layout-business .cc-hub-upgrade{margin-top:0}
@@ -1035,9 +1049,11 @@ body.always-modal-open .nav{display:none!important}
 <div class="bs-scroll">
 <div class="bs-step" data-step="welcome">
 <p class="bs-typing" id="bsWelcomeTyping" aria-live="polite"></p>
+<p class="bs-subtext" id="bsWelcomeNote">This takes less than a minute.</p>
 </div>
 <div class="bs-step" data-step="ack" hidden>
 <p class="bs-typing" id="bsAckTyping" aria-live="polite"></p>
+<ul class="bs-value-adds" id="bsAckValues" hidden></ul>
 </div>
 <div class="bs-step" data-step="goals" hidden>
 <h2 class="bs-headline">What would you like MilePilot to take care of?</h2>
@@ -1066,20 +1082,24 @@ body.always-modal-open .nav{display:none!important}
 <div class="bs-step" data-step="recommendation" hidden>
 <p class="bs-recommend-kicker" id="bsRecommendIntro">Here&apos;s what I recommend.</p>
 <ul class="bs-recommend-list" id="bsRecommendList"></ul>
+<p class="bs-recommend-sub" id="bsRecommendSub"></p>
 </div>
 <div class="bs-step" data-step="choosePlan" hidden>
-<h2 class="bs-headline">Choose your plan</h2>
-<div class="bs-plan-grid">
+<h2 class="bs-headline bs-plan-headline">Your recommended plan</h2>
+<p class="bs-plan-sub" id="bsPlanSub">Pick the plan that fits your workspace.</p>
+<div class="bs-plan-grid" id="bsPlanGrid">
 <button type="button" class="bs-plan-card" id="bsPlanCore" onclick="MPBusinessSetup.selectPlan('core')">
 <span class="bs-plan-badge" hidden>Recommended for you</span>
 <p class="bs-plan-name">MilePilot Core</p>
 <p class="bs-plan-price">£4.99/month</p>
+<p class="bs-plan-kicker">Never miss another business mile.</p>
 <p class="bs-plan-tag">Mileage tracking, HMRC estimates, PDF and email reports.</p>
 </button>
 <button type="button" class="bs-plan-card" id="bsPlanBusiness" onclick="MPBusinessSetup.selectPlan('business')">
 <span class="bs-plan-badge" hidden>Recommended for you</span>
 <p class="bs-plan-name">MilePilot Business</p>
 <p class="bs-plan-price">£9.99/month</p>
+<p class="bs-plan-kicker">Run your business with less admin.</p>
 <p class="bs-plan-tag">Everything in Core plus receipts, expenses, VAT, AI Bookkeeper and Accountant Pack.</p>
 </button>
 </div>
@@ -1087,13 +1107,15 @@ body.always-modal-open .nav{display:none!important}
 </div>
 <div class="knowYou-foot">
 <button type="button" class="btn premium-btn is-ready" id="bsWelcomeContinue" onclick="MPBusinessSetup.nextFrom('welcome')">Start Setup</button>
+<div class="bs-skip-wrap" id="bsWelcomeSkipWrap"><button type="button" class="onboard-skip" onclick="MPBusinessSetup.skipSetup()">Skip for now</button></div>
 <button type="button" class="btn premium-btn" id="bsAckContinue" onclick="MPBusinessSetup.nextFrom('ack')" hidden disabled>Continue</button>
 <button type="button" class="btn premium-btn" id="bsGoalsContinue" onclick="MPBusinessSetup.nextFrom('goals')" hidden disabled>Continue</button>
 <button type="button" class="btn premium-btn" id="bsVehicleUseContinue" onclick="MPBusinessSetup.nextFrom('vehicleUse')" hidden disabled>Continue</button>
 <button type="button" class="btn premium-btn" id="bsTrackingContinue" onclick="MPBusinessSetup.nextFrom('trackingPreference')" hidden disabled>Continue</button>
 <button type="button" class="btn premium-btn" id="bsVatContinue" onclick="MPBusinessSetup.nextFrom('vat')" hidden disabled>Continue</button>
 <button type="button" class="btn premium-btn is-ready" id="bsRecommendContinue" onclick="MPBusinessSetup.nextFrom('recommendation')" hidden>Continue</button>
-<button type="button" class="btn premium-btn" id="bsPlanContinue" onclick="MPBusinessSetup.nextFrom('choosePlan')" hidden disabled>Continue</button>
+<button type="button" class="btn premium-btn" id="bsPlanContinue" onclick="MPBusinessSetup.nextFrom('choosePlan')" hidden disabled>Start Business</button>
+<button type="button" class="onboard-skip" id="bsComparePlans" onclick="MPBusinessSetup.toggleComparePlans()" hidden>Compare plans</button>
 </div>
 </div>
 </section>
@@ -1320,10 +1342,11 @@ body.always-modal-open .nav{display:none!important}
 <div class="onboard-progress"><div class="onboard-progress-track"><div class="onboard-progress-fill" id="onboardReadyProgressFill" style="width:83%"></div></div><p class="onboard-progress-label">Step 6 of 6</p></div>
 <div class="onboard-body" style="align-items:center;justify-content:center;text-align:center;padding:12px 0 20px">
 <div class="onboard-ready-icon" id="onboardReadyIcon" aria-hidden="true">✓</div>
-<h1 class="knowYou-greeting" id="onboardReadyGreeting">Welcome aboard!</h1>
-<p class="onboard-ready-sub" id="onboardReadyLead">MilePilot is ready to track your business mileage automatically.</p>
-<p class="onboard-ready-feature" id="onboardReadyFeature">Start your first shift. MilePilot will automatically record your journeys and prepare your mileage reports.</p>
-<p class="onboard-ready-payoff" id="onboardReadyPayoff">Every business mile now counts.</p>
+<h1 class="knowYou-greeting" id="onboardReadyGreeting">You&apos;re all set.</h1>
+<p class="onboard-ready-sub" id="onboardReadyLead">I&apos;ll help keep your business organised.</p>
+<ul class="onboard-ready-checklist" id="onboardReadyChecklist" aria-label="Your setup"></ul>
+<p class="onboard-ready-feature" id="onboardReadyFeature">You get back to running it.</p>
+<p class="onboard-ready-payoff" id="onboardReadyPayoff" hidden></p>
 </div>
 <div class="knowYou-foot"><button type="button" class="btn premium-btn is-ready" onclick="openDashboard()">Start My First Shift</button><p class="onboard-ready-hint">You can change these settings any time.</p></div>
 </div>
@@ -1763,7 +1786,7 @@ body.always-modal-open .nav{display:none!important}
 <script src="js/business-setup-onboard.js"></script>
 <script src="js/beta-feedback.js"></script>
 <script>
-const APP_VERSION='8.43.66';
+const APP_VERSION='8.43.67';
 window.APP_VERSION=APP_VERSION;
 const DEFAULT_WEEKLY_GOAL_MILES=400;
 const BUSINESS_PROFILE_KEY='mp_business_profile';
@@ -1888,7 +1911,7 @@ async function continueSetup(){const btn=q('permSetupBtn');if(btn){btn.disabled=
 function goToEmailSetup(){localStorage.setItem('mp_onboard_step','email');initEmailSetup();showScreen('emailSetup')}
 function applyModeReportPrefs(){const mode=(typeof MPTrackingMode!=='undefined'&&MPTrackingMode.getMode())||selectedTrackingMode||'autopilot';localStorage.setItem('mp_operating_mode',mode);setReportFrequency('off');if(mode==='manual')saveReportPrefs({emailReports:false,pdfAttachment:true});else{saveReportPrefs({emailReports:true,pdfAttachment:true});markStayUpdatedPromptSeen()}}
 function saveOnboardReportPrefs(){applyModeReportPrefs()}
-function initOnboardReady(){const copy=typeof MPBusinessSetup!=='undefined'?MPBusinessSetup.getReadyCopy():null;if(copy){setText('onboardReadyLead',copy.lead);setText('onboardReadyFeature',copy.feature);const btn=q('onboardReady')?.querySelector('.premium-btn');if(btn)btn.textContent=copy.cta}else{setText('onboardReadyLead','MilePilot is ready to track your business mileage automatically.');setText('onboardReadyFeature','Start your first shift. MilePilot will automatically record your journeys and prepare your mileage reports.')}const icon=q('onboardReadyIcon');if(icon){icon.classList.remove('is-animated');void icon.offsetWidth;icon.classList.add('is-animated')}const fill=q('onboardReadyProgressFill');if(fill){fill.style.width='83%';requestAnimationFrame(()=>{fill.style.width='100%'})}}
+function initOnboardReady(){const copy=typeof MPBusinessSetup!=='undefined'?MPBusinessSetup.getReadyCopy():null;if(copy){if(copy.greeting)setText('onboardReadyGreeting',copy.greeting);setText('onboardReadyLead',copy.lead);setText('onboardReadyFeature',copy.feature);if(typeof MPBusinessSetup!=='undefined')MPBusinessSetup.renderReadyChecklist();const btn=q('onboardReady')?.querySelector('.premium-btn');if(btn)btn.textContent=copy.cta}else{setText('onboardReadyLead','MilePilot is ready to track your business mileage automatically.');setText('onboardReadyFeature','Start your first shift. MilePilot will automatically record your journeys and prepare your mileage reports.')}const icon=q('onboardReadyIcon');if(icon){icon.classList.remove('is-animated');void icon.offsetWidth;icon.classList.add('is-animated')}const fill=q('onboardReadyProgressFill');if(fill){fill.style.width='83%';requestAnimationFrame(()=>{fill.style.width='100%'})}}
 async function enableOnboardNotifications(){if(typeof MPExpoBridge!=='undefined'&&MPExpoBridge.request){try{const res=await MPExpoBridge.request('expo:notification:request');localStorage.setItem('mp_notifications_choice',res&&(res.granted||res.status==='granted')?'granted':'skipped');return}catch(e){}}enableNotificationPermission();await new Promise(r=>setTimeout(r,400))}
 function initEmailSetup(){const email=q('emailInput'),hint=q('emailSetupPrefillHint'),stored=(localStorage.getItem('mp_email')||'').trim();if(email)email.value=stored;if(hint)hint.hidden=!stored}
 function confirmEmailSetup(){const e=q('emailInput')?.value.trim();if(e)localStorage.setItem('mp_email',e);saveOnboardReportPrefs();localStorage.setItem('mp_onboard_step','ready');initOnboardReady();showScreen('onboardReady')}

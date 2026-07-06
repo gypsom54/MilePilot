@@ -60,7 +60,18 @@ run('mileage goal + vehicle gets Core recommendation', () => {
   });
   assert.equal(rec.setup, 'mileage');
   assert.equal(rec.plan, 'core');
-  assert.ok(rec.items.includes('AutoPilot mileage tracking'));
+  assert.ok(rec.items.some((i) => i.includes('mileage tracking')));
+});
+
+run('mileage + reduce paperwork stays mileage-first Core', () => {
+  const M = loadModule(createMockLocalStorage());
+  const rec = M.computeRecommendation({
+    goals: ['track_mileage', 'reduce_paperwork'],
+    vehicleUse: 'daily',
+  });
+  assert.equal(rec.setup, 'mileage');
+  assert.equal(rec.plan, 'core');
+  assert.equal(M.wantsBusinessHub({ goals: ['track_mileage', 'reduce_paperwork'] }), false);
 });
 
 run('VAT goals without vehicle gets Business recommendation', () => {
@@ -73,19 +84,21 @@ run('VAT goals without vehicle gets Business recommendation', () => {
   assert.equal(rec.setup, 'business');
   assert.equal(rec.plan, 'business');
   assert.ok(rec.items.includes('Business Hub'));
+  assert.ok(rec.items.includes('VAT summaries'));
 });
 
 run('mixed goals with vehicle gets Business mixed setup', () => {
   const M = loadModule(createMockLocalStorage());
   const rec = M.computeRecommendation({
-    goals: ['track_mileage', 'organise_receipts'],
+    goals: ['track_mileage', 'organise_receipts', 'track_expenses', 'help_vat'],
     vehicleUse: 'daily',
     vatRegistered: 'yes',
   });
   assert.equal(rec.setup, 'mixed');
   assert.equal(rec.plan, 'business');
-  assert.ok(rec.items.includes('AutoPilot'));
+  assert.ok(rec.items.includes('Mileage tracking'));
   assert.ok(rec.items.includes('Business Hub'));
+  assert.ok(rec.items.includes('VAT summaries'));
 });
 
 run('combined goal ack is a single message for mileage only', () => {
@@ -120,22 +133,27 @@ run('mileage flow includes vehicle and tracking steps only when relevant', () =>
   assert.ok(mileageFlow.includes('trackingPreference'));
   assert.ok(!mileageFlow.includes('vat'));
 
-  const businessFlow = M.buildFlow({ goals: ['organise_receipts', 'help_vat'] });
+  const businessFlow = M.buildFlow({ goals: ['organise_receipts', 'help_vat', 'accountant'] });
   assert.ok(!businessFlow.includes('vehicleUse'));
   assert.ok(!businessFlow.includes('trackingPreference'));
   assert.ok(businessFlow.includes('vat'));
 });
 
-run('legacy goal ids migrate on load', () => {
+run('ready checklist only includes selected modules', () => {
   const ls = createMockLocalStorage();
   ls.setItem(
     'mp_business_setup',
-    JSON.stringify({ goals: ['tracking_mileage', 'saving_receipts'], vehicleUse: 'daily' })
+    JSON.stringify({
+      goals: ['track_mileage'],
+      vehicleUse: 'daily',
+      trackingPreference: 'autopilot',
+    })
   );
   const M = loadModule(ls);
-  const setup = M.loadSetup();
-  assert.equal(setup.goals[0], 'track_mileage');
-  assert.equal(setup.goals[1], 'organise_receipts');
+  const list = M.getReadyChecklist();
+  assert.ok(list.includes('Mileage tracking ready'));
+  assert.ok(list.includes('Reports ready'));
+  assert.ok(!list.includes('Business Hub ready'));
 });
 
 console.log(`\nBusiness setup: ${passed} passed, ${failed} failed\n`);

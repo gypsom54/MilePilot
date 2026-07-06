@@ -150,7 +150,6 @@
       g.includes('track_expenses') ||
       g.includes('help_vat') ||
       g.includes('accountant') ||
-      g.includes('reduce_paperwork') ||
       s.vatRegistered === 'yes'
     );
   }
@@ -170,41 +169,53 @@
     return steps;
   }
 
+  function mileageTrackingLabel(setup) {
+    const pref = (setup || loadSetup()).trackingPreference;
+    if (pref === 'manual') return 'Manual mileage tracking';
+    if (pref === 'autopilot') return 'AutoPilot mileage tracking';
+    return 'AutoPilot or Manual mileage tracking';
+  }
+
+  function recommendationSubline(setup) {
+    const s = setup || loadSetup();
+    if ((s.goals || []).includes('reduce_paperwork') || wantsBusinessHub(s)) {
+      return 'This setup is built around the admin you told me you want to reduce.';
+    }
+    return "Let's make sure you never miss another business mile.";
+  }
+
   function computeRecommendation(setup) {
     const s = setup || loadSetup();
     const mileage = wantsMileageWorkspace(s);
     const business = wantsBusinessHub(s);
+    const hasVat = selectedVatGoal(s) || s.vatRegistered === 'yes';
+    const subline = recommendationSubline(s);
+    const intro = "Here's what I recommend.";
 
     if (mileage && business) {
-      return {
-        setup: 'mixed',
-        dashboardMode: 'mixed',
-        items: ['AutoPilot', 'Business Hub', 'AI Receipt Scanner', 'VAT summaries', 'Accountant Pack'],
-        plan: 'business',
-        intro: "Here's what I recommend.",
-      };
+      const items = [
+        'Mileage tracking',
+        'Business Hub',
+        'AI Receipt Scanner',
+        'Expense tracking',
+      ];
+      if (hasVat) items.push('VAT summaries');
+      items.push('Accountant Pack');
+      return { setup: 'mixed', dashboardMode: 'mixed', items, plan: 'business', intro, subline };
     }
     if (business && !mileage) {
-      return {
-        setup: 'business',
-        dashboardMode: 'business',
-        items: [
-          'Business Hub',
-          'AI Receipt Scanner',
-          'Expenses',
-          'VAT summaries',
-          'Accountant Pack',
-        ],
-        plan: 'business',
-        intro: "Here's what I recommend.",
-      };
+      const items = ['Business Hub', 'AI Receipt Scanner', 'Expense tracking'];
+      if (hasVat) items.push('VAT summaries');
+      items.push('Accountant Pack');
+      return { setup: 'business', dashboardMode: 'business', items, plan: 'business', intro, subline };
     }
     return {
       setup: 'mileage',
       dashboardMode: 'mileage',
-      items: ['AutoPilot mileage tracking', 'HMRC estimates', 'PDF/email reports'],
+      items: [mileageTrackingLabel(s), 'HMRC mileage estimates', 'PDF & email reports'],
       plan: 'core',
-      intro: "Here's what I recommend.",
+      intro,
+      subline,
     };
   }
 
@@ -291,7 +302,7 @@
         ];
       }
       return [
-        "Great — I'll focus your workspace on Business Hub, receipts, expenses and tax records.",
+        "Great — I'll focus your workspace on Business Hub, expenses and records.",
       ];
     }
     if (hasMileage && hasBusiness) {
@@ -309,17 +320,73 @@
     return ["Great — I'll build the right workspace around what you need."];
   }
 
-  function showAck(lines, nextStep) {
+  function getAckForVat(vat) {
+    if (vat === 'yes') {
+      return ["Excellent — I'll prioritise VAT summaries and receipt automation."];
+    }
+    return ['No problem — you can still track expenses and accountant records.'];
+  }
+
+  function getValueAddsForGoals(goals) {
+    const g = goals || [];
+    const lines = [];
+    if (g.includes('track_mileage')) lines.push('✓ Mileage tracking added');
+    if (g.includes('organise_receipts')) lines.push('✓ Receipt Scanner added');
+    if (g.includes('track_expenses')) lines.push('✓ Expense tracking added');
+    if (g.includes('help_vat')) lines.push('✓ VAT summaries added');
+    if (g.includes('accountant')) lines.push('✓ Accountant Pack added');
+    return lines.slice(0, 4);
+  }
+
+  function revealValueAdds(lines, onDone) {
+    const ul = q('bsAckValues');
+    if (!ul || !lines.length) {
+      if (onDone) onDone();
+      return;
+    }
+    ul.hidden = false;
+    ul.innerHTML = '';
+    let i = 0;
+    function addNext() {
+      if (i >= lines.length) {
+        if (onDone) onDone();
+        return;
+      }
+      const li = document.createElement('li');
+      li.className = 'bs-value-add';
+      li.textContent = lines[i++];
+      ul.appendChild(li);
+      requestAnimationFrame(function () {
+        li.classList.add('is-visible');
+      });
+      setTimeout(addNext, 260);
+    }
+    addNext();
+  }
+
+  function showAck(lines, nextStep, valueLines) {
     pendingAfterAck = nextStep;
     document.querySelectorAll('.bs-step').forEach(function (el) {
       el.hidden = el.dataset.step !== 'ack';
     });
+    const valuesEl = q('bsAckValues');
+    if (valuesEl) {
+      valuesEl.hidden = true;
+      valuesEl.innerHTML = '';
+    }
     showFooterFor('ack');
     updateProgress('ack');
     syncContinueBtn('bsAckContinue', false);
-    typeLines(q('bsAckTyping'), lines, function () {
-      syncContinueBtn('bsAckContinue', true);
-    });
+    typeLines(
+      q('bsAckTyping'),
+      lines,
+      function () {
+        revealValueAdds(valueLines || [], function () {
+          syncContinueBtn('bsAckContinue', true);
+        });
+      },
+      24
+    );
   }
 
   function renderOptionCards(container, options, selected, multi) {
@@ -384,11 +451,16 @@
       if (!btn) return;
       btn.hidden = key !== step;
     });
+    const skipWrap = q('bsWelcomeSkipWrap');
+    if (skipWrap) skipWrap.hidden = step !== 'welcome';
+    const compareBtn = q('bsComparePlans');
+    if (compareBtn) compareBtn.hidden = step !== 'choosePlan';
     if (step === 'building') {
       Object.keys(FOOTER_BTNS).forEach(function (key) {
         const btn = q(FOOTER_BTNS[key]);
         if (btn) btn.hidden = true;
       });
+      if (compareBtn) compareBtn.hidden = true;
     }
   }
 
@@ -414,11 +486,16 @@
       (typeof global.driver !== 'undefined' ? global.driver : '') ||
       'there';
     const greet = name && name !== 'there' ? 'Hi ' + name + ' 👋' : 'Hi there 👋';
-    typeLines(q('bsWelcomeTyping'), [
-      greet,
-      "Let's build your business assistant.",
-      "I'll ask a couple of quick questions, then create the best workspace for you.",
-    ]);
+    typeLines(
+      q('bsWelcomeTyping'),
+      [
+        greet,
+        "Let's build your business assistant.",
+        "I'll ask a few quick questions, then create the best MilePilot workspace for you.",
+      ],
+      null,
+      22
+    );
   }
 
   function initGoalsStep() {
@@ -491,14 +568,14 @@
   function runBuildingSequence() {
     typeLines(
       q('bsBuildingTyping'),
-      ['Looking at what you need...', 'Almost ready...'],
+      ['Looking at what you need...', 'Choosing the best setup...', 'Almost ready...'],
       function () {
         setTimeout(function () {
           renderRecommendation();
           showStep('recommendation');
-        }, 380);
+        }, 180);
       },
-      30
+      18
     );
   }
 
@@ -512,7 +589,9 @@
     });
     const intro = q('bsRecommendIntro');
     const list = q('bsRecommendList');
+    const sub = q('bsRecommendSub');
     if (intro) intro.textContent = rec.intro;
+    if (sub) sub.textContent = rec.subline || '';
     if (list) {
       list.innerHTML = rec.items
         .map(function (item) {
@@ -522,11 +601,31 @@
     }
   }
 
+  let comparePlansOpen = false;
+
+  function toggleComparePlans() {
+    comparePlansOpen = !comparePlansOpen;
+    const grid = q('bsPlanGrid');
+    if (grid) grid.classList.toggle('is-compare', comparePlansOpen);
+    const btn = q('bsComparePlans');
+    if (btn) btn.textContent = comparePlansOpen ? 'Show recommendation' : 'Compare plans';
+  }
+
   function renderPlanCards() {
     const rec = computeRecommendation(loadSetup());
-    const selected = loadSetup().selectedPlan || rec.plan;
+    const setup = loadSetup();
+    const selected = setup.selectedPlan || rec.plan;
     const coreCard = q('bsPlanCore');
     const bizCard = q('bsPlanBusiness');
+    const grid = q('bsPlanGrid');
+    const sub = q('bsPlanSub');
+    if (sub) {
+      sub.textContent =
+        rec.plan === 'core'
+          ? 'Core fits your mileage-focused workspace.'
+          : 'Business fits the workspace we built for you.';
+    }
+    if (grid) grid.classList.toggle('is-compare', comparePlansOpen);
     if (coreCard) {
       coreCard.classList.toggle('is-selected', selected === 'core');
       coreCard.classList.toggle('is-recommended', rec.plan === 'core');
@@ -538,6 +637,12 @@
       bizCard.classList.toggle('is-recommended', rec.plan === 'business');
       const badge = bizCard.querySelector('.bs-plan-badge');
       if (badge) badge.hidden = rec.plan !== 'business';
+    }
+    const continueBtn = q('bsPlanContinue');
+    if (continueBtn) {
+      continueBtn.textContent = selected === 'core' ? 'Start Core' : 'Start Business';
+      continueBtn.classList.toggle('is-ready', !!selected);
+      continueBtn.disabled = !selected;
     }
   }
 
@@ -584,7 +689,7 @@
     if (step === 'goals') {
       buildFlow(setup);
       const next = nextStepAfter('goals');
-      showAck(getAckForGoals(setup.goals || []), next);
+      showAck(getAckForGoals(setup.goals || []), next, getValueAddsForGoals(setup.goals || []));
       return;
     }
     if (step === 'vehicleUse') {
@@ -597,6 +702,14 @@
     if (step === 'trackingPreference') {
       buildFlow(setup);
       const next = nextStepAfter('trackingPreference');
+      if (wantsMileageWorkspace(setup) && setup.trackingPreference && setup.trackingPreference !== 'later') {
+        const value =
+          setup.trackingPreference === 'autopilot'
+            ? '✓ AutoPilot mileage tracking added'
+            : '✓ Manual mileage tracking added';
+        showAck(["Nice — I'll make sure that's included."], next, [value]);
+        return;
+      }
       if (next === 'vat') {
         showStep('vat');
       } else {
@@ -605,10 +718,11 @@
       return;
     }
     if (step === 'vat') {
-      showStep('building');
+      showAck(getAckForVat(setup.vatRegistered), 'building');
       return;
     }
     if (step === 'recommendation') {
+      comparePlansOpen = false;
       showStep('choosePlan');
       renderPlanCards();
       syncContinueBtn('bsPlanContinue', !!setup.selectedPlan);
@@ -697,12 +811,57 @@
     }
   }
 
+  function getReadyChecklist() {
+    const s = loadSetup();
+    const rec = computeRecommendation(s);
+    const items = [];
+    if (selectedMileageGoal(s)) items.push('Mileage tracking ready');
+    if (wantsBusinessHub(s)) items.push('Business Hub ready');
+    if (s.goals.includes('organise_receipts')) items.push('Receipt Scanner ready');
+    if (s.goals.includes('track_expenses')) items.push('Expense tracking ready');
+    if (s.goals.includes('help_vat') || s.vatRegistered === 'yes') items.push('VAT summaries ready');
+    if (s.goals.includes('accountant')) items.push('Accountant Pack ready');
+    if (wantsBusinessHub(s) && rec.plan === 'business') items.push('AI Bookkeeper ready');
+    if (selectedMileageGoal(s) || wantsBusinessHub(s)) items.push('Reports ready');
+    const seen = new Set();
+    return items.filter(function (item) {
+      if (seen.has(item)) return false;
+      seen.add(item);
+      return true;
+    });
+  }
+
+  function renderReadyChecklist() {
+    const list = q('onboardReadyChecklist');
+    if (!list) return;
+    const items = getReadyChecklist();
+    list.innerHTML = items
+      .map(function (item) {
+        return '<li><span class="mark" aria-hidden="true">✓</span> ' + item + '</li>';
+      })
+      .join('');
+  }
+
   function getReadyCopy() {
     return {
+      greeting: "You're all set.",
       lead: "I'll help keep your business organised.",
       feature: 'You get back to running it.',
       cta: 'Go to Dashboard',
     };
+  }
+
+  function skipSetup() {
+    saveSetup({
+      goals: ['reduce_paperwork'],
+      dashboardMode: 'mileage',
+      selectedPlan: 'core',
+      recommendedSetup: 'mileage',
+    });
+    if (typeof global.MPSubscription !== 'undefined' && global.MPSubscription.setPlanTier) {
+      global.MPSubscription.setPlanTier('core');
+    }
+    routeAfterSetupToKnowYou();
   }
 
   function reset() {
@@ -730,6 +889,10 @@
     routeAfterSetupToKnowYou: routeAfterSetupToKnowYou,
     buildFlow: buildFlow,
     getAckForGoals: getAckForGoals,
+    getReadyChecklist: getReadyChecklist,
+    renderReadyChecklist: renderReadyChecklist,
+    toggleComparePlans: toggleComparePlans,
+    skipSetup: skipSetup,
     reset: reset,
   };
 })(typeof window !== 'undefined' ? window : global);
