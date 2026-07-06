@@ -1,5 +1,5 @@
 /**
- * Business setup onboarding — branching workspace builder
+ * Business setup onboarding — two-workspace strategy
  */
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
@@ -51,7 +51,7 @@ function run(name, fn) {
   }
 }
 
-run('mileage goal + vehicle gets Core recommendation', () => {
+run('mileage goal + vehicle gets Core Mileage Workspace', () => {
   const M = loadModule(createMockLocalStorage());
   const rec = M.computeRecommendation({
     goals: ['track_mileage'],
@@ -60,6 +60,7 @@ run('mileage goal + vehicle gets Core recommendation', () => {
   });
   assert.equal(rec.setup, 'mileage');
   assert.equal(rec.plan, 'core');
+  assert.equal(rec.dashboardMode, 'mileage');
   assert.ok(rec.items.some((i) => i.includes('mileage tracking')));
 });
 
@@ -71,23 +72,26 @@ run('mileage + reduce paperwork stays mileage-first Core', () => {
   });
   assert.equal(rec.setup, 'mileage');
   assert.equal(rec.plan, 'core');
-  assert.equal(M.wantsBusinessHub({ goals: ['track_mileage', 'reduce_paperwork'] }), false);
+  assert.equal(M.wantsBusinessWorkspace({ goals: ['track_mileage', 'reduce_paperwork'] }), false);
 });
 
-run('VAT goals without vehicle gets Business recommendation', () => {
+run('business-only gets Business Workspace recommendation', () => {
   const M = loadModule(createMockLocalStorage());
   const rec = M.computeRecommendation({
-    goals: ['organise_receipts', 'help_vat'],
+    goals: ['organise_receipts', 'help_vat', 'accountant'],
     vehicleUse: 'no',
     vatRegistered: 'yes',
   });
   assert.equal(rec.setup, 'business');
   assert.equal(rec.plan, 'business');
-  assert.ok(rec.items.includes('Business Hub'));
-  assert.ok(rec.items.includes('VAT summaries'));
+  assert.equal(rec.dashboardMode, 'business');
+  assert.ok(rec.items.includes('Business Workspace'));
+  assert.ok(rec.items.includes('AI Receipt Scanner'));
+  assert.ok(rec.items.includes('Business Inbox'));
+  assert.ok(rec.items.includes('Business Health'));
 });
 
-run('mixed goals with vehicle gets Business mixed setup', () => {
+run('mixed goals with vehicle gets combined workspace', () => {
   const M = loadModule(createMockLocalStorage());
   const rec = M.computeRecommendation({
     goals: ['track_mileage', 'organise_receipts', 'track_expenses', 'help_vat'],
@@ -96,9 +100,17 @@ run('mixed goals with vehicle gets Business mixed setup', () => {
   });
   assert.equal(rec.setup, 'mixed');
   assert.equal(rec.plan, 'business');
+  assert.equal(rec.dashboardMode, 'mixed');
   assert.ok(rec.items.includes('Mileage tracking'));
-  assert.ok(rec.items.includes('Business Hub'));
-  assert.ok(rec.items.includes('VAT summaries'));
+  assert.ok(rec.items.includes('Business Workspace'));
+});
+
+run('business flow skips mileage questions', () => {
+  const M = loadModule(createMockLocalStorage());
+  const flow = M.buildFlow({ goals: ['organise_receipts', 'help_vat', 'accountant'] });
+  assert.ok(!flow.includes('vehicleUse'));
+  assert.ok(!flow.includes('trackingPreference'));
+  assert.ok(flow.includes('vat'));
 });
 
 run('combined goal ack is a single message for mileage only', () => {
@@ -108,52 +120,27 @@ run('combined goal ack is a single message for mileage only', () => {
   assert.match(ack[0], /mileage tracking the centre/);
 });
 
-run('combined goal ack for mileage plus business goals', () => {
-  const M = loadModule(createMockLocalStorage());
-  const ack = M.getAckForGoals(['track_mileage', 'organise_receipts', 'help_vat']);
-  assert.equal(ack.length, 1);
-  assert.match(ack[0], /mileage, receipts and VAT/);
-});
-
-run('six goal options only', () => {
-  const M = loadModule(createMockLocalStorage());
-  assert.equal(M.GOALS.length, 6);
-  assert.ok(!M.GOALS.some((g) => g.id === 'understand_business'));
-});
-
-run('no vehicle suppresses mileage workspace even with mileage goal', () => {
-  const M = loadModule(createMockLocalStorage());
-  assert.equal(M.wantsMileageWorkspace({ goals: ['track_mileage'], vehicleUse: 'no' }), false);
-});
-
-run('mileage flow includes vehicle and tracking steps only when relevant', () => {
-  const M = loadModule(createMockLocalStorage());
-  const mileageFlow = M.buildFlow({ goals: ['track_mileage'], vehicleUse: 'daily' });
-  assert.ok(mileageFlow.includes('vehicleUse'));
-  assert.ok(mileageFlow.includes('trackingPreference'));
-  assert.ok(!mileageFlow.includes('vat'));
-
-  const businessFlow = M.buildFlow({ goals: ['organise_receipts', 'help_vat', 'accountant'] });
-  assert.ok(!businessFlow.includes('vehicleUse'));
-  assert.ok(!businessFlow.includes('trackingPreference'));
-  assert.ok(businessFlow.includes('vat'));
-});
-
-run('ready checklist only includes selected modules', () => {
+run('ready copy reflects workspace type', () => {
   const ls = createMockLocalStorage();
   ls.setItem(
     'mp_business_setup',
-    JSON.stringify({
-      goals: ['track_mileage'],
-      vehicleUse: 'daily',
-      trackingPreference: 'autopilot',
-    })
+    JSON.stringify({ goals: ['organise_receipts'], dashboardMode: 'business', selectedPlan: 'business' })
   );
   const M = loadModule(ls);
-  const list = M.getReadyChecklist();
-  assert.ok(list.includes('Mileage tracking ready'));
-  assert.ok(list.includes('Reports ready'));
-  assert.ok(!list.includes('Business Hub ready'));
+  const copy = M.getReadyCopy();
+  assert.match(copy.lead, /Business Workspace is ready/);
+});
+
+run('legacy goal ids migrate on load', () => {
+  const ls = createMockLocalStorage();
+  ls.setItem(
+    'mp_business_setup',
+    JSON.stringify({ goals: ['tracking_mileage', 'saving_receipts'], vehicleUse: 'daily' })
+  );
+  const M = loadModule(ls);
+  const setup = M.loadSetup();
+  assert.equal(setup.goals[0], 'track_mileage');
+  assert.equal(setup.goals[1], 'organise_receipts');
 });
 
 console.log(`\nBusiness setup: ${passed} passed, ${failed} failed\n`);

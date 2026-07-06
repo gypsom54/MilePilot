@@ -974,9 +974,12 @@ body.always-modal-open .nav{display:none!important}
 .onboard-ready-checklist li{display:flex;align-items:center;gap:8px;padding:7px 0;font-size:14px;font-weight:600;color:rgba(198,220,248,.92)}
 .onboard-ready-checklist .mark{color:#20D781;font-weight:700}
 .bs-building-head{margin:0 0 12px;font-size:clamp(22px,5.8vw,28px);font-weight:700;color:#fff}
-.cc-hub-upgrade{opacity:.92}
-.cc-layout-business .cc-hub-upgrade{margin-top:0}
-.cc-layout-mileage .cc-hub-upgrade{margin-top:12px}
+.cc-hub.cc-workspace-discover{opacity:.9;margin-top:14px;padding:16px 18px;border-style:dashed;border-color:rgba(110,180,255,.22);box-shadow:0 8px 24px rgba(8,30,70,.28)}
+.cc-hub.cc-workspace-discover .cc-hub-glow{opacity:.45}
+.cc-hub.cc-workspace-discover .cc-hub-chips{display:none}
+.cc-hub.cc-workspace-primary{opacity:1}
+.cc-layout-mileage .cc-hub.cc-workspace-discover{margin-top:14px}
+.cc-layout-business .cc-business-panel{margin-bottom:16px}
 .cc-layout-mixed .cc-business-panel{margin-top:0}
 .bs-plan-card.is-recommended{border-color:rgba(32,215,129,.45);box-shadow:0 12px 32px rgba(13,107,255,.24),0 0 0 1px rgba(32,215,129,.2)}
 .cc-business-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
@@ -1092,14 +1095,14 @@ body.always-modal-open .nav{display:none!important}
 <span class="bs-plan-badge" hidden>Recommended for you</span>
 <p class="bs-plan-name">MilePilot Core</p>
 <p class="bs-plan-price">£4.99/month</p>
-<p class="bs-plan-kicker">Never miss another business mile.</p>
+<p class="bs-plan-kicker">Your Mileage Workspace.</p>
 <p class="bs-plan-tag">Mileage tracking, HMRC estimates, PDF and email reports.</p>
 </button>
 <button type="button" class="bs-plan-card" id="bsPlanBusiness" onclick="MPBusinessSetup.selectPlan('business')">
 <span class="bs-plan-badge" hidden>Recommended for you</span>
 <p class="bs-plan-name">MilePilot Business</p>
 <p class="bs-plan-price">£9.99/month</p>
-<p class="bs-plan-kicker">Run your business with less admin.</p>
+<p class="bs-plan-kicker">Your complete Business Workspace.</p>
 <p class="bs-plan-tag">Everything in Core plus receipts, expenses, VAT, AI Bookkeeper and Accountant Pack.</p>
 </button>
 </div>
@@ -1406,26 +1409,28 @@ body.always-modal-open .nav{display:none!important}
 </div>
 </div>
 </div>
-<!-- Business Hub -->
+<!-- Business Workspace -->
 <div id="ccBusinessHubBlock">
-<button type="button" class="cc-hub" onclick="openBusinessHub()">
+<button type="button" class="cc-hub" id="ccBusinessHubCard" onclick="openBusinessHub()">
 <span class="cc-hub-glow" aria-hidden="true"></span>
-<span class="cc-hub-head"><span class="cc-hub-title">Business Hub</span><span class="cc-hub-chevron" aria-hidden="true">›</span></span>
-<span class="cc-hub-sub">Mileage, receipts, expenses, VAT, tax and accountant-ready reports in one place.</span>
-<span class="cc-hub-chips"><span>Mileage</span><span>Receipts</span><span>Expenses</span><span>VAT</span><span>Reports</span><span>Accountant</span><span>AI Bookkeeper</span></span>
-<span class="cc-hub-cta">Open Business Hub</span>
-<span class="cc-hub-tagline">Run your business with less admin.</span>
+<span class="cc-hub-head"><span class="cc-hub-title" id="ccHubTitle">Business Workspace</span><span class="cc-hub-chevron" aria-hidden="true">›</span></span>
+<span class="cc-hub-sub" id="ccHubSub">Receipts, expenses, VAT, AI Bookkeeper and accountant-ready records.</span>
+<span class="cc-hub-chips" id="ccHubChips"><span>Receipts</span><span>Expenses</span><span>VAT</span><span>AI Bookkeeper</span><span>Accountant</span><span>Business Health</span><span>Inbox</span></span>
+<span class="cc-hub-cta" id="ccHubCta">Open Business Workspace</span>
+<span class="cc-hub-tagline" id="ccHubTagline">Run your business with less admin.</span>
 </button>
 </div>
-<!-- Business summary panel (Business Hub users) -->
+<!-- Business Workspace quick actions -->
 <div class="cc-business-panel" id="ccBusinessPanel" hidden>
-<h2 class="cc-business-panel-title">Today&apos;s Business</h2>
+<h2 class="cc-business-panel-title" id="ccBusinessPanelTitle">Business Workspace</h2>
 <div class="cc-business-actions">
 <button type="button" class="cc-business-action" onclick="openBusinessHub()">Scan Receipt</button>
 <button type="button" class="cc-business-action" onclick="openBusinessHub()">Expenses</button>
 <button type="button" class="cc-business-action" onclick="openBusinessHub()">VAT Summary</button>
 <button type="button" class="cc-business-action" onclick="openBusinessHub()">AI Bookkeeper</button>
 <button type="button" class="cc-business-action" onclick="openBusinessHub()">Accountant Pack</button>
+<button type="button" class="cc-business-action" onclick="openBusinessHub()">Business Inbox</button>
+<button type="button" class="cc-business-action" onclick="openBusinessHub()">Business Health</button>
 </div>
 </div>
 <div class="cc-mileage-later" id="ccMileageLaterCard" hidden>
@@ -1786,7 +1791,7 @@ body.always-modal-open .nav{display:none!important}
 <script src="js/business-setup-onboard.js"></script>
 <script src="js/beta-feedback.js"></script>
 <script>
-const APP_VERSION='8.43.67';
+const APP_VERSION='8.43.68';
 window.APP_VERSION=APP_VERSION;
 const DEFAULT_WEEKLY_GOAL_MILES=400;
 const BUSINESS_PROFILE_KEY='mp_business_profile';
@@ -2090,7 +2095,7 @@ function getAutoTrackCardStatus(){if(ccState==='active'&&isAutoPilotTracking())r
 function renderHomeModeCards(){const auto=isAutoPilotTracking(),autoCard=q('ccAutoCard'),manualCard=q('ccManualCard'),autoTag=q('ccAutoTag'),manualTag=q('ccManualTag');if(autoCard)autoCard.classList.toggle('is-active',auto);if(manualCard)manualCard.classList.toggle('is-active',!auto);if(autoTag){const st=getAutoTrackCardStatus();autoTag.textContent=st.label;autoTag.className='cc-choice-badge'+(st.tone?' '+st.tone:'')}if(manualTag){const tracking=ccState==='active'&&!isAutoPilotTracking();manualTag.textContent=tracking?'Tracking':'Ready';manualTag.className='cc-choice-badge'+(tracking?' is-tracking':'')}}
 function manageAutoPilot(){renderAutopilotStatusPage();showScreen('autopilotStatus')}
 function startManualTrip(){if(!requireActiveAccess('Subscribe to start tracking'))return;autopilotStartedShift=false;startShiftCommandCentre();showScreen('tracking')}
-function openBusinessHub(){toast('Business Hub is coming next ✨')}
+function openBusinessHub(){toast('Business Workspace is coming next ✨')}
 function viewTodayReport(){setArchiveFilter('daily');showReports()}
 function generateTodayReport(){showReports();setTimeout(function(){downloadArchiveReport('syn_today')},350)}
 function downsampleRoute(pts,max=ENGINE.ROUTE_MAX){if(!pts?.length)return[];if(pts.length<=max)return pts;const step=Math.ceil(pts.length/max);return pts.filter((_,i)=>i%step===0||i===pts.length-1)}

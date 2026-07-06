@@ -1,5 +1,6 @@
 /**
- * MilePilot Conversational Onboarding — branching workspace builder
+ * MilePilot Conversational Onboarding — two-workspace strategy (Mileage + Business)
+ * @see docs/PRODUCT_STRATEGY_LOCK.md
  */
 (function (global) {
   'use strict';
@@ -178,45 +179,65 @@
 
   function recommendationSubline(setup) {
     const s = setup || loadSetup();
-    if ((s.goals || []).includes('reduce_paperwork') || wantsBusinessHub(s)) {
+    if ((s.goals || []).includes('reduce_paperwork') || wantsBusinessWorkspace(s)) {
       return 'This setup is built around the admin you told me you want to reduce.';
     }
     return "Let's make sure you never miss another business mile.";
   }
 
+  function wantsBusinessWorkspace(setup) {
+    return wantsBusinessHub(setup);
+  }
+
+  function businessWorkspaceItems(setup) {
+    const s = setup || loadSetup();
+    const hasVat = selectedVatGoal(s) || s.vatRegistered === 'yes';
+    const items = ['Business Workspace', 'AI Receipt Scanner', 'Expenses'];
+    if (hasVat) items.push('VAT');
+    items.push('AI Bookkeeper', 'Accountant Pack', 'Business Health', 'Business Inbox', 'Reports');
+    return items;
+  }
+
+  function mileageWorkspaceItems(setup) {
+    const s = setup || loadSetup();
+    return [mileageTrackingLabel(s), 'HMRC mileage estimates', 'PDF & email reports'];
+  }
+
   function computeRecommendation(setup) {
     const s = setup || loadSetup();
     const mileage = wantsMileageWorkspace(s);
-    const business = wantsBusinessHub(s);
-    const hasVat = selectedVatGoal(s) || s.vatRegistered === 'yes';
+    const business = wantsBusinessWorkspace(s);
     const subline = recommendationSubline(s);
     const intro = "Here's what I recommend.";
 
     if (mileage && business) {
-      const items = [
-        'Mileage tracking',
-        'Business Hub',
-        'AI Receipt Scanner',
-        'Expense tracking',
-      ];
-      if (hasVat) items.push('VAT summaries');
+      const items = ['Mileage tracking', 'Business Workspace', 'AI Receipt Scanner', 'Expense tracking'];
+      if (selectedVatGoal(s) || s.vatRegistered === 'yes') items.push('VAT summaries');
       items.push('Accountant Pack');
       return { setup: 'mixed', dashboardMode: 'mixed', items, plan: 'business', intro, subline };
     }
     if (business && !mileage) {
-      const items = ['Business Hub', 'AI Receipt Scanner', 'Expense tracking'];
-      if (hasVat) items.push('VAT summaries');
-      items.push('Accountant Pack');
-      return { setup: 'business', dashboardMode: 'business', items, plan: 'business', intro, subline };
+      return {
+        setup: 'business',
+        dashboardMode: 'business',
+        items: businessWorkspaceItems(s),
+        plan: 'business',
+        intro,
+        subline,
+      };
     }
     return {
       setup: 'mileage',
       dashboardMode: 'mileage',
-      items: [mileageTrackingLabel(s), 'HMRC mileage estimates', 'PDF & email reports'],
+      items: mileageWorkspaceItems(s),
       plan: 'core',
       intro,
       subline,
     };
+  }
+
+  function getWorkspaceType() {
+    return getDashboardMode();
   }
 
   function getDashboardMode() {
@@ -302,7 +323,7 @@
         ];
       }
       return [
-        "Great — I'll focus your workspace on Business Hub, expenses and records.",
+        "Great — I'll focus your Business Workspace on receipts, expenses and records.",
       ];
     }
     if (hasMileage && hasBusiness) {
@@ -622,8 +643,8 @@
     if (sub) {
       sub.textContent =
         rec.plan === 'core'
-          ? 'Core fits your mileage-focused workspace.'
-          : 'Business fits the workspace we built for you.';
+          ? 'Core unlocks your Mileage Workspace.'
+          : 'Business unlocks your complete Business Workspace.';
     }
     if (grid) grid.classList.toggle('is-compare', comparePlansOpen);
     if (coreCard) {
@@ -778,6 +799,43 @@
     showStep('welcome');
   }
 
+  function setElText(id, text) {
+    const el = q(id);
+    if (el) el.textContent = text;
+  }
+
+  function updateHubPresentation(mode) {
+    const card = q('ccBusinessHubCard');
+    if (card) {
+      card.classList.toggle('cc-workspace-discover', mode === 'mileage');
+      card.classList.toggle('cc-workspace-primary', mode === 'business' || mode === 'mixed');
+    }
+    if (mode === 'mileage') {
+      setElText('ccHubTitle', 'Business Workspace');
+      setElText(
+        'ccHubSub',
+        'Receipts, expenses, VAT and accountant records — explore when you need them.'
+      );
+      setElText('ccHubCta', 'Explore Business Workspace');
+      setElText('ccHubTagline', 'Your Mileage Workspace is complete. This is optional.');
+    } else if (mode === 'business') {
+      setElText('ccHubTitle', 'Business Workspace');
+      setElText(
+        'ccHubSub',
+        'Organise receipts, expenses, VAT and accountant-ready records in one place.'
+      );
+      setElText('ccHubCta', 'Open Business Workspace');
+      setElText('ccHubTagline', 'Your flagship workspace for less admin.');
+    } else {
+      setElText('ccHubTitle', 'Business Workspace');
+      setElText('ccHubSub', 'Receipts, expenses, VAT and reports alongside your mileage.');
+      setElText('ccHubCta', 'Open Business Workspace');
+      setElText('ccHubTagline', 'Mileage and business records together.');
+    }
+    const chips = q('ccHubChips');
+    if (chips) chips.hidden = mode === 'mileage';
+  }
+
   function applyDashboardLayout() {
     const mode = getDashboardMode();
     const body = q('ccBody');
@@ -795,19 +853,26 @@
       todayKicker.textContent =
         mode === 'mixed' ? "Today's Overview" : mode === 'business' ? "Today's Business" : 'Today';
     }
+    setElText(
+      'ccBusinessPanelTitle',
+      mode === 'mixed' ? "Today's Overview" : 'Business Workspace'
+    );
     if (mileageBlock) mileageBlock.hidden = mode === 'business';
-    if (hub) {
-      hub.hidden = mode === 'mileage';
-      if (mode === 'mileage') hub.classList.add('cc-hub-upgrade');
-      else hub.classList.remove('cc-hub-upgrade');
-    }
     if (businessPanel) businessPanel.hidden = mode === 'mileage';
+    if (hub) hub.hidden = false;
     if (mileageLater) mileageLater.hidden = mode !== 'business';
-    if (mode === 'business' && businessPanel && hub && businessPanel.parentNode) {
-      businessPanel.parentNode.insertBefore(businessPanel, hub);
+    updateHubPresentation(mode);
+    const parent = mileageBlock && mileageBlock.parentNode;
+    if (mode === 'business' && businessPanel && hub && parent) {
+      parent.insertBefore(businessPanel, hub);
+      parent.insertBefore(hub, mileageBlock);
     }
-    if (mode === 'business' && hub && mileageBlock && hub.parentNode) {
-      hub.parentNode.insertBefore(hub, mileageBlock);
+    if (mode === 'mixed' && parent && mileageBlock && businessPanel && hub) {
+      parent.insertBefore(mileageBlock, businessPanel);
+      parent.insertBefore(businessPanel, hub);
+    }
+    if (mode === 'mileage' && parent && mileageBlock && hub) {
+      parent.insertBefore(mileageBlock, hub);
     }
   }
 
@@ -816,12 +881,13 @@
     const rec = computeRecommendation(s);
     const items = [];
     if (selectedMileageGoal(s)) items.push('Mileage tracking ready');
-    if (wantsBusinessHub(s)) items.push('Business Hub ready');
+    if (wantsBusinessWorkspace(s)) items.push('Business Workspace ready');
     if (s.goals.includes('organise_receipts')) items.push('Receipt Scanner ready');
     if (s.goals.includes('track_expenses')) items.push('Expense tracking ready');
     if (s.goals.includes('help_vat') || s.vatRegistered === 'yes') items.push('VAT summaries ready');
     if (s.goals.includes('accountant')) items.push('Accountant Pack ready');
-    if (wantsBusinessHub(s) && rec.plan === 'business') items.push('AI Bookkeeper ready');
+    if (wantsBusinessWorkspace(s) && rec.plan === 'business') items.push('AI Bookkeeper ready');
+    if (wantsBusinessWorkspace(s) && rec.plan === 'business') items.push('Business Health ready');
     if (selectedMileageGoal(s) || wantsBusinessHub(s)) items.push('Reports ready');
     const seen = new Set();
     return items.filter(function (item) {
@@ -843,9 +909,18 @@
   }
 
   function getReadyCopy() {
+    const mode = getDashboardMode();
+    let lead = "I'll help keep your business organised.";
+    if (mode === 'mileage') {
+      lead = "Your Mileage Workspace is ready — I'll help you capture every business mile.";
+    } else if (mode === 'business') {
+      lead = "Your Business Workspace is ready — I'll help keep your records organised.";
+    } else if (mode === 'mixed') {
+      lead = 'Your Mileage and Business Workspaces are ready — everything in one place.';
+    }
     return {
       greeting: "You're all set.",
-      lead: "I'll help keep your business organised.",
+      lead: lead,
       feature: 'You get back to running it.',
       cta: 'Go to Dashboard',
     };
@@ -882,6 +957,10 @@
     usesVehicle: usesVehicle,
     wantsMileageWorkspace: wantsMileageWorkspace,
     wantsBusinessHub: wantsBusinessHub,
+    wantsBusinessWorkspace: wantsBusinessWorkspace,
+    getWorkspaceType: getWorkspaceType,
+    businessWorkspaceItems: businessWorkspaceItems,
+    mileageWorkspaceItems: mileageWorkspaceItems,
     computeRecommendation: computeRecommendation,
     getDashboardMode: getDashboardMode,
     applyDashboardLayout: applyDashboardLayout,
