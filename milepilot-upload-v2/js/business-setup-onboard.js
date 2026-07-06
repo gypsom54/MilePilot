@@ -1,12 +1,23 @@
 /**
- * MilePilot Interactive Business Setup Onboarding
- * Warm conversational flow → personalised plan + dashboard layout.
+ * MilePilot Conversational Business Setup Onboarding (LOCKED DIRECTION)
+ * Pain points first → personalised acks → building moment → recommendation → plan
  */
 (function (global) {
   'use strict';
 
   const STORAGE_KEY = 'mp_business_setup';
   const PROFILE_KEY = 'mp_business_profile';
+
+  const GOALS = [
+    { id: 'tracking_mileage', label: 'Tracking mileage' },
+    { id: 'saving_receipts', label: 'Saving receipts' },
+    { id: 'adding_vat', label: 'Adding up VAT' },
+    { id: 'tracking_expenses', label: 'Tracking expenses' },
+    { id: 'accountant', label: 'Sending records to accountant' },
+    { id: 'tax_records', label: 'Preparing tax records' },
+    { id: 'business_reports', label: 'Business reports' },
+    { id: 'less_paperwork', label: 'Less paperwork' },
+  ];
 
   const BUSINESS_TYPES = [
     { id: 'tradesperson', label: 'Tradesperson', profession: 'tradesperson' },
@@ -27,84 +38,46 @@
     { id: 'no', label: 'No / not really' },
   ];
 
-  const FUEL_PAYER = [
-    { id: 'self', label: 'I pay myself' },
-    { id: 'business', label: 'My business pays' },
-    { id: 'employer', label: 'My employer / client pays' },
-    { id: 'company', label: 'Company vehicle' },
-    { id: 'na', label: 'Not applicable' },
-  ];
-
   const VAT_OPTIONS = [
     { id: 'yes', label: 'Yes' },
     { id: 'no', label: 'No' },
     { id: 'unsure', label: 'Not sure' },
   ];
 
-  const ADMIN_PAINS = [
-    { id: 'mileage', label: 'Remembering mileage' },
-    { id: 'receipts', label: 'Losing receipts' },
-    { id: 'vat', label: 'Adding up VAT' },
-    { id: 'expenses', label: 'Tracking expenses' },
-    { id: 'accountant', label: 'Sending records to accountant' },
-    { id: 'tax', label: 'Preparing tax records' },
-    { id: 'costs', label: 'Understanding business costs' },
-    { id: 'organised', label: 'Staying organised' },
-  ];
-
   const PLANS = {
     core: {
       id: 'core',
       label: 'MilePilot Core',
-      price: 4.99,
       priceLabel: '£4.99/month',
       tagline: 'Never miss another business mile.',
-      features: [
-        'AutoPilot',
-        'Manual tracking',
-        'Background mileage tracking',
-        'HMRC mileage estimates',
-        'PDF reports',
-        'Email reports',
-      ],
       experience: 'tracker',
     },
     business: {
       id: 'business',
       label: 'MilePilot Business',
-      price: 9.99,
       priceLabel: '£9.99/month',
       tagline: 'Run your business with less admin.',
-      features: [
-        'Business Hub',
-        'AI receipt scanner',
-        'Expense tracking',
-        'VAT summaries',
-        'AI Bookkeeper',
-        'Business Health Score',
-        'Accountant Pack',
-      ],
       experience: 'business',
-      includesCore: true,
     },
   };
 
   const STEPS = [
     'welcome',
+    'ack',
+    'goals',
     'businessType',
     'vehicleUse',
-    'fuelCosts',
     'vat',
-    'adminPain',
+    'building',
     'recommendation',
     'choosePlan',
     'trackingMode',
-    'permissions',
     'ready',
   ];
 
   let typingTimer = null;
   let currentStep = 'welcome';
+  let pendingAfterAck = null;
 
   function q(id) {
     return document.getElementById(id);
@@ -112,11 +85,10 @@
 
   function defaultSetup() {
     return {
+      goals: [],
       businessType: null,
       vehicleUse: null,
-      fuelPayer: null,
       vatRegistered: null,
-      adminPainPoints: [],
       recommendedSetup: null,
       selectedPlan: null,
       trackingModeChoice: null,
@@ -127,10 +99,28 @@
 
   function loadSetup() {
     try {
-      return { ...defaultSetup(), ...JSON.parse(global.localStorage.getItem(STORAGE_KEY) || '{}') };
+      const raw = JSON.parse(global.localStorage.getItem(STORAGE_KEY) || '{}');
+      if (raw.adminPainPoints && !raw.goals) raw.goals = migrateLegacyPains(raw.adminPainPoints);
+      return { ...defaultSetup(), ...raw };
     } catch (e) {
       return defaultSetup();
     }
+  }
+
+  function migrateLegacyPains(pains) {
+    const map = {
+      mileage: 'tracking_mileage',
+      receipts: 'saving_receipts',
+      vat: 'adding_vat',
+      expenses: 'tracking_expenses',
+      accountant: 'accountant',
+      tax: 'tax_records',
+      costs: 'less_paperwork',
+      organised: 'less_paperwork',
+    };
+    return pains.map(function (p) {
+      return map[p] || p;
+    });
   }
 
   function saveSetup(updates) {
@@ -142,23 +132,18 @@
 
   function syncSetupToProfile(setup) {
     if (typeof global.saveBusinessProfile !== 'function') return;
-    const type = BUSINESS_TYPES.find((t) => t.id === setup.businessType);
+    const type = BUSINESS_TYPES.find(function (t) {
+      return t.id === setup.businessType;
+    });
     const plan = PLANS[setup.selectedPlan] || PLANS.core;
-    const mileageFocus =
-      setup.dashboardMode === 'mileage' || setup.dashboardMode === 'mixed';
-    const businessHubFocus =
-      setup.dashboardMode === 'business' || setup.dashboardMode === 'mixed';
-
+    const mileageFocus = setup.dashboardMode === 'mileage' || setup.dashboardMode === 'mixed';
+    const businessHubFocus = setup.dashboardMode === 'business' || setup.dashboardMode === 'mixed';
     global.saveBusinessProfile({
       profession: type ? type.profession : 'other',
       experience: plan.experience,
       receiptsEnabled: businessHubFocus,
       vatRegistered:
-        setup.vatRegistered === 'yes'
-          ? true
-          : setup.vatRegistered === 'no'
-            ? false
-            : null,
+        setup.vatRegistered === 'yes' ? true : setup.vatRegistered === 'no' ? false : null,
       businessSetup: setup,
       dashboardMode: setup.dashboardMode,
       mileageFocus: mileageFocus,
@@ -172,41 +157,52 @@
     return s.vehicleUse === 'daily' || s.vehicleUse === 'sometimes';
   }
 
+  function wantsMileage(setup) {
+    const s = setup || loadSetup();
+    const goals = s.goals || [];
+    return (
+      goals.includes('tracking_mileage') &&
+      usesVehicle(s)
+    );
+  }
+
+  function wantsBusinessHub(setup) {
+    const s = setup || loadSetup();
+    const goals = s.goals || [];
+    return (
+      goals.includes('saving_receipts') ||
+      goals.includes('adding_vat') ||
+      goals.includes('tracking_expenses') ||
+      goals.includes('accountant') ||
+      goals.includes('tax_records') ||
+      goals.includes('business_reports') ||
+      goals.includes('less_paperwork') ||
+      s.vatRegistered === 'yes' ||
+      !usesVehicle(s)
+    );
+  }
+
   function computeRecommendation(setup) {
     const s = setup || loadSetup();
-    const pains = s.adminPainPoints || [];
-    const mileageSignals =
-      usesVehicle(s) ||
-      pains.includes('mileage') ||
-      ['taxi', 'delivery', 'sales', 'mobile_service', 'tradesperson'].includes(
-        s.businessType
-      );
-    const businessSignals =
-      s.vatRegistered === 'yes' ||
-      pains.includes('receipts') ||
-      pains.includes('vat') ||
-      pains.includes('expenses') ||
-      pains.includes('accountant') ||
-      pains.includes('tax') ||
-      pains.includes('costs') ||
-      pains.includes('organised');
+    const mileage = wantsMileage(s);
+    const business = wantsBusinessHub(s);
 
-    if (mileageSignals && businessSignals) {
+    if (mileage && business) {
       return {
         setup: 'mixed',
         dashboardMode: 'mixed',
         items: [
-          'AutoPilot Mileage Tracking',
+          'AutoPilot',
+          'Business Hub',
           'AI Receipt Scanner',
-          'Expense tracking',
           'VAT summaries',
           'Accountant Pack',
         ],
         plan: 'business',
-        planLabel: 'MilePilot Business — £9.99/month',
+        intro: 'Based on what you told me, I recommend:',
       };
     }
-    if (businessSignals && !mileageSignals) {
+    if (business && !mileage) {
       return {
         setup: 'business',
         dashboardMode: 'business',
@@ -218,19 +214,19 @@
           'Accountant Pack',
         ],
         plan: 'business',
-        planLabel: 'MilePilot Business — £9.99/month',
+        intro: 'Based on what you told me, I recommend:',
       };
     }
     return {
       setup: 'mileage',
       dashboardMode: 'mileage',
       items: [
-        'AutoPilot Mileage Tracking',
-        'Daily / weekly reports',
-        'HMRC mileage estimates',
+        'AutoPilot mileage tracking',
+        'HMRC mileage reports',
+        'Daily / weekly PDF reports',
       ],
       plan: 'core',
-      planLabel: 'MilePilot Core — £4.99/month',
+      intro: 'Based on what you told me, I recommend:',
     };
   }
 
@@ -255,7 +251,7 @@
     }
   }
 
-  function typeLines(el, lines, onDone) {
+  function typeLines(el, lines, onDone, speed) {
     clearTyping();
     if (!el) {
       if (onDone) onDone();
@@ -264,6 +260,7 @@
     let lineIdx = 0;
     let charIdx = 0;
     el.innerHTML = '';
+    const ms = speed || 28;
     function tick() {
       if (lineIdx >= lines.length) {
         clearTyping();
@@ -271,9 +268,7 @@
         return;
       }
       const line = lines[lineIdx];
-      if (charIdx === 0 && lineIdx > 0) {
-        el.innerHTML += '<br>';
-      }
+      if (charIdx === 0 && lineIdx > 0) el.innerHTML += '<br>';
       if (charIdx < line.length) {
         const current = el.innerHTML.split('<br>');
         current[lineIdx] = (current[lineIdx] || '') + line.charAt(charIdx);
@@ -284,17 +279,63 @@
         charIdx = 0;
       }
     }
-    typingTimer = setInterval(tick, 28);
+    typingTimer = setInterval(tick, ms);
     tick();
+  }
+
+  function getAckForGoals(goals) {
+    if (goals.includes('tracking_mileage'))
+      return ['Perfect.', "I'll make sure mileage tracking is part of your setup."];
+    if (goals.includes('saving_receipts'))
+      return ['Great.', 'Receipt capture can save a lot of admin time.'];
+    if (goals.includes('adding_vat'))
+      return ['Excellent.', "I'll prioritise VAT summaries and receipt automation."];
+    if (goals.includes('accountant'))
+      return ['No problem.', "I'll make sure accountant-ready reports are included."];
+    if (goals.includes('tracking_expenses'))
+      return ['Got it.', "I'll include expense tracking in your workspace."];
+    if (goals.includes('tax_records'))
+      return ['Understood.', "I'll help you stay organised for tax time."];
+    if (goals.includes('business_reports'))
+      return ['Lovely.', "I'll make sure professional reports are ready when you need them."];
+    return ['Great.', "Let's find the best setup for your business."];
+  }
+
+  function getAckForVehicle(vehicleUse) {
+    if (vehicleUse === 'no')
+      return ["That's fine.", "We'll focus on Business Hub instead."];
+    return ['Good to know.', "I'll include mileage options in your setup."];
+  }
+
+  function getAckForVat(vat) {
+    if (vat === 'yes')
+      return [
+        'Excellent.',
+        "I'll prioritise VAT summaries, receipt scanning and accountant-ready reports.",
+      ];
+    return ['Noted.', "We'll keep things simple for now."];
+  }
+
+  function showAck(lines, nextStep) {
+    pendingAfterAck = nextStep;
+    currentStep = 'ack';
+    document.querySelectorAll('.bs-step').forEach(function (el) {
+      el.hidden = el.dataset.step !== 'ack';
+    });
+    showFooterFor('ack');
+    updateProgress('ack');
+    const el = q('bsAckTyping');
+    syncContinueBtn('bsAckContinue', false);
+    typeLines(el, lines, function () {
+      syncContinueBtn('bsAckContinue', true);
+    });
   }
 
   function renderOptionCards(container, options, selected, multi) {
     if (!container) return;
     container.innerHTML = options
       .map(function (opt) {
-        const sel = multi
-          ? (selected || []).includes(opt.id)
-          : selected === opt.id;
+        const sel = multi ? (selected || []).includes(opt.id) : selected === opt.id;
         return (
           '<button type="button" class="bs-option' +
           (sel ? ' is-selected' : '') +
@@ -308,7 +349,7 @@
       .join('');
   }
 
-  function bindOptionCards(container, onSelect, multi) {
+  function bindOptionCards(container, onSelect) {
     if (!container) return;
     container.querySelectorAll('.bs-option').forEach(function (btn) {
       btn.addEventListener('click', function () {
@@ -319,7 +360,7 @@
 
   function refreshSingleSelect(grid, options, selected, onSelect) {
     renderOptionCards(grid, options, selected, false);
-    bindOptionCards(grid, onSelect, false);
+    bindOptionCards(grid, onSelect);
   }
 
   function updateProgress(step) {
@@ -333,11 +374,12 @@
 
   const FOOTER_BTNS = {
     welcome: 'bsWelcomeContinue',
+    ack: 'bsAckContinue',
+    goals: 'bsGoalsContinue',
     businessType: 'bsBusinessTypeContinue',
     vehicleUse: 'bsVehicleUseContinue',
-    fuelCosts: 'bsFuelCostsContinue',
     vat: 'bsVatContinue',
-    adminPain: 'bsAdminPainContinue',
+    building: 'bsBuildingContinue',
     recommendation: 'bsRecommendContinue',
     choosePlan: 'bsPlanContinue',
     trackingMode: 'bsTrackingContinue',
@@ -348,8 +390,7 @@
     Object.keys(FOOTER_BTNS).forEach(function (key) {
       const btn = q(FOOTER_BTNS[key]);
       if (!btn) return;
-      const active = key === step;
-      btn.hidden = !active;
+      btn.hidden = key !== step;
     });
   }
 
@@ -361,11 +402,11 @@
     showFooterFor(step);
     updateProgress(step);
     if (step === 'welcome') initWelcomeStep();
+    if (step === 'goals') initGoalsStep();
     if (step === 'businessType') initBusinessTypeStep();
     if (step === 'vehicleUse') initVehicleUseStep();
-    if (step === 'fuelCosts') initFuelCostsStep();
     if (step === 'vat') initVatStep();
-    if (step === 'adminPain') initAdminPainStep();
+    if (step === 'building') runBuildingSequence();
     if (step === 'recommendation') renderRecommendation();
     if (step === 'choosePlan') renderPlanCards();
     if (step === 'trackingMode') initTrackingModeStep();
@@ -379,12 +420,40 @@
       (typeof global.driver !== 'undefined' ? global.driver : '') ||
       'there';
     const greet = name && name !== 'there' ? 'Hi ' + name + ' 👋' : 'Hi there 👋';
-    typeLines(typing, [greet, "I'll ask a few quick questions.", "Then I'll recommend the best setup for you."]);
+    typeLines(typing, [
+      greet,
+      "I'll ask a few quick questions.",
+      "Then I'll build the best setup for your business.",
+    ]);
+  }
+
+  function initGoalsStep() {
+    const setup = loadSetup();
+    const grid = q('bsGoalsGrid');
+    const intro = q('bsGoalsIntro');
+    const pains = setup.goals || [];
+    if (intro) {
+      typeLines(intro, ['Tell me what you want help with first.'], function () {});
+    }
+    renderOptionCards(grid, GOALS, pains, true);
+    bindOptionCards(grid, function (id) {
+      let next = pains.slice();
+      const i = next.indexOf(id);
+      if (i >= 0) next.splice(i, 1);
+      else next.push(id);
+      saveSetup({ goals: next });
+      initGoalsStep();
+    });
+    syncContinueBtn('bsGoalsContinue', pains.length > 0);
   }
 
   function initBusinessTypeStep() {
     const setup = loadSetup();
     const grid = q('bsBusinessTypeGrid');
+    const intro = q('bsBusinessTypeIntro');
+    if (intro) {
+      typeLines(intro, ['Great.', "Let's understand the kind of work you do."], function () {});
+    }
     function onSelect(id) {
       saveSetup({ businessType: id });
       refreshSingleSelect(grid, BUSINESS_TYPES, id, onSelect);
@@ -406,47 +475,38 @@
     syncContinueBtn('bsVehicleUseContinue', !!setup.vehicleUse);
   }
 
-  function initFuelCostsStep() {
-    const setup = loadSetup();
-    const grid = q('bsFuelCostsGrid');
-    function onSelect(id) {
-      saveSetup({ fuelPayer: id });
-      refreshSingleSelect(grid, FUEL_PAYER, id, onSelect);
-      syncContinueBtn('bsFuelCostsContinue', true);
-    }
-    refreshSingleSelect(grid, FUEL_PAYER, setup.fuelPayer, onSelect);
-    syncContinueBtn('bsFuelCostsContinue', !!setup.fuelPayer);
-  }
-
   function initVatStep() {
     const setup = loadSetup();
     const grid = q('bsVatGrid');
-    const note = q('bsVatNote');
     function onSelect(id) {
       saveSetup({ vatRegistered: id });
       refreshSingleSelect(grid, VAT_OPTIONS, id, onSelect);
-      if (note) note.hidden = id !== 'yes';
       syncContinueBtn('bsVatContinue', true);
     }
     refreshSingleSelect(grid, VAT_OPTIONS, setup.vatRegistered, onSelect);
-    if (note) note.hidden = setup.vatRegistered !== 'yes';
     syncContinueBtn('bsVatContinue', !!setup.vatRegistered);
   }
 
-  function initAdminPainStep() {
-    const setup = loadSetup();
-    const grid = q('bsAdminPainGrid');
-    const pains = setup.adminPainPoints || [];
-    renderOptionCards(grid, ADMIN_PAINS, pains, true);
-    bindOptionCards(grid, function (id) {
-      let next = pains.slice();
-      const i = next.indexOf(id);
-      if (i >= 0) next.splice(i, 1);
-      else next.push(id);
-      saveSetup({ adminPainPoints: next });
-      initAdminPainStep();
-    }, true);
-    syncContinueBtn('bsAdminPainContinue', pains.length > 0);
+  function runBuildingSequence() {
+    const el = q('bsBuildingTyping');
+    showFooterFor('building');
+    syncContinueBtn('bsBuildingContinue', false);
+    if (q('bsBuildingContinue')) q('bsBuildingContinue').hidden = true;
+    typeLines(
+      el,
+      [
+        'Analysing your answers...',
+        'Finding the best MilePilot workspace...',
+        'Almost ready...',
+      ],
+      function () {
+        setTimeout(function () {
+          renderRecommendation();
+          showStep('recommendation');
+        }, 500);
+      },
+      32
+    );
   }
 
   function renderRecommendation() {
@@ -457,16 +517,16 @@
       dashboardMode: rec.dashboardMode,
       selectedPlan: rec.plan,
     });
+    const intro = q('bsRecommendIntro');
     const list = q('bsRecommendList');
-    const plan = q('bsRecommendPlan');
+    if (intro) intro.textContent = rec.intro;
     if (list) {
       list.innerHTML = rec.items
         .map(function (item) {
-          return '<li>' + item + '</li>';
+          return '<li><span class="bs-check" aria-hidden="true">✓</span> ' + item + '</li>';
         })
         .join('');
     }
-    if (plan) plan.textContent = rec.planLabel;
   }
 
   function renderPlanCards() {
@@ -475,16 +535,13 @@
     const selected = setup.selectedPlan || rec.plan;
     const coreCard = q('bsPlanCore');
     const bizCard = q('bsPlanBusiness');
-    if (coreCard) coreCard.classList.toggle('is-selected', selected === 'core');
-    if (bizCard) bizCard.classList.toggle('is-selected', selected === 'business');
-    const badge = q('bsPlanBusinessBadge');
-    if (badge) {
-      badge.hidden = !(
-        setup.vatRegistered === 'yes' ||
-        (setup.adminPainPoints || []).some(function (p) {
-          return ['receipts', 'vat', 'expenses', 'accountant'].includes(p);
-        })
-      );
+    if (coreCard) {
+      coreCard.classList.toggle('is-selected', selected === 'core');
+      coreCard.classList.toggle('is-recommended', rec.plan === 'core');
+    }
+    if (bizCard) {
+      bizCard.classList.toggle('is-selected', selected === 'business');
+      bizCard.classList.toggle('is-recommended', rec.plan === 'business');
     }
   }
 
@@ -506,30 +563,16 @@
 
   function selectTrackingMode(mode) {
     saveSetup({ trackingModeChoice: mode });
-    if (typeof global.MPTrackingMode !== 'undefined') {
-      global.MPTrackingMode.setMode(mode);
-    }
-    if (typeof global.selectedTrackingMode !== 'undefined') {
-      global.selectedTrackingMode = mode;
-    }
+    if (typeof global.MPTrackingMode !== 'undefined') global.MPTrackingMode.setMode(mode);
+    if (typeof global.selectedTrackingMode !== 'undefined') global.selectedTrackingMode = mode;
     initTrackingModeStep();
   }
 
   function renderReadyStep() {
-    const setup = loadSetup();
     const lead = q('bsReadyLead');
-    const cta = q('bsReadyCta');
-    if (!lead) return;
-    if (setup.dashboardMode === 'business') {
-      lead.textContent =
-        'Business Hub is ready to organise your receipts, expenses and VAT records.';
-    } else if (setup.dashboardMode === 'mixed') {
-      lead.textContent =
-        'MilePilot is ready to track your mileage and organise your business records.';
-    } else {
-      lead.textContent = 'AutoPilot is ready to record your business journeys.';
-    }
-    if (cta) cta.textContent = 'Go to Dashboard';
+    const sub = q('bsReadySub');
+    if (lead) lead.textContent = "I'll help keep your business organised.";
+    if (sub) sub.textContent = 'You get back to running it.';
   }
 
   function syncContinueBtn(id, enabled) {
@@ -542,32 +585,31 @@
   function nextFrom(step) {
     const setup = loadSetup();
     if (step === 'welcome') {
-      showStep('businessType');
-      initBusinessTypeStep();
+      showStep('goals');
+      return;
+    }
+    if (step === 'ack') {
+      if (pendingAfterAck) {
+        const next = pendingAfterAck;
+        pendingAfterAck = null;
+        showStep(next);
+      }
+      return;
+    }
+    if (step === 'goals') {
+      showAck(getAckForGoals(setup.goals || []), 'businessType');
       return;
     }
     if (step === 'businessType') {
       showStep('vehicleUse');
-      initVehicleUseStep();
       return;
     }
     if (step === 'vehicleUse') {
-      showStep('fuelCosts');
-      initFuelCostsStep();
-      return;
-    }
-    if (step === 'fuelCosts') {
-      showStep('vat');
-      initVatStep();
+      showAck(getAckForVehicle(setup.vehicleUse), 'vat');
       return;
     }
     if (step === 'vat') {
-      showStep('adminPain');
-      initAdminPainStep();
-      return;
-    }
-    if (step === 'adminPain') {
-      showStep('recommendation');
+      showAck(getAckForVat(setup.vatRegistered), 'building');
       return;
     }
     if (step === 'recommendation') {
@@ -578,19 +620,16 @@
     }
     if (step === 'choosePlan') {
       applySelectedPlan();
-      if (usesVehicle(setup)) {
+      if (usesVehicle(setup) && wantsMileage(setup)) {
         showStep('trackingMode');
-        initTrackingModeStep();
         return;
       }
       saveSetup({ trackingModeChoice: null });
-      return finishSetupPermissions();
+      showStep('ready');
+      return;
     }
     if (step === 'trackingMode') {
       return finishSetupPermissions();
-    }
-    if (step === 'permissions') {
-      return completeBusinessSetup();
     }
     if (step === 'ready') {
       return routeAfterSetupToKnowYou();
@@ -608,18 +647,14 @@
 
   function finishSetupPermissions() {
     const setup = loadSetup();
-    if (!usesVehicle(setup)) {
-      if (typeof global.MPTrackingMode !== 'undefined') {
-        global.MPTrackingMode.setMode('manual');
-      }
+    if (!usesVehicle(setup) || !wantsMileage(setup)) {
+      if (typeof global.MPTrackingMode !== 'undefined') global.MPTrackingMode.setMode('manual');
       global.localStorage.setItem('mp_location_choice', 'skipped');
       global.localStorage.setItem('mp_notifications_choice', 'skipped');
       return routeAfterSetupToKnowYou();
     }
     const mode = setup.trackingModeChoice || 'autopilot';
-    if (typeof global.selectedTrackingMode !== 'undefined') {
-      global.selectedTrackingMode = mode;
-    }
+    if (typeof global.selectedTrackingMode !== 'undefined') global.selectedTrackingMode = mode;
     if (mode === 'autopilot') {
       global.localStorage.setItem('mp_onboard_step', 'enableSetup');
       if (typeof global.initEnableSetup === 'function') global.initEnableSetup();
@@ -631,13 +666,6 @@
   }
 
   function routeAfterSetupToKnowYou() {
-    global.localStorage.setItem('mp_onboard_step', 'name');
-    if (typeof global.initOnboardName === 'function') global.initOnboardName();
-    if (typeof global.showScreen === 'function') global.showScreen('knowYou');
-  }
-
-  function completeBusinessSetup() {
-    saveSetup({ setupComplete: true });
     global.localStorage.setItem('mp_onboard_step', 'name');
     if (typeof global.initOnboardName === 'function') global.initOnboardName();
     if (typeof global.showScreen === 'function') global.showScreen('knowYou');
@@ -655,6 +683,7 @@
     const mileageBlock = q('ccMileageBlock');
     const hub = q('ccBusinessHubBlock');
     const businessPanel = q('ccBusinessPanel');
+    const mileageLater = q('ccMileageLaterCard');
     if (body) {
       body.classList.toggle('cc-layout-mileage', mode === 'mileage');
       body.classList.toggle('cc-layout-business', mode === 'business');
@@ -663,30 +692,19 @@
     if (mileageBlock) mileageBlock.hidden = mode === 'business';
     if (hub) hub.hidden = mode === 'mileage';
     if (businessPanel) businessPanel.hidden = mode === 'mileage';
+    if (mileageLater) mileageLater.hidden = mode !== 'business';
     if (mode === 'business' && hub && mileageBlock && hub.parentNode) {
       hub.parentNode.insertBefore(hub, mileageBlock);
+    }
+    if (mode === 'business' && businessPanel && hub && businessPanel.parentNode) {
+      businessPanel.parentNode.insertBefore(businessPanel, hub);
     }
   }
 
   function getReadyCopy() {
-    const setup = loadSetup();
-    if (setup.dashboardMode === 'business') {
-      return {
-        lead: 'Business Hub is ready to organise your receipts, expenses and VAT records.',
-        feature: 'Scan receipts, track expenses and stay VAT-ready — all in one place.',
-        cta: 'Go to Dashboard',
-      };
-    }
-    if (setup.dashboardMode === 'mixed') {
-      return {
-        lead: 'MilePilot is ready to track your mileage and organise your business records.',
-        feature: 'Mileage tracking and Business Hub work together from day one.',
-        cta: 'Go to Dashboard',
-      };
-    }
     return {
-      lead: 'AutoPilot is ready to record your business journeys.',
-      feature: 'Drive as normal — MilePilot prepares your mileage reports automatically.',
+      lead: "I'll help keep your business organised.",
+      feature: 'You get back to running it.',
       cta: 'Go to Dashboard',
     };
   }
@@ -699,6 +717,7 @@
     STORAGE_KEY: STORAGE_KEY,
     STEPS: STEPS,
     PLANS: PLANS,
+    GOALS: GOALS,
     loadSetup: loadSetup,
     saveSetup: saveSetup,
     start: start,
@@ -707,21 +726,13 @@
     selectPlan: selectPlan,
     selectTrackingMode: selectTrackingMode,
     usesVehicle: usesVehicle,
+    wantsMileage: wantsMileage,
+    wantsBusinessHub: wantsBusinessHub,
     computeRecommendation: computeRecommendation,
     getDashboardMode: getDashboardMode,
     applyDashboardLayout: applyDashboardLayout,
     getReadyCopy: getReadyCopy,
-    completeBusinessSetup: completeBusinessSetup,
     routeAfterSetupToKnowYou: routeAfterSetupToKnowYou,
     reset: reset,
-    initBusinessTypeStep: initBusinessTypeStep,
-    initVehicleUseStep: initVehicleUseStep,
-    initFuelCostsStep: initFuelCostsStep,
-    initVatStep: initVatStep,
-    initAdminPainStep: initAdminPainStep,
-    renderRecommendation: renderRecommendation,
-    renderPlanCards: renderPlanCards,
-    initTrackingModeStep: initTrackingModeStep,
-    renderReadyStep: renderReadyStep,
   };
 })(typeof window !== 'undefined' ? window : global);

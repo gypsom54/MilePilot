@@ -1,5 +1,5 @@
 /**
- * Business setup onboarding — recommendation engine
+ * Business setup onboarding — recommendation engine (conversational lockdown)
  */
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
@@ -51,43 +51,49 @@ function run(name, fn) {
   }
 }
 
-run('mileage-heavy user gets Core recommendation', () => {
+run('mileage goal + vehicle gets Core recommendation', () => {
   const ls = createMockLocalStorage();
   const M = loadModule(ls);
   const rec = M.computeRecommendation({
+    goals: ['tracking_mileage'],
     businessType: 'taxi',
     vehicleUse: 'daily',
-    adminPainPoints: ['mileage'],
     vatRegistered: 'no',
   });
   assert.equal(rec.setup, 'mileage');
   assert.equal(rec.plan, 'core');
 });
 
-run('VAT user gets Business recommendation', () => {
+run('VAT goals without vehicle gets Business recommendation', () => {
   const ls = createMockLocalStorage();
   const M = loadModule(ls);
   const rec = M.computeRecommendation({
+    goals: ['saving_receipts', 'adding_vat'],
     businessType: 'freelancer',
     vehicleUse: 'no',
-    adminPainPoints: ['receipts', 'vat'],
     vatRegistered: 'yes',
   });
   assert.equal(rec.setup, 'business');
   assert.equal(rec.plan, 'business');
 });
 
-run('mixed signals get Business mixed setup', () => {
+run('mixed goals with vehicle gets Business mixed setup', () => {
   const ls = createMockLocalStorage();
   const M = loadModule(ls);
   const rec = M.computeRecommendation({
+    goals: ['tracking_mileage', 'saving_receipts'],
     businessType: 'tradesperson',
     vehicleUse: 'daily',
-    adminPainPoints: ['mileage', 'receipts'],
     vatRegistered: 'yes',
   });
   assert.equal(rec.setup, 'mixed');
   assert.equal(rec.plan, 'business');
+});
+
+run('no vehicle suppresses mileage even with mileage goal', () => {
+  const ls = createMockLocalStorage();
+  const M = loadModule(ls);
+  assert.equal(M.wantsMileage({ goals: ['tracking_mileage'], vehicleUse: 'no' }), false);
 });
 
 console.log(`\nBusiness setup: ${passed} passed, ${failed} failed\n`);

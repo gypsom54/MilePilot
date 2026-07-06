@@ -955,7 +955,17 @@ body.always-modal-open .nav{display:none!important}
 .bs-vat-note[hidden]{display:none!important}
 .bs-recommend-card{margin:0 0 16px;padding:18px 16px;border-radius:20px;border:1px solid rgba(110,180,255,.18);background:linear-gradient(180deg,rgba(13,107,255,.12),rgba(13,107,255,.03));box-shadow:var(--card-shadow)}
 .bs-recommend-kicker{margin:0 0 10px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(110,180,255,.85)}
-.bs-recommend-list{margin:0 0 14px;padding:0 0 0 18px;color:rgba(198,220,248,.92);font-size:15px;line-height:1.5}
+.bs-recommend-list{margin:0 0 14px;padding:0;list-style:none;color:rgba(198,220,248,.92);font-size:15px;line-height:1.5}
+.bs-recommend-list li{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px}
+.bs-check{color:#20D781;font-weight:700;flex-shrink:0}
+.bs-building-head{margin:0 0 12px;font-size:clamp(22px,5.8vw,28px);font-weight:700;color:#fff}
+.bs-plan-card.is-recommended{border-color:rgba(32,215,129,.45);box-shadow:0 12px 32px rgba(13,107,255,.24),0 0 0 1px rgba(32,215,129,.2)}
+.cc-business-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+.cc-business-action{padding:12px 10px;border-radius:14px;border:1px solid rgba(110,180,255,.16);background:rgba(13,107,255,.08);color:rgba(198,220,248,.94);font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;text-align:center}
+.cc-mileage-later{margin:0 0 16px;padding:14px 16px;border-radius:16px;border:1px dashed rgba(110,180,255,.18);background:rgba(255,255,255,.02);text-align:center}
+.cc-mileage-later[hidden]{display:none!important}
+.cc-mileage-later p{margin:0 0 10px;font-size:14px;font-weight:500;color:rgba(159,180,208,.88)}
+.cc-mileage-later button{border:0;background:transparent;color:rgba(110,180,255,.95);font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;text-decoration:underline}
 .bs-recommend-plan{margin:0;font-size:16px;font-weight:700;color:#fff}
 .bs-plan-grid{display:grid;grid-template-columns:1fr;gap:12px}
 .bs-plan-card{text-align:left;padding:18px 16px;border-radius:20px;border:1px solid rgba(110,180,255,.16);background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(13,107,255,.02));cursor:pointer;font-family:inherit;color:inherit;transition:border-color .22s ease,box-shadow .22s ease}
@@ -1023,37 +1033,35 @@ body.always-modal-open .nav{display:none!important}
 <p class="bs-typing" id="bsWelcomeTyping" aria-live="polite"></p>
 <p class="bs-subtext">This takes less than a minute.</p>
 </div>
+<div class="bs-step" data-step="ack" hidden>
+<p class="bs-typing" id="bsAckTyping" aria-live="polite"></p>
+</div>
+<div class="bs-step" data-step="goals" hidden>
+<h2 class="bs-headline">What do you want MilePilot to help you with?</h2>
+<p class="bs-typing bs-intro" id="bsGoalsIntro" aria-live="polite"></p>
+<p class="bs-helper">Choose all that apply.</p>
+<div class="bs-options" id="bsGoalsGrid"></div>
+</div>
 <div class="bs-step" data-step="businessType" hidden>
-<h2 class="bs-headline">What best describes your business?</h2>
+<h2 class="bs-headline">What do you do?</h2>
+<p class="bs-typing bs-intro" id="bsBusinessTypeIntro" aria-live="polite"></p>
 <div class="bs-options" id="bsBusinessTypeGrid"></div>
 </div>
 <div class="bs-step" data-step="vehicleUse" hidden>
 <h2 class="bs-headline">Do you use a vehicle for business?</h2>
-<p class="bs-helper">This helps us decide whether mileage tracking should be part of your setup.</p>
 <div class="bs-options" id="bsVehicleUseGrid"></div>
-</div>
-<div class="bs-step" data-step="fuelCosts" hidden>
-<h2 class="bs-headline">Who usually pays for your fuel or vehicle costs?</h2>
-<p class="bs-helper">This helps MilePilot understand whether mileage, expenses or VAT tools matter most.</p>
-<div class="bs-options" id="bsFuelCostsGrid"></div>
 </div>
 <div class="bs-step" data-step="vat" hidden>
 <h2 class="bs-headline">Are you VAT registered?</h2>
 <div class="bs-options" id="bsVatGrid"></div>
-<p class="bs-vat-note" id="bsVatNote" hidden>Great — we&apos;ll prioritise receipts, VAT summaries and accountant-ready reports.</p>
 </div>
-<div class="bs-step" data-step="adminPain" hidden>
-<h2 class="bs-headline">What takes up the most admin time?</h2>
-<p class="bs-helper">Choose all that apply.</p>
-<div class="bs-options" id="bsAdminPainGrid"></div>
+<div class="bs-step" data-step="building" hidden>
+<h2 class="bs-building-head">Building your setup...</h2>
+<p class="bs-typing" id="bsBuildingTyping" aria-live="polite"></p>
 </div>
 <div class="bs-step" data-step="recommendation" hidden>
-<h2 class="bs-headline">Recommended for you</h2>
-<div class="bs-recommend-card">
-<p class="bs-recommend-kicker">Your personalised setup</p>
+<p class="bs-recommend-kicker" id="bsRecommendIntro">Based on what you told me, I recommend:</p>
 <ul class="bs-recommend-list" id="bsRecommendList"></ul>
-<p class="bs-recommend-plan" id="bsRecommendPlan"></p>
-</div>
 </div>
 <div class="bs-step" data-step="choosePlan" hidden>
 <h2 class="bs-headline">Choose your plan</h2>
@@ -1062,14 +1070,13 @@ body.always-modal-open .nav{display:none!important}
 <p class="bs-plan-name">MilePilot Core</p>
 <p class="bs-plan-price">£4.99/month</p>
 <p class="bs-plan-tag">Never miss another business mile.</p>
-<ul class="bs-plan-features"><li>AutoPilot</li><li>Manual tracking</li><li>Background mileage tracking</li><li>HMRC mileage estimates</li><li>PDF reports</li><li>Email reports</li></ul>
+<ul class="bs-plan-features"><li>AutoPilot</li><li>Manual tracking</li><li>Background tracking</li><li>HMRC estimates</li><li>PDF reports</li><li>Email reports</li></ul>
 </button>
 <button type="button" class="bs-plan-card" id="bsPlanBusiness" onclick="MPBusinessSetup.selectPlan('business')">
-<span class="bs-plan-badge" id="bsPlanBusinessBadge">Recommended if you track receipts, expenses or VAT</span>
 <p class="bs-plan-name">MilePilot Business</p>
 <p class="bs-plan-price">£9.99/month</p>
 <p class="bs-plan-tag">Run your business with less admin.</p>
-<ul class="bs-plan-features"><li>Everything in Core, plus:</li><li>Business Hub</li><li>AI receipt scanner</li><li>Expense tracking</li><li>VAT summaries</li><li>AI Bookkeeper</li><li>Business Health Score</li><li>Accountant Pack</li></ul>
+<ul class="bs-plan-features"><li>Everything in Core, plus:</li><li>Business Hub</li><li>AI Receipt Scanner</li><li>Expenses</li><li>VAT summaries</li><li>AI Bookkeeper</li><li>Business Health</li><li>Accountant Pack</li></ul>
 </button>
 </div>
 </div>
@@ -1087,17 +1094,19 @@ body.always-modal-open .nav{display:none!important}
 </div>
 </div>
 <div class="bs-step" data-step="ready" hidden>
-<h2 class="bs-headline">You&apos;re ready to go.</h2>
-<p class="bs-helper" id="bsReadyLead">MilePilot is ready for your business.</p>
+<h2 class="bs-headline">You&apos;re all set.</h2>
+<p class="bs-helper" id="bsReadyLead">I&apos;ll help keep your business organised.</p>
+<p class="bs-subtext" id="bsReadySub">You get back to running it.</p>
 </div>
 </div>
 <div class="knowYou-foot">
 <button type="button" class="btn premium-btn is-ready" id="bsWelcomeContinue" onclick="MPBusinessSetup.nextFrom('welcome')">Start Setup</button>
-<button type="button" class="btn premium-btn" id="bsBusinessTypeContinue" onclick="MPBusinessSetup.nextFrom('businessType')" disabled>Continue</button>
+<button type="button" class="btn premium-btn" id="bsAckContinue" onclick="MPBusinessSetup.nextFrom('ack')" hidden disabled>Continue</button>
+<button type="button" class="btn premium-btn" id="bsGoalsContinue" onclick="MPBusinessSetup.nextFrom('goals')" hidden disabled>Continue</button>
+<button type="button" class="btn premium-btn" id="bsBusinessTypeContinue" onclick="MPBusinessSetup.nextFrom('businessType')" hidden disabled>Continue</button>
 <button type="button" class="btn premium-btn" id="bsVehicleUseContinue" onclick="MPBusinessSetup.nextFrom('vehicleUse')" hidden disabled>Continue</button>
-<button type="button" class="btn premium-btn" id="bsFuelCostsContinue" onclick="MPBusinessSetup.nextFrom('fuelCosts')" hidden disabled>Continue</button>
 <button type="button" class="btn premium-btn" id="bsVatContinue" onclick="MPBusinessSetup.nextFrom('vat')" hidden disabled>Continue</button>
-<button type="button" class="btn premium-btn" id="bsAdminPainContinue" onclick="MPBusinessSetup.nextFrom('adminPain')" hidden disabled>Continue</button>
+<button type="button" class="btn premium-btn" id="bsBuildingContinue" hidden disabled>Continue</button>
 <button type="button" class="btn premium-btn is-ready" id="bsRecommendContinue" onclick="MPBusinessSetup.nextFrom('recommendation')" hidden>Continue</button>
 <button type="button" class="btn premium-btn" id="bsPlanContinue" onclick="MPBusinessSetup.nextFrom('choosePlan')" hidden disabled>Continue</button>
 <button type="button" class="btn premium-btn" id="bsTrackingContinue" onclick="MPBusinessSetup.nextFrom('trackingMode')" hidden disabled>Continue</button>
@@ -1405,11 +1414,17 @@ body.always-modal-open .nav{display:none!important}
 <!-- Business summary panel (Business Hub users) -->
 <div class="cc-business-panel" id="ccBusinessPanel" hidden>
 <h2 class="cc-business-panel-title">Today&apos;s Business</h2>
-<div class="cc-business-metrics">
-<div class="cc-business-metric"><span>Receipts</span><strong id="ccBizReceipts">0</strong></div>
-<div class="cc-business-metric"><span>Expenses</span><strong id="ccBizExpenses">£0</strong></div>
-<div class="cc-business-metric"><span>VAT</span><strong id="ccBizVat">—</strong></div>
+<div class="cc-business-actions">
+<button type="button" class="cc-business-action" onclick="openBusinessHub()">Scan Receipt</button>
+<button type="button" class="cc-business-action" onclick="openBusinessHub()">Expenses</button>
+<button type="button" class="cc-business-action" onclick="openBusinessHub()">VAT Summary</button>
+<button type="button" class="cc-business-action" onclick="openBusinessHub()">AI Bookkeeper</button>
+<button type="button" class="cc-business-action" onclick="openBusinessHub()">Accountant Pack</button>
 </div>
+</div>
+<div class="cc-mileage-later" id="ccMileageLaterCard" hidden>
+<p>Need mileage later?</p>
+<button type="button" onclick="openTrackingModeSettings()">Enable AutoPilot anytime</button>
 </div>
 <button type="button" class="cc-report-btn" id="ccReportBtn" hidden onclick="viewTodayReport()">View Report →</button>
 <div class="cc-divider" aria-hidden="true"></div>
@@ -1765,7 +1780,7 @@ body.always-modal-open .nav{display:none!important}
 <script src="js/business-setup-onboard.js"></script>
 <script src="js/beta-feedback.js"></script>
 <script>
-const APP_VERSION='8.43.63';
+const APP_VERSION='8.43.64';
 window.APP_VERSION=APP_VERSION;
 const DEFAULT_WEEKLY_GOAL_MILES=400;
 const BUSINESS_PROFILE_KEY='mp_business_profile';
