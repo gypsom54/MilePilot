@@ -1,5 +1,5 @@
 /**
- * MilePilot Conversational Onboarding — two-workspace strategy (Mileage + Business)
+ * MilePilot Onboarding V4 — branching workspace builder
  * @see docs/PRODUCT_STRATEGY_LOCK.md
  */
 (function (global) {
@@ -9,18 +9,32 @@
   const PROFILE_KEY = 'mp_business_profile';
 
   const GOALS = [
-    { id: 'track_mileage', label: 'Track mileage' },
-    { id: 'organise_receipts', label: 'Scan receipts' },
-    { id: 'track_expenses', label: 'Track expenses' },
+    { id: 'track_mileage', label: 'Track my business mileage' },
+    { id: 'organise_receipts', label: 'Scan and organise receipts' },
+    { id: 'track_expenses', label: 'Track business expenses' },
     { id: 'help_vat', label: 'Help with VAT' },
-    { id: 'accountant', label: 'Prepare accountant records' },
+    { id: 'accountant', label: 'Prepare records for my accountant' },
     { id: 'reduce_paperwork', label: 'Reduce paperwork' },
+  ];
+
+  const BUSINESS_GOAL_IDS = [
+    'organise_receipts',
+    'track_expenses',
+    'help_vat',
+    'accountant',
+    'reduce_paperwork',
   ];
 
   const VEHICLE_USE = [
     { id: 'daily', label: 'Yes, every day' },
     { id: 'sometimes', label: 'Sometimes' },
     { id: 'no', label: 'No / not really' },
+  ];
+
+  const VEHICLE_TYPE = [
+    { id: 'car', label: 'Car' },
+    { id: 'van', label: 'Van' },
+    { id: 'motorcycle', label: 'Motorcycle' },
   ];
 
   const TRACKING_PREF = [
@@ -33,6 +47,17 @@
     { id: 'yes', label: 'Yes' },
     { id: 'no', label: 'No' },
     { id: 'unsure', label: 'Not sure' },
+  ];
+
+  const ACCOUNTANT_OPTIONS = [
+    { id: 'yes', label: 'Yes' },
+    { id: 'no', label: 'No' },
+    { id: 'sometimes', label: 'Sometimes' },
+  ];
+
+  const SCAN_OPTIONS = [
+    { id: 'yes', label: 'Yes, scan now' },
+    { id: 'later', label: 'Maybe later' },
   ];
 
   const PLANS = {
@@ -63,7 +88,7 @@
 
   let typingTimer = null;
   let pendingAfterAck = null;
-  let flowSteps = ['welcome', 'goals'];
+  let flowSteps = ['welcome', 'name'];
 
   function q(id) {
     return document.getElementById(id);
@@ -71,10 +96,16 @@
 
   function defaultSetup() {
     return {
+      driverName: '',
       goals: [],
+      onboardPath: null,
       vehicleUse: null,
+      vehicleType: null,
       trackingPreference: null,
       vatRegistered: null,
+      worksWithAccountant: null,
+      reportEmail: '',
+      scanReceiptNow: null,
       recommendedSetup: null,
       selectedPlan: null,
       setupComplete: false,
@@ -98,6 +129,9 @@
       if (raw.trackingModeChoice && !raw.trackingPreference) {
         raw.trackingPreference = raw.trackingModeChoice;
       }
+      if (!raw.driverName && global.localStorage.getItem('mp_driver')) {
+        raw.driverName = global.localStorage.getItem('mp_driver');
+      }
       return { ...defaultSetup(), ...raw };
     } catch (e) {
       return defaultSetup();
@@ -106,6 +140,18 @@
 
   function saveSetup(updates) {
     const next = { ...loadSetup(), ...updates };
+    if (next.driverName) {
+      global.localStorage.setItem('mp_driver', next.driverName);
+      if (typeof global.driver !== 'undefined') global.driver = next.driverName;
+    }
+    if (next.vehicleType) {
+      global.localStorage.setItem('mp_vehicle', next.vehicleType);
+      if (typeof global.vehicle !== 'undefined') global.vehicle = next.vehicleType;
+      if (typeof global.selectedVehicle !== 'undefined') global.selectedVehicle = next.vehicleType;
+    }
+    if (next.reportEmail) {
+      global.localStorage.setItem('mp_email', next.reportEmail);
+    }
     global.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
     syncSetupToProfile(next);
     return next;
@@ -114,28 +160,61 @@
   function syncSetupToProfile(setup) {
     if (typeof global.saveBusinessProfile !== 'function') return;
     const plan = PLANS[setup.selectedPlan] || PLANS.core;
-    const mileageFocus = setup.dashboardMode === 'mileage' || setup.dashboardMode === 'mixed';
-    const businessHubFocus = setup.dashboardMode === 'business' || setup.dashboardMode === 'mixed';
+    const mode = setup.dashboardMode || computeDashboardMode(setup);
     global.saveBusinessProfile({
       profession: 'other',
       experience: plan.experience,
-      receiptsEnabled: businessHubFocus,
+      receiptsEnabled: mode === 'business' || mode === 'mixed',
       vatRegistered:
         setup.vatRegistered === 'yes' ? true : setup.vatRegistered === 'no' ? false : null,
       businessSetup: setup,
-      dashboardMode: setup.dashboardMode,
-      mileageFocus: mileageFocus,
-      businessHubFocus: businessHubFocus,
+      dashboardMode: mode,
+      mileageFocus: mode === 'mileage' || mode === 'mixed',
+      businessHubFocus: mode === 'business' || mode === 'mixed',
       selectedPlan: setup.selectedPlan,
     });
   }
 
-  function selectedMileageGoal(setup) {
+  function hasMileageGoal(setup) {
     return (setup || loadSetup()).goals.includes('track_mileage');
+  }
+
+  function hasBusinessGoals(setup) {
+    const g = (setup || loadSetup()).goals || [];
+    return BUSINESS_GOAL_IDS.some(function (id) {
+      return g.includes(id);
+    });
+  }
+
+  function getOnboardPath(setup) {
+    const s = setup || loadSetup();
+    if (s.onboardPath) return s.onboardPath;
+    const mileage = hasMileageGoal(s);
+    const business = hasBusinessGoals(s);
+    if (mileage && !business) return 'mileage';
+    if (!mileage && business) return 'business';
+    if (mileage && business) return 'combined';
+    return 'business';
+  }
+
+  function needsMileageOnboarding(setup) {
+    return hasMileageGoal(setup || loadSetup());
+  }
+
+  function needsBusinessOnboarding(setup) {
+    return hasBusinessGoals(setup || loadSetup());
   }
 
   function selectedVatGoal(setup) {
     return (setup || loadSetup()).goals.includes('help_vat');
+  }
+
+  function selectedAccountantGoal(setup) {
+    return (setup || loadSetup()).goals.includes('accountant');
+  }
+
+  function selectedReceiptsGoal(setup) {
+    return (setup || loadSetup()).goals.includes('organise_receipts');
   }
 
   function usesVehicle(setup) {
@@ -143,28 +222,51 @@
     return s.vehicleUse === 'daily' || s.vehicleUse === 'sometimes';
   }
 
-  function wantsBusinessHub(setup) {
-    const s = setup || loadSetup();
-    const g = s.goals || [];
-    return (
-      g.includes('organise_receipts') ||
-      g.includes('track_expenses') ||
-      g.includes('help_vat') ||
-      g.includes('accountant') ||
-      s.vatRegistered === 'yes'
-    );
-  }
-
   function wantsMileageWorkspace(setup) {
     const s = setup || loadSetup();
-    return selectedMileageGoal(s) && usesVehicle(s);
+    return hasMileageGoal(s) && usesVehicle(s);
+  }
+
+  function wantsBusinessHub(setup) {
+    return hasBusinessGoals(setup);
+  }
+
+  function wantsBusinessWorkspace(setup) {
+    return wantsBusinessHub(setup);
+  }
+
+  function computeDashboardMode(setup) {
+    const path = getOnboardPath(setup);
+    if (path === 'mileage') return 'mileage';
+    if (path === 'business') return 'business';
+    return 'mixed';
   }
 
   function buildFlow(setup) {
-    const steps = ['welcome', 'goals'];
-    if (selectedMileageGoal(setup)) steps.push('vehicleUse');
-    if (selectedMileageGoal(setup) && usesVehicle(setup)) steps.push('trackingPreference');
-    if (selectedVatGoal(setup)) steps.push('vat');
+    const s = setup || loadSetup();
+    const path = getOnboardPath(s);
+    const steps = ['welcome', 'name', 'nameAck', 'goals', 'ack'];
+
+    if (needsMileageOnboarding(s)) {
+      steps.push('vehicleUse');
+      if (usesVehicle(s)) {
+        steps.push('vehicleType', 'trackingPreference');
+      }
+    }
+
+    if (needsBusinessOnboarding(s)) {
+      if (path === 'combined' && needsMileageOnboarding(s)) {
+        steps.push('businessBridge');
+      }
+      if (selectedVatGoal(s)) steps.push('vat');
+      if (selectedAccountantGoal(s)) steps.push('accountant');
+    }
+
+    steps.push('reportEmail');
+    if (needsBusinessOnboarding(s) && selectedReceiptsGoal(s) && path !== 'mileage') {
+      steps.push('scanReceipt');
+    }
+
     steps.push('building', 'recommendation', 'choosePlan');
     flowSteps = steps;
     return steps;
@@ -172,77 +274,74 @@
 
   function mileageTrackingLabel(setup) {
     const pref = (setup || loadSetup()).trackingPreference;
-    if (pref === 'manual') return 'Manual mileage tracking';
-    if (pref === 'autopilot') return 'AutoPilot mileage tracking';
-    return 'AutoPilot or Manual mileage tracking';
-  }
-
-  function recommendationSubline(setup) {
-    const s = setup || loadSetup();
-    if ((s.goals || []).includes('reduce_paperwork') || wantsBusinessWorkspace(s)) {
-      return 'This setup is built around the admin you told me you want to reduce.';
-    }
-    return "Let's make sure you never miss another business mile.";
-  }
-
-  function wantsBusinessWorkspace(setup) {
-    return wantsBusinessHub(setup);
-  }
-
-  function businessWorkspaceItems(setup) {
-    const s = setup || loadSetup();
-    const hasVat = selectedVatGoal(s) || s.vatRegistered === 'yes';
-    const items = ['Business Workspace', 'AI Receipt Scanner', 'Expenses'];
-    if (hasVat) items.push('VAT');
-    items.push('AI Bookkeeper', 'Accountant Pack', 'Business Health', 'Business Inbox', 'Reports');
-    return items;
-  }
-
-  function mileageWorkspaceItems(setup) {
-    const s = setup || loadSetup();
-    return [mileageTrackingLabel(s), 'HMRC mileage estimates', 'PDF & email reports'];
+    if (pref === 'manual') return 'Manual tracking';
+    if (pref === 'autopilot') return 'AutoPilot';
+    return 'AutoPilot or Manual tracking';
   }
 
   function computeRecommendation(setup) {
     const s = setup || loadSetup();
-    const mileage = wantsMileageWorkspace(s);
-    const business = wantsBusinessWorkspace(s);
-    const subline = recommendationSubline(s);
-    const intro = "Here's what I recommend.";
+    const path = getOnboardPath(s);
+    const subline =
+      path === 'business' || path === 'combined'
+        ? 'This setup is built around the admin you told me you want to reduce.'
+        : "Let's make sure you never miss another business mile.";
 
-    if (mileage && business) {
-      const items = ['Mileage tracking', 'Business Workspace', 'AI Receipt Scanner', 'Expense tracking'];
-      if (selectedVatGoal(s) || s.vatRegistered === 'yes') items.push('VAT summaries');
-      items.push('Accountant Pack');
-      return { setup: 'mixed', dashboardMode: 'mixed', items, plan: 'business', intro, subline };
+    if (path === 'combined') {
+      return {
+        setup: 'combined',
+        dashboardMode: 'mixed',
+        workspaceTitle: 'MilePilot Business',
+        items: [
+          'Mileage tracking',
+          'Business Hub',
+          'Receipts',
+          'Expenses',
+          'VAT',
+          'Accountant Pack',
+          'AI Bookkeeper',
+        ],
+        plan: 'business',
+        intro: "Here's what I recommend.",
+        subline,
+      };
     }
-    if (business && !mileage) {
+    if (path === 'business') {
       return {
         setup: 'business',
         dashboardMode: 'business',
-        items: businessWorkspaceItems(s),
+        workspaceTitle: 'Business Hub',
+        items: [
+          'AI Receipt Scanner',
+          'Expense tracking',
+          'VAT summaries',
+          'Business reports',
+          'Accountant Pack',
+          'AI Bookkeeper',
+        ],
         plan: 'business',
-        intro,
+        intro: "Here's what I recommend.",
         subline,
       };
     }
     return {
       setup: 'mileage',
       dashboardMode: 'mileage',
-      items: mileageWorkspaceItems(s),
+      workspaceTitle: 'Mileage Workspace',
+      items: [mileageTrackingLabel(s), 'HMRC mileage estimates', 'PDF & email reports'],
       plan: 'core',
-      intro,
+      intro: "Here's what I recommend.",
       subline,
     };
-  }
-
-  function getWorkspaceType() {
-    return getDashboardMode();
   }
 
   function getDashboardMode() {
     const profile = getProfile();
     return profile.dashboardMode || loadSetup().dashboardMode || 'mileage';
+  }
+
+  function getWorkspaceType() {
+    return getDashboardMode();
   }
 
   function getProfile() {
@@ -270,7 +369,7 @@
     let lineIdx = 0;
     let charIdx = 0;
     el.innerHTML = '';
-    const ms = speed || 28;
+    const ms = speed || 22;
     function tick() {
       if (lineIdx >= lines.length) {
         clearTyping();
@@ -307,12 +406,9 @@
     const hasVat = g.includes('help_vat');
     const hasAccountant = g.includes('accountant');
     const hasExpenses = g.includes('track_expenses');
-    const hasBusiness =
-      hasReceipts || hasExpenses || hasVat || hasAccountant || g.includes('reduce_paperwork');
+    const hasBusiness = hasBusinessGoals({ goals: g });
 
-    if (!g.length) {
-      return ["Great — I'll build the right workspace around what you need."];
-    }
+    if (!g.length) return ["Great — I'll build the right workspace around what you need."];
     if (hasMileage && !hasBusiness) {
       return ["Perfect — I'll make mileage tracking the centre of your workspace."];
     }
@@ -322,9 +418,7 @@
           "Great — I'll focus your setup on receipts, VAT summaries and accountant-ready records.",
         ];
       }
-      return [
-        "Great — I'll focus your Business Workspace on receipts, expenses and records.",
-      ];
+      return ["Great — I'll focus your Business Workspace on receipts, expenses and records."];
     }
     if (hasMileage && hasBusiness) {
       const focus = [];
@@ -334,9 +428,6 @@
       if (hasAccountant) focus.push('accountant-ready records');
       if (hasExpenses) focus.push('expenses');
       return ["Perfect — I'll build your workspace around " + formatAckList(focus) + '.'];
-    }
-    if (g.includes('reduce_paperwork')) {
-      return ["Great — I'll keep your workspace simple with less paperwork."];
     }
     return ["Great — I'll build the right workspace around what you need."];
   }
@@ -380,7 +471,7 @@
       requestAnimationFrame(function () {
         li.classList.add('is-visible');
       });
-      setTimeout(addNext, 260);
+      setTimeout(addNext, 240);
     }
     addNext();
   }
@@ -406,7 +497,7 @@
           syncContinueBtn('bsAckContinue', true);
         });
       },
-      24
+      22
     );
   }
 
@@ -443,8 +534,7 @@
   }
 
   function updateProgress(step) {
-    const setup = loadSetup();
-    buildFlow(setup);
+    buildFlow(loadSetup());
     const idx = flowSteps.indexOf(step);
     const pct = idx < 0 ? 0 : Math.round((idx / Math.max(1, flowSteps.length - 1)) * 100);
     const fill = q('bsProgressFill');
@@ -457,11 +547,18 @@
 
   const FOOTER_BTNS = {
     welcome: 'bsWelcomeContinue',
+    name: 'bsNameContinue',
+    nameAck: 'bsNameAckContinue',
     ack: 'bsAckContinue',
     goals: 'bsGoalsContinue',
     vehicleUse: 'bsVehicleUseContinue',
+    vehicleType: 'bsVehicleTypeContinue',
     trackingPreference: 'bsTrackingContinue',
+    businessBridge: 'bsBusinessBridgeContinue',
     vat: 'bsVatContinue',
+    accountant: 'bsAccountantContinue',
+    reportEmail: 'bsReportEmailContinue',
+    scanReceipt: 'bsScanReceiptContinue',
     recommendation: 'bsRecommendContinue',
     choosePlan: 'bsPlanContinue',
   };
@@ -472,16 +569,11 @@
       if (!btn) return;
       btn.hidden = key !== step;
     });
-    const skipWrap = q('bsWelcomeSkipWrap');
-    if (skipWrap) skipWrap.hidden = step !== 'welcome';
-    const compareBtn = q('bsComparePlans');
-    if (compareBtn) compareBtn.hidden = step !== 'choosePlan';
     if (step === 'building') {
       Object.keys(FOOTER_BTNS).forEach(function (key) {
         const btn = q(FOOTER_BTNS[key]);
         if (btn) btn.hidden = true;
       });
-      if (compareBtn) compareBtn.hidden = true;
     }
   }
 
@@ -492,31 +584,57 @@
     showFooterFor(step);
     updateProgress(step);
     if (step === 'welcome') initWelcomeStep();
+    if (step === 'name') initNameStep();
+    if (step === 'nameAck') initNameAckStep();
     if (step === 'goals') initGoalsStep();
     if (step === 'vehicleUse') initVehicleUseStep();
+    if (step === 'vehicleType') initVehicleTypeStep();
     if (step === 'trackingPreference') initTrackingPreferenceStep();
+    if (step === 'businessBridge') initBusinessBridgeStep();
     if (step === 'vat') initVatStep();
+    if (step === 'accountant') initAccountantStep();
+    if (step === 'reportEmail') initReportEmailStep();
+    if (step === 'scanReceipt') initScanReceiptStep();
     if (step === 'building') runBuildingSequence();
     if (step === 'recommendation') renderRecommendation();
     if (step === 'choosePlan') renderPlanCards();
   }
 
   function initWelcomeStep() {
-    const name =
-      global.localStorage.getItem('mp_driver') ||
-      (typeof global.driver !== 'undefined' ? global.driver : '') ||
-      'there';
-    const greet = name && name !== 'there' ? 'Hi ' + name + ' 👋' : 'Hi there 👋';
     typeLines(
       q('bsWelcomeTyping'),
       [
-        greet,
+        'MilePilot',
         "Let's build your business assistant.",
-        "I'll ask a few quick questions, then create the best MilePilot workspace for you.",
+        "I'll ask a few quick questions and recommend the best workspace for you.",
       ],
       null,
-      22
+      20
     );
+  }
+
+  function initNameStep() {
+    const input = q('bsNameInput');
+    const setup = loadSetup();
+    if (input) {
+      if (!input.dataset.bound) {
+        input.addEventListener('input', function () {
+          syncContinueBtn('bsNameContinue', input.value.trim().length > 0);
+        });
+        input.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter') nextFrom('name');
+        });
+        input.dataset.bound = '1';
+      }
+      input.value = setup.driverName || global.localStorage.getItem('mp_driver') || '';
+    }
+    syncContinueBtn('bsNameContinue', !!(input && input.value.trim()));
+  }
+
+  function initNameAckStep() {
+    const name = loadSetup().driverName || 'there';
+    typeLines(q('bsNameAckTyping'), ['Nice to meet you, ' + name + '.'], null, 20);
+    syncContinueBtn('bsNameAckContinue', true);
   }
 
   function initGoalsStep() {
@@ -529,7 +647,8 @@
       const i = next.indexOf(id);
       if (i >= 0) next.splice(i, 1);
       else next.push(id);
-      saveSetup({ goals: next });
+      const path = getOnboardPath({ goals: next });
+      saveSetup({ goals: next, onboardPath: path });
       initGoalsStep();
     });
     syncContinueBtn('bsGoalsContinue', goals.length > 0);
@@ -537,10 +656,7 @@
 
   function initVehicleUseStep() {
     const setup = loadSetup();
-    const bridge = q('bsVehicleBridge');
-    if (bridge) {
-      typeLines(bridge, ["Because you'd like help with mileage..."], function () {});
-    }
+    typeLines(q('bsVehicleBridge'), ["Because you'd like help with mileage..."], function () {}, 20);
     function onSelect(id) {
       saveSetup({ vehicleUse: id });
       refreshSingleSelect(q('bsVehicleUseGrid'), VEHICLE_USE, id, onSelect);
@@ -550,12 +666,20 @@
     syncContinueBtn('bsVehicleUseContinue', !!setup.vehicleUse);
   }
 
+  function initVehicleTypeStep() {
+    const setup = loadSetup();
+    function onSelect(id) {
+      saveSetup({ vehicleType: id });
+      refreshSingleSelect(q('bsVehicleTypeGrid'), VEHICLE_TYPE, id, onSelect);
+      syncContinueBtn('bsVehicleTypeContinue', true);
+    }
+    refreshSingleSelect(q('bsVehicleTypeGrid'), VEHICLE_TYPE, setup.vehicleType, onSelect);
+    syncContinueBtn('bsVehicleTypeContinue', !!setup.vehicleType);
+  }
+
   function initTrackingPreferenceStep() {
     const setup = loadSetup();
-    const bridge = q('bsTrackingBridge');
-    if (bridge) {
-      typeLines(bridge, ['To build the right workspace...'], function () {});
-    }
+    typeLines(q('bsTrackingBridge'), ['To capture journeys the right way...'], function () {}, 20);
     function onSelect(id) {
       saveSetup({ trackingPreference: id });
       if (id !== 'later' && typeof global.MPTrackingMode !== 'undefined') {
@@ -571,12 +695,14 @@
     syncContinueBtn('bsTrackingContinue', !!setup.trackingPreference);
   }
 
+  function initBusinessBridgeStep() {
+    typeLines(q('bsBusinessBridge'), ['Now a few questions about your business records...'], function () {}, 20);
+    syncContinueBtn('bsBusinessBridgeContinue', true);
+  }
+
   function initVatStep() {
     const setup = loadSetup();
-    const bridge = q('bsVatBridge');
-    if (bridge) {
-      typeLines(bridge, ['Since VAT matters to you...'], function () {});
-    }
+    typeLines(q('bsVatBridge'), ['Since VAT matters to you...'], function () {}, 20);
     function onSelect(id) {
       saveSetup({ vatRegistered: id });
       refreshSingleSelect(q('bsVatGrid'), VAT_OPTIONS, id, onSelect);
@@ -584,6 +710,79 @@
     }
     refreshSingleSelect(q('bsVatGrid'), VAT_OPTIONS, setup.vatRegistered, onSelect);
     syncContinueBtn('bsVatContinue', !!setup.vatRegistered);
+  }
+
+  function initAccountantStep() {
+    const setup = loadSetup();
+    typeLines(q('bsAccountantBridge'), ['To prepare the right reports...'], function () {}, 20);
+    function onSelect(id) {
+      saveSetup({ worksWithAccountant: id });
+      refreshSingleSelect(q('bsAccountantGrid'), ACCOUNTANT_OPTIONS, id, onSelect);
+      syncContinueBtn('bsAccountantContinue', true);
+    }
+    refreshSingleSelect(q('bsAccountantGrid'), ACCOUNTANT_OPTIONS, setup.worksWithAccountant, onSelect);
+    syncContinueBtn('bsAccountantContinue', !!setup.worksWithAccountant);
+  }
+
+  function getReportEmailCopy(setup) {
+    const s = setup || loadSetup();
+    const path = getOnboardPath(s);
+    if (path === 'mileage') {
+      return {
+        title: 'Where should we send your mileage reports?',
+        helper:
+          'Mileage reports include journeys, miles, HMRC estimates and PDFs.',
+      };
+    }
+    if (path === 'business') {
+      return {
+        title: 'Where should we send your business reports?',
+        helper:
+          'Business reports include receipts, expenses, VAT summaries and accountant-ready records.',
+      };
+    }
+    return {
+      title: 'Where should we send your reports?',
+      helper: "We'll send mileage, expense, VAT and business reports here.",
+    };
+  }
+
+  function initReportEmailStep() {
+    const setup = loadSetup();
+    const copy = getReportEmailCopy(setup);
+    const title = q('bsReportEmailTitle');
+    const helper = q('bsReportEmailHelper');
+    const input = q('bsReportEmailInput');
+    if (title) title.textContent = copy.title;
+    if (helper) helper.textContent = copy.helper;
+    if (input) {
+      input.value = setup.reportEmail || global.localStorage.getItem('mp_email') || '';
+      if (!input.dataset.bound) {
+        input.addEventListener('input', function () {
+          syncContinueBtn('bsReportEmailContinue', isValidEmail(input.value.trim()));
+        });
+        input.dataset.bound = '1';
+      }
+    }
+    syncContinueBtn(
+      'bsReportEmailContinue',
+      input ? isValidEmail(input.value.trim()) : false
+    );
+  }
+
+  function isValidEmail(value) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+  }
+
+  function initScanReceiptStep() {
+    const setup = loadSetup();
+    function onSelect(id) {
+      saveSetup({ scanReceiptNow: id });
+      refreshSingleSelect(q('bsScanReceiptGrid'), SCAN_OPTIONS, id, onSelect);
+      syncContinueBtn('bsScanReceiptContinue', true);
+    }
+    refreshSingleSelect(q('bsScanReceiptGrid'), SCAN_OPTIONS, setup.scanReceiptNow, onSelect);
+    syncContinueBtn('bsScanReceiptContinue', !!setup.scanReceiptNow);
   }
 
   function runBuildingSequence() {
@@ -594,9 +793,9 @@
         setTimeout(function () {
           renderRecommendation();
           showStep('recommendation');
-        }, 180);
+        }, 160);
       },
-      18
+      16
     );
   }
 
@@ -607,11 +806,14 @@
       recommendedSetup: rec.setup,
       dashboardMode: rec.dashboardMode,
       selectedPlan: rec.plan,
+      onboardPath: getOnboardPath(setup),
     });
     const intro = q('bsRecommendIntro');
+    const workspace = q('bsRecommendWorkspace');
     const list = q('bsRecommendList');
     const sub = q('bsRecommendSub');
     if (intro) intro.textContent = rec.intro;
+    if (workspace) workspace.textContent = 'Recommended Workspace: ' + rec.workspaceTitle;
     if (sub) sub.textContent = rec.subline || '';
     if (list) {
       list.innerHTML = rec.items
@@ -622,23 +824,12 @@
     }
   }
 
-  let comparePlansOpen = false;
-
-  function toggleComparePlans() {
-    comparePlansOpen = !comparePlansOpen;
-    const grid = q('bsPlanGrid');
-    if (grid) grid.classList.toggle('is-compare', comparePlansOpen);
-    const btn = q('bsComparePlans');
-    if (btn) btn.textContent = comparePlansOpen ? 'Show recommendation' : 'Compare plans';
-  }
-
   function renderPlanCards() {
     const rec = computeRecommendation(loadSetup());
     const setup = loadSetup();
     const selected = setup.selectedPlan || rec.plan;
     const coreCard = q('bsPlanCore');
     const bizCard = q('bsPlanBusiness');
-    const grid = q('bsPlanGrid');
     const sub = q('bsPlanSub');
     if (sub) {
       sub.textContent =
@@ -646,7 +837,6 @@
           ? 'Core unlocks your Mileage Workspace.'
           : 'Business unlocks your complete Business Workspace.';
     }
-    if (grid) grid.classList.toggle('is-compare', comparePlansOpen);
     if (coreCard) {
       coreCard.classList.toggle('is-selected', selected === 'core');
       coreCard.classList.toggle('is-recommended', rec.plan === 'core');
@@ -673,11 +863,6 @@
     syncContinueBtn('bsPlanContinue', true);
   }
 
-  function selectTrackingPreference(id) {
-    saveSetup({ trackingPreference: id });
-    initTrackingPreferenceStep();
-  }
-
   function syncContinueBtn(id, enabled) {
     const btn = q(id);
     if (!btn) return;
@@ -686,8 +871,7 @@
   }
 
   function nextStepAfter(step) {
-    const setup = loadSetup();
-    const flow = buildFlow(setup);
+    const flow = buildFlow(loadSetup());
     const idx = flow.indexOf(step);
     return idx >= 0 && idx < flow.length - 1 ? flow[idx + 1] : null;
   }
@@ -696,6 +880,18 @@
     const setup = loadSetup();
 
     if (step === 'welcome') {
+      showStep('name');
+      return;
+    }
+    if (step === 'name') {
+      const input = q('bsNameInput');
+      const name = input ? input.value.trim() : '';
+      if (!name) return;
+      saveSetup({ driverName: name });
+      showStep('nameAck');
+      return;
+    }
+    if (step === 'nameAck') {
       showStep('goals');
       return;
     }
@@ -708,16 +904,20 @@
       return;
     }
     if (step === 'goals') {
+      const path = getOnboardPath(setup);
+      saveSetup({ onboardPath: path });
       buildFlow(setup);
       const next = nextStepAfter('goals');
       showAck(getAckForGoals(setup.goals || []), next, getValueAddsForGoals(setup.goals || []));
       return;
     }
     if (step === 'vehicleUse') {
-      const refreshed = loadSetup();
-      buildFlow(refreshed);
-      const next = nextStepAfter('vehicleUse');
-      showStep(next);
+      buildFlow(loadSetup());
+      showStep(nextStepAfter('vehicleUse'));
+      return;
+    }
+    if (step === 'vehicleType') {
+      showStep(nextStepAfter('vehicleType'));
       return;
     }
     if (step === 'trackingPreference') {
@@ -731,19 +931,38 @@
         showAck(["Nice — I'll make sure that's included."], next, [value]);
         return;
       }
-      if (next === 'vat') {
-        showStep('vat');
-      } else {
-        showStep('building');
-      }
+      showStep(next);
+      return;
+    }
+    if (step === 'businessBridge') {
+      showStep(nextStepAfter('businessBridge'));
       return;
     }
     if (step === 'vat') {
-      showAck(getAckForVat(setup.vatRegistered), 'building');
+      showAck(getAckForVat(setup.vatRegistered), nextStepAfter('vat'));
+      return;
+    }
+    if (step === 'accountant') {
+      showStep(nextStepAfter('accountant'));
+      return;
+    }
+    if (step === 'reportEmail') {
+      const input = q('bsReportEmailInput');
+      const email = input ? input.value.trim() : '';
+      if (!isValidEmail(email)) return;
+      saveSetup({ reportEmail: email });
+      applyReportPrefs(setup);
+      showStep(nextStepAfter('reportEmail'));
+      return;
+    }
+    if (step === 'scanReceipt') {
+      if (setup.scanReceiptNow === 'yes') {
+        toastScanLater();
+      }
+      showStep('building');
       return;
     }
     if (step === 'recommendation') {
-      comparePlansOpen = false;
       showStep('choosePlan');
       renderPlanCards();
       syncContinueBtn('bsPlanContinue', !!setup.selectedPlan);
@@ -755,10 +974,31 @@
     }
   }
 
+  function applyReportPrefs(setup) {
+    const s = setup || loadSetup();
+    const path = getOnboardPath(s);
+    if (typeof global.applyModeReportPrefs === 'function') {
+      if (path === 'business') {
+        if (typeof global.MPTrackingMode !== 'undefined') global.MPTrackingMode.setMode('manual');
+        if (typeof global.saveReportPrefs === 'function') {
+          global.saveReportPrefs({ emailReports: true, pdfAttachment: true, businessInsights: true });
+        }
+      } else {
+        global.applyModeReportPrefs();
+      }
+    }
+  }
+
+  function toastScanLater() {
+    if (typeof global.toast === 'function') {
+      global.toast('Receipt scanner opens from your Business Workspace.');
+    }
+  }
+
   function applySelectedPlan() {
     const setup = loadSetup();
     const plan = PLANS[setup.selectedPlan] || PLANS.core;
-    saveSetup({ selectedPlan: plan.id });
+    saveSetup({ selectedPlan: plan.id, setupComplete: true });
     if (typeof global.MPSubscription !== 'undefined' && global.MPSubscription.setPlanTier) {
       global.MPSubscription.setPlanTier(plan.id);
     }
@@ -766,6 +1006,19 @@
 
   function finishAfterPlan() {
     const setup = loadSetup();
+    const path = getOnboardPath(setup);
+    global.localStorage.setItem('mp_onboard_step', 'ready');
+
+    if (!needsMileageOnboarding(setup)) {
+      if (typeof global.MPTrackingMode !== 'undefined') global.MPTrackingMode.setMode('manual');
+      global.localStorage.setItem('mp_location_choice', 'skipped');
+      global.localStorage.setItem('mp_notifications_choice', 'skipped');
+      if (!global.localStorage.getItem('mp_vehicle')) {
+        global.localStorage.setItem('mp_vehicle', 'car');
+      }
+      return routeToOnboardReady();
+    }
+
     const pref = setup.trackingPreference;
     if (wantsMileageWorkspace(setup) && pref === 'autopilot') {
       if (typeof global.MPTrackingMode !== 'undefined') global.MPTrackingMode.setMode('autopilot');
@@ -775,26 +1028,28 @@
       if (typeof global.showScreen === 'function') global.showScreen('permissions');
       return;
     }
+
     if (pref === 'manual' && wantsMileageWorkspace(setup)) {
       if (typeof global.MPTrackingMode !== 'undefined') global.MPTrackingMode.setMode('manual');
       if (typeof global.selectedTrackingMode !== 'undefined') global.selectedTrackingMode = 'manual';
     }
+
     if (!wantsMileageWorkspace(setup) || pref === 'later') {
       if (typeof global.MPTrackingMode !== 'undefined') global.MPTrackingMode.setMode('manual');
       global.localStorage.setItem('mp_location_choice', 'skipped');
-      global.localStorage.setItem('mp_notifications_choice', 'skipped');
     }
-    return routeAfterSetupToKnowYou();
+
+    return routeToOnboardReady();
   }
 
-  function routeAfterSetupToKnowYou() {
-    global.localStorage.setItem('mp_onboard_step', 'name');
-    if (typeof global.initOnboardName === 'function') global.initOnboardName();
-    if (typeof global.showScreen === 'function') global.showScreen('knowYou');
+  function routeToOnboardReady() {
+    global.localStorage.setItem('mp_onboard_step', 'ready');
+    if (typeof global.initOnboardReady === 'function') global.initOnboardReady();
+    if (typeof global.showScreen === 'function') global.showScreen('onboardReady');
   }
 
   function start() {
-    flowSteps = ['welcome', 'goals'];
+    flowSteps = ['welcome', 'name'];
     if (typeof global.showScreen === 'function') global.showScreen('businessSetup');
     showStep('welcome');
   }
@@ -811,25 +1066,19 @@
       card.classList.toggle('cc-workspace-primary', mode === 'business' || mode === 'mixed');
     }
     if (mode === 'mileage') {
-      setElText('ccHubTitle', 'Business Workspace');
-      setElText(
-        'ccHubSub',
-        'Receipts, expenses, VAT and accountant records — explore when you need them.'
-      );
-      setElText('ccHubCta', 'Explore Business Workspace');
+      setElText('ccHubTitle', 'Business Hub');
+      setElText('ccHubSub', 'Receipts, expenses, VAT and accountant records — explore when you need them.');
+      setElText('ccHubCta', 'Explore Business Hub');
       setElText('ccHubTagline', 'Your Mileage Workspace is complete. This is optional.');
     } else if (mode === 'business') {
-      setElText('ccHubTitle', 'Business Workspace');
-      setElText(
-        'ccHubSub',
-        'Organise receipts, expenses, VAT and accountant-ready records in one place.'
-      );
-      setElText('ccHubCta', 'Open Business Workspace');
+      setElText('ccHubTitle', 'Business Hub');
+      setElText('ccHubSub', 'Organise receipts, expenses, VAT and accountant-ready records in one place.');
+      setElText('ccHubCta', 'Open Business Hub');
       setElText('ccHubTagline', 'Your flagship workspace for less admin.');
     } else {
-      setElText('ccHubTitle', 'Business Workspace');
+      setElText('ccHubTitle', 'Business Hub');
       setElText('ccHubSub', 'Receipts, expenses, VAT and reports alongside your mileage.');
-      setElText('ccHubCta', 'Open Business Workspace');
+      setElText('ccHubCta', 'Open Business Hub');
       setElText('ccHubTagline', 'Mileage and business records together.');
     }
     const chips = q('ccHubChips');
@@ -855,12 +1104,20 @@
     }
     setElText(
       'ccBusinessPanelTitle',
-      mode === 'mixed' ? "Today's Overview" : 'Business Workspace'
+      mode === 'mixed' ? "Today's Overview" : 'Business Hub'
     );
     if (mileageBlock) mileageBlock.hidden = mode === 'business';
     if (businessPanel) businessPanel.hidden = mode === 'mileage';
     if (hub) hub.hidden = false;
-    if (mileageLater) mileageLater.hidden = mode !== 'business';
+    if (mileageLater) {
+      mileageLater.hidden = mode !== 'business';
+      if (mode === 'business') {
+        const p = mileageLater.querySelector('p');
+        if (p) p.textContent = 'Need mileage later?';
+        const btn = mileageLater.querySelector('button');
+        if (btn) btn.textContent = 'Enable Mileage Workspace anytime';
+      }
+    }
     updateHubPresentation(mode);
     const parent = mileageBlock && mileageBlock.parentNode;
     if (mode === 'business' && businessPanel && hub && parent) {
@@ -878,17 +1135,16 @@
 
   function getReadyChecklist() {
     const s = loadSetup();
-    const rec = computeRecommendation(s);
+    const path = getOnboardPath(s);
     const items = [];
-    if (selectedMileageGoal(s)) items.push('Mileage tracking ready');
-    if (wantsBusinessWorkspace(s)) items.push('Business Workspace ready');
+    if (path === 'mileage' || path === 'combined') items.push('Mileage tracking ready');
+    if (path === 'business' || path === 'combined') items.push('Business Hub ready');
     if (s.goals.includes('organise_receipts')) items.push('Receipt Scanner ready');
     if (s.goals.includes('track_expenses')) items.push('Expense tracking ready');
     if (s.goals.includes('help_vat') || s.vatRegistered === 'yes') items.push('VAT summaries ready');
     if (s.goals.includes('accountant')) items.push('Accountant Pack ready');
-    if (wantsBusinessWorkspace(s) && rec.plan === 'business') items.push('AI Bookkeeper ready');
-    if (wantsBusinessWorkspace(s) && rec.plan === 'business') items.push('Business Health ready');
-    if (selectedMileageGoal(s) || wantsBusinessHub(s)) items.push('Reports ready');
+    if (path !== 'mileage') items.push('AI Bookkeeper ready');
+    items.push('Reports ready');
     const seen = new Set();
     return items.filter(function (item) {
       if (seen.has(item)) return false;
@@ -900,8 +1156,7 @@
   function renderReadyChecklist() {
     const list = q('onboardReadyChecklist');
     if (!list) return;
-    const items = getReadyChecklist();
-    list.innerHTML = items
+    list.innerHTML = getReadyChecklist()
       .map(function (item) {
         return '<li><span class="mark" aria-hidden="true">✓</span> ' + item + '</li>';
       })
@@ -909,14 +1164,14 @@
   }
 
   function getReadyCopy() {
-    const mode = getDashboardMode();
+    const path = getOnboardPath(loadSetup());
     let lead = "I'll help keep your business organised.";
-    if (mode === 'mileage') {
+    if (path === 'mileage') {
       lead = "Your Mileage Workspace is ready — I'll help you capture every business mile.";
-    } else if (mode === 'business') {
-      lead = "Your Business Workspace is ready — I'll help keep your records organised.";
-    } else if (mode === 'mixed') {
-      lead = 'Your Mileage and Business Workspaces are ready — everything in one place.';
+    } else if (path === 'business') {
+      lead = "Your Business Hub is ready — I'll help keep your records organised.";
+    } else {
+      lead = 'Your combined workspace is ready — mileage and business records in one place.';
     }
     return {
       greeting: "You're all set.",
@@ -924,19 +1179,6 @@
       feature: 'You get back to running it.',
       cta: 'Go to Dashboard',
     };
-  }
-
-  function skipSetup() {
-    saveSetup({
-      goals: ['reduce_paperwork'],
-      dashboardMode: 'mileage',
-      selectedPlan: 'core',
-      recommendedSetup: 'mileage',
-    });
-    if (typeof global.MPSubscription !== 'undefined' && global.MPSubscription.setPlanTier) {
-      global.MPSubscription.setPlanTier('core');
-    }
-    routeAfterSetupToKnowYou();
   }
 
   function reset() {
@@ -953,25 +1195,25 @@
     showStep: showStep,
     nextFrom: nextFrom,
     selectPlan: selectPlan,
-    selectTrackingPreference: selectTrackingPreference,
     usesVehicle: usesVehicle,
     wantsMileageWorkspace: wantsMileageWorkspace,
     wantsBusinessHub: wantsBusinessHub,
     wantsBusinessWorkspace: wantsBusinessWorkspace,
+    needsMileageOnboarding: needsMileageOnboarding,
+    needsBusinessOnboarding: needsBusinessOnboarding,
+    hasBusinessGoals: hasBusinessGoals,
+    getOnboardPath: getOnboardPath,
     getWorkspaceType: getWorkspaceType,
-    businessWorkspaceItems: businessWorkspaceItems,
-    mileageWorkspaceItems: mileageWorkspaceItems,
     computeRecommendation: computeRecommendation,
     getDashboardMode: getDashboardMode,
     applyDashboardLayout: applyDashboardLayout,
     getReadyCopy: getReadyCopy,
-    routeAfterSetupToKnowYou: routeAfterSetupToKnowYou,
+    getReportEmailCopy: getReportEmailCopy,
     buildFlow: buildFlow,
     getAckForGoals: getAckForGoals,
     getReadyChecklist: getReadyChecklist,
     renderReadyChecklist: renderReadyChecklist,
-    toggleComparePlans: toggleComparePlans,
-    skipSetup: skipSetup,
+    routeToOnboardReady: routeToOnboardReady,
     reset: reset,
   };
 })(typeof window !== 'undefined' ? window : global);
