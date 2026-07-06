@@ -958,7 +958,12 @@ body.always-modal-open .nav{display:none!important}
 .bs-recommend-list{margin:0 0 14px;padding:0;list-style:none;color:rgba(198,220,248,.92);font-size:15px;line-height:1.5}
 .bs-recommend-list li{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px}
 .bs-check{color:#20D781;font-weight:700;flex-shrink:0}
+.bs-bridge{min-height:0;margin:0 0 12px;font-size:15px;font-weight:500;line-height:1.45;color:rgba(147,168,196,.88)}
 .bs-building-head{margin:0 0 12px;font-size:clamp(22px,5.8vw,28px);font-weight:700;color:#fff}
+.cc-hub-upgrade{opacity:.92}
+.cc-layout-business .cc-hub-upgrade{margin-top:0}
+.cc-layout-mileage .cc-hub-upgrade{margin-top:12px}
+.cc-layout-mixed .cc-business-panel{margin-top:0}
 .bs-plan-card.is-recommended{border-color:rgba(32,215,129,.45);box-shadow:0 12px 32px rgba(13,107,255,.24),0 0 0 1px rgba(32,215,129,.2)}
 .cc-business-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
 .cc-business-action{padding:12px 10px;border-radius:14px;border:1px solid rgba(110,180,255,.16);background:rgba(13,107,255,.08);color:rgba(198,220,248,.94);font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;text-align:center}
@@ -1029,88 +1034,68 @@ body.always-modal-open .nav{display:none!important}
 <div class="onboard-progress"><div class="onboard-progress-track"><div class="onboard-progress-fill" id="bsProgressFill" style="width:0%"></div></div><p class="onboard-progress-label" id="bsProgressLabel">Step 1 of 11</p></div>
 <div class="bs-scroll">
 <div class="bs-step" data-step="welcome">
-<h1 class="bs-headline">Let&apos;s set up MilePilot around your business.</h1>
 <p class="bs-typing" id="bsWelcomeTyping" aria-live="polite"></p>
-<p class="bs-subtext">This takes less than a minute.</p>
 </div>
 <div class="bs-step" data-step="ack" hidden>
 <p class="bs-typing" id="bsAckTyping" aria-live="polite"></p>
 </div>
 <div class="bs-step" data-step="goals" hidden>
-<h2 class="bs-headline">What do you want MilePilot to help you with?</h2>
-<p class="bs-typing bs-intro" id="bsGoalsIntro" aria-live="polite"></p>
-<p class="bs-helper">Choose all that apply.</p>
+<h2 class="bs-headline">What would you like MilePilot to take care of?</h2>
+<p class="bs-helper">Choose everything that applies.</p>
 <div class="bs-options" id="bsGoalsGrid"></div>
 </div>
-<div class="bs-step" data-step="businessType" hidden>
-<h2 class="bs-headline">What do you do?</h2>
-<p class="bs-typing bs-intro" id="bsBusinessTypeIntro" aria-live="polite"></p>
-<div class="bs-options" id="bsBusinessTypeGrid"></div>
-</div>
 <div class="bs-step" data-step="vehicleUse" hidden>
+<p class="bs-bridge" id="bsVehicleBridge" aria-live="polite"></p>
 <h2 class="bs-headline">Do you use a vehicle for business?</h2>
 <div class="bs-options" id="bsVehicleUseGrid"></div>
 </div>
+<div class="bs-step" data-step="trackingPreference" hidden>
+<p class="bs-bridge" id="bsTrackingBridge" aria-live="polite"></p>
+<h2 class="bs-headline">Would you like MilePilot to record journeys automatically?</h2>
+<div class="bs-options" id="bsTrackingGrid"></div>
+</div>
 <div class="bs-step" data-step="vat" hidden>
+<p class="bs-bridge" id="bsVatBridge" aria-live="polite"></p>
 <h2 class="bs-headline">Are you VAT registered?</h2>
 <div class="bs-options" id="bsVatGrid"></div>
 </div>
 <div class="bs-step" data-step="building" hidden>
-<h2 class="bs-building-head">Building your setup...</h2>
+<h2 class="bs-building-head">Building your workspace...</h2>
 <p class="bs-typing" id="bsBuildingTyping" aria-live="polite"></p>
 </div>
 <div class="bs-step" data-step="recommendation" hidden>
-<p class="bs-recommend-kicker" id="bsRecommendIntro">Based on what you told me, I recommend:</p>
+<p class="bs-recommend-kicker" id="bsRecommendIntro">Here&apos;s what I recommend.</p>
 <ul class="bs-recommend-list" id="bsRecommendList"></ul>
 </div>
 <div class="bs-step" data-step="choosePlan" hidden>
 <h2 class="bs-headline">Choose your plan</h2>
 <div class="bs-plan-grid">
 <button type="button" class="bs-plan-card" id="bsPlanCore" onclick="MPBusinessSetup.selectPlan('core')">
+<span class="bs-plan-badge" hidden>Recommended</span>
 <p class="bs-plan-name">MilePilot Core</p>
 <p class="bs-plan-price">£4.99/month</p>
 <p class="bs-plan-tag">Never miss another business mile.</p>
-<ul class="bs-plan-features"><li>AutoPilot</li><li>Manual tracking</li><li>Background tracking</li><li>HMRC estimates</li><li>PDF reports</li><li>Email reports</li></ul>
+<ul class="bs-plan-features"><li>AutoPilot</li><li>Manual tracking</li><li>Background tracking</li><li>HMRC mileage estimates</li><li>PDF reports</li><li>Email reports</li></ul>
 </button>
 <button type="button" class="bs-plan-card" id="bsPlanBusiness" onclick="MPBusinessSetup.selectPlan('business')">
+<span class="bs-plan-badge" hidden>Recommended</span>
 <p class="bs-plan-name">MilePilot Business</p>
 <p class="bs-plan-price">£9.99/month</p>
 <p class="bs-plan-tag">Run your business with less admin.</p>
-<ul class="bs-plan-features"><li>Everything in Core, plus:</li><li>Business Hub</li><li>AI Receipt Scanner</li><li>Expenses</li><li>VAT summaries</li><li>AI Bookkeeper</li><li>Business Health</li><li>Accountant Pack</li></ul>
+<ul class="bs-plan-features"><li>Everything in Core, plus:</li><li>Business Hub</li><li>AI Receipt Scanner</li><li>Expense tracking</li><li>VAT summaries</li><li>AI Bookkeeper</li><li>Business Health</li><li>Accountant Pack</li></ul>
 </button>
 </div>
-</div>
-<div class="bs-step" data-step="trackingMode" hidden>
-<h2 class="bs-headline">How would you like to track mileage?</h2>
-<div class="bs-track-grid">
-<button type="button" class="bs-track-card" id="bsTrackAuto" onclick="MPBusinessSetup.selectTrackingMode('autopilot')">
-<p class="bs-track-title">AutoPilot</p>
-<p class="bs-track-copy">Drive as normal. MilePilot records mileage automatically.</p>
-</button>
-<button type="button" class="bs-track-card" id="bsTrackManual" onclick="MPBusinessSetup.selectTrackingMode('manual')">
-<p class="bs-track-title">Manual</p>
-<p class="bs-track-copy">Start and stop trips yourself.</p>
-</button>
-</div>
-</div>
-<div class="bs-step" data-step="ready" hidden>
-<h2 class="bs-headline">You&apos;re all set.</h2>
-<p class="bs-helper" id="bsReadyLead">I&apos;ll help keep your business organised.</p>
-<p class="bs-subtext" id="bsReadySub">You get back to running it.</p>
 </div>
 </div>
 <div class="knowYou-foot">
 <button type="button" class="btn premium-btn is-ready" id="bsWelcomeContinue" onclick="MPBusinessSetup.nextFrom('welcome')">Start Setup</button>
 <button type="button" class="btn premium-btn" id="bsAckContinue" onclick="MPBusinessSetup.nextFrom('ack')" hidden disabled>Continue</button>
 <button type="button" class="btn premium-btn" id="bsGoalsContinue" onclick="MPBusinessSetup.nextFrom('goals')" hidden disabled>Continue</button>
-<button type="button" class="btn premium-btn" id="bsBusinessTypeContinue" onclick="MPBusinessSetup.nextFrom('businessType')" hidden disabled>Continue</button>
 <button type="button" class="btn premium-btn" id="bsVehicleUseContinue" onclick="MPBusinessSetup.nextFrom('vehicleUse')" hidden disabled>Continue</button>
+<button type="button" class="btn premium-btn" id="bsTrackingContinue" onclick="MPBusinessSetup.nextFrom('trackingPreference')" hidden disabled>Continue</button>
 <button type="button" class="btn premium-btn" id="bsVatContinue" onclick="MPBusinessSetup.nextFrom('vat')" hidden disabled>Continue</button>
-<button type="button" class="btn premium-btn" id="bsBuildingContinue" hidden disabled>Continue</button>
 <button type="button" class="btn premium-btn is-ready" id="bsRecommendContinue" onclick="MPBusinessSetup.nextFrom('recommendation')" hidden>Continue</button>
 <button type="button" class="btn premium-btn" id="bsPlanContinue" onclick="MPBusinessSetup.nextFrom('choosePlan')" hidden disabled>Continue</button>
-<button type="button" class="btn premium-btn" id="bsTrackingContinue" onclick="MPBusinessSetup.nextFrom('trackingMode')" hidden disabled>Continue</button>
-<button type="button" class="btn premium-btn is-ready" id="bsReadyCta" onclick="MPBusinessSetup.nextFrom('ready')" hidden>Go to Dashboard</button>
 </div>
 </div>
 </section>
@@ -1370,7 +1355,7 @@ body.always-modal-open .nav{display:none!important}
 <div id="ccMileageBlock">
 <section class="cc-today" aria-label="Today summary">
 <div class="cc-today-top">
-<span class="cc-today-kicker">Today</span>
+<span class="cc-today-kicker" id="ccTodayKicker">Today</span>
 <div class="cc-mode-badge is-autopilot" id="ccModeBadge" hidden aria-live="polite">AutoPilot</div>
 </div>
 <div class="cc-today-hero"><span class="cc-today-miles" id="ccHeroMiles">0.0</span><span class="cc-today-unit">miles</span></div>
@@ -1780,7 +1765,7 @@ body.always-modal-open .nav{display:none!important}
 <script src="js/business-setup-onboard.js"></script>
 <script src="js/beta-feedback.js"></script>
 <script>
-const APP_VERSION='8.43.64';
+const APP_VERSION='8.43.65';
 window.APP_VERSION=APP_VERSION;
 const DEFAULT_WEEKLY_GOAL_MILES=400;
 const BUSINESS_PROFILE_KEY='mp_business_profile';
@@ -1895,12 +1880,12 @@ function syncOnboardNameContinue(){const btn=q('knowYouContinue'),input=q('onboa
 function handleKnowYouContinueClick(){syncOnboardNameContinue();const n=q('onboardName')?.value.trim();if(!n){q('onboardName')?.focus();toast('Please enter your first name');return}if(!selectedVehicle){toast('Please select your vehicle');return}confirmOnboardName()}
 function handleVehicleContinueClick(){syncKnowYouContinue();if(knowYouMode!=='vehicle'||!selectedVehicle){toast('Please select your vehicle');return}confirmVehicle()}
 function handleTrackingModeContinueClick(){syncTrackingModeUI(false);if(!selectedTrackingMode){toast('Please choose how MilePilot should work');return}confirmTrackingModeOnboard()}
-function confirmOnboardName(){const n=q('onboardName')?.value.trim();if(!n||!selectedVehicle)return;driver=n;vehicle=selectedVehicle;localStorage.setItem('mp_driver',driver);localStorage.setItem('mp_vehicle',vehicle);const bsSetup=typeof MPBusinessSetup!=='undefined'?MPBusinessSetup.loadSetup():null;if(bsSetup&&bsSetup.trackingModeChoice){selectedTrackingMode=bsSetup.trackingModeChoice;if(typeof MPTrackingMode!=='undefined')MPTrackingMode.setMode(bsSetup.trackingModeChoice);goToEmailSetup();return}localStorage.setItem('mp_onboard_step','trackingMode');initTrackingMode(false);showScreen('trackingMode')}
+function confirmOnboardName(){const n=q('onboardName')?.value.trim();if(!n||!selectedVehicle)return;driver=n;vehicle=selectedVehicle;localStorage.setItem('mp_driver',driver);localStorage.setItem('mp_vehicle',vehicle);const bsSetup=typeof MPBusinessSetup!=='undefined'?MPBusinessSetup.loadSetup():null;const pref=bsSetup&&(bsSetup.trackingPreference||bsSetup.trackingModeChoice);if(pref==='autopilot'){selectedTrackingMode='autopilot';if(typeof MPTrackingMode!=='undefined')MPTrackingMode.setMode('autopilot');if(localStorage.getItem('mp_location_choice')){goToEmailSetup();return}localStorage.setItem('mp_onboard_step','enableSetup');initEnableSetup();showScreen('permissions');return}if(pref==='manual'){selectedTrackingMode='manual';if(typeof MPTrackingMode!=='undefined')MPTrackingMode.setMode('manual');goToEmailSetup();return}if(bsSetup&&(pref==='later'||!MPBusinessSetup.wantsMileageWorkspace(bsSetup))){goToEmailSetup();return}if(bsSetup&&bsSetup.trackingModeChoice){selectedTrackingMode=bsSetup.trackingModeChoice;if(typeof MPTrackingMode!=='undefined')MPTrackingMode.setMode(bsSetup.trackingModeChoice);goToEmailSetup();return}localStorage.setItem('mp_onboard_step','trackingMode');initTrackingMode(false);showScreen('trackingMode')}
 function routeOnboardAfterTrackingSetup(){if(!localStorage.getItem('mp_driver')){localStorage.setItem('mp_onboard_step','name');initOnboardName();showScreen('knowYou');return}goToEmailSetup()}
 function confirmTrackingModeOnboard(){if(!selectedTrackingMode)return;if(typeof MPTrackingMode!=='undefined')MPTrackingMode.setMode(selectedTrackingMode);if(selectedTrackingMode==='manual'){routeOnboardAfterTrackingSetup();return}localStorage.setItem('mp_onboard_step','enableSetup');initEnableSetup();showScreen('permissions')}
 function initEnableSetup(){clearOnboardTimers();const btn=q('permSetupBtn');if(btn){btn.disabled=false;btn.textContent='Enable AutoPilot'}}
 function skipPermissions(){continueWithManualMode()}
-function continueWithManualMode(){selectedTrackingMode='manual';if(typeof MPTrackingMode!=='undefined')MPTrackingMode.setMode('manual');if(typeof MPBusinessSetup!=='undefined')MPBusinessSetup.saveSetup({trackingModeChoice:'manual'});if(!localStorage.getItem('mp_location_choice'))localStorage.setItem('mp_location_choice','skipped');routeOnboardAfterTrackingSetup()}
+function continueWithManualMode(){selectedTrackingMode='manual';if(typeof MPTrackingMode!=='undefined')MPTrackingMode.setMode('manual');if(typeof MPBusinessSetup!=='undefined')MPBusinessSetup.saveSetup({trackingPreference:'manual',trackingModeChoice:'manual'});if(!localStorage.getItem('mp_location_choice'))localStorage.setItem('mp_location_choice','skipped');routeOnboardAfterTrackingSetup()}
 async function continueSetup(){const btn=q('permSetupBtn');if(btn){btn.disabled=true;btn.textContent='Configuring…'}const isAuto=selectedTrackingMode==='autopilot'||(typeof MPTrackingMode!=='undefined'&&MPTrackingMode.isAutoPilot());try{await enableGpsPermission()}catch(e){}if(isAuto){try{await enableAutopilotBackgroundPermission()}catch(e){}}try{await enableOnboardNotifications()}catch(e){}if(btn){btn.disabled=false;btn.textContent='Enable AutoPilot'}routeOnboardAfterTrackingSetup()}
 function goToEmailSetup(){localStorage.setItem('mp_onboard_step','email');initEmailSetup();showScreen('emailSetup')}
 function applyModeReportPrefs(){const mode=(typeof MPTrackingMode!=='undefined'&&MPTrackingMode.getMode())||selectedTrackingMode||'autopilot';localStorage.setItem('mp_operating_mode',mode);setReportFrequency('off');if(mode==='manual')saveReportPrefs({emailReports:false,pdfAttachment:true});else{saveReportPrefs({emailReports:true,pdfAttachment:true});markStayUpdatedPromptSeen()}}
@@ -2022,7 +2007,7 @@ function initOnboardInputScroll(){document.addEventListener('focusin',function(e
 function updateGpsUi(message){const banner=q('ccGpsBanner'),text=q('ccGpsBannerText');if(!banner||!text)return;if(isAutoPilotTracking()&&ccState!=='active'){banner.hidden=true;return}if(message){banner.hidden=false;text.textContent=message;return}if(ccState==='active'&&!gpsLocked){banner.hidden=false;text.textContent='Enable location to track your business miles.'}else banner.hidden=true}
 async function enableTrackingGps(fromUserGesture=false){if(typeof MPTrackingProvider!=='undefined'&&MPTrackingProvider.isNative()){if(ccState==='active'){startNativeTripWebGpsWatch();await seedTripGps();await burstNativeTripSync();gpsLocked=true;localStorage.setItem('mp_location_choice','granted');updateGpsUi(null);return}const result=await MPTrackingProvider.enableTracking(fromUserGesture);const ok=result&&(result.ok!==false);if(ok){gpsLocked=true;localStorage.setItem('mp_location_choice','granted');if((result.backgroundActive===false||MPTrackingProvider.getPermission()==='foreground-only')&&isAutoPilotTracking())setTimeout(function(){showNativeAlwaysLocationModal()},2500);else if(MPTrackingProvider.getPermission()==='granted')hideNativeAlwaysLocationModal()}return}if(!navigator.geolocation){updateGpsUi('GPS not available on this device.');return}if(!isSecureGeoContext()){updateGpsUi('Location needs HTTPS. Use https://app.milepilot.uk');return}if(!fromUserGesture){const perm=await queryGeoPermission();if(perm!=='granted'){updateGpsUi(perm==='denied'?geoErrorMessage({code:1}):'Tap Enable Location to start tracking.');return}}stopGpsWatch();if(gpsReconnectTimer){clearTimeout(gpsReconnectTimer);gpsReconnectTimer=null}updateGpsUi('Requesting location permission…');try{const pos=await requestGeolocation(GEO_OPTS_ACCURATE,GEO_OPTS_RELAXED);handlePos(pos);gpsLocked=true;localStorage.setItem('mp_location_choice','granted');const watchOpts=ccState==='active'?GEO_OPTS_TRACKING:GEO_OPTS_ACCURATE;gpsWatchId=navigator.geolocation.watchPosition(handlePos,onGpsWatchError,watchOpts);updateGpsUi(null)}catch(err){gpsLocked=false;if(err?.code===1)localStorage.setItem('mp_location_choice','denied');updateGpsUi(geoErrorMessage(err));renderCommandCentre()}}
 function enableNotificationPermission(){const btn=q('permNotifBtn');if(!('Notification' in window)){localStorage.setItem('mp_notifications_choice','unsupported');syncNotificationButton();return}if(Notification.permission==='granted'){localStorage.setItem('mp_notifications_choice','granted');syncNotificationButton();return}if(Notification.permission==='denied'){localStorage.setItem('mp_notifications_choice','denied');syncNotificationButton();return}if(btn){btn.disabled=true;btn.textContent='Requesting…'}Notification.requestPermission().then(p=>{localStorage.setItem('mp_notifications_choice',p==='granted'?'granted':p==='denied'?'denied':'skipped');syncNotificationButton()}).catch(()=>{localStorage.setItem('mp_notifications_choice','skipped');syncNotificationButton()})}
-function finishOnboarding(){if(!localStorage.getItem('mp_vehicle')){vehicle='car';localStorage.setItem('mp_vehicle','car')}if(!hasTrackingModeSelected()){const bs=typeof MPBusinessSetup!=='undefined'?MPBusinessSetup.loadSetup():null;if(bs&&bs.trackingModeChoice&&typeof MPTrackingMode!=='undefined'){MPTrackingMode.setMode(bs.trackingModeChoice)}else{trackingModeChoiceMode='onboard';initTrackingMode(false);showScreen('trackingMode');return}}if(!localStorage.getItem('mp_location_choice'))localStorage.setItem('mp_location_choice','skipped');if(!localStorage.getItem('mp_notifications_choice'))localStorage.setItem('mp_notifications_choice','skipped');localStorage.setItem('mp_onboard_complete','true');localStorage.removeItem('mp_onboard_step');clearOnboardTimers();if(typeof MPSubscription!=='undefined')MPSubscription.startTrialIfNeeded();ensureDefaultBusinessProfile();if(typeof MPBusinessSetup!=='undefined'){const setup=MPBusinessSetup.loadSetup();if(setup.selectedPlan&&MPSubscription.setPlanTier)MPSubscription.setPlanTier(setup.selectedPlan);MPBusinessSetup.saveSetup({setupComplete:true})}syncReportSubscription();ensureAutopilotArmed();goHome()}
+function finishOnboarding(){if(!localStorage.getItem('mp_vehicle')){vehicle='car';localStorage.setItem('mp_vehicle','car')}if(!hasTrackingModeSelected()){const bs=typeof MPBusinessSetup!=='undefined'?MPBusinessSetup.loadSetup():null;const pref=bs&&(bs.trackingPreference||bs.trackingModeChoice);if(bs&&(!MPBusinessSetup.wantsMileageWorkspace(bs)||pref==='later')){if(typeof MPTrackingMode!=='undefined')MPTrackingMode.setMode('manual')}else if(pref&&pref!=='later'&&typeof MPTrackingMode!=='undefined'){MPTrackingMode.setMode(pref==='autopilot'?'autopilot':'manual')}else if(bs&&bs.trackingModeChoice&&typeof MPTrackingMode!=='undefined'){MPTrackingMode.setMode(bs.trackingModeChoice)}else{trackingModeChoiceMode='onboard';initTrackingMode(false);showScreen('trackingMode');return}}if(!localStorage.getItem('mp_location_choice'))localStorage.setItem('mp_location_choice','skipped');if(!localStorage.getItem('mp_notifications_choice'))localStorage.setItem('mp_notifications_choice','skipped');localStorage.setItem('mp_onboard_complete','true');localStorage.removeItem('mp_onboard_step');clearOnboardTimers();if(typeof MPSubscription!=='undefined')MPSubscription.startTrialIfNeeded();ensureDefaultBusinessProfile();if(typeof MPBusinessSetup!=='undefined'){const setup=MPBusinessSetup.loadSetup();if(setup.selectedPlan&&MPSubscription.setPlanTier)MPSubscription.setPlanTier(setup.selectedPlan);MPBusinessSetup.saveSetup({setupComplete:true})}syncReportSubscription();ensureAutopilotArmed();goHome()}
 function showScreen(id){const target=q(id)||q('home');if(!target){console.error('[MilePilot] showScreen missing:',id);return}if(ONBOARD_SCREENS.includes(target.id))hideNativeAlwaysLocationModal();document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));target.classList.add('active');const nav=q('nav');const hideNav=target.id==='tracking'||target.id==='trackingDebug'||target.id==='autopilotDebug'||target.id==='autopilotStatus';if(nav)nav.classList.toggle('show',!ONBOARD_SCREENS.includes(target.id)&&!hideNav);window.scrollTo(0,0);target.scrollTop=0;if(target.id==='tracking')setTimeout(()=>previewMapBundle?.map?.invalidateSize(),120);if(target.id==='autopilotStatus')renderAutopilotStatusPage()}
 function setNav(n){['Home','Reports','History','Settings'].forEach(x=>{const btn=q('nav'+x);if(!btn)return;btn.classList.toggle('active',x===n);btn.setAttribute('aria-current',x===n?'page':'false')})}
 function fmt(s){s=Number(s)||0;let m=Math.floor(s/60),h=Math.floor(m/60);return h+'h '+String(m%60).padStart(2,'0')+'m'}function money(v){return '£'+(Number(v)||0).toFixed(2)}function claim(mi,v=vehicle){return (Number(mi)||0)*(vehicles[v]?.rate||.55)}
