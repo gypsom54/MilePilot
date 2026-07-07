@@ -451,6 +451,53 @@ html.mp-expo #welcome.active{padding-top:max(52px,calc(env(safe-area-inset-top,0
 .cc-empty-state[hidden]{display:none!important}
 .cc-empty-title{margin:0 0 6px;font-size:14px;font-weight:600;color:rgba(180,210,245,.9);line-height:1.35}
 .cc-empty-sub{margin:0;font-size:13px;font-weight:500;line-height:1.45;color:rgba(147,168,196,.78)}
+.bh-body{max-width:390px;margin:0 auto;padding-bottom:24px}
+.bh-bar{display:flex;align-items:center;justify-content:space-between}
+.bh-back{border:0;background:transparent;color:rgba(180,210,245,.92);font-size:30px;line-height:1;padding:0 6px;cursor:pointer;width:36px;text-align:left}
+.bh-bar-spacer{width:36px}
+.bh-head{margin:2px 0 16px}
+.bh-h1{margin:0 0 4px;font-size:clamp(26px,6.5vw,32px);font-weight:700;letter-spacing:-.03em;color:#fff}
+.bh-sub{margin:0;font-size:15px;font-weight:500;color:rgba(159,180,208,.9)}
+.bh-card{border:1px solid rgba(110,180,255,.14);border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(13,107,255,.02));padding:20px 18px;margin:0 0 16px;box-shadow:var(--card-shadow);animation:ccSlideIn .5s var(--ease-premium) both}
+.bh-health{display:flex;flex-direction:column;align-items:center;text-align:center;background:linear-gradient(180deg,rgba(13,107,255,.12),rgba(13,107,255,.02));border-color:rgba(126,192,255,.22)}
+.bh-health-ring-wrap{position:relative;width:168px;height:168px;margin:2px auto 12px}
+.bh-ring{width:168px;height:168px;transform:rotate(-90deg)}
+.bh-ring-track{fill:none;stroke:rgba(255,255,255,.08);stroke-width:10}
+.bh-ring-fill{fill:none;stroke:url(#bhGrad);stroke-width:10;stroke-linecap:round;stroke-dasharray:326.7;stroke-dashoffset:326.7;transition:stroke-dashoffset .9s var(--ease-premium),stroke .5s ease}
+.bh-ring-fill.is-strong{stroke:#20D781}
+.bh-ring-fill.is-ok{stroke:#4DA3FF}
+.bh-ring-fill.is-low{stroke:#FFB020}
+.bh-ring-center{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:1px}
+.bh-score{font-size:46px;font-weight:700;letter-spacing:-.04em;color:#fff;font-variant-numeric:tabular-nums;line-height:1}
+.bh-score-unit{font-size:15px;font-weight:600;color:rgba(159,180,208,.7);align-self:flex-start;margin-top:16px}
+.bh-health-kicker{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(147,178,222,.85);margin-bottom:4px}
+.bh-health-label{margin:0 0 4px;font-size:21px;font-weight:700;letter-spacing:-.02em;color:#fff}
+.bh-health-note{margin:0 0 14px;font-size:13.5px;line-height:1.45;color:rgba(180,204,236,.9)}
+.bh-factors{display:flex;flex-wrap:wrap;gap:7px;justify-content:center}
+.bh-factor{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;padding:5px 10px;border-radius:999px;border:1px solid rgba(147,168,196,.24);background:rgba(255,255,255,.04);color:rgba(170,190,216,.9)}
+.bh-factor.is-done{border-color:rgba(32,215,129,.35);background:rgba(32,215,129,.1);color:rgba(180,240,210,.95)}
+.bh-factor-dot{width:6px;height:6px;border-radius:50%;background:rgba(147,168,196,.5)}
+.bh-factor.is-done .bh-factor-dot{background:#20D781}
+.bh-hero-action{display:flex;align-items:center;gap:14px;width:100%;text-align:left;border:0;border-radius:20px;background:linear-gradient(135deg,#1E88FF 0%,#0D6BFF 55%,#005FE8 100%);padding:18px;margin:0 0 18px;box-shadow:0 14px 36px rgba(13,107,255,.36),inset 0 1px 0 rgba(255,255,255,.16);cursor:pointer;transition:transform .18s var(--ease-premium),box-shadow .28s ease}
+.bh-hero-action:active{transform:scale(.99);box-shadow:0 8px 22px rgba(13,107,255,.3)}
+.bh-hero-icon{font-size:26px;flex-shrink:0;width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.16)}
+.bh-hero-copy{flex:1;display:flex;flex-direction:column;gap:2px}
+.bh-hero-title{font-size:18px;font-weight:700;letter-spacing:-.02em;color:#fff}
+.bh-hero-desc{font-size:13px;font-weight:500;color:rgba(226,238,255,.9)}
+.bh-hero-chevron{font-size:26px;color:rgba(255,255,255,.7)}
+.bh-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:0 0 22px}
+.bh-stat{padding:12px 8px;border-radius:14px;border:1px solid rgba(110,180,255,.1);background:rgba(255,255,255,.035);text-align:center}
+.bh-stat span{display:block;font-size:9.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:rgba(147,168,196,.82);margin-bottom:5px}
+.bh-stat strong{display:block;font-size:17px;font-weight:700;letter-spacing:-.02em;color:rgba(234,242,255,.96);font-variant-numeric:tabular-nums}
+.bh-section-title{margin:0 0 12px;font-size:13px;font-weight:600;letter-spacing:.02em;color:rgba(159,180,208,.9)}
+.bh-modules{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.bh-module{position:relative;display:flex;flex-direction:column;border:1px solid rgba(110,180,255,.12);border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(13,107,255,.015));padding:14px 13px;min-height:132px}
+.bh-module-icon{font-size:22px;margin-bottom:8px}
+.bh-module-title{margin:0 0 4px;font-size:14.5px;font-weight:700;letter-spacing:-.01em;color:#fff}
+.bh-module-desc{margin:0;font-size:11.5px;line-height:1.4;color:rgba(159,180,208,.85);flex:1}
+.bh-module-badge{align-self:flex-start;margin-top:10px;font-size:9.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:999px}
+.bh-module-badge.is-active{color:rgba(180,240,210,.95);border:1px solid rgba(32,215,129,.32);background:rgba(32,215,129,.1)}
+.bh-module-badge.is-soon{color:rgba(180,204,236,.85);border:1px solid rgba(147,168,196,.26);background:rgba(147,168,196,.1)}
 .cc-today{border:1px solid rgba(110,180,255,.16);border-radius:22px;background:linear-gradient(180deg,rgba(13,107,255,.1),rgba(13,107,255,.02));padding:18px 18px 16px;margin:0 0 16px;box-shadow:var(--card-shadow);animation:ccSlideIn .5s var(--ease-premium) both}
 .cc-today-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;min-height:24px}
 .cc-today-kicker{font-size:13px;font-weight:600;letter-spacing:.02em;color:rgba(159,180,208,.9)}
@@ -1296,6 +1343,44 @@ body.always-modal-open .nav{display:none!important}
 </div>
 <div class="cc-version" id="ccVersion">MilePilot v8.25.0</div>
 </section>
+<!-- PRD-001 Business Home -->
+<section id="businessHub" class="screen bh-screen" data-mp="PRD-001">
+<header class="brand-bar bh-bar"><button type="button" class="bh-back" onclick="goHome()" aria-label="Back to dashboard">‹</button><div class="wordmark">Mile <span class="blue">Pilot</span></div><span class="bh-bar-spacer" aria-hidden="true"></span></header>
+<div class="bh-body">
+<div class="bh-head">
+<h1 class="bh-h1">Business Hub</h1>
+<p class="bh-sub" id="bhSub">Everything in one place.</p>
+</div>
+<section class="bh-card bh-health" aria-label="Business Health">
+<div class="bh-health-ring-wrap">
+<svg class="bh-ring" viewBox="0 0 120 120" aria-hidden="true">
+<defs><linearGradient id="bhGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4DA3FF"></stop><stop offset="1" stop-color="#0D6BFF"></stop></linearGradient></defs>
+<circle class="bh-ring-track" cx="60" cy="60" r="52"></circle>
+<circle class="bh-ring-fill" id="bhRingFill" cx="60" cy="60" r="52"></circle>
+</svg>
+<div class="bh-ring-center"><span class="bh-score" id="bhScore">0</span><span class="bh-score-unit">/100</span></div>
+</div>
+<div class="bh-health-copy">
+<span class="bh-health-kicker">Business Health</span>
+<h2 class="bh-health-label" id="bhHealthLabel">Getting organised</h2>
+<p class="bh-health-note" id="bhHealthNote">A few quick steps will get your business organised.</p>
+</div>
+<div class="bh-factors" id="bhFactors"></div>
+</section>
+<button type="button" class="bh-hero-action" onclick="businessHubScanReceipt()">
+<span class="bh-hero-icon" aria-hidden="true">🧾</span>
+<span class="bh-hero-copy"><span class="bh-hero-title">Scan Receipt</span><span class="bh-hero-desc">Capture a receipt — we sort the rest</span></span>
+<span class="bh-hero-chevron" aria-hidden="true">›</span>
+</button>
+<div class="bh-stats" id="bhStats">
+<div class="bh-stat"><span>Miles this month</span><strong id="bhMonthMiles">0.0</strong></div>
+<div class="bh-stat"><span>HMRC estimate</span><strong id="bhMonthHmrc">£0.00</strong></div>
+<div class="bh-stat"><span>Trips</span><strong id="bhMonthTrips">0</strong></div>
+</div>
+<h3 class="bh-section-title">Your business, organised</h3>
+<div class="bh-modules" id="bhModules"></div>
+</div>
+</section>
 <section id="tracking" class="screen">
 <header class="brand-bar center"><div class="wordmark">Mile <span class="blue">Pilot</span></div><div class="brand-pulse alive"></div><p class="brand-tagline">Your business. On AutoPilot.</p></header>
 <div class="track-panel">
@@ -1579,9 +1664,10 @@ body.always-modal-open .nav{display:none!important}
 <script src="js/summary-reports.js"></script>
 <script src="js/report-archive.js"></script>
 <script src="js/app-copy.js"></script>
+<script src="js/business-hub.js"></script>
 <script src="js/beta-feedback.js"></script>
 <script>
-const APP_VERSION='8.43.61';
+const APP_VERSION='8.43.64';
 window.APP_VERSION=APP_VERSION;
 const DEFAULT_WEEKLY_GOAL_MILES=400;
 const BUSINESS_PROFILE_KEY='mp_business_profile';
@@ -1882,7 +1968,9 @@ function renderHomeDebugButton(){const btn=q('homeOpenDebugBtn');if(!btn)return;
 function renderHomeModeCards(){const auto=isAutoPilotTracking(),autoCard=q('ccAutoCard'),manualCard=q('ccManualCard'),autoTag=q('ccAutoTag'),manualTag=q('ccManualTag');if(autoCard)autoCard.classList.toggle('is-active',auto);if(manualCard)manualCard.classList.toggle('is-active',!auto);if(autoTag){let t='Ready';if(!auto)t='Tap to enable';else if(typeof MPAutoPilotMotion!=='undefined'){const d=MPAutoPilotMotion.getDebugState();if(ccState==='active')t='Tracking';else if(d.state==='MOVING_CANDIDATE')t='Motion detected';else if(d.state==='PERMISSION_REQUIRED')t='Needs permission';else if(!d.lastGpsAt)t='Connecting…';else t='Ready'}autoTag.textContent=t}if(manualTag)manualTag.textContent=ccState==='active'?'Trip active':'Ready'}
 function manageAutoPilot(){if(typeof openTrackingModeSettings==='function')openTrackingModeSettings()}
 function startManualTrip(){if(!requireActiveAccess('Subscribe to start tracking'))return;autopilotStartedShift=false;startShiftCommandCentre();showScreen('tracking')}
-function openBusinessHub(){toast('Business Hub is coming next ✨')}
+function openBusinessHub(){renderBusinessHub();if(typeof MPAutoPilotMotion!=='undefined')try{MPAutoPilotMotion.syncLifecycle&&MPAutoPilotMotion.syncLifecycle()}catch(e){}showScreen('businessHub')}
+function renderBusinessHub(){if(typeof MPBusinessHub==='undefined')return;const health=MPBusinessHub.getHealth(),summary=MPBusinessHub.getSummary(),modules=MPBusinessHub.getModules();const ring=q('bhRingFill');if(ring){const circ=2*Math.PI*52;ring.style.strokeDasharray=circ.toFixed(1);ring.style.strokeDashoffset=(circ*(1-health.score/100)).toFixed(1);ring.classList.remove('is-strong','is-ok','is-low');ring.classList.add('is-'+health.tone)}setText('bhScore',String(health.score));setText('bhHealthLabel',health.label);setText('bhHealthNote',health.note);const fWrap=q('bhFactors');if(fWrap)fWrap.innerHTML=health.factors.map(function(f){return '<span class="bh-factor'+(f.done?' is-done':'')+'"><span class="bh-factor-dot"></span>'+f.label+'</span>'}).join('');setText('bhMonthMiles',summary.monthMiles.toFixed(1));setText('bhMonthHmrc',money(summary.monthHmrc));setText('bhMonthTrips',String(summary.monthTrips));const mWrap=q('bhModules');if(mWrap)mWrap.innerHTML=modules.map(function(m){const badge=m.status==='active'?'<span class="bh-module-badge is-active">Active</span>':'<span class="bh-module-badge is-soon">Coming soon</span>';return '<div class="bh-module"><span class="bh-module-icon" aria-hidden="true">'+m.icon+'</span><h4 class="bh-module-title">'+m.title+'</h4><p class="bh-module-desc">'+m.desc+'</p>'+badge+'</div>'}).join('')}
+function businessHubScanReceipt(){if(!requireActiveAccess('Subscribe to use Business Hub'))return;toast('Receipt scanning arrives with MilePilot Business — coming soon ✨')}
 function viewTodayReport(){setArchiveFilter('daily');showReports()}
 function generateTodayReport(){showReports();setTimeout(function(){downloadArchiveReport('syn_today')},350)}
 function downsampleRoute(pts,max=ENGINE.ROUTE_MAX){if(!pts?.length)return[];if(pts.length<=max)return pts;const step=Math.ceil(pts.length/max);return pts.filter((_,i)=>i%step===0||i===pts.length-1)}
@@ -1919,7 +2007,7 @@ async function startShiftNativeTracking(){registerNativeTripLocationHandler();st
 function registerNativeTripLocationHandler(){window.__onExpoNativeLocation=function(msg){if(!msg||!msg.coords)return;handlePos({coords:{latitude:msg.coords.latitude,longitude:msg.coords.longitude,accuracy:msg.coords.accuracy,altitude:msg.coords.altitude,altitudeAccuracy:msg.coords.altitudeAccuracy,heading:msg.coords.heading,speed:msg.coords.speed},timestamp:msg.timestamp||Date.now()})}}
 function startNativeSyncPoll(){stopNativeSyncPoll();if(typeof MPTrackingProvider==='undefined'||!MPTrackingProvider.isNative())return;nativeSyncPollId=setInterval(function(){if(ccState!=='active')return;requestNativeTripSync()},1500)}
 function stopNativeSyncPoll(){if(nativeSyncPollId){clearInterval(nativeSyncPollId);nativeSyncPollId=null}if(tripGpsWatchId){clearInterval(tripGpsWatchId);tripGpsWatchId=null}}
-async function syncNativeTripStart(){if(!(typeof MPTrackingProvider!=='undefined'&&MPTrackingProvider.isNative()&&window.MPExpoBridge))return;window.__nativeEngineAuthoritative=document.visibilityState==='hidden';registerNativeTripLocationHandler();const perm=await MPTrackingProvider.queryPermissionStatus();if(perm!=='granted'&&perm!=='foreground-only'){const req=await MPTrackingProvider.requestPermissions();if(req!=='granted'&&req!=='foreground-only'){updateGpsUi('Location required for tracking.');startNativeTripWebGpsWatch();seedTripGps().catch(function(){});return}}const autoEnd=typeof MPTripAutoEnd!=='undefined'?{active:true,shiftId:shiftId,lastMovementAt:shiftStartedAt,inactivityMs:MPTripAutoEnd.getInactivityMs(),autoEndDeadlineAt:shiftStartedAt+MPTripAutoEnd.getInactivityMs()}:null;try{const res=await MPExpoBridge.request('expo:trip:start',{shiftId:shiftId,startedAt:shiftStartedAt,vehicle:vehicle,miles,pendingMeters,routePoints:downsampleRoute(routePoints),lastPoint,background:isAutoPilotTracking(),autoEnd:autoEnd});if(res&&res.sync)applyNativeTripSync(res.sync);await burstNativeTripSync();if(document.visibilityState==='hidden')await handoffToNativeEngine();if((!res||!res.backgroundActive)&&isAutoPilotTracking())setTimeout(function(){showNativeAlwaysLocationModal()},2500);gpsLocked=true;localStorage.setItem('mp_location_choice','granted')}catch(e){console.error('[MilePilot] syncNativeTripStart',e)}}
+async function syncNativeTripStart(){if(!(typeof MPTrackingProvider!=='undefined'&&MPTrackingProvider.isNative()&&window.MPExpoBridge))return;window.__nativeEngineAuthoritative=document.visibilityState==='hidden';registerNativeTripLocationHandler();const perm=await MPTrackingProvider.queryPermissionStatus();if(perm!=='granted'&&perm!=='foreground-only'){const req=await MPTrackingProvider.requestPermissions();if(req!=='granted'&&req!=='foreground-only'){updateGpsUi('Location required for tracking.');startNativeTripWebGpsWatch();seedTripGps().catch(function(){});return}}const autoEndAnchor=Math.max(Number(shiftStartedAt)||0,Number(lastMileRecordedAt)||0)||Date.now();const autoEnd=typeof MPTripAutoEnd!=='undefined'?{active:true,shiftId:shiftId,lastMovementAt:autoEndAnchor,inactivityMs:MPTripAutoEnd.getInactivityMs(),autoEndDeadlineAt:autoEndAnchor+MPTripAutoEnd.getInactivityMs()}:null;try{const res=await MPExpoBridge.request('expo:trip:start',{shiftId:shiftId,startedAt:shiftStartedAt,vehicle:vehicle,miles,pendingMeters,routePoints:downsampleRoute(routePoints),lastPoint,background:isAutoPilotTracking(),autoEnd:autoEnd});if(res&&res.sync)applyNativeTripSync(res.sync);await burstNativeTripSync();if(document.visibilityState==='hidden')await handoffToNativeEngine();if((!res||!res.backgroundActive)&&isAutoPilotTracking())setTimeout(function(){showNativeAlwaysLocationModal()},2500);gpsLocked=true;localStorage.setItem('mp_location_choice','granted')}catch(e){console.error('[MilePilot] syncNativeTripStart',e)}}
 async function syncNativeTripStop(){if(!(window.MPExpoBridge&&typeof MPTrackingProvider!=='undefined'&&MPTrackingProvider.isNative()))return;try{await MPExpoBridge.request('expo:trip:stop')}catch(e){}window.__nativeEngineAuthoritative=false}
 async function syncNativeTripRestore(payload){if(!(window.MPExpoBridge&&typeof MPTrackingProvider!=='undefined'&&MPTrackingProvider.isNative()))return;try{const res=await MPExpoBridge.request('expo:trip:restore',{...payload,background:isAutoPilotTracking()});if(res&&res.sync)applyNativeTripSync(res.sync)}catch(e){console.error('[MilePilot] syncNativeTripRestore',e)}}
 function initTripAutoEnd(){if(typeof MPTripAutoEnd==='undefined'){console.error('[MilePilot] MPTripAutoEnd not loaded — auto-end disabled. Hard refresh required.');return}window.__pendingNativeAutoEnd=false;MPTripAutoEnd.setTickCallback(function(){endShiftCommandCentre('auto')});window.__onExpoAutoEnd=function(){if(ccState==='active')endShiftCommandCentre('auto');else window.__pendingNativeAutoEnd=true};MPTripAutoEnd.log('Auto-end service ready',{inactivityMin:MPTripAutoEnd.getInactivityMs()/60000})}
@@ -2036,8 +2124,9 @@ function migrateOnboardingVersion(){const stored=localStorage.getItem('mp_app_ve
 function resumeOnboardingStep(step){driver=localStorage.getItem('mp_driver')||'';vehicle=localStorage.getItem('mp_vehicle')||'car';selectedVehicle=localStorage.getItem('mp_vehicle')||selectedVehicle;if(step==='name'||step==='knowYou'){initOnboardName();showScreen('knowYou');return true}if(step==='trackingMode'){initTrackingMode(false);showScreen('trackingMode');return true}if(step==='enableSetup'||step==='location'||step==='permissions'){selectedTrackingMode=(typeof MPTrackingMode!=='undefined'&&MPTrackingMode.getMode())||selectedTrackingMode;if(selectedTrackingMode==='manual'){initEmailSetup();showScreen('emailSetup');return true}initEnableSetup();showScreen('permissions');return true}if(step==='workSchedule'){initEmailSetup();showScreen('emailSetup');return true}if(step==='email'||step==='emailSetup'||step==='reportSchedule'){initEmailSetup();showScreen('emailSetup');return true}if(step==='ready'||step==='onboardReady'){initOnboardReady();showScreen('onboardReady');return true}if(step==='notifications'){initEmailSetup();showScreen('emailSetup');return true}if(step==='experience'||step==='experienceChoice'){initExperienceChoice();showScreen('experienceChoice');return true}if(step==='businessProfile'||step==='profession'){initBusinessProfile();showScreen('businessProfile');return true}if(step==='promise'){initOnboardReady();showScreen('onboardReady');return true}if(step==='welcome'){initFirstImpression();showScreen('welcome');return true}return false}
 function initSummaryReports(){if(typeof MPSummaryReports==='undefined')return;MPSummaryReports.init({getEmail:()=>localStorage.getItem('mp_email')||'',getDriver:()=>localStorage.getItem('mp_driver')||driver||'',getFrequency:()=>getReportFrequency(),getTrips:()=>{refreshTripStore();return trips.slice()},getShifts:()=>shifts.slice(),fmt,apiPost:(body)=>apiPost('/reports/send',body),getHmrcRate:()=>vehicles[vehicle]?.rate||0.55,onSent:function(type,payload){saveReportToArchive(payload,'auto-'+type);toast(copyMsg('autoReportSent','Your automatic business summary has been emailed.'))}});MPSummaryReports.checkScheduledReports();setInterval(()=>{if(canUseActiveFeatures())MPSummaryReports.checkScheduledReports()},60*1000)}
 function initBetaFeedback(){if(typeof MPBetaFeedback==='undefined')return;MPBetaFeedback.init({getEmail:()=>localStorage.getItem('mp_email')||'',getDriver:()=>localStorage.getItem('mp_driver')||driver||'',getVersion:()=>APP_VERSION,apiPost:(body)=>apiPost('/feedback',body),toast})}
+function initBusinessHub(){if(typeof MPBusinessHub==='undefined')return;MPBusinessHub.init({getShifts:()=>shifts.slice(),getTrips:()=>{refreshTripStore();return trips.slice()},hmrcEstimate:(mi)=>claim(mi),isTrackingEnabled:()=>typeof MPTrackingMode!=='undefined'?true:false,reportsReady:()=>!!(localStorage.getItem('mp_email')||'').trim()&&getReportPrefs().emailReports,profileComplete:()=>typeof isProfileComplete==='function'?isProfileComplete():hasBusinessProfile()})}
 function assertTrackingResilience(){const required=['startBackgroundGpsPoll','stopBackgroundGpsPoll','checkGpsStale','scheduleGpsReconnect','bindMotionGpsNudge','onGpsWatchError','ensureMotionAccess','movementSpeedMps'];const missing=required.filter(n=>typeof globalThis[n]!=='function');if(missing.length)console.error('[MilePilot] TRACKING CONTRACT BROKEN ('+TRACKING_CONTRACT_ID+'): missing '+missing.join(', ')+'. See docs/TRACKING_CONTRACT.md');else if(typeof MPTrackingProvider!=='undefined'&&!MPTrackingProvider.isNative()&&typeof console!=='undefined'&&console.debug)console.debug('[MilePilot] Tracking resilience OK ('+TRACKING_CONTRACT_ID+')');else if(typeof MPTrackingProvider!=='undefined'&&MPTrackingProvider.isNative()&&typeof console!=='undefined'&&console.debug)console.debug('[MilePilot] Native tracking bridge OK ('+TRACKING_CONTRACT_ID+')')}
-function bootApp(){assertTrackingResilience();initAlwaysLocationModal();initOnboardInputScroll();shifts=loadShifts();refreshTripStore();updateAppVersionBadge();initDebugSecretTap();if(typeof MPTrackingMode!=='undefined')MPTrackingMode.migrateLegacyDefault();if(localStorage.getItem('mp_onboard_complete')==='true'&&typeof MPSubscription!=='undefined')MPSubscription.startTrialIfNeeded();initSummaryReports();initTripAutoEnd();initTrackingEngine();initAutoPilotMotion();initBetaFeedback();migrateBusinessProfileVision();localStorage.removeItem('mp_work_done');shiftJustCompleted=false;if(migrateOnboardingVersion()){localStorage.setItem('mp_onboard_step','welcome');initFirstImpression();showScreen('welcome');return}restoreActiveShift();setTimeout(function(){restoreNativeTripIfNeeded({})},800);const debugParam=new URLSearchParams(location.search).get('debug');if(debugParam==='1'||debugParam==='true')localStorage.setItem('mp_debug','1');if(debugParam==='tracking'&&window.MPTrackingDebug)setTimeout(function(){MPTrackingDebug.open()},2500);if(debugParam==='autopilot'&&window.MPAutoPilotDebug)setTimeout(function(){MPAutoPilotDebug.open()},2500);queryGeoPermission().then(perm=>{if(perm==='granted'){gpsLocked=true;localStorage.setItem('mp_location_choice','granted');ensureAutopilotArmed()}});if(typeof MPTrackingProvider!=='undefined'&&MPTrackingProvider.isNative()){MPTrackingProvider.queryPermissionStatus().then(function(perm){if(perm==='granted'||perm==='foreground-only'){localStorage.setItem('mp_location_choice','granted');gpsLocked=true;ensureAutopilotArmed()}}).catch(function(){})}const complete=localStorage.getItem('mp_onboard_complete')==='true',d=localStorage.getItem('mp_driver'),v=localStorage.getItem('mp_vehicle'),step=localStorage.getItem('mp_onboard_step');if(complete){driver=d||'';vehicle=v||'car';if(ccState==='active')return;ensureDefaultBusinessProfile();if(parseDeepLink()){showReports();return}ensureAutopilotArmed();goHome();return}if(d&&v&&!step&&(localStorage.getItem('mp_location_choice')||localStorage.getItem('mp_notifications_choice'))){localStorage.setItem('mp_onboard_complete','true');if(!localStorage.getItem('mp_location_choice'))localStorage.setItem('mp_location_choice','legacy');driver=d;vehicle=v;ensureDefaultBusinessProfile();ensureAutopilotArmed();goHome();return}if(d&&v&&!step){localStorage.setItem('mp_location_choice','legacy');localStorage.setItem('mp_onboard_complete','true');driver=d;vehicle=v;ensureDefaultBusinessProfile();ensureAutopilotArmed();goHome();return}if(step&&resumeOnboardingStep(step))return;if(d&&!v){driver=d;localStorage.setItem('mp_onboard_step','name');initOnboardName();showScreen('knowYou');return}localStorage.setItem('mp_onboard_step','welcome');initFirstImpression();showScreen('welcome')}
+function bootApp(){assertTrackingResilience();initAlwaysLocationModal();initOnboardInputScroll();shifts=loadShifts();refreshTripStore();updateAppVersionBadge();initDebugSecretTap();if(typeof MPTrackingMode!=='undefined')MPTrackingMode.migrateLegacyDefault();if(localStorage.getItem('mp_onboard_complete')==='true'&&typeof MPSubscription!=='undefined')MPSubscription.startTrialIfNeeded();initSummaryReports();initTripAutoEnd();initTrackingEngine();initAutoPilotMotion();initBetaFeedback();initBusinessHub();migrateBusinessProfileVision();localStorage.removeItem('mp_work_done');shiftJustCompleted=false;if(migrateOnboardingVersion()){localStorage.setItem('mp_onboard_step','welcome');initFirstImpression();showScreen('welcome');return}restoreActiveShift();setTimeout(function(){restoreNativeTripIfNeeded({})},800);const debugParam=new URLSearchParams(location.search).get('debug');if(debugParam==='1'||debugParam==='true')localStorage.setItem('mp_debug','1');if(debugParam==='tracking'&&window.MPTrackingDebug)setTimeout(function(){MPTrackingDebug.open()},2500);if(debugParam==='autopilot'&&window.MPAutoPilotDebug)setTimeout(function(){MPAutoPilotDebug.open()},2500);queryGeoPermission().then(perm=>{if(perm==='granted'){gpsLocked=true;localStorage.setItem('mp_location_choice','granted');ensureAutopilotArmed()}});if(typeof MPTrackingProvider!=='undefined'&&MPTrackingProvider.isNative()){MPTrackingProvider.queryPermissionStatus().then(function(perm){if(perm==='granted'||perm==='foreground-only'){localStorage.setItem('mp_location_choice','granted');gpsLocked=true;ensureAutopilotArmed()}}).catch(function(){})}const complete=localStorage.getItem('mp_onboard_complete')==='true',d=localStorage.getItem('mp_driver'),v=localStorage.getItem('mp_vehicle'),step=localStorage.getItem('mp_onboard_step');if(complete){driver=d||'';vehicle=v||'car';if(ccState==='active')return;ensureDefaultBusinessProfile();if(parseDeepLink()){showReports();return}ensureAutopilotArmed();goHome();return}if(d&&v&&!step&&(localStorage.getItem('mp_location_choice')||localStorage.getItem('mp_notifications_choice'))){localStorage.setItem('mp_onboard_complete','true');if(!localStorage.getItem('mp_location_choice'))localStorage.setItem('mp_location_choice','legacy');driver=d;vehicle=v;ensureDefaultBusinessProfile();ensureAutopilotArmed();goHome();return}if(d&&v&&!step){localStorage.setItem('mp_location_choice','legacy');localStorage.setItem('mp_onboard_complete','true');driver=d;vehicle=v;ensureDefaultBusinessProfile();ensureAutopilotArmed();goHome();return}if(step&&resumeOnboardingStep(step))return;if(d&&!v){driver=d;localStorage.setItem('mp_onboard_step','name');initOnboardName();showScreen('knowYou');return}localStorage.setItem('mp_onboard_step','welcome');initFirstImpression();showScreen('welcome')}
 window.addEventListener('load',bootApp);
 if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('./service-worker.js?v='+APP_VERSION).then(r=>r.update()).catch(()=>{})})}
 </script>

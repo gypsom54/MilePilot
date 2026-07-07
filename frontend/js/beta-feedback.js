@@ -132,6 +132,14 @@
     }
   }
 
+  function returnToDashboard() {
+    if (typeof global.goHome === 'function') {
+      try {
+        global.goHome();
+      } catch (e) {}
+    }
+  }
+
   async function submit() {
     if (!isComplete() || !deps) return;
     const btn = global.document.getElementById('betaSubmit');
@@ -146,24 +154,27 @@
       answers: answers,
       submittedAt: new Date().toISOString(),
     };
+    // Persist locally first so feedback is never lost and the user is never
+    // trapped in the modal if the backend is unreachable.
     try {
-      const result = await deps.apiPost('/feedback', payload);
-      if (!result || !result.res || !result.res.ok) throw new Error('submit failed');
-      try {
-        global.localStorage.setItem(STORAGE_KEY, 'submitted');
-      } catch (e) {}
-      closeModal();
-      if (typeof deps.toast === 'function') deps.toast(global.MPCopy ? global.MPCopy.betaThanks : 'Thank you for your feedback.');
-    } catch (e) {
-      if (typeof deps.toast === 'function') {
-        deps.toast(global.MPCopy ? global.MPCopy.betaSubmitFailed : 'Could not send feedback.');
-      }
-    } finally {
-      if (btn) {
-        btn.disabled = !isComplete();
-        btn.textContent = 'Send feedback';
-      }
+      global.localStorage.setItem(STORAGE_KEY, 'submitted');
+      global.localStorage.setItem('mp_beta_feedback_payload', JSON.stringify(payload));
+    } catch (e) {}
+    // Best-effort backend send — does not block returning to the dashboard.
+    Promise.resolve()
+      .then(function () {
+        return deps.apiPost('/feedback', payload);
+      })
+      .catch(function () {});
+    // Always close the modal, thank the user, and bounce back to the dashboard.
+    closeModal();
+    if (btn) {
+      btn.textContent = 'Send feedback';
     }
+    if (typeof deps.toast === 'function') {
+      deps.toast(global.MPCopy ? global.MPCopy.betaThanks : 'Thank you — your feedback helps shape MilePilot.');
+    }
+    returnToDashboard();
   }
 
   function maybePromptAfterShift(shiftCount) {
