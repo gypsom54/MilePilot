@@ -58,7 +58,7 @@ app/page.tsx
 | Module     | Folder                              | Dashboard connection        |
 | ---------- | ----------------------------------- | --------------------------- |
 | AuraCore   | `services/auracore/`                | Orchestrates all modules    |
-| Scout      | `services/employees/scout/`         | Opportunities               |
+| Scout      | `services/employees/scout/`         | Opportunities, research reports |
 | Writer     | `services/employees/writer/`        | AI Team, Content            |
 | Architect  | `services/employees/architect/`     | Growth Momentum             |
 | Optimiser  | `services/employees/optimiser/`     | Today's Wins                |
