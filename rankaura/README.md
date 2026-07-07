@@ -1,47 +1,49 @@
 # RankAura
 
-**Your AI Growth Employee** — an AI growth platform for small businesses.
+**Your AI Growth Employee** — an AI Growth Operating System for small businesses.
 
-This is the technical foundation. The dashboard shell is in place with placeholder sections ready for future modules.
+## Documentation
+
+- [AURA.md](docs/AURA.md) — Product philosophy and experience rules
+- [SYSTEM_MAP.md](docs/SYSTEM_MAP.md) — Architecture overview
+- [PROJECT_STATUS.md](docs/PROJECT_STATUS.md) — Phase 1 completion status
+- [DECISIONS.md](docs/DECISIONS.md) — Architectural decision records
 
 ## Getting started
 
 ```bash
-cd rankaura
 npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open http://localhost:3000
 
 ## Project structure
 
 ```
-app/                  Next.js App Router pages & layout
+app/                  Next.js App Router
 components/
-  dashboard/          Dashboard shell & section components
-  ui/                 Reusable UI primitives
-lib/                  Utilities & constants
-services/             Data layer (module connections planned)
-types/                Shared TypeScript types
+  dashboard/          Approved dashboard shell (locked UI)
+  ui/                 Design system primitives
+config/               App configuration
+database/             Repository interfaces (future)
+docs/                 Architecture & product documentation
+hooks/                React hooks (future)
+integrations/         External API stubs (future)
+lib/                  Backward-compatible re-exports
+services/
+  auracore/           Orchestration contracts
+  dashboard/          Dashboard data service
+  employees/          AI employee module stubs
 styles/               Design tokens
+types/
+  models/             Domain models
+  dashboard.ts        Dashboard view models
+utils/                Shared utilities
 ```
 
-## Future modules
+## Phase 1 scope
 
-| Module     | Role                          | Dashboard connection        |
-| ---------- | ----------------------------- | --------------------------- |
-| AuraCore   | Orchestrates all AI modules   | Unified dashboard state     |
-| Scout      | Discovers opportunities       | Opportunities               |
-| Writer     | Creates content               | AI Team Activity            |
-| Optimiser  | Improves pages                | Today's Wins                |
-| Architect  | Site structure insights       | Growth Momentum             |
-| Publisher  | Publishing & visibility       | AI Team Activity, Autopilot |
-| Analyst    | Performance metrics           | Growth Momentum, Today's Wins |
+Foundation only — no AI, no SEO engine, no auth, no database.
 
-## Scripts
-
-- `npm run dev` — Start development server
-- `npm run build` — Production build
-- `npm run start` — Start production server
-- `npm run lint` — Run ESLint
+Every future feature has a defined place to live.

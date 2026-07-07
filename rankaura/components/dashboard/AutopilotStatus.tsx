@@ -1,9 +1,9 @@
+import type { DashboardAutopilot } from "@/types/dashboard";
 import { Card } from "@/components/ui/Card";
 import { SectionHeader } from "@/components/ui/SectionHeader";
-import type { AutopilotState } from "@/types/dashboard";
 
 interface AutopilotStatusProps {
-  autopilot: AutopilotState;
+  autopilot: DashboardAutopilot;
 }
 
 /**

@@ -1,32 +1,33 @@
 /**
- * Dashboard types for RankAura.
- * These will be populated by AuraCore and module services.
+ * Dashboard view models (presentation layer).
+ * Maps from domain models via dashboardService — not used directly in UI logic.
  */
 
-export type ActivityStatus = "working" | "idle" | "complete";
+import type { EmployeeActivityStatus } from "@/types/models/ai-employee";
 
-export interface BusinessProfile {
+export type { EmployeeActivityStatus };
+
+export interface DashboardBusinessProfile {
   name: string;
   industry: string;
   logoInitial: string;
 }
 
-export interface HeroSummary {
+export interface DashboardHero {
   headline: string;
   improvementsCount: number;
   hoursSaved: number;
 }
 
-export interface TeamMemberActivity {
+export interface DashboardTeamMember {
   id: string;
   name: string;
   task: string;
-  status: ActivityStatus;
-  /** 0–100, shown as a subtle progress indicator when active */
+  status: EmployeeActivityStatus;
   progress?: number;
 }
 
-export interface Win {
+export interface DashboardWin {
   id: string;
   icon: string;
   title: string;
@@ -34,7 +35,7 @@ export interface Win {
   impact: string;
 }
 
-export interface Opportunity {
+export interface DashboardOpportunity {
   id: string;
   title: string;
   description: string;
@@ -44,13 +45,13 @@ export interface Opportunity {
   priority: "low" | "medium" | "high";
 }
 
-export interface AutopilotState {
+export interface DashboardAutopilot {
   enabled: boolean;
   activities: string[];
   lastCompletedTask: string;
 }
 
-export interface GrowthMomentum {
+export interface DashboardMomentum {
   label: string;
   changePercent: number;
   progress: number;
@@ -59,12 +60,12 @@ export interface GrowthMomentum {
 }
 
 export interface DashboardData {
-  business: BusinessProfile;
+  business: DashboardBusinessProfile;
   greeting: string;
-  hero: HeroSummary;
-  teamActivity: TeamMemberActivity[];
-  momentum: GrowthMomentum;
-  wins: Win[];
-  opportunities: Opportunity[];
-  autopilot: AutopilotState;
+  hero: DashboardHero;
+  teamActivity: DashboardTeamMember[];
+  momentum: DashboardMomentum;
+  wins: DashboardWin[];
+  opportunities: DashboardOpportunity[];
+  autopilot: DashboardAutopilot;
 }

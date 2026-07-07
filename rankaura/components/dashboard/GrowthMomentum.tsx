@@ -1,9 +1,10 @@
 import { Card } from "@/components/ui/Card";
+import { ProgressBar } from "@/components/ui/ProgressBar";
 import { SectionHeader } from "@/components/ui/SectionHeader";
-import type { GrowthMomentum as GrowthMomentumType } from "@/types/dashboard";
+import type { DashboardMomentum } from "@/types/dashboard";
 
 interface GrowthMomentumProps {
-  momentum: GrowthMomentumType;
+  momentum: DashboardMomentum;
 }
 
 /**
@@ -29,12 +30,7 @@ export function GrowthMomentum({ momentum }: GrowthMomentumProps) {
         +{momentum.changePercent}%
       </p>
 
-      <div className="mt-5 h-1.5 overflow-hidden rounded-full bg-[var(--color-border-subtle)]">
-        <div
-          className="h-full rounded-full bg-[var(--color-aura)] animate-progress-fill"
-          style={{ width: `${momentum.progress}%` }}
-        />
-      </div>
+      <ProgressBar value={momentum.progress} className="mt-5 h-1.5" />
 
       <p className="mt-5 text-sm font-medium text-[var(--color-text-primary)]">
         {momentum.summary}

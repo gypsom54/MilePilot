@@ -1,9 +1,9 @@
+import { NAV_ITEMS } from "@/config/navigation";
 import { BusinessProfile } from "@/components/dashboard/BusinessProfile";
-import { NAV_ITEMS } from "@/lib/constants";
-import type { BusinessProfile as BusinessProfileType } from "@/types/dashboard";
+import type { DashboardBusinessProfile } from "@/types/dashboard";
 
 interface SidebarProps {
-  business: BusinessProfileType;
+  business: DashboardBusinessProfile;
 }
 
 export function Sidebar({ business }: SidebarProps) {

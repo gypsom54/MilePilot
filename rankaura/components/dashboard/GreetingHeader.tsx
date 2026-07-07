@@ -1,9 +1,9 @@
+import type { DashboardHero } from "@/types/dashboard";
 import { Button } from "@/components/ui/Button";
-import type { HeroSummary } from "@/types/dashboard";
 
 interface GreetingHeaderProps {
   greeting: string;
-  hero: HeroSummary;
+  hero: DashboardHero;
 }
 
 export function GreetingHeader({ greeting, hero }: GreetingHeaderProps) {

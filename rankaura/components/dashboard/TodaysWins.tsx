@@ -1,9 +1,9 @@
+import type { DashboardWin } from "@/types/dashboard";
 import { Card } from "@/components/ui/Card";
 import { SectionHeader } from "@/components/ui/SectionHeader";
-import type { Win } from "@/types/dashboard";
 
 interface TodaysWinsProps {
-  wins: Win[];
+  wins: DashboardWin[];
 }
 
 /**
