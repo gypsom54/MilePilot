@@ -14,6 +14,7 @@ High-level architecture for the AI Growth Operating System.
 ├─────────────────────────────────────────────────────────────┤
 │  services/               Business logic layer               │
 │    auracore/             Orchestration contracts            │
+│    memory/               Memory framework (read/write)      │
 │    dashboard/            Dashboard data service + mocks     │
 │    employees/            AI employee module stubs           │
 ├─────────────────────────────────────────────────────────────┤
@@ -64,7 +65,7 @@ app/page.tsx
 | Publisher  | `services/employees/publisher/`     | AI Team, Autopilot          |
 | Analyst    | `services/employees/analyst/`       | Growth Momentum, Wins       |
 | Guardian   | `services/employees/guardian/`      | Approval workflows          |
-| Memory     | `services/employees/memory/`        | Business context for all    |
+| Memory     | `services/memory/`                  | Business context for all    |
 
 ## Core domain models
 

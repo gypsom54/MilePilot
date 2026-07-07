@@ -1,6 +1,6 @@
-import type { MemoryStore } from "@/types/models/memory";
+import type { IMemoryReader } from "@/services/memory/types";
 
-export interface MemoryService {
+export interface MemoryEmployeeService {
   serviceId: "memory";
-  getStore(businessId: string): Promise<MemoryStore | null>;
+  reader: IMemoryReader;
 }

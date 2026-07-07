@@ -1,10 +1,8 @@
-import type { EmployeeId } from "@/types/models/ai-employee";
+import type { EmployeeServiceBase } from "@/services/employees/shared/types";
 
 export interface GuardianTaskContext {
   businessId: string;
   taskId: string;
 }
 
-export interface GuardianService {
-  id: EmployeeId;
-}
+export type GuardianService = EmployeeServiceBase;

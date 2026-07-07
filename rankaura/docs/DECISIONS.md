@@ -61,3 +61,9 @@ Record of key decisions made during Phase 1 foundation build.
 **Decision:** Placeholder user/business in `config/placeholders.ts`.  
 **Rationale:** Auth is Phase 2; framework should not assume provider.  
 **Status:** Accepted
+
+## ADR-011: Memory write access gated to AuraCore
+
+**Decision:** `IMemoryReader` for employees; `IMemoryService` writes reject non-AuraCore actors.  
+**Rationale:** Prevents employees modifying each other or memory directly.  
+**Status:** Accepted

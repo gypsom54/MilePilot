@@ -1,10 +1,8 @@
-import type { EmployeeId } from "@/types/models/ai-employee";
+import type { EmployeeServiceBase } from "@/services/employees/shared/types";
 
 export interface AnalystTaskContext {
   businessId: string;
   period: string;
 }
 
-export interface AnalystService {
-  id: EmployeeId;
-}
+export type AnalystService = EmployeeServiceBase;

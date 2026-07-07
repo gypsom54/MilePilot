@@ -1,10 +1,8 @@
-import type { EmployeeId } from "@/types/models/ai-employee";
+import type { EmployeeServiceBase } from "@/services/employees/shared/types";
 
 export interface WriterTaskContext {
   businessId: string;
   contentType: string;
 }
 
-export interface WriterService {
-  id: EmployeeId;
-}
+export type WriterService = EmployeeServiceBase;

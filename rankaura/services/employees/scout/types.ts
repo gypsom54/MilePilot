@@ -1,10 +1,8 @@
-import type { EmployeeId } from "@/types/models/ai-employee";
+import type { EmployeeServiceBase } from "@/services/employees/shared/types";
 
 export interface ScoutTaskContext {
   businessId: string;
   market: string;
 }
 
-export interface ScoutService {
-  id: EmployeeId;
-}
+export type ScoutService = EmployeeServiceBase;

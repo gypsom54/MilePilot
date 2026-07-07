@@ -13,7 +13,7 @@
 - [x] Domain model interfaces
 - [x] AuraCore orchestration contracts
 - [x] AI employee service stubs (8 modules)
-- [x] Task and Memory frameworks (interfaces)
+- [x] Task and Memory frameworks (interfaces + mock service)
 - [x] Dashboard data layer with mock service
 - [x] Database and integration placeholders
 - [x] Architecture documentation

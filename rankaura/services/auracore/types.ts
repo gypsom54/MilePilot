@@ -6,6 +6,8 @@
 import type { EmployeeId } from "@/types/models/ai-employee";
 import type { GrowthMetric } from "@/types/models/growth-metric";
 import type { Task } from "@/types/models/task";
+import type { IAuraCoreMemoryGateway } from "@/services/memory/types";
+import type { MemoryStore } from "@/services/memory/models";
 
 export interface DailyBrief {
   greeting: string;
@@ -33,8 +35,9 @@ export interface CompleteTaskInput {
 /**
  * AuraCore orchestration interface.
  * Implementation will coordinate all AI employees in a future phase.
+ * Memory writes are gated — employees read only via IMemoryReader.
  */
-export interface IAuraCore {
+export interface IAuraCore extends IAuraCoreMemoryGateway {
   startDay(context: AuraCoreContext): Promise<DailyBrief>;
   processTasks(context: AuraCoreContext): Promise<Task[]>;
   assignEmployee(context: AuraCoreContext, input: AssignEmployeeInput): Promise<Task>;
@@ -42,4 +45,5 @@ export interface IAuraCore {
   completeTask(context: AuraCoreContext, input: CompleteTaskInput): Promise<Task>;
   generateBrief(context: AuraCoreContext): Promise<DailyBrief>;
   getGrowthMetric(context: AuraCoreContext): Promise<GrowthMetric>;
+  getMemory(context: AuraCoreContext): Promise<MemoryStore>;
 }
