@@ -498,6 +498,34 @@ html.mp-expo #welcome.active{padding-top:max(52px,calc(env(safe-area-inset-top,0
 .bh-module-badge{align-self:flex-start;margin-top:10px;font-size:9.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:999px}
 .bh-module-badge.is-active{color:rgba(180,240,210,.95);border:1px solid rgba(32,215,129,.32);background:rgba(32,215,129,.1)}
 .bh-module-badge.is-soon{color:rgba(180,204,236,.85);border:1px solid rgba(147,168,196,.26);background:rgba(147,168,196,.1)}
+.rc-overlay{position:fixed;inset:0;z-index:90;background:rgba(2,8,18,.82);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);display:flex;align-items:flex-end;justify-content:center;padding:16px}
+.rc-overlay[hidden]{display:none!important}
+.rc-sheet{width:min(420px,100%);background:linear-gradient(180deg,#0B2348 0%,#061A38 100%);border:1px solid rgba(126,192,255,.16);border-radius:26px 26px 22px 22px;padding:30px 22px 26px;box-shadow:0 24px 64px rgba(0,0,0,.5);animation:ccSlideUp .4s var(--ease-premium) both;text-align:center;position:relative}
+.rc-close{position:absolute;top:14px;right:16px;border:0;background:transparent;color:rgba(160,190,225,.7);font-size:26px;line-height:1;cursor:pointer}
+.rc-spinner{width:56px;height:56px;margin:6px auto 18px;border-radius:50%;border:4px solid rgba(126,192,255,.18);border-top-color:#1E88FF;animation:rcSpin .9s linear infinite}
+@keyframes rcSpin{to{transform:rotate(360deg)}}
+.rc-title{margin:0 0 6px;font-size:22px;font-weight:700;letter-spacing:-.02em;color:#fff}
+.rc-step{margin:0 0 16px;font-size:14px;font-weight:500;color:rgba(180,204,236,.9);min-height:20px}
+.rc-steps{list-style:none;margin:0;padding:0;text-align:left;max-width:260px;margin:0 auto}
+.rc-steps li{display:flex;align-items:center;gap:10px;font-size:13.5px;color:rgba(150,176,208,.7);padding:6px 0;transition:color .3s ease}
+.rc-steps li .rc-dot{width:18px;height:18px;border-radius:50%;border:2px solid rgba(147,168,196,.35);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;transition:all .3s ease}
+.rc-steps li.is-active{color:rgba(226,238,255,.95)}
+.rc-steps li.is-done{color:rgba(180,240,210,.95)}
+.rc-steps li.is-done .rc-dot{border-color:#20D781;background:#20D781;color:#04121f}
+.rc-tick{width:72px;height:72px;margin:4px auto 16px;border-radius:50%;background:linear-gradient(180deg,rgba(32,215,129,.25),rgba(32,215,129,.1));border:1px solid rgba(32,215,129,.4);display:flex;align-items:center;justify-content:center;font-size:36px;color:#20D781;animation:ccPop .5s var(--ease-premium) both}
+@keyframes ccPop{0%{transform:scale(.6);opacity:0}60%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+.rc-summary{margin:6px 0 14px;border:1px solid rgba(110,180,255,.14);border-radius:16px;background:rgba(255,255,255,.04);padding:14px 16px;text-align:left}
+.rc-summary-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0}
+.rc-summary-row span{font-size:12.5px;color:rgba(159,180,208,.85)}
+.rc-summary-row strong{font-size:15px;font-weight:700;color:#fff;letter-spacing:-.01em}
+.rc-cat-chip{font-size:11px;font-weight:700;text-transform:capitalize;padding:3px 10px;border-radius:999px;color:rgba(180,220,255,.95);border:1px solid rgba(110,180,255,.28);background:rgba(13,107,255,.12)}
+.rc-reassure{margin:0 0 18px;font-size:13px;line-height:1.45;color:rgba(180,204,236,.85)}
+.rc-btn{width:100%;height:50px;border:0;border-radius:14px;background:linear-gradient(180deg,#1E88FF 0%,#0D6BFF 50%,#005FE8 100%);color:#fff;font-size:16px;font-weight:600;box-shadow:0 8px 22px rgba(13,107,255,.3);cursor:pointer}
+.rc-btn:active{transform:scale(.99)}
+.rc-field{text-align:left;margin:0 0 14px}
+.rc-field label{display:block;font-size:12px;font-weight:600;color:rgba(159,180,208,.85);margin-bottom:6px}
+.rc-input,.rc-select{width:100%;height:48px;border-radius:12px;border:1px solid rgba(110,180,255,.2);background:rgba(0,0,0,.2);color:#EAF2FF;padding:0 14px;font-size:16px}
+.cc-today{border:1px solid rgba(110,180,255,.16);border-radius:22px;background:linear-gradient(180deg,rgba(13,107,255,.1),rgba(13,107,255,.02));padding:18px 18px 16px;margin:0 0 16px;box-shadow:var(--card-shadow);animation:ccSlideIn .5s var(--ease-premium) both}
 .cc-today{border:1px solid rgba(110,180,255,.16);border-radius:22px;background:linear-gradient(180deg,rgba(13,107,255,.1),rgba(13,107,255,.02));padding:18px 18px 16px;margin:0 0 16px;box-shadow:var(--card-shadow);animation:ccSlideIn .5s var(--ease-premium) both}
 .cc-today-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;min-height:24px}
 .cc-today-kicker{font-size:13px;font-weight:600;letter-spacing:.02em;color:rgba(159,180,208,.9)}
@@ -1579,6 +1607,38 @@ body.always-modal-open .nav{display:none!important}
 </div>
 </section>
 </div>
+<div class="rc-overlay" id="receiptCapture" hidden role="dialog" aria-modal="true" aria-labelledby="rcTitle">
+<div class="rc-sheet">
+<button type="button" class="rc-close" onclick="closeReceiptCapture()" aria-label="Close">×</button>
+<div id="rcProcessing">
+<div class="rc-spinner" aria-hidden="true"></div>
+<h2 class="rc-title" id="rcTitle">Reading your receipt…</h2>
+<p class="rc-step" id="rcStep">One photo — we do the rest.</p>
+<ul class="rc-steps" id="rcSteps">
+<li data-step="save"><span class="rc-dot" aria-hidden="true"></span>Saving photo</li>
+<li data-step="read"><span class="rc-dot" aria-hidden="true"></span>Reading the receipt</li>
+<li data-step="sort"><span class="rc-dot" aria-hidden="true"></span>Sorting &amp; categorising</li>
+<li data-step="file"><span class="rc-dot" aria-hidden="true"></span>Filing to expenses &amp; VAT</li>
+</ul>
+</div>
+<div id="rcSuccess" hidden>
+<div class="rc-tick" aria-hidden="true">✓</div>
+<h2 class="rc-title">All sorted</h2>
+<div class="rc-summary" id="rcSummary"></div>
+<p class="rc-reassure">Added to your expenses, VAT, Business Health and reports — automatically.</p>
+<button type="button" class="rc-btn" onclick="closeReceiptCapture()">Done</button>
+</div>
+<div id="rcConfirm" hidden>
+<div class="rc-tick" aria-hidden="true" style="background:linear-gradient(180deg,rgba(30,136,255,.22),rgba(13,107,255,.1));border-color:rgba(110,180,255,.4);color:#7EC0FF">✓</div>
+<h2 class="rc-title">Receipt saved — quick check</h2>
+<p class="rc-reassure">We stored your photo. Confirm the amount to file it.</p>
+<div class="rc-field"><label for="rcAmount">Amount (£)</label><input type="number" inputmode="decimal" step="0.01" class="rc-input" id="rcAmount" placeholder="0.00"></div>
+<div class="rc-field"><label for="rcCategory">Category</label><select class="rc-select" id="rcCategory"></select></div>
+<button type="button" class="rc-btn" onclick="confirmReceiptExpense()">Save expense</button>
+</div>
+</div>
+</div>
+<input type="file" id="rcFileInput" accept="image/*" capture="environment" hidden onchange="onReceiptFileChosen(event)">
 <nav class="nav" id="nav" aria-label="Main">
 <button type="button" class="nav-item" id="navHome" onclick="goHome()" aria-label="Dashboard"><span class="nav-icon-wrap"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5L12 4l8 6.5V20a1 1 0 01-1 1h-5v-6H10v6H5a1 1 0 01-1-1v-9.5z"/></svg><span class="nav-pulse"></span></span><span class="nav-label">Dashboard</span></button>
 <button type="button" class="nav-item" id="navReports" onclick="showReports()" aria-label="Reports"><span class="nav-icon-wrap"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 21V11M12 21V6M17 21V15"/></svg><span class="nav-pulse"></span></span><span class="nav-label">Reports</span></button>
@@ -1668,6 +1728,7 @@ body.always-modal-open .nav{display:none!important}
 <script src="js/business/store.js"></script>
 <script src="js/business/receipt-engine.js"></script>
 <script src="js/business/ocr-engine.js"></script>
+<script src="js/business/receipt-parser.js"></script>
 <script src="js/business/expense-engine.js"></script>
 <script src="js/business/vat-engine.js"></script>
 <script src="js/business/timeline-engine.js"></script>
@@ -1679,7 +1740,7 @@ body.always-modal-open .nav{display:none!important}
 <script src="js/business-hub.js"></script>
 <script src="js/beta-feedback.js"></script>
 <script>
-const APP_VERSION='8.43.65';
+const APP_VERSION='8.43.66';
 window.APP_VERSION=APP_VERSION;
 const DEFAULT_WEEKLY_GOAL_MILES=400;
 const BUSINESS_PROFILE_KEY='mp_business_profile';
@@ -1982,7 +2043,22 @@ function manageAutoPilot(){if(typeof openTrackingModeSettings==='function')openT
 function startManualTrip(){if(!requireActiveAccess('Subscribe to start tracking'))return;autopilotStartedShift=false;startShiftCommandCentre();showScreen('tracking')}
 function openBusinessHub(){if(mpBusinessEngine)try{mpBusinessEngine.ingestMileage({mileage:mpBusinessMileageSnapshot()})}catch(e){}renderBusinessHub();showScreen('businessHub')}
 function renderBusinessHub(){if(typeof MPBusinessHub==='undefined')return;const health=MPBusinessHub.getHealth(),summary=MPBusinessHub.getSummary(),modules=MPBusinessHub.getModules();const ring=q('bhRingFill');if(ring){const circ=2*Math.PI*52;ring.style.strokeDasharray=circ.toFixed(1);ring.style.strokeDashoffset=(circ*(1-health.score/100)).toFixed(1);ring.classList.remove('is-strong','is-ok','is-low');ring.classList.add('is-'+health.tone)}setText('bhScore',String(health.score));setText('bhHealthLabel',health.label);setText('bhHealthNote',health.note);const fWrap=q('bhFactors');if(fWrap)fWrap.innerHTML=health.factors.map(function(f){return '<span class="bh-factor'+(f.done?' is-done':'')+'"><span class="bh-factor-dot"></span>'+f.label+'</span>'}).join('');setText('bhMonthMiles',summary.monthMiles.toFixed(1));setText('bhMonthHmrc',money(summary.monthHmrc));setText('bhMonthTrips',String(summary.monthTrips));const mWrap=q('bhModules');if(mWrap)mWrap.innerHTML=modules.map(function(m){const badge=m.status==='active'?'<span class="bh-module-badge is-active">Active</span>':'<span class="bh-module-badge is-soon">Coming soon</span>';return '<div class="bh-module"><span class="bh-module-icon" aria-hidden="true">'+m.icon+'</span><h4 class="bh-module-title">'+m.title+'</h4><p class="bh-module-desc">'+m.desc+'</p>'+badge+'</div>'}).join('')}
-function businessHubScanReceipt(){if(!requireActiveAccess('Subscribe to use Business Hub'))return;toast('Receipt scanning arrives with MilePilot Business — coming soon ✨')}
+function businessHubScanReceipt(){openReceiptCapture()}
+function openReceiptCapture(){if(!requireActiveAccess('Subscribe to use Business Hub'))return;if(!mpBusinessEngine){toast('Business Hub is still loading…');return}const inp=q('rcFileInput');if(inp){inp.value='';inp.click()}}
+function onReceiptFileChosen(ev){const file=ev.target.files&&ev.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=function(){startReceiptProcessing(reader.result)};reader.onerror=function(){toast('Could not read that photo — try again')};reader.readAsDataURL(file)}
+const RC_STEPS=['save','read','sort','file'];
+function showReceiptState(state){['rcProcessing','rcSuccess','rcConfirm'].forEach(function(id){const el=q(id);if(el)el.hidden=id!==state})}
+function resetRcSteps(){RC_STEPS.forEach(function(s){const li=document.querySelector('#rcSteps li[data-step="'+s+'"]');if(li){li.classList.remove('is-active','is-done');const d=li.querySelector('.rc-dot');if(d)d.textContent=''}})}
+function rcMark(step){const idx=RC_STEPS.indexOf(step);RC_STEPS.forEach(function(s,i){const li=document.querySelector('#rcSteps li[data-step="'+s+'"]');if(!li)return;const dot=li.querySelector('.rc-dot');if(i<idx){li.classList.add('is-done');li.classList.remove('is-active');if(dot)dot.textContent='✓'}else if(i===idx){li.classList.add('is-active');li.classList.remove('is-done');if(dot)dot.textContent=''}});const labels={save:'Saving photo…',read:'Reading the receipt…',sort:'Sorting \u0026 categorising…',file:'Filing to expenses \u0026 VAT…'};setText('rcStep',labels[step]||'')}
+function money2(n){return '£'+(Number(n)||0).toFixed(2)}
+function startReceiptProcessing(dataUrl){if(!mpBusinessEngine){toast('Business Hub is still loading…');return}const bus=mpBusinessEngine.bus,E=bus.events;showReceiptState('rcProcessing');resetRcSteps();q('receiptCapture').hidden=false;let receiptId=null,resolved=false;const offs=[];function done(){if(resolved)return true;resolved=true;offs.forEach(function(u){try{u()}catch(e){}});offs.length=0;return false}function filed(expense){if(done())return;rcMark('file');rcShowSuccess(expense)}function needsConfirm(fields){if(done())return;rcShowConfirm(receiptId,fields||{})}offs.push(bus.on(E.RECEIPT_CAPTURED,function(p){receiptId=p.id;rcMark('save')}));offs.push(bus.on(E.RECEIPT_STORED,function(p){if(p.id===receiptId)rcMark('read')}));offs.push(bus.on(E.EXPENSE_UPDATED,function(p){if(p&&p.expense&&p.expense.receiptId===receiptId)filed(p.expense)}));offs.push(bus.on(E.OCR_COMPLETE,function(p){if(p.receiptId!==receiptId)return;rcMark('sort');const created=mpBusinessEngine.engines.expense.getExpenses().some(function(e){return e.receiptId===receiptId});if(!created)needsConfirm(p.fields)}));offs.push(bus.on(E.OCR_FAILED,function(p){if(p.receiptId===receiptId)needsConfirm({})}));const to=setTimeout(function(){if(receiptId)needsConfirm({})},25000);offs.push(function(){clearTimeout(to)});try{mpBusinessEngine.engines.receipt.capture({imageRef:dataUrl})}catch(e){console.error('[MilePilot] receipt capture',e);needsConfirm({})}}
+function rcShowSuccess(expense){const sum=q('rcSummary');if(sum&&expense){sum.innerHTML='<div class="rc-summary-row"><span>Merchant</span><strong>'+(expense.merchant||'Receipt')+'</strong></div><div class="rc-summary-row"><span>Amount</span><strong>'+money2(expense.amount)+'</strong></div><div class="rc-summary-row"><span>Category</span><span class="rc-cat-chip">'+(expense.category||'other')+'</span></div>'}showReceiptState('rcSuccess');if(q('businessHub')&&q('businessHub').classList.contains('active'))renderBusinessHub()}
+function rcShowConfirm(receiptId,fields){window.__rcPendingReceipt={id:receiptId,fields:fields||{}};const sel=q('rcCategory');if(sel&&typeof MPExpenseEngine!=='undefined'){sel.innerHTML=MPExpenseEngine.CATEGORIES.map(function(c){return '<option value="'+c+'">'+c.charAt(0).toUpperCase()+c.slice(1)+'</option>'}).join('');const guess=fields&&fields.merchant?fields.merchant:'';if(guess&&sel.querySelector){/* leave default */}}const amt=q('rcAmount');if(amt)amt.value=fields&&fields.amount!=null?Number(fields.amount).toFixed(2):'';showReceiptState('rcConfirm');setTimeout(function(){if(amt)amt.focus()},150)}
+function confirmReceiptExpense(){const pend=window.__rcPendingReceipt||{};const amt=parseFloat(q('rcAmount')&&q('rcAmount').value);if(!amt||amt<=0){toast('Enter the amount to file this receipt');return}const cat=q('rcCategory')?q('rcCategory').value:'other';const f=pend.fields||{};const expense=mpBusinessEngine.engines.expense.addExpense({receiptId:pend.id,merchant:f.merchant||'Receipt',amount:amt,vat:f.vat,category:cat,date:f.date||Date.now(),source:'confirmed'});window.__rcPendingReceipt=null;rcShowSuccess(expense)}
+function closeReceiptCapture(){const m=q('receiptCapture');if(m)m.hidden=true;if(q('businessHub')&&q('businessHub').classList.contains('active'))renderBusinessHub()}
+let __tessPromise=null;
+function loadTesseract(){if(typeof Tesseract!=='undefined')return Promise.resolve(Tesseract);if(__tessPromise)return __tessPromise;__tessPromise=new Promise(function(resolve){const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';s.onload=function(){resolve(typeof Tesseract!=='undefined'?Tesseract:null)};s.onerror=function(){resolve(null)};document.head.appendChild(s)});return __tessPromise}
+async function runReceiptOcr(image){try{const T=await loadTesseract();if(!T)return{rawText:'',fields:{},confidence:0};const res=await T.recognize(image,'eng');const text=(res&&res.data&&res.data.text)||'';const fields=typeof MPReceiptParser!=='undefined'?MPReceiptParser.parse(text):{};return{rawText:text,fields:fields,confidence:fields.confidence||0}}catch(e){console.warn('[MilePilot] OCR failed',e);return{rawText:'',fields:{},confidence:0}}}
 function viewTodayReport(){setArchiveFilter('daily');showReports()}
 function generateTodayReport(){showReports();setTimeout(function(){downloadArchiveReport('syn_today')},350)}
 function downsampleRoute(pts,max=ENGINE.ROUTE_MAX){if(!pts?.length)return[];if(pts.length<=max)return pts;const step=Math.ceil(pts.length/max);return pts.filter((_,i)=>i%step===0||i===pts.length-1)}
@@ -2138,7 +2214,7 @@ function initSummaryReports(){if(typeof MPSummaryReports==='undefined')return;MP
 function initBetaFeedback(){if(typeof MPBetaFeedback==='undefined')return;MPBetaFeedback.init({getEmail:()=>localStorage.getItem('mp_email')||'',getDriver:()=>localStorage.getItem('mp_driver')||driver||'',getVersion:()=>APP_VERSION,apiPost:(body)=>apiPost('/feedback',body),toast})}
 function mpBusinessMileageSnapshot(){const nowD=new Date();const mStart=new Date(nowD.getFullYear(),nowD.getMonth(),1).getTime();const y=nowD.getFullYear();const april6=new Date(y,3,6);const yStart=(nowD>=april6?april6:new Date(y-1,3,6)).getTime();let mm=0,mh=0,mt=0,ym=0,yh=0;shifts.forEach(function(s){const t=new Date(s.startISO||s.date||0).getTime();const mi=Number(s.miles)||0;const hm=s.hmrc!=null?Number(s.hmrc)||0:claim(mi);if(t>=mStart){mm+=mi;mh+=hm;mt+=1}if(t>=yStart){ym+=mi;yh+=hm}});return{monthMiles:mm,monthHmrc:mh,monthTrips:mt,ytdMiles:ym,ytdHmrc:yh}}
 let mpBusinessEngine=null;
-function initBusinessHub(){if(typeof MPBusinessEngine==='undefined'||typeof MPBusinessHub==='undefined')return;try{mpBusinessEngine=MPBusinessEngine.start({mileage:mpBusinessMileageSnapshot,signals:{mileageOn:function(){return typeof MPTrackingMode!=='undefined'?!MPTrackingMode.isManual():shifts.length>0},tripsThisMonth:function(){return mpBusinessMileageSnapshot().monthTrips>0},reportsReady:function(){return!!(localStorage.getItem('mp_email')||'').trim()&&getReportPrefs().emailReports},profileComplete:function(){return typeof isProfileComplete==='function'?isProfileComplete():hasBusinessProfile()}}});window.mpBusinessEngine=mpBusinessEngine;MPBusinessHub.init({engine:mpBusinessEngine});MPBusinessHub.subscribe(function(){if(q('businessHub')&&q('businessHub').classList.contains('active'))renderBusinessHub()})}catch(e){console.error('[MilePilot] initBusinessHub',e)}}
+function initBusinessHub(){if(typeof MPBusinessEngine==='undefined'||typeof MPBusinessHub==='undefined')return;try{mpBusinessEngine=MPBusinessEngine.start({mileage:mpBusinessMileageSnapshot,ocr:{recognise:function(image){return runReceiptOcr(image)}},signals:{mileageOn:function(){return typeof MPTrackingMode!=='undefined'?!MPTrackingMode.isManual():shifts.length>0},tripsThisMonth:function(){return mpBusinessMileageSnapshot().monthTrips>0},reportsReady:function(){return!!(localStorage.getItem('mp_email')||'').trim()&&getReportPrefs().emailReports},profileComplete:function(){return typeof isProfileComplete==='function'?isProfileComplete():hasBusinessProfile()}}});window.mpBusinessEngine=mpBusinessEngine;MPBusinessHub.init({engine:mpBusinessEngine});MPBusinessHub.subscribe(function(){if(q('businessHub')&&q('businessHub').classList.contains('active'))renderBusinessHub()})}catch(e){console.error('[MilePilot] initBusinessHub',e)}}
 function assertTrackingResilience(){const required=['startBackgroundGpsPoll','stopBackgroundGpsPoll','checkGpsStale','scheduleGpsReconnect','bindMotionGpsNudge','onGpsWatchError','ensureMotionAccess','movementSpeedMps'];const missing=required.filter(n=>typeof globalThis[n]!=='function');if(missing.length)console.error('[MilePilot] TRACKING CONTRACT BROKEN ('+TRACKING_CONTRACT_ID+'): missing '+missing.join(', ')+'. See docs/TRACKING_CONTRACT.md');else if(typeof MPTrackingProvider!=='undefined'&&!MPTrackingProvider.isNative()&&typeof console!=='undefined'&&console.debug)console.debug('[MilePilot] Tracking resilience OK ('+TRACKING_CONTRACT_ID+')');else if(typeof MPTrackingProvider!=='undefined'&&MPTrackingProvider.isNative()&&typeof console!=='undefined'&&console.debug)console.debug('[MilePilot] Native tracking bridge OK ('+TRACKING_CONTRACT_ID+')')}
 function bootApp(){assertTrackingResilience();initAlwaysLocationModal();initOnboardInputScroll();shifts=loadShifts();refreshTripStore();updateAppVersionBadge();initDebugSecretTap();if(typeof MPTrackingMode!=='undefined')MPTrackingMode.migrateLegacyDefault();if(localStorage.getItem('mp_onboard_complete')==='true'&&typeof MPSubscription!=='undefined')MPSubscription.startTrialIfNeeded();initSummaryReports();initTripAutoEnd();initTrackingEngine();initAutoPilotMotion();initBetaFeedback();initBusinessHub();migrateBusinessProfileVision();localStorage.removeItem('mp_work_done');shiftJustCompleted=false;if(migrateOnboardingVersion()){localStorage.setItem('mp_onboard_step','welcome');initFirstImpression();showScreen('welcome');return}restoreActiveShift();setTimeout(function(){restoreNativeTripIfNeeded({})},800);const debugParam=new URLSearchParams(location.search).get('debug');if(debugParam==='1'||debugParam==='true')localStorage.setItem('mp_debug','1');if(debugParam==='tracking'&&window.MPTrackingDebug)setTimeout(function(){MPTrackingDebug.open()},2500);if(debugParam==='autopilot'&&window.MPAutoPilotDebug)setTimeout(function(){MPAutoPilotDebug.open()},2500);queryGeoPermission().then(perm=>{if(perm==='granted'){gpsLocked=true;localStorage.setItem('mp_location_choice','granted');ensureAutopilotArmed()}});if(typeof MPTrackingProvider!=='undefined'&&MPTrackingProvider.isNative()){MPTrackingProvider.queryPermissionStatus().then(function(perm){if(perm==='granted'||perm==='foreground-only'){localStorage.setItem('mp_location_choice','granted');gpsLocked=true;ensureAutopilotArmed()}}).catch(function(){})}const complete=localStorage.getItem('mp_onboard_complete')==='true',d=localStorage.getItem('mp_driver'),v=localStorage.getItem('mp_vehicle'),step=localStorage.getItem('mp_onboard_step');if(complete){driver=d||'';vehicle=v||'car';if(ccState==='active')return;ensureDefaultBusinessProfile();if(parseDeepLink()){showReports();return}ensureAutopilotArmed();goHome();return}if(d&&v&&!step&&(localStorage.getItem('mp_location_choice')||localStorage.getItem('mp_notifications_choice'))){localStorage.setItem('mp_onboard_complete','true');if(!localStorage.getItem('mp_location_choice'))localStorage.setItem('mp_location_choice','legacy');driver=d;vehicle=v;ensureDefaultBusinessProfile();ensureAutopilotArmed();goHome();return}if(d&&v&&!step){localStorage.setItem('mp_location_choice','legacy');localStorage.setItem('mp_onboard_complete','true');driver=d;vehicle=v;ensureDefaultBusinessProfile();ensureAutopilotArmed();goHome();return}if(step&&resumeOnboardingStep(step))return;if(d&&!v){driver=d;localStorage.setItem('mp_onboard_step','name');initOnboardName();showScreen('knowYou');return}localStorage.setItem('mp_onboard_step','welcome');initFirstImpression();showScreen('welcome')}
 window.addEventListener('load',bootApp);

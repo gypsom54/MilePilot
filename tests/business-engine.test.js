@@ -20,6 +20,7 @@ var Bus = load('event-bus.js');
 load('store.js');
 load('receipt-engine.js');
 load('ocr-engine.js');
+var Parser = load('receipt-parser.js');
 load('expense-engine.js');
 load('vat-engine.js');
 load('timeline-engine.js');
@@ -170,6 +171,41 @@ test('AI engine: answers from real data, never invents figures', function () {
   var ans = biz.ask('how much did I spend on fuel this month?');
   assert.ok(/48\.00/.test(ans), 'cites real total: ' + ans);
   biz.destroy();
+});
+
+test('receipt parser: extracts total, merchant, date and VAT from receipt text', function () {
+  var text = 'SHELL STATION\n123 High St\nDate: 03/07/2026\nUnleaded 40.00\nVAT 8.00\nTOTAL 48.00\nThank you';
+  var r = Parser.parse(text);
+  assert.strictEqual(r.amount, 48, 'amount from TOTAL line');
+  assert.strictEqual(r.merchant, 'SHELL STATION');
+  assert.strictEqual(r.vat, 8);
+  assert.ok(r.date != null, 'date parsed');
+  assert.ok(r.confidence >= 0.7, 'high confidence when all fields found: ' + r.confidence);
+});
+
+test('receipt parser: low confidence + null amount on garbage input', function () {
+  var r = Parser.parse('....\n@@@@\n');
+  assert.strictEqual(r.amount, null);
+  assert.ok(r.confidence < 0.4);
+});
+
+test('pipeline: parsed receipt via OCR provider creates categorised fuel expense', function () {
+  var biz = BusinessEngine.start({
+    storeFactory: memStoreFactory(),
+    mileage: function () { return { monthMiles: 0, monthHmrc: 0, monthTrips: 0, ytdMiles: 0, ytdHmrc: 0 }; },
+    ocr: { recognise: function () {
+      var fields = Parser.parse('BP FUEL\nTOTAL 55.20\nVAT 9.20');
+      return Promise.resolve({ rawText: 'BP FUEL', fields: fields, confidence: fields.confidence });
+    } },
+  });
+  biz.engines.receipt.capture({ imageRef: 'data:image/png;base64,AAAA' });
+  return new Promise(function (res) { setTimeout(res, 20); }).then(function () {
+    var st = biz.engines.expense.getState();
+    assert.strictEqual(st.count, 1, 'expense auto-created from receipt');
+    assert.strictEqual(st.byCategory.fuel, 55.2, 'categorised as fuel');
+    assert.ok(biz.getSnapshot().vat.monthReclaimable > 0, 'VAT reflected');
+    biz.destroy();
+  });
 });
 
 test('notification engine: health change queues one notification', function () {
