@@ -1,0 +1,11 @@
+@import '@vector-os/design-system/tokens.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: var(--vector-font-sans);
+  color: var(--vector-color-neutral-900);
+  background-color: var(--vector-color-neutral-50);
+}
