@@ -1,0 +1,14 @@
+{
+  "name": "aura-core",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AuraCore — production editorial department framework",
+  "scripts": {
+    "test": "pnpm --filter @aura-core/writer-department test",
+    "typecheck": "pnpm --filter @aura-core/writer-department typecheck",
+    "example:workflow": "pnpm --filter @aura-core/writer-department example:workflow",
+    "example:review": "pnpm --filter @aura-core/writer-department example:review",
+    "example:revision": "pnpm --filter @aura-core/writer-department example:revision"
+  },
+  "packageManager": "pnpm@9.15.0"
+}
