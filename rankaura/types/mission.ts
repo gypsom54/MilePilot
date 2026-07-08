@@ -1,5 +1,5 @@
 /**
- * Mission Workspace types — universal workflow engine for department reviews.
+ * Mission Workspace types — Sprint 015 intelligence briefing.
  */
 
 export type MissionWorkspaceStatus =
@@ -10,6 +10,9 @@ export type MissionWorkspaceStatus =
   | "revision_requested"
   | "saved_for_later"
   | "archived";
+
+/** Sprint 015 alias */
+export type MissionStatus = MissionWorkspaceStatus;
 
 export type MissionType = "content_guide" | "service_page" | "campaign" | "email";
 export type MissionPriority = "high" | "medium" | "low";
@@ -77,6 +80,13 @@ export interface WriterDraft {
   statusLabel: string;
 }
 
+/** Sprint 015 — article preview for Draft Preview panel */
+export interface MissionDraft {
+  title: string;
+  sections: WriterDraftSection[];
+  callToAction: string;
+}
+
 export interface ArchitectChecklistItem {
   id: string;
   label: string;
@@ -92,6 +102,13 @@ export interface ArchitectReview {
   checklist: ArchitectChecklistItem[];
 }
 
+/** Sprint 015 — architecture plan section */
+export interface ArchitecturePlan {
+  recommendedLocation: string;
+  suggestedInternalLinks: string[];
+  suggestedCta: string;
+}
+
 export interface GuardianCheckItem {
   id: string;
   label: string;
@@ -102,6 +119,37 @@ export interface GuardianReview {
   checks: GuardianCheckItem[];
   score: number;
   scoreLabel: string;
+}
+
+/** Sprint 015 — department workflow contribution card */
+export interface DepartmentContribution {
+  id: string;
+  departmentName: string;
+  statusLabel: string;
+  outputs: string[];
+  confidence?: number;
+  score?: string;
+}
+
+/** Sprint 015 — Aura Brief narrative */
+export interface AuraBrief {
+  paragraphs: string[];
+}
+
+/** Sprint 015 — business impact KPI grid */
+export interface BusinessImpact {
+  estimatedMonthlyVisitors: number;
+  potentialEnquiries: number;
+  confidence: number;
+  managementTimeMinutes: number;
+  estimatedTimeSavedHours: number;
+}
+
+/** Sprint 015 — service action result */
+export interface MissionActionResult {
+  success: boolean;
+  mission: Mission;
+  message: string;
 }
 
 export interface MissionBriefingImpact {
@@ -155,6 +203,11 @@ export interface Mission {
   architect: ArchitectReview;
   guardian: GuardianReview;
   briefingImpact: MissionBriefingImpact;
+  auraBrief: AuraBrief;
+  departmentContributions: DepartmentContribution[];
+  draftPreview: MissionDraft;
+  architecturePlan: ArchitecturePlan;
+  businessImpact: BusinessImpact;
   /** @deprecated Sprint 003 */
   impact: MissionImpact;
   /** @deprecated Sprint 003 */

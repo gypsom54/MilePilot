@@ -4,13 +4,15 @@ import { useEffect, useState } from "react";
 import { cn } from "@/utils/cn";
 
 export const DEPLOYMENT_STEPS = [
-  { id: "writer", label: "Writer" },
-  { id: "architect", label: "Architect" },
-  { id: "publisher", label: "Publisher" },
-  { id: "website", label: "Website Updated" },
+  { id: "preparing", label: "Preparing mission..." },
+  { id: "writer", label: "Writer confirmed" },
+  { id: "architect", label: "Architect confirmed" },
+  { id: "guardian", label: "Guardian confirmed" },
+  { id: "publisher", label: "Publisher queued" },
+  { id: "approved", label: "Mission approved" },
 ] as const;
 
-const STEP_INTERVAL_MS = 900;
+const STEP_INTERVAL_MS = 750;
 
 interface DeploymentAnimationProps {
   onComplete: () => void;
@@ -33,23 +35,23 @@ export function DeploymentAnimation({ onComplete }: DeploymentAnimationProps) {
     timers.push(
       setTimeout(() => {
         onComplete();
-      }, DEPLOYMENT_STEPS.length * STEP_INTERVAL_MS + 600),
+      }, DEPLOYMENT_STEPS.length * STEP_INTERVAL_MS + 500),
     );
 
     return () => timers.forEach(clearTimeout);
   }, [onComplete]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--color-background)]/95 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--color-background)]/96 backdrop-blur-sm">
       <div className="w-full max-w-md px-8 animate-fade-in">
         <p className="text-center text-[11px] font-semibold uppercase tracking-[0.25em] text-[var(--color-text-muted)]">
-          Deploying mission
+          Deploying
         </p>
         <h2 className="mt-4 text-center text-2xl font-semibold tracking-tight text-[var(--color-text-primary)]">
-          Your Growth Team is publishing
+          Your Growth Team is continuing
         </h2>
 
-        <ul className="mt-12 space-y-5">
+        <ul className="mt-12 space-y-4">
           {DEPLOYMENT_STEPS.map((step, index) => {
             const isComplete = index < completedCount;
             const isActive = index === completedCount - 1 && completedCount > 0;
@@ -60,17 +62,17 @@ export function DeploymentAnimation({ onComplete }: DeploymentAnimationProps) {
                 key={step.id}
                 className={cn(
                   "flex items-center justify-between rounded-xl px-6 py-4 transition-all duration-500",
-                  isComplete && "bg-[var(--color-emerald-muted)]/30",
-                  isActive && "scale-[1.02] bg-[var(--color-emerald-muted)]/20",
-                  isPending && "opacity-40",
+                  isComplete && "bg-[var(--color-emerald-muted)]/25",
+                  isActive && "scale-[1.01] bg-[var(--color-emerald-muted)]/15",
+                  isPending && "opacity-35",
                 )}
               >
-                <span className="text-base font-medium text-[var(--color-text-primary)]">
+                <span className="text-sm font-medium text-[var(--color-text-primary)] sm:text-base">
                   {step.label}
                 </span>
                 <span
                   className={cn(
-                    "flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold transition-all duration-300",
+                    "flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold transition-all duration-300",
                     isComplete
                       ? "bg-[var(--color-emerald)] text-white animate-deployment-check"
                       : "bg-[var(--color-border-subtle)] text-transparent",
@@ -88,16 +90,16 @@ export function DeploymentAnimation({ onComplete }: DeploymentAnimationProps) {
 }
 
 export const AURA_MISSION_COMPLETE_MESSAGE = {
-  title: "Mission Complete.",
-  body: "Your business has been improved.",
-  footer: "Next mission is already being prepared.",
+  title: "Mission Approved",
+  body: "Aura will continue the work in the background.",
+  footer: "Your timeline has been updated.",
 };
 
-interface AuraConfirmationProps {
+interface MissionApprovedConfirmationProps {
   className?: string;
 }
 
-export function AuraConfirmation({ className }: AuraConfirmationProps) {
+export function MissionApprovedConfirmation({ className }: MissionApprovedConfirmationProps) {
   return (
     <div
       className={cn(
@@ -107,7 +109,7 @@ export function AuraConfirmation({ className }: AuraConfirmationProps) {
     >
       <span
         aria-hidden
-        className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[var(--color-emerald-muted)] text-2xl text-emerald-700"
+        className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[var(--color-emerald-muted)] text-3xl text-emerald-700"
       >
         ✓
       </span>
@@ -117,9 +119,12 @@ export function AuraConfirmation({ className }: AuraConfirmationProps) {
       <p className="mt-4 text-lg text-[var(--color-text-secondary)]">
         {AURA_MISSION_COMPLETE_MESSAGE.body}
       </p>
-      <p className="mt-6 text-sm font-medium text-[var(--color-aura)]">
+      <p className="mt-3 text-sm font-medium text-[var(--color-aura)]">
         {AURA_MISSION_COMPLETE_MESSAGE.footer}
       </p>
     </div>
   );
 }
+
+/** @deprecated Sprint 014 — use MissionApprovedConfirmation */
+export const AuraConfirmation = MissionApprovedConfirmation;

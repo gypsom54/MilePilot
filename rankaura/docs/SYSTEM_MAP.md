@@ -86,20 +86,22 @@ Modules never communicate directly — only through the orchestrator.
 
 Mock data: `lib/mock-dashboard.ts`
 
-### Mission Workspace (Sprint 014 — Vector OS core workflow)
+### Mission Workspace (Sprint 015 — proper build)
 
 ```
 /missions/[id]
-    → missionService.getMission()
-        → lib/mock-mission.ts
-    → MissionWorkspace (client)
-        → MissionHeader
-        → DepartmentCard sections (Scout, Writer, Architect, Guardian)
-        → ApprovalFooter
-        → DeploymentAnimation → AuraConfirmation (on approve)
+    → missionService.getMissionById()
+        → lib/mock-mission.ts (id: research-storage-conditions-guide)
+    → MissionWorkspacePage (client)
+        → MissionHeader / AuraBrief / DepartmentWorkflow
+        → DraftPreview / ArchitecturePlan / BusinessImpactGrid
+        → ApprovalPanel
+        → DeploymentAnimation → MissionApprovedConfirmation
 ```
 
-Pluggable department layout — future departments (Sales, Finance, Operations, Support, Hiring) use the same `DepartmentCard` shell.
+Dashboard **Review Mission** CTA links to `/missions/{mission.id}` via `activityEngine.buildMorningBrief()`.
+
+Pluggable department layout — future departments use `DepartmentContributionCard` without redesign.
 See `docs/PROJECT_STATUS.md` for integration guide.
 
 ## AI employee modules

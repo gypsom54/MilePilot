@@ -2,20 +2,22 @@ import {
   AURA_MISSION_COMPLETE_MESSAGE,
   DEPLOYMENT_STEPS,
 } from "@/components/mission-workspace/DeploymentAnimation";
-import { mockMissionWorkspace } from "@/lib/mock-mission";
+import { MOCK_MISSION_ID, mockMissionWorkspace } from "@/lib/mock-mission";
+import { mockTodayMission } from "@/lib/mock-dashboard";
+import { buildMorningBrief } from "@/services/activity/activityEngine";
 import type { Mission } from "@/types/mission";
 
 export function getMissionWorkspaceSections(mission: Mission) {
   return {
     hasHeader: mission.workspaceStatusLabel.length > 0,
-    hasScoutReport: mission.scout.monthlySearches > 0,
-    hasWriterDraft: mission.writer.sections.length > 0,
-    hasArchitectReview: mission.architect.checklist.length > 0,
-    hasGuardianReview: mission.guardian.checks.every((c) => c.passed),
-    guardianScore: mission.guardian.score,
-    briefingImpactVisitors: mission.briefingImpact.estimatedMonthlyVisitors,
+    hasAuraBrief: mission.auraBrief.paragraphs.length >= 5,
+    departmentCount: mission.departmentContributions.length,
+    hasDraftPreview: mission.draftPreview.sections.length >= 5,
+    hasArchitecturePlan: mission.architecturePlan.suggestedInternalLinks.length >= 4,
+    businessImpactVisitors: mission.businessImpact.estimatedMonthlyVisitors,
     preparedBy: mission.preparedByDepartments.join(","),
     scoutConfidence: mission.scout.confidence,
+    guardianScore: mission.guardian.score,
   };
 }
 
@@ -30,17 +32,23 @@ export function runMissionWorkspaceTests(): { passed: number; failed: number } {
 
   const sections = getMissionWorkspaceSections(mockMissionWorkspace);
   assert(sections.hasHeader);
-  assert(sections.hasScoutReport);
-  assert(sections.hasWriterDraft);
-  assert(sections.hasArchitectReview);
-  assert(sections.hasGuardianReview);
-  assert(sections.guardianScore === 97);
-  assert(sections.briefingImpactVisitors === "420");
+  assert(sections.hasAuraBrief);
+  assert(sections.departmentCount === 5);
+  assert(sections.hasDraftPreview);
+  assert(sections.hasArchitecturePlan);
+  assert(sections.businessImpactVisitors === 420);
   assert(sections.preparedBy === "Scout,Writer,Architect,Guardian");
-  assert(sections.scoutConfidence === 94);
-  assert(DEPLOYMENT_STEPS.length === 4);
-  assert(DEPLOYMENT_STEPS[3].label === "Website Updated");
-  assert(AURA_MISSION_COMPLETE_MESSAGE.title === "Mission Complete.");
+  assert(sections.scoutConfidence === 96);
+  assert(sections.guardianScore === 97);
+  assert(MOCK_MISSION_ID === "research-storage-conditions-guide");
+  assert(DEPLOYMENT_STEPS.length === 6);
+  assert(DEPLOYMENT_STEPS[0].label === "Preparing mission...");
+  assert(DEPLOYMENT_STEPS[5].label === "Mission approved");
+  assert(AURA_MISSION_COMPLETE_MESSAGE.title === "Mission Approved");
+
+  const brief = buildMorningBrief(mockTodayMission, 12, 2.8);
+  assert(brief.ctaHref === `/missions/${MOCK_MISSION_ID}`);
+  assert(brief.ctaLabel === "Review Mission");
 
   return { passed, failed };
 }

@@ -156,4 +156,10 @@ Record of key decisions made during Phase 1 foundation build.
 
 **Decision:** Rebuild Mission Workspace with reusable primitives (`MissionHeader`, `DepartmentCard`, `FindingCard`, `ApprovalFooter`, `DeploymentAnimation`). Business impact and confidence live in the header; department sections use soft cards with generous spacing. Approve triggers a deployment animation (Writer → Architect → Publisher → Website Updated) and Aura confirmation.  
 **Rationale:** Mission-centric workflow replaces dashboard-centric thinking; layout scales to future departments without redesign.  
-**Status:** Accepted (Sprint 014)
+**Status:** Superseded by ADR-027 (Sprint 015)
+
+## ADR-027: Mission Workspace proper build (Sprint 015)
+
+**Decision:** Rebuild `/missions/[id]` as a standalone full-page intelligence briefing (`MissionWorkspacePage`) with Aura Brief, department workflow cards, draft preview, architecture plan, business impact grid, and approval panel. Mock mission id `research-storage-conditions-guide`. Dashboard Review Mission CTA routes to workspace. Approval uses local mock state with deployment animation and timeline prepend.  
+**Rationale:** User must see a substantially different, premium briefing experience — not dashboard cards. Clear department contributions and approve flow validate AI Growth Team positioning.  
+**Status:** Accepted (Sprint 015)

@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import { MissionWorkspace } from "@/components/mission-workspace/MissionWorkspace";
-import { getMission } from "@/services/mission/missionService";
+import { MissionWorkspacePage } from "@/components/mission-workspace/MissionWorkspacePage";
+import { getMissionById } from "@/services/mission/missionService";
 
 interface MissionPageProps {
   params: Promise<{ id: string }>;
@@ -8,11 +8,11 @@ interface MissionPageProps {
 
 export default async function MissionPage({ params }: MissionPageProps) {
   const { id } = await params;
-  const mission = await getMission(id);
+  const mission = await getMissionById(id);
 
   if (!mission) {
     notFound();
   }
 
-  return <MissionWorkspace initialMission={mission} />;
+  return <MissionWorkspacePage initialMission={mission} />;
 }

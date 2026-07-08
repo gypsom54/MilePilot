@@ -28,7 +28,7 @@ export const mockDailyBrief: DashboardDailyBrief = {
 };
 
 export const mockTodayMission: DashboardMission = {
-  id: "mission-001",
+  id: "research-storage-conditions-guide",
   title: "Create Research Storage Conditions Guide",
   timelineApprovalTitle: "Research Storage Conditions Guide",
   reason:
