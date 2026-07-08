@@ -95,9 +95,9 @@
 
   function getAutoBusiness() {
     try {
-      return localStorage.getItem(STORAGE.AUTO_BUSINESS) !== '0';
+      return localStorage.getItem(STORAGE.AUTO_BUSINESS) === '1';
     } catch (e) {
-      return true;
+      return false;
     }
   }
 
