@@ -1,17 +1,60 @@
-# Writer
+# Writer Department
 
-Creates content for the business website and growth channels.
+RankAura's **production-ready editorial department**. Not an AI writer — a modular content production system.
 
-## Responsibilities
+## Philosophy
 
-- Draft pages, articles, and service descriptions
-- Apply brand voice and writing style from Memory
-- Prepare content for Publisher approval
+- Plain English content for customers
+- Every module has exactly one responsibility
+- All communication routes through the orchestrator
+- AuraCore talks only to the orchestrator
+- No module talks directly to another module
 
-## Phase 1 status
+## Folder structure
 
-Structure only. No content generation logic.
+```
+writer/
+├── README.md
+├── ARCHITECTURE.md
+├── EXAMPLES.md
+├── writerService.ts           # IAIEmployee facade → orchestrator
+├── orchestrator/              # Department orchestrator (AuraCore entry)
+├── models/                    # BusinessImpact, ContentQuality, etc.
+├── lifecycle/                 # Draft lifecycle
+├── pipeline/                  # Review pipeline
+├── modules/
+│   ├── planner/
+│   ├── strategist/
+│   ├── copywriter/
+│   ├── editor/
+│   ├── seo-reviewer/
+│   ├── brand-reviewer/
+│   ├── readability-reviewer/
+│   └── qa-reviewer/
+└── mock/
+```
 
-## AuraCore connection
+## Production flow
 
-Writer receives tasks from AuraCore and reports progress to the AI Team feed.
+```
+Brief → Planner → Strategist → Copywriter → [Review Pipeline]
+                                              Editor → SEO → Brand → Readability → QA
+```
+
+## Usage
+
+```typescript
+import { writerDepartmentOrchestrator } from "@/services/employees/writer";
+
+const draft = await writerDepartmentOrchestrator.receiveBrief({
+  businessId: "biz_rankaura_demo",
+  title: "Emergency Boiler Repair",
+  contentType: "service",
+  brief: "Create a helpful service page...",
+});
+
+await writerDepartmentOrchestrator.runProduction(draft.id);
+await writerDepartmentOrchestrator.runReview(draft.id);
+```
+
+See `ARCHITECTURE.md` for the full diagram and `EXAMPLES.md` for more examples.

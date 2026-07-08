@@ -1,8 +1,3 @@
-import type { EmployeeServiceBase } from "@/services/employees/shared/types";
+import type { IAIEmployee } from "@/services/employees/shared/aiEmployee";
 
-export interface WriterTaskContext {
-  businessId: string;
-  contentType: string;
-}
-
-export type WriterService = EmployeeServiceBase;
+export type WriterService = IAIEmployee;

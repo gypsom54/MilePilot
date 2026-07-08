@@ -67,3 +67,27 @@ Record of key decisions made during Phase 1 foundation build.
 **Decision:** `IMemoryReader` for employees; `IMemoryService` writes reject non-AuraCore actors.  
 **Rationale:** Prevents employees modifying each other or memory directly.  
 **Status:** Accepted
+
+## ADR-012: Writer as editorial department, not AI writer
+
+**Decision:** Replace single Writer employee stub with a Writer Department: Planner, Strategist, Copywriter, Editor, and four specialised reviewers plus QA.  
+**Rationale:** Production-ready editorial workflow with clear separation of concerns; no AI content generation in framework phase.  
+**Status:** Accepted
+
+## ADR-013: Orchestrator-only module communication (Writer Department)
+
+**Decision:** All Writer modules return results to `writerDepartmentOrchestrator` only. No module calls another module. AuraCore uses `writerService` → orchestrator.  
+**Rationale:** Enforces single responsibility, auditability, and safe future AI substitution per module.  
+**Status:** Accepted
+
+## ADR-014: Sequential review pipeline with early exit
+
+**Decision:** Review order: Editor → Discoverability → Brand → Readability → QA. Pipeline stops on first failed reviewer with a revision request.  
+**Rationale:** Mirrors real editorial sign-off; avoids wasted downstream reviews on blocked drafts.  
+**Status:** Accepted
+
+## ADR-015: Draft lifecycle as explicit state machine
+
+**Decision:** `draftLifecycle.transition()` governs all status changes with actor and summary metadata recorded in `VersionHistory`.  
+**Rationale:** Audit trail and predictable state for AuraCore task mapping.  
+**Status:** Accepted

@@ -16,7 +16,9 @@ High-level architecture for the AI Growth Operating System.
 │    auracore/             Orchestration contracts            │
 │    memory/               Memory framework (read/write)      │
 │    dashboard/            Dashboard data service + mocks     │
-│    employees/            AI employee module stubs           │
+│    employees/            AI employee modules                  │
+│      scout/              Research employee (framework)      │
+│      writer/             Writer Department (editorial)      │
 ├─────────────────────────────────────────────────────────────┤
 │  types/                  TypeScript contracts                 │
 │    models/               Domain models                        │
@@ -48,10 +50,24 @@ app/page.tsx
     → services/auracore (IAuraCore)
         → services/employees/* (Scout, Writer, …)
         → database/* (repositories)
-        → types/models/memory (MemoryStore)
+        → services/memory (MemoryStore)
     → services/dashboard/dashboardService.ts (maps to view models)
     → components/dashboard/*
 ```
+
+## Writer Department flow
+
+```
+AuraCore
+    → writerService (IAIEmployee facade)
+        → writerDepartmentOrchestrator
+            → planner → strategist → copywriter (production)
+            → reviewPipeline → editor → seo-reviewer → brand-reviewer
+                                 → readability-reviewer → qa-reviewer
+            → draftLifecycle / versionHistory / models
+```
+
+Modules never communicate directly — only through the orchestrator.
 
 ## AI employee modules
 
@@ -59,13 +75,26 @@ app/page.tsx
 | ---------- | ----------------------------------- | --------------------------- |
 | AuraCore   | `services/auracore/`                | Orchestrates all modules    |
 | Scout      | `services/employees/scout/`         | Opportunities, research reports |
-| Writer     | `services/employees/writer/`        | AI Team, Content            |
+| Writer     | `services/employees/writer/`        | AI Team, Content (department) |
 | Architect  | `services/employees/architect/`     | Growth Momentum             |
 | Optimiser  | `services/employees/optimiser/`     | Today's Wins                |
 | Publisher  | `services/employees/publisher/`     | AI Team, Autopilot          |
 | Analyst    | `services/employees/analyst/`       | Growth Momentum, Wins       |
 | Guardian   | `services/employees/guardian/`      | Approval workflows          |
 | Memory     | `services/memory/`                  | Business context for all    |
+
+## Writer Department modules
+
+| Module | Responsibility | Folder |
+| ------ | -------------- | ------ |
+| Planner | Content plan from brief | `modules/planner/` |
+| Strategist | Angle and messaging strategy | `modules/strategist/` |
+| Copywriter | First draft body | `modules/copywriter/` |
+| Editor | Structure and clarity | `modules/editor/` |
+| Discoverability Reviewer | Customer findability structure | `modules/seo-reviewer/` |
+| Brand Reviewer | Voice and values | `modules/brand-reviewer/` |
+| Readability Reviewer | Plain English | `modules/readability-reviewer/` |
+| QA Reviewer | Final sign-off | `modules/qa-reviewer/` |
 
 ## Core domain models
 
@@ -74,6 +103,11 @@ Located in `types/models/`:
 - Business, User, Website, Page
 - Opportunity, Task, AIEmployee
 - MemoryStore, Notification, GrowthMetric
+
+Writer Department models in `services/employees/writer/models/`:
+
+- ContentDraft, BusinessImpact, ContentQuality
+- RevisionRequest, WriterReport, VersionHistory
 
 ## Task system
 
