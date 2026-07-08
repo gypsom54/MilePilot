@@ -145,3 +145,9 @@ Record of key decisions made during Phase 1 foundation build.
 **Decision:** Replace Daily Brief with time-aware Morning/Evening Brief. One primary CTA (`Review Mission`). Mission card is informational only.  
 **Rationale:** Reduces clutter; reinforces single-priority mission focus.  
 **Status:** Accepted (Sprint 004)
+
+## ADR-025: Mission Workspace as universal workflow engine (Sprint 005)
+
+**Decision:** Rebuild `/missions/[id]` as intelligence briefing with pluggable department sections (Scout, Writer, Architect, Guardian, Impact, Approval). Each section is a reusable component fed by typed mock data.  
+**Rationale:** Single review experience scales to future departments (SEO, Ads, Email, Sales, Social, CRM, Support) without layout redesign.  
+**Status:** Accepted (Sprint 005)

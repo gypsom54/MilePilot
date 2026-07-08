@@ -4,11 +4,13 @@ import type { Mission } from "@/types/mission";
 export function getMissionWorkspaceSections(mission: Mission) {
   return {
     hasHeader: mission.workspaceStatusLabel.length > 0,
-    departmentCount: mission.departments.length,
-    departmentNames: mission.departments.map((d) => d.name),
-    previewBlockCount: mission.preview.blocks.length,
-    timelineCount: mission.timeline.length,
-    impactVisitors: mission.impact.estimatedVisitors,
+    hasScoutReport: mission.scout.monthlySearches > 0,
+    hasWriterDraft: mission.writer.sections.length > 0,
+    hasArchitectReview: mission.architect.checklist.length > 0,
+    hasGuardianReview: mission.guardian.checks.every((c) => c.passed),
+    guardianScore: mission.guardian.score,
+    briefingImpactVisitors: mission.briefingImpact.estimatedMonthlyVisitors,
+    missionType: mission.missionTypeLabel,
   };
 }
 
@@ -23,11 +25,15 @@ export function runMissionWorkspaceTests(): { passed: number; failed: number } {
 
   const sections = getMissionWorkspaceSections(mockMissionWorkspace);
   assert(sections.hasHeader);
-  assert(sections.departmentCount === 5);
-  assert(sections.departmentNames.join(",") === "Scout,Writer,Architect,Guardian,Publisher");
-  assert(sections.previewBlockCount >= 5);
-  assert(sections.timelineCount >= 3);
-  assert(sections.impactVisitors === "420 visitors/month");
+  assert(sections.hasScoutReport);
+  assert(sections.hasWriterDraft);
+  assert(sections.hasArchitectReview);
+  assert(sections.hasGuardianReview);
+  assert(sections.guardianScore === 97);
+  assert(sections.briefingImpactVisitors === "420");
+  assert(sections.missionType === "Content Guide");
+  assert(mockMissionWorkspace.scout.customerQuestions.length >= 3);
+  assert(mockMissionWorkspace.writer.callToAction.length > 0);
 
   return { passed, failed };
 }

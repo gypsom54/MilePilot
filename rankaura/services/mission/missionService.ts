@@ -1,5 +1,6 @@
 /**
  * Mission Workspace service — API-shaped, mock only.
+ * Universal workflow engine for department reviews.
  */
 
 import { MOCK_MISSION_ID } from "@/lib/mock-mission";
@@ -30,11 +31,7 @@ export async function approveMission(id: string): Promise<Mission | null> {
     workspaceStatus: "approved",
     workspaceStatusLabel: "APPROVED",
     approvalMessage: MISSION_APPROVED_MESSAGE,
-    departments: mission.departments.map((dept) =>
-      dept.id === "publisher"
-        ? { ...dept, status: "in_progress", statusLabel: "Publishing Scheduled" }
-        : dept,
-    ),
+    writer: { ...mission.writer, status: "approved", statusLabel: "Approved" },
   };
 
   updated = prependTimelineEvent(updated, {
@@ -44,6 +41,24 @@ export async function approveMission(id: string): Promise<Mission | null> {
   });
 
   return saveStoredMission(updated);
+}
+
+export async function approveDraft(id: string): Promise<Mission | null> {
+  const mission = await getMission(id);
+  if (!mission) return null;
+
+  const updated: Mission = {
+    ...mission,
+    writer: { ...mission.writer, status: "approved", statusLabel: "Draft Approved" },
+  };
+
+  return saveStoredMission(
+    prependTimelineEvent(updated, {
+      time: formatTimelineTime(),
+      title: "Writer draft approved",
+      type: "team",
+    }),
+  );
 }
 
 export async function requestChanges(
@@ -65,23 +80,11 @@ export async function requestChanges(
     ...updated,
     workspaceStatus: "revision_requested",
     workspaceStatusLabel: "REVISION REQUESTED",
-    departments: updated.departments.map((dept) =>
-      dept.id === "writer"
-        ? {
-            ...dept,
-            status: "revision_requested",
-            statusLabel: "Revision Requested",
-            outputs: ["Awaiting updates based on your feedback"],
-          }
-        : dept.id === "publisher"
-          ? {
-              ...dept,
-              status: "waiting_approval",
-              statusLabel: "On Hold",
-              outputs: ["Waiting for revised draft"],
-            }
-          : dept,
-    ),
+    writer: {
+      ...updated.writer,
+      status: "revision_requested",
+      statusLabel: "Revision Requested",
+    },
   };
 
   updated = prependTimelineEvent(updated, {
@@ -93,6 +96,50 @@ export async function requestChanges(
   return saveStoredMission(updated);
 }
 
+export async function requestRewrite(id: string): Promise<Mission | null> {
+  return requestChanges(id, "Please rewrite the draft with clearer language.");
+}
+
+export async function leaveFeedback(id: string, commentText: string): Promise<Mission | null> {
+  const mission = await getMission(id);
+  if (!mission) return null;
+
+  const updated = addMissionComment(mission, {
+    id: `feedback-${Date.now()}`,
+    text: commentText,
+    createdAt: new Date().toISOString(),
+    author: "You",
+  });
+
+  return saveStoredMission(
+    prependTimelineEvent(updated, {
+      time: formatTimelineTime(),
+      title: "Feedback received",
+      type: "mission",
+    }),
+  );
+}
+
+export async function archiveMission(id: string): Promise<Mission | null> {
+  const mission = await getMission(id);
+  if (!mission) return null;
+
+  const updated: Mission = {
+    ...mission,
+    workspaceStatus: "archived",
+    workspaceStatusLabel: "ARCHIVED",
+  };
+
+  return saveStoredMission(
+    prependTimelineEvent(updated, {
+      time: formatTimelineTime(),
+      title: "Mission archived",
+      type: "mission",
+    }),
+  );
+}
+
+/** @deprecated Use archiveMission or leaveFeedback */
 export async function saveMission(id: string): Promise<Mission | null> {
   const mission = await getMission(id);
   if (!mission) return null;

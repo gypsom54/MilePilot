@@ -1,21 +1,25 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import {
-  BusinessImpactPanel,
-  DepartmentWorkflow,
-  MissionActions,
+  ApprovalPanel,
+  ArchitectChecklist,
+  BusinessImpactCard,
+  GuardianChecklist,
   MissionHeader,
-  MissionOverview,
-  MissionPreviewPanel,
-  TimelineCard,
+  MissionWorkspaceSkeleton,
+  ScoutInsightCard,
+  WriterDraftPreview,
 } from "@/components/mission-workspace";
 import { mockBusiness } from "@/lib/mock-dashboard";
 import {
+  approveDraft,
   approveMission as approveMissionService,
-  requestChanges as requestChangesService,
-  saveMission as saveMissionService,
+  archiveMission,
+  leaveFeedback,
+  requestChanges,
+  requestRewrite,
 } from "@/services/mission/missionService";
 import type { Mission } from "@/types/mission";
 
@@ -24,64 +28,84 @@ interface MissionWorkspaceProps {
 }
 
 /**
- * Mission Workspace — dedicated review experience for Growth Team output.
- * Client state syncs with mock missionService (in-memory store).
+ * Mission Workspace — intelligence briefing for AI department output.
+ * Universal layout: future departments (SEO, Ads, Email, etc.) plug into sections.
  */
 export function MissionWorkspace({ initialMission }: MissionWorkspaceProps) {
   const [mission, setMission] = useState(initialMission);
   const [loading, setLoading] = useState(false);
+  const [isReady, setIsReady] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
-  const handleApprove = useCallback(async () => {
+  useEffect(() => {
+    const timer = window.setTimeout(() => setIsReady(true), 300);
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  const runAction = useCallback(async (action: () => Promise<Mission | null>) => {
     setLoading(true);
-    const updated = await approveMissionService(mission.id);
-    if (updated) setMission(updated);
+    const updated = await action();
+    if (updated) {
+      setMission(updated);
+      if (updated.workspaceStatus === "approved") {
+        setShowSuccess(true);
+        window.setTimeout(() => setShowSuccess(false), 3000);
+      }
+    }
     setLoading(false);
-  }, [mission.id]);
+  }, []);
 
-  const handleRequestChanges = useCallback(
-    async (comment: string) => {
-      setLoading(true);
-      const updated = await requestChangesService(mission.id, comment);
-      if (updated) setMission(updated);
-      setLoading(false);
-    },
-    [mission.id],
-  );
-
-  const handleSaveForLater = useCallback(async () => {
-    setLoading(true);
-    const updated = await saveMissionService(mission.id);
-    if (updated) setMission(updated);
-    setLoading(false);
-  }, [mission.id]);
+  const openRequestChanges = useCallback(() => {
+    const panel = document.getElementById("approval-panel");
+    panel?.scrollIntoView({ behavior: "smooth" });
+  }, []);
 
   return (
     <div className="flex min-h-screen bg-[var(--color-background)]">
       <Sidebar business={mockBusiness} />
 
       <main className="flex-1 overflow-auto">
-        <div className="mx-auto max-w-6xl px-8 py-10 sm:px-10 sm:py-12">
-          <MissionHeader mission={mission} />
-
-          <div className="mt-10 grid gap-8 lg:grid-cols-3">
-            <div className="space-y-8 lg:col-span-2">
-              <MissionOverview mission={mission} />
-              <DepartmentWorkflow departments={mission.departments} />
-              <MissionPreviewPanel preview={mission.preview} />
-            </div>
-
+        <div className="mx-auto max-w-4xl px-8 py-10 sm:px-10 sm:py-12">
+          {!isReady ? (
+            <MissionWorkspaceSkeleton />
+          ) : (
             <div className="space-y-8">
-              <BusinessImpactPanel impact={mission.impact} />
-              <MissionActions
+              {showSuccess && (
+                <div className="animate-fade-in rounded-xl border border-[var(--color-emerald-muted)] bg-[var(--color-emerald-muted)]/30 px-5 py-4 text-center text-sm font-medium text-emerald-800">
+                  Mission approved — Aura has continued execution.
+                </div>
+              )}
+
+              <MissionHeader
                 mission={mission}
-                onApprove={handleApprove}
-                onRequestChanges={handleRequestChanges}
-                onSaveForLater={handleSaveForLater}
+                onApprove={() => runAction(() => approveMissionService(mission.id))}
+                onRequestChanges={openRequestChanges}
                 loading={loading}
               />
-              <TimelineCard events={mission.timeline} />
+
+              <ScoutInsightCard report={mission.scout} />
+              <WriterDraftPreview
+                draft={mission.writer}
+                onApproveDraft={() => runAction(() => approveDraft(mission.id))}
+                onRequestRewrite={() => runAction(() => requestRewrite(mission.id))}
+                loading={loading}
+              />
+              <ArchitectChecklist review={mission.architect} />
+              <GuardianChecklist review={mission.guardian} />
+              <BusinessImpactCard impact={mission.briefingImpact} />
+
+              <div id="approval-panel">
+                <ApprovalPanel
+                  mission={mission}
+                  onApprove={() => runAction(() => approveMissionService(mission.id))}
+                  onRequestChanges={(c) => runAction(() => requestChanges(mission.id, c))}
+                  onArchive={() => runAction(() => archiveMission(mission.id))}
+                  onLeaveFeedback={(c) => runAction(() => leaveFeedback(mission.id, c))}
+                  loading={loading}
+                />
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </main>
     </div>
