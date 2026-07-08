@@ -1,36 +1,35 @@
 import { Button } from '@vector-platform/ui';
-import { HeroVisual } from './HeroVisual';
+import { HeroProductVisual } from './HeroProductVisual';
 
 export function Hero() {
   return (
-    <section className="hero" aria-labelledby="hero-heading">
-      <div className="hero__glow" aria-hidden="true" />
-      <div className="hero__glow hero__glow--secondary" aria-hidden="true" />
+    <section className="hero">
+      <div className="hero__inner">
+        <div className="hero__content">
+          <p className="hero__eyebrow">Vector Peptides UK</p>
 
-      <div className="hero__layout">
-        <HeroVisual />
-
-        <div className="hero__inner">
-          <p className="hero__eyebrow hero__animate hero__animate--1">Vector Platform</p>
-
-          <h1 id="hero-heading" className="hero__headline hero__animate hero__animate--2">
-            Build the Future of Research.
+          <h1 className="hero__headline">
+            Premium Research Peptides.
+            <br />
+            Presented Properly.
           </h1>
 
-          <p className="hero__subheading hero__animate hero__animate--3">
-            Premium peptide research products, intelligent business software and
-            AI-powered laboratory tools.
+          <p className="hero__subheading">
+            High-quality research compounds with clear documentation, professional
+            packaging and secure UK fulfilment.
           </p>
 
-          <div className="hero__actions hero__animate hero__animate--4">
+          <div className="hero__actions">
             <Button variant="primary" size="lg" className="premium-btn premium-btn--primary">
-              Explore Products
+              Shop Research Products
             </Button>
             <Button variant="ghost" size="lg" className="premium-btn premium-btn--ghost hero__ghost-btn">
-              Explore Platform
+              View Quality Standards
             </Button>
           </div>
         </div>
+
+        <HeroProductVisual />
       </div>
     </section>
   );

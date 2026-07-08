@@ -1,13 +1,19 @@
-import { FeatureCards } from '@/components/home/FeatureCards';
+import { ComplianceBanner } from '@/components/home/ComplianceBanner';
+import { FeaturedProducts } from '@/components/home/FeaturedProducts';
 import { Hero } from '@/components/home/Hero';
-import { PlatformPreview } from '@/components/home/PlatformPreview';
+import { PackagingSection } from '@/components/home/PackagingSection';
+import { QualitySection } from '@/components/home/QualitySection';
+import { TrustStrip } from '@/components/home/TrustStrip';
 
 export default function HomePage() {
   return (
     <main>
       <Hero />
-      <FeatureCards />
-      <PlatformPreview />
+      <TrustStrip />
+      <FeaturedProducts />
+      <PackagingSection />
+      <QualitySection />
+      <ComplianceBanner />
     </main>
   );
 }

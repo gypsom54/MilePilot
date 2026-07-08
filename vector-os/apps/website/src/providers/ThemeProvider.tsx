@@ -7,8 +7,8 @@ interface ThemeProviderProps {
 }
 
 /**
- * Applies Vector Platform dark theme tokens to the document root.
+ * Applies Vector Peptides UK dark theme tokens to the document root.
  */
 export function ThemeProvider({ children }: ThemeProviderProps) {
-  return <div data-theme="vector-dark">{children}</div>;
+  return <div data-theme="vector-peptides">{children}</div>;
 }
