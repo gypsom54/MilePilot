@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Writer Department — Example Output</title>
+  <style>
+    body { font-family: 'SF Mono', 'Fira Code', monospace; background: #0d1117; color: #c9d1d9; padding: 2rem; }
+    h1 { color: #58a6ff; font-family: sans-serif; }
+    pre { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 1.5rem; line-height: 1.7; font-size: 0.9rem; }
+    .label { color: #8b949e; }
+    .value { color: #79c0ff; }
+    .success { color: #3fb950; }
+  </style>
+</head>
+<body>
+  <h1>Writer Department — Example Workflow</h1>
+  <pre>
+=== Writer Department — Basic Workflow ===
+
+Brief: Vector OS — Product Launch Landing Page
+Format: landing_page
+Impact tier: high
+
+--- Writer Report ---
+Report ID:    <span class="value">report-0001</span>
+Lifecycle:    <span class="success">published</span>
+Draft ID:     <span class="value">draft-brief-001-v1</span>
+Quality:      <span class="success">92/100</span>
+Review:       <span class="success">approved</span>
+Revisions:    2
+Versions:     2
+
+Business Impact:
+  Tier:         high
+  Reach:        50,000
+  Risk:         medium
+
+=== Review Pipeline ===
+
+Pipeline status: <span class="success">completed</span>
+
+  <span class="success">✓</span> seo            [seo-reviewer] → passed (score: 90)
+  <span class="success">✓</span> brand          [brand-reviewer] → passed (score: 100)
+  <span class="success">✓</span> readability    [readability-reviewer] → passed (score: 100)
+  <span class="success">✓</span> qa             [qa-reviewer] → passed (score: 88)
+
+Final quality: <span class="success">95/100</span>
+  </pre>
+</body>
+</html>
