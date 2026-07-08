@@ -1,42 +1,54 @@
 # RankAura Project Status
 
-**Phase:** Aurora Build Sprint 003 — Mission Workspace  
-**Last updated:** Mission Workspace implemented  
-**UI status:** Dashboard approved — Mission Workspace added as dedicated page
+**Phase:** Aurora Build Sprint 004 — Living AI Operating System  
+**Last updated:** Activity engine + live Mission Control behaviour  
+**UI status:** Layout locked — behaviour and micro-interactions only
 
-## Aurora Build Sprint 003 (current)
+## Aurora Build Sprint 004 (current)
 
-- [x] Mission Workspace page at `/missions/[id]`
-- [x] Mission Header, Overview, Department Workflow, Preview, Impact, Actions, Timeline
-- [x] Department progress: Scout, Writer, Architect, Guardian, Publisher
-- [x] Mock article preview panel
-- [x] Actions: Approve Mission, Request Changes, Save For Later
-- [x] `missionService.ts` — getMission, approveMission, requestChanges, saveMission
-- [x] Review Mission / Continue Growing navigate to workspace (not modal)
+- [x] **AI Activity Engine** (`services/activity/activityEngine.ts`)
+  - Simulated live department states: Idle, Researching, Writing, Reviewing, Waiting, Complete
+  - Progress animations and gentle pulse on active departments
+- [x] **Dynamic Timeline** — auto-updating activity events with department colours and timestamps
+- [x] **Morning Brief / Evening Brief** — time-aware brief with one CTA only
+- [x] **Business Snapshot** — compact KPI card (growth, leads, visibility, hours saved, pending reviews)
+- [x] **Living Mission Control** — skeleton loading, smooth transitions, `useActivityEngine` hook
+- [x] **Component refactor** — `components/mission-control/` (MorningBrief, MissionCard, DepartmentActivity, ActivityTimeline, BusinessSnapshot, StatusIndicator)
 - [x] Tests: `npm run test:aurora`
-- [x] Mock/local state only
+- [x] Mock only — no APIs, AI, auth, or database
+
+## Aurora Build Sprint 003 (complete)
+
+- [x] Mission Workspace at `/missions/[id]`
+- [x] `missionService.ts` with approve / request changes / save
 
 ## Aurora Build Sprint 002 (complete)
 
-- [x] Mission Review modal experience (superseded by workspace navigation)
-- [x] Approval confirmation flow
-- [x] Shared `lib/mission-review.ts`
+- [x] Mission Review experience (navigates to workspace)
 
 ## Aurora Build Sprint 001 (complete)
 
 - [x] Mission Control dashboard loop
-- [x] API-shaped dashboard service
-- [x] Mock data layer
+
+## Architecture (Sprint 004)
+
+```
+MissionControl (client)
+  → useActivityEngine (4s tick interval)
+      → activityEngine.ts (state transitions + timeline events)
+  → MorningBrief (single CTA)
+  → MissionCard (informational)
+  → DepartmentActivityPanel (live states)
+  → BusinessSnapshot (KPIs)
+  → ActivityTimeline (live feed)
+```
 
 ## Not started (Phase 3+)
 
-- [ ] AuraCore wired to Mission Workspace
-- [ ] AI / LLM integration
-- [ ] Authentication
-- [ ] Database persistence
-- [ ] Real API integrations
-- [ ] Publishing pipelines (Publisher backend)
-- [ ] WordPress integration
+- [ ] AuraCore wired to activity engine
+- [ ] Real employee services feeding department states
+- [ ] Persistence across sessions
+- [ ] Authentication, database, APIs
 
 ## Build health
 
@@ -55,16 +67,9 @@ npm install
 npm run dev
 ```
 
-- Mission Control: http://localhost:3000
+- Mission Control: http://localhost:3000 (watch departments animate live)
 - Mission Workspace: http://localhost:3000/missions/mission-001
 
 ```bash
 npm run test:aurora
-```
-
-## Entry points
-
-```typescript
-import { getMission, approveMission } from "@/services/mission/missionService";
-import { MissionWorkspace } from "@/components/mission-workspace/MissionWorkspace";
 ```

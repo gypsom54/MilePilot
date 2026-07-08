@@ -133,3 +133,15 @@ Record of key decisions made during Phase 1 foundation build.
 **Decision:** `services/mission/missionService.ts` owns workspace CRUD and actions; `dashboard.service.ts` re-exports `getMission` for discovery. In-memory `mockMissionStore` until API layer exists.  
 **Rationale:** Clean separation between Mission Control (brief) and Mission Workspace (deep review).  
 **Status:** Accepted (Sprint 003)
+
+## ADR-023: Activity Engine for living Mission Control (Sprint 004)
+
+**Decision:** `services/activity/activityEngine.ts` drives simulated department states, progress, and timeline events via `useActivityEngine` client hook. Dashboard layout unchanged.  
+**Rationale:** Transform static dashboard into living AI OS without redesign; swap mock engine for AuraCore feeds in Phase 3.  
+**Status:** Accepted (Sprint 004)
+
+## ADR-024: Morning Brief with single CTA (Sprint 004)
+
+**Decision:** Replace Daily Brief with time-aware Morning/Evening Brief. One primary CTA (`Review Mission`). Mission card is informational only.  
+**Rationale:** Reduces clutter; reinforces single-priority mission focus.  
+**Status:** Accepted (Sprint 004)

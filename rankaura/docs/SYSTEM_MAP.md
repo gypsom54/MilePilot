@@ -86,19 +86,21 @@ Modules never communicate directly — only through the orchestrator.
 
 Mock data: `lib/mock-dashboard.ts`
 
-### Mission Review flow (Sprint 002 → 003)
+### Mission Control flow (Sprint 004 — living OS)
 
 ```
-Review Mission / Continue Growing
-    → /missions/[id] (Mission Workspace)
-        → MissionHeader, MissionOverview, DepartmentWorkflow
-        → MissionPreviewPanel, BusinessImpactPanel
-        → MissionActions (Approve / Request Changes / Save For Later)
-        → TimelineCard (instant updates)
+MissionControl (client)
+  → useActivityEngine (tick every 4s)
+      → services/activity/activityEngine.ts
+  → MorningBrief / EveningBrief (time-aware, one CTA)
+  → MissionCard (single priority mission)
+  → DepartmentActivity (live states + animated progress)
+  → BusinessSnapshot (compact KPIs)
+  → ActivityTimeline (auto-updating department events)
 ```
 
-Mission service: `services/mission/missionService.ts`  
-Mock data: `lib/mock-mission.ts`
+Activity engine: `services/activity/activityEngine.ts`  
+Components: `components/mission-control/`
 
 ## AI employee modules
 
