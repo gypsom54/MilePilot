@@ -4,7 +4,16 @@
 **Last updated:** Three-panel Mission Mode with live AI feed, Aura assistant, cinematic deployment  
 **UI status:** Mission Control locked — Mission Mode is the immersive review experience
 
-## Mission Mode (current)
+## Phase 1 — Magic Moment onboarding (complete)
+
+- [x] **5-screen onboarding** at `/onboarding` — welcome, website, business name, description, analysis
+- [x] **One question per screen** — single input, one button, Apple-like calm layout
+- [x] **Analysis sequence** — 6 checkmark steps, then redirect to dashboard
+- [x] **Middleware** — first visit redirects `/` → onboarding; cookie on completion
+
+Dashboard, Mission Mode, and Growth Team **unchanged**.
+
+## Mission Mode (prior — pending simplification per constitution)
 
 - [x] **Immersive three-panel layout** — Pipeline · Document · Live Feed
 - [x] **7 AI employees** — Scout, Writer, Architect, Guardian, Optimiser, Analyst, Publisher

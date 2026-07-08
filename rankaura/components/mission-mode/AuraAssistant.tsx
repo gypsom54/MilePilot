@@ -14,7 +14,7 @@ export function AuraAssistant({ insight }: AuraAssistantProps) {
   useEffect(() => {
     let index = 0;
     const text = insight.text;
-    let interval: ReturnType<typeof setInterval> | undefined;
+    let interval: number | undefined;
 
     const startTimer = window.setTimeout(() => {
       setDisplayed("");

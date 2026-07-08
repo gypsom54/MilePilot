@@ -1,3 +1,4 @@
+import { runOnboardingTests } from "@/components/onboarding/tests/onboarding.test";
 import { runActivityEngineTests } from "@/services/activity/tests/activityEngine.test";
 import { runMissionModeTests } from "@/components/mission-mode/tests/missionMode.test";
 import { runMissionComponentTests } from "@/components/mission-workspace/tests/missionComponents.test";
@@ -17,6 +18,7 @@ export async function runAuroraSprintTests(): Promise<{ passed: number; failed: 
   const workspace = runMissionWorkspaceTests();
   const missionComponents = runMissionComponentTests();
   const missionMode = runMissionModeTests();
+  const onboarding = await runOnboardingTests();
   const activityEngine = runActivityEngineTests();
 
   return {
@@ -29,6 +31,7 @@ export async function runAuroraSprintTests(): Promise<{ passed: number; failed: 
       workspace.passed +
       missionComponents.passed +
       missionMode.passed +
+      onboarding.passed +
       activityEngine.passed,
     failed:
       service.failed +
@@ -39,6 +42,7 @@ export async function runAuroraSprintTests(): Promise<{ passed: number; failed: 
       workspace.failed +
       missionComponents.failed +
       missionMode.failed +
+      onboarding.failed +
       activityEngine.failed,
   };
 }
