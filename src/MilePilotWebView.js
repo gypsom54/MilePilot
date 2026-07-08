@@ -11,6 +11,8 @@ import {
   handleWebViewMessage,
   injectLocationIntoWebView,
   initNativeTracking,
+  maybeArmNativeAutopilot,
+  setNativeAutoStartNotifier,
 } from './expoLocationBridge';
 import { setNativeAutoEndInjector, flushPendingNativeAutoEnd } from './nativeAutoEnd';
 import { getTripSyncPayload, setNativeDebugMeta, setNativeAppBackground } from './nativeTrackingEngine';
@@ -35,6 +37,9 @@ const BRIDGE_BOOT_SCRIPT = `
       }
       if (msg && msg.type === 'expo:autoend:trigger' && typeof window.__onExpoAutoEnd === 'function') {
         window.__onExpoAutoEnd(msg);
+      }
+      if (msg && msg.type === 'expo:autopilot:started' && typeof window.__onNativeAutoStarted === 'function') {
+        window.__onNativeAutoStarted(msg);
       }
       if (msg && msg.id && window.__expoBridgeCallbacks[msg.id]) {
         window.__expoBridgeCallbacks[msg.id](msg);
@@ -71,7 +76,9 @@ export default function MilePilotWebView() {
   }, []);
 
   useEffect(() => {
-    initNativeTracking().catch((e) => console.warn('[MilePilot] initNativeTracking', e.message));
+    initNativeTracking()
+      .then(() => maybeArmNativeAutopilot())
+      .catch((e) => console.warn('[MilePilot] initNativeTracking', e.message));
   }, []);
 
   useEffect(() => {
@@ -82,9 +89,13 @@ export default function MilePilotWebView() {
     setNativeAutoEndInjector(() => {
       injectLocationIntoWebView(webViewRef, { type: 'expo:autoend:trigger', timestamp: Date.now() });
     });
+    setNativeAutoStartNotifier((payload) => {
+      injectLocationIntoWebView(webViewRef, payload);
+    });
     return () => {
       setBackgroundLocationForwarder(null);
       setNativeAutoEndInjector(null);
+      setNativeAutoStartNotifier(null);
     };
   }, [sendToWebView]);
 
@@ -109,6 +120,16 @@ export default function MilePilotWebView() {
         sendToWebView({ type: 'expo:appstate', state: 'active' });
         pushNativeState();
         flushPendingNativeAutoEnd();
+        const current = getTripSyncPayload();
+        if (current?.active && current.autoStarted) {
+          sendToWebView({
+            type: 'expo:autopilot:started',
+            sync: current,
+            autoStarted: true,
+            tripStatus: current.tripStatus,
+            timestamp: Date.now(),
+          });
+        }
       }
     });
     return () => sub.remove();

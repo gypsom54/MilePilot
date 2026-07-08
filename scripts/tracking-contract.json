@@ -18,7 +18,10 @@
     "src/MilePilotWebView.js",
     "src/nativeTrackingEngine.js",
     "src/nativeAutoEnd.js",
-    "src/nativeIdlePolicy.js"
+    "src/nativeIdlePolicy.js",
+    "src/nativeAutoStart.js",
+    "src/nativeDriveDetector.js",
+    "src/nativeAutopilotPrefs.js"
   ],
   "companionExports": [
     { "file": "frontend/js/native-platform.js", "symbol": "MPPlatform" },
@@ -74,6 +77,7 @@
     "burstNativeTripSync",
     "expo:native:background",
     "nativeOdometerMeters",
-    "__nativeEngineAuthoritative"
+    "__nativeEngineAuthoritative",
+    "feedAutopilotGps(pos);lastGpsAccuracy"
   ]
 }

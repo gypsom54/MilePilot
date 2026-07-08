@@ -26,6 +26,9 @@ const emptyTrip = () => ({
   shiftId: null,
   startedAt: null,
   vehicle: 'car',
+  autoStarted: false,
+  tripStatus: null,
+  autopilotDetected: false,
   miles: 0,
   movingSeconds: 0,
   pendingMeters: 0,
@@ -200,13 +203,16 @@ export async function loadPersistedState() {
   return false;
 }
 
-export function startNativeTrip({ shiftId, startedAt, vehicle, miles: seedMiles, pendingMeters: seedPending, routePoints: seedRoute, lastPoint: seedLastPoint, lastMileRecordedAt: seedLastMile, lastGpsAt: seedLastGps } = {}) {
+export function startNativeTrip({ shiftId, startedAt, vehicle, autoStarted, tripStatus, autopilotDetected, miles: seedMiles, pendingMeters: seedPending, routePoints: seedRoute, lastPoint: seedLastPoint, lastMileRecordedAt: seedLastMile, lastGpsAt: seedLastGps } = {}) {
   trip = {
     ...emptyTrip(),
     active: true,
     shiftId: shiftId || `shift_${Date.now()}`,
     startedAt: startedAt || Date.now(),
     vehicle: vehicle || 'car',
+    autoStarted: !!autoStarted,
+    tripStatus: tripStatus || null,
+    autopilotDetected: !!autopilotDetected || !!autoStarted,
     miles: Number(seedMiles) || 0,
     pendingMeters: Number(seedPending) || 0,
     routePoints: seedRoute || [],
@@ -312,6 +318,9 @@ export function getTripSyncPayload() {
     lastPersistAt: trip.lastPersistAt,
     lastMileRecordedAt: trip.lastMileRecordedAt,
     vehicle: trip.vehicle,
+    autoStarted: !!trip.autoStarted,
+    tripStatus: trip.tripStatus,
+    autopilotDetected: !!trip.autopilotDetected,
     engine: 'native',
     timestamp: Date.now(),
   };

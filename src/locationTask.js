@@ -3,6 +3,7 @@
  * Expo background location task. GPS points feed nativeTrackingEngine immediately.
  */
 import { onNativeBackgroundLocation } from './nativeAutoEnd';
+import { onIdleLocationForAutoStart } from './nativeAutoStart';
 import { ingestNativeLocation } from './nativeTrackingEngine';
 import * as TaskManager from 'expo-task-manager';
 import * as Location from 'expo-location';
@@ -74,6 +75,9 @@ TaskManager.defineTask(BACKGROUND_LOCATION_TASK, ({ data, error }) => {
       queueSync(sync);
     } else {
       onNativeBackgroundLocation(payload);
+      onIdleLocationForAutoStart(payload).catch((e) => {
+        console.warn('[MilePilot BG GPS] auto-start check failed', e.message);
+      });
     }
   }
 });

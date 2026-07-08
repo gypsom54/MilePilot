@@ -43,4 +43,12 @@ Every development sprint from this point onward should prioritise the following,
 
 ---
 
+## 7. Business Hub + AI Assistant (future — not active)
+
+**Locked vision only.** See [BUSINESS_HUB_VISION_LOCK.md](./BUSINESS_HUB_VISION_LOCK.md).
+
+Do not implement receipt scanning, expenses, Business Inbox, AI Assistant, or Business dashboard until AutoPilot and reporting are field-validated and the user explicitly approves a Business Hub phase.
+
+---
+
 **Out of scope unless bug fix:** onboarding redesign, copy polish, or spacing tweaks on `#knowYou` (MP-002).

@@ -198,6 +198,8 @@ MilePilot eventually helps users:
 
 All while maintaining the **same calm, premium interface**.
 
+**Full Business Hub + AI Assistant specification:** [BUSINESS_HUB_VISION_LOCK.md](./BUSINESS_HUB_VISION_LOCK.md) 🔒 — do not implement without explicit instruction.
+
 ---
 
 ## What this document does NOT authorise

@@ -9,7 +9,15 @@ import {
   startBackgroundLocationUpdates,
   stopBackgroundLocationUpdates,
 } from './locationTask';
-import { syncNativeAutoEnd, setNativeAutoEndInjector } from './nativeAutoEnd';
+import { syncNativeAutoEnd, setNativeAutoEndInjector, onNativeBackgroundLocation } from './nativeAutoEnd';
+import {
+  armNativeAutoStart,
+  disarmNativeAutoStart,
+  onIdleLocationForAutoStart,
+  setNativeAutoStartNotifier,
+  isNativeAutoStartArmed,
+} from './nativeAutoStart';
+import { syncNativeAutopilotPrefs, loadNativeAutopilotPrefs, canNativeAutoStart } from './nativeAutopilotPrefs';
 import {
   ingestNativeLocation,
   startNativeTrip,
@@ -23,7 +31,7 @@ import {
   isNativeTripActive,
 } from './nativeTrackingEngine';
 
-export { setNativeAutoEndInjector, syncNativeAutoEnd };
+export { setNativeAutoEndInjector, syncNativeAutoEnd, setNativeAutoStartNotifier };
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -132,6 +140,25 @@ export async function startTracking(onLocation, { background = false } = {}) {
 
 export async function initNativeTracking() {
   await loadPersistedState();
+  await loadNativeAutopilotPrefs();
+}
+
+export async function maybeArmNativeAutopilot() {
+  await loadNativeAutopilotPrefs();
+  if (!canNativeAutoStart() || isNativeTripActive()) return { ok: false, reason: 'not_ready' };
+
+  const onLocation = (payload) => {
+    if (!isNativeTripActive()) {
+      onNativeBackgroundLocation(payload);
+      onIdleLocationForAutoStart(payload).catch(() => {});
+    }
+  };
+
+  const result = await startTracking(onLocation, { background: true });
+  if (result.ok) {
+    armNativeAutoStart();
+  }
+  return { ok: !!result.ok, backgroundActive: !!result.backgroundActive, armed: true };
 }
 
 export function getLastBackgroundActive() {
@@ -179,6 +206,7 @@ export async function handleWebViewMessage(raw, sendToWebView) {
     case 'expo:trip:start': {
       const onLocation = (payload) => pushLocationAndSync(payload, 'foreground', sendToWebView);
       const result = await startTracking(onLocation, { background: !!msg.payload?.background });
+      disarmNativeAutoStart();
       const sync = startNativeTrip(msg.payload || {});
       if (msg.payload?.autoEnd) syncNativeAutoEnd(msg.payload.autoEnd);
       reply({
@@ -194,6 +222,9 @@ export async function handleWebViewMessage(raw, sendToWebView) {
       await stopAllTracking();
       const sync = stopNativeTrip();
       syncNativeAutoEnd({ active: false });
+      if (canNativeAutoStart()) {
+        await maybeArmNativeAutopilot();
+      }
       reply({ type: 'expo:trip:result', ok: true, sync });
       break;
     }
@@ -263,17 +294,28 @@ export async function handleWebViewMessage(raw, sendToWebView) {
         }
         if (!isNativeTripActive()) {
           onNativeBackgroundLocation(payload);
+          onIdleLocationForAutoStart(payload).catch(() => {});
         }
       };
       const result = await startTracking(onLocation, { background: !!msg.payload?.background });
+      if (result.ok) armNativeAutoStart();
       reply({ type: 'expo:autopilot:result', ok: result.ok, backgroundActive: !!result.backgroundActive });
       break;
     }
     case 'expo:autopilot:disarm': {
+      disarmNativeAutoStart();
       if (!isNativeTripActive()) {
         await stopAllTracking();
       }
       reply({ type: 'expo:autopilot:result', ok: true });
+      break;
+    }
+    case 'expo:autopilot:prefs:sync': {
+      const prefs = await syncNativeAutopilotPrefs(msg.payload || {});
+      if (!isNativeTripActive() && canNativeAutoStart() && !isNativeAutoStartArmed()) {
+        await maybeArmNativeAutopilot();
+      }
+      reply({ type: 'expo:autopilot:prefs:result', ok: true, prefs });
       break;
     }
     case 'expo:notification:local': {
