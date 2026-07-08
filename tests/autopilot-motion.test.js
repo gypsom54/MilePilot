@@ -147,12 +147,12 @@ run('poor GPS blocks candidate', () => {
   assert.notEqual(state, M.STATES.MOVING_CANDIDATE);
 });
 
-run('auto business defaults true, pending when off', () => {
+run('auto business defaults to needs review (opt-in)', () => {
   const ls = createMockLocalStorage();
   const M = loadMotion(ls);
-  assert.equal(M.getTripStatusForSave(), 'business');
-  M.setAutoBusiness(false);
   assert.equal(M.getTripStatusForSave(), 'pending');
+  M.setAutoBusiness(true);
+  assert.equal(M.getTripStatusForSave(), 'business');
 });
 
 run('driving speed threshold ~10 mph', () => {
