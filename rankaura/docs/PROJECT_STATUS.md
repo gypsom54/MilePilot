@@ -1,19 +1,27 @@
 # RankAura Project Status
 
-**Phase:** Aurora Build Sprint 001 — first product loop  
-**Last updated:** Aurora Mission Control  
-**UI status:** Approved design language — Mission Control layout implemented
+**Phase:** Aurora Build Sprint 002 — Mission Review Experience  
+**Last updated:** Mission Review mock approval loop  
+**UI status:** Approved design language — Mission Control layout intact
 
-## Aurora Build Sprint 001 (current)
+## Aurora Build Sprint 002 (current)
+
+- [x] Polished Mission Review modal (`MissionReview`, `MissionReviewModal`)
+- [x] Approval confirmation (`ApprovalConfirmation`)
+- [x] Review Mission + Continue Growing both open Mission Review
+- [x] Approve Mission → status update + timeline event + confirmation copy
+- [x] Timeline Preview highlights new approval events immediately
+- [x] Shared approval logic (`lib/mission-review.ts`)
+- [x] Guardian department in mission mock data
+- [x] Tests: `npm run test:aurora`
+- [x] Mock/local state only — no AI, APIs, auth, or database
+
+## Aurora Build Sprint 001 (complete)
 
 - [x] Mission Control page — first usable Aurora experience
 - [x] Daily Brief, Today's Mission, Growth Team Status, Business Health, Timeline Preview
-- [x] Review Mission flow (Approve / Not Now)
 - [x] Mock data layer (`lib/mock-dashboard.ts`)
 - [x] API-shaped dashboard service (`services/dashboard/dashboard.service.ts`)
-- [x] Mission approval updates local timeline state
-- [x] Tests: `npm run test:aurora`
-- [x] Mock data only — no AI, APIs, auth, or database
 
 ## Completed (prior phases)
 
@@ -38,7 +46,7 @@
 - [ ] Real API integrations
 - [ ] Publishing pipelines (Publisher)
 - [ ] WordPress integration
-- [ ] Guardian approval backend
+- [ ] Guardian approval backend (persistence)
 
 ## Build health
 
@@ -63,9 +71,10 @@ Open http://localhost:3000 — Mission Control loads at `/`.
 npm run test:aurora
 ```
 
-## Mission Control entry points
+## Mission Review entry points
 
 ```typescript
-import { getMissionControlData } from "@/services/dashboard/dashboard.service";
+import { approveMission } from "@/lib/mission-review";
+import { MissionReviewModal } from "@/components/dashboard/mission-review";
 import { mockTodayMission } from "@/lib/mock-dashboard";
 ```

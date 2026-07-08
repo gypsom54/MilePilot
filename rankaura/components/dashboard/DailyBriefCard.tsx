@@ -1,12 +1,20 @@
 import { Card } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
 import type { DashboardDailyBrief } from "@/types/dashboard";
 
 interface DailyBriefCardProps {
   greeting: string;
   dailyBrief: DashboardDailyBrief;
+  showContinueGrowing?: boolean;
+  onContinueGrowing?: () => void;
 }
 
-export function DailyBriefCard({ greeting, dailyBrief }: DailyBriefCardProps) {
+export function DailyBriefCard({
+  greeting,
+  dailyBrief,
+  showContinueGrowing = false,
+  onContinueGrowing,
+}: DailyBriefCardProps) {
   return (
     <Card delay={0} className="border-[var(--color-border-subtle)]">
       <p className="text-sm font-medium text-[var(--color-text-muted)]">Daily Brief</p>
@@ -41,6 +49,13 @@ export function DailyBriefCard({ greeting, dailyBrief }: DailyBriefCardProps) {
           saved this week
         </span>
       </div>
+      {showContinueGrowing && onContinueGrowing && (
+        <div className="mt-6">
+          <Button variant="secondary" onClick={onContinueGrowing}>
+            Continue Growing
+          </Button>
+        </div>
+      )}
     </Card>
   );
 }

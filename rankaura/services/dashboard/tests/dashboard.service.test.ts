@@ -31,6 +31,7 @@ export async function runDashboardServiceTests(): Promise<{ passed: number; fail
   const mission = await getTodayMission();
   assert(mission.confidence === 94);
   assert(mission.ctaLabel === "Review Mission");
+  assert(mission.departments.some((d) => d.name === "Guardian"));
 
   const team = await getGrowthTeamStatus();
   assert(team.some((m) => m.status === "working"));

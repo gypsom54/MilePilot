@@ -2,26 +2,8 @@
  * Mission approval state tests — validates timeline update on approve.
  */
 
+import { approveMission, MISSION_APPROVAL_CONFIRMATION } from "@/lib/mission-review";
 import { mockTodayMission, mockTimelineEvents } from "@/lib/mock-dashboard";
-import type { DashboardMission, DashboardTimelineEvent } from "@/types/dashboard";
-
-export function approveMission(
-  mission: DashboardMission,
-  timeline: DashboardTimelineEvent[],
-): { mission: DashboardMission; timeline: DashboardTimelineEvent[] } {
-  const updatedMission: DashboardMission = { ...mission, status: "approved" };
-  const approvalEvent: DashboardTimelineEvent = {
-    id: `evt-approved-test`,
-    title: `Mission approved: ${mission.title}`,
-    timestamp: "Just now",
-    type: "mission",
-  };
-
-  return {
-    mission: updatedMission,
-    timeline: [approvalEvent, ...timeline],
-  };
-}
 
 export function runMissionApprovalTests(): { passed: number; failed: number } {
   let passed = 0;
@@ -34,9 +16,11 @@ export function runMissionApprovalTests(): { passed: number; failed: number } {
 
   const result = approveMission(mockTodayMission, mockTimelineEvents);
   assert(result.mission.status === "approved");
-  assert(result.timeline[0].title.includes("Mission approved"));
+  assert(result.timeline[0].title === "Mission approved: Research Storage Conditions Guide");
   assert(result.timeline[0].type === "mission");
+  assert(result.timeline[0].timestamp === "Just now");
   assert(result.timeline.length === mockTimelineEvents.length + 1);
+  assert(result.confirmationMessage === MISSION_APPROVAL_CONFIRMATION);
 
   return { passed, failed };
 }

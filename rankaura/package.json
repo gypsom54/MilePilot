@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test:aurora": "tsx tests/aurora-sprint-001.test.ts"
+    "test:aurora": "tsx tests/aurora-sprint-002.test.ts"
   },
   "dependencies": {
     "next": "16.2.10",

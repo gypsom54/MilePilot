@@ -40,6 +40,8 @@ export interface DashboardMissionDepartment {
 export interface DashboardMission {
   id: string;
   title: string;
+  /** Shorter label used in timeline approval events */
+  timelineApprovalTitle?: string;
   reason: string;
   impact: MissionImpact;
   confidence: number;

@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { ConfidenceBadge } from "@/components/ui/ConfidenceBadge";
+import { getMissionCardConfirmationCopy } from "@/components/dashboard/mission-review/missionCardCopy";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import type { DashboardMission } from "@/types/dashboard";
@@ -59,7 +60,7 @@ export function MissionCard({ mission, onReview }: MissionCardProps) {
 
       {mission.status === "approved" && (
         <p className="mt-6 text-sm font-medium text-[var(--color-emerald)]">
-          Mission approved — your Growth Team will take it from here.
+          {getMissionCardConfirmationCopy(mission)}
         </p>
       )}
     </Card>

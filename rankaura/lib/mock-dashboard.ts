@@ -30,6 +30,7 @@ export const mockDailyBrief: DashboardDailyBrief = {
 export const mockTodayMission: DashboardMission = {
   id: "mission-001",
   title: "Create Research Storage Conditions Guide",
+  timelineApprovalTitle: "Research Storage Conditions Guide",
   reason:
     "Customers often look for clear storage guidance before trusting a supplier.",
   impact: "high",
@@ -41,23 +42,28 @@ export const mockTodayMission: DashboardMission = {
     {
       id: "scout",
       name: "Scout",
-      contribution: "Identified the customer question from research",
+      contribution: "Spotted that customers ask about storage before they buy",
     },
     {
       id: "writer",
       name: "Writer",
-      contribution: "Drafted a clear, trustworthy guide",
+      contribution: "Prepared a clear, trustworthy guide in plain English",
     },
     {
       id: "architect",
       name: "Architect",
-      contribution: "Structured the page for easy reading",
+      contribution: "Organised the page so visitors find answers quickly",
+    },
+    {
+      id: "guardian",
+      name: "Guardian",
+      contribution: "Checked the work meets your standards before review",
     },
   ],
   expectedOutcome:
-    "More visitors trust your expertise and reach out with confidence.",
+    "More visitors trust your expertise and feel confident reaching out.",
   onApproveSummary:
-    "The guide will be scheduled for publishing after a final quality check.",
+    "Your Growth Team will finish quality checks and prepare the guide for publishing.",
 };
 
 export const mockGrowthTeam: DashboardGrowthTeamMember[] = [

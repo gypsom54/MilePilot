@@ -72,7 +72,7 @@ AuraCore
 
 Modules never communicate directly — only through the orchestrator.
 
-## Aurora Mission Control (Sprint 001)
+## Aurora Mission Control (Sprint 001 + 002)
 
 | Section | Component | Service method |
 | ------- | --------- | -------------- |
@@ -81,9 +81,22 @@ Modules never communicate directly — only through the orchestrator.
 | Growth Team Status | `GrowthTeamCard` | `getGrowthTeamStatus()` |
 | Business Health | `BusinessHealthCard` | `getBusinessHealth()` |
 | Timeline Preview | `TimelinePreview` | `getTimelinePreview()` |
-| Mission Review | `MissionReviewPanel` | Local client state |
+| Mission Review | `MissionReviewModal` + `MissionReview` | `lib/mission-review.ts` |
+| Approval confirmation | `ApprovalConfirmation` | Local client state |
 
 Mock data: `lib/mock-dashboard.ts`
+
+### Mission Review flow (Sprint 002)
+
+```
+Review Mission / Continue Growing
+    → MissionReviewModal
+        → MissionReview (content sections)
+        → Approve Mission → ApprovalConfirmation → Done
+        → Updates mission status + TimelinePreview (highlighted event)
+```
+
+Timeline approval event: `Mission approved: Research Storage Conditions Guide`
 
 ## AI employee modules
 

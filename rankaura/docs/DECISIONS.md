@@ -109,3 +109,15 @@ Record of key decisions made during Phase 1 foundation build.
 **Decision:** Approve Mission updates mission status and prepends a timeline event in client state only. No publishing or Guardian backend yet.  
 **Rationale:** Validates the review loop UX before backend wiring.  
 **Status:** Accepted (Sprint 001)
+
+## ADR-019: Mission Review as composable modal experience (Sprint 002)
+
+**Decision:** Split Mission Review into `MissionReview` (content), `MissionReviewModal` (shell + steps), and `ApprovalConfirmation` (post-approve). Shared logic in `lib/mission-review.ts`.  
+**Rationale:** Reusable, testable components; polished two-step approve → confirm flow without dashboard redesign.  
+**Status:** Accepted (Sprint 002)
+
+## ADR-020: Continue Growing opens Mission Review (Sprint 002)
+
+**Decision:** Daily Brief secondary CTA "Continue Growing" opens the same Mission Review modal as "Review Mission" when a mission is pending.  
+**Rationale:** Two familiar entry points, one review experience; no extra features.  
+**Status:** Accepted (Sprint 002)
