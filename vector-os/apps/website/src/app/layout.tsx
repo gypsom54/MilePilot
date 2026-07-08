@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import '@vector-platform/ui/styles.css';
 import './globals.css';
+import { AmbientGlow } from '@/components/effects/AmbientGlow';
 import { AnnouncementBar } from '@/components/layout/AnnouncementBar';
 import { SiteFooter } from '@/components/layout/SiteFooter';
 import { SiteHeader } from '@/components/layout/SiteHeader';
@@ -16,7 +17,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: 'Vector Peptides UK — Premium Research Peptides',
   description:
-    'High-quality research compounds with clear documentation, professional packaging and secure UK fulfilment. Research use only.',
+    'Premium research peptides with clear documentation, professional packaging and secure UK fulfilment. Research use only.',
 };
 
 export default function RootLayout({
@@ -28,6 +29,7 @@ export default function RootLayout({
     <html lang="en" className={inter.variable}>
       <body className={inter.className}>
         <ThemeProvider>
+          <AmbientGlow />
           <AnnouncementBar />
           <SiteHeader />
           {children}

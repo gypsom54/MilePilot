@@ -3,7 +3,7 @@ import { VectorLogo } from './VectorLogo';
 
 const FOOTER_LINKS = [
   { label: 'Products', href: '#products' },
-  { label: 'Quality', href: '#quality' },
+  { label: 'Quality', href: '#verification' },
   { label: 'Documentation', href: '#documentation' },
   { label: 'Contact', href: '#contact' },
   { label: 'Terms', href: '#terms' },
@@ -16,13 +16,11 @@ export function SiteFooter() {
   return (
     <footer className="site-footer" id="contact">
       <div className="site-footer__inner">
-        <div className="site-footer__brand-block">
-          <div className="site-footer__brand">
-            <VectorLogo />
-            <div>
-              <span className="site-footer__wordmark">Vector Peptides UK</span>
-              <span className="site-footer__domain">vectorpeptides.uk</span>
-            </div>
+        <div className="site-footer__brand">
+          <VectorLogo variant="silver" />
+          <div>
+            <span className="site-footer__wordmark">Vector Peptides UK</span>
+            <span className="site-footer__domain">vectorpeptides.uk</span>
           </div>
         </div>
 
@@ -35,7 +33,7 @@ export function SiteFooter() {
         </nav>
 
         <p className="site-footer__copyright">
-          &copy; {year} Vector Peptides UK. All rights reserved.
+          &copy; {year} Vector Peptides UK
         </p>
       </div>
     </footer>

@@ -1,20 +1,8 @@
 const TRUST_ITEMS = [
-  {
-    title: 'Research Use Only',
-    description: 'Supplied strictly for laboratory research purposes.',
-  },
-  {
-    title: 'Batch Documentation',
-    description: 'Clear records provided with every order.',
-  },
-  {
-    title: 'Secure UK Fulfilment',
-    description: 'Professional dispatch from the United Kingdom.',
-  },
-  {
-    title: 'Premium Packaging',
-    description: 'Presentation-grade boxes with protective inlays.',
-  },
+  { title: 'Research Use Only' },
+  { title: 'Batch Documentation' },
+  { title: 'Premium Packaging' },
+  { title: 'Secure UK Fulfilment' },
 ] as const;
 
 export function TrustStrip() {
@@ -23,8 +11,8 @@ export function TrustStrip() {
       <div className="trust-strip__inner">
         {TRUST_ITEMS.map((item) => (
           <div key={item.title} className="trust-strip__card">
+            <span className="trust-strip__icon" aria-hidden="true" />
             <h3 className="trust-strip__title">{item.title}</h3>
-            <p className="trust-strip__description">{item.description}</p>
           </div>
         ))}
       </div>
