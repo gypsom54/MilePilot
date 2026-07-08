@@ -162,4 +162,10 @@ Record of key decisions made during Phase 1 foundation build.
 
 **Decision:** Rebuild `/missions/[id]` as a standalone full-page intelligence briefing (`MissionWorkspacePage`) with Aura Brief, department workflow cards, draft preview, architecture plan, business impact grid, and approval panel. Mock mission id `research-storage-conditions-guide`. Dashboard Review Mission CTA routes to workspace. Approval uses local mock state with deployment animation and timeline prepend.  
 **Rationale:** User must see a substantially different, premium briefing experience — not dashboard cards. Clear department contributions and approve flow validate AI Growth Team positioning.  
-**Status:** Accepted (Sprint 015)
+**Status:** Superseded by ADR-028 (Mission Mode)
+
+## ADR-028: Mission Mode immersive AI OS experience
+
+**Decision:** Replace scroll-based Mission Workspace with Mission Mode — three-panel immersive layout (Pipeline, Document, Live Feed), Aura floating assistant, animated background, live simulated engine, and cinematic deployment on approve. Dashboard Review Mission uses `MissionModeTransition` for morph entrance without changing Mission Control layout.  
+**Rationale:** RankAura is an AI Business Operating System, not a SaaS dashboard. Mission Mode should feel alive — Jarvis/Vision Pro/Linear inspiration — controlling an intelligent company in real time.  
+**Status:** Accepted (Mission Mode)

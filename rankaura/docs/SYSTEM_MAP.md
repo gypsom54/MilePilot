@@ -86,23 +86,20 @@ Modules never communicate directly — only through the orchestrator.
 
 Mock data: `lib/mock-dashboard.ts`
 
-### Mission Workspace (Sprint 015 — proper build)
+### Mission Mode (immersive AI Business OS)
 
 ```
-/missions/[id]
-    → missionService.getMissionById()
-        → lib/mock-mission.ts (id: research-storage-conditions-guide)
-    → MissionWorkspacePage (client)
-        → MissionHeader / AuraBrief / DepartmentWorkflow
-        → DraftPreview / ArchitecturePlan / BusinessImpactGrid
-        → ApprovalPanel
-        → DeploymentAnimation → MissionApprovedConfirmation
+Review Mission → MissionModeTransition → /missions/[id]
+    → MissionMode
+        ├── MissionPipeline (7 AI employees, live progress)
+        ├── MissionDocument (Notion-style working document)
+        ├── LiveAIFeed (scrolling activity timeline)
+        ├── AuraAssistant (Jarvis-style floating AI)
+        └── MissionModeDeployment (cinematic approve flow)
 ```
 
-Dashboard **Review Mission** CTA links to `/missions/{mission.id}` via `activityEngine.buildMorningBrief()`.
-
-Pluggable department layout — future departments use `DepartmentContributionCard` without redesign.
-See `docs/PROJECT_STATUS.md` for integration guide.
+Engine: `services/mission-mode/missionModeEngine.ts` + `hooks/useMissionModeEngine.ts`  
+Mock data: `lib/mock-mission-mode.ts`
 
 ## AI employee modules
 

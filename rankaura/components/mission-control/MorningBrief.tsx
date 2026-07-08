@@ -1,6 +1,6 @@
-import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { MissionModeTransition } from "@/components/mission-mode/MissionModeTransition";
 import type { MorningBriefData } from "@/types/activity";
 
 interface MorningBriefProps {
@@ -41,9 +41,9 @@ export function MorningBrief({ brief }: MorningBriefProps) {
       </div>
 
       <div className="mt-8">
-        <Link href={brief.ctaHref}>
+        <MissionModeTransition href={brief.ctaHref}>
           <Button className="min-w-[200px] px-8 py-4 text-base">{brief.ctaLabel}</Button>
-        </Link>
+        </MissionModeTransition>
       </div>
     </Card>
   );

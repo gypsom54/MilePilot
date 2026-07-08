@@ -72,3 +72,209 @@ body {
 .animate-deployment-check {
   animation: deployment-check 0.4s ease-out both;
 }
+
+/* ─── Mission Mode — immersive AI OS ─── */
+.mission-mode {
+  --mm-bg: #060a12;
+  --mm-surface: rgba(255, 255, 255, 0.03);
+  --mm-surface-strong: rgba(12, 18, 30, 0.85);
+  --mm-border: rgba(255, 255, 255, 0.07);
+  --mm-text: #f0f4f8;
+  --mm-text-secondary: rgba(240, 244, 248, 0.65);
+  --mm-text-muted: rgba(240, 244, 248, 0.38);
+  --mm-aura: #4f8ef7;
+  --mm-aura-soft: #7aabf9;
+  --mm-emerald: #2eb88a;
+}
+
+.mission-mode-gradient {
+  background: radial-gradient(circle, rgba(47, 111, 237, 0.35) 0%, transparent 70%);
+  animation: mm-drift 18s ease-in-out infinite alternate;
+}
+
+.mission-mode-gradient-alt {
+  background: radial-gradient(circle, rgba(46, 184, 138, 0.2) 0%, transparent 70%);
+  animation: mm-drift-alt 22s ease-in-out infinite alternate;
+}
+
+.mission-mode-orb {
+  background: rgba(79, 142, 247, 0.6);
+  box-shadow: 0 0 20px rgba(79, 142, 247, 0.4);
+  animation: mm-float 8s ease-in-out infinite;
+}
+
+.mission-mode-orb-delay-1 { animation-delay: 2s; }
+.mission-mode-orb-delay-2 { animation-delay: 4s; }
+
+.mission-mode-particle {
+  background: rgba(255, 255, 255, 0.25);
+  animation: mm-particle 12s ease-in-out infinite;
+}
+
+.mission-mode-pulse {
+  animation: mm-pulse 2.5s ease-in-out infinite;
+}
+
+.mission-mode-progress {
+  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mission-mode-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+}
+
+.mission-mode-entering {
+  opacity: 0;
+  transform: scale(1.02);
+}
+
+.mission-mode-active {
+  animation: mm-enter 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.mission-mode-fading .relative.z-10,
+.mission-mode-fading header {
+  opacity: 0.15;
+  transition: opacity 0.8s ease;
+  pointer-events: none;
+}
+
+.mission-mode-panel-enter {
+  animation: mm-slide-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.mission-mode-doc-enter {
+  animation: mm-doc-enter 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+}
+
+.mission-mode-section-enter {
+  animation: mm-fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.mission-mode-feed-enter {
+  animation: mm-feed-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.mission-mode-feed-new {
+  animation: mm-feed-new 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.mission-mode-aura {
+  animation: mm-aura-float 6s ease-in-out infinite;
+}
+
+.mission-mode-aura-glow {
+  animation: mm-aura-glow 4s ease-in-out infinite;
+}
+
+.mission-mode-cursor {
+  animation: mm-blink 1s step-end infinite;
+  color: var(--mm-aura-soft);
+}
+
+.mission-mode-cta:active {
+  transform: scale(0.97);
+}
+
+.mission-mode-deploy-overlay {
+  animation: mm-fade-in 0.6s ease both;
+}
+
+.mission-mode-deploy-lit {
+  box-shadow: 0 0 30px rgba(46, 184, 138, 0.15);
+}
+
+.mission-mode-deploy-check {
+  animation: deployment-check 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.mission-mode-deploy-complete {
+  animation: mm-scale-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+html.mission-mode-transitioning body {
+  opacity: 0.6;
+  transition: opacity 0.28s ease;
+}
+
+@keyframes mm-drift {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(40px, 30px) scale(1.1); }
+}
+
+@keyframes mm-drift-alt {
+  from { transform: translate(0, 0); }
+  to { transform: translate(-30px, -20px); }
+}
+
+@keyframes mm-float {
+  0%, 100% { transform: translateY(0); opacity: 0.5; }
+  50% { transform: translateY(-12px); opacity: 0.8; }
+}
+
+@keyframes mm-particle {
+  0%, 100% { transform: translateY(0); opacity: 0.2; }
+  50% { transform: translateY(-20px); opacity: 0.5; }
+}
+
+@keyframes mm-pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(79, 142, 247, 0.4); }
+  50% { opacity: 0.7; box-shadow: 0 0 0 6px rgba(79, 142, 247, 0); }
+}
+
+@keyframes mm-enter {
+  from { opacity: 0; transform: scale(1.015); filter: blur(4px); }
+  to { opacity: 1; transform: scale(1); filter: blur(0); }
+}
+
+@keyframes mm-slide-in {
+  from { opacity: 0; transform: translateX(-12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes mm-doc-enter {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes mm-fade-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes mm-feed-in {
+  from { opacity: 0; transform: translateX(8px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes mm-feed-new {
+  0% { opacity: 0; transform: translateX(16px); background: rgba(79, 142, 247, 0.08); }
+  40% { background: rgba(79, 142, 247, 0.08); }
+  100% { opacity: 1; transform: translateX(0); background: transparent; }
+}
+
+@keyframes mm-aura-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes mm-aura-glow {
+  0%, 100% { box-shadow: 0 8px 40px rgba(47, 111, 237, 0.15); }
+  50% { box-shadow: 0 8px 48px rgba(47, 111, 237, 0.28); }
+}
+
+@keyframes mm-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes mm-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes mm-scale-in {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}

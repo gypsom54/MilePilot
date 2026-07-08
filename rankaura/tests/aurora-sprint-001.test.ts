@@ -1,4 +1,5 @@
 import { runActivityEngineTests } from "@/services/activity/tests/activityEngine.test";
+import { runMissionModeTests } from "@/components/mission-mode/tests/missionMode.test";
 import { runMissionComponentTests } from "@/components/mission-workspace/tests/missionComponents.test";
 import { runMissionWorkspaceTests } from "@/components/mission-workspace/tests/missionWorkspace.test";
 import { runMissionCardTests } from "@/components/dashboard/tests/missionCard.test";
@@ -15,6 +16,7 @@ export async function runAuroraSprintTests(): Promise<{ passed: number; failed: 
   const missionService = await runMissionServiceTests();
   const workspace = runMissionWorkspaceTests();
   const missionComponents = runMissionComponentTests();
+  const missionMode = runMissionModeTests();
   const activityEngine = runActivityEngineTests();
 
   return {
@@ -26,6 +28,7 @@ export async function runAuroraSprintTests(): Promise<{ passed: number; failed: 
       missionService.passed +
       workspace.passed +
       missionComponents.passed +
+      missionMode.passed +
       activityEngine.passed,
     failed:
       service.failed +
@@ -35,6 +38,7 @@ export async function runAuroraSprintTests(): Promise<{ passed: number; failed: 
       missionService.failed +
       workspace.failed +
       missionComponents.failed +
+      missionMode.failed +
       activityEngine.failed,
   };
 }
