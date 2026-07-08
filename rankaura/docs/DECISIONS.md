@@ -91,3 +91,21 @@ Record of key decisions made during Phase 1 foundation build.
 **Decision:** `draftLifecycle.transition()` governs all status changes with actor and summary metadata recorded in `VersionHistory`.  
 **Rationale:** Audit trail and predictable state for AuraCore task mapping.  
 **Status:** Accepted
+
+## ADR-016: Aurora Mission Control as first product loop
+
+**Decision:** Replace legacy multi-section dashboard with Mission Control: Daily Brief → Today's Mission → Growth Team → Business Health → Timeline. One primary CTA: Review Mission.  
+**Rationale:** First release (Aurora) must feel immediately usable — calm, focused, confident.  
+**Status:** Accepted (Sprint 001)
+
+## ADR-017: API-shaped dashboard service with mock data
+
+**Decision:** `services/dashboard/dashboard.service.ts` exposes discrete methods (`getDailyBrief`, `getTodayMission`, etc.) reading from `lib/mock-dashboard.ts`.  
+**Rationale:** Swap mock for real API without changing UI components.  
+**Status:** Accepted (Sprint 001)
+
+## ADR-018: Mission approval as local UI state (Sprint 001)
+
+**Decision:** Approve Mission updates mission status and prepends a timeline event in client state only. No publishing or Guardian backend yet.  
+**Rationale:** Validates the review loop UX before backend wiring.  
+**Status:** Accepted (Sprint 001)

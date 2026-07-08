@@ -1,8 +1,8 @@
-import { DashboardShell } from "@/components/dashboard/DashboardShell";
-import { getDashboardData } from "@/services/dashboard/dashboardService";
+import { MissionControl } from "@/components/dashboard/MissionControl";
+import { getMissionControlData } from "@/services/dashboard/dashboard.service";
 
 export default async function HomePage() {
-  const data = await getDashboardData();
+  const data = await getMissionControlData();
 
-  return <DashboardShell data={data} />;
+  return <MissionControl data={data} />;
 }

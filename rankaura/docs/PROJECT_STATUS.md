@@ -1,48 +1,44 @@
 # RankAura Project Status
 
-**Phase:** 2 — Employee frameworks (architecture only)  
-**Last updated:** Writer Department framework  
-**UI status:** Approved — locked, no redesign
+**Phase:** Aurora Build Sprint 001 — first product loop  
+**Last updated:** Aurora Mission Control  
+**UI status:** Approved design language — Mission Control layout implemented
 
-## Completed
+## Aurora Build Sprint 001 (current)
+
+- [x] Mission Control page — first usable Aurora experience
+- [x] Daily Brief, Today's Mission, Growth Team Status, Business Health, Timeline Preview
+- [x] Review Mission flow (Approve / Not Now)
+- [x] Mock data layer (`lib/mock-dashboard.ts`)
+- [x] API-shaped dashboard service (`services/dashboard/dashboard.service.ts`)
+- [x] Mission approval updates local timeline state
+- [x] Tests: `npm run test:aurora`
+- [x] Mock data only — no AI, APIs, auth, or database
+
+## Completed (prior phases)
 
 ### Phase 1 — Foundation
 - [x] Next.js + TypeScript application shell
-- [x] Approved dashboard UI (AI Marketing Headquarters)
-- [x] Scalable folder structure
 - [x] Design system components
 - [x] Domain model interfaces
 - [x] AuraCore orchestration contracts
-- [x] Dashboard data layer with mock service
-- [x] Database and integration placeholders
 - [x] Architecture documentation
 
 ### Phase 2 — Employee frameworks (architecture only)
 - [x] Memory framework (`services/memory/`)
 - [x] Scout employee framework (`services/employees/scout/`)
 - [x] Writer Department framework (`services/employees/writer/`)
-  - [x] 8 modules: Planner, Strategist, Copywriter, Editor, 4 reviewers, QA
-  - [x] Department orchestrator (AuraCore sole entry)
-  - [x] Draft lifecycle
-  - [x] Review pipeline
-  - [x] Domain models: BusinessImpact, ContentQuality, RevisionRequest, WriterReport, VersionHistory
-  - [x] Mock data, tests, README, examples, architecture diagram
-
-### Remaining employee stubs
-- [x] Architect, Optimiser, Publisher, Analyst, Guardian (stubs only)
 
 ## Not started (Phase 3+)
 
-- [ ] AuraCore implementation
-- [ ] AI / LLM integration (explicitly deferred)
+- [ ] AuraCore implementation (wired to Mission Control)
+- [ ] AI / LLM integration
 - [ ] Authentication
 - [ ] Database persistence
-- [ ] API integrations
-- [ ] Real-time updates
-- [ ] Multi-business switching
-- [ ] Approval workflows (Guardian)
+- [ ] Real API integrations
 - [ ] Publishing pipelines (Publisher)
-- [ ] Content generation (Copywriter AI hook)
+- [ ] WordPress integration
+- [ ] Guardian approval backend
 
 ## Build health
 
@@ -51,7 +47,7 @@
 | TypeScript   | Passing  |
 | ESLint       | Passing  |
 | Production build | Passing |
-| UI regression | None intended |
+| Aurora tests | Passing (`npm run test:aurora`) |
 
 ## How to run
 
@@ -61,12 +57,15 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:3000
+Open http://localhost:3000 — Mission Control loads at `/`.
 
-## Writer Department entry points
-
-```typescript
-import { writerDepartmentOrchestrator, writerService } from "@/services/employees/writer";
+```bash
+npm run test:aurora
 ```
 
-See `services/employees/writer/README.md` and `ARCHITECTURE.md`.
+## Mission Control entry points
+
+```typescript
+import { getMissionControlData } from "@/services/dashboard/dashboard.service";
+import { mockTodayMission } from "@/lib/mock-dashboard";
+```

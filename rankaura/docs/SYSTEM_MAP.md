@@ -28,22 +28,25 @@ High-level architecture for the AI Growth Operating System.
 │  integrations/           External API stubs (future)        │
 │  hooks/                  React hooks (future)               │
 │  config/                 App configuration                  │
+│  lib/                    Mock data (Aurora Sprint 001)      │
 │  utils/                  Shared utilities                   │
 │  styles/                 Design tokens                      │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-## Data flow (Phase 1)
+## Data flow (Aurora Sprint 001 — Mission Control)
 
 ```
 app/page.tsx
-    → services/dashboard/dashboardService.ts
-        → services/dashboard/mockData.ts
-    → components/dashboard/DashboardShell.tsx
-        → components/ui/* (design system)
+    → services/dashboard/dashboard.service.ts
+        → lib/mock-dashboard.ts
+    → components/dashboard/MissionControl.tsx (client state)
+        → DailyBriefCard, MissionCard, GrowthTeamCard
+        → BusinessHealthCard, TimelinePreview
+        → MissionReviewPanel (approve / defer)
 ```
 
-## Data flow (Phase 2 — planned)
+## Data flow (Phase 3 — planned)
 
 ```
 app/page.tsx
@@ -51,8 +54,8 @@ app/page.tsx
         → services/employees/* (Scout, Writer, …)
         → database/* (repositories)
         → services/memory (MemoryStore)
-    → services/dashboard/dashboardService.ts (maps to view models)
-    → components/dashboard/*
+    → services/dashboard/dashboard.service.ts (maps to view models)
+    → components/dashboard/MissionControl.tsx
 ```
 
 ## Writer Department flow
@@ -68,6 +71,19 @@ AuraCore
 ```
 
 Modules never communicate directly — only through the orchestrator.
+
+## Aurora Mission Control (Sprint 001)
+
+| Section | Component | Service method |
+| ------- | --------- | -------------- |
+| Daily Brief | `DailyBriefCard` | `getDailyBrief()` |
+| Today's Mission | `MissionCard` | `getTodayMission()` |
+| Growth Team Status | `GrowthTeamCard` | `getGrowthTeamStatus()` |
+| Business Health | `BusinessHealthCard` | `getBusinessHealth()` |
+| Timeline Preview | `TimelinePreview` | `getTimelinePreview()` |
+| Mission Review | `MissionReviewPanel` | Local client state |
+
+Mock data: `lib/mock-dashboard.ts`
 
 ## AI employee modules
 

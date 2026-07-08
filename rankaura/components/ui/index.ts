@@ -9,4 +9,5 @@ export { Logo } from "@/components/ui/Logo";
 export { OpportunityCard } from "@/components/ui/OpportunityCard";
 export { ProgressBar } from "@/components/ui/ProgressBar";
 export { SectionHeader } from "@/components/ui/SectionHeader";
-export { StatusIndicator } from "@/components/ui/StatusIndicator";
+export { ConfidenceBadge } from "@/components/ui/ConfidenceBadge";
+export { StatusBadge } from "@/components/ui/StatusBadge";

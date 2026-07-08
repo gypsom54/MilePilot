@@ -1,28 +1,30 @@
 /**
- * Dashboard data service.
- * Returns presentation-layer data for the home screen.
- *
- * Phase 1: mock data via mockData.ts
+ * Dashboard data service (legacy + Mission Control).
+ * Phase 1: mock data via lib/mock-dashboard.ts
  * Phase 2: AuraCore.generateBrief() + employee services
  */
 
-import { PLACEHOLDER_USER } from "@/config/placeholders";
 import { MOCK_DASHBOARD_DATA } from "@/services/dashboard/mockData";
+import { PLACEHOLDER_USER } from "@/config/placeholders";
 import { getGreeting } from "@/utils/greeting";
 import type { DashboardData } from "@/types/dashboard";
 
+export {
+  getBusinessHealth,
+  getDailyBrief,
+  getGrowthTeamStatus,
+  getMissionControlData,
+  getTimelinePreview,
+  getTodayMission,
+} from "@/services/dashboard/dashboard.service";
+
 export async function getDashboardData(): Promise<DashboardData> {
-  const greeting = getGreeting();
+  const greeting = `${getGreeting()} ${PLACEHOLDER_USER.firstName} 👋`;
 
   return {
     ...MOCK_DASHBOARD_DATA,
-    greeting: `${greeting} ${PLACEHOLDER_USER.firstName} 👋`,
+    greeting,
   };
-}
-
-export async function getDailyBrief(): Promise<Pick<DashboardData, "greeting" | "hero">> {
-  const data = await getDashboardData();
-  return { greeting: data.greeting, hero: data.hero };
 }
 
 export async function getAITeam(): Promise<DashboardData["teamActivity"]> {
