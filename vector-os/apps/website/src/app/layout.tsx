@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import '@vector-platform/ui/styles.css';
 import './globals.css';
+import { SiteFooter } from '@/components/layout/SiteFooter';
 import { SiteHeader } from '@/components/layout/SiteHeader';
 import { ThemeProvider } from '@/providers/ThemeProvider';
 
@@ -14,7 +15,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: 'Vector Platform',
   description:
-    'Premium peptide research products, intelligent software and AI-powered business tools.',
+    'Premium peptide research products, intelligent business software and AI-powered laboratory tools.',
 };
 
 export default function RootLayout({
@@ -28,6 +29,7 @@ export default function RootLayout({
         <ThemeProvider>
           <SiteHeader />
           {children}
+          <SiteFooter />
         </ThemeProvider>
       </body>
     </html>

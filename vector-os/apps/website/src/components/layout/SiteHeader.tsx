@@ -1,11 +1,12 @@
 import Link from 'next/link';
+import { Button } from '@vector-platform/ui';
 import { VectorLogo } from './VectorLogo';
 
 const NAV_ITEMS = [
   { label: 'Products', href: '#products' },
   { label: 'Platform', href: '#platform' },
+  { label: 'Research', href: '#research' },
   { label: 'Documentation', href: '#documentation' },
-  { label: 'About', href: '#about' },
 ] as const;
 
 export function SiteHeader() {
@@ -24,6 +25,15 @@ export function SiteHeader() {
             </Link>
           ))}
         </nav>
+
+        <div className="site-header__actions">
+          <Link href="#sign-in" className="site-header__sign-in">
+            Sign In
+          </Link>
+          <Button variant="primary" size="sm" className="site-header__cta">
+            Get Started
+          </Button>
+        </div>
       </div>
     </header>
   );

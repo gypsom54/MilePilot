@@ -12,13 +12,13 @@ export function Hero() {
         </h1>
 
         <p className="hero__subheading">
-          Premium peptide research products, intelligent software and AI-powered
-          business tools.
+          Premium peptide research products, intelligent business software and
+          AI-powered laboratory tools.
         </p>
 
         <div className="hero__actions">
           <Button variant="primary" size="lg">
-            View Products
+            Explore Products
           </Button>
           <Button variant="ghost" size="lg" className="hero__ghost-btn">
             Explore Platform
