@@ -86,17 +86,19 @@ Modules never communicate directly — only through the orchestrator.
 
 Mock data: `lib/mock-dashboard.ts`
 
-### Mission Review flow (Sprint 002)
+### Mission Review flow (Sprint 002 → 003)
 
 ```
 Review Mission / Continue Growing
-    → MissionReviewModal
-        → MissionReview (content sections)
-        → Approve Mission → ApprovalConfirmation → Done
-        → Updates mission status + TimelinePreview (highlighted event)
+    → /missions/[id] (Mission Workspace)
+        → MissionHeader, MissionOverview, DepartmentWorkflow
+        → MissionPreviewPanel, BusinessImpactPanel
+        → MissionActions (Approve / Request Changes / Save For Later)
+        → TimelineCard (instant updates)
 ```
 
-Timeline approval event: `Mission approved: Research Storage Conditions Guide`
+Mission service: `services/mission/missionService.ts`  
+Mock data: `lib/mock-mission.ts`
 
 ## AI employee modules
 

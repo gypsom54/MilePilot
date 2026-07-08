@@ -1,52 +1,42 @@
 # RankAura Project Status
 
-**Phase:** Aurora Build Sprint 002 — Mission Review Experience  
-**Last updated:** Mission Review mock approval loop  
-**UI status:** Approved design language — Mission Control layout intact
+**Phase:** Aurora Build Sprint 003 — Mission Workspace  
+**Last updated:** Mission Workspace implemented  
+**UI status:** Dashboard approved — Mission Workspace added as dedicated page
 
-## Aurora Build Sprint 002 (current)
+## Aurora Build Sprint 003 (current)
 
-- [x] Polished Mission Review modal (`MissionReview`, `MissionReviewModal`)
-- [x] Approval confirmation (`ApprovalConfirmation`)
-- [x] Review Mission + Continue Growing both open Mission Review
-- [x] Approve Mission → status update + timeline event + confirmation copy
-- [x] Timeline Preview highlights new approval events immediately
-- [x] Shared approval logic (`lib/mission-review.ts`)
-- [x] Guardian department in mission mock data
+- [x] Mission Workspace page at `/missions/[id]`
+- [x] Mission Header, Overview, Department Workflow, Preview, Impact, Actions, Timeline
+- [x] Department progress: Scout, Writer, Architect, Guardian, Publisher
+- [x] Mock article preview panel
+- [x] Actions: Approve Mission, Request Changes, Save For Later
+- [x] `missionService.ts` — getMission, approveMission, requestChanges, saveMission
+- [x] Review Mission / Continue Growing navigate to workspace (not modal)
 - [x] Tests: `npm run test:aurora`
-- [x] Mock/local state only — no AI, APIs, auth, or database
+- [x] Mock/local state only
+
+## Aurora Build Sprint 002 (complete)
+
+- [x] Mission Review modal experience (superseded by workspace navigation)
+- [x] Approval confirmation flow
+- [x] Shared `lib/mission-review.ts`
 
 ## Aurora Build Sprint 001 (complete)
 
-- [x] Mission Control page — first usable Aurora experience
-- [x] Daily Brief, Today's Mission, Growth Team Status, Business Health, Timeline Preview
-- [x] Mock data layer (`lib/mock-dashboard.ts`)
-- [x] API-shaped dashboard service (`services/dashboard/dashboard.service.ts`)
-
-## Completed (prior phases)
-
-### Phase 1 — Foundation
-- [x] Next.js + TypeScript application shell
-- [x] Design system components
-- [x] Domain model interfaces
-- [x] AuraCore orchestration contracts
-- [x] Architecture documentation
-
-### Phase 2 — Employee frameworks (architecture only)
-- [x] Memory framework (`services/memory/`)
-- [x] Scout employee framework (`services/employees/scout/`)
-- [x] Writer Department framework (`services/employees/writer/`)
+- [x] Mission Control dashboard loop
+- [x] API-shaped dashboard service
+- [x] Mock data layer
 
 ## Not started (Phase 3+)
 
-- [ ] AuraCore implementation (wired to Mission Control)
+- [ ] AuraCore wired to Mission Workspace
 - [ ] AI / LLM integration
 - [ ] Authentication
 - [ ] Database persistence
 - [ ] Real API integrations
-- [ ] Publishing pipelines (Publisher)
+- [ ] Publishing pipelines (Publisher backend)
 - [ ] WordPress integration
-- [ ] Guardian approval backend (persistence)
 
 ## Build health
 
@@ -65,16 +55,16 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:3000 — Mission Control loads at `/`.
+- Mission Control: http://localhost:3000
+- Mission Workspace: http://localhost:3000/missions/mission-001
 
 ```bash
 npm run test:aurora
 ```
 
-## Mission Review entry points
+## Entry points
 
 ```typescript
-import { approveMission } from "@/lib/mission-review";
-import { MissionReviewModal } from "@/components/dashboard/mission-review";
-import { mockTodayMission } from "@/lib/mock-dashboard";
+import { getMission, approveMission } from "@/services/mission/missionService";
+import { MissionWorkspace } from "@/components/mission-workspace/MissionWorkspace";
 ```

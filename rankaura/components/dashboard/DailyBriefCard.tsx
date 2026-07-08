@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import type { DashboardDailyBrief } from "@/types/dashboard";
@@ -6,14 +7,14 @@ interface DailyBriefCardProps {
   greeting: string;
   dailyBrief: DashboardDailyBrief;
   showContinueGrowing?: boolean;
-  onContinueGrowing?: () => void;
+  missionHref?: string;
 }
 
 export function DailyBriefCard({
   greeting,
   dailyBrief,
   showContinueGrowing = false,
-  onContinueGrowing,
+  missionHref,
 }: DailyBriefCardProps) {
   return (
     <Card delay={0} className="border-[var(--color-border-subtle)]">
@@ -49,11 +50,11 @@ export function DailyBriefCard({
           saved this week
         </span>
       </div>
-      {showContinueGrowing && onContinueGrowing && (
+      {showContinueGrowing && missionHref && (
         <div className="mt-6">
-          <Button variant="secondary" onClick={onContinueGrowing}>
-            Continue Growing
-          </Button>
+          <Link href={missionHref}>
+            <Button variant="secondary">Continue Growing</Button>
+          </Link>
         </div>
       )}
     </Card>

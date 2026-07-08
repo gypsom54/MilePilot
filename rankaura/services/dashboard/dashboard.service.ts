@@ -52,6 +52,9 @@ export async function getTimelinePreview(): Promise<DashboardTimelineEvent[]> {
   return simulateLatency([...mockTimelineEvents]);
 }
 
+/** @see services/mission/missionService.ts — Mission Workspace data */
+export { getMission } from "@/services/mission/missionService";
+
 export async function getMissionControlData(): Promise<MissionControlData> {
   const [greeting, dailyBrief, todayMission, growthTeam, businessHealth, timelineEvents] =
     await Promise.all([

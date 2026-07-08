@@ -120,4 +120,16 @@ Record of key decisions made during Phase 1 foundation build.
 
 **Decision:** Daily Brief secondary CTA "Continue Growing" opens the same Mission Review modal as "Review Mission" when a mission is pending.  
 **Rationale:** Two familiar entry points, one review experience; no extra features.  
-**Status:** Accepted (Sprint 002)
+**Status:** Superseded by ADR-021 (Sprint 003)
+
+## ADR-021: Mission Workspace as dedicated page (Sprint 003)
+
+**Decision:** Replace modal review with `/missions/[id]` Mission Workspace — full-page experience with department workflow, preview, impact, actions, and timeline.  
+**Rationale:** Customer should feel they are managing an elite AI Growth Team, not using a chatbot. Dedicated workspace matches AI Business OS positioning.  
+**Status:** Accepted (Sprint 003)
+
+## ADR-022: missionService separate from dashboard service (Sprint 003)
+
+**Decision:** `services/mission/missionService.ts` owns workspace CRUD and actions; `dashboard.service.ts` re-exports `getMission` for discovery. In-memory `mockMissionStore` until API layer exists.  
+**Rationale:** Clean separation between Mission Control (brief) and Mission Workspace (deep review).  
+**Status:** Accepted (Sprint 003)

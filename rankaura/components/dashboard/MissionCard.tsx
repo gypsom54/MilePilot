@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
@@ -9,7 +10,6 @@ import type { DashboardMission } from "@/types/dashboard";
 
 interface MissionCardProps {
   mission: DashboardMission;
-  onReview: () => void;
 }
 
 const impactLabels = {
@@ -18,8 +18,9 @@ const impactLabels = {
   low: "Low impact",
 } as const;
 
-export function MissionCard({ mission, onReview }: MissionCardProps) {
+export function MissionCard({ mission }: MissionCardProps) {
   const isActionable = mission.status === "pending";
+  const reviewHref = `/missions/${mission.id}`;
 
   return (
     <Card delay={60} className="border-[var(--color-aura)]/20 bg-[var(--color-surface)]">
@@ -52,9 +53,9 @@ export function MissionCard({ mission, onReview }: MissionCardProps) {
 
       {isActionable && (
         <div className="mt-8">
-          <Button className="min-w-[200px] px-8 py-4 text-base" onClick={onReview}>
-            {mission.ctaLabel}
-          </Button>
+          <Link href={reviewHref}>
+            <Button className="min-w-[200px] px-8 py-4 text-base">{mission.ctaLabel}</Button>
+          </Link>
         </div>
       )}
 
