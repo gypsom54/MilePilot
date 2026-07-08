@@ -1,0 +1,40 @@
+name: Deploy to Cloudflare Pages
+
+# Automatic web deploys — no manual zip uploads.
+# Runs when the production branch (main) updates, or on demand from the
+# Actions tab (Run workflow → pick a branch). Requires ONE repo secret:
+# CLOUDFLARE_API_TOKEN (see docs/AUTO_DEPLOY.md).
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+concurrency:
+  group: cloudflare-pages-deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build web bundle (validates contracts + tests, regenerates version.txt)
+        run: bash build-upload.sh
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: e85ff511e5a4e0f1bd6a8ce7baf07fbf
+          command: pages deploy milepilot-upload-v2 --project-name=milepilot-app --branch=main --commit-dirty=true
+
+      - name: Confirm deployed version
+        run: echo "Deployed version.txt -> $(cat milepilot-upload-v2/version.txt)"
