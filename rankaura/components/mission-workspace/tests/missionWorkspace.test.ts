@@ -1,3 +1,7 @@
+import {
+  AURA_MISSION_COMPLETE_MESSAGE,
+  DEPLOYMENT_STEPS,
+} from "@/components/mission-workspace/DeploymentAnimation";
 import { mockMissionWorkspace } from "@/lib/mock-mission";
 import type { Mission } from "@/types/mission";
 
@@ -10,7 +14,8 @@ export function getMissionWorkspaceSections(mission: Mission) {
     hasGuardianReview: mission.guardian.checks.every((c) => c.passed),
     guardianScore: mission.guardian.score,
     briefingImpactVisitors: mission.briefingImpact.estimatedMonthlyVisitors,
-    missionType: mission.missionTypeLabel,
+    preparedBy: mission.preparedByDepartments.join(","),
+    scoutConfidence: mission.scout.confidence,
   };
 }
 
@@ -31,9 +36,11 @@ export function runMissionWorkspaceTests(): { passed: number; failed: number } {
   assert(sections.hasGuardianReview);
   assert(sections.guardianScore === 97);
   assert(sections.briefingImpactVisitors === "420");
-  assert(sections.missionType === "Content Guide");
-  assert(mockMissionWorkspace.scout.customerQuestions.length >= 3);
-  assert(mockMissionWorkspace.writer.callToAction.length > 0);
+  assert(sections.preparedBy === "Scout,Writer,Architect,Guardian");
+  assert(sections.scoutConfidence === 94);
+  assert(DEPLOYMENT_STEPS.length === 4);
+  assert(DEPLOYMENT_STEPS[3].label === "Website Updated");
+  assert(AURA_MISSION_COMPLETE_MESSAGE.title === "Mission Complete.");
 
   return { passed, failed };
 }

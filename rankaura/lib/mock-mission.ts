@@ -46,6 +46,7 @@ export const mockMissionWorkspace: Mission = {
       "Do I need specialist storage for sensitive materials?",
       "What labelling is required for compliance?",
     ],
+    confidence: 94,
   },
   writer: {
     title: "How to Store Research Materials Safely",
@@ -128,4 +129,5 @@ export const mockMissionWorkspace: Mission = {
     { id: "tl-4", time: "19:20", title: "Guardian quality checks passed", type: "team" },
   ],
   comments: [],
+  preparedByDepartments: ["Scout", "Writer", "Architect", "Guardian"],
 };

@@ -150,4 +150,10 @@ Record of key decisions made during Phase 1 foundation build.
 
 **Decision:** Rebuild `/missions/[id]` as intelligence briefing with pluggable department sections (Scout, Writer, Architect, Guardian, Impact, Approval). Each section is a reusable component fed by typed mock data.  
 **Rationale:** Single review experience scales to future departments (SEO, Ads, Email, Sales, Social, CRM, Support) without layout redesign.  
-**Status:** Accepted (Sprint 005)
+**Status:** Superseded by ADR-026 (Sprint 014)
+
+## ADR-026: Mission Workspace as primary Vector OS workflow (Sprint 014)
+
+**Decision:** Rebuild Mission Workspace with reusable primitives (`MissionHeader`, `DepartmentCard`, `FindingCard`, `ApprovalFooter`, `DeploymentAnimation`). Business impact and confidence live in the header; department sections use soft cards with generous spacing. Approve triggers a deployment animation (Writer → Architect → Publisher → Website Updated) and Aura confirmation.  
+**Rationale:** Mission-centric workflow replaces dashboard-centric thinking; layout scales to future departments without redesign.  
+**Status:** Accepted (Sprint 014)

@@ -1,7 +1,8 @@
-import { getStateLabel } from "@/services/activity/activityEngine";
-import { mockMissionWorkspace } from "@/lib/mock-mission";
-import { MissionStatusBadge } from "@/components/mission-workspace/MissionStatusBadge";
-import { MetricBadge } from "@/components/mission-workspace/MetricBadge";
+import { DEPLOYMENT_STEPS } from "@/components/mission-workspace/DeploymentAnimation";
+import { DepartmentCard } from "@/components/mission-workspace/DepartmentCard";
+import { FindingCard } from "@/components/mission-workspace/FindingCard";
+import { ApprovalFooter } from "@/components/mission-workspace/ApprovalFooter";
+import { MissionHeader } from "@/components/mission-workspace/MissionHeader";
 
 export function runMissionComponentTests(): { passed: number; failed: number } {
   let passed = 0;
@@ -12,12 +13,11 @@ export function runMissionComponentTests(): { passed: number; failed: number } {
     else failed++;
   };
 
-  assert(typeof MissionStatusBadge === "function");
-  assert(typeof MetricBadge === "function");
-  assert(mockMissionWorkspace.workspaceStatus === "ready_for_approval");
-  assert(mockMissionWorkspace.scout.competitionLabel === "Medium");
-  assert(mockMissionWorkspace.architect.structureScore >= 90);
-  assert(getStateLabel("researching") === "Researching");
+  assert(typeof DepartmentCard === "function");
+  assert(typeof FindingCard === "function");
+  assert(typeof ApprovalFooter === "function");
+  assert(typeof MissionHeader === "function");
+  assert(DEPLOYMENT_STEPS.map((s) => s.label).join(",") === "Writer,Architect,Publisher,Website Updated");
 
   return { passed, failed };
 }

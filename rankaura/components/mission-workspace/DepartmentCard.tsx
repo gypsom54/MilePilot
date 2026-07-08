@@ -1,47 +1,79 @@
-import { StatusPill } from "@/components/mission-workspace/StatusPill";
-import type { DepartmentStatus } from "@/types/mission";
+import { cn } from "@/utils/cn";
+import type { ReactNode } from "react";
 
 interface DepartmentCardProps {
-  department: DepartmentStatus;
-  isLast?: boolean;
+  departmentId: string;
+  departmentName: string;
+  title: string;
+  subtitle?: string;
+  confidence?: number;
+  children: ReactNode;
+  delay?: number;
+  className?: string;
 }
 
-export function DepartmentCard({ department, isLast = false }: DepartmentCardProps) {
+const DEPARTMENT_ACCENTS: Record<string, string> = {
+  scout: "var(--color-aura)",
+  writer: "var(--color-emerald)",
+  architect: "#5b7c99",
+  guardian: "#6b5b95",
+  publisher: "var(--color-midnight)",
+  sales: "var(--color-amber)",
+  finance: "#4a7c59",
+  operations: "#7c6b4a",
+  support: "#4a6b7c",
+  hiring: "#7c4a6b",
+};
+
+/**
+ * Universal department section — plug in Sales, Finance, Operations, etc.
+ */
+export function DepartmentCard({
+  departmentId,
+  departmentName,
+  title,
+  subtitle,
+  confidence,
+  children,
+  delay = 0,
+  className,
+}: DepartmentCardProps) {
+  const accent = DEPARTMENT_ACCENTS[departmentId] ?? "var(--color-aura)";
+
   return (
-    <div className="relative flex gap-4">
-      {!isLast && (
-        <span
-          aria-hidden
-          className="absolute left-[11px] top-8 h-[calc(100%+1rem)] w-px bg-[var(--color-border-subtle)]"
-        />
+    <section
+      className={cn(
+        "animate-fade-in rounded-2xl bg-[var(--color-surface)] p-8 shadow-[var(--shadow-sm)] transition-shadow duration-300 hover:shadow-[var(--shadow-md)] sm:p-10",
+        className,
       )}
-
-      <span
-        aria-hidden
-        className="relative z-10 mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 border-[var(--color-border)] bg-[var(--color-surface)]"
-      >
-        <span className="h-2 w-2 rounded-full bg-[var(--color-aura)]" />
-      </span>
-
-      <div className="min-w-0 flex-1 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)] p-5">
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <h3 className="text-base font-semibold text-[var(--color-text-primary)]">
-            {department.name}
-          </h3>
-          <StatusPill label={department.statusLabel} variant={department.status} />
+      style={{ animationDelay: `${delay}ms` }}
+      data-department={departmentId}
+    >
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <p
+            className="text-[11px] font-semibold uppercase tracking-[0.2em]"
+            style={{ color: accent }}
+          >
+            {departmentName}
+          </p>
+          <h2 className="mt-3 text-2xl font-semibold tracking-tight text-[var(--color-text-primary)]">
+            {title}
+          </h2>
+          {subtitle && (
+            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--color-text-secondary)]">
+              {subtitle}
+            </p>
+          )}
         </div>
-
-        <p className="mt-3 text-xs font-medium uppercase tracking-wide text-[var(--color-text-muted)]">
-          Output
-        </p>
-        <ul className="mt-2 space-y-1.5">
-          {department.outputs.map((output) => (
-            <li key={output} className="text-sm text-[var(--color-text-secondary)]">
-              {output}
-            </li>
-          ))}
-        </ul>
+        {confidence !== undefined && (
+          <p className="text-sm text-[var(--color-text-muted)]">
+            <span className="font-semibold text-[var(--color-text-primary)]">{confidence}%</span>{" "}
+            confidence
+          </p>
+        )}
       </div>
-    </div>
+      <div className="mt-10">{children}</div>
+    </section>
   );
 }

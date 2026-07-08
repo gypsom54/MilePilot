@@ -54,3 +54,21 @@ body {
 .animate-progress-fill {
   animation: progress-fill 1.2s ease-out both;
 }
+
+@keyframes deployment-check {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-deployment-check {
+  animation: deployment-check 0.4s ease-out both;
+}

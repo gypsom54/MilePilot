@@ -1,62 +1,50 @@
 # RankAura Project Status
 
-**Phase:** Aurora Build Sprint 005 — Mission Workspace (Intelligence Briefing)  
-**Last updated:** Universal workflow engine for department reviews  
-**UI status:** Mission Control locked — Mission Workspace rebuilt as briefing experience
+**Phase:** Sprint 014 — Mission Workspace (Vector OS Core Workflow)  
+**Last updated:** Mission-centric intelligence briefing with deployment animation  
+**UI status:** Mission Control locked — Mission Workspace is primary workflow
 
-## Aurora Build Sprint 005 (current)
+## Sprint 014 (current)
 
-- [x] **Mission Workspace** rebuilt at `/missions/[id]` — intelligence briefing, not CMS
-- [x] **7 sections:** Header, Scout Report, Writer Draft, Architect Review, Guardian Review, Business Impact, Approval
-- [x] **Universal workflow engine** — pluggable department sections for future teams (SEO, Ads, Email, Sales, Social, CRM, Support)
-- [x] **Components:** MissionHeader, MissionStatusBadge, ScoutInsightCard, WriterDraftPreview, ArchitectChecklist, GuardianChecklist, BusinessImpactCard, ApprovalPanel, MetricBadge, DepartmentHeader
-- [x] **Micro-interactions:** fade-in sections, card hover, skeleton loading, success animation
-- [x] **missionService:** approve, approveDraft, requestChanges, requestRewrite, archive, leaveFeedback
+- [x] **Mission-centric workflow** — `/missions/[id]` is the primary review experience
+- [x] **Premium intelligence briefing** — generous whitespace, soft cards, minimal borders
+- [x] **Reusable components:** MissionHeader, DepartmentCard, FindingCard, ApprovalFooter, DeploymentAnimation
+- [x] **Department sections:** Scout, Writer, Architect, Guardian (pluggable for Sales, Finance, Operations, Support, Hiring)
+- [x] **Deployment animation** — Writer → Architect → Publisher → Website Updated
+- [x] **Aura confirmation** — "Mission Complete. Your business has been improved."
 - [x] Tests: `npm run test:aurora`
-- [x] Mock only — no APIs, AI, auth, backend
 
 ## Mission Workspace Architecture
 
 ```
 /missions/[id]
 └── MissionWorkspace
-    ├── MissionHeader          (title, status, metrics, primary CTA)
-    ├── ScoutInsightCard       ← Research / market departments
-    ├── WriterDraftPreview     ← Content departments
-    ├── ArchitectChecklist     ← Structure / SEO departments
-    ├── GuardianChecklist      ← Compliance / quality departments
-    ├── BusinessImpactCard     ← Analyst / impact data
-    └── ApprovalPanel          ← Universal approval gate
+    ├── MissionHeader
+    ├── DepartmentCard × N (Scout, Writer, Architect, Guardian, …)
+    │   └── FindingCard (research / KPI findings)
+    ├── ApprovalFooter
+    └── DeploymentAnimation → AuraConfirmation
 ```
 
-### Future department integration
+### Plugging in future departments
 
-| Future department | Plugs into | Data interface |
-| ----------------- | ---------- | -------------- |
-| SEO | ArchitectChecklist | `ArchitectReview` |
-| Ads | ScoutInsightCard + BusinessImpactCard | `ScoutReport` + impact |
-| Email | WriterDraftPreview | `WriterDraft` |
-| Sales | ScoutInsightCard | `ScoutReport` |
-| Social | WriterDraftPreview | `WriterDraft` |
-| CRM | BusinessImpactCard | `MissionBriefingImpact` |
-| Support | GuardianChecklist | `GuardianReview` |
+1. Add department data to `types/mission.ts`
+2. Add mock data in `lib/mock-mission.ts`
+3. Create section component using `DepartmentCard` + `FindingCard`
+4. Register in `MissionWorkspace.tsx`
+5. Add accent colour in `DepartmentCard` `DEPARTMENT_ACCENTS`
 
-Add a new department by: (1) extend `types/mission.ts`, (2) add mock in `lib/mock-mission.ts`, (3) create or reuse section component, (4) wire in `MissionWorkspace.tsx`.
-
-## Aurora Build Sprint 004 (complete)
-
-- [x] Living Mission Control — activity engine, Morning Brief, dynamic timeline
+No layout redesign required.
 
 ## Prior sprints (complete)
 
-- Sprint 003: Initial Mission Workspace route
-- Sprint 002: Mission Review navigation
-- Sprint 001: Mission Control dashboard
+- Sprint 005: Intelligence briefing sections
+- Sprint 004: Living Mission Control
+- Sprints 001–003: Foundation and dashboard loop
 
 ## Not started
 
-- [ ] AuraCore feeding real department output
-- [ ] Persistence, auth, APIs, notifications, chat
+- Notifications, chat, AI APIs, backend persistence
 
 ## Build health
 
@@ -64,20 +52,15 @@ Add a new department by: (1) extend `types/mission.ts`, (2) add mock in `lib/moc
 | ----- | ------ |
 | TypeScript | Passing |
 | ESLint | Passing |
-| Production build | Passing |
 | Aurora tests | Passing (`npm run test:aurora`) |
 
 ## How to run
 
 ```bash
-cd rankaura
-npm install
-npm run dev
+cd rankaura && npm install && npm run dev
 ```
 
 - Mission Control: http://localhost:3000
 - Mission Workspace: http://localhost:3000/missions/mission-001
 
-```bash
-npm run test:aurora
-```
+Approve a mission to see the deployment animation.

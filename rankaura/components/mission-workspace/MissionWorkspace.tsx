@@ -1,113 +1,115 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import Link from "next/link";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import {
-  ApprovalPanel,
-  ArchitectChecklist,
-  BusinessImpactCard,
-  GuardianChecklist,
+  ApprovalFooter,
+  AuraConfirmation,
+  DeploymentAnimation,
   MissionHeader,
   MissionWorkspaceSkeleton,
-  ScoutInsightCard,
-  WriterDraftPreview,
 } from "@/components/mission-workspace";
+import {
+  ArchitectSection,
+  GuardianSection,
+  ScoutSection,
+  WriterSection,
+} from "@/components/mission-workspace/MissionDepartmentSections";
 import { mockBusiness } from "@/lib/mock-dashboard";
 import {
-  approveDraft,
   approveMission as approveMissionService,
-  archiveMission,
-  leaveFeedback,
   requestChanges,
-  requestRewrite,
 } from "@/services/mission/missionService";
 import type { Mission } from "@/types/mission";
+
+type WorkspacePhase = "review" | "deploying" | "complete";
 
 interface MissionWorkspaceProps {
   initialMission: Mission;
 }
 
 /**
- * Mission Workspace — intelligence briefing for AI department output.
- * Universal layout: future departments (SEO, Ads, Email, etc.) plug into sections.
+ * Mission Workspace — primary Vector OS workflow.
+ * Mission-centric intelligence briefing with deployment animation on approve.
  */
 export function MissionWorkspace({ initialMission }: MissionWorkspaceProps) {
   const [mission, setMission] = useState(initialMission);
+  const [phase, setPhase] = useState<WorkspacePhase>("review");
   const [loading, setLoading] = useState(false);
   const [isReady, setIsReady] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
 
   useEffect(() => {
-    const timer = window.setTimeout(() => setIsReady(true), 300);
+    const timer = window.setTimeout(() => setIsReady(true), 350);
     return () => window.clearTimeout(timer);
   }, []);
 
-  const runAction = useCallback(async (action: () => Promise<Mission | null>) => {
-    setLoading(true);
-    const updated = await action();
-    if (updated) {
-      setMission(updated);
-      if (updated.workspaceStatus === "approved") {
-        setShowSuccess(true);
-        window.setTimeout(() => setShowSuccess(false), 3000);
-      }
-    }
+  const handleDeploymentComplete = useCallback(async () => {
+    const updated = await approveMissionService(mission.id);
+    if (updated) setMission(updated);
+    setPhase("complete");
     setLoading(false);
+  }, [mission.id]);
+
+  const handleApprove = useCallback(() => {
+    setLoading(true);
+    setPhase("deploying");
   }, []);
 
-  const openRequestChanges = useCallback(() => {
-    const panel = document.getElementById("approval-panel");
-    panel?.scrollIntoView({ behavior: "smooth" });
-  }, []);
+  const handleRequestChanges = useCallback(
+    async (comment: string) => {
+      setLoading(true);
+      const updated = await requestChanges(mission.id, comment);
+      if (updated) setMission(updated);
+      setLoading(false);
+    },
+    [mission.id],
+  );
+
+  const isReviewable =
+    phase === "review" &&
+    (mission.workspaceStatus === "ready_for_approval" ||
+      mission.workspaceStatus === "in_review" ||
+      mission.workspaceStatus === "pending");
 
   return (
     <div className="flex min-h-screen bg-[var(--color-background)]">
       <Sidebar business={mockBusiness} />
 
       <main className="flex-1 overflow-auto">
-        <div className="mx-auto max-w-4xl px-8 py-10 sm:px-10 sm:py-12">
+        <div className="mx-auto max-w-3xl px-8 py-12 sm:px-12 sm:py-16">
           {!isReady ? (
             <MissionWorkspaceSkeleton />
+          ) : phase === "complete" ? (
+            <div className="flex min-h-[70vh] flex-col items-center justify-center">
+              <AuraConfirmation />
+              <Link
+                href="/"
+                className="mt-10 text-sm font-medium text-[var(--color-aura)] transition-colors hover:underline"
+              >
+                Return to Mission Control
+              </Link>
+            </div>
           ) : (
-            <div className="space-y-8">
-              {showSuccess && (
-                <div className="animate-fade-in rounded-xl border border-[var(--color-emerald-muted)] bg-[var(--color-emerald-muted)]/30 px-5 py-4 text-center text-sm font-medium text-emerald-800">
-                  Mission approved — Aura has continued execution.
-                </div>
-              )}
-
-              <MissionHeader
-                mission={mission}
-                onApprove={() => runAction(() => approveMissionService(mission.id))}
-                onRequestChanges={openRequestChanges}
-                loading={loading}
-              />
-
-              <ScoutInsightCard report={mission.scout} />
-              <WriterDraftPreview
-                draft={mission.writer}
-                onApproveDraft={() => runAction(() => approveDraft(mission.id))}
-                onRequestRewrite={() => runAction(() => requestRewrite(mission.id))}
-                loading={loading}
-              />
-              <ArchitectChecklist review={mission.architect} />
-              <GuardianChecklist review={mission.guardian} />
-              <BusinessImpactCard impact={mission.briefingImpact} />
-
-              <div id="approval-panel">
-                <ApprovalPanel
-                  mission={mission}
-                  onApprove={() => runAction(() => approveMissionService(mission.id))}
-                  onRequestChanges={(c) => runAction(() => requestChanges(mission.id, c))}
-                  onArchive={() => runAction(() => archiveMission(mission.id))}
-                  onLeaveFeedback={(c) => runAction(() => leaveFeedback(mission.id, c))}
+            <div className="space-y-16 pb-24">
+              <MissionHeader mission={mission} />
+              <ScoutSection report={mission.scout} />
+              <WriterSection draft={mission.writer} />
+              <ArchitectSection review={mission.architect} />
+              <GuardianSection review={mission.guardian} />
+              {isReviewable && (
+                <ApprovalFooter
+                  onApprove={handleApprove}
+                  onRequestChanges={handleRequestChanges}
                   loading={loading}
                 />
-              </div>
+              )}
             </div>
           )}
         </div>
       </main>
+
+      {phase === "deploying" && <DeploymentAnimation onComplete={handleDeploymentComplete} />}
     </div>
   );
 }

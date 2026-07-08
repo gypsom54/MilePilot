@@ -58,6 +58,7 @@ export interface ScoutReport {
   customerIntent: string;
   competitorObservations: string[];
   customerQuestions: string[];
+  confidence: number;
 }
 
 export interface WriterDraftSection {
@@ -163,4 +164,12 @@ export interface Mission {
   timeline: MissionTimelineEvent[];
   comments: MissionComment[];
   approvalMessage?: string;
+  preparedByDepartments: string[];
+}
+
+export interface DepartmentSectionConfig {
+  id: string;
+  name: string;
+  title: string;
+  subtitle?: string;
 }
