@@ -2,6 +2,9 @@
 set -e
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 VERSION=$(grep "const APP_VERSION" "$ROOT/frontend/index.html" | sed "s/.*'\(.*\)'.*/\1/")
+# Always regenerate version.txt from the real APP_VERSION so it can never drift
+# out of sync with index.html (a stale copy caused mismatched deploys).
+printf '%s' "$VERSION" > "$ROOT/frontend/version.txt"
 cp "$ROOT/frontend/index.html" "$ROOT/frontend/version.txt" "$ROOT/frontend/service-worker.js" \
    "$ROOT/frontend/manifest.json" "$ROOT/frontend/icon.svg" "$ROOT/milepilot-upload-v2/"
 mkdir -p "$ROOT/milepilot-upload-v2/js"
@@ -16,4 +19,5 @@ ZIP="$ROOT/MilePilot-v${VERSION}-CLOUDFLARE-UPLOAD.zip"
 zip -r "$ZIP" .
 echo "Built $ZIP"
 grep "APP_VERSION" index.html | head -1
-grep "v8" version.txt | head -1
+echo "version.txt -> $(cat version.txt)"
+if [ "$(cat version.txt)" != "$VERSION" ]; then echo "VERSION MISMATCH: version.txt != APP_VERSION"; exit 1; fi
