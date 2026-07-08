@@ -1,19 +1,19 @@
-import { BatchVerification } from '@/components/home/BatchVerification';
-import { ComplianceBanner } from '@/components/home/ComplianceBanner';
-import { FeaturedProducts } from '@/components/home/FeaturedProducts';
-import { Hero } from '@/components/home/Hero';
-import { PackagingSection } from '@/components/home/PackagingSection';
-import { TrustStrip } from '@/components/home/TrustStrip';
+import { CinematicHero } from '@/components/home/CinematicHero';
+import { PackagingStory } from '@/components/home/PackagingStory';
+import { PurchaseCta } from '@/components/home/PurchaseCta';
+import { QualityStory } from '@/components/home/QualityStory';
+import { ResearchSeries } from '@/components/home/ResearchSeries';
+import { TrustRibbon } from '@/components/home/TrustRibbon';
 
 export default function HomePage() {
   return (
-    <main>
-      <Hero />
-      <TrustStrip />
-      <FeaturedProducts />
-      <PackagingSection />
-      <BatchVerification />
-      <ComplianceBanner />
+    <main className="cinematic-page">
+      <CinematicHero />
+      <TrustRibbon />
+      <ResearchSeries />
+      <PackagingStory />
+      <QualityStory />
+      <PurchaseCta />
     </main>
   );
 }
