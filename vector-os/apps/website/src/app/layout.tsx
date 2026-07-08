@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import '@vector-platform/ui/styles.css';
 import './globals.css';
+import { AnimatedBackground } from '@/components/effects/AnimatedBackground';
 import { SiteFooter } from '@/components/layout/SiteFooter';
 import { SiteHeader } from '@/components/layout/SiteHeader';
 import { ThemeProvider } from '@/providers/ThemeProvider';
@@ -27,6 +28,7 @@ export default function RootLayout({
     <html lang="en" className={inter.variable}>
       <body className={inter.className}>
         <ThemeProvider>
+          <AnimatedBackground />
           <SiteHeader />
           {children}
           <SiteFooter />

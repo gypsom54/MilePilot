@@ -30,7 +30,7 @@ export function SiteHeader() {
           <Link href="#sign-in" className="site-header__sign-in">
             Sign In
           </Link>
-          <Button variant="primary" size="sm" className="site-header__cta">
+          <Button variant="primary" size="sm" className="site-header__cta premium-btn premium-btn--primary premium-btn--sm">
             Get Started
           </Button>
         </div>
