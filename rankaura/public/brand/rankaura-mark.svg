@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" fill="none" role="img" aria-label="RankAura">
+  <defs>
+    <linearGradient id="rankaura-blue" x1="44" y1="18" x2="68" y2="58" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2563EB"/>
+      <stop offset="1" stop-color="#60A5FA"/>
+    </linearGradient>
+    <filter id="rankaura-glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="80" height="80" rx="18" fill="#0B1526"/>
+  <g filter="url(#rankaura-glow)">
+    <!-- R  solid white -->
+    <path
+      fill="#FFFFFF"
+      d="M21 58V22h13.8c5.4 0 9.2 3.4 9.2 8.6 0 4-2.3 6.8-6 7.9L48.5 58h-6.4l-7.8-14.6H25.4V58H21zm4.4-18.8h8.6c2.9 0 4.7-1.6 4.7-4.2 0-2.6-1.8-4.2-4.7-4.2h-8.6v8.4z"
+    />
+    <!-- A  premium blue gradient, shared diagonal with R -->
+    <path
+      fill="url(#rankaura-blue)"
+      d="M49.2 58 59.6 30h4.8L74.8 58h-4.6l-2.9-8.4H54.7L51.8 58h-2.6zm7.4-21.2 3.8 11.2h.2l3.8-11.2h-7.8z"
+    />
+  </g>
+</svg>

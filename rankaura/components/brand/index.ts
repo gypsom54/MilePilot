@@ -1,1 +1,1 @@
-export { RankAuraLogo } from "@/components/brand/RankAuraLogo";
+export { RankAuraLogo, RankAuraMark, RankAuraWordmark } from "@/components/brand/RankAuraLogo";

@@ -315,7 +315,7 @@ html.mission-mode-transitioning body {
 
 /* RankAura brand — onboarding welcome (staggered entrance) */
 .rankaura-logo-glow {
-  filter: drop-shadow(0 8px 24px rgba(47, 111, 237, 0.28));
+  filter: drop-shadow(0 10px 28px rgba(37, 99, 235, 0.32));
 }
 
 .onboarding-brand-logo {

@@ -48,8 +48,8 @@ Implement the approved RankAura logo concept across all surfaces:
 
 | Property | Specification |
 |----------|---------------|
-| Mark | Minimal **RA** monogram |
-| Colour | Premium blue gradient on deep navy / white palette |
+| Mark | Minimal **RA** monogram — `public/brand/rankaura-mark.svg` |
+| Colour | Premium blue gradient `#2563EB` → `#60A5FA` on deep navy `#0B1526` |
 | Geometry | Rounded, elegant proportions |
 | Spacing | Premium — never cramped |
 
