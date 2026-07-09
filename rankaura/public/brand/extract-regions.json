@@ -1,0 +1,5 @@
+{
+  "_comment": "Tune crop boxes after placing rankaura-brand-sheet.png. Values are relative 0-1.",
+  "mark": { "left": 0.38, "top": 0.06, "width": 0.24, "height": 0.18 },
+  "lockup": { "left": 0.28, "top": 0.04, "width": 0.44, "height": 0.32 }
+}

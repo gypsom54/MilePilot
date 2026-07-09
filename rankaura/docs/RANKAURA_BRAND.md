@@ -48,7 +48,9 @@ Implement the approved RankAura logo concept across all surfaces:
 
 | Property | Specification |
 |----------|---------------|
-| Mark | Minimal **RA** monogram — `public/brand/rankaura-mark.svg` |
+| Mark | Minimal **RA** monogram — `public/brand/rankaura-mark.png` (extracted from brand sheet) |
+| Lockup | Vertical mark + wordmark + tagline — `public/brand/rankaura-lockup.png` |
+| Source | Place premium design file at `public/brand/rankaura-brand-sheet.png`, run `npm run brand:extract` |
 | Colour | Premium blue gradient `#2563EB` → `#60A5FA` on deep navy `#0B1526` |
 | Geometry | Rounded, elegant proportions |
 | Spacing | Premium — never cramped |
