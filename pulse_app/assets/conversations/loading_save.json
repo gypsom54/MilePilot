@@ -1,0 +1,13 @@
+{
+  "id": "loading_save",
+  "steps": [
+    {
+      "type": "typing",
+      "charDelayMs": 38,
+      "charDelayVariance": 0.12,
+      "lines": [
+        { "text": "Your research has been safely saved.", "pauseAfterMs": 400 }
+      ]
+    }
+  ]
+}

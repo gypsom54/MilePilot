@@ -1,0 +1,30 @@
+{
+  "id": "onboarding_help",
+  "steps": [
+    {
+      "type": "typing",
+      "charDelayMs": 40,
+      "charDelayVariance": 0.14,
+      "lines": [
+        { "text": "What would you like help with most?", "pauseAfterMs": 400 }
+      ]
+    },
+    {
+      "type": "choice",
+      "choiceKey": "primaryHelp",
+      "options": [
+        { "id": "inventory", "label": "Track my peptide inventory" },
+        { "id": "supply", "label": "Estimate remaining supply" },
+        { "id": "education", "label": "Learn from trusted resources" },
+        { "id": "journal", "label": "Keep a research journal" },
+        { "id": "tools", "label": "Use smart research tools" },
+        { "id": "everything", "label": "Everything" }
+      ]
+    },
+    {
+      "type": "button",
+      "label": "Continue",
+      "action": "navigate:promise"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "id": "loading_ready",
+  "steps": [
+    {
+      "type": "typing",
+      "charDelayMs": 38,
+      "charDelayVariance": 0.12,
+      "lines": [
+        { "text": "Just getting everything ready...", "pauseAfterMs": 400 }
+      ]
+    }
+  ]
+}

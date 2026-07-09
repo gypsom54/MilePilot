@@ -1,0 +1,22 @@
+{
+  "id": "onboarding_home_preview",
+  "steps": [
+    {
+      "type": "typing",
+      "charDelayMs": 40,
+      "charDelayVariance": 0.14,
+      "lines": [
+        { "text": "Welcome home, {{firstName}}.", "pauseAfterMs": 800 },
+        { "text": "Your research cabinet is ready.", "pauseAfterMs": 500 }
+      ]
+    },
+    {
+      "type": "preview"
+    },
+    {
+      "type": "button",
+      "label": "Enter Pulse",
+      "action": "complete:onboarding"
+    }
+  ]
+}
