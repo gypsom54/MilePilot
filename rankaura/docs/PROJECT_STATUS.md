@@ -1,10 +1,18 @@
 # RankAura Project Status
 
-**Phase:** Mission Mode — Immersive AI Business Operating System  
-**Last updated:** Three-panel Mission Mode with live AI feed, Aura assistant, cinematic deployment  
-**UI status:** Mission Control locked — Mission Mode is the immersive review experience
+**Phase:** Brand direction locked — implementation aligned to `docs/RANKAURA_BRAND.md`  
+**Design bible:** `docs/RANKAURA_BRAND.md` (permanent — do not deviate)  
+**Simplification roadmap:** `docs/RANKAURA_SIMPLICITY_PLAN.md`
 
-## Phase 1 — Magic Moment onboarding (complete)
+## Brand (locked July 2026)
+
+- **Promise:** We Help Grow Businesses.
+- **AI:** Invisible to customers — outcomes only
+- **Logo:** RA monogram, premium blue gradient, deep navy / white
+- **Welcome copy:** See brand bible — Welcome to RankAura + promise + subheading
+- **No customer-facing:** AI Growth Manager, SEO automation, AI employees terminology
+
+## Phase 1 — Magic Moment onboarding (built — pending brand copy alignment)
 
 - [x] **5-screen onboarding** at `/onboarding` — welcome, website, business name, description, analysis
 - [x] **One question per screen** — single input, one button, Apple-like calm layout

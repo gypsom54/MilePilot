@@ -168,4 +168,10 @@ Record of key decisions made during Phase 1 foundation build.
 
 **Decision:** Replace scroll-based Mission Workspace with Mission Mode — three-panel immersive layout (Pipeline, Document, Live Feed), Aura floating assistant, animated background, live simulated engine, and cinematic deployment on approve. Dashboard Review Mission uses `MissionModeTransition` for morph entrance without changing Mission Control layout.  
 **Rationale:** RankAura is an AI Business Operating System, not a SaaS dashboard. Mission Mode should feel alive — Jarvis/Vision Pro/Linear inspiration — controlling an intelligent company in real time.  
-**Status:** Accepted (Mission Mode)
+**Status:** Superseded by ADR-029 and `RANKAURA_BRAND.md` / `RANKAURA_SIMPLICITY_PLAN.md`
+
+## ADR-029: Official brand direction — We Help Grow Businesses (July 2026)
+
+**Decision:** Lock permanent brand in `docs/RANKAURA_BRAND.md`. Brand promise **We Help Grow Businesses.** replaces customer-facing AI/SEO product messaging. RA monogram logo with premium blue gradient on deep navy/white palette. AI invisible to customers; outcomes only. Welcome, onboarding, voice, banned jargon, motion rules, and per-screen missions defined. Supersedes conflicting copy in `AURA.md`, ADR-028 customer-facing rationale, and "Your AI Growth Employee" tagline.  
+**Rationale:** Strategic reset — RankAura is a growth partner for small businesses, not SEO software. Customer buys growth and peace of mind. Every implementation must pass brand bible checklist before merge.  
+**Status:** Accepted — design bible locked

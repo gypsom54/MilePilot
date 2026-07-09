@@ -1,12 +1,20 @@
 # AURA — RankAura Product & Experience Guide
 
-The single source of truth for tone, philosophy, and experience rules.
+> **⚠️ Superseded in part by [`RANKAURA_BRAND.md`](./RANKAURA_BRAND.md)** — the official design bible (July 2026).  
+> Where this document conflicts with the brand bible, **the brand bible wins**.
+
+The sections below remain valid for engineering structure. Customer-facing messaging must follow `RANKAURA_BRAND.md`.
+
+---
 
 ## What RankAura is
 
 RankAura is **not** traditional SEO software.
 
-RankAura is an **AI Growth Operating System** — it feels like hiring an AI marketing employee.
+RankAura helps small businesses **grow** — quietly, without complexity.
+
+~~RankAura is an **AI Growth Operating System** — it feels like hiring an AI marketing employee.~~  
+→ See brand promise: **We Help Grow Businesses.**
 
 ## Core philosophy
 
@@ -22,74 +30,51 @@ RankAura is an **AI Growth Operating System** — it feels like hiring an AI mar
 - Never overwhelming
 - Never jargon-heavy
 - Celebrate wins — make customers smile
-- Speak like a trusted employee giving a morning briefing
+- Speak like a trusted partner giving a morning briefing
 
 ## Brand
 
 | Element    | Value                      |
 | ---------- | -------------------------- |
 | Name       | RankAura                   |
-| Positioning| Your AI Growth Employee    |
+| Promise    | **We Help Grow Businesses.** |
 | Feel       | Calm, premium, minimal     |
-| References | Stripe, Linear, Vercel, Apple |
+| References | Apple, Linear, Stripe, Notion, Arc |
 
 ### Colours
 
-- Deep midnight blue (primary surfaces)
-- Electric aura blue (accents, active states)
-- Soft emerald (growth, success, active employees)
-- Light background (breathing room)
+- Deep navy (primary surfaces)
+- Premium blue gradient (logo mark only)
+- White / off-white backgrounds
+- Soft emerald (growth, success)
 
-Avoid bright colours. Avoid gradients.
+Surfaces stay calm. Logo carries the premium gradient.
 
-## Dashboard experience rules
+## What we never say
 
-### Hero
+See full list in `RANKAURA_BRAND.md`.
 
-- Time-based greeting with first name
-- Personal growth headline — not "your team was working"
-- Quantified daily summary (improvements + hours saved)
-- Primary CTA: **🚀 Continue Growing**
+- Keywords, SERP, backlinks, meta tags, crawl budget, canonical, schema, robots.txt
+- "Optimise your SEO"
+- Customer-facing "AI employees" or "AI Growth Manager"
 
-### AI Team
+## What we always say
 
-- Title: **Your AI Team**
-- Each employee shows name, current task, status indicator
-- Active employees: soft pulse + subtle progress bar
-- Idle employees: amber indicator, no pulse
+- Growing, customers, enquiries, opportunities
+- We / RankAura — outcomes, not processes
+- Plain English business results
 
-### Marketing Autopilot
+## Engineering alignment
 
-- Must feel relaxing — user should trust background work
-- ACTIVE status with checklist of current activities
-- Show last completed task timestamp
+- New features must align with `RANKAURA_BRAND.md` and `RANKAURA_SIMPLICITY_PLAN.md`
+- New features must have an obvious folder in `services/`
+- Internal employee modules (Scout, Writer, etc.) stay in code — never primary customer UI
 
-### Growth Momentum
+## Internal reference — employee modules
 
-- No raw scores users must decode
-- Plain labels: Strong, Steady, Needs attention
-- Percentage change + short explanation
+Employees exist in **backend architecture only**. Customer UI shows outcomes.
 
-### Today's Wins
-
-- Achievement cards, not bullet lists
-- Icon, title, explanation, estimated impact
-
-### Opportunities
-
-- Business language only — no SEO terms
-- Show visitors, leads, confidence, priority
-- Review Opportunity CTA
-
-## Animation rules
-
-- Subtle only: soft pulse, fade-in, progress fill, hover shadow
-- No flashy effects
-- No charts or complicated graphs on dashboard
-
-## AI employees
-
-| Employee   | Role                          |
+| Employee   | Internal role                 |
 | ---------- | ----------------------------- |
 | Scout      | Finds opportunities           |
 | Writer     | Creates content               |
@@ -100,23 +85,4 @@ Avoid bright colours. Avoid gradients.
 | Guardian   | Protects quality and brand    |
 | Memory     | Remembers business context    |
 
-AuraCore orchestrates all employees. Users interact with outcomes, not employees directly.
-
-## What we never say
-
-- Keywords, SERP, backlinks, meta tags, crawl budget
-- "Optimise your SEO"
-- Technical marketing jargon
-
-## What we always say
-
-- Growing, customers, visibility, opportunities
-- Your AI team, improvements, wins
-- Plain English outcomes
-
-## Engineering alignment
-
-- UI is approved — do not redesign
-- Extend via services and types, not UI rewrites
-- New features must have an obvious folder in `services/`
-- All employee work flows through the Task model
+AuraCore orchestrates employees. **Customers interact with outcomes, not employees.**

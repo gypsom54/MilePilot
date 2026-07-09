@@ -1,8 +1,8 @@
 # RankAura Simplicity Plan
 
-**Status:** Strategic architecture reset — roadmap only, no implementation yet  
+**Status:** Strategic architecture reset — roadmap only  
+**Authority:** Must align with [`RANKAURA_BRAND.md`](./RANKAURA_BRAND.md) — the official design bible (locked July 2026)  
 **Date:** July 2026  
-**Authority:** RankAura Product Constitution  
 **North star:** The customer logs in for less than five minutes and leaves feeling *everything is under control.*
 
 ---
