@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["dom", "dom.iterable", "ES2022"],
+    "allowJs": false,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "paths": {
+      "@vector-platform/tokens": ["./packages/tokens/src/index.ts"],
+      "@vector-platform/tokens/*": ["./packages/tokens/src/*"],
+      "@vector-platform/ui": ["./packages/ui/src/index.ts"],
+      "@vector-platform/ui/*": ["./packages/ui/src/*"],
+      "@vector-platform/icons": ["./packages/icons/src/index.tsx"],
+      "@vector-platform/utils": ["./packages/utils/src/index.ts"],
+      "@vector-platform/types": ["./packages/types/src/index.ts"]
+    }
+  }
+}
