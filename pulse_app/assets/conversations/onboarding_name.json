@@ -1,0 +1,27 @@
+{
+  "id": "onboarding_name",
+  "steps": [
+    {
+      "type": "typing",
+      "charDelayMs": 44,
+      "charDelayVariance": 0.18,
+      "lines": [
+        { "text": "Hello...", "pauseAfterMs": 920 },
+        { "text": "Welcome to Pulse.", "pauseAfterMs": 880 },
+        { "text": "I'm really pleased you're here.", "pauseAfterMs": 840 },
+        { "text": "Let's build something that's completely yours.", "pauseAfterMs": 800 },
+        { "text": "Who are we talking to today?", "pauseAfterMs": 400 }
+      ]
+    },
+    {
+      "type": "input",
+      "inputKey": "firstName",
+      "placeholder": "Your first name"
+    },
+    {
+      "type": "button",
+      "label": "Continue",
+      "action": "navigate:welcome"
+    }
+  ]
+}

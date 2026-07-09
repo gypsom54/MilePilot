@@ -1,0 +1,13 @@
+{
+  "id": "loading_fetch",
+  "steps": [
+    {
+      "type": "typing",
+      "charDelayMs": 38,
+      "charDelayVariance": 0.12,
+      "lines": [
+        { "text": "Looking after your latest progress...", "pauseAfterMs": 400 }
+      ]
+    }
+  ]
+}
