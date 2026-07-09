@@ -7,9 +7,9 @@
 ## Brand (locked July 2026)
 
 - **Promise:** We Help Grow Businesses.
-- **AI:** Invisible to customers — outcomes only
-- **Logo:** RA monogram, premium blue gradient, deep navy / white
-- **Welcome copy:** See brand bible — Welcome to RankAura + promise + subheading
+- **Logo:** Option 1 RA monogram — white + premium blue gradient, subtle glow, deep navy/white palette (`components/brand/RankAuraLogo.tsx`)
+- **Customer philosophy:** Simple, calm, business-growth focused — no SEO overwhelm; AI invisible
+- **Screen 1 (onboarding welcome):** Brand implemented — logo, wordmark, tagline, hero, supporting copy, staggered entrance animation
 - **No customer-facing:** AI Growth Manager, SEO automation, AI employees terminology
 
 ## Phase 1 — Magic Moment onboarding (built — pending brand copy alignment)

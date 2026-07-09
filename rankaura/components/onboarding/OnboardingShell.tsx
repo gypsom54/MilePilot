@@ -8,6 +8,7 @@ interface OnboardingShellProps {
   stepIndex?: number;
   totalSteps?: number;
   showProgress?: boolean;
+  animate?: boolean;
 }
 
 export function OnboardingShell({
@@ -15,6 +16,7 @@ export function OnboardingShell({
   stepIndex = 0,
   totalSteps = 4,
   showProgress = true,
+  animate = true,
 }: OnboardingShellProps) {
   return (
     <div className="onboarding-root flex min-h-screen flex-col bg-[#fafafa]">
@@ -37,7 +39,7 @@ export function OnboardingShell({
       )}
 
       <main className="flex flex-1 flex-col items-center justify-center px-8 py-16 sm:px-12">
-        <div className="onboarding-enter w-full max-w-lg">{children}</div>
+        <div className={`w-full max-w-lg ${animate ? "onboarding-enter" : ""}`}>{children}</div>
       </main>
     </div>
   );

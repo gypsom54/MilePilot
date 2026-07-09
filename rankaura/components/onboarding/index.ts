@@ -6,3 +6,4 @@ export {
   OnboardingTextarea,
 } from "@/components/onboarding/OnboardingFields";
 export { OnboardingShell } from "@/components/onboarding/OnboardingShell";
+export { OnboardingWelcome } from "@/components/onboarding/OnboardingWelcome";

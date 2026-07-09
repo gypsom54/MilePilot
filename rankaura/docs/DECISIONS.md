@@ -172,6 +172,12 @@ Record of key decisions made during Phase 1 foundation build.
 
 ## ADR-029: Official brand direction — We Help Grow Businesses (July 2026)
 
-**Decision:** Lock permanent brand in `docs/RANKAURA_BRAND.md`. Brand promise **We Help Grow Businesses.** replaces customer-facing AI/SEO product messaging. RA monogram logo with premium blue gradient on deep navy/white palette. AI invisible to customers; outcomes only. Welcome, onboarding, voice, banned jargon, motion rules, and per-screen missions defined. Supersedes conflicting copy in `AURA.md`, ADR-028 customer-facing rationale, and "Your AI Growth Employee" tagline.  
+**Decision:** Lock permanent brand in `docs/RANKAURA_BRAND.md`. Brand promise **We Help Grow Businesses.** replaces customer-facing AI/SEO product messaging. RA monogram logo (Option 1) with premium blue gradient on deep navy/white palette. AI invisible to customers; outcomes only. Welcome, onboarding, voice, banned jargon, motion rules, and per-screen missions defined. Supersedes conflicting copy in `AURA.md`, ADR-028 customer-facing rationale, and "Your AI Growth Employee" tagline.  
 **Rationale:** Strategic reset — RankAura is a growth partner for small businesses, not SEO software. Customer buys growth and peace of mind. Every implementation must pass brand bible checklist before merge.  
 **Status:** Accepted — design bible locked
+
+## ADR-030: Brand implementation — onboarding Screen One (July 2026)
+
+**Decision:** Implement locked brand on first onboarding screen only: `RankAuraLogo` (temporary code-based Option 1 RA monogram), wordmark, tagline, hero promise, supporting copy, staggered calm entrance animation. No onboarding logic changes. No SEO/AI jargon on screen.  
+**Rationale:** First customer touchpoint must instantly communicate RankAura = business growth, calm and premium.  
+**Status:** Accepted (Screen One complete)

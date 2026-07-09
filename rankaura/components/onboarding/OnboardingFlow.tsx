@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { OnboardingWelcome } from "@/components/onboarding/OnboardingWelcome";
 import { OnboardingShell } from "@/components/onboarding/OnboardingShell";
 import {
   OnboardingInput,
@@ -42,17 +43,7 @@ export function OnboardingFlow() {
   };
 
   if (step === "welcome") {
-    return (
-      <OnboardingShell stepIndex={0} showProgress={false}>
-        <p className="text-sm font-medium tracking-wide text-[#8b95a5]">Welcome to Aura</p>
-        <h1 className="mt-8 text-4xl font-semibold leading-[1.15] tracking-tight text-[#080f1a] sm:text-5xl sm:leading-[1.1]">
-          I&apos;ll grow your business while you focus on running it.
-        </h1>
-        <OnboardingPrimaryButton onClick={() => setStep("website")}>
-          Get Started
-        </OnboardingPrimaryButton>
-      </OnboardingShell>
-    );
+    return <OnboardingWelcome onGetStarted={() => setStep("website")} />;
   }
 
   if (step === "website") {
