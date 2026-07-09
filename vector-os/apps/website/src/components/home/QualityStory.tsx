@@ -25,7 +25,7 @@ const PILLARS = [
 
 export function QualityStory() {
   return (
-    <section className="quality-story section--dark" id="quality" aria-labelledby="quality-title">
+    <section className="quality-story section--dark section--cinematic" id="quality" aria-labelledby="quality-title">
       <div className="quality-story__inner">
         <Reveal className="quality-story__header">
           <p className="section-eyebrow">Quality Assurance</p>

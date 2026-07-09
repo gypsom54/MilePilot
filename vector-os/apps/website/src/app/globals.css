@@ -1,4 +1,5 @@
 @import '@vector-platform/tokens/tokens.css';
+@import './living-brand.css';
 
 @tailwind base;
 @tailwind components;
@@ -856,7 +857,7 @@ a { color: inherit; text-decoration: none; }
 
 @media (max-width: 1024px) {
   .c-hero__inner,
-  .packaging-story__inner,
+  .packaging-experience__layout,
   .product-feature {
     grid-template-columns: 1fr;
     text-align: center;

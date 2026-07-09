@@ -2,7 +2,9 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import '@vector-platform/ui/styles.css';
 import './globals.css';
-import { AmbientGlow } from '@/components/effects/AmbientGlow';
+import { GrainOverlay } from '@/components/effects/GrainOverlay';
+import { LoadingExperience } from '@/components/effects/LoadingExperience';
+import { ParallaxAmbient } from '@/components/effects/ParallaxAmbient';
 import { SiteFooter } from '@/components/layout/SiteFooter';
 import { SiteHeader } from '@/components/layout/SiteHeader';
 import { UtilityBar } from '@/components/layout/UtilityBar';
@@ -29,11 +31,14 @@ export default function RootLayout({
     <html lang="en" className={inter.variable}>
       <body className={inter.className}>
         <ThemeProvider>
-          <AmbientGlow />
-          <UtilityBar />
-          <SiteHeader />
-          {children}
-          <SiteFooter />
+          <LoadingExperience>
+            <GrainOverlay />
+            <ParallaxAmbient />
+            <UtilityBar />
+            <SiteHeader />
+            {children}
+            <SiteFooter />
+          </LoadingExperience>
         </ThemeProvider>
       </body>
     </html>

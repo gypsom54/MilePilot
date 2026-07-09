@@ -3,7 +3,7 @@ import { Reveal } from '@/components/effects/Reveal';
 
 export function PurchaseCta() {
   return (
-    <section className="purchase-cta section--light" aria-labelledby="purchase-title">
+    <section className="purchase-cta section--light section--cinematic" aria-labelledby="purchase-title">
       <Reveal>
         <div className="purchase-cta__inner">
           <h2 id="purchase-title" className="purchase-cta__title">

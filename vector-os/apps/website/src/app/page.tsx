@@ -1,17 +1,17 @@
 import { CinematicHero } from '@/components/home/CinematicHero';
-import { PackagingStory } from '@/components/home/PackagingStory';
 import { PurchaseCta } from '@/components/home/PurchaseCta';
 import { QualityStory } from '@/components/home/QualityStory';
 import { ResearchSeries } from '@/components/home/ResearchSeries';
-import { TrustRibbon } from '@/components/home/TrustRibbon';
+import { PackagingExperience } from '@/components/effects/PackagingExperience';
+import { TrustMarquee } from '@/components/effects/TrustMarquee';
 
 export default function HomePage() {
   return (
     <main className="cinematic-page">
       <CinematicHero />
-      <TrustRibbon />
+      <TrustMarquee />
       <ResearchSeries />
-      <PackagingStory />
+      <PackagingExperience />
       <QualityStory />
       <PurchaseCta />
     </main>

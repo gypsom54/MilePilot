@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { VectorLogo } from './VectorLogo';
+import { VectorBrandLockup } from './VectorBrandLockup';
 
 const NAV_ITEMS = [
   { label: 'Products', href: '#research-series' },
@@ -13,15 +13,17 @@ const NAV_ITEMS = [
 export function SiteHeader() {
   return (
     <header className="site-header">
+      <div className="site-header__glass" aria-hidden="true" />
       <div className="site-header__inner">
         <Link href="/" className="site-header__brand" aria-label="Vector Peptides home">
-          <VectorLogo variant="silver" />
+          <VectorBrandLockup variant="header" />
         </Link>
 
         <nav className="site-header__nav" aria-label="Main navigation">
           {NAV_ITEMS.map((item) => (
             <Link key={item.label} href={item.href} className="site-header__link">
-              {item.label}
+              <span className="site-header__link-text">{item.label}</span>
+              <span className="site-header__link-line" aria-hidden="true" />
             </Link>
           ))}
         </nav>

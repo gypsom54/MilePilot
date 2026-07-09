@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { VectorLogo } from './VectorLogo';
+import { VectorBrandLockup } from './VectorBrandLockup';
 
 export function SiteFooter() {
   const year = new Date().getFullYear();
@@ -26,7 +26,7 @@ export function SiteFooter() {
 
       <div className="site-footer__inner">
         <div className="site-footer__brand">
-          <VectorLogo variant="silver" />
+          <VectorBrandLockup variant="footer" />
           <div>
             <span className="site-footer__wordmark">Vector Peptides UK</span>
             <span className="site-footer__domain">vectorpeptides.uk</span>
