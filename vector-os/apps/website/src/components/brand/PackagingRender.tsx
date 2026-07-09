@@ -10,7 +10,7 @@ interface PackagingRenderProps {
   src: string;
   alt: string;
   accent?: PackagingAccent;
-  variant?: 'hero' | 'feature' | 'system';
+  variant?: 'hero' | 'feature' | 'system' | 'card';
   priority?: boolean;
   living?: boolean;
 }
@@ -52,7 +52,9 @@ export function PackagingRender({
               ? '(max-width: 768px) 100vw, 50vw'
               : variant === 'system'
                 ? '(max-width: 768px) 100vw, 55vw'
-                : '(max-width: 768px) 100vw, 45vw'
+                : variant === 'card'
+                  ? '(max-width: 768px) 45vw, 22vw'
+                  : '(max-width: 768px) 100vw, 45vw'
           }
           className="packaging-render__image"
         />

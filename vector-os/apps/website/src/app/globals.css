@@ -1,6 +1,7 @@
 @import '@vector-platform/tokens/tokens.css';
 @import './living-brand.css';
 @import './polish-refinement.css';
+@import './mockup.css';
 
 @tailwind base;
 @tailwind components;
@@ -617,12 +618,10 @@ a { color: inherit; text-decoration: none; }
   border: 1px solid var(--c-border-dark);
 }
 
-.product-feature--blue .product-feature__name,
-.product-feature--teal .product-feature__name,
-.product-feature--gold .product-feature__name,
-.product-feature--copper .product-feature__name {
-  color: var(--c-blue-soft);
-}
+.product-feature--blue .product-feature__name { color: #8eb8ff; }
+.product-feature--teal .product-feature__name { color: #5eead4; }
+.product-feature--gold .product-feature__name { color: #e8c97a; }
+.product-feature--copper .product-feature__name { color: #f0a87a; }
 
 /* ── Packaging story (light) ──────────────────────────────────────────────── */
 

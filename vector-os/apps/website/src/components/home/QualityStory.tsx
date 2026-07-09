@@ -1,18 +1,23 @@
-import { Reveal } from '@/components/effects/Reveal';
 import { IconVerify } from '@/components/icons/PremiumIcons';
+import {
+  IconDocument,
+  IconLab,
+  IconQr,
+  IconResearch,
+} from '@/components/icons/PackagingIcons';
 
-const DETAILS = [
-  'Independent HPLC & Mass Spec verification',
-  'Full batch documentation supplied',
-  'QR authentication on every package',
-  'Research use only — laboratory compounds',
+const FEATURES = [
+  { title: 'Independent HPLC verification', Icon: IconLab },
+  { title: 'Full batch documentation', Icon: IconDocument },
+  { title: 'QR authentication', Icon: IconQr },
+  { title: 'Research use only', Icon: IconResearch },
 ] as const;
 
 export function QualityStory() {
   return (
-    <section className="verification section--dark section--cinematic" id="quality" aria-labelledby="quality-title">
-      <div className="verification__inner">
-        <Reveal className="verification__header">
+    <section className="quality-story section--dark" id="quality" aria-labelledby="quality-title">
+      <div className="quality-story__inner">
+        <div className="quality-story__left">
           <p className="section-eyebrow">Quality Assurance</p>
           <h2 id="quality-title" className="section-headline">
             Verify Every Detail.
@@ -20,59 +25,58 @@ export function QualityStory() {
           <p className="section-lead" id="documentation">
             Traceability from manufacture to your laboratory bench.
           </p>
-        </Reveal>
 
-        <Reveal delay={120}>
-          <div className="verification__showcase">
-            <article className="verification__card" aria-label="Batch authentication card">
-              <div className="verification__card-glow" aria-hidden="true" />
-              <div className="verification__card-top">
-                <span className="verification__brand">VECTOR</span>
-                <div className="verification__hologram" aria-hidden="true" />
+          <article className="quality-story__scan-card" aria-label="Batch authentication">
+            <p className="quality-story__scan-label">Scan to Verify</p>
+            <div className="quality-story__qr" aria-hidden="true">
+              <div className="quality-story__qr-grid">
+                {Array.from({ length: 121 }).map((_, i) => {
+                  const row = Math.floor(i / 11);
+                  const col = i % 11;
+                  const on =
+                    (row < 3 && col < 3) ||
+                    (row < 3 && col > 7) ||
+                    (row > 7 && col < 3) ||
+                    (row + col) % 3 === 0 ||
+                    (row * col) % 5 === 0;
+                  return (
+                    <span
+                      key={i}
+                      className={`quality-story__qr-cell${on ? ' quality-story__qr-cell--on' : ''}`}
+                    />
+                  );
+                })}
               </div>
+            </div>
+            <p className="quality-story__batch-label">Batch Reference</p>
+            <p className="quality-story__batch-id">VP-UK-2026-0847</p>
+            <p className="quality-story__verified">
+              <IconVerify />
+              Authenticity Verified
+            </p>
+          </article>
+        </div>
 
-              <div className="verification__qr" aria-hidden="true">
-                <div className="verification__qr-grid">
-                  {Array.from({ length: 121 }).map((_, i) => {
-                    const row = Math.floor(i / 11);
-                    const col = i % 11;
-                    const on =
-                      (row < 3 && col < 3) ||
-                      (row < 3 && col > 7) ||
-                      (row > 7 && col < 3) ||
-                      (row + col) % 3 === 0 ||
-                      (row * col) % 5 === 0;
-                    return (
-                      <span
-                        key={i}
-                        className={`verification__qr-cell${on ? ' verification__qr-cell--on' : ''}`}
-                      />
-                    );
-                  })}
-                </div>
-              </div>
+        <ul className="quality-story__features">
+          {FEATURES.map(({ title, Icon }) => (
+            <li key={title} className="quality-story__feature">
+              <span className="quality-story__feature-icon" aria-hidden="true">
+                <Icon />
+              </span>
+              <span>{title}</span>
+            </li>
+          ))}
+        </ul>
 
-              <div className="verification__batch">
-                <p className="verification__batch-label">Batch Reference</p>
-                <p className="verification__batch-id">VP-UK-2026-0847</p>
-              </div>
-
-              <div className="verification__card-footer">
-                <span className="verification__status">
-                  <IconVerify />
-                  Authenticity Verified
-                </span>
-                <span className="verification__scan">Scan to verify</span>
-              </div>
-            </article>
-
-            <ul className="verification__details">
-              {DETAILS.map((detail) => (
-                <li key={detail}>{detail}</li>
-              ))}
-            </ul>
+        <div className="quality-story__seal" aria-hidden="true">
+          <div className="quality-story__pedestal" />
+          <div className="quality-story__seal-disc">
+            <span className="quality-story__seal-ring" />
+            <span className="quality-story__seal-text">VECTOR</span>
+            <span className="quality-story__seal-sub">PEPTIDES</span>
+            <span className="quality-story__seal-badge">VERIFIED</span>
           </div>
-        </Reveal>
+        </div>
       </div>
     </section>
   );

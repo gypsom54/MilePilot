@@ -1,49 +1,64 @@
 import Link from 'next/link';
 import { VectorBrandLockup } from './VectorBrandLockup';
-import { IconShield } from '@/components/icons/PremiumIcons';
+import { IconEmail, IconInstagram, IconLinkedIn } from '@/components/icons/PackagingIcons';
+
+const FOOTER_LINKS = {
+  Products: ['Research Series', 'Retatrutide', 'BPC-157 + TB500', 'NAD+', 'GHK-Cu'],
+  Quality: ['Quality Assurance', 'Batch Verification', 'Testing Standards', 'Certificates'],
+  Documentation: ['Product Data', 'Batch Records', 'Safety Data', 'Compliance'],
+  Company: ['About Vector', 'Contact', 'Terms', 'Privacy'],
+} as const;
 
 export function SiteFooter() {
   const year = new Date().getFullYear();
 
   return (
     <footer className="site-footer section--dark" id="contact">
-      <div className="compliance-strip" id="about">
-        <div className="compliance-strip__inner">
-          <div className="compliance-strip__icon" aria-hidden="true">
-            <IconShield />
-          </div>
-          <div className="compliance-strip__copy">
-            <p className="compliance-strip__title">Research Use Only. Not for Human Consumption.</p>
-            <p className="compliance-strip__text">
-              All products are supplied strictly for laboratory research purposes only.
-              Not for human or veterinary use.
-            </p>
-          </div>
-          <Link href="#documentation" className="compliance-strip__link">
-            Learn More
-          </Link>
+      <div className="site-footer__grid">
+        <div className="site-footer__brand-col">
+          <VectorBrandLockup variant="footer" />
+          <p className="site-footer__desc">
+            Premium research peptides with rigorous independent testing, professional
+            packaging and secure UK fulfilment.
+          </p>
+          <p className="site-footer__copy">&copy; {year} Vector Peptides UK</p>
+        </div>
+
+        {Object.entries(FOOTER_LINKS).map(([heading, links]) => (
+          <nav key={heading} className="site-footer__col" aria-label={`${heading} navigation`}>
+            <h3 className="site-footer__col-title">{heading}</h3>
+            <ul className="site-footer__col-links">
+              {links.map((link) => (
+                <li key={link}>
+                  <Link href="#research-series">{link}</Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        ))}
+
+        <div className="site-footer__disclaimer">
+          <p className="site-footer__disclaimer-title">Research Use Only</p>
+          <p className="site-footer__disclaimer-text">
+            All products are supplied strictly for laboratory research purposes only.
+            Not for human or veterinary use.
+          </p>
         </div>
       </div>
 
-      <div className="site-footer__inner">
-        <div className="site-footer__brand">
-          <VectorBrandLockup variant="footer" />
-          <div>
-            <span className="site-footer__wordmark">Vector Peptides UK</span>
-            <span className="site-footer__domain">vectorpeptides.uk</span>
-          </div>
+      <div className="site-footer__bottom">
+        <span className="site-footer__domain">vectorpeptides.uk</span>
+        <div className="site-footer__socials" aria-label="Social links">
+          <a href="#instagram" aria-label="Instagram">
+            <IconInstagram />
+          </a>
+          <a href="#linkedin" aria-label="LinkedIn">
+            <IconLinkedIn />
+          </a>
+          <a href="mailto:contact@vectorpeptides.uk" aria-label="Email">
+            <IconEmail />
+          </a>
         </div>
-
-        <nav className="site-footer__nav" aria-label="Footer navigation">
-          <Link href="#research-series">Products</Link>
-          <Link href="#quality">Quality</Link>
-          <Link href="#documentation">Documentation</Link>
-          <Link href="#contact">Contact</Link>
-          <Link href="#terms">Terms</Link>
-          <Link href="#privacy">Privacy</Link>
-        </nav>
-
-        <p className="site-footer__copy">&copy; {year} Vector Peptides UK</p>
       </div>
     </footer>
   );
