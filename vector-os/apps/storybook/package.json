@@ -1,0 +1,33 @@
+{
+  "name": "@vector-platform/storybook",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Vector OS UI Lab — Storybook",
+  "scripts": {
+    "dev": "storybook dev -p 6006",
+    "build": "storybook build",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "clean": "rimraf .next"
+  },
+  "dependencies": {
+    "@vector-platform/tokens": "workspace:*",
+    "@vector-platform/ui": "workspace:*",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@storybook/addon-essentials": "^8.4.7",
+    "@storybook/addon-interactions": "^8.4.7",
+    "@storybook/addon-links": "^8.4.7",
+    "@storybook/blocks": "^8.4.7",
+    "@storybook/react": "^8.4.7",
+    "@storybook/react-vite": "^8.4.7",
+    "@storybook/test": "^8.4.7",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "storybook": "^8.4.7",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.6"
+  }
+}
