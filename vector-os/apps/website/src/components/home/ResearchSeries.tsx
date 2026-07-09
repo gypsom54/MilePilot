@@ -1,33 +1,44 @@
 import { Button } from '@vector-platform/ui';
+import { PackagingRender } from '@/components/brand/PackagingRender';
 import { Reveal } from '@/components/effects/Reveal';
-import { ProductScene } from './ProductScene';
+import { VECTOR_ASSETS, type ProductAssetKey } from '@/lib/vector-assets';
 
-const PRODUCTS = [
+const PRODUCTS: {
+  name: string;
+  strength: string;
+  accent: 'blue' | 'teal' | 'gold' | 'copper';
+  asset: ProductAssetKey;
+  points: string[];
+}[] = [
   {
     name: 'Retatrutide',
     strength: '40 mg',
-    accent: 'blue' as const,
+    accent: 'blue',
+    asset: 'retatrutide',
     points: ['Research Grade', 'Independently Tested', 'Batch Verified'],
   },
   {
     name: 'BPC-157 + TB500',
     strength: '20 mg',
-    accent: 'teal' as const,
+    accent: 'teal',
+    asset: 'bpc',
     points: ['Research Grade', 'Independently Tested', 'Batch Verified'],
   },
   {
     name: 'NAD+',
     strength: '1000 mg',
-    accent: 'gold' as const,
+    accent: 'gold',
+    asset: 'nad',
     points: ['Research Grade', 'Independently Tested', 'Batch Verified'],
   },
   {
     name: 'GHK-Cu',
     strength: '100 mg',
-    accent: 'copper' as const,
+    accent: 'copper',
+    asset: 'ghk',
     points: ['Research Grade', 'Independently Tested', 'Batch Verified'],
   },
-] as const;
+];
 
 export function ResearchSeries() {
   return (
@@ -51,10 +62,11 @@ export function ResearchSeries() {
               className={`product-feature product-feature--${product.accent}${index % 2 === 1 ? ' product-feature--reverse' : ''}`}
             >
               <div className="product-feature__visual">
-                <ProductScene
-                  name={product.name}
-                  strength={product.strength}
+                <PackagingRender
+                  src={VECTOR_ASSETS.products[product.asset]}
+                  alt={`Vector Peptides ${product.name} ${product.strength} — premium matte navy packaging with research pen`}
                   accent={product.accent}
+                  variant="feature"
                 />
               </div>
 

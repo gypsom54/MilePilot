@@ -1,4 +1,6 @@
+import { PackagingRender } from '@/components/brand/PackagingRender';
 import { Reveal } from '@/components/effects/Reveal';
+import { VECTOR_ASSETS } from '@/lib/vector-assets';
 
 export function PackagingStory() {
   return (
@@ -12,29 +14,19 @@ export function PackagingStory() {
             Commands Respect.
           </h2>
           <p className="section-lead section-lead--dark">
-            Every detail considered — from the matte navy presentation box to the
-            holographic authenticity seal. Designed for research environments
-            that demand clarity and confidence.
+            Matte navy presentation box. Silver Vector identity. Premium research
+            pen. Side label. QC card. Information booklet. Hologram authenticity
+            seal — every element designed as one cohesive system.
           </p>
         </Reveal>
 
         <Reveal delay={120}>
-          <div className="packaging-story__stage" aria-hidden="true">
-            <div className="packaging-story__box">
-              <div className="packaging-story__box-front">
-                <span className="packaging-story__logo">VECTOR</span>
-                <span className="packaging-story__logo-sub">PEPTIDES</span>
-              </div>
-              <div className="packaging-story__box-edge" />
-            </div>
-
-            <div className="packaging-story__pen" />
-            <div className="packaging-story__hologram" />
-            <div className="packaging-story__qc">
-              <span className="packaging-story__qc-label">Batch / QC</span>
-            </div>
-            <div className="packaging-story__booklet" />
-          </div>
+          <PackagingRender
+            src={VECTOR_ASSETS.packagingSystem}
+            alt="Vector Peptides complete packaging system — presentation box, research pen, side label, QC card, information booklet and hologram seal"
+            accent="neutral"
+            variant="system"
+          />
         </Reveal>
       </div>
     </section>

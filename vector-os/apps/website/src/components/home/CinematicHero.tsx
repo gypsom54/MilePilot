@@ -1,5 +1,6 @@
 import { Button } from '@vector-platform/ui';
-import { ProductScene } from './ProductScene';
+import { PackagingRender } from '@/components/brand/PackagingRender';
+import { VECTOR_ASSETS } from '@/lib/vector-assets';
 
 export function CinematicHero() {
   return (
@@ -29,22 +30,13 @@ export function CinematicHero() {
         </div>
 
         <div className="c-hero__visual">
-          <ProductScene
-            variant="hero"
-            name="Retatrutide"
-            strength="40 mg"
+          <PackagingRender
+            src={VECTOR_ASSETS.hero}
+            alt="Vector Peptides premium packaging — matte navy presentation box, research pen and hologram authenticity seal"
             accent="blue"
+            variant="hero"
+            priority
           />
-          <div className="c-hero__seal" aria-hidden="true">
-            <span className="c-hero__seal-ring" />
-            <span className="c-hero__seal-text">
-              Verified
-              <br />
-              Vector
-              <br />
-              Authenticity
-            </span>
-          </div>
         </div>
       </div>
     </section>
