@@ -7,7 +7,6 @@ import { LoadingExperience } from '@/components/effects/LoadingExperience';
 import { ParallaxAmbient } from '@/components/effects/ParallaxAmbient';
 import { SiteFooter } from '@/components/layout/SiteFooter';
 import { SiteHeader } from '@/components/layout/SiteHeader';
-import { UtilityBar } from '@/components/layout/UtilityBar';
 import { ThemeProvider } from '@/providers/ThemeProvider';
 
 const inter = Inter({
@@ -34,7 +33,6 @@ export default function RootLayout({
           <LoadingExperience>
             <GrainOverlay />
             <ParallaxAmbient />
-            <UtilityBar />
             <SiteHeader />
             {children}
             <SiteFooter />

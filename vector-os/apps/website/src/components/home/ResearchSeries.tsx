@@ -73,7 +73,6 @@ export function ResearchSeries() {
                   alt={`Vector Peptides ${product.name} ${product.strength} — premium matte navy packaging with research pen`}
                   accent={product.accent}
                   variant="feature"
-                  living
                 />
               </CascadeItem>
 

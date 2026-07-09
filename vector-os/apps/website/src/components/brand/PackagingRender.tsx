@@ -56,7 +56,7 @@ export function PackagingRender({
           }
           className="packaging-render__image"
         />
-        {living && !reducedMotion && (
+        {living && variant === 'hero' && !reducedMotion && (
           <>
             <div className="packaging-render__hologram" aria-hidden="true" />
             <div className="packaging-render__reflection" aria-hidden="true" />

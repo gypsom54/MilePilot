@@ -279,8 +279,8 @@
 }
 
 .product-showcase.cascade--in .product-feature__visual {
-  transform: translateY(-12px);
-  box-shadow: 0 48px 96px rgba(0, 0, 0, 0.35);
+  transform: none;
+  box-shadow: none;
 }
 
 .product-showcase .product-feature__visual {

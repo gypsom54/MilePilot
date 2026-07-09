@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { VectorBrandLockup } from './VectorBrandLockup';
+import { IconShield } from '@/components/icons/PremiumIcons';
 
 export function SiteFooter() {
   const year = new Date().getFullYear();
@@ -9,7 +10,7 @@ export function SiteFooter() {
       <div className="compliance-strip" id="about">
         <div className="compliance-strip__inner">
           <div className="compliance-strip__icon" aria-hidden="true">
-            <ShieldIcon />
+            <IconShield />
           </div>
           <div className="compliance-strip__copy">
             <p className="compliance-strip__title">Research Use Only. Not for Human Consumption.</p>
@@ -45,19 +46,5 @@ export function SiteFooter() {
         <p className="site-footer__copy">&copy; {year} Vector Peptides UK</p>
       </div>
     </footer>
-  );
-}
-
-function ShieldIcon() {
-  return (
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path
-        d="M12 3L4 7V12C4 16.418 7.582 20.418 12 21C16.418 20.418 20 16.418 20 12V7L12 3Z"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinejoin="round"
-      />
-      <path d="M9 12L11 14L15 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
   );
 }
