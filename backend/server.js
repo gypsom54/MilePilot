@@ -19,6 +19,7 @@ import {
 } from "./reportEngine.js";
 import { storeReportDownload, getStoredDownload } from "./reportDownload.js";
 import { loadEmailTemplate } from "./emailTemplate.js";
+import { runAmosQuery } from "./amosRuntime.js";
 
 dotenv.config();
 
@@ -66,6 +67,31 @@ app.get("/health", (req, res) => {
     reportVersion: REPORT_VERSION,
     timestamp: new Date().toISOString(),
   });
+});
+
+app.post("/amos/query", async (req, res) => {
+  try {
+    const run = await runAmosQuery(req.body || {});
+    if (!run.ok) {
+      return res.status(run.statusCode || 400).json({
+        ok: false,
+        message: run.message || "Invalid AMOS query",
+      });
+    }
+
+    return res.json({
+      ok: true,
+      workflowId: run.result?.workflowId || null,
+      response: run.result?.response || null,
+      toolResult: run.result?.toolResult || null,
+    });
+  } catch (err) {
+    console.error("AMOS query failed:", err);
+    return res.status(500).json({
+      ok: false,
+      message: "The journey engine is currently unavailable.",
+    });
+  }
 });
 
 async function deliverReportEmail(report, attachmentFilename) {
