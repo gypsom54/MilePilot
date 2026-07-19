@@ -23,6 +23,50 @@ function makeEngine() {
           outputSchema: {},
           version: "1.0.0",
         },
+        {
+          id: "journey.getTodayTrips",
+          engineId: "journey-engine",
+          name: "Today trips",
+          description: "trusted today trips",
+          permission: "read",
+          confirmationRequired: false,
+          inputSchema: {},
+          outputSchema: {},
+          version: "1.0.0",
+        },
+        {
+          id: "journey.getTripHistory",
+          engineId: "journey-engine",
+          name: "Trip history",
+          description: "trusted history",
+          permission: "read",
+          confirmationRequired: false,
+          inputSchema: {},
+          outputSchema: {},
+          version: "1.0.0",
+        },
+        {
+          id: "journey.getPendingReviews",
+          engineId: "journey-engine",
+          name: "Pending reviews",
+          description: "trusted pending reviews",
+          permission: "read",
+          confirmationRequired: false,
+          inputSchema: {},
+          outputSchema: {},
+          version: "1.0.0",
+        },
+        {
+          id: "journey.getJourneyById",
+          engineId: "journey-engine",
+          name: "Journey by id",
+          description: "trusted journey by id",
+          permission: "read",
+          confirmationRequired: false,
+          inputSchema: {},
+          outputSchema: {},
+          version: "1.0.0",
+        },
       ];
     },
     async executeTool() {
@@ -40,6 +84,10 @@ export async function runToolRegistryTests() {
   tools.loadToolsFromEngines();
 
   assert.ok(tools.getTool("journey.getMileageSummary"), "registers valid tools");
+  assert.ok(tools.getTool("journey.getTodayTrips"), "registers today's journey tool");
+  assert.ok(tools.getTool("journey.getTripHistory"), "registers trip history tool");
+  assert.ok(tools.getTool("journey.getPendingReviews"), "registers pending review tool");
+  assert.ok(tools.getTool("journey.getJourneyById"), "registers journey-by-id tool");
 
   assert.throws(() => {
     tools.registerTool({

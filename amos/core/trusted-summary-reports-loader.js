@@ -6,8 +6,8 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, "../..");
 
-function createMemoryStorage(seed = {}) {
-  const map = new Map(Object.entries(seed).map(([k, v]) => [k, String(v)]));
+export function createMemoryStorage(seed = {}) {
+  const map = new Map(Object.entries(seed).map(([key, value]) => [key, String(value)]));
   return {
     getItem(key) {
       return map.has(key) ? map.get(key) : null;
@@ -21,25 +21,39 @@ function createMemoryStorage(seed = {}) {
   };
 }
 
-export function loadTrustedSummaryReportsModule(dependencies) {
-  const srcPath = path.join(root, "frontend/js/summary-reports.js");
-  const src = fs.readFileSync(srcPath, "utf8");
+function createWindowSandbox({ localStorage, preload = {} } = {}) {
+  const windowObject = {
+    localStorage: localStorage || createMemoryStorage(),
+    ...preload,
+  };
 
-  const sandbox = {
+  return {
     console,
     Date,
     setInterval,
     clearInterval,
     setTimeout,
     clearTimeout,
-    localStorage: dependencies.localStorage || createMemoryStorage(),
-    window: {},
-    globalThis: {},
+    localStorage: windowObject.localStorage,
+    window: windowObject,
+    globalThis: windowObject,
   };
-  sandbox.window = sandbox.globalThis;
+}
 
-  vm.runInNewContext(src, sandbox);
-  const summaryReports = sandbox.window.MPSummaryReports;
+function loadWindowModule(relativePath, globalKey, { localStorage, preload } = {}) {
+  const sourcePath = path.join(root, relativePath);
+  const source = fs.readFileSync(sourcePath, "utf8");
+  const sandbox = createWindowSandbox({ localStorage, preload });
+
+  vm.runInNewContext(source, sandbox);
+
+  return sandbox.window?.[globalKey] || null;
+}
+
+export function loadTrustedSummaryReportsModule(dependencies = {}) {
+  const summaryReports = loadWindowModule("frontend/js/summary-reports.js", "MPSummaryReports", {
+    localStorage: dependencies.localStorage,
+  });
 
   if (!summaryReports || typeof summaryReports.init !== "function") {
     throw new Error("Trusted summary reports module failed to load");
@@ -57,4 +71,30 @@ export function loadTrustedSummaryReportsModule(dependencies) {
   });
 
   return summaryReports;
+}
+
+export function loadTrustedTripStoreModule(dependencies = {}) {
+  const tripStore = loadWindowModule("frontend/js/trip-store.js", "MPTrips", {
+    localStorage: dependencies.localStorage,
+  });
+
+  if (!tripStore || typeof tripStore.loadTrips !== "function") {
+    throw new Error("Trusted trip store module failed to load");
+  }
+
+  return tripStore;
+}
+
+export function loadTrustedJourneyReviewModule(dependencies = {}) {
+  const tripStore = dependencies.tripStore || loadTrustedTripStoreModule(dependencies);
+  const journeyReview = loadWindowModule("frontend/js/journey-review.js", "MPJourneyReview", {
+    localStorage: dependencies.localStorage,
+    preload: { MPTrips: tripStore },
+  });
+
+  if (!journeyReview || typeof journeyReview.tripsForReviewDate !== "function") {
+    throw new Error("Trusted journey review module failed to load");
+  }
+
+  return journeyReview;
 }

@@ -112,6 +112,7 @@ export class WorkflowRunner {
       const response = this.responseBuilder.buildSuccess({
         workflowId: id,
         intent: routedIntent,
+        toolId: tool.id,
         toolData: result.data,
       });
 

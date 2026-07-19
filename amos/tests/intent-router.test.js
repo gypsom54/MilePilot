@@ -20,6 +20,19 @@ export function runIntentRouterTests() {
   const unsupported = router.route("Book me a hotel near Manchester");
   assert.equal(unsupported.intentId, "unsupported", "returns unsupported for unrelated requests");
 
+  const today = router.route("Show today's journeys.");
+  assert.equal(today.intentId, "journey.today_trips", "routes today's journeys deterministically");
+  assert.equal(today.toolId, "journey.getTodayTrips", "selects today's journey tool");
+
+  const lastJourney = router.route("Show my last journey.");
+  assert.equal(lastJourney.intentId, "journey.last_journey", "routes last journey deterministically");
+  assert.equal(lastJourney.toolId, "journey.getTripHistory", "selects trip history tool for last journey");
+  assert.equal(lastJourney.parameters.limit, 1, "limits last journey lookup to one result");
+
+  const pending = router.route("Show my journeys awaiting review.");
+  assert.equal(pending.intentId, "journey.pending_reviews", "routes pending reviews deterministically");
+  assert.equal(pending.toolId, "journey.getPendingReviews", "selects pending review tool");
+
   const lowConfidenceLike = router.route("Maybe something about last month maybe");
   assert.equal(lowConfidenceLike.intentId, "unsupported", "does not guess at low confidence");
 }

@@ -24,3 +24,22 @@ export function loadFixtureTrips() {
   const src = fs.readFileSync(path.join(root, "tests", "fixtures", "amos-week-trips.json"), "utf8");
   return JSON.parse(src);
 }
+
+export function createJourneyDependencies(trips = loadFixtureTrips()) {
+  const localStorage = createMemoryStorage({
+    mp_trips: JSON.stringify(trips),
+  });
+
+  return {
+    localStorage,
+    getEmail: () => "driver@example.com",
+    getDriver: () => "Driver",
+    getFrequency: () => "weekly",
+    getVehicle: () => "car",
+    getTrips: () => trips,
+    getShifts: () => [],
+    fmt: (seconds) => `${seconds}s`,
+    apiPost: async () => ({ res: { ok: true }, data: { sent: true } }),
+    getHmrcRate: () => 0.55,
+  };
+}
