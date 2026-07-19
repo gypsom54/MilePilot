@@ -10,7 +10,6 @@ import { setBackgroundLocationForwarder, takePendingBackgroundLocations } from '
 import {
   handleWebViewMessage,
   injectLocationIntoWebView,
-  initNativeTracking,
   ensureBackgroundLocationForTrip,
 } from './expoLocationBridge';
 import {
@@ -85,10 +84,6 @@ export default function MilePilotWebView() {
   }, []);
 
   useEffect(() => {
-    initNativeTracking().catch((e) => console.warn('[MilePilot] initNativeTracking', e.message));
-  }, []);
-
-  useEffect(() => {
     setBackgroundLocationForwarder((sync) => {
       setNativeDebugMeta({ appState: appStateRef.current });
       sendToWebView(sync);
@@ -98,7 +93,6 @@ export default function MilePilotWebView() {
     });
     setNativeAutoEndTripStopHandler(() => {
       stopNativeTrip();
-      syncNativeAutoEnd({ active: false });
     });
     return () => {
       setBackgroundLocationForwarder(null);

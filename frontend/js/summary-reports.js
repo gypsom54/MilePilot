@@ -48,24 +48,43 @@
     }
   }
 
-  function persistPendingReport(type, fireAt, shiftEndedAt) {
+  function buildPendingJobId(type, anchorAt) {
+    return type + '_' + dedupeKey(type, new Date(anchorAt || Date.now()));
+  }
+
+  function normalizePendingReport(job) {
+    if (!job || !job.type) return null;
+    const fireAt = Number(job.fireAt) || 0;
+    const anchorAt = Number(job.anchorAt) || Number(job.shiftEndedAt) || fireAt || Date.now();
+    return {
+      id: job.id || buildPendingJobId(job.type, anchorAt),
+      type: job.type,
+      fireAt: fireAt || anchorAt,
+      anchorAt: anchorAt,
+      shiftEndedAt: Number(job.shiftEndedAt) || 0,
+      createdAt: Number(job.createdAt) || Date.now(),
+    };
+  }
+
+  function loadPendingReports() {
     try {
-      localStorage.setItem(
-        PENDING_REPORT_KEY,
-        JSON.stringify({
-          type: type,
-          fireAt: fireAt,
-          shiftEndedAt: shiftEndedAt,
-          createdAt: Date.now(),
-        })
-      );
-      reportLog('Report email scheduled (persisted)', {
-        type: type,
-        fireAt: new Date(fireAt).toISOString(),
-      });
+      const raw = localStorage.getItem(PENDING_REPORT_KEY);
+      if (!raw) return [];
+      const parsed = JSON.parse(raw);
+      const jobs = Array.isArray(parsed) ? parsed : [parsed];
+      return jobs.map(normalizePendingReport).filter(Boolean);
     } catch (e) {
-      reportLog('Failed to persist pending report', { error: String(e) });
+      return [];
     }
+  }
+
+  function savePendingReports(jobs) {
+    const list = (jobs || []).map(normalizePendingReport).filter(Boolean);
+    if (!list.length) {
+      localStorage.removeItem(PENDING_REPORT_KEY);
+      return;
+    }
+    localStorage.setItem(PENDING_REPORT_KEY, JSON.stringify(list));
   }
 
   function clearPendingReport() {
@@ -73,29 +92,87 @@
   }
 
   function loadPendingReport() {
-    try {
-      const raw = localStorage.getItem(PENDING_REPORT_KEY);
-      return raw ? JSON.parse(raw) : null;
-    } catch (e) {
-      return null;
-    }
+    const jobs = loadPendingReports();
+    return jobs.length ? jobs[0] : null;
   }
 
-  async function checkPendingReports(deps) {
-    const pending = loadPendingReport();
-    if (!pending) return null;
-    if (Date.now() < pending.fireAt) return { waiting: true, pending: pending };
-    reportLog('Pending report due — sending', { type: pending.type });
-    clearPendingReport();
-    const result = await sendAutomaticReport(deps, pending.type, new Date());
+  function queuePendingReport(type, fireAt, options) {
+    const job = normalizePendingReport({
+      type: type,
+      fireAt: fireAt,
+      anchorAt: options && options.anchorAt != null ? options.anchorAt : fireAt,
+      shiftEndedAt: options && options.shiftEndedAt,
+      createdAt: options && options.createdAt,
+    });
+    if (!job) return null;
+
+    const jobs = loadPendingReports();
+    const existing = jobs.find(function (entry) {
+      return entry.id === job.id;
+    });
+    if (existing) return existing;
+
+    jobs.push(job);
+    savePendingReports(jobs);
+    reportLog('Report email scheduled (persisted)', {
+      type: type,
+      fireAt: new Date(job.fireAt).toISOString(),
+    });
+    return job;
+  }
+
+  function removePendingReportJob(jobId) {
+    const jobs = loadPendingReports().filter(function (entry) {
+      return entry.id !== jobId;
+    });
+    savePendingReports(jobs);
+  }
+
+  function isShiftActive(deps) {
+    return !!(deps && typeof deps.isShiftActive === 'function' && deps.isShiftActive());
+  }
+
+  function pendingReportAnchor(job) {
+    return new Date(job.anchorAt || job.shiftEndedAt || job.fireAt || job.createdAt || Date.now());
+  }
+
+  async function sendPendingReportJob(deps, job) {
+    reportLog('Pending report due — sending', { type: job.type, id: job.id });
+    const result = await sendAutomaticReport(deps, job.type, pendingReportAnchor(job));
+    if (result && result.sent) {
+      removePendingReportJob(job.id);
+    }
     return result;
+  }
+
+  async function processPendingReports(deps) {
+    const jobs = loadPendingReports();
+    if (!jobs.length) return { results: [] };
+    if (isShiftActive(deps)) {
+      return { waiting: true, pending: jobs[0] };
+    }
+
+    const now = Date.now();
+    const results = [];
+    for (let i = 0; i < jobs.length; i++) {
+      const job = jobs[i];
+      if (now < job.fireAt) {
+        return { waiting: true, pending: job, results: results };
+      }
+      const result = await sendPendingReportJob(deps, job);
+      results.push(result);
+      if (!result || !result.sent) {
+        return { failed: result, pending: job, results: results };
+      }
+    }
+    return { results: results };
   }
 
   const SCHEDULE = {
     dailyAfterShiftMinutes: 90,
     dailyNightShiftEndHour: 10,
     dailyEndOfDaySlot: { hour: 23, minute: 59, windowMin: 35 },
-    weeklyPrimary: { day: 0, hour: 18, minute: 0, windowMin: 45 },
+    weeklyPrimary: { day: 0, hour: 23, minute: 59, windowMin: 35 },
     weeklySummary: { day: 0, hour: 23, minute: 59, windowMin: 35 },
     monthlyPrimary: { hour: 23, minute: 59, windowMin: 35 },
     monthlySummary: { hour: 23, minute: 59, windowMin: 35 },
@@ -559,22 +636,33 @@
   }
 
   async function checkScheduledReports(deps) {
-    const pendingResult = await checkPendingReports(deps);
-    if (pendingResult && pendingResult.sent) {
-      return [pendingResult];
-    }
-
+    const now = new Date();
     const frequency = deps.getFrequency();
     if (!frequency || frequency === 'off') return [];
     if (!deps.getEmail()) return [];
 
-    const now = new Date();
-    const types = getDueReportTypes(frequency, now);
-    const results = [];
-    for (let i = 0; i < types.length; i++) {
-      results.push(await sendAutomaticReport(deps, types[i], now));
+    const dueTypes = getDueReportTypes(frequency, now);
+    if (dueTypes.length) {
+      for (let i = 0; i < dueTypes.length; i++) {
+        queuePendingReport(dueTypes[i], now.getTime(), {
+          anchorAt: now.getTime(),
+          createdAt: now.getTime(),
+        });
+      }
+      if (isShiftActive(deps)) {
+        return [{ waiting: true, pending: loadPendingReport(), reason: 'active_session' }];
+      }
     }
-    return results;
+
+    const pendingResult = await processPendingReports(deps);
+    if (pendingResult.waiting) {
+      return [pendingResult];
+    }
+    if (pendingResult.results && pendingResult.results.length) {
+      return pendingResult.results;
+    }
+
+    return [];
   }
 
   async function sendShiftCompletionEmail(deps, shift, endReason) {
@@ -646,11 +734,19 @@
       shiftId: shift && shift.id,
       endReason: endReason || 'manual',
     });
-    if (deps.getFrequency() === 'daily' && shift && shift.endISO) {
+    const frequency = deps.getFrequency();
+    if (!frequency || frequency === 'off') {
+      return { skipped: true, reason: 'reports_off' };
+    }
+
+    if (frequency === 'daily' && shift && shift.endISO) {
       const scheduled = scheduleDailyAfterShift(deps, shift.endISO);
       return scheduled || { scheduled: false, reason: 'not_scheduled' };
     }
-    return sendShiftCompletionEmail(deps, shift, endReason || 'manual');
+
+    // Weekly delivery runs through scheduler windows, never immediate per-shift send.
+    await checkScheduledReports(deps);
+    return { skipped: true, reason: 'frequency_windowed' };
   }
 
   function scheduleDailyAfterShift(deps, shiftEndedAt) {
@@ -668,7 +764,11 @@
     const fireAt = computeDailyReportFireAt(shiftEndedAt);
     const wait = Math.max(0, fireAt - Date.now());
 
-    persistPendingReport('Daily', fireAt, shiftEndedAt);
+    queuePendingReport('Daily', fireAt, {
+      anchorAt: shiftEndedAt,
+      shiftEndedAt: shiftEndedAt,
+      createdAt: Date.now(),
+    });
     reportLog('Daily report scheduled', {
       shiftEndedISO: new Date(shiftEndedAt).toISOString(),
       fireAtISO: new Date(fireAt).toISOString(),
@@ -676,11 +776,7 @@
     });
 
     return setTimeout(async function () {
-      const now = new Date();
-      const key = dedupeKey('Daily', now);
-      if (wasSent('Daily', key)) return;
-      clearPendingReport();
-      await sendAutomaticReport(deps, 'Daily', now);
+      await checkScheduledReports(deps);
     }, wait);
   }
 
@@ -689,7 +785,7 @@
       return "Daily summary at 11:59pm, or 90 minutes after your shift ends for night drivers — plus Weekly Summary every Sunday at 11:59pm and Monthly Summary on the last day of each month.";
     }
     if (frequency === 'weekly') {
-      return "Weekly report every Sunday, plus a Monthly Summary on the last day of each month at 11:59pm.";
+      return "Weekly report every Sunday at 11:59pm, plus a Monthly Summary on the last day of each month at 11:59pm.";
     }
     if (frequency === 'monthly') {
       return "Monthly report on the last day of each month at 11:59pm.";
@@ -740,7 +836,7 @@
     getLastEmailResult: getLastEmailResult,
     getPendingReport: loadPendingReport,
     checkPendingReports: function () {
-      return checkPendingReports(requireDeps());
+      return processPendingReports(requireDeps());
     },
     wasSent: wasSent,
     markSent: markSent,

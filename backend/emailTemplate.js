@@ -35,8 +35,8 @@ function fill(template, vars) {
 }
 
 function summaryLine(icon, text) {
-  return `<div style="margin:0 0 12px;font-size:14px;line-height:1.5;color:#9FB4D0;">
-    <span style="display:inline-block;width:24px;font-size:15px;line-height:1;opacity:0.82;vertical-align:-1px;">${icon}</span>${text}
+  return `<div style="margin:0 0 12px;font-size:14px;line-height:1.5;color:#1E2F49 !important;">
+    <span style="display:inline-block;width:24px;font-size:15px;line-height:1;opacity:0.95;vertical-align:-1px;color:#0D6BFF !important;">${icon}</span>${text}
   </div>`;
 }
 
@@ -168,17 +168,17 @@ function buildAutomationBlock(period) {
     note = "Your monthly records are securely archived and ready for HMRC or your accountant.";
   }
   if (!note) return "";
-  return `<p style="margin:0 0 8px;font-size:13px;color:#64748B;line-height:1.6;text-align:center;">${note}</p>`;
+  return `<p style="margin:0 0 8px;font-size:13px;color:#475569 !important;line-height:1.6;text-align:center;">${note}</p>`;
 }
 
 function pendingBlock(notice) {
   if (!notice) return "";
-  return `<p style="margin:0 0 24px;font-size:13px;color:#7A5B12;line-height:1.55;padding:14px 16px;border-radius:10px;background:#FFF8E8;border:1px solid #F0C35A;">${notice}</p>`;
+  return `<p style="margin:0 0 24px;font-size:13px;color:#7A5B12 !important;line-height:1.55;padding:14px 16px;border-radius:10px;background:#FFF8E8;border:1px solid #F0C35A;">${notice}</p>`;
 }
 
 function aiInsightBlock(sentence) {
   if (!sentence) return "";
-  return `<p style="margin:0 0 32px;font-size:15px;font-weight:500;line-height:1.6;color:rgba(159,180,208,0.92);letter-spacing:-0.01em;">${sentence}</p>`;
+  return `<p style="margin:0 0 32px;font-size:15px;font-weight:500;line-height:1.6;color:#1E2F49 !important;letter-spacing:-0.01em;">${sentence}</p>`;
 }
 
 /**

@@ -3,15 +3,39 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="color-scheme" content="dark">
-<meta name="supported-color-schemes" content="dark">
+<meta name="color-scheme" content="light">
+<meta name="supported-color-schemes" content="light">
+<meta name="x-apple-disable-message-reformatting">
 <title>MilePilot Report</title>
 <!--[if mso]><style type="text/css">body,table,td{font-family:Arial,sans-serif!important;}</style><![endif]-->
+<style type="text/css">
+  html, body {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+  }
+  table, td {
+    mso-table-lspace: 0pt;
+    mso-table-rspace: 0pt;
+  }
+  img {
+    -ms-interpolation-mode: bicubic;
+  }
+  u + .milepilot-body .email-shell,
+  .milepilot-body[data-ogsc] .email-shell,
+  .milepilot-body[data-ogsb] .email-shell {
+    background-color: #FFFFFF !important;
+  }
+  u + .milepilot-body .email-text,
+  .milepilot-body[data-ogsc] .email-text,
+  .milepilot-body[data-ogsb] .email-text {
+    color: #0B1F3A !important;
+  }
+</style>
 </head>
-<body style="margin:0;padding:0;background-color:#020B1B;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased;">
+<body class="milepilot-body" style="margin:0;padding:0;background-color:#020B1B;color:#0B1F3A;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#020B1B" style="background-color:#020B1B;padding:32px 16px 48px;">
 <tr><td align="center">
-<table role="presentation" width="560" cellpadding="0" cellspacing="0" border="0" bgcolor="#031126" style="max-width:560px;width:100%;background-color:#031126;border-radius:20px;border:1px solid rgba(110,180,255,0.28);box-shadow:0 0 0 1px rgba(13,107,255,0.12),0 24px 64px rgba(0,0,0,0.45);">
+<table role="presentation" width="560" cellpadding="0" cellspacing="0" border="0" bgcolor="#FFFFFF" class="email-shell" style="max-width:560px;width:100%;background-color:#FFFFFF;border-radius:20px;border:1px solid #DDE6F2;box-shadow:0 8px 32px rgba(6,17,42,0.08);">
 <!-- Brand header -->
 <tr><td bgcolor="#050F22" style="background:linear-gradient(180deg,#050F22 0%,#031126 100%);padding:40px 32px 38px;text-align:center;border-bottom:1px solid rgba(110,180,255,0.14);">
   <div style="font-size:32px;font-weight:700;color:#FFFFFF;letter-spacing:-0.04em;line-height:1;text-shadow:0 0 28px rgba(13,107,255,0.35);">Mile <span style="color:#0D6BFF;">Pilot</span></div>
@@ -20,27 +44,27 @@
 </td></tr>
 <tr><td style="padding:44px 32px 8px;">
   <!-- Greeting hierarchy -->
-  <p style="margin:0 0 8px;font-size:16px;font-weight:500;color:rgba(159,180,208,0.68);line-height:1.45;">{{GREETING_HEAD}}</p>
-  <p style="margin:0 0 36px;font-size:34px;font-weight:800;color:#EAF2FF;line-height:1.12;letter-spacing:-0.03em;">{{GREETING_NAME}}</p>
-  <p style="margin:0 0 12px;font-size:17px;font-weight:600;letter-spacing:-0.01em;color:#6EB4FF;line-height:1.4;">{{PERIOD_TITLE}}</p>
-  <p style="margin:0 0 36px;font-size:15px;font-weight:500;color:rgba(159,180,208,0.78);line-height:1.45;letter-spacing:-0.01em;">📅 {{PERIOD_LINE}}</p>
+  <p class="email-text" style="margin:0 0 8px;font-size:16px;font-weight:500;color:#475569 !important;line-height:1.45;">{{GREETING_HEAD}}</p>
+  <p class="email-text" style="margin:0 0 36px;font-size:34px;font-weight:800;color:#0B1F3A !important;line-height:1.12;letter-spacing:-0.03em;">{{GREETING_NAME}}</p>
+  <p class="email-text" style="margin:0 0 12px;font-size:17px;font-weight:600;letter-spacing:-0.01em;color:#0D6BFF !important;line-height:1.4;">{{PERIOD_TITLE}}</p>
+  <p class="email-text" style="margin:0 0 36px;font-size:15px;font-weight:500;color:#334155 !important;line-height:1.45;letter-spacing:-0.01em;">📅 {{PERIOD_LINE}}</p>
   {{PENDING_NOTICE}}
   <!-- KPI grid — fixed equal card dimensions -->
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 24px;border-collapse:separate;border-spacing:0;">
     <tr>
       <td width="50%" height="108" style="width:50%;height:108px;padding:0 8px 16px 0;vertical-align:top;">
         <table role="presentation" width="100%" height="108" cellpadding="0" cellspacing="0" border="0" style="height:108px;width:100%;">
-          <tr><td height="108" style="height:108px;vertical-align:top;background-color:#0B2348;background:linear-gradient(180deg,#0D2A52 0%,#0B2348 100%);border:1px solid rgba(110,180,255,0.28);border-radius:16px;padding:24px 22px;box-shadow:0 0 0 1px rgba(13,107,255,0.08),inset 0 1px 0 rgba(255,255,255,0.07);">
-            <div style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(159,180,208,0.68);margin-bottom:10px;line-height:1.3;"><span style="font-size:13px;margin-right:5px;opacity:0.85;">🚗</span>Business Miles</div>
-            <div style="font-size:36px;font-weight:700;color:#EAF2FF;letter-spacing:-0.03em;line-height:1;white-space:nowrap;">{{MILES}}</div>
+          <tr><td height="108" bgcolor="#0B2348" style="height:108px;vertical-align:top;background-color:#0B2348;background:linear-gradient(180deg,#0D2A52 0%,#0B2348 100%);border:1px solid rgba(110,180,255,0.28);border-radius:16px;padding:24px 22px;box-shadow:0 0 0 1px rgba(13,107,255,0.08),inset 0 1px 0 rgba(255,255,255,0.07);">
+            <div style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#D9E8FF !important;margin-bottom:10px;line-height:1.3;"><span style="font-size:13px;margin-right:5px;opacity:0.9;color:#EAF2FF !important;">🚗</span>Business Miles</div>
+            <div style="font-size:36px;font-weight:700;color:#FFFFFF !important;letter-spacing:-0.03em;line-height:1;white-space:nowrap;">{{MILES}}</div>
           </td></tr>
         </table>
       </td>
       <td width="50%" height="108" style="width:50%;height:108px;padding:0 0 16px 8px;vertical-align:top;">
         <table role="presentation" width="100%" height="108" cellpadding="0" cellspacing="0" border="0" style="height:108px;width:100%;">
-          <tr><td height="108" style="height:108px;vertical-align:top;background-color:#0B2348;background:linear-gradient(180deg,#0D2A52 0%,#0B2348 100%);border:1px solid rgba(110,180,255,0.28);border-radius:16px;padding:24px 22px;box-shadow:0 0 0 1px rgba(13,107,255,0.08),inset 0 1px 0 rgba(255,255,255,0.07);">
-            <div style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(159,180,208,0.68);margin-bottom:10px;line-height:1.3;"><span style="font-size:13px;margin-right:5px;opacity:0.85;">💷</span>HMRC Estimate</div>
-            <div style="font-size:36px;font-weight:700;color:#EAF2FF;letter-spacing:-0.03em;line-height:1;white-space:nowrap;">{{HMRC_ESTIMATE}}</div>
+          <tr><td height="108" bgcolor="#0B2348" style="height:108px;vertical-align:top;background-color:#0B2348;background:linear-gradient(180deg,#0D2A52 0%,#0B2348 100%);border:1px solid rgba(110,180,255,0.28);border-radius:16px;padding:24px 22px;box-shadow:0 0 0 1px rgba(13,107,255,0.08),inset 0 1px 0 rgba(255,255,255,0.07);">
+            <div style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#D9E8FF !important;margin-bottom:10px;line-height:1.3;"><span style="font-size:13px;margin-right:5px;opacity:0.9;color:#EAF2FF !important;">💷</span>HMRC Estimate</div>
+            <div style="font-size:36px;font-weight:700;color:#FFFFFF !important;letter-spacing:-0.03em;line-height:1;white-space:nowrap;">{{HMRC_ESTIMATE}}</div>
           </td></tr>
         </table>
       </td>
@@ -48,17 +72,17 @@
     <tr>
       <td width="50%" height="108" style="width:50%;height:108px;padding:0 8px 0 0;vertical-align:top;">
         <table role="presentation" width="100%" height="108" cellpadding="0" cellspacing="0" border="0" style="height:108px;width:100%;">
-          <tr><td height="108" style="height:108px;vertical-align:top;background-color:#0B2348;background:linear-gradient(180deg,#0D2A52 0%,#0B2348 100%);border:1px solid rgba(110,180,255,0.28);border-radius:16px;padding:24px 22px;box-shadow:0 0 0 1px rgba(13,107,255,0.08),inset 0 1px 0 rgba(255,255,255,0.07);">
-            <div style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(159,180,208,0.68);margin-bottom:10px;line-height:1.3;"><span style="font-size:13px;margin-right:5px;opacity:0.85;">🛣</span>Trips</div>
-            <div style="font-size:36px;font-weight:700;color:#EAF2FF;letter-spacing:-0.03em;line-height:1;white-space:nowrap;">{{JOURNEYS}}</div>
+          <tr><td height="108" bgcolor="#0B2348" style="height:108px;vertical-align:top;background-color:#0B2348;background:linear-gradient(180deg,#0D2A52 0%,#0B2348 100%);border:1px solid rgba(110,180,255,0.28);border-radius:16px;padding:24px 22px;box-shadow:0 0 0 1px rgba(13,107,255,0.08),inset 0 1px 0 rgba(255,255,255,0.07);">
+            <div style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#D9E8FF !important;margin-bottom:10px;line-height:1.3;"><span style="font-size:13px;margin-right:5px;opacity:0.9;color:#EAF2FF !important;">🛣</span>Trips</div>
+            <div style="font-size:36px;font-weight:700;color:#FFFFFF !important;letter-spacing:-0.03em;line-height:1;white-space:nowrap;">{{JOURNEYS}}</div>
           </td></tr>
         </table>
       </td>
       <td width="50%" height="108" style="width:50%;height:108px;padding:0 0 0 8px;vertical-align:top;">
         <table role="presentation" width="100%" height="108" cellpadding="0" cellspacing="0" border="0" style="height:108px;width:100%;">
-          <tr><td height="108" style="height:108px;vertical-align:top;background-color:#0B2348;background:linear-gradient(180deg,#0D2A52 0%,#0B2348 100%);border:1px solid rgba(110,180,255,0.28);border-radius:16px;padding:24px 22px;box-shadow:0 0 0 1px rgba(13,107,255,0.08),inset 0 1px 0 rgba(255,255,255,0.07);">
-            <div style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(159,180,208,0.68);margin-bottom:10px;line-height:1.3;"><span style="font-size:13px;margin-right:5px;opacity:0.85;">⏱</span>Driving Time</div>
-            <div style="font-size:36px;font-weight:700;color:#EAF2FF;letter-spacing:-0.03em;line-height:1;white-space:nowrap;">{{DRIVING_TIME}}</div>
+          <tr><td height="108" bgcolor="#0B2348" style="height:108px;vertical-align:top;background-color:#0B2348;background:linear-gradient(180deg,#0D2A52 0%,#0B2348 100%);border:1px solid rgba(110,180,255,0.28);border-radius:16px;padding:24px 22px;box-shadow:0 0 0 1px rgba(13,107,255,0.08),inset 0 1px 0 rgba(255,255,255,0.07);">
+            <div style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#D9E8FF !important;margin-bottom:10px;line-height:1.3;"><span style="font-size:13px;margin-right:5px;opacity:0.9;color:#EAF2FF !important;">⏱</span>Driving Time</div>
+            <div style="font-size:36px;font-weight:700;color:#FFFFFF !important;letter-spacing:-0.03em;line-height:1;white-space:nowrap;">{{DRIVING_TIME}}</div>
           </td></tr>
         </table>
       </td>
@@ -66,8 +90,8 @@
   </table>
   {{AI_INSIGHT}}
   <!-- Summary card -->
-  <div style="margin:0 0 32px;padding:22px 24px;border-radius:16px;background:rgba(255,255,255,0.035);border:1px solid rgba(110,180,255,0.2);box-shadow:0 0 0 1px rgba(13,107,255,0.06),inset 0 1px 0 rgba(255,255,255,0.05);">
-    <div style="font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#6EB4FF;margin-bottom:16px;line-height:1.3;">{{SUMMARY_TITLE}}</div>
+  <div bgcolor="#F7F9FC" style="margin:0 0 32px;padding:22px 24px;border-radius:16px;background-color:#F7F9FC;border:1px solid #DDE6F2;box-shadow:0 1px 0 rgba(255,255,255,0.85);">
+    <div class="email-text" style="font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#0D6BFF !important;margin-bottom:16px;line-height:1.3;">{{SUMMARY_TITLE}}</div>
     {{SUMMARY_LINES}}
   </div>
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 8px;">
@@ -75,16 +99,16 @@
       <a href="{{PDF_DOWNLOAD_URL}}" style="display:inline-block;width:100%;max-width:320px;background:linear-gradient(180deg,#1E88FF 0%,#0D6BFF 55%,#005FE8 100%);color:#FFFFFF !important;font-size:16px;font-weight:600;text-decoration:none;padding:16px 28px;border-radius:14px;letter-spacing:-0.01em;box-sizing:border-box;box-shadow:0 8px 32px rgba(13,107,255,0.42);">Download Full PDF Report</a>
     </td></tr>
     <tr><td align="center" style="padding-bottom:4px;">
-      <a href="{{ARCHIVE_URL}}" style="display:inline-block;color:#9FB4D0;font-size:14px;font-weight:600;text-decoration:none;padding:8px 16px;">Open MilePilot →</a>
+      <a href="{{ARCHIVE_URL}}" style="display:inline-block;color:#334155 !important;font-size:14px;font-weight:600;text-decoration:none;padding:8px 16px;">Open MilePilot →</a>
     </td></tr>
   </table>
-  <p style="margin:0 0 24px;font-size:13px;color:#64748B;line-height:1.6;text-align:center;">Your premium 7-page PDF is attached — executive dashboard, journey map, HMRC summary, and verification certificate.</p>
+  <p class="email-text" style="margin:0 0 24px;font-size:13px;color:#475569 !important;line-height:1.6;text-align:center;">Your premium 7-page PDF is attached — executive dashboard, journey map, HMRC summary, and verification certificate.</p>
   {{AUTOMATION_NOTES}}
 </td></tr>
-<tr><td style="padding:0 32px 32px;border-top:1px solid rgba(110,180,255,0.16);text-align:center;">
-  <p style="margin:20px 0 8px;font-size:11px;font-weight:600;letter-spacing:0.12em;color:#6EB4FF;">{{FOOTER_TAGLINE}}</p>
-  <p style="margin:0 0 6px;font-size:13px;color:#9FB4D0;line-height:1.6;">Thank you for choosing MilePilot.</p>
-  <p style="margin:0;font-size:11px;color:#64748B;line-height:1.55;">HMRC figures are estimates for record keeping. Verify against official guidance before filing.<br>MilePilot · app.milepilot.uk</p>
+<tr><td style="padding:0 32px 32px;border-top:1px solid #E8EEF7;text-align:center;">
+  <p class="email-text" style="margin:20px 0 8px;font-size:11px;font-weight:600;letter-spacing:0.12em;color:#0D6BFF !important;">{{FOOTER_TAGLINE}}</p>
+  <p class="email-text" style="margin:0 0 6px;font-size:13px;color:#334155 !important;line-height:1.6;">Thank you for choosing MilePilot.</p>
+  <p class="email-text" style="margin:0;font-size:11px;color:#64748B !important;line-height:1.55;">HMRC figures are estimates for record keeping. Verify against official guidance before filing.<br>MilePilot · app.milepilot.uk</p>
 </td></tr>
 </table>
 </td></tr>
