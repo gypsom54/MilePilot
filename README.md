@@ -2,6 +2,14 @@
 
 Clean rebuild for the new computer. Use this as the single source of truth.
 
+## AMOS Sprint 1 (Architecture Only)
+
+AMOS foundation is implemented as an additive module in `amos/` with deterministic intent routing and a single wrapped journey summary tool.
+
+- Architecture docs: `amos/README.md`
+- AMOS tests: `npm run test:amos`
+- AMOS harness: `npm run amos:harness`
+
 ## Frontend local
 
 ```powershell

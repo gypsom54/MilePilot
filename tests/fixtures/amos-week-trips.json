@@ -1,0 +1,46 @@
+[
+  {
+    "id": "trip_week_1",
+    "status": "business",
+    "miles": 42.6,
+    "seconds": 4100,
+    "hmrc": 23.43,
+    "vehicle": "car",
+    "startISO": "2026-07-14T08:20:00.000Z",
+    "endISO": "2026-07-14T09:40:00.000Z",
+    "shiftId": "shift_week_1"
+  },
+  {
+    "id": "trip_week_2",
+    "status": "business",
+    "miles": 18.9,
+    "seconds": 1800,
+    "hmrc": 10.4,
+    "vehicle": "car",
+    "startISO": "2026-07-16T10:00:00.000Z",
+    "endISO": "2026-07-16T10:35:00.000Z",
+    "shiftId": "shift_week_2"
+  },
+  {
+    "id": "trip_week_3",
+    "status": "business",
+    "miles": 9.5,
+    "seconds": 900,
+    "hmrc": 5.23,
+    "vehicle": "car",
+    "startISO": "2026-07-18T13:00:00.000Z",
+    "endISO": "2026-07-18T13:18:00.000Z",
+    "shiftId": "shift_week_3"
+  },
+  {
+    "id": "trip_week_pending",
+    "status": "pending",
+    "miles": 5.1,
+    "seconds": 600,
+    "hmrc": 0,
+    "vehicle": "car",
+    "startISO": "2026-07-18T16:00:00.000Z",
+    "endISO": "2026-07-18T16:11:00.000Z",
+    "shiftId": "shift_week_4"
+  }
+]
