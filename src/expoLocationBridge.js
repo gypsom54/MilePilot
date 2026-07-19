@@ -419,6 +419,15 @@ export async function handleWebViewMessage(raw, sendToWebView) {
       });
       break;
     }
+    case 'expo:autopilot:verify-persisted': {
+      const persisted = await loadNativeAutopilotState();
+      reply({
+        type: 'expo:autopilot:verify:result',
+        ok: true,
+        armed: !!persisted,
+      });
+      break;
+    }
     case 'expo:autopilot:disarm': {
       await setNativeAutopilotArmed(false);
       stopAutopilotPoll();

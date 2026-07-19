@@ -93,6 +93,25 @@ run('manual mode uses journey labels', () => {
   assert.equal(MPTrackingMode.getEndButtonLabel(), 'End Journey');
 });
 
+run('falls back to AutoPilot labels when no mode selected', () => {
+  const ls = createMockLocalStorage();
+  const { MPTrackingMode } = loadModules(ls);
+  assert.equal(MPTrackingMode.getMode(), null);
+  assert.equal(MPTrackingMode.getStartButtonLabel(), 'Start Shift');
+  assert.equal(MPTrackingMode.getEndButtonLabel(), 'End Shift');
+  assert.equal(MPTrackingMode.isAutoPilot(), true);
+});
+
+run('legacy migrate defaults returning users to AutoPilot', () => {
+  const ls = createMockLocalStorage();
+  ls.setItem('mp_onboard_complete', 'true');
+  const { MPTrackingMode } = loadModules(ls);
+  assert.equal(MPTrackingMode.getMode(), null);
+  assert.equal(MPTrackingMode.migrateLegacyDefault(), true);
+  assert.equal(MPTrackingMode.getMode(), 'autopilot');
+  assert.equal(MPTrackingMode.migrateLegacyDefault(), false);
+});
+
 run('intelligence stubs return empty recommendations', () => {
   const { MPIntelligence } = loadModules(createMockLocalStorage());
   assert.equal(JSON.stringify(MPIntelligence.getPendingRecommendations()), '[]');
