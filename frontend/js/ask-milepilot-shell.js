@@ -1,5 +1,5 @@
 /**
- * MilePilot Ask MilePilot — Shell (MP-S4-001 / MP-S4-002)
+ * MilePilot Ask MilePilot — Shell (MP-S4-001 / MP-S4-002 / MP-S4-003)
  * Standalone scenario previews only. No AI, APIs, or business logic.
  */
 (function (global) {
@@ -38,10 +38,6 @@
     }
     s = s || 'empty';
     return SCENARIOS[s] ? s : 'empty';
-  }
-
-  function devBanner(scenario) {
-    return '<p class="mp-ask-dev-banner">Development only · MP-S4-002 · ' + SCENARIOS[scenario].label + '</p>';
   }
 
   function headerBlock() {
@@ -118,7 +114,6 @@
   function renderEmpty(scenario) {
     return '<div class="mp-ask-scene">' +
       '<div class="mp-ask-scene__body">' +
-      devBanner(scenario) +
       headerBlock() +
       heroInput() +
       '<div class="mp-ask-suggestions" aria-label="Suggested questions">' +
@@ -135,7 +130,6 @@
   function renderSimple(scenario) {
     return '<div class="mp-ask-scene mp-ask-scene--with-composer">' +
       '<div class="mp-ask-scene__body">' +
-      devBanner(scenario) +
       userBubble('How much did I claim this month?') +
       processing('Checking your mileage…') +
       '<div class="mp-ask-answer-surface">' +
@@ -152,7 +146,6 @@
   function renderDetailed(scenario) {
     return '<div class="mp-ask-scene mp-ask-scene--with-composer">' +
       '<div class="mp-ask-scene__body">' +
-      devBanner(scenario) +
       userBubble('Explain my mileage claim for this month.') +
       '<div class="mp-ask-detail-surface">' +
       '<p class="mp-ask-detail-surface__summary">Your July mileage claim at a glance.</p>' +
@@ -180,7 +173,6 @@
   function renderInsight(scenario) {
     return '<div class="mp-ask-scene mp-ask-scene--with-composer">' +
       '<div class="mp-ask-scene__body">' +
-      devBanner(scenario) +
       userBubble('How is my business doing?') +
       '<div class="mp-ask-insight-surface">' +
       '<div class="mp-ask-insight-surface__block">' +
@@ -193,7 +185,7 @@
       '</div>' +
       '<div class="mp-ask-insight-surface__block">' +
       '<p class="mp-ask-insight-surface__label">Suggested next step</p>' +
-      '<p class="mp-ask-insight-surface__text">Review three unclassified journeys.</p>' +
+      '<button type="button" class="mp-ds-btn mp-ds-btn--secondary mp-ask-insight-action">Review 3 journeys</button>' +
       '</div>' +
       '</div>' +
       '</div>' +
@@ -205,7 +197,6 @@
   function renderConfirm(scenario) {
     return '<div class="mp-ask-scene mp-ask-scene--with-composer">' +
       '<div class="mp-ask-scene__body">' +
-      devBanner(scenario) +
       userBubble('Send my weekly mileage report to my accountant.') +
       '<div class="mp-ask-confirm-surface">' +
       '<p class="mp-ask-confirm-surface__title">Confirm before sending</p>' +
