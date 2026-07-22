@@ -134,6 +134,18 @@
     }
   }
 
+  function focusFirst(root, selector) {
+    if (!root || typeof root.querySelector !== 'function') return;
+    var target = root.querySelector(selector);
+    if (target && typeof target.focus === 'function') {
+      try {
+        target.focus({ preventScroll: true });
+      } catch (e) {
+        target.focus();
+      }
+    }
+  }
+
   function paintHome() {
     var root = global.document.getElementById(HOME_ROOT_ID);
     var V = global.MPBusinessWorkspaceView;
@@ -159,6 +171,7 @@
     if (homeRoot) homeRoot.hidden = false;
     if (toolRoot) toolRoot.hidden = true;
     paintHome();
+    focusFirst(homeRoot, '.mp-bw-ask-input');
   }
 
   function showTool(id) {
@@ -172,6 +185,7 @@
     paintTool(id);
     var win = global.window || global;
     if (win && typeof win.scrollTo === 'function') win.scrollTo(0, 0);
+    focusFirst(toolRoot, '[data-bw-back]');
   }
 
   function mount() {

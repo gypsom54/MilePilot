@@ -106,6 +106,21 @@ async function main() {
   await page.waitForSelector('#business.active .mp-bw-tools', { timeout: 10000 });
   await page.screenshot({ path: path.join(OUT, '07-business-home-1440x900.png'), fullPage: false });
 
+  await page.setViewport({ width: 320, height: 568, deviceScaleFactor: 2 });
+  await page.goto(`http://127.0.0.1:${PORT}/index.html`, { waitUntil: 'domcontentloaded' });
+  await seed(page);
+  await page.evaluate(() => window.showBusiness());
+  await page.waitForSelector('#business.active', { timeout: 20000 });
+  await page.waitForSelector('#nav.show', { timeout: 10000 });
+  await page.screenshot({ path: path.join(OUT, '08-nav-density-320x568.png'), fullPage: false });
+
+  await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 2 });
+  await page.evaluate(() => {
+    window.MPBusinessWorkspace.showTool('expenses');
+  });
+  await page.waitForSelector('#mpBusinessToolRoot [data-bw-back]', { timeout: 10000 });
+  await page.screenshot({ path: path.join(OUT, '09-expenses-focus-back-390x844.png'), fullPage: true });
+
   await browser.close();
   server.close();
   console.log('Screenshots saved to', OUT);

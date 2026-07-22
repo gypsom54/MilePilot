@@ -310,6 +310,72 @@ run('mobile nav: six items including Business', () => {
   assert.ok(html.includes("['Home','Ask','Business','Reports','History','Settings']"));
 });
 
+run('mobile nav density: icon-only mode on narrow viewports', () => {
+  const html = fs.readFileSync(path.join(root, 'frontend/index.html'), 'utf8');
+  assert.ok(html.includes('@media(max-width:360px)'));
+  assert.ok(html.includes('clip:rect(0,0,0,0)'));
+});
+
+run('focus management: showTool focuses back control', () => {
+  const backBtn = {
+    focusCalls: 0,
+    focus() { this.focusCalls++; },
+    addEventListener() {},
+  };
+  const askInput = {
+    focusCalls: 0,
+    focus() { this.focusCalls++; },
+    addEventListener() {},
+  };
+  const toolRoot = {
+    id: 'mpBusinessToolRoot',
+    hidden: true,
+    innerHTML: '',
+    querySelector(sel) {
+      if (sel === '[data-bw-back]') return backBtn;
+      return null;
+    },
+    querySelectorAll() { return []; },
+  };
+  const homeRoot = {
+    id: 'mpBusinessWorkspaceRoot',
+    hidden: false,
+    innerHTML: '',
+    querySelector(sel) {
+      if (sel === '.mp-bw-ask-input') return askInput;
+      return null;
+    },
+    querySelectorAll() { return []; },
+  };
+  const sb = {
+    window: { scrollTo() {} },
+    globalThis: {},
+    document: {
+      getElementById(id) {
+        if (id === 'mpBusinessWorkspaceRoot') return homeRoot;
+        if (id === 'mpBusinessToolRoot') return toolRoot;
+        return null;
+      },
+    },
+  };
+  sb.globalThis = sb.window = sb;
+  loadWorkspace(sb);
+  sb.MPBusinessWorkspace.showTool('expenses');
+  assert.equal(backBtn.focusCalls, 1);
+  sb.MPBusinessWorkspace.mount();
+  assert.equal(askInput.focusCalls, 1);
+});
+
+run('PR does not introduce separate handlePos diff vs main', () => {
+  const prHtml = fs.readFileSync(path.join(root, 'frontend/index.html'), 'utf8');
+  const mainHtml = require('child_process').execSync('git show main:frontend/index.html', { encoding: 'utf8' });
+  const handlePosRe = /function handlePos\(pos\)\{[\s\S]*?renderTrackingScreen\(\)\}/;
+  const prMatch = prHtml.match(handlePosRe);
+  const mainMatch = mainHtml.match(handlePosRe);
+  assert.ok(prMatch && mainMatch, 'handlePos block present');
+  assert.equal(prMatch[0], mainMatch[0], 'handlePos must match main exactly');
+});
+
 async function finish() {
   await Promise.all(pending);
   console.log(`\nBusiness Workspace: ${passed} passed, ${failed} failed\n`);
