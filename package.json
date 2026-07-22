@@ -20,7 +20,7 @@
     "submit:ios": "eas submit --platform ios --latest --profile production",
     "release:ios": "eas build --platform ios --profile production --non-interactive && eas submit --platform ios --latest --profile production --non-interactive",
     "verify:stabilisation": "node scripts/verify-stabilisation-checklist.js",
-    "verify:release": "node scripts/verify-release.js",
+    "verify:release": "node scripts/verify-release.js && node scripts/verify-production-boot.js",
     "verify:tracking": "node scripts/verify-tracking-contract.js",
     "test:native-tracking": "node tests/native-tracking-engine.test.js",
     "verify:reports": "node scripts/verify-reports-contract.js",
@@ -38,8 +38,9 @@
     "test:tax-engine": "node tests/mp-tax-engine.test.js",
     "test:ask-milepilot": "node tests/ask-milepilot-service.test.js",
     "test:ask-parity": "node scripts/mp-s5-parity-audit.js",
+    "test:production-boot-syntax": "node tests/production-boot-syntax.test.js",
     "test:ai-review": "node tests/ai-mileage-review.test.js",
-    "test:vital": "npm run verify:tracking && npm run verify:reports && npm run test:mileage-checklist && npm run test:tracking && npm run test:native-idle && npm run test:autopilot && npm run test:reports && npm run test:summary-collect && npm run test:trips && npm run test:auto-end && npm run test:tracking-mode && npm run test:subscription && npm run test:journey-review && npm run test:tax-engine && npm run test:ask-milepilot && npm run test:ai-review"
+    "test:vital": "npm run test:production-boot-syntax && npm run verify:tracking && npm run verify:reports && npm run test:mileage-checklist && npm run test:tracking && npm run test:native-idle && npm run test:autopilot && npm run test:reports && npm run test:summary-collect && npm run test:trips && npm run test:auto-end && npm run test:tracking-mode && npm run test:subscription && npm run test:journey-review && npm run test:tax-engine && npm run test:ask-milepilot && npm run test:ai-review"
   },
   "dependencies": {
     "expo": "~56.0.12",
