@@ -209,6 +209,8 @@
 
   function tripToShiftRow(trip) {
     return {
+      id: trip.id,
+      status: 'business',
       miles: trip.miles,
       seconds: trip.seconds,
       hmrc: trip.hmrc,
@@ -237,7 +239,22 @@
     const unmigratedShifts = shifts.filter(function (s) {
       return !tripShiftIds.has(s.id) && (Number(s.miles) || 0) >= 0.01;
     });
-    const list = business.map(tripToShiftRow).concat(unmigratedShifts);
+    const list = business.map(tripToShiftRow).concat(
+      unmigratedShifts.map(function (s) {
+        return {
+          id: s.id,
+          status: 'business',
+          miles: s.miles,
+          seconds: s.seconds,
+          hmrc: s.hmrc,
+          vehicle: s.vehicle,
+          startISO: s.startISO,
+          endISO: s.endISO,
+          route: s.route || s.routePoints || [],
+          waitingSeconds: s.waitingSeconds || 0,
+        };
+      })
+    );
     const enriched =
       global.MPTaxEngine && list.length
         ? global.MPTaxEngine.enrichJourneysWithRecalculatedHmrc(list, inferVehicle(list))
@@ -277,10 +294,18 @@
     })[0];
   }
 
+  function requireTaxEngine() {
+    if (!global.MPTaxEngine) {
+      throw new Error('MPTaxEngine unavailable. Application initialisation error.');
+    }
+    return global.MPTaxEngine;
+  }
+
   function sumJourneys(list, periodOpts) {
     periodOpts = periodOpts || {};
-    if (global.MPTaxEngine && periodOpts.allJourneys && periodOpts.start && periodOpts.end) {
-      const totals = global.MPTaxEngine.periodClaimTotals(
+    const engine = requireTaxEngine();
+    if (periodOpts.allJourneys && periodOpts.start && periodOpts.end) {
+      const totals = engine.periodClaimTotals(
         periodOpts.allJourneys,
         periodOpts.start,
         periodOpts.end,
@@ -294,23 +319,10 @@
         list: totals.list,
       };
     }
-    if (global.MPTaxEngine) {
-      const summary = global.MPTaxEngine.sumRecalculatedClaims(
-        list,
-        periodOpts.defaultVehicle || inferVehicle(list)
-      );
-      return {
-        mi: list.reduce(function (a, b) {
-          return a + Number(b.miles || 0);
-        }, 0),
-        sec: list.reduce(function (a, b) {
-          return a + Number(b.seconds || 0);
-        }, 0),
-        hmrc: summary.hmrc,
-        journeys: list.length,
-        list: list,
-      };
-    }
+    const summary = engine.sumRecalculatedClaims(
+      list,
+      periodOpts.defaultVehicle || inferVehicle(list)
+    );
     return {
       mi: list.reduce(function (a, b) {
         return a + Number(b.miles || 0);
@@ -318,9 +330,7 @@
       sec: list.reduce(function (a, b) {
         return a + Number(b.seconds || 0);
       }, 0),
-      hmrc: list.reduce(function (a, b) {
-        return a + Number(b.hmrc || 0);
-      }, 0),
+      hmrc: summary.hmrc,
       journeys: list.length,
       list: list,
     };

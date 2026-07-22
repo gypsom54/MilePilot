@@ -19,17 +19,17 @@
 
   function buildDefaultDeps() {
     function claim(mi, v) {
-      if (global.MPTaxEngine) {
-        var vehicle = getVehicle();
-        var trips = global.MPTrips.loadTrips(vehicle, claim);
-        var shifts = [];
-        try {
-          shifts = JSON.parse(global.localStorage.getItem('mp_shifts') || '[]');
-        } catch (e) {}
-        var all = global.MPTaxEngine.collectBusinessJourneys(trips, shifts, vehicle);
-        return global.MPTaxEngine.claimMarginalPounds(mi, v || vehicle, all, new Date());
+      if (!global.MPTaxEngine) {
+        throw new Error('MPTaxEngine unavailable. Application initialisation error.');
       }
-      return (Number(mi) || 0) * 0.55;
+      var vehicle = getVehicle();
+      var trips = global.MPTrips.loadTrips(vehicle, claim);
+      var shifts = [];
+      try {
+        shifts = JSON.parse(global.localStorage.getItem('mp_shifts') || '[]');
+      } catch (e) {}
+      var all = global.MPTaxEngine.collectBusinessJourneys(trips, shifts, vehicle);
+      return global.MPTaxEngine.claimMarginalPounds(mi, v || vehicle, all, new Date());
     }
     function getVehicle() {
       try {
@@ -66,11 +66,11 @@
         }
       },
       getHmrcRate: function () {
-        if (global.MPTaxEngine) {
-          var ty = global.MPTaxEngine.getUkTaxYear(new Date());
-          return global.MPTaxEngine.displayRateForVehicle(ty.id, getVehicle());
+        if (!global.MPTaxEngine) {
+          throw new Error('MPTaxEngine unavailable. Application initialisation error.');
         }
-        return 0.55;
+        var ty = global.MPTaxEngine.getUkTaxYear(new Date());
+        return global.MPTaxEngine.displayRateForVehicle(ty.id, getVehicle());
       },
       fmt: function (sec) {
         var s = Math.max(0, Math.round(Number(sec) || 0));

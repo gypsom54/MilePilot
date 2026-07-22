@@ -27,11 +27,11 @@
   var pendingAction = null;
 
   function defaultClaim(mi, vehicle) {
-    if (global.MPTaxEngine) {
-      var all = global.MPTaxEngine.collectBusinessJourneys(getTrips(), getShifts(), vehicle || getVehicle());
-      return global.MPTaxEngine.claimMarginalPounds(mi, vehicle || getVehicle(), all, now());
+    if (!global.MPTaxEngine) {
+      throw new Error('MPTaxEngine unavailable. Application initialisation error.');
     }
-    return (Number(mi) || 0) * 0.55;
+    var all = global.MPTaxEngine.collectBusinessJourneys(getTrips(), getShifts(), vehicle || getVehicle());
+    return global.MPTaxEngine.claimMarginalPounds(mi, vehicle || getVehicle(), all, now());
   }
 
   function defaultFmt(sec) {
@@ -387,11 +387,11 @@
         fmt: (deps && deps.fmt) || defaultFmt,
         getHmrcRate: function () {
           if (deps && deps.getHmrcRate) return deps.getHmrcRate();
-          if (global.MPTaxEngine) {
-            var ty = global.MPTaxEngine.getUkTaxYear(now());
-            return global.MPTaxEngine.displayRateForVehicle(ty.id, getVehicle());
+          if (!global.MPTaxEngine) {
+            throw new Error('MPTaxEngine unavailable. Application initialisation error.');
           }
-          return 0.55;
+          var ty = global.MPTaxEngine.getUkTaxYear(now());
+          return global.MPTaxEngine.displayRateForVehicle(ty.id, getVehicle());
         },
       };
     },

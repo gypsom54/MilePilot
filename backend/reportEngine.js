@@ -888,7 +888,7 @@ export function buildDemoTestReport(email, driver = "") {
         ],
       },
     ],
-    hmrcRate: 0.55,
+    hmrcRate: MPTaxEngine.displayRateForVehicle(MPTaxEngine.getUkTaxYear(new Date()).id, "car"),
     isTest: true,
   };
 }

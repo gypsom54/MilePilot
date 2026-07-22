@@ -25,6 +25,12 @@ function createMockLocalStorage() {
   };
 }
 
+function loadTaxEngine(sandbox) {
+  const taxSrc = fs.readFileSync(path.join(root, "frontend/js/mp-tax-engine.js"), "utf8");
+  vm.runInNewContext(taxSrc, sandbox);
+  sandbox.MPTaxEngine = sandbox.window.MPTaxEngine;
+}
+
 function loadSummaryReports(ls) {
   const src = fs.readFileSync(path.join(root, "frontend/js/summary-reports.js"), "utf8");
   const sandbox = {
@@ -39,6 +45,7 @@ function loadSummaryReports(ls) {
     globalThis: {},
   };
   sandbox.window = sandbox.globalThis;
+  loadTaxEngine(sandbox);
   vm.runInNewContext(src, sandbox);
   return sandbox.window.MPSummaryReports;
 }

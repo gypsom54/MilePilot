@@ -9,6 +9,13 @@
   const STORAGE_KEY = 'mp_custom_report_cycle_day';
   const PRESET_MONTHLY_CYCLE = 'monthly-cycle';
 
+  function requireTaxEngine() {
+    if (!global.MPTaxEngine) {
+      throw new Error('MPTaxEngine unavailable. Application initialisation error.');
+    }
+    return global.MPTaxEngine;
+  }
+
   const MONTHS = {
     jan: 0, january: 0, feb: 1, february: 1, mar: 2, march: 2, apr: 3, april: 3,
     may: 4, jun: 5, june: 5, jul: 6, july: 6, aug: 7, august: 7,
@@ -377,8 +384,13 @@
     const mi = Number(shift.miles) || 0;
     const route = shift.route || shift.routePoints || [];
     const hmrc =
-      Number(shift.hmrc) ||
-      Number((typeof claimFn === 'function' ? claimFn(mi, v) : mi * 0.55).toFixed(2));
+      typeof claimFn === 'function'
+        ? Number(claimFn(mi, v).toFixed(2))
+        : Number(
+            requireTaxEngine()
+              .claimMarginalPounds(mi, v, [], shift.startISO || new Date())
+              .toFixed(2)
+          );
     return {
       id: shift.id,
       miles: mi,
@@ -491,7 +503,12 @@
       previousPeriod: { miles: 0, seconds: 0, hmrc: 0, journeys: 0 },
       previousWeek: { miles: 0, seconds: 0, hmrc: 0, journeys: 0 },
       weekShifts: [],
-      hmrcRate: opts.hmrcRate || 0.55,
+      hmrcRate:
+        opts.hmrcRate ||
+        requireTaxEngine().displayRateForVehicle(
+          requireTaxEngine().getUkTaxYear(new Date()).id,
+          opts.vehicle || 'car'
+        ),
       shifts: data.included,
       generatedAt: new Date().toISOString(),
     };

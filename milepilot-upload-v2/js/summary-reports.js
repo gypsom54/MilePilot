@@ -277,10 +277,18 @@
     })[0];
   }
 
+  function requireTaxEngine() {
+    if (!global.MPTaxEngine) {
+      throw new Error('MPTaxEngine unavailable. Application initialisation error.');
+    }
+    return global.MPTaxEngine;
+  }
+
   function sumJourneys(list, periodOpts) {
     periodOpts = periodOpts || {};
-    if (global.MPTaxEngine && periodOpts.allJourneys && periodOpts.start && periodOpts.end) {
-      const totals = global.MPTaxEngine.periodClaimTotals(
+    const engine = requireTaxEngine();
+    if (periodOpts.allJourneys && periodOpts.start && periodOpts.end) {
+      const totals = engine.periodClaimTotals(
         periodOpts.allJourneys,
         periodOpts.start,
         periodOpts.end,
@@ -294,23 +302,10 @@
         list: totals.list,
       };
     }
-    if (global.MPTaxEngine) {
-      const summary = global.MPTaxEngine.sumRecalculatedClaims(
-        list,
-        periodOpts.defaultVehicle || inferVehicle(list)
-      );
-      return {
-        mi: list.reduce(function (a, b) {
-          return a + Number(b.miles || 0);
-        }, 0),
-        sec: list.reduce(function (a, b) {
-          return a + Number(b.seconds || 0);
-        }, 0),
-        hmrc: summary.hmrc,
-        journeys: list.length,
-        list: list,
-      };
-    }
+    const summary = engine.sumRecalculatedClaims(
+      list,
+      periodOpts.defaultVehicle || inferVehicle(list)
+    );
     return {
       mi: list.reduce(function (a, b) {
         return a + Number(b.miles || 0);
@@ -318,9 +313,7 @@
       sec: list.reduce(function (a, b) {
         return a + Number(b.seconds || 0);
       }, 0),
-      hmrc: list.reduce(function (a, b) {
-        return a + Number(b.hmrc || 0);
-      }, 0),
+      hmrc: summary.hmrc,
       journeys: list.length,
       list: list,
     };
@@ -553,8 +546,8 @@
     });
     const prevTotals = sumJourneys(prevList, {
       allJourneys: collected.list,
-      start: prev.start,
-      end: prev.end,
+      start: prevRange.start,
+      end: prevRange.end,
     });
 
     return {

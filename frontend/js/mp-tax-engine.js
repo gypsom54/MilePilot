@@ -652,7 +652,15 @@
     });
   }
 
+  function requireTaxEngine() {
+    if (!global.MPTaxEngine) {
+      throw new Error('MPTaxEngine unavailable. Application initialisation error.');
+    }
+    return global.MPTaxEngine;
+  }
+
   global.MPTaxEngine = {
+    requireTaxEngine: requireTaxEngine,
     HMRC_RATE_TABLES: HMRC_RATE_TABLES,
     SUPPORTED_VEHICLES: SUPPORTED_VEHICLES,
     BUSINESS: BUSINESS,

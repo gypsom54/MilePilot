@@ -168,7 +168,12 @@
       previousWeek: prev || { miles: 0, seconds: 0, hmrc: 0, journeys: 0 },
       shifts: list,
       weekShifts: list,
-      hmrcRate: deps.getHmrcRate ? deps.getHmrcRate() : 0.55,
+      hmrcRate: (function () {
+        if (!deps.getHmrcRate) {
+          throw new Error('MPTaxEngine unavailable. Application initialisation error.');
+        }
+        return deps.getHmrcRate();
+      })(),
     };
   }
 

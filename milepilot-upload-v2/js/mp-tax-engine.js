@@ -487,8 +487,8 @@
         '.'
       );
     }
-    var firstRate = (summary.firstTierRatePence / 100).toFixed(0);
-    var secondRate = (summary.secondTierRatePence / 100).toFixed(0);
+    var firstRate = String(summary.firstTierRatePence);
+    var secondRate = String(summary.secondTierRatePence);
     if (summary.secondTierMiles > 0) {
       return (
         'You have recorded ' +
@@ -652,7 +652,15 @@
     });
   }
 
+  function requireTaxEngine() {
+    if (!global.MPTaxEngine) {
+      throw new Error('MPTaxEngine unavailable. Application initialisation error.');
+    }
+    return global.MPTaxEngine;
+  }
+
   global.MPTaxEngine = {
+    requireTaxEngine: requireTaxEngine,
     HMRC_RATE_TABLES: HMRC_RATE_TABLES,
     SUPPORTED_VEHICLES: SUPPORTED_VEHICLES,
     BUSINESS: BUSINESS,

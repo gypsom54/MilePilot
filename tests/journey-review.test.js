@@ -26,6 +26,7 @@ function createMockLocalStorage() {
 }
 
 function loadModules(ls) {
+  const taxSrc = fs.readFileSync(path.join(root, 'frontend/js/mp-tax-engine.js'), 'utf8');
   const tripSrc = fs.readFileSync(path.join(root, 'frontend/js/trip-store.js'), 'utf8');
   const reviewSrc = fs.readFileSync(path.join(root, 'frontend/js/journey-review.js'), 'utf8');
   const sandbox = {
@@ -36,6 +37,8 @@ function loadModules(ls) {
     Date,
   };
   sandbox.window = sandbox.globalThis;
+  vm.runInNewContext(taxSrc, sandbox);
+  sandbox.MPTaxEngine = sandbox.window.MPTaxEngine;
   vm.runInNewContext(tripSrc, sandbox);
   vm.runInNewContext(reviewSrc, sandbox);
   return { MPTrips: sandbox.window.MPTrips, MPJourneyReview: sandbox.window.MPJourneyReview };

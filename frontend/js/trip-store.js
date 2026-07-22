@@ -31,6 +31,13 @@
     ACTIVE: 'mp_active_trip',
   };
 
+  function requireTaxEngine() {
+    if (!global.MPTaxEngine) {
+      throw new Error('MPTaxEngine unavailable. Application initialisation error.');
+    }
+    return global.MPTaxEngine;
+  }
+
   function normaliseTrip(raw, vehicleDefault, claimFn) {
     const v = raw.vehicle || vehicleDefault || 'car';
     const mi = Number(raw.miles) || 0;
@@ -46,8 +53,8 @@
         hmrc = Number(raw.hmrc) || 0;
       } else if (typeof claimFn === 'function') {
         hmrc = Number(claimFn(mi, v).toFixed(2));
-      } else if (global.MPTaxEngine) {
-        hmrc = Number(global.MPTaxEngine.claimMarginalPounds(mi, v, [], startISO).toFixed(2));
+      } else {
+        hmrc = Number(requireTaxEngine().claimMarginalPounds(mi, v, [], startISO).toFixed(2));
       }
     }
     return {
@@ -156,12 +163,12 @@
       claimFn
     );
     if (status === TRIP_STATUS.BUSINESS) {
-      if (global.MPTaxEngine) {
-        next.hmrc = Number(
-          global.MPTaxEngine.hmrcForTripClassification(next, trips, vehicle || trip.vehicle).toFixed(2)
-        );
+      if (typeof claimFn === 'function') {
+        next.hmrc = Number(claimFn(next.miles, next.vehicle).toFixed(2));
       } else {
-        next.hmrc = Number((claimFn ? claimFn(next.miles, next.vehicle) : next.miles * 0.55).toFixed(2));
+        next.hmrc = Number(
+          requireTaxEngine().hmrcForTripClassification(next, trips, vehicle || trip.vehicle).toFixed(2)
+        );
       }
     } else {
       next.hmrc = 0;
@@ -187,20 +194,7 @@
 
   function sumBusinessTrips(trips, vehicleDefault) {
     const list = getBusinessTrips(trips);
-    if (global.MPTaxEngine) {
-      const summary = global.MPTaxEngine.sumRecalculatedClaims(list, vehicleDefault);
-      return {
-        mi: list.reduce(function (a, t) {
-          return a + t.miles;
-        }, 0),
-        sec: list.reduce(function (a, t) {
-          return a + t.seconds;
-        }, 0),
-        hmrc: summary.hmrc,
-        list: list,
-        journeys: list.length,
-      };
-    }
+    const summary = requireTaxEngine().sumRecalculatedClaims(list, vehicleDefault);
     return {
       mi: list.reduce(function (a, t) {
         return a + t.miles;
@@ -208,9 +202,7 @@
       sec: list.reduce(function (a, t) {
         return a + t.seconds;
       }, 0),
-      hmrc: list.reduce(function (a, t) {
-        return a + t.hmrc;
-      }, 0),
+      hmrc: summary.hmrc,
       list: list,
       journeys: list.length,
     };
