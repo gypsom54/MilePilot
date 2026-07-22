@@ -170,7 +170,8 @@
     if (homeRoot) homeRoot.hidden = true;
     if (toolRoot) toolRoot.hidden = false;
     paintTool(id);
-    global.window.scrollTo(0, 0);
+    var win = global.window || global;
+    if (win && typeof win.scrollTo === 'function') win.scrollTo(0, 0);
   }
 
   function mount() {

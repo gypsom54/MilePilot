@@ -236,16 +236,19 @@
   color: var(--mp-bw-text-muted);
   margin: 0;
 }
-.mp-bw-empty__action {
+.mp-bw-empty__status {
   margin-top: 8px;
-  border: 1px solid rgba(110, 180, 255, 0.28);
-  background: rgba(13, 107, 255, 0.12);
-  color: rgba(220, 235, 255, 0.95);
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 20px;
   border-radius: 14px;
-  padding: 12px 22px;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
-  cursor: default;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(158, 198, 255, 0.9);
+  background: rgba(13, 107, 255, 0.1);
+  border: 1px solid rgba(110, 180, 255, 0.22);
   pointer-events: none;
 }
 

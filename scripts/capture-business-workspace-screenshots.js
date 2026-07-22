@@ -89,6 +89,23 @@ async function main() {
   await page.waitForSelector('#business.active .mp-bw-tools', { timeout: 20000 });
   await page.screenshot({ path: path.join(OUT, '04-business-home-desktop.png'), fullPage: false });
 
+  await page.setViewport({ width: 375, height: 812, deviceScaleFactor: 2 });
+  await page.goto(`http://127.0.0.1:${PORT}/index.html`, { waitUntil: 'domcontentloaded' });
+  await seed(page);
+  await page.evaluate(() => window.showBusiness());
+  await page.waitForSelector('#business.active .mp-bw-ask', { timeout: 20000 });
+  await page.screenshot({ path: path.join(OUT, '05-business-home-375x812.png'), fullPage: true });
+
+  await page.setViewport({ width: 768, height: 1024, deviceScaleFactor: 2 });
+  await page.evaluate(() => window.showBusiness());
+  await page.waitForSelector('#business.active .mp-bw-tools', { timeout: 10000 });
+  await page.screenshot({ path: path.join(OUT, '06-business-home-768x1024.png'), fullPage: true });
+
+  await page.setViewport({ width: 1440, height: 900, deviceScaleFactor: 1 });
+  await page.evaluate(() => window.showBusiness());
+  await page.waitForSelector('#business.active .mp-bw-tools', { timeout: 10000 });
+  await page.screenshot({ path: path.join(OUT, '07-business-home-1440x900.png'), fullPage: false });
+
   await browser.close();
   server.close();
   console.log('Screenshots saved to', OUT);

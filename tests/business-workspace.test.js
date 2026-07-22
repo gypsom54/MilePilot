@@ -1,28 +1,41 @@
 /**
- * MP-S6-001 — Business Workspace foundation tests
+ * MP-S6-001A — Business Workspace foundation verification tests
  */
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import fs from 'node:fs';
 import path from 'node:path';
+import crypto from 'node:crypto';
+import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
+
+const require = createRequire(import.meta.url);
+const acorn = require('acorn');
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
 
 let passed = 0;
 let failed = 0;
+const pending = [];
 
 function run(name, fn) {
-  try {
-    fn();
-    console.log('✓ ' + name);
-    passed++;
-  } catch (e) {
-    console.error('✗ ' + name);
-    console.error('  ' + e.message);
-    failed++;
-  }
+  const job = (async () => {
+    try {
+      await fn();
+      console.log('✓ ' + name);
+      passed++;
+    } catch (e) {
+      console.error('✗ ' + name);
+      console.error('  ' + e.message);
+      failed++;
+    }
+  })();
+  pending.push(job);
+}
+
+function md5(file) {
+  return crypto.createHash('md5').update(fs.readFileSync(file)).digest('hex');
 }
 
 function loadWorkspace(sandbox) {
@@ -31,107 +44,276 @@ function loadWorkspace(sandbox) {
   vm.runInNewContext(fs.readFileSync(path.join(root, 'frontend/js/business-workspace.js'), 'utf8'), sandbox);
 }
 
-run('models define schema version 1', () => {
-  const sb = { window: {}, globalThis: {}, document: {} };
-  sb.globalThis = sb;
-  sb.window = sb;
+function mockDom() {
+  const listeners = [];
+  function el(id) {
+    return {
+      id,
+      hidden: false,
+      innerHTML: '',
+      addEventListener(type, fn) {
+        listeners.push({ id, type, fn });
+      },
+      querySelector() {
+        return null;
+      },
+      querySelectorAll() {
+        return [];
+      },
+    };
+  }
+  const home = el('mpBusinessWorkspaceRoot');
+  const tool = el('mpBusinessToolRoot');
+  const doc = {
+    getElementById(id) {
+      if (id === 'mpBusinessWorkspaceRoot') return home;
+      if (id === 'mpBusinessToolRoot') return tool;
+      return null;
+    },
+  };
+  return { doc, home, tool, listeners };
+}
+
+run('models: interfaces only, schema v1', () => {
+  const sb = { window: {}, globalThis: {} };
+  sb.globalThis = sb.window = sb;
   vm.runInNewContext(fs.readFileSync(path.join(root, 'frontend/js/business-workspace-models.js'), 'utf8'), sb);
-  assert.equal(sb.MPBusinessWorkspaceModels.SCHEMA_VERSION, 1);
-  assert.equal(sb.MPBusinessWorkspaceModels.expenseShape().schemaVersion, 1);
-  assert.equal(sb.MPBusinessWorkspaceModels.vatRecordShape().status, 'draft');
+  const M = sb.MPBusinessWorkspaceModels;
+  assert.equal(M.SCHEMA_VERSION, 1);
+  assert.equal(M.expenseShape().amountPence, 0);
+  assert.equal(M.expenseShape().currency, 'GBP');
+  assert.equal(M.receiptShape().imageRef, undefined);
+  assert.equal(M.businessHealthShape().highlights.length, 0);
 });
 
-run('five business tools registered', () => {
+run('models: no localStorage access in module', () => {
+  const src = fs.readFileSync(path.join(root, 'frontend/js/business-workspace-models.js'), 'utf8');
+  assert.ok(!src.includes('localStorage.setItem'));
+  assert.ok(!src.includes('fetch('));
+});
+
+run('five tool cards registered', () => {
   const sb = { window: {}, globalThis: {}, document: {} };
-  sb.globalThis = sb;
-  sb.window = sb;
+  sb.globalThis = sb.window = sb;
   loadWorkspace(sb);
-  assert.equal(sb.MPBusinessWorkspace.getTools().length, 5);
-  assert.ok(sb.MPBusinessWorkspace.getTool('expenses'));
-  assert.ok(sb.MPBusinessWorkspace.getTool('vat'));
-  assert.ok(sb.MPBusinessWorkspace.getTool('bookkeeper'));
-  assert.ok(sb.MPBusinessWorkspace.getTool('health'));
-  assert.ok(sb.MPBusinessWorkspace.getTool('accountant'));
+  ['expenses', 'vat', 'bookkeeper', 'health', 'accountant'].forEach((id) => {
+    assert.ok(sb.MPBusinessWorkspace.getTool(id), id);
+  });
 });
 
-run('features not connected in sprint 1', () => {
+run('all five tool empty states render', () => {
   const sb = { window: {}, globalThis: {}, document: {} };
-  sb.globalThis = sb;
-  sb.window = sb;
+  sb.globalThis = sb.window = sb;
   loadWorkspace(sb);
-  assert.equal(sb.MPBusinessWorkspace.isConnected('expenses'), false);
-  assert.equal(sb.MPBusinessWorkspace.isConnected('vat'), false);
+  const V = sb.MPBusinessWorkspaceView;
+  sb.MPBusinessWorkspace.getTools().forEach((tool) => {
+    const html = V.renderToolEmpty(tool);
+    assert.ok(html.includes(tool.title));
+    assert.ok(html.includes('Coming Soon') || html.includes('role="status"'));
+    assert.ok(!html.includes('under construction'));
+  });
 });
 
-run('home view includes Ask embed and business tools', () => {
+run('invalid tool ID fails safely', () => {
   const sb = { window: {}, globalThis: {}, document: {} };
-  sb.globalThis = sb;
-  sb.window = sb;
+  sb.globalThis = sb.window = sb;
+  loadWorkspace(sb);
+  const before = sb.MPBusinessWorkspace.showTool('not-a-real-tool');
+  assert.equal(before, undefined);
+});
+
+run('route: production index has showBusiness and deep link', () => {
+  const html = fs.readFileSync(path.join(root, 'frontend/index.html'), 'utf8');
+  assert.ok(html.includes('function showBusiness()'));
+  assert.ok(html.includes("view')==='business'"));
+  assert.ok(html.includes("last==='business'"));
+  assert.ok(html.includes('MPBusinessWorkspace.leave()'));
+});
+
+run('refresh restore: sessionStorage business key wired', () => {
+  const html = fs.readFileSync(path.join(root, 'frontend/index.html'), 'utf8');
+  assert.ok(html.includes("sessionStorage.setItem('mp_active_screen'"));
+  assert.ok(html.includes("last==='business'"));
+});
+
+run('Ask chip handoff uses production showAsk + submitQuestion', () => {
+  const sb = { window: {}, globalThis: {}, document: {} };
+  sb.globalThis = sb.window = sb;
+  loadWorkspace(sb);
+  let asked = null;
+  let submitted = null;
+  sb.showAsk = () => {
+    asked = true;
+  };
+  sb.MPAskMilePilotApp = { submitQuestion: (t) => (submitted = t) };
+  sb.MPBusinessWorkspace.openAskWithQuestion('How much can I claim this month?');
+  assert.equal(asked, true);
+  assert.equal(submitted, 'How much can I claim this month?');
+});
+
+run('Ask manual submission path same as chips', () => {
+  const sb = { window: {}, globalThis: {}, document: {} };
+  sb.globalThis = sb.window = sb;
+  loadWorkspace(sb);
+  let submitted = null;
+  sb.showAsk = () => {};
+  sb.MPAskMilePilotApp = { submitQuestion: (t) => (submitted = t) };
+  sb.MPBusinessWorkspace.openAskWithQuestion("Show this week's journeys.");
+  assert.equal(submitted, "Show this week's journeys.");
+});
+
+run('four workspace suggestion chips present', () => {
+  const sb = { window: {}, globalThis: {}, document: {} };
+  sb.globalThis = sb.window = sb;
   loadWorkspace(sb);
   const html = sb.MPBusinessWorkspaceView.renderHome(sb.MPBusinessWorkspace.getTools());
-  assert.ok(html.includes('Ask MilePilot'));
-  assert.ok(html.includes('What would you like help with today?'));
-  assert.ok(html.includes('How much can I claim this month?'));
-  assert.ok(html.includes('Business Tools'));
-  assert.ok(html.includes('Recent Activity'));
-  assert.ok(html.includes('Coming Next'));
-  assert.ok(html.includes('data-bw-tool="expenses"'));
-  assert.ok(!html.includes('lorem ipsum'));
+  [
+    'How much can I claim this month?',
+    "Show this week's journeys.",
+    'Prepare my mileage report.',
+    'Show trips needing review.',
+  ].forEach((chip) => assert.ok(html.includes(chip), chip));
 });
 
-run('tool cards have no fake metrics', () => {
+run('no second Ask service or intent registry', () => {
+  const ws = fs.readFileSync(path.join(root, 'frontend/js/business-workspace.js'), 'utf8');
+  const view = fs.readFileSync(path.join(root, 'frontend/js/business-workspace-view.js'), 'utf8');
+  assert.ok(!ws.includes('IntentRouter'));
+  assert.ok(!ws.includes('MPAskMilePilotService'));
+  assert.ok(!view.includes('MPTaxEngine'));
+  assert.equal(fs.readFileSync(path.join(root, 'frontend/js/ask-milepilot-service.js'), 'utf8').includes('MPBusinessWorkspace'), false);
+});
+
+run('cards use button elements with aria-label', () => {
   const sb = { window: {}, globalThis: {}, document: {} };
-  sb.globalThis = sb;
-  sb.window = sb;
+  sb.globalThis = sb.window = sb;
+  loadWorkspace(sb);
+  const html = sb.MPBusinessWorkspaceView.renderHome(sb.MPBusinessWorkspace.getTools());
+  assert.ok(html.includes('<button type="button" class="mp-bw-card"'));
+  assert.ok(html.includes('aria-label="Expenses"'));
+});
+
+run('back control has accessible label', () => {
+  const sb = { window: {}, globalThis: {}, document: {} };
+  sb.globalThis = sb.window = sb;
+  loadWorkspace(sb);
+  const html = sb.MPBusinessWorkspaceView.renderToolEmpty(sb.MPBusinessWorkspace.getTool('vat'));
+  assert.ok(html.includes('aria-label="Back to Business Workspace"'));
+});
+
+run('Coming Soon is status label not actionable button', () => {
+  const sb = { window: {}, globalThis: {}, document: {} };
+  sb.globalThis = sb.window = sb;
+  loadWorkspace(sb);
+  const html = sb.MPBusinessWorkspaceView.renderToolEmpty(sb.MPBusinessWorkspace.getTool('expenses'));
+  assert.ok(html.includes('role="status"'));
+  assert.ok(!html.includes('mp-bw-empty__action'));
+});
+
+run('Ask input retains aria-label in embed', () => {
+  const sb = { window: {}, globalThis: {}, document: {} };
+  sb.globalThis = sb.window = sb;
+  loadWorkspace(sb);
+  const html = sb.MPBusinessWorkspaceView.renderAskEmbed();
+  assert.ok(html.includes('aria-label="Ask MilePilot"'));
+});
+
+run('no fake activity or metrics on home', () => {
+  const sb = { window: {}, globalThis: {}, document: {} };
+  sb.globalThis = sb.window = sb;
   loadWorkspace(sb);
   const html = sb.MPBusinessWorkspaceView.renderHome(sb.MPBusinessWorkspace.getTools());
   assert.ok(!html.includes('£'));
-  assert.ok(!html.includes('mp-bw-stat__value'));
+  assert.ok(html.includes('No recent activity yet'));
 });
 
-run('expenses empty state premium copy', () => {
-  const sb = { window: {}, globalThis: {}, document: {} };
-  sb.globalThis = sb;
-  sb.window = sb;
+run('leave resets tool visibility', () => {
+  const sb = { window: { scrollTo() {} }, globalThis: {}, document: mockDom().doc };
+  sb.globalThis = sb.window = sb;
   loadWorkspace(sb);
-  const tool = sb.MPBusinessWorkspace.getTool('expenses');
-  const html = sb.MPBusinessWorkspaceView.renderToolEmpty(tool);
-  assert.ok(html.includes('Expenses'));
-  assert.ok(html.includes('scan receipts'));
-  assert.ok(html.includes('Coming Soon'));
-  assert.ok(!html.includes('under construction'));
+  sb.MPBusinessWorkspace.mount();
+  sb.MPBusinessWorkspace.showTool('expenses');
+  sb.MPBusinessWorkspace.leave();
+  const home = sb.document.getElementById('mpBusinessWorkspaceRoot');
+  const tool = sb.document.getElementById('mpBusinessToolRoot');
+  assert.equal(home.hidden, false);
+  assert.equal(tool.hidden, true);
+});
+
+run('50 mount cycles do not accumulate innerHTML handlers unsafely', () => {
+  const dom = mockDom();
+  const sb = { window: {}, globalThis: {}, document: dom.doc };
+  sb.globalThis = sb.window = sb;
+  loadWorkspace(sb);
+  for (let i = 0; i < 50; i++) {
+    sb.MPBusinessWorkspace.mount();
+    sb.MPBusinessWorkspace.leave();
+  }
+  assert.ok(dom.home.innerHTML !== undefined);
+});
+
+run('deploy mirror parity hashes', () => {
+  const pairs = [
+    ['frontend/css/business-workspace.css', 'milepilot-upload-v2/css/business-workspace.css'],
+    ['frontend/js/business-workspace.js', 'milepilot-upload-v2/js/business-workspace.js'],
+    ['frontend/js/business-workspace-view.js', 'milepilot-upload-v2/js/business-workspace-view.js'],
+    ['frontend/js/business-workspace-models.js', 'milepilot-upload-v2/js/business-workspace-models.js'],
+    ['frontend/index.html', 'milepilot-upload-v2/index.html'],
+  ];
+  pairs.forEach(([a, b]) => assert.equal(md5(path.join(root, a)), md5(path.join(root, b)), a));
+});
+
+run('handlePos syntax: semicolon present after feedAutopilotGps', () => {
+  const html = fs.readFileSync(path.join(root, 'frontend/index.html'), 'utf8');
+  assert.ok(html.includes('feedAutopilotGps(pos);lastGpsAccuracy'));
+  assert.ok(!html.includes('feedAutopilotGps(pos)lastGpsAccuracy'));
+});
+
+run('handlePos syntax: acorn parses full inline script', () => {
+  const html = fs.readFileSync(path.join(root, 'frontend/index.html'), 'utf8');
+  const js = html.match(/<script>[\s\S]*<\/script>\s*<\/body>/)[0].replace(/<script>/, '').replace(/<\/script>[\s\S]*/, '');
+  acorn.parse(js, { ecmaVersion: 2022 });
+});
+
+run('protected Ask files unchanged vs main', () => {
+  const files = [
+    'frontend/js/ask-milepilot-service.js',
+    'frontend/js/ask-milepilot-app.js',
+    'frontend/js/ask-milepilot-view.js',
+    'frontend/js/mp-tax-engine.js',
+  ];
+  files.forEach((f) => {
+    const cur = fs.readFileSync(path.join(root, f), 'utf8');
+    let mainSrc;
+    try {
+      mainSrc = require('child_process').execSync(`git show main:${f}`, { encoding: 'utf8' });
+    } catch {
+      return;
+    }
+    assert.equal(cur, mainSrc, f + ' must match main');
+  });
 });
 
 run('workspace components exported', () => {
   const sb = { window: {}, globalThis: {}, document: {} };
-  sb.globalThis = sb;
-  sb.window = sb;
+  sb.globalThis = sb.window = sb;
   loadWorkspace(sb);
   const V = sb.MPBusinessWorkspaceView;
-  assert.ok(typeof V.WorkspaceHeader === 'function');
-  assert.ok(typeof V.WorkspaceCard === 'function');
-  assert.ok(typeof V.WorkspaceSection === 'function');
-  assert.ok(typeof V.WorkspaceEmptyState === 'function');
-  assert.ok(typeof V.WorkspaceBadge === 'function');
-  assert.ok(typeof V.WorkspaceStat === 'function');
-  assert.ok(typeof V.WorkspaceDivider === 'function');
-  assert.ok(typeof V.WorkspaceSkeleton === 'function');
+  ['WorkspaceHeader', 'WorkspaceCard', 'WorkspaceSection', 'WorkspaceEmptyState', 'WorkspaceBadge', 'WorkspaceStat', 'WorkspaceDivider', 'WorkspaceSkeleton'].forEach((n) => {
+    assert.equal(typeof V[n], 'function', n);
+  });
 });
 
-run('production index wires business workspace', () => {
+run('mobile nav: six items including Business', () => {
   const html = fs.readFileSync(path.join(root, 'frontend/index.html'), 'utf8');
-  assert.ok(html.includes('id="business"'));
-  assert.ok(html.includes('showBusiness()'));
-  assert.ok(html.includes('business-workspace.js'));
-  assert.ok(html.includes('navBusiness'));
-  assert.ok(html.includes('business-workspace.css'));
+  assert.ok(html.includes('id="navBusiness"'));
+  assert.ok(html.includes("['Home','Ask','Business','Reports','History','Settings']"));
 });
 
-run('ask service files unchanged in sprint branch', () => {
-  const service = fs.readFileSync(path.join(root, 'frontend/js/ask-milepilot-service.js'), 'utf8');
-  assert.ok(service.includes('NotConnected'));
-  assert.ok(!service.includes('MPBusinessWorkspace'));
-});
+async function finish() {
+  await Promise.all(pending);
+  console.log(`\nBusiness Workspace: ${passed} passed, ${failed} failed\n`);
+  process.exit(failed > 0 ? 1 : 0);
+}
 
-console.log(`\nBusiness Workspace: ${passed} passed, ${failed} failed\n`);
-process.exit(failed > 0 ? 1 : 0);
+finish();

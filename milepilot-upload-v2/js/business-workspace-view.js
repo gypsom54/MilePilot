@@ -133,9 +133,9 @@
       escapeHtml(opts.body || '') +
       '</p>' +
       (opts.buttonLabel
-        ? '<button type="button" class="mp-bw-empty__action" disabled aria-disabled="true">' +
+        ? '<p class="mp-bw-empty__status" role="status">' +
           escapeHtml(opts.buttonLabel) +
-          '</button>'
+          '</p>'
         : '') +
       '</div>'
     );
