@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
-<title>MilePilot Ask MilePilot — MP-S4-002 Preview (dev only)</title>
+<title>MilePilot Ask MilePilot — MP-S5 Preview (dev only)</title>
 <link rel="stylesheet" href="css/mp-design-system.css">
 <style>
   html, body { margin: 0; min-height: 100%; background: #020b1b; overflow-x: hidden; }
@@ -12,8 +12,16 @@
 </style>
 </head>
 <body>
-<div id="mpAskShellRoot" class="mp-ds-root"></div>
+<div id="mpAskShellRoot" class="mp-ds-root" data-ask-live="1"></div>
+<script src="js/trip-store.js"></script>
+<script src="js/custom-period-report.js"></script>
+<script src="js/summary-reports.js"></script>
+<script src="js/tracking-mode.js"></script>
+<script src="js/autopilot-motion.js"></script>
+<script src="js/ask-milepilot-service.js"></script>
+<script src="js/ask-milepilot-view.js"></script>
 <script src="js/ask-milepilot-shell.js"></script>
-<script>MPAskMilePilotShell.mount();</script>
+<script src="js/ask-milepilot-app.js"></script>
+<script>MPAskMilePilotApp.mount();</script>
 </body>
 </html>
