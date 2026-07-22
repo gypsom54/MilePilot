@@ -32,3 +32,11 @@
 /docs/PRODUCTION_MONITORING_PLAN.md @gypsom54
 /docs/BRANCH_PROTECTION.md @gypsom54
 /.github/workflows/production-guard.yml @gypsom54
+
+# BUSINESS CRITICAL — HMRC Tax Engine (MP-044 / MP-044B — LOCKED)
+/frontend/js/mp-tax-engine.js @gypsom54
+/backend/mpTaxEngine.js @gypsom54
+/tests/mp-tax-engine.test.js @gypsom54
+/docs/MP-044-ENGINE-LOCK.md @gypsom54
+/docs/adr/001-mp-tax-engine-single-source-of-truth.md @gypsom54
+/milepilot-upload-v2/js/mp-tax-engine.js @gypsom54

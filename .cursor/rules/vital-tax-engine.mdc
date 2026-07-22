@@ -1,0 +1,33 @@
+---
+description: BUSINESS CRITICAL — MPTaxEngine is the sole HMRC mileage calculation engine. Do not duplicate rates or calculate claims outside the engine.
+globs:
+  - frontend/js/mp-tax-engine.js
+  - backend/mpTaxEngine.js
+  - tests/mp-tax-engine.test.js
+  - docs/MP-044-ENGINE-LOCK.md
+  - docs/adr/001-mp-tax-engine-single-source-of-truth.md
+alwaysApply: false
+---
+
+# VITAL: HMRC Tax Engine (MP-044 / MP-044B — LOCKED)
+
+**MPTaxEngine is the single source of truth for all mileage claim calculations.**
+
+## Rules for agents and developers
+
+1. **Do NOT** implement `miles × rate`, `0.55` fallbacks, or local `VEHICLE_RATES` tables outside `mp-tax-engine.js`.
+2. **Do NOT** display stored `trip.hmrc` / `shift.hmrc` as authoritative totals — recalculate via the engine.
+3. **Do NOT** modify engine tax-year rules, threshold logic, or rate tables without explicit product approval.
+4. **All consumers** (dashboard, reports, PDF, email, Ask MilePilot, future features) must call `MPTaxEngine` helpers.
+5. **HMRC changes** — extend versioned `HMRC_RATE_TABLES` in the engine only; never patch consumers.
+6. Before intentional engine changes: run `npm run test:tax-engine` and `npm run test:vital`.
+
+## Protected capabilities
+
+- `HMRC_RATE_TABLES` — sole production rate table
+- `claimMarginalPounds`, `periodClaimTotals`, `sumRecalculatedClaims`
+- `requireTaxEngine()` — missing engine must throw, not fall back
+
+## ADR
+
+`docs/adr/001-mp-tax-engine-single-source-of-truth.md`

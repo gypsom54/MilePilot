@@ -173,6 +173,30 @@ See `docs/MILEAGE_REGRESSION_CHECKLIST.md` for the full regression checklist and
 
 ---
 
+## 13. HMRC Tax Engine (MP-044 / MP-044B — VITAL, LOCKED)
+
+| File | Responsibility |
+|------|----------------|
+| `frontend/js/mp-tax-engine.js` | **Sole** HMRC rate tables, tax-year resolver, threshold splitting, claim calculators |
+| `backend/mpTaxEngine.js` | Node ESM adapter — loads frontend engine as single source of truth |
+| `tests/mp-tax-engine.test.js` | 25-test regression matrix |
+
+**Contract:** All mileage claim calculations must route through `MPTaxEngine`.  
+**Docs:** `docs/MP-044-ENGINE-LOCK.md` · `docs/adr/001-mp-tax-engine-single-source-of-truth.md`  
+**Agent rule:** `.cursor/rules/vital-tax-engine.mdc`
+
+### Must-not-regress behaviours
+
+- Versioned rate tables per UK tax year (2025-26, 2026-27, …)
+- 10,000-mile threshold applied chronologically per tax year / vehicle type
+- Integer pence internally; no silent `miles × rate` fallbacks
+- `requireTaxEngine()` throws if engine script failed to load
+- Stored `trip.hmrc` / `shift.hmrc` not used as display authority
+
+**Test coverage:** `npm run test:tax-engine` (25 tests), included in `npm run test:vital`
+
+---
+
 ## Change checklist
 
 Before merging any PR that touches files in §1–§9:
