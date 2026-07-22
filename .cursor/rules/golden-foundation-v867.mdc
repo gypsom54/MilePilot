@@ -1,0 +1,40 @@
+---
+description: PERMANENT — MilePilot v8.43.67 golden foundation rules. Always apply. Audit before edit; one objective per task; never touch protected engine code during UI work.
+alwaysApply: true
+---
+
+# MilePilot Golden Foundation (v8.43.67)
+
+**Base version:** v8.43.67 · branch `cursor/restore-validated-flow-e91d`  
+**Docs:** `docs/DEVELOPMENT_RULES.md`
+
+## Non-negotiable
+
+1. Never modify unrelated files.
+2. Never perform broad refactors.
+3. Never rewrite working logic for cleanliness.
+4. Never change native tracking, background location, motion detection, trip completion, reports, permissions, or email delivery during UI work.
+5. Never replace complete files unless explicitly authorised.
+6. Never invent new copy, screens, routes, or functionality.
+7. Never combine multiple objectives into one implementation.
+8. Never report success without: files changed, exact behaviour changed, tests performed, protected systems untouched.
+9. If protected engine code must be touched — STOP and explain why before editing.
+10. Preserve a rollback point before every implementation.
+
+## Workflow (mandatory)
+
+Audit → Report → **Receive approval** → Implement **one** objective → Test → Screenshots → Approve → Lock → Move on.
+
+The user-facing app must **never** be left partially functioning.
+
+## Protected (STOP unless user explicitly requests)
+
+- `src/nativeTrackingEngine.js`, `src/nativeAutopilot.js`, `src/nativeAutoEnd.js`, `src/locationTask.js`, `src/expoLocationBridge.js`
+- Tracking block in `frontend/index.html`
+- `frontend/js/autopilot-motion.js`, `frontend/js/trip-auto-end.js`, `frontend/js/summary-reports.js`
+- `backend/reportEngine.js`, `backend/server.js` (email/report routes)
+- `scripts/tracking-contract.json`, `scripts/home-ui-contract.json`
+
+## Before editing
+
+Read `docs/DEVELOPMENT_RULES.md`. State which files you will touch and which protected systems you will NOT touch. Wait for approval on non-trivial tasks.
