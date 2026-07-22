@@ -57,7 +57,46 @@
     });
   }
 
-  function sumList(list) {
+  function sumListForPeriod(list, allJourneys, start, end) {
+    return sumList(list, {
+      allJourneys: allJourneys,
+      start: start,
+      end: end,
+      defaultVehicle: list[0] && list[0].vehicle,
+    });
+  }
+
+  function sumList(list, periodOpts) {
+    periodOpts = periodOpts || {};
+    if (global.MPTaxEngine && periodOpts.allJourneys && periodOpts.start && periodOpts.end) {
+      const totals = global.MPTaxEngine.periodClaimTotals(
+        periodOpts.allJourneys,
+        periodOpts.start,
+        periodOpts.end,
+        periodOpts.defaultVehicle || "car"
+      );
+      return {
+        miles: totals.mi,
+        sec: totals.sec,
+        hmrc: totals.hmrc,
+        journeys: totals.journeys,
+        list: totals.list,
+      };
+    }
+    if (global.MPTaxEngine) {
+      const summary = global.MPTaxEngine.sumRecalculatedClaims(list, periodOpts.defaultVehicle || "car");
+      return {
+        miles: list.reduce(function (a, b) {
+          return a + Number(b.miles || 0);
+        }, 0),
+        sec: list.reduce(function (a, b) {
+          return a + Number(b.seconds || 0);
+        }, 0),
+        hmrc: summary.hmrc,
+        journeys: list.length,
+        list: list,
+      };
+    }
     return {
       miles: list.reduce(function (a, b) {
         return a + Number(b.miles || 0);
@@ -79,6 +118,25 @@
       return t.status === "business";
     });
     if (business.length) {
+      const shifts = typeof deps.getShifts === "function" ? deps.getShifts() : [];
+      const vehicle =
+        (business[0] && business[0].vehicle) ||
+        (typeof deps.getVehicle === "function" ? deps.getVehicle() : "car");
+      if (global.MPTaxEngine) {
+        const all = global.MPTaxEngine.collectBusinessJourneys(trips, shifts, vehicle);
+        return global.MPTaxEngine.enrichJourneysWithRecalculatedHmrc(all, vehicle).map(function (t) {
+          return {
+            id: t.id,
+            miles: t.miles,
+            seconds: t.seconds,
+            hmrc: t.hmrc,
+            vehicle: t.vehicle,
+            startISO: t.startISO,
+            endISO: t.endISO,
+            route: t.route || t.routePoints || [],
+          };
+        });
+      }
       return business.map(function (t) {
         return {
           miles: t.miles,
@@ -110,7 +168,12 @@
       previousWeek: prev || { miles: 0, seconds: 0, hmrc: 0, journeys: 0 },
       shifts: list,
       weekShifts: list,
-      hmrcRate: deps.getHmrcRate ? deps.getHmrcRate() : 0.55,
+      hmrcRate: (function () {
+        if (!deps.getHmrcRate) {
+          throw new Error('MPTaxEngine unavailable. Application initialisation error.');
+        }
+        return deps.getHmrcRate();
+      })(),
     };
   }
 
@@ -141,7 +204,7 @@
     const tomorrow = new Date(todayStart);
     tomorrow.setDate(tomorrow.getDate() + 1);
     const todayList = journeysInRange(list, todayStart, tomorrow);
-    const todayTotals = sumList(todayList);
+    const todayTotals = sumListForPeriod(todayList, list, todayStart, tomorrow);
     if (todayTotals.journeys && dismissed.indexOf("syn_today") < 0) {
       entries.push(
         syntheticEntry(
@@ -160,7 +223,7 @@
     const yStart = new Date(todayStart);
     yStart.setDate(yStart.getDate() - 1);
     const yList = journeysInRange(list, yStart, todayStart);
-    const yTotals = sumList(yList);
+    const yTotals = sumListForPeriod(yList, list, yStart, todayStart);
     if (yTotals.journeys && dismissed.indexOf("syn_yesterday") < 0) {
       entries.push(
         syntheticEntry(
@@ -181,7 +244,7 @@
     const weekEnd = new Date(weekStart);
     weekEnd.setDate(weekEnd.getDate() + 7);
     const weekList = journeysInRange(list, weekStart, weekEnd);
-    const weekTotals = sumList(weekList);
+    const weekTotals = sumListForPeriod(weekList, list, weekStart, weekEnd);
     if (weekTotals.journeys && dismissed.indexOf("syn_this_week") < 0) {
       entries.push(
         syntheticEntry(
@@ -201,7 +264,7 @@
     const lastWeekStart = new Date(lastWeekEnd);
     lastWeekStart.setDate(lastWeekStart.getDate() - 7);
     const lwList = journeysInRange(list, lastWeekStart, lastWeekEnd);
-    const lwTotals = sumList(lwList);
+    const lwTotals = sumListForPeriod(lwList, list, lastWeekStart, lastWeekEnd);
     if (lwTotals.journeys && dismissed.indexOf("syn_last_week") < 0) {
       const label = "Week ending " + new Date(lastWeekEnd.getTime() - 86400000).toLocaleDateString("en-GB", { day: "numeric", month: "short" });
       entries.push(
@@ -221,7 +284,7 @@
     const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
     const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 1);
     const monthList = journeysInRange(list, monthStart, monthEnd);
-    const monthTotals = sumList(monthList);
+    const monthTotals = sumListForPeriod(monthList, list, monthStart, monthEnd);
     if (monthTotals.journeys && dismissed.indexOf("syn_this_month") < 0) {
       entries.push(
         syntheticEntry(
@@ -240,7 +303,7 @@
     const prevMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
     const prevMonthEnd = new Date(now.getFullYear(), now.getMonth(), 1);
     const pmList = journeysInRange(list, prevMonthStart, prevMonthEnd);
-    const pmTotals = sumList(pmList);
+    const pmTotals = sumListForPeriod(pmList, list, prevMonthStart, prevMonthEnd);
     if (pmTotals.journeys && dismissed.indexOf("syn_last_month") < 0) {
       entries.push(
         syntheticEntry(

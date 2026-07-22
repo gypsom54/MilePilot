@@ -198,27 +198,26 @@
       );
     });
     const list = businessTrips.slice();
-    let mi = businessTrips.reduce(function (a, t) {
-      return a + (Number(t.miles) || 0);
-    }, 0);
-    let sec = businessTrips.reduce(function (a, t) {
-      return a + (Number(t.seconds) || 0);
-    }, 0);
-    let hmrc = businessTrips.reduce(function (a, t) {
-      return a + (Number(t.hmrc) || 0);
-    }, 0);
     legacyShifts.forEach(function (s) {
-      mi += Number(s.miles) || 0;
-      sec += Number(s.seconds) || 0;
-      hmrc += Number(s.hmrc) || 0;
       list.push(s);
     });
+    if (!global.MPTaxEngine) {
+      throw new Error('MPTaxEngine unavailable. Application initialisation error.');
+    }
+    const dayStart = new Date(date);
+    dayStart.setHours(0, 0, 0, 0);
+    const dayEnd = new Date(dayStart);
+    dayEnd.setDate(dayEnd.getDate() + 1);
+    const all = global.MPTaxEngine.collectBusinessJourneys(trips, shifts);
+    const defaultVehicle =
+      all.length && all[0].vehicle ? all[0].vehicle : trips[0]?.vehicle || shifts[0]?.vehicle || 'car';
+    const totals = global.MPTaxEngine.periodClaimTotals(all, dayStart, dayEnd, defaultVehicle);
     return {
-      mi: mi,
-      sec: sec,
-      hmrc: hmrc,
-      journeys: list.length,
-      list: list,
+      mi: totals.mi,
+      sec: totals.sec,
+      hmrc: totals.hmrc,
+      journeys: totals.journeys,
+      list: totals.list.length ? totals.list : list,
       pending: tripsNeedingReview(trips, date).length,
     };
   }

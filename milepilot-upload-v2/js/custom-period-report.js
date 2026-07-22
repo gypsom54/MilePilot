@@ -9,6 +9,13 @@
   const STORAGE_KEY = 'mp_custom_report_cycle_day';
   const PRESET_MONTHLY_CYCLE = 'monthly-cycle';
 
+  function requireTaxEngine() {
+    if (!global.MPTaxEngine) {
+      throw new Error('MPTaxEngine unavailable. Application initialisation error.');
+    }
+    return global.MPTaxEngine;
+  }
+
   const MONTHS = {
     jan: 0, january: 0, feb: 1, february: 1, mar: 2, march: 2, apr: 3, april: 3,
     may: 4, jun: 5, june: 5, jul: 6, july: 6, aug: 7, august: 7,
@@ -315,15 +322,32 @@
       });
     }
 
-    const mi = included.reduce(function (a, j) {
+    let mi = included.reduce(function (a, j) {
       return a + Number(j.miles || 0);
     }, 0);
-    const sec = included.reduce(function (a, j) {
+    let sec = included.reduce(function (a, j) {
       return a + Number(j.seconds || 0);
     }, 0);
-    const hmrc = included.reduce(function (a, j) {
+    let hmrc = included.reduce(function (a, j) {
       return a + Number(j.hmrc || 0);
     }, 0);
+
+    if (global.MPTaxEngine) {
+      const all = global.MPTaxEngine.collectBusinessJourneys(trips, shifts, vehicle);
+      const enriched = global.MPTaxEngine.enrichJourneysWithRecalculatedHmrc(all, vehicle);
+      const periodRows = enriched.filter(function (j) {
+        return journeyInRange(j, start, end);
+      });
+      const totals = global.MPTaxEngine.periodClaimTotals(all, start, end, vehicle);
+      included = periodRows.map(function (t) {
+        return journeyToReportRow(t);
+      });
+      mi = totals.mi;
+      sec = periodRows.reduce(function (a, j) {
+        return a + Number(j.seconds || 0);
+      }, 0);
+      hmrc = totals.hmrc;
+    }
     const waitingSec = included.reduce(function (a, j) {
       return a + Number(j.waitingSeconds || 0);
     }, 0);
@@ -360,8 +384,13 @@
     const mi = Number(shift.miles) || 0;
     const route = shift.route || shift.routePoints || [];
     const hmrc =
-      Number(shift.hmrc) ||
-      Number((typeof claimFn === 'function' ? claimFn(mi, v) : mi * 0.55).toFixed(2));
+      typeof claimFn === 'function'
+        ? Number(claimFn(mi, v).toFixed(2))
+        : Number(
+            requireTaxEngine()
+              .claimMarginalPounds(mi, v, [], shift.startISO || new Date())
+              .toFixed(2)
+          );
     return {
       id: shift.id,
       miles: mi,
@@ -474,7 +503,12 @@
       previousPeriod: { miles: 0, seconds: 0, hmrc: 0, journeys: 0 },
       previousWeek: { miles: 0, seconds: 0, hmrc: 0, journeys: 0 },
       weekShifts: [],
-      hmrcRate: opts.hmrcRate || 0.55,
+      hmrcRate:
+        opts.hmrcRate ||
+        requireTaxEngine().displayRateForVehicle(
+          requireTaxEngine().getUkTaxYear(new Date()).id,
+          opts.vehicle || 'car'
+        ),
       shifts: data.included,
       generatedAt: new Date().toISOString(),
     };

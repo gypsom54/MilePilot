@@ -19,6 +19,7 @@
  */
 
 import PDFDocument from "pdfkit";
+import { MPTaxEngine } from "./mpTaxEngine.js";
 import { createHash } from "crypto";
 import {
   buildRouteMapContext,
@@ -43,10 +44,10 @@ export const BRAND = {
 };
 
 export const VEHICLE_RATES = {
-  car: 0.55,
-  van: 0.55,
-  bicycle: 0.2,
-  motorcycle: 0.24,
+  car: MPTaxEngine.displayRateForVehicle(MPTaxEngine.getUkTaxYear(new Date()).id, "car"),
+  van: MPTaxEngine.displayRateForVehicle(MPTaxEngine.getUkTaxYear(new Date()).id, "van"),
+  bicycle: MPTaxEngine.displayRateForVehicle(MPTaxEngine.getUkTaxYear(new Date()).id, "bicycle"),
+  motorcycle: MPTaxEngine.displayRateForVehicle(MPTaxEngine.getUkTaxYear(new Date()).id, "motorcycle"),
 };
 
 export const VEHICLE_LABELS = {
@@ -190,14 +191,28 @@ function primaryVehicle(shifts) {
 }
 
 function hmrcRateForShifts(shifts) {
-  return VEHICLE_RATES[primaryVehicle(shifts)] || 0.55;
+  const v = primaryVehicle(shifts);
+  const ref = shifts[0]?.startISO || new Date();
+  const ty = MPTaxEngine.getUkTaxYear(ref);
+  return MPTaxEngine.displayRateForVehicle(ty.id, v);
 }
 
 function sumShifts(list) {
+  const vehicle = primaryVehicle(list);
+  const journeys = list.map((s) => ({
+    id: s.id,
+    status: "business",
+    miles: s.miles,
+    vehicle: s.vehicle || vehicle,
+    startISO: s.startISO,
+    hmrc: s.hmrc,
+    seconds: s.seconds,
+  }));
+  const summary = MPTaxEngine.sumRecalculatedClaims(journeys, vehicle);
   return {
     mi: list.reduce((a, b) => a + Number(b.miles || 0), 0),
     sec: list.reduce((a, b) => a + Number(b.seconds || 0), 0),
-    hmrc: list.reduce((a, b) => a + Number(b.hmrc || 0), 0),
+    hmrc: summary.hmrc,
     journeys: list.length,
   };
 }
@@ -842,7 +857,15 @@ export function buildDemoTestReport(email, driver = "") {
   end.setMinutes(end.getMinutes() + 47);
   const miles = 12.4;
   const seconds = 47 * 60;
-  const hmrc = Math.round(miles * 0.55 * 100) / 100;
+  const shift = {
+    miles,
+    seconds,
+    vehicle: "car",
+    startISO: start.toISOString(),
+    endISO: end.toISOString(),
+    status: "business",
+  };
+  const hmrc = MPTaxEngine.sumRecalculatedClaims([shift], "car").hmrc;
 
   return {
     email,
@@ -865,7 +888,7 @@ export function buildDemoTestReport(email, driver = "") {
         ],
       },
     ],
-    hmrcRate: 0.55,
+    hmrcRate: MPTaxEngine.displayRateForVehicle(MPTaxEngine.getUkTaxYear(new Date()).id, "car"),
     isTest: true,
   };
 }
