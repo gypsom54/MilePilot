@@ -9,6 +9,7 @@ cp "$ROOT/frontend/index.html" "$ROOT/frontend/version.txt" "$ROOT/frontend/serv
    "$ROOT/frontend/manifest.json" "$ROOT/frontend/icon.svg" "$ROOT/milepilot-upload-v2/"
 mkdir -p "$ROOT/milepilot-upload-v2/js"
 cp "$ROOT/frontend/js/"*.js "$ROOT/milepilot-upload-v2/js/" 2>/dev/null || true
+rm -f "$ROOT/milepilot-upload-v2/js/design-system-preview.js"
 if [ -d "$ROOT/frontend/css" ]; then
   mkdir -p "$ROOT/milepilot-upload-v2/css"
   cp "$ROOT/frontend/css/"*.css "$ROOT/milepilot-upload-v2/css/" 2>/dev/null || true
@@ -19,6 +20,7 @@ node "$ROOT/scripts/verify-home-ui-contract.js"
 node "$ROOT/tests/native-autopilot.test.js"
 cd "$ROOT/milepilot-upload-v2"
 ZIP="$ROOT/MilePilot-v${VERSION}-CLOUDFLARE-UPLOAD.zip"
+rm -f "$ZIP"
 zip -r "$ZIP" .
 echo "Built $ZIP"
 grep "APP_VERSION" index.html | head -1

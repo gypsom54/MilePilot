@@ -1,6 +1,6 @@
 # Sprint 1 — Core UI Brand System
 
-**Status:** Complete (visual infrastructure only)  
+**Status:** Safety refinement complete — awaiting visual approval (not merged)  
 **Base version:** v8.43.67  
 **Branch:** `cursor/sprint1-design-system-19bd`
 
@@ -12,16 +12,28 @@
 |-------|------|
 | Design tokens + components | `frontend/css/mp-design-system.css` |
 | Dev-only component gallery | `frontend/js/design-system-preview.js` |
-| Preview screen hook | `frontend/index.html` (minimal — 5 touch points) |
+| Standalone preview page | `frontend/design-system-preview.html` |
 
-## Preview access (development only)
+## Production integration (minimal, safe)
 
+`frontend/index.html` adds **only**:
+
+```html
+<link rel="stylesheet" href="css/mp-design-system.css">
 ```
-https://app.milepilot.uk/?ds=preview
-https://app.milepilot.uk/?debug=designsystem
-```
 
-Not accessible to normal users without the URL flag. Does not replace welcome screen or alter onboarding routing.
+- **No** preview section, script, `showScreen()` changes, or `bootApp()` branches.
+- `bootApp()` and `showScreen()` remain identical to the protected golden foundation (`686d370`).
+- Loading the stylesheet alone produces **zero visual changes** to current production screens (all selectors scoped under `.mp-ds-root`).
+
+No production screen markup was redesigned. No onboarding or dashboard logic was changed.
+
+## Preview (development only — standalone)
+
+1. Serve `frontend/` (e.g. `npx serve frontend -p 8000`).
+2. Open **`http://localhost:8000/design-system-preview.html`** only.
+
+The production app does not load preview JavaScript or reference the gallery. The Cloudflare upload package excludes preview HTML/JS.
 
 ## Design tokens
 
@@ -31,9 +43,20 @@ Semantic colour roles, typography roles, spacing scale, radius scale, depth pres
 
 Primary, secondary, tertiary buttons · compact + card selection · text/email inputs · standard/elevated/selected cards · metric card · section heading · status badge · assistant message · user bubble · bottom sheet · modal · loading · success · empty state.
 
+## Deploy package
+
+`build-upload.sh` copies shared CSS into the upload bundle and **removes** `design-system-preview.js` from `milepilot-upload-v2/js/`. Preview HTML is not included in the production ZIP.
+
 ## Protected systems
 
 No changes to tracking, AutoPilot, reports, backend, onboarding logic, or welcome splash styles.
+
+## Revalidation
+
+- [x] `npm run test:vital` — all passed
+- [x] `build-upload.sh` — zip created (CSS only; preview JS/HTML excluded)
+- [x] Protected engine files — **unchanged** vs `686d370`
+- [x] Production `index.html` — CSS link only; no preview integration
 
 ## Rollback
 

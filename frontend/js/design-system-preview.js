@@ -1,10 +1,11 @@
 /**
- * MilePilot Design System — dev-only component gallery
- * Open: ?ds=preview or ?debug=designsystem
- * Does not affect production routing or engine logic.
+ * MilePilot Design System — standalone component gallery only.
+ * Loaded by frontend/design-system-preview.html — not used by production index.html.
  */
 (function (global) {
   'use strict';
+
+  var ROOT_ID = 'mpDsPreviewRoot';
 
   var PREVIEW_HTML =
     '<div class="mp-ds-preview-header">' +
@@ -15,7 +16,7 @@
     '<div class="mp-ds-preview-body mp-ds-stack mp-ds-stack-lg">' +
 
     '<section class="mp-ds-section">' +
-    '<h2 class="mp-ds-text-section-title">Typography</h2>' +
+    '<h2 class="mp-ds-text-section-title">Typography &amp; colour</h2>' +
     '<div class="mp-ds-stack">' +
     '<p class="mp-ds-text-display">Display</p>' +
     '<p class="mp-ds-text-page-title">Page title</p>' +
@@ -26,11 +27,8 @@
     '<p class="mp-ds-text-body-sm">Body small — secondary detail without fading away.</p>' +
     '<p class="mp-ds-text-caption">Caption label</p>' +
     '<p class="mp-ds-text-metadata">METADATA · 8.43.67</p>' +
-    '</div></section>' +
-
-    '<section class="mp-ds-section">' +
-    '<h2 class="mp-ds-text-section-title">Colour roles</h2>' +
-    '<div class="mp-ds-swatch-row">' +
+    '</div>' +
+    '<div class="mp-ds-swatch-row" style="margin-top:16px">' +
     '<span class="mp-ds-swatch" style="background:#031126" title="background-primary"></span>' +
     '<span class="mp-ds-swatch" style="background:#0B2348" title="surface"></span>' +
     '<span class="mp-ds-swatch" style="background:#0D6BFF" title="brand-primary"></span>' +
@@ -43,6 +41,7 @@
     '<h2 class="mp-ds-text-section-title">Buttons</h2>' +
     '<div class="mp-ds-btn-row">' +
     '<button type="button" class="mp-ds-btn mp-ds-btn--primary">Primary action</button>' +
+    '<button type="button" class="mp-ds-btn mp-ds-btn--primary is-pressed-demo">Primary pressed</button>' +
     '<button type="button" class="mp-ds-btn mp-ds-btn--secondary">Secondary action</button>' +
     '<button type="button" class="mp-ds-btn mp-ds-btn--tertiary">Tertiary action</button>' +
     '<button type="button" class="mp-ds-btn mp-ds-btn--primary" disabled>Disabled primary</button>' +
@@ -69,12 +68,14 @@
     '<section class="mp-ds-section">' +
     '<h2 class="mp-ds-text-section-title">Inputs</h2>' +
     '<div class="mp-ds-stack">' +
-    '<label class="mp-ds-field"><span class="mp-ds-text-label">Email</span>' +
-    '<input class="mp-ds-input" type="email" placeholder="you@business.co.uk" value="reports@milepilot.uk" /></label>' +
-    '<label class="mp-ds-field"><span class="mp-ds-text-label">Error state</span>' +
+    '<label class="mp-ds-field"><span class="mp-ds-text-label">Default</span>' +
+    '<input class="mp-ds-input" type="email" placeholder="you@business.co.uk" /></label>' +
+    '<label class="mp-ds-field"><span class="mp-ds-text-label">Focused</span>' +
+    '<input class="mp-ds-input is-focus-demo" type="email" value="reports@milepilot.uk" /></label>' +
+    '<label class="mp-ds-field"><span class="mp-ds-text-label">Error</span>' +
     '<input class="mp-ds-input is-error" type="text" value="invalid@" />' +
     '<span class="mp-ds-field-hint">Enter a valid email address</span></label>' +
-    '<label class="mp-ds-field"><span class="mp-ds-text-label">Success state</span>' +
+    '<label class="mp-ds-field"><span class="mp-ds-text-label">Success</span>' +
     '<input class="mp-ds-input is-success" type="email" value="gypsom54@gmail.com" readonly />' +
     '<span class="mp-ds-field-hint is-success">Looks good</span></label>' +
     '<label class="mp-ds-field"><span class="mp-ds-text-label">Disabled</span>' +
@@ -96,14 +97,6 @@
     '</div></div></section>' +
 
     '<section class="mp-ds-section">' +
-    '<h2 class="mp-ds-text-section-title">Status</h2>' +
-    '<div style="display:flex;gap:8px;flex-wrap:wrap">' +
-    '<span class="mp-ds-badge"><span class="mp-ds-badge__dot"></span>AutoPilot Active</span>' +
-    '<span class="mp-ds-badge mp-ds-badge--success"><span class="mp-ds-badge__dot"></span>Everything working</span>' +
-    '<span class="mp-ds-badge mp-ds-badge--warn"><span class="mp-ds-badge__dot"></span>Location needed</span>' +
-    '</div></section>' +
-
-    '<section class="mp-ds-section">' +
     '<h2 class="mp-ds-text-section-title">Conversation</h2>' +
     '<div class="mp-ds-conversation">' +
     '<div class="mp-ds-assistant">I can help you understand your mileage and prepare HMRC-ready reports.</div>' +
@@ -113,6 +106,7 @@
     '<section class="mp-ds-section">' +
     '<h2 class="mp-ds-text-section-title">States</h2>' +
     '<div class="mp-ds-stack">' +
+    '<span class="mp-ds-badge"><span class="mp-ds-badge__dot"></span>AutoPilot Active</span>' +
     '<div class="mp-ds-loading"><span class="mp-ds-loading__spinner"></span>Preparing your summary…</div>' +
     '<div class="mp-ds-success"><span class="mp-ds-success__icon">✓</span>Report sent successfully</div>' +
     '<div class="mp-ds-empty"><p class="mp-ds-empty__title">No trips yet</p>' +
@@ -129,66 +123,34 @@
     '<p class="mp-ds-text-body-sm">For contextual actions without leaving the screen.</p></div>' +
     '</section>' +
 
-    '<button type="button" class="mp-ds-btn mp-ds-btn--secondary" id="mpDsPreviewClose">Close preview</button>' +
+    '<section class="mp-ds-section">' +
+    '<h2 class="mp-ds-text-section-title">Example composition</h2>' +
+    '<div class="mp-ds-card mp-ds-card--elevated mp-ds-composition">' +
+    '<p class="mp-ds-text-section-title" style="margin-bottom:8px">AutoPilot setup</p>' +
+    '<p class="mp-ds-text-question" style="margin-bottom:12px">Where should we send your reports?</p>' +
+    '<label class="mp-ds-field"><span class="mp-ds-text-label">Email</span>' +
+    '<input class="mp-ds-input is-focus-demo" type="email" value="you@business.co.uk" /></label>' +
+    '<div class="mp-ds-conversation" style="margin:14px 0">' +
+    '<div class="mp-ds-assistant">I\'ll email HMRC-ready summaries automatically after each shift.</div>' +
+    '</div>' +
+    '<button type="button" class="mp-ds-btn mp-ds-btn--primary">Continue</button>' +
+    '<button type="button" class="mp-ds-btn mp-ds-btn--tertiary">Skip for now</button>' +
+    '</div></section>' +
+
+    '<section class="mp-ds-section">' +
+    '<h2 class="mp-ds-text-section-title">Reduced motion</h2>' +
+    '<p class="mp-ds-text-body-sm">All motion presets honour <code>prefers-reduced-motion: reduce</code>. Animations are disabled under that media query.</p>' +
+    '</section>' +
+
     '</div>';
 
-  function isPreviewRequested() {
-    try {
-      var params = new URLSearchParams(global.location.search);
-      var ds = params.get('ds');
-      var debug = params.get('debug');
-      return ds === 'preview' || debug === 'designsystem';
-    } catch (e) {
-      return false;
-    }
-  }
-
   function mount() {
-    var section = global.document.getElementById('designSystemPreview');
-    if (!section || section.dataset.mounted === '1') return section;
-    section.className = 'screen mp-ds-root';
-    section.innerHTML = PREVIEW_HTML;
-    section.dataset.mounted = '1';
-    section.removeAttribute('aria-hidden');
-    var closeBtn = section.querySelector('#mpDsPreviewClose');
-    if (closeBtn) {
-      closeBtn.addEventListener('click', function () {
-        MPDesignSystemPreview.close();
-      });
-    }
-    return section;
+    var root = global.document.getElementById(ROOT_ID);
+    if (!root || root.dataset.mounted === '1') return root;
+    root.innerHTML = PREVIEW_HTML;
+    root.dataset.mounted = '1';
+    return root;
   }
 
-  function open() {
-    mount();
-    if (typeof global.showScreen === 'function') {
-      global.showScreen('designSystemPreview');
-    }
-  }
-
-  function close() {
-    try {
-      var params = new URLSearchParams(global.location.search);
-      params.delete('ds');
-      params.delete('debug');
-      var qs = params.toString();
-      var next = global.location.pathname + (qs ? '?' + qs : '') + global.location.hash;
-      global.history.replaceState({}, '', next);
-    } catch (e) {}
-    if (typeof global.goHome === 'function' && global.localStorage.getItem('mp_onboard_complete') === 'true') {
-      global.goHome();
-      return;
-    }
-    if (typeof global.showScreen === 'function') {
-      global.showScreen('welcome');
-      if (typeof global.initFirstImpression === 'function') global.initFirstImpression();
-    }
-  }
-
-  global.MPDesignSystemPreview = {
-    open: open,
-    close: close,
-    isPreviewRequested: isPreviewRequested,
-    mount: mount,
-  };
+  global.MPDesignSystemPreview = { mount: mount, ROOT_ID: ROOT_ID };
 })(typeof window !== 'undefined' ? window : globalThis);
