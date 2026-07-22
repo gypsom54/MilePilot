@@ -71,7 +71,7 @@
     toolById[t.id] = t;
   });
 
-  var state = { screen: 'home', toolId: null };
+  var state = { screen: 'home', toolId: null, originToolId: null };
 
   function isConnected(feature) {
     return false;
@@ -119,7 +119,7 @@
     });
     root.querySelectorAll('[data-bw-tool]').forEach(function (el) {
       el.addEventListener('click', function () {
-        showTool(el.getAttribute('data-bw-tool'));
+        showTool(el.getAttribute('data-bw-tool'), { recordOrigin: true });
       });
     });
   }
@@ -135,7 +135,7 @@
   }
 
   function focusFirst(root, selector) {
-    if (!root || typeof root.querySelector !== 'function') return;
+    if (!root || typeof root.querySelector !== 'function') return false;
     var target = root.querySelector(selector);
     if (target && typeof target.focus === 'function') {
       try {
@@ -143,7 +143,9 @@
       } catch (e) {
         target.focus();
       }
+      return true;
     }
+    return false;
   }
 
   function paintHome() {
@@ -163,7 +165,20 @@
     bindToolEvents(root);
   }
 
-  function showHomeScreen() {
+  function restoreHomeFocus(homeRoot) {
+    var originId = state.originToolId;
+    if (originId && getTool(originId)) {
+      if (focusFirst(homeRoot, '[data-bw-tool="' + originId + '"]')) {
+        state.originToolId = null;
+        return;
+      }
+    }
+    state.originToolId = null;
+    focusFirst(homeRoot, '.mp-bw-ask-input');
+  }
+
+  function showHomeScreen(opts) {
+    opts = opts || {};
     state.screen = 'home';
     state.toolId = null;
     var homeRoot = global.document.getElementById(HOME_ROOT_ID);
@@ -171,11 +186,18 @@
     if (homeRoot) homeRoot.hidden = false;
     if (toolRoot) toolRoot.hidden = true;
     paintHome();
-    focusFirst(homeRoot, '.mp-bw-ask-input');
+    if (opts.focusAskOnly) {
+      state.originToolId = null;
+      focusFirst(homeRoot, '.mp-bw-ask-input');
+      return;
+    }
+    restoreHomeFocus(homeRoot);
   }
 
-  function showTool(id) {
+  function showTool(id, opts) {
+    opts = opts || {};
     if (!getTool(id)) return;
+    if (opts.recordOrigin) state.originToolId = id;
     state.screen = 'tool';
     state.toolId = id;
     var homeRoot = global.document.getElementById(HOME_ROOT_ID);
@@ -185,22 +207,31 @@
     paintTool(id);
     var win = global.window || global;
     if (win && typeof win.scrollTo === 'function') win.scrollTo(0, 0);
-    focusFirst(toolRoot, '[data-bw-back]');
+    focusFirst(toolRoot, '[data-bw-tool-heading]');
   }
 
   function mount() {
-    showHomeScreen();
+    showHomeScreen({ focusAskOnly: true });
   }
 
   function leave() {
-    state = { screen: 'home', toolId: null };
+    state = { screen: 'home', toolId: null, originToolId: null };
     var homeRoot = global.document.getElementById(HOME_ROOT_ID);
     var toolRoot = global.document.getElementById(TOOL_ROOT_ID);
     if (homeRoot) homeRoot.hidden = false;
     if (toolRoot) toolRoot.hidden = true;
   }
 
+  function isBusinessScreenActive() {
+    var doc = global.document;
+    return !!(doc && doc.querySelector && doc.querySelector('#business.active'));
+  }
+
   function showHome() {
+    if (isBusinessScreenActive()) {
+      showHomeScreen();
+      return;
+    }
     if (typeof global.showBusiness === 'function') {
       global.showBusiness();
       return;

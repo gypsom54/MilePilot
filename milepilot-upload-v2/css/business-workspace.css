@@ -37,6 +37,14 @@
   margin: 0;
   line-height: 1.1;
 }
+.mp-bw-header__title[data-bw-tool-heading]:focus {
+  outline: none;
+}
+.mp-bw-header__title[data-bw-tool-heading]:focus-visible {
+  outline: 2px solid rgba(110, 180, 255, 0.88);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
 .mp-bw-header__subtitle {
   margin: 10px 0 0;
   font-size: 15px;

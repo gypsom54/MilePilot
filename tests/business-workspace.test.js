@@ -232,7 +232,7 @@ run('leave resets tool visibility', () => {
   sb.globalThis = sb.window = sb;
   loadWorkspace(sb);
   sb.MPBusinessWorkspace.mount();
-  sb.MPBusinessWorkspace.showTool('expenses');
+  sb.MPBusinessWorkspace.showTool('expenses', { recordOrigin: true });
   sb.MPBusinessWorkspace.leave();
   const home = sb.document.getElementById('mpBusinessWorkspaceRoot');
   const tool = sb.document.getElementById('mpBusinessToolRoot');
@@ -316,37 +316,74 @@ run('mobile nav density: icon-only mode on narrow viewports', () => {
   assert.ok(html.includes('clip:rect(0,0,0,0)'));
 });
 
-run('focus management: showTool focuses back control', () => {
-  const backBtn = {
-    focusCalls: 0,
-    focus() { this.focusCalls++; },
-    addEventListener() {},
-  };
-  const askInput = {
-    focusCalls: 0,
-    focus() { this.focusCalls++; },
-    addEventListener() {},
-  };
-  const toolRoot = {
-    id: 'mpBusinessToolRoot',
-    hidden: true,
-    innerHTML: '',
-    querySelector(sel) {
-      if (sel === '[data-bw-back]') return backBtn;
-      return null;
-    },
-    querySelectorAll() { return []; },
-  };
+run('tool heading is programmatically focusable', () => {
+  const sb = { window: {}, globalThis: {}, document: {} };
+  sb.globalThis = sb.window = sb;
+  loadWorkspace(sb);
+  const html = sb.MPBusinessWorkspaceView.renderToolEmpty(sb.MPBusinessWorkspace.getTool('expenses'));
+  assert.ok(html.includes('data-bw-tool-heading tabindex="-1"'));
+});
+
+run('tool screen DOM order: back before heading for keyboard tab', () => {
+  const sb = { window: {}, globalThis: {}, document: {} };
+  sb.globalThis = sb.window = sb;
+  loadWorkspace(sb);
+  const html = sb.MPBusinessWorkspaceView.renderToolEmpty(sb.MPBusinessWorkspace.getTool('vat'));
+  const backIdx = html.indexOf('data-bw-back');
+  const headingIdx = html.indexOf('data-bw-tool-heading');
+  assert.ok(backIdx > -1 && headingIdx > backIdx, 'back control precedes heading in DOM');
+});
+
+function createFocusSandbox() {
+  function makeFocusable(id, attrs) {
+    return {
+      id,
+      hidden: false,
+      innerHTML: '',
+      attrs: attrs || {},
+      focusCalls: 0,
+      focus() { this.focusCalls++; },
+      addEventListener() {},
+      getAttribute(name) { return this.attrs[name] || null; },
+      querySelector() { return null; },
+      querySelectorAll() { return []; },
+    };
+  }
+
+  const cards = {};
+  ['expenses', 'vat', 'bookkeeper', 'health', 'accountant'].forEach((toolId) => {
+    cards[toolId] = makeFocusable('card-' + toolId, { 'data-bw-tool': toolId });
+  });
+
+  const heading = makeFocusable('tool-heading', { 'data-bw-tool-heading': '1', tabindex: '-1' });
+  const backBtn = makeFocusable('back', { 'data-bw-back': '1' });
+  const askInput = makeFocusable('ask');
+
   const homeRoot = {
     id: 'mpBusinessWorkspaceRoot',
     hidden: false,
     innerHTML: '',
     querySelector(sel) {
       if (sel === '.mp-bw-ask-input') return askInput;
+      const cardMatch = sel.match(/^\[data-bw-tool="([^"]+)"\]$/);
+      if (cardMatch) return cards[cardMatch[1]] || null;
       return null;
     },
     querySelectorAll() { return []; },
   };
+
+  const toolRoot = {
+    id: 'mpBusinessToolRoot',
+    hidden: true,
+    innerHTML: '',
+    querySelector(sel) {
+      if (sel === '[data-bw-back]') return backBtn;
+      if (sel === '[data-bw-tool-heading]') return heading;
+      return null;
+    },
+    querySelectorAll() { return []; },
+  };
+
   const sb = {
     window: { scrollTo() {} },
     globalThis: {},
@@ -356,14 +393,104 @@ run('focus management: showTool focuses back control', () => {
         if (id === 'mpBusinessToolRoot') return toolRoot;
         return null;
       },
+      querySelector(sel) {
+        if (sel === '#business.active') return { id: 'business' };
+        return null;
+      },
     },
+    _focus: { cards, heading, backBtn, askInput, homeRoot, toolRoot },
   };
   sb.globalThis = sb.window = sb;
   loadWorkspace(sb);
-  sb.MPBusinessWorkspace.showTool('expenses');
-  assert.equal(backBtn.focusCalls, 1);
+  return sb;
+}
+
+['expenses', 'vat', 'bookkeeper', 'health', 'accountant'].forEach((toolId) => {
+  run(`focus: opening ${toolId} focuses tool heading`, () => {
+    const sb = createFocusSandbox();
+    sb.MPBusinessWorkspace.showTool(toolId);
+    assert.equal(sb._focus.heading.focusCalls, 1, 'heading focus');
+    assert.equal(sb._focus.backBtn.focusCalls, 0, 'back must not take initial focus');
+  });
+
+  run(`focus: back from ${toolId} restores originating card`, () => {
+    const sb = createFocusSandbox();
+    sb._focus.homeRoot.querySelector = function (sel) {
+      if (sel === '.mp-bw-ask-input') return sb._focus.askInput;
+      if (sel === '[data-bw-tool="' + toolId + '"]') return sb._focus.cards[toolId];
+      return null;
+    };
+    sb.MPBusinessWorkspace.showTool(toolId, { recordOrigin: true });
+    sb.MPBusinessWorkspace.showHome();
+    assert.equal(sb._focus.cards[toolId].focusCalls, 1, 'card restored');
+    assert.equal(sb._focus.askInput.focusCalls, 0, 'ask not focused when card restored');
+  });
+});
+
+run('focus: mount without origin focuses Ask input', () => {
+  const sb = createFocusSandbox();
+  sb.document.querySelector = () => null;
   sb.MPBusinessWorkspace.mount();
-  assert.equal(askInput.focusCalls, 1);
+  assert.equal(sb._focus.askInput.focusCalls, 1);
+});
+
+run('focus: leave clears stale origin state', () => {
+  const sb = createFocusSandbox();
+  sb.MPBusinessWorkspace.showTool('expenses', { recordOrigin: true });
+  sb.MPBusinessWorkspace.leave();
+  sb.MPBusinessWorkspace.mount();
+  assert.equal(sb._focus.cards.expenses.focusCalls, 0);
+  assert.equal(sb._focus.askInput.focusCalls, 1);
+});
+
+run('focus: repeated tool switch restores latest card only', () => {
+  const sb = createFocusSandbox();
+  sb._focus.homeRoot.querySelector = function (sel) {
+    if (sel === '.mp-bw-ask-input') return sb._focus.askInput;
+    if (sel === '[data-bw-tool="expenses"]') return sb._focus.cards.expenses;
+    if (sel === '[data-bw-tool="vat"]') return sb._focus.cards.vat;
+    return null;
+  };
+  sb._focus.cards.expenses.attrs['data-bw-tool'] = 'expenses';
+  sb._focus.cards.vat.attrs['data-bw-tool'] = 'vat';
+  sb.MPBusinessWorkspace.showTool('expenses', { recordOrigin: true });
+  sb.MPBusinessWorkspace.showHome();
+  assert.equal(sb._focus.cards.expenses.focusCalls, 1);
+  sb.MPBusinessWorkspace.showTool('vat', { recordOrigin: true });
+  sb.MPBusinessWorkspace.showHome();
+  assert.equal(sb._focus.cards.vat.focusCalls, 1);
+  assert.equal(sb._focus.cards.expenses.focusCalls, 1);
+});
+
+run('focus: invalid tool ID does not move focus', () => {
+  const sb = createFocusSandbox();
+  sb.MPBusinessWorkspace.showTool('not-real');
+  assert.equal(sb._focus.heading.focusCalls, 0);
+  assert.equal(sb._focus.backBtn.focusCalls, 0);
+});
+
+run('focus: showHome on business screen avoids remount', () => {
+  const sb = createFocusSandbox();
+  let businessCalls = 0;
+  sb.showBusiness = () => { businessCalls++; };
+  sb.MPBusinessWorkspace.showTool('expenses', { recordOrigin: true });
+  sb.MPBusinessWorkspace.showHome();
+  assert.equal(businessCalls, 0, 'showBusiness must not run when already on business');
+  assert.equal(sb._focus.cards.expenses.focusCalls, 1);
+});
+
+run('focus: tool → Ask → Business uses Ask fallback', () => {
+  const sb = createFocusSandbox();
+  sb.document.querySelector = (sel) => (sel === '#business.active' ? { id: 'business' } : null);
+  sb.showAsk = () => {
+    sb.MPBusinessWorkspace.leave();
+    sb.document.querySelector = () => null;
+  };
+  sb.MPBusinessWorkspace.showTool('expenses', { recordOrigin: true });
+  sb.MPBusinessWorkspace.openAskWithQuestion('How much can I claim this month?');
+  sb.MPBusinessWorkspace.mount();
+  assert.equal(sb._focus.askInput.focusCalls, 1);
+  assert.equal(sb._focus.cards.expenses.focusCalls, 0);
 });
 
 run('PR does not introduce separate handlePos diff vs main', () => {

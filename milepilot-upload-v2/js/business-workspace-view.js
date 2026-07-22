@@ -36,7 +36,7 @@
         '<button type="button" class="mp-bw-header__back" data-bw-back="1" aria-label="Back to Business Workspace">←</button>' +
         '<div><p class="mp-bw-header__eyebrow">' +
         escapeHtml(opts.eyebrow || 'Business Workspace') +
-        '</p><h1 class="mp-bw-header__title">' +
+        '</p><h1 class="mp-bw-header__title" data-bw-tool-heading tabindex="-1">' +
         escapeHtml(opts.title || '') +
         '</h1>' +
         (opts.subtitle ? '<p class="mp-bw-header__subtitle">' + escapeHtml(opts.subtitle) + '</p>' : '') +
