@@ -5,7 +5,7 @@
 **Status:** APPROVED AND LOCKED  
 **Merged:** visual shell only — no functional integration  
 **Branch:** `cursor/merge-approved-visual-shell-19bd`  
-**Merge commit:** _(recorded after merge to main)_  
+**Merge commit:** `438bfe5e8040f11584b0b2abba5c67e4178e4fad`  
 **Rollback tag:** `ask-milepilot-visual-lock-v84331`
 
 ---
