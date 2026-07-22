@@ -165,8 +165,8 @@ See `docs/MILEAGE_REGRESSION_CHECKLIST.md` for the full regression checklist and
 | `.github/workflows/production-guard.yml` | Runs all verifiers + tests |
 | `.github/workflows/tracking-guard.yml` | Path-filtered tracking guard |
 | `.github/CODEOWNERS` | Required reviewer on critical paths |
-| `.cursor/rules/vital-gps-tracking.mdc` | Agent guardrail for tracking |
-| `.cursor/rules/vital-reports-pipeline.mdc` | Agent guardrail for reports |
+| `.cursor/rules/vital-tax-engine.mdc` | Agent guardrail for HMRC engine |
+| `.cursor/rules/vital-ask-milepilot.mdc` | Agent guardrail for Ask MilePilot |
 | `docs/TRACKING_CONTRACT.md` | Human-readable tracking contract |
 | `docs/PRODUCTION_MONITORING_PLAN.md` | Monitoring + health dashboard plan |
 | `docs/BRANCH_PROTECTION.md` | GitHub branch protection setup |
@@ -197,9 +197,40 @@ See `docs/MILEAGE_REGRESSION_CHECKLIST.md` for the full regression checklist and
 
 ---
 
+## 14. Ask MilePilot (MP-S5 — VITAL, LOCKED)
+
+| File | Responsibility |
+|------|----------------|
+| `frontend/js/ask-milepilot-view.js` | **Locked** MP-S4 visual shell — composer, chips, cards, confirmation UI |
+| `frontend/js/ask-milepilot-service.js` | IntentRouter, query services, ResponseFormatter, ActionExecutor |
+| `frontend/js/ask-milepilot-app.js` | mount/leave lifecycle, submit/confirm controllers |
+| `frontend/index.html` (Ask wiring) | `showAsk`, `buildAskDeps`, deep link, session restore |
+| `milepilot-upload-v2/js/ask-milepilot-*.js` | Deploy mirrors |
+| `tests/ask-milepilot-service.test.js` | 43+ integration tests |
+| `scripts/mp-s5-parity-audit.js` | HMRC parity matrix (Ask vs engine) |
+
+**Contract:** Intent registry and action execution are protected. Financial answers must use `MPTaxEngine`.  
+**Docs:** `docs/MP-S5-ASK-LOCK.md` · `docs/adr/002-ask-milepilot-production-lock.md`  
+**Agent rule:** `.cursor/rules/vital-ask-milepilot.mdc`
+
+### Must-not-regress behaviours
+
+- Visual shell matches MP-S4 lock (typography, spacing, layout)
+- Intent collisions resolved (email lookup ≠ email action; fuel/VAT/pack → NotConnected)
+- External actions require confirmation; no execution on question submit
+- Missing email blocks email action preparation
+- `collectRange` / claim paths require `MPTaxEngine` (no flat-rate fallback)
+- `leave()` clears pending actions on navigation away
+
+**Test coverage:** `npm run test:ask-milepilot`, `npm run test:ask-parity`, included in `npm run test:vital`
+
+**Backlog:** `docs/MP-S5-006-BROWSER-HISTORY.md` — browser back/forward routing
+
+---
+
 ## Change checklist
 
-Before merging any PR that touches files in §1–§9:
+Before merging any PR that touches files in §1–§9 or §13–§14:
 
 1. [ ] Explicit product sign-off for intentional behaviour changes
 2. [ ] `npm run test:vital` passes locally

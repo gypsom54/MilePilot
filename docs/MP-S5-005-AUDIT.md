@@ -4,7 +4,8 @@
 **Branch / PR:** `cursor/ask-milepilot-production-19bd` / PR #163  
 **Depends on:** MP-044 / MP-044B (merged via PR #162)  
 **Audit date:** 2026-07-22  
-**Status:** Verification complete — corrections applied on branch  
+**Status:** Verification complete — **MERGED** (PR #163 → `main`, 2026-07-22)  
+**Post-merge lock:** `docs/MP-S5-ASK-LOCK.md`, ADR 002  
 
 ---
 

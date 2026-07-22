@@ -40,3 +40,15 @@
 /docs/MP-044-ENGINE-LOCK.md @gypsom54
 /docs/adr/001-mp-tax-engine-single-source-of-truth.md @gypsom54
 /milepilot-upload-v2/js/mp-tax-engine.js @gypsom54
+
+# BUSINESS CRITICAL — Ask MilePilot production (MP-S5 — LOCKED)
+/frontend/js/ask-milepilot-view.js @gypsom54
+/frontend/js/ask-milepilot-service.js @gypsom54
+/frontend/js/ask-milepilot-app.js @gypsom54
+/milepilot-upload-v2/js/ask-milepilot-view.js @gypsom54
+/milepilot-upload-v2/js/ask-milepilot-service.js @gypsom54
+/milepilot-upload-v2/js/ask-milepilot-app.js @gypsom54
+/tests/ask-milepilot-service.test.js @gypsom54
+/scripts/mp-s5-parity-audit.js @gypsom54
+/docs/MP-S5-ASK-LOCK.md @gypsom54
+/docs/adr/002-ask-milepilot-production-lock.md @gypsom54

@@ -14,9 +14,31 @@
 | Design & branding | ~90% 🔒 Locked |
 | Onboarding flow (`#knowYou` MP-002) | **100% 🔒 Frozen** — production-ready; bug fixes only |
 | Dashboard foundation | ~90% 🔒 Locked |
-| **Core tracking engine** | Sprint 1 → in progress |
-| Reports | ~10% |
-| Business intelligence | Phase 4 — Intelligence Layer in progress |
+| **Core tracking engine** | ✅ Complete |
+| **HMRC Tax Engine (MPTaxEngine)** | ✅ **LOCKED** (MP-044B) |
+| **Unified reporting** | ✅ PDF, email, archive |
+| **Ask MilePilot (production)** | ✅ **LOCKED** (MP-S5, PR #163 merged) |
+| **Business Workspace** | 🔜 Sprint 1 — foundations (MP-S6-001) |
+| Business intelligence (MIE) | In progress |
+
+---
+
+## Current priority — Business Workspace Sprint 1 (MP-S6-001)
+
+**Goal:** Business companion foundations — navigation, empty states, data model — before expenses, VAT, or OCR.
+
+Build order (full programme):
+
+1. **Business Workspace foundations** ← *now*
+2. Receipt scanning / Expenses
+3. VAT tracking
+4. Business Health
+5. Accountant Pack
+6. Expand Ask MilePilot to answer from new data sources
+
+See `docs/MP-S6-001-BUSINESS-WORKSPACE-SPRINT1.md`.
+
+**Backlog:** Browser history / in-app navigation — `docs/MP-S5-006-BROWSER-HISTORY.md`
 
 ---
 

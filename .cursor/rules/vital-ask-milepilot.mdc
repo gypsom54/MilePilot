@@ -1,0 +1,44 @@
+---
+description: BUSINESS CRITICAL — Ask MilePilot production shell, intent registry, and action execution are locked. Dedicated review required for financial, routing, or action changes.
+globs:
+  - frontend/js/ask-milepilot-view.js
+  - frontend/js/ask-milepilot-service.js
+  - frontend/js/ask-milepilot-app.js
+  - tests/ask-milepilot-service.test.js
+  - scripts/mp-s5-parity-audit.js
+  - docs/MP-S5-ASK-LOCK.md
+  - docs/adr/002-ask-milepilot-production-lock.md
+alwaysApply: false
+---
+
+# VITAL: Ask MilePilot Production (MP-S5 — LOCKED)
+
+**Ask MilePilot is an accepted production feature.** PR #163 merged; MP-S5-005 audit approved.
+
+## Rules for agents and developers
+
+1. **Visual shell** (`ask-milepilot-view.js`) — do NOT change typography, spacing, colours, composer layout, or confirmation UI without MP-S4 visual sign-off.
+2. **Intent registry** — all routing changes go through `IntentRouter`; add tests for collisions (email lookup vs email action, claim vs mileage, report vs trips).
+3. **Action execution** — external actions (prepare/export/email) require confirmation flow; never execute on `handleQuestion`.
+4. **Financial answers** — must use `MPTaxEngine` only; no `miles × rate` or stored `hmrc` sums. See ADR 001.
+5. **Not-connected features** — fuel, VAT, accountant pack return `NotConnected` until Business Workspace data sources exist.
+6. **Missing email** — block email action preparation; direct user to Settings; no fake recipients.
+7. Before intentional changes: run `npm run test:ask-milepilot`, `npm run test:ask-parity`, and `npm run test:vital`.
+
+## Protected subsystems
+
+| Subsystem | File | Review trigger |
+|-----------|------|----------------|
+| Visual shell | `ask-milepilot-view.js` | Any CSS class / layout change |
+| Intent registry | `IntentRouter` in service | New intent, regex change, collision fix |
+| Action executor | `ActionExecutor` | Confirm/cancel/execute flow |
+| Lifecycle | `ask-milepilot-app.js` | mount/leave, listener binding |
+| Production routing | `index.html` Ask wiring | showAsk, deep link, session restore |
+
+## ADR
+
+`docs/adr/002-ask-milepilot-production-lock.md`
+
+## Backlog
+
+Browser history: `docs/MP-S5-006-BROWSER-HISTORY.md`
