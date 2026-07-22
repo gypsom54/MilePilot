@@ -1691,6 +1691,13 @@
   font-weight: 600;
   color: var(--mp-ds-color-text-primary);
 }
+.mp-ds-root .mp-ask-insight-action {
+  width: auto;
+  min-height: 40px;
+  padding: 0 var(--mp-ds-space-5);
+  margin-top: var(--mp-ds-space-2);
+  font-size: var(--mp-ds-font-body-sm-size);
+}
 .mp-ds-root .mp-ask-confirm-surface {
   padding: var(--mp-ds-space-5);
   border-radius: var(--mp-ds-radius-card);
