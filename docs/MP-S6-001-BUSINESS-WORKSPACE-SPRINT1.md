@@ -1,7 +1,7 @@
 # MP-S6-001 — Business Workspace Sprint 1: Foundations
 
 **Specification ID:** MP-S6-001  
-**Status:** PLANNED — next roadmap priority  
+**Status:** COMPLETE — Sprint 1 foundation (await approval)  
 **Depends on:** MP-044B (engine lock), MP-S5 (Ask production), unified reporting  
 **Vision:** `docs/VISION_LOCK.md` — MilePilot Business tier
 

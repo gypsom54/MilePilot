@@ -1,0 +1,317 @@
+/**
+ * MP-S6-001 — Business Workspace design system
+ * Scoped under .mp-bw-root
+ */
+.mp-bw-root {
+  --mp-bw-glow: rgba(13, 107, 255, 0.32);
+  --mp-bw-glow-soft: rgba(13, 107, 255, 0.14);
+  --mp-bw-surface: rgba(255, 255, 255, 0.05);
+  --mp-bw-border: rgba(110, 180, 255, 0.22);
+  --mp-bw-text-muted: rgba(185, 200, 221, 0.78);
+  font-family: var(--mp-ds-font-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif);
+}
+
+.mp-bw-page {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding-bottom: 12px;
+}
+
+/* WorkspaceHeader */
+.mp-bw-header {
+  margin-bottom: 4px;
+}
+.mp-bw-header__eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(110, 180, 255, 0.82);
+  margin: 0 0 8px;
+}
+.mp-bw-header__title {
+  font-size: clamp(28px, 6.5vw, 34px);
+  font-weight: 650;
+  letter-spacing: -0.03em;
+  margin: 0;
+  line-height: 1.1;
+}
+.mp-bw-header__subtitle {
+  margin: 10px 0 0;
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--mp-bw-text-muted);
+}
+.mp-bw-header--with-back {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.mp-bw-header__back {
+  flex-shrink: 0;
+  margin-top: 4px;
+  border: 0;
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  border-radius: 12px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+}
+.mp-bw-header__back:active {
+  opacity: 0.85;
+}
+
+/* WorkspaceSection */
+.mp-bw-section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.mp-bw-section__title {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(158, 176, 200, 0.92);
+  margin: 0;
+}
+
+/* WorkspaceCard */
+.mp-bw-tools {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+@media (min-width: 380px) {
+  .mp-bw-tools {
+    gap: 14px;
+  }
+}
+.mp-bw-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 16px 14px;
+  border: 1px solid var(--mp-bw-border);
+  border-radius: 20px;
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.03) 100%);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  text-align: left;
+  color: inherit;
+  font: inherit;
+  width: 100%;
+  transition: box-shadow 0.22s ease, border-color 0.22s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.mp-bw-card:hover,
+.mp-bw-card:focus-visible {
+  border-color: rgba(110, 180, 255, 0.42);
+  box-shadow: 0 6px 28px rgba(0, 0, 0, 0.16), 0 0 0 1px var(--mp-bw-glow-soft);
+  outline: none;
+}
+.mp-bw-card:active {
+  opacity: 0.92;
+}
+.mp-bw-card__icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--mp-bw-glow-soft);
+  box-shadow: 0 0 20px var(--mp-bw-glow-soft);
+  color: #6eb4ff;
+}
+.mp-bw-card__icon svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.mp-bw-card__title {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+.mp-bw-card__desc {
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--mp-bw-text-muted);
+  margin: 0;
+}
+.mp-bw-card__footer {
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+  margin-top: auto;
+}
+
+/* WorkspaceBadge */
+.mp-bw-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: rgba(13, 107, 255, 0.14);
+  color: rgba(158, 198, 255, 0.95);
+  border: 1px solid rgba(110, 180, 255, 0.22);
+}
+.mp-bw-badge--muted {
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(185, 200, 221, 0.88);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* WorkspaceStat — reserved for future metrics; Sprint 1 shows no values */
+.mp-bw-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: var(--mp-bw-surface);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.mp-bw-stat__label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--mp-bw-text-muted);
+}
+.mp-bw-stat__value {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+/* WorkspaceDivider */
+.mp-bw-divider {
+  height: 1px;
+  border: 0;
+  margin: 0;
+  background: linear-gradient(90deg, transparent, rgba(110, 180, 255, 0.22), transparent);
+}
+
+/* WorkspaceEmptyState */
+.mp-bw-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 24px 20px;
+  border-radius: 22px;
+  border: 1px solid var(--mp-bw-border);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+.mp-bw-empty--centered {
+  align-items: center;
+  text-align: center;
+  padding: 36px 24px;
+  margin-top: 12px;
+}
+.mp-bw-empty__title {
+  font-size: clamp(22px, 5vw, 26px);
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+.mp-bw-empty__body {
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--mp-bw-text-muted);
+  margin: 0;
+}
+.mp-bw-empty__action {
+  margin-top: 8px;
+  border: 1px solid rgba(110, 180, 255, 0.28);
+  background: rgba(13, 107, 255, 0.12);
+  color: rgba(220, 235, 255, 0.95);
+  border-radius: 14px;
+  padding: 12px 22px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: default;
+  pointer-events: none;
+}
+
+/* WorkspaceSkeleton */
+.mp-bw-skeleton {
+  border-radius: 12px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.09) 50%, rgba(255, 255, 255, 0.04) 100%);
+  background-size: 200% 100%;
+  animation: mpBwShimmer 1.4s ease-in-out infinite;
+}
+@keyframes mpBwShimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mp-bw-skeleton { animation: none; }
+}
+
+/* Ask embed — reuses mp-ask classes from design system */
+.mp-bw-ask {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px 18px 18px;
+  border-radius: 24px;
+  border: 1px solid rgba(110, 180, 255, 0.28);
+  background: linear-gradient(165deg, rgba(13, 107, 255, 0.1) 0%, rgba(255, 255, 255, 0.04) 48%, rgba(255, 255, 255, 0.02) 100%);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.14), 0 0 40px var(--mp-bw-glow-soft);
+}
+.mp-bw-ask__label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(110, 180, 255, 0.9);
+  margin: 0;
+}
+.mp-bw-ask__title {
+  font-size: clamp(20px, 4.5vw, 24px);
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+.mp-bw-coming-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.mp-bw-coming-list li {
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--mp-bw-text-muted);
+  padding-left: 18px;
+  position: relative;
+}
+.mp-bw-coming-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(110, 180, 255, 0.65);
+  box-shadow: 0 0 8px var(--mp-bw-glow);
+}
