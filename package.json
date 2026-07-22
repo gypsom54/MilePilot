@@ -36,7 +36,8 @@
     "test:subscription": "node tests/subscription.test.js",
     "test:journey-review": "node tests/journey-review.test.js",
     "test:ai-review": "node tests/ai-mileage-review.test.js",
-    "test:vital": "npm run verify:tracking && npm run verify:reports && npm run test:mileage-checklist && npm run test:tracking && npm run test:native-idle && npm run test:autopilot && npm run test:reports && npm run test:summary-collect && npm run test:trips && npm run test:auto-end && npm run test:tracking-mode && npm run test:subscription && npm run test:journey-review && npm run test:ai-review"
+    "test:ask-milepilot": "node tests/ask-milepilot-service.test.js",
+    "test:vital": "npm run verify:tracking && npm run verify:reports && npm run test:mileage-checklist && npm run test:tracking && npm run test:native-idle && npm run test:autopilot && npm run test:reports && npm run test:summary-collect && npm run test:trips && npm run test:auto-end && npm run test:tracking-mode && npm run test:subscription && npm run test:journey-review && npm run test:ai-review && npm run test:ask-milepilot"
   },
   "dependencies": {
     "expo": "~56.0.12",

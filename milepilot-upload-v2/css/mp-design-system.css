@@ -1666,3 +1666,24 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* MP-S5 — Live Ask interactivity (pointer only; no visual change) */
+.mp-ds-root[data-ask-live="1"] .mp-ask-input__send,
+.mp-ds-root[data-ask-live="1"] .mp-ask-composer__send {
+  pointer-events: auto;
+  cursor: pointer;
+}
+.mp-ds-root[data-ask-live="1"] .mp-ask-suggestion,
+.mp-ds-root[data-ask-live="1"] .mp-ask-followup,
+.mp-ds-root[data-ask-live="1"] .mp-ask-recent__item {
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.mp-ds-root[data-ask-live="1"] .mp-ask-input,
+.mp-ds-root[data-ask-live="1"] .mp-ask-composer__input {
+  cursor: text;
+}
