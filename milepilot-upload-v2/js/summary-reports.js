@@ -238,9 +238,13 @@
       return !tripShiftIds.has(s.id) && (Number(s.miles) || 0) >= 0.01;
     });
     const list = business.map(tripToShiftRow).concat(unmigratedShifts);
+    const enriched =
+      global.MPTaxEngine && list.length
+        ? global.MPTaxEngine.enrichJourneysWithRecalculatedHmrc(list, inferVehicle(list))
+        : list;
 
     return {
-      list: list,
+      list: enriched,
       excludedPending: pending.length,
       pendingNotice:
         pending.length > 0
@@ -261,7 +265,52 @@
     });
   }
 
-  function sumJourneys(list) {
+  function inferVehicle(list) {
+    if (!list || !list.length) return 'car';
+    const counts = {};
+    list.forEach(function (j) {
+      const v = j.vehicle || 'car';
+      counts[v] = (counts[v] || 0) + 1;
+    });
+    return Object.keys(counts).sort(function (a, b) {
+      return counts[b] - counts[a];
+    })[0];
+  }
+
+  function sumJourneys(list, periodOpts) {
+    periodOpts = periodOpts || {};
+    if (global.MPTaxEngine && periodOpts.allJourneys && periodOpts.start && periodOpts.end) {
+      const totals = global.MPTaxEngine.periodClaimTotals(
+        periodOpts.allJourneys,
+        periodOpts.start,
+        periodOpts.end,
+        periodOpts.defaultVehicle || inferVehicle(periodOpts.allJourneys)
+      );
+      return {
+        mi: totals.mi,
+        sec: totals.sec,
+        hmrc: totals.hmrc,
+        journeys: totals.journeys,
+        list: totals.list,
+      };
+    }
+    if (global.MPTaxEngine) {
+      const summary = global.MPTaxEngine.sumRecalculatedClaims(
+        list,
+        periodOpts.defaultVehicle || inferVehicle(list)
+      );
+      return {
+        mi: list.reduce(function (a, b) {
+          return a + Number(b.miles || 0);
+        }, 0),
+        sec: list.reduce(function (a, b) {
+          return a + Number(b.seconds || 0);
+        }, 0),
+        hmrc: summary.hmrc,
+        journeys: list.length,
+        list: list,
+      };
+    }
     return {
       mi: list.reduce(function (a, b) {
         return a + Number(b.miles || 0);
@@ -386,8 +435,16 @@
     const prev = previousWeekRange(now || new Date());
     const list = journeysInRange(collected.list, range.start, range.end);
     const prevList = journeysInRange(collected.list, prev.start, prev.end);
-    const totals = sumJourneys(list);
-    const prevTotals = sumJourneys(prevList);
+    const totals = sumJourneys(list, {
+      allJourneys: collected.list,
+      start: range.start,
+      end: range.end,
+    });
+    const prevTotals = sumJourneys(prevList, {
+      allJourneys: collected.list,
+      start: prev.start,
+      end: prev.end,
+    });
     const label =
       'Week ending ' +
       new Date(range.end.getTime() - 86400000).toLocaleDateString('en-GB', {
@@ -424,8 +481,16 @@
     const prev = previousMonthRange(now);
     const list = journeysInRange(collected.list, range.start, range.end);
     const prevList = journeysInRange(collected.list, prev.start, prev.end);
-    const totals = sumJourneys(list);
-    const prevTotals = sumJourneys(prevList);
+    const totals = sumJourneys(list, {
+      allJourneys: collected.list,
+      start: range.start,
+      end: range.end,
+    });
+    const prevTotals = sumJourneys(prevList, {
+      allJourneys: collected.list,
+      start: prev.start,
+      end: prev.end,
+    });
     const workingDays = new Set(
       list.map(function (j) {
         return new Date(j.startISO).toDateString();
@@ -481,8 +546,16 @@
     }
     const list = journeysInRange(collected.list, range.start, range.end);
     const prevList = journeysInRange(collected.list, prevRange.start, prevRange.end);
-    const totals = sumJourneys(list);
-    const prevTotals = sumJourneys(prevList);
+    const totals = sumJourneys(list, {
+      allJourneys: collected.list,
+      start: range.start,
+      end: range.end,
+    });
+    const prevTotals = sumJourneys(prevList, {
+      allJourneys: collected.list,
+      start: prev.start,
+      end: prev.end,
+    });
 
     return {
       email: deps.getEmail(),

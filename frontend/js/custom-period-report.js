@@ -315,15 +315,32 @@
       });
     }
 
-    const mi = included.reduce(function (a, j) {
+    let mi = included.reduce(function (a, j) {
       return a + Number(j.miles || 0);
     }, 0);
-    const sec = included.reduce(function (a, j) {
+    let sec = included.reduce(function (a, j) {
       return a + Number(j.seconds || 0);
     }, 0);
-    const hmrc = included.reduce(function (a, j) {
+    let hmrc = included.reduce(function (a, j) {
       return a + Number(j.hmrc || 0);
     }, 0);
+
+    if (global.MPTaxEngine) {
+      const all = global.MPTaxEngine.collectBusinessJourneys(trips, shifts, vehicle);
+      const enriched = global.MPTaxEngine.enrichJourneysWithRecalculatedHmrc(all, vehicle);
+      const periodRows = enriched.filter(function (j) {
+        return journeyInRange(j, start, end);
+      });
+      const totals = global.MPTaxEngine.periodClaimTotals(all, start, end, vehicle);
+      included = periodRows.map(function (t) {
+        return journeyToReportRow(t);
+      });
+      mi = totals.mi;
+      sec = periodRows.reduce(function (a, j) {
+        return a + Number(j.seconds || 0);
+      }, 0);
+      hmrc = totals.hmrc;
+    }
     const waitingSec = included.reduce(function (a, j) {
       return a + Number(j.waitingSeconds || 0);
     }, 0);

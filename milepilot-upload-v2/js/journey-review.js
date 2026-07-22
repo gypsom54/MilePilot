@@ -198,6 +198,25 @@
       );
     });
     const list = businessTrips.slice();
+    legacyShifts.forEach(function (s) {
+      list.push(s);
+    });
+    if (global.MPTaxEngine) {
+      const dayStart = new Date(date);
+      dayStart.setHours(0, 0, 0, 0);
+      const dayEnd = new Date(dayStart);
+      dayEnd.setDate(dayEnd.getDate() + 1);
+      const all = global.MPTaxEngine.collectBusinessJourneys(trips, shifts);
+      const totals = global.MPTaxEngine.periodClaimTotals(all, dayStart, dayEnd);
+      return {
+        mi: totals.mi,
+        sec: totals.sec,
+        hmrc: totals.hmrc,
+        journeys: totals.journeys,
+        list: totals.list.length ? totals.list : list,
+        pending: tripsNeedingReview(trips, date).length,
+      };
+    }
     let mi = businessTrips.reduce(function (a, t) {
       return a + (Number(t.miles) || 0);
     }, 0);
@@ -211,7 +230,6 @@
       mi += Number(s.miles) || 0;
       sec += Number(s.seconds) || 0;
       hmrc += Number(s.hmrc) || 0;
-      list.push(s);
     });
     return {
       mi: mi,

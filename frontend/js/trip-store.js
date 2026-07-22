@@ -40,8 +40,16 @@
     const startISO = raw.startISO || new Date().toISOString();
     const endISO = raw.endISO || startISO;
     const status = raw.status || TRIP_STATUS.PENDING;
-    const rate = typeof claimFn === 'function' ? claimFn(1, v) : 0.55;
-    const hmrc = status === TRIP_STATUS.BUSINESS ? Number((mi * rate).toFixed(2)) : 0;
+    let hmrc = 0;
+    if (status === TRIP_STATUS.BUSINESS) {
+      if (raw.hmrc != null && raw.hmrc !== '') {
+        hmrc = Number(raw.hmrc) || 0;
+      } else if (typeof claimFn === 'function') {
+        hmrc = Number(claimFn(mi, v).toFixed(2));
+      } else if (global.MPTaxEngine) {
+        hmrc = Number(global.MPTaxEngine.claimMarginalPounds(mi, v, [], startISO).toFixed(2));
+      }
+    }
     return {
       id: raw.id || 'trip_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
       status: status,
@@ -148,7 +156,13 @@
       claimFn
     );
     if (status === TRIP_STATUS.BUSINESS) {
-      next.hmrc = Number((claimFn ? claimFn(next.miles, next.vehicle) : next.miles * 0.55).toFixed(2));
+      if (global.MPTaxEngine) {
+        next.hmrc = Number(
+          global.MPTaxEngine.hmrcForTripClassification(next, trips, vehicle || trip.vehicle).toFixed(2)
+        );
+      } else {
+        next.hmrc = Number((claimFn ? claimFn(next.miles, next.vehicle) : next.miles * 0.55).toFixed(2));
+      }
     } else {
       next.hmrc = 0;
     }
@@ -171,8 +185,22 @@
     });
   }
 
-  function sumBusinessTrips(trips) {
+  function sumBusinessTrips(trips, vehicleDefault) {
     const list = getBusinessTrips(trips);
+    if (global.MPTaxEngine) {
+      const summary = global.MPTaxEngine.sumRecalculatedClaims(list, vehicleDefault);
+      return {
+        mi: list.reduce(function (a, t) {
+          return a + t.miles;
+        }, 0),
+        sec: list.reduce(function (a, t) {
+          return a + t.seconds;
+        }, 0),
+        hmrc: summary.hmrc,
+        list: list,
+        journeys: list.length,
+      };
+    }
     return {
       mi: list.reduce(function (a, t) {
         return a + t.miles;

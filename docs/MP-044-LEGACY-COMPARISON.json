@@ -1,0 +1,58 @@
+{
+  "rows": [
+    {
+      "id": "s2",
+      "miles": 10000,
+      "vehicle": "car",
+      "taxYear": "2026-27",
+      "recalculatedPence": 550000,
+      "storedHmrcPence": 550000,
+      "diffPence": 0,
+      "startISO": "2026-05-01T08:00:00.000Z"
+    },
+    {
+      "id": "s5",
+      "miles": 50,
+      "vehicle": "motorcycle",
+      "taxYear": "2026-27",
+      "recalculatedPence": 1200,
+      "storedHmrcPence": 2750,
+      "diffPence": -1550,
+      "startISO": "2026-06-10T08:00:00.000Z"
+    },
+    {
+      "id": "s3",
+      "miles": 100,
+      "vehicle": "car",
+      "taxYear": "2026-27",
+      "recalculatedPence": 2500,
+      "storedHmrcPence": 5500,
+      "diffPence": -3000,
+      "startISO": "2026-06-15T08:00:00.000Z"
+    },
+    {
+      "id": "s4",
+      "status": "pending",
+      "miles": 12,
+      "recalculatedPence": 0,
+      "storedHmrcPence": 0,
+      "diffPence": 0
+    },
+    {
+      "id": "s1",
+      "miles": 24.5,
+      "vehicle": "car",
+      "taxYear": "2026-27",
+      "recalculatedPence": 613,
+      "storedHmrcPence": 1348,
+      "diffPence": -735,
+      "startISO": "2026-06-30T08:00:00.000Z"
+    }
+  ],
+  "totalStoredPence": 559598,
+  "totalRecalculatedPence": 554313,
+  "totalDiffPence": -5285,
+  "totalStored": 5595.98,
+  "totalRecalculated": 5543.13,
+  "totalDiff": -52.85
+}
