@@ -216,6 +216,7 @@
     }
     if (response.view === 'confirm') {
       var sendLabel = response.action === 'email' ? 'Send report' : response.action === 'export' ? 'Export report' : 'Prepare report';
+      var disabled = options && options.showProcessing ? ' disabled aria-disabled="true"' : '';
       return (
         '<div class="mp-ask-confirm-surface">' +
         '<p class="mp-ask-confirm-surface__title">Confirm before sending</p>' +
@@ -226,10 +227,14 @@
         '<div class="mp-ask-confirm-surface__actions">' +
         '<button type="button" class="mp-ds-btn mp-ds-btn--primary" data-ask-confirm="' +
         escapeAttr(response.action) +
-        '">' +
+        '"' +
+        disabled +
+        '>' +
         escapeHtml(sendLabel) +
         '</button>' +
-        '<button type="button" class="mp-ds-btn mp-ds-btn--secondary" data-ask-cancel="1">Cancel</button>' +
+        '<button type="button" class="mp-ds-btn mp-ds-btn--secondary" data-ask-cancel="1"' +
+        disabled +
+        '>Cancel</button>' +
         '</div></div>'
       );
     }

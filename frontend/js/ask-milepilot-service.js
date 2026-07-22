@@ -17,6 +17,8 @@
     MileageReport: 'MileageReport',
     ExportReport: 'ExportReport',
     EmailAccountant: 'EmailAccountant',
+    AccountantEmailLookup: 'AccountantEmailLookup',
+    NotConnected: 'NotConnected',
     AutopilotStatus: 'AutopilotStatus',
     LastJourney: 'LastJourney',
     DroveYesterday: 'DroveYesterday',
@@ -138,6 +140,9 @@
         vehicle: getVehicle(),
       });
     }
+    if (!global.MPTaxEngine) {
+      throw new Error('MPTaxEngine unavailable. Application initialisation error.');
+    }
     var trips = getTrips();
     var startMs = start.getTime();
     var endMs = end.getTime();
@@ -151,17 +156,15 @@
     var pending = inRange.filter(function (t) {
       return t.status === 'pending';
     });
+    var all = global.MPTaxEngine.collectBusinessJourneys(business, [], getVehicle());
+    var totals = global.MPTaxEngine.periodClaimTotals(all, start, end, getVehicle());
     return {
-      included: business,
-      mi: business.reduce(function (a, t) {
-        return a + t.miles;
-      }, 0),
-      hmrc: business.reduce(function (a, t) {
-        return a + t.hmrc;
-      }, 0),
+      included: totals.list.length ? totals.list : business,
+      mi: totals.mi,
+      hmrc: totals.hmrc,
       pendingCount: pending.length,
       pendingList: pending,
-      journeys: business.length,
+      journeys: totals.journeys,
     };
   }
 
@@ -171,11 +174,26 @@
       var t = (text || '').trim().toLowerCase();
       if (!t) return { intent: INTENTS.Unknown, text: text };
 
-      if (/email.*accountant|send.*accountant|accountant.*email/.test(t)) {
+      if (/fuel|petrol|diesel|how much.*spent.*fuel/.test(t)) {
+        return { intent: INTENTS.NotConnected, feature: 'fuel', text: text };
+      }
+      if (/\bvat\b|vat position|vat return/.test(t)) {
+        return { intent: INTENTS.NotConnected, feature: 'vat', text: text };
+      }
+      if (/accountant pack|accountant export|prepare my accountant/.test(t)) {
+        return { intent: INTENTS.NotConnected, feature: 'accountantPack', text: text };
+      }
+      if (/what.*accountant.*email|accountant.*email address|my accountant.*email/.test(t) && !/send|email my|email this/.test(t)) {
+        return { intent: INTENTS.AccountantEmailLookup, text: text };
+      }
+      if (/email.*accountant|send.*accountant|email my mileage report/.test(t)) {
         return { intent: INTENTS.EmailAccountant, text: text };
       }
       if (/export.*report|download.*report/.test(t)) {
         return { intent: INTENTS.ExportReport, text: text };
+      }
+      if (/show.*report|my report for/.test(t)) {
+        return { intent: INTENTS.MileageReport, text: text };
       }
       if (/prepare.*report|mileage report|generate.*report/.test(t)) {
         return { intent: INTENTS.MileageReport, text: text };
@@ -445,12 +463,25 @@
       };
     },
     emailAccountantPreview: function () {
+      var reportDeps = this.buildReportDeps();
+      var email = reportDeps.getEmail();
+      if (!email) {
+        return {
+          intent: INTENTS.EmailAccountant,
+          action: 'email',
+          blocked: true,
+          reason: 'missing_email',
+        };
+      }
       var report = this.prepareMonthlyReport();
       report.intent = INTENTS.EmailAccountant;
       report.action = 'email';
-      var reportDeps = this.buildReportDeps();
-      report.recipient = (report.payload && report.payload.email) || reportDeps.getEmail();
+      report.recipient = (report.payload && report.payload.email) || email;
       report.reportLabel = 'Monthly mileage report';
+      if (!report.payload) {
+        report.blocked = true;
+        report.reason = 'no_data';
+      }
       return report;
     },
     exportReportPreview: function () {
@@ -510,6 +541,10 @@
         case INTENTS.ExportReport:
         case INTENTS.EmailAccountant:
           return this.confirmAction(data);
+        case INTENTS.AccountantEmailLookup:
+          return this.accountantEmailLookup();
+        case INTENTS.NotConnected:
+          return this.notConnected(data);
         case INTENTS.AutopilotStatus:
           return this.autopilotStatus(data);
         case INTENTS.LastJourney:
@@ -582,10 +617,16 @@
         };
       }
       var rows = list.slice(0, 8).map(function (t) {
+        var claimVal = t.hmrc;
+        if (global.MPTaxEngine && t.id) {
+          var all = global.MPTaxEngine.collectBusinessJourneys(getTrips(), getShifts(), getVehicle());
+          var map = global.MPTaxEngine.sumRecalculatedClaims(all, getVehicle()).hmrcById;
+          if (map[t.id] != null) claimVal = map[t.id];
+        }
         return {
           date: new Date(t.startISO).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric' }),
           miles: miles(t.miles),
-          claim: money(t.hmrc),
+          claim: money(claimVal),
         };
       });
       var note = '';
@@ -674,11 +715,36 @@
       };
     },
     confirmAction: function (data) {
+      if (data.blocked) {
+        if (data.reason === 'missing_email') {
+          return {
+            view: 'text',
+            message:
+              'Add your email address in Settings before sending a report. I cannot prepare an email action without a saved recipient.',
+            followups: ['Open Settings', 'Prepare my mileage report', 'Export my report'],
+          };
+        }
+        return {
+          view: 'text',
+          message: "I couldn't prepare that report — there is no mileage data for this period yet.",
+          followups: ['Show today\'s journeys', 'How much can I claim this month?'],
+        };
+      }
       pendingAction = data;
+      var recipient = data.recipient || (data.payload && data.payload.email) || '';
+      if ((data.action === 'email' || data.intent === INTENTS.EmailAccountant) && !recipient) {
+        pendingAction = null;
+        return {
+          view: 'text',
+          message:
+            'Add your email address in Settings before sending a report. I cannot prepare an email action without a saved recipient.',
+          followups: ['Open Settings', 'Prepare my mileage report'],
+        };
+      }
       return {
         view: 'confirm',
         action: data.action,
-        recipient: data.recipient || data.payload && data.payload.email || 'your email on file',
+        recipient: recipient,
         reportLabel: data.reportLabel || 'Mileage report',
         periodLabel: data.periodLabel || '',
         contents:
@@ -687,6 +753,34 @@
           money(data.hmrc) +
           ' claimable',
         followups: [],
+      };
+    },
+    notConnected: function (data) {
+      var messages = {
+        fuel: 'Fuel and expense tracking is not connected yet. MilePilot currently answers mileage and HMRC claim questions from your recorded journeys.',
+        vat: 'VAT calculations are not connected yet. MilePilot currently answers mileage allowance questions from your recorded business journeys.',
+        accountantPack: 'Accountant export packs are not connected yet. You can prepare, export, or email your mileage report from here instead.',
+      };
+      return {
+        view: 'text',
+        message: messages[data.feature] || 'That feature is not connected yet.',
+        followups: ['Prepare my mileage report', 'How much can I claim this month?', 'Show this month\'s trips'],
+      };
+    },
+    accountantEmailLookup: function () {
+      var email = (deps && deps.getEmail && deps.getEmail()) || '';
+      if (!email) {
+        return {
+          view: 'text',
+          message:
+            'No email address is saved yet. Add your email in Settings — this is used for report delivery, not as a separate accountant contact.',
+          followups: ['Open Settings', 'Prepare my mileage report'],
+        };
+      }
+      return {
+        view: 'text',
+        message: 'Your saved report email is <strong>' + email + '</strong>. This is where MilePilot sends mileage reports.',
+        followups: ['Email my mileage report to my accountant', 'Prepare my mileage report'],
       };
     },
     autopilotStatus: function (data) {
@@ -791,6 +885,7 @@
   };
 
   /* —— ActionExecutor —— */
+  var executing = false;
   var ActionExecutor = {
     getPending: function () {
       return pendingAction;
@@ -798,15 +893,23 @@
     clearPending: function () {
       pendingAction = null;
     },
+    isExecuting: function () {
+      return executing;
+    },
     execute: async function (actionType) {
+      if (executing) {
+        return { ok: false, error: 'Action already in progress.', duplicate: true };
+      }
       var action = pendingAction;
       if (!action || !action.payload) {
         return { ok: false, error: 'No report prepared.' };
       }
+      executing = true;
       try {
         if (actionType === 'email' || action.action === 'email') {
           if (deps && typeof deps.apiPost === 'function') {
             await deps.apiPost('/reports/send', action.payload);
+            pendingAction = null;
             return { ok: true, type: 'email' };
           }
           return { ok: false, error: 'Email delivery is not available in preview mode.' };
@@ -815,17 +918,21 @@
           if (deps && typeof deps.apiPost === 'function') {
             var res = await deps.apiPost('/reports/pdf', action.payload);
             if (res && res.blob) {
+              pendingAction = null;
               return { ok: true, type: 'export', blob: res.blob };
             }
           }
           return { ok: false, error: 'Export is not available in preview mode.' };
         }
         if (actionType === 'prepare' || action.action === 'prepare') {
+          pendingAction = null;
           return { ok: true, type: 'prepare', payload: action.payload };
         }
         return { ok: false, error: 'Unknown action.' };
       } catch (e) {
         return { ok: false, error: 'Action failed.' };
+      } finally {
+        executing = false;
       }
     },
     cancel: function () {
@@ -883,6 +990,12 @@
       case INTENTS.DroveYesterday:
         data = JourneyQueryService.droveYesterday();
         break;
+      case INTENTS.AccountantEmailLookup:
+        data = { intent: INTENTS.AccountantEmailLookup };
+        break;
+      case INTENTS.NotConnected:
+        data = routed;
+        break;
       default:
         return Promise.resolve(ResponseFormatter.unknown());
     }
@@ -891,7 +1004,9 @@
 
   async function confirmAction(actionType) {
     var result = await ActionExecutor.execute(actionType);
-    ActionExecutor.clearPending();
+    if (!result.duplicate) {
+      ActionExecutor.clearPending();
+    }
     return ResponseFormatter.complete(actionType || result.type, result);
   }
 

@@ -187,7 +187,7 @@
   }
 
   function confirmAction(actionType) {
-    if (state.busy) return;
+    if (state.busy || (global.MPAskMilePilotService.ActionExecutor && global.MPAskMilePilotService.ActionExecutor.isExecuting())) return;
     state.busy = true;
     paint();
     global.MPAskMilePilotService.confirmAction(actionType).then(function (response) {
@@ -195,6 +195,11 @@
       state.response = response;
       paint();
     });
+  }
+
+  function leave() {
+    if (global.MPAskMilePilotService) global.MPAskMilePilotService.cancelAction();
+    state = { question: '', response: null, busy: false };
   }
 
   function mount(skipInit) {
@@ -211,5 +216,5 @@
     return getRoot();
   }
 
-  global.MPAskMilePilotApp = { mount: mount, submitQuestion: submitQuestion };
+  global.MPAskMilePilotApp = { mount: mount, leave: leave, submitQuestion: submitQuestion };
 })(typeof window !== 'undefined' ? window : globalThis);
