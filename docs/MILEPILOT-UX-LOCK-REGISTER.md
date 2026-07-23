@@ -17,7 +17,7 @@ One-screen-at-a-time product recovery workflow.
 
 Do not change artwork, logo, animation, timing, typography, background, spacing, or transition styling.
 
-**Permitted change:** routing from splash CTA to Screen 2 (`startIntroduction()`).
+**Permitted change:** none to splash HTML/CSS. Routing to Screen 2 is handled inside `startOnboardingName()` when `mp_onboard_complete !== 'true'`.
 
 ---
 

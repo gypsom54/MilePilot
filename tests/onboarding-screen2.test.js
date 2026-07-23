@@ -48,9 +48,10 @@ forBoth("splash still present and locked", (src) => {
   assert.match(src, /Run your business on/);
 });
 
-forBoth("splash routes to Screen 2 only", (src) => {
-  assert.match(src, /welcome-get-started[^>]*onclick="startIntroduction\(\)"/);
-  assert.doesNotMatch(src, /welcome-get-started[^>]*onclick="startOnboardingName\(\)"/);
+forBoth("splash routes to Screen 2 via startOnboardingName (HTML unchanged)", (src) => {
+  assert.match(src, /welcome-get-started[^>]*onclick="startOnboardingName\(\)"/);
+  assert.doesNotMatch(src, /welcome-get-started[^>]*onclick="startIntroduction\(\)"/);
+  assert.match(src, /function startOnboardingName\(\)\{if\(isNewUserUxLockFlow\(\)\)\{startIntroduction\(\);return\}/);
 });
 
 forBoth("Screen 2 section exists", (src) => {

@@ -180,10 +180,11 @@ html.mp-expo #welcome.active{padding-top:max(52px,calc(env(safe-area-inset-top,0
 .mp-intro-promise{margin:0 0 32px;font-size:clamp(15px,4vw,17px);font-weight:600;line-height:1.5;letter-spacing:-.01em;color:rgba(126,184,255,.95);text-align:left;-webkit-font-smoothing:antialiased;animation:mpIntroFadeUp .55s cubic-bezier(.22,1,.36,1) .52s both}
 .mp-intro-cta{margin-top:auto;min-height:52px;height:52px;border-radius:var(--button-radius);font-size:17px;font-weight:600;letter-spacing:-.01em;width:100%;animation:mpIntroFadeUp .5s cubic-bezier(.22,1,.36,1) .62s both}
 .mp-intro-cta:focus-visible{outline:2px solid rgba(110,180,255,.95);outline-offset:3px}
+#introduction.active .mp-intro-eyebrow,#introduction.active .mp-intro-heading,#introduction.active .mp-intro-primary,#introduction.active .mp-intro-support,#introduction.active .mp-intro-promise,#introduction.active .mp-intro-cta{opacity:1}
 #onboardAwaiting .mp-await-inner{flex:1;display:flex;align-items:center;justify-content:center;max-width:360px;width:100%;margin:0 auto;text-align:center;padding:24px 0}
 .mp-await-msg{margin:0;font-size:16px;font-weight:500;line-height:1.5;color:rgba(159,180,208,.9);letter-spacing:-.01em}
-@keyframes mpIntroFadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-@media(prefers-reduced-motion:reduce){.mp-intro-eyebrow,.mp-intro-heading,.mp-intro-primary,.mp-intro-support,.mp-intro-promise,.mp-intro-cta{animation:none;opacity:1;transform:none}}
+@keyframes mpIntroFadeUp{from{transform:translateY(10px)}to{transform:none}}
+@media(prefers-reduced-motion:reduce){.mp-intro-eyebrow,.mp-intro-heading,.mp-intro-primary,.mp-intro-support,.mp-intro-promise,.mp-intro-cta{animation:none;transform:none}}
 @media(max-width:360px){#introduction.active,#onboardAwaiting.active{padding-left:20px;padding-right:20px}}
 #knowYou .onboard-inner{display:flex;flex-direction:column;min-height:0;overflow:hidden}
 #knowYou .brand-bar .wordmark,#experienceChoice .brand-bar .wordmark,#businessProfile .brand-bar .wordmark,#promise .brand-bar .wordmark,#permissions .brand-bar .wordmark,#notifications .brand-bar .wordmark{font-size:42px}
@@ -945,7 +946,7 @@ body.always-modal-open .nav{display:none!important}
 <h1 class="welcome-headline">Run your business on <span class="blue">AutoPilot</span>.</h1>
 <p class="welcome-value-line">Business mileage without the paperwork.</p>
 </div>
-<button type="button" class="btn premium-btn is-ready welcome-get-started" onclick="startIntroduction()">Get Started</button>
+<button type="button" class="btn premium-btn is-ready welcome-get-started" onclick="startOnboardingName()">Get Started</button>
 </div>
 <div class="welcome-version" id="appVersion">MP-001 🔒 Locked · v2.8</div>
 </section>
