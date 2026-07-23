@@ -5,17 +5,17 @@
   "frozenCommit": "9b91907fef6146d20aa905099782bac7deaed254",
   "frozenCommitShort": "9b91907",
   "alternateCandidate": "a84a0c4",
-  "generatedAt": "2026-07-23T17:41:33.427Z",
+  "generatedAt": "2026-07-23T17:59:37.572Z",
   "git": {
-    "commit": "3b985851b0b375a4209d12aebf7e48457d175219",
-    "commitShort": "3b98585",
+    "commit": "9deac1735c5d747eecebc9e268aa63df6f5bb408",
+    "commitShort": "9deac17",
     "branch": "cursor/mp-hf-009-historical-validation-19bd",
     "isFrozenCommit": false,
     "containsFrozenCommit": true
   },
   "appVersion": "8.43.63",
   "versionTxt": "8.43.63",
-  "iosBuildNumber": "16",
+  "iosBuildNumber": "18",
   "easProfile": "recovery-hf009",
   "webAppUrl": "https://app.milepilot.uk/?runtime=expo&build=recovery-hf009&commit=9b91907&v=8.43.63",
   "bundleHash": "5a7de22514eb704509f466b785e8c0b36997e5173a6bc69bc4e51af579bfc5a9",
@@ -28,7 +28,7 @@
     "frontend/js/autopilot-motion.js",
     "frontend/js/trip-store.js"
   ],
-  "nativeSourceHash": "e7aaade727eb9f0f1cdca6dfabeaf0c17221a7f9be4e858f37e8c695266ea09b",
+  "nativeSourceHash": "de75acb1ce5243b3fe4a2683e7d6013e80321d60691338d837feb5cd28d26641",
   "nativeFiles": [
     "index.js",
     "src/nativeAutopilot.js",
