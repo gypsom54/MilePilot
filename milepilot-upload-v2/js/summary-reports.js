@@ -209,6 +209,8 @@
 
   function tripToShiftRow(trip) {
     return {
+      id: trip.id,
+      status: 'business',
       miles: trip.miles,
       seconds: trip.seconds,
       hmrc: trip.hmrc,
@@ -237,7 +239,22 @@
     const unmigratedShifts = shifts.filter(function (s) {
       return !tripShiftIds.has(s.id) && (Number(s.miles) || 0) >= 0.01;
     });
-    const list = business.map(tripToShiftRow).concat(unmigratedShifts);
+    const list = business.map(tripToShiftRow).concat(
+      unmigratedShifts.map(function (s) {
+        return {
+          id: s.id,
+          status: 'business',
+          miles: s.miles,
+          seconds: s.seconds,
+          hmrc: s.hmrc,
+          vehicle: s.vehicle,
+          startISO: s.startISO,
+          endISO: s.endISO,
+          route: s.route || s.routePoints || [],
+          waitingSeconds: s.waitingSeconds || 0,
+        };
+      })
+    );
     const enriched =
       global.MPTaxEngine && list.length
         ? global.MPTaxEngine.enrichJourneysWithRecalculatedHmrc(list, inferVehicle(list))
