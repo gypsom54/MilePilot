@@ -55,7 +55,7 @@ Do not change artwork, logo, animation, timing, typography, background, spacing,
 
 | Field | Value |
 |-------|-------|
-| **Name** | How MilePilot Can Help |
+| **Name** | How can I help your business today? |
 | **ID** | `helpChoice` (MP-UX-LOCK-003) |
 | **Status** | **LOCKED** |
 | **Specification** | MP-UX-LOCK-003 / MP-UX-LOCK-003A |
@@ -65,7 +65,7 @@ Do not change artwork, logo, animation, timing, typography, background, spacing,
 
 **Screen title**
 - Heading: `How can I help your business today?`
-- Supporting: `Choose the experience that's right for you.`
+- Supporting: `Choose how you'd like me to help.`
 - Supporting sub: `You can always change this later.`
 
 **Card 1 — Track my mileage**
@@ -117,4 +117,4 @@ Old screens remain in DOM but are **blocked** for users where `mp_onboard_comple
 
 ---
 
-*Last updated: MP-UX-LOCK-003A — Screen 3 final copy locked*
+*Last updated: MP-UX-LOCK-003A — Screen 3 approved and locked (human sign-off)*

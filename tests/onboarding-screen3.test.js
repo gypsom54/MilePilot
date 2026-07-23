@@ -16,7 +16,7 @@ const lockedScreen2Html = execSync("git show 55d501e:frontend/index.html", { cwd
 
 const COPY = {
   heading: "How can I help your business today?",
-  support: "Choose the experience that's right for you.",
+  support: "Choose how you'd like me to help.",
   supportSub: "You can always change this later.",
   cta: "Continue →",
   badge: "HMRC READY",
@@ -56,6 +56,7 @@ const COPY = {
 
 const FORBIDDEN = [
   "How would you like MilePilot to help?",
+  "Choose the experience that's right for you.",
   "Complete Business Companion",
   "to help you stay organised",
   "AI Receipt Scanner",
