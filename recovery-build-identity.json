@@ -5,12 +5,12 @@
   "frozenCommit": "9b91907fef6146d20aa905099782bac7deaed254",
   "frozenCommitShort": "9b91907",
   "alternateCandidate": "a84a0c4",
-  "generatedAt": "2026-07-23T17:40:57.961Z",
+  "generatedAt": "2026-07-23T17:41:33.427Z",
   "git": {
-    "commit": "9b91907fef6146d20aa905099782bac7deaed254",
-    "commitShort": "9b91907",
+    "commit": "3b985851b0b375a4209d12aebf7e48457d175219",
+    "commitShort": "3b98585",
     "branch": "cursor/mp-hf-009-historical-validation-19bd",
-    "isFrozenCommit": true,
+    "isFrozenCommit": false,
     "containsFrozenCommit": true
   },
   "appVersion": "8.43.63",
