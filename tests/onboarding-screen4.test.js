@@ -114,10 +114,10 @@ forBoth("heading focused on entry not input", (src) => {
   assert.match(src, /function initPersonalIntro\(\)\{[\s\S]*?heading\.focus\(\)/);
 });
 
-forBoth("routing Screen 3 to Screen 4 to Screen 5 placeholder", (src) => {
+forBoth("routing Screen 3 to Screen 4 with post-Screen-4 branching", (src) => {
   assert.match(src, /function finishHelpChoice\(\)\{if\(!selectedHelpChoice\)return;localStorage\.setItem\('mp_onboard_step','personalIntro'\);initPersonalIntro\(\);showScreen\('personalIntro'\)\}/);
-  assert.match(src, /localStorage\.setItem\('mp_onboard_step','awaiting'\);showScreen\('onboardAwaiting'\)/);
-  assert.ok(src.includes(COPY.placeholderScreen5));
+  assert.match(src, /function routeAfterPersonalIntro\(\)/);
+  assert.match(src, /localStorage\.setItem\(MP_USER_FIRST_NAME_KEY,raw\.trim\(\)\);routeAfterPersonalIntro\(\)/);
 });
 
 forBoth("old knowYou screen blocked", (src) => {

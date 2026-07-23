@@ -74,13 +74,63 @@ Once a screen has been approved and marked **LOCKED**, it may not be modified ag
 
 **Storage:** `mp_user_first_name` only (max 50 chars, trim whitespace, preserve capitalisation)
 
-**Flow:** Splash → Introduction → Help Choice → **Personal Introduction** → Screen 5 placeholder (`onboardAwaiting`) — **STOP**
+**Flow:** Splash → Introduction → Help Choice → **Personal Introduction** → branches by `mp_help_choice` (mileage/companion → Screen 5A; business → business placeholder) — **STOP**
 
 **Dev preview:** append `?preview=personalIntro` while `mp_onboard_complete` is not `true`.
 
 ---
 
-## Screen 5+ — Not started
+## Screen 5A — Travel Method
+
+| Field | Value |
+|-------|-------|
+| **Name** | How You Travel for Work |
+| **ID** | `travelMethod` (MP-UX-LOCK-005A) |
+| **Status** | **IN REVIEW** |
+| **Specification** | MP-UX-LOCK-005A |
+| **Change authority** | Explicit human approval only — requires UNLOCK SCREEN 5A to modify after lock |
+
+**Approved copy** (exact production — curly apostrophe `'` U+2019 in `I'll`):
+
+- Eyebrow: `YOUR WORK JOURNEYS`
+- Heading: `{name}, what do you usually use for your work journeys?` (fallback: `What do you usually use for your work journeys?`)
+- Supporting: `We'll tailor MilePilot around how you normally travel for work.`
+- CTA: `Continue`
+
+**Options** (single selection, `mp_travel_method`):
+
+| Value | Title |
+|-------|-------|
+| `car_van` | Car or van |
+| `motorcycle` | Motorcycle |
+| `bicycle` | Bicycle |
+| `public_transport` | Public transport |
+| `none` | None of these |
+
+**Branching after Screen 4:**
+
+| `mp_help_choice` | Route |
+|------------------|-------|
+| `mileage` | Screen 5A → Screen 6 placeholder |
+| `companion` | Screen 5A → Screen 6 placeholder |
+| `business` | Business placeholder (not Screen 5A) |
+| invalid/missing | Screen 3 |
+
+**Storage:** `mp_travel_method` and `mp_onboard_step` only (on Continue)
+
+**Dev preview:** append `?preview=travelMethod` while `mp_onboard_complete` is not `true`.
+
+---
+
+## Screen 5B — Business Profile
+
+| Field | Value |
+|-------|-------|
+| **Status** | **NOT STARTED** |
+
+---
+
+## Screen 6+ — Not started
 
 | Field | Value |
 |-------|-------|
@@ -98,4 +148,4 @@ Old name screen: `knowYou` (MP-002) — blocked, not reachable in UX lock v2 flo
 
 ---
 
-*Last updated: MP-UX-LOCK-004A — Screen 4 Personal Introduction (LOCKED)*
+*Last updated: MP-UX-LOCK-005A-REV1 — Screen 5A Travel Method visual polish (IN REVIEW)*
