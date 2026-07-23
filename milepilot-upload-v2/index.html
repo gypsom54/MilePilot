@@ -168,7 +168,7 @@ html:has(#welcome.active),body:has(#welcome.active),.app:has(#welcome.active){ba
 html.mp-expo #welcome.active{padding-top:max(52px,calc(env(safe-area-inset-top,0px) + 20px))}
 #welcome .welcome-brand-compact{width:100%}
 #welcome .premium-btn.is-ready{opacity:1}
-/* MP-UX-LOCK-002 — Screen 2 MilePilot Introduction (IN REVIEW) */
+/* MP-UX-LOCK-002 / MP-UX-LOCK-002A — Screen 2 MilePilot Introduction (LOCKED) */
 #introduction,#onboardAwaiting{position:relative;overflow:hidden;background:linear-gradient(180deg,#050F22 0%,#020B1B 55%,#010810 100%)}
 #introduction.active,#onboardAwaiting.active{display:flex;flex-direction:column;min-height:100dvh;padding:max(32px,env(safe-area-inset-top)) 24px max(24px,env(safe-area-inset-bottom));justify-content:flex-start}
 #introduction .onboard-bg{display:block}
@@ -950,8 +950,8 @@ body.always-modal-open .nav{display:none!important}
 </div>
 <div class="welcome-version" id="appVersion">MP-001 🔒 Locked · v2.8</div>
 </section>
-<!-- MP-UX-LOCK-002 Screen 2 — MilePilot Introduction (IN REVIEW) -->
-<section id="introduction" class="screen" data-mp="MP-UX-LOCK-002" aria-labelledby="mpIntroHeading">
+<!-- MP-UX-LOCK-002 / MP-UX-LOCK-002A Screen 2 — MilePilot Introduction (LOCKED) -->
+<section id="introduction" class="screen" data-mp="MP-UX-LOCK-002" data-mp-lock="002A" aria-labelledby="mpIntroHeading">
 <div class="onboard-bg" aria-hidden="true">
 <div class="onboard-glow onboard-glow-1"></div>
 <div class="onboard-glow onboard-glow-2"></div>
@@ -1616,6 +1616,7 @@ const MP_004_LOCKED=true;
 const MP_005_LOCKED=true;
 const ONBOARDING_COMPLETE=true;
 const MP_UX_LOCK_002=true;
+const MP_UX_LOCK_002A=true;
 const MP_UX002_COPY={eyebrow:'MEET MILEPILOT',heading:'Hi, I\u2019m MilePilot.',primary:'I\u2019m here to make self-employed life simpler.',supporting:'I\u2019ll help you track your mileage, reduce your admin and stay on top of your business \u2014 so you have more time for the work that matters.',promise:'Less admin. More time for your business.',cta:'Let\u2019s get started'};
 const UX_LOCK_V2_SCREENS=['welcome','introduction','onboardAwaiting'];
 const UX_LOCK_LEGACY_BLOCKED=['knowYou','trackingMode','permissions','emailSetup','onboardReady','experienceChoice','businessProfile','promise','notifications','reportSchedule','trackingModeSettings'];

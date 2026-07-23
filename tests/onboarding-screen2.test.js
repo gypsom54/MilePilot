@@ -1,15 +1,32 @@
 /**
- * MP-UX-LOCK-002 — Screen 2 MilePilot Introduction contract tests.
+ * MP-UX-LOCK-002 / MP-UX-LOCK-002A — Screen 2 MilePilot Introduction contract tests.
  */
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { execSync } from "node:child_process";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, "..");
 const html = fs.readFileSync(path.join(root, "frontend/index.html"), "utf8");
 const mirror = fs.readFileSync(path.join(root, "milepilot-upload-v2/index.html"), "utf8");
+const mainHtml = execSync("git show main:frontend/index.html", { cwd: root, encoding: "utf8" });
+
+const CURLY = "\u2019";
+const STRAIGHT_FORBIDDEN = ["I'm", "I'll", "Let's"];
+
+function extractWelcomeSection(src) {
+  const m = src.match(/<section id="welcome"[\s\S]*?<\/section>/);
+  assert.ok(m, "welcome section");
+  return m[0];
+}
+
+function extractIntroductionSection(src) {
+  const m = src.match(/<section id="introduction"[\s\S]*?<\/section>/);
+  assert.ok(m, "introduction section");
+  return m[0];
+}
 
 const EXACT_COPY = {
   eyebrow: "MEET MILEPILOT",
@@ -60,12 +77,31 @@ forBoth("Screen 2 section exists", (src) => {
 });
 
 forBoth("exact approved copy on Screen 2", (src) => {
-  assert.ok(src.includes(EXACT_COPY.eyebrow), "eyebrow");
-  assert.ok(src.includes(EXACT_COPY.heading), "heading");
-  assert.ok(src.includes(EXACT_COPY.primary), "primary");
-  assert.ok(src.includes(EXACT_COPY.supporting), "supporting");
-  assert.ok(src.includes(EXACT_COPY.promise), "promise");
-  assert.ok(src.includes(">" + EXACT_COPY.cta + "<"), "cta button text");
+  const introBlock = extractIntroductionSection(src);
+  assert.ok(introBlock.includes(EXACT_COPY.eyebrow), "eyebrow");
+  assert.ok(introBlock.includes(EXACT_COPY.heading), "heading");
+  assert.ok(introBlock.includes(EXACT_COPY.primary), "primary");
+  assert.ok(introBlock.includes(EXACT_COPY.supporting), "supporting");
+  assert.ok(introBlock.includes(EXACT_COPY.promise), "promise");
+  assert.ok(introBlock.includes(">" + EXACT_COPY.cta + "<"), "cta button text");
+  assert.ok(introBlock.includes('aria-label="' + EXACT_COPY.cta + '"'), "cta aria-label");
+});
+
+forBoth("Screen 2 rejects straight apostrophes (MP-UX-LOCK-002A)", (src) => {
+  const introBlock = extractIntroductionSection(src);
+  for (const bad of STRAIGHT_FORBIDDEN) {
+    assert.ok(!introBlock.includes(bad), "must not contain straight form: " + bad);
+  }
+  assert.ok(introBlock.includes("I" + CURLY + "m MilePilot"), "curly I" + CURLY + "m in heading");
+  assert.ok(introBlock.includes("I" + CURLY + "m here"), "curly I" + CURLY + "m in primary");
+  assert.ok(introBlock.includes("I" + CURLY + "ll help"), "curly I" + CURLY + "ll in supporting");
+  assert.ok(introBlock.includes("Let" + CURLY + "s get started"), "curly Let" + CURLY + "s in CTA");
+});
+
+test("splash welcome section byte-identical to main", () => {
+  const mainWelcome = extractWelcomeSection(mainHtml);
+  const currWelcome = extractWelcomeSection(html);
+  assert.equal(currWelcome, mainWelcome, "welcome section must match main exactly");
 });
 
 forBoth("single primary action on Screen 2", (src) => {
@@ -133,14 +169,18 @@ forBoth("responsive / safe-area CSS present", (src) => {
 
 forBoth("UX lock register constant", (src) => {
   assert.match(src, /MP_UX_LOCK_002/);
+  assert.match(src, /MP_UX_LOCK_002A/);
   assert.match(src, /MP_UX002_COPY/);
 });
 
-test("docs/MILEPILOT-UX-LOCK-REGISTER.md exists", () => {
+test("docs/MILEPILOT-UX-LOCK-REGISTER.md locked per MP-UX-LOCK-002A", () => {
   const doc = fs.readFileSync(path.join(root, "docs/MILEPILOT-UX-LOCK-REGISTER.md"), "utf8");
   assert.match(doc, /Screen 1.*LOCKED/s);
-  assert.match(doc, /Screen 2.*IN REVIEW/s);
+  assert.match(doc, /Screen 2.*LOCKED/s);
+  assert.match(doc, /MP-UX-LOCK-002A/);
   assert.match(doc, /NOT STARTED/);
+  assert.ok(doc.includes("Hi, I" + CURLY + "m MilePilot."), "register records curly heading");
+  assert.ok(!doc.includes("I'm MilePilot"), "register must not use straight apostrophe in heading");
 });
 
 test("tracking engine files present (protected)", () => {

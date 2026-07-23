@@ -10,9 +10,10 @@ One-screen-at-a-time product recovery workflow.
 
 | Field | Value |
 |-------|-------|
+| **Name** | Splash Screen |
 | **ID** | `welcome` (MP-001) |
 | **Status** | **LOCKED** |
-| **Specification** | MP-001 First Impression |
+| **Specification** | Original approved production splash |
 | **Change authority** | Explicit human approval only |
 
 Do not change artwork, logo, animation, timing, typography, background, spacing, or transition styling.
@@ -25,19 +26,20 @@ Do not change artwork, logo, animation, timing, typography, background, spacing,
 
 | Field | Value |
 |-------|-------|
+| **Name** | MilePilot Introduction |
 | **ID** | `introduction` (MP-UX-LOCK-002) |
-| **Status** | **IN REVIEW** |
-| **Specification** | MP-UX-LOCK-002 |
+| **Status** | **LOCKED** |
+| **Specification** | MP-UX-LOCK-002 / MP-UX-LOCK-002A |
 | **Change authority** | Explicit human approval only |
 
-**Approved copy** (exact — do not paraphrase):
+**Approved copy** (exact production — curly apostrophe `’` U+2019):
 
 - Eyebrow: `MEET MILEPILOT`
-- Heading: `Hi, I'm MilePilot.`
-- Primary: `I'm here to make self-employed life simpler.`
-- Supporting: `I'll help you track your mileage, reduce your admin and stay on top of your business — so you have more time for the work that matters.`
+- Heading: `Hi, I’m MilePilot.`
+- Primary: `I’m here to make self-employed life simpler.`
+- Supporting: `I’ll help you track your mileage, reduce your admin and stay on top of your business — so you have more time for the work that matters.`
 - Promise: `Less admin. More time for your business.`
-- CTA: `Let's get started`
+- CTA: `Let’s get started`
 
 **Flow:** Splash → Introduction → dev placeholder (`onboardAwaiting`) — **STOP** (Screen 3 not started).
 
@@ -45,7 +47,13 @@ Do not change artwork, logo, animation, timing, typography, background, spacing,
 
 ---
 
-## Screen 3+ — Not started
+## Screen 3 — Not started
+
+| Field | Value |
+|-------|-------|
+| **Status** | **NOT STARTED** |
+
+Legacy screens below remain in DOM but are unreachable in UX lock v2 flow until Screen 3+ is approved.
 
 | Screen | Status |
 |--------|--------|
@@ -78,4 +86,4 @@ Old screens remain in DOM but are **blocked** for users where `mp_onboard_comple
 
 ---
 
-*Last updated: MP-UX-LOCK-002 implementation (v8.43.72 branch)*
+*Last updated: MP-UX-LOCK-002A — Screen 2 corrected and locked*
