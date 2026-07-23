@@ -241,7 +241,7 @@ html.mp-expo #welcome.active{padding-top:max(52px,calc(env(safe-area-inset-top,0
 @media(prefers-reduced-motion:reduce){.mp-personal-input{transition:none}}
 /* MP-UX-LOCK-005 — Screen 5 Your Work (IN REVIEW) */
 #yourWork{position:relative;overflow:hidden;background:linear-gradient(180deg,#050F22 0%,#020B1B 55%,#010810 100%)}
-#yourWork.active{display:flex;flex-direction:column;min-height:100dvh;padding:max(32px,env(safe-area-inset-top)) 24px max(24px,env(safe-area-inset-bottom));justify-content:flex-start}
+#yourWork.active{display:flex;flex-direction:column;height:100dvh;max-height:100dvh;min-height:100dvh;overflow:hidden;padding:max(32px,env(safe-area-inset-top)) 24px max(24px,env(safe-area-inset-bottom));justify-content:flex-start}
 #yourWork .onboard-bg{display:block}
 #yourWork .onboard-inner.mp-work-inner{flex:1;display:flex;flex-direction:column;max-width:480px;width:100%;margin:0 auto;min-height:0;padding-top:6px}
 .mp-work-eyebrow{margin:0 0 18px;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(126,184,255,.88);text-align:left;-webkit-font-smoothing:antialiased}
