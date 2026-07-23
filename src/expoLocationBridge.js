@@ -22,6 +22,13 @@ import {
   loadPersistedState,
   isNativeTripActive,
 } from './nativeTrackingEngine';
+import {
+  initLifecycleLedger,
+  recordLifecycleEvent,
+  mergeJsLedgerEntries,
+  getLifecycleExport,
+  clearLifecycleLedger,
+} from './lifecycleLedger';
 
 export { setNativeAutoEndInjector, syncNativeAutoEnd };
 
@@ -127,11 +134,17 @@ export async function startTracking(onLocation, { background = false } = {}) {
 
   lastBackgroundActive = backgroundActive;
   setNativeDebugMeta({ backgroundActive, permissionStatus: await queryLocationPermission() });
+  recordLifecycleEvent('autopilot_armed', {
+    backgroundActive,
+    backgroundRequested: !!background,
+  });
   return { ok: true, backgroundActive };
 }
 
 export async function initNativeTracking() {
+  await initLifecycleLedger();
   await loadPersistedState();
+  recordLifecycleEvent('native_tracking_initialized', {});
 }
 
 export function getLastBackgroundActive() {
@@ -257,6 +270,7 @@ export async function handleWebViewMessage(raw, sendToWebView) {
       break;
     }
     case 'expo:autopilot:arm': {
+      recordLifecycleEvent('autopilot_arm_requested', { source: 'expo:autopilot:arm' });
       const onLocation = (payload) => {
         if (typeof sendToWebView === 'function') {
           sendToWebView({ type: 'expo:autopilot:location', ...payload });
@@ -267,6 +281,31 @@ export async function handleWebViewMessage(raw, sendToWebView) {
       };
       const result = await startTracking(onLocation, { background: !!msg.payload?.background });
       reply({ type: 'expo:autopilot:result', ok: result.ok, backgroundActive: !!result.backgroundActive });
+      break;
+    }
+    case 'expo:ledger:record': {
+      recordLifecycleEvent(msg.payload?.type || 'js_bridge_event', msg.payload?.detail || {});
+      reply({ type: 'expo:ledger:record:ok', ok: true });
+      break;
+    }
+    case 'expo:ledger:export': {
+      const ledger = await mergeJsLedgerEntries(msg.payload?.jsEntries, {
+        ...(msg.payload?.jsProvenance || {}),
+        marketingVersion: msg.payload?.appVersion || null,
+        webBuildNumber: msg.payload?.buildNumber || null,
+        webAppUrl: msg.payload?.webAppUrl || null,
+      });
+      reply({ type: 'expo:ledger:export:result', ledger });
+      break;
+    }
+    case 'expo:ledger:clear': {
+      await clearLifecycleLedger();
+      reply({ type: 'expo:ledger:clear:ok', ok: true });
+      break;
+    }
+    case 'expo:ledger:snapshot': {
+      const ledger = await getLifecycleExport(msg.payload || {});
+      reply({ type: 'expo:ledger:snapshot:result', ledger });
       break;
     }
     case 'expo:autopilot:disarm': {

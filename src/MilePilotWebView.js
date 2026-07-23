@@ -14,6 +14,7 @@ import {
 } from './expoLocationBridge';
 import { setNativeAutoEndInjector, flushPendingNativeAutoEnd } from './nativeAutoEnd';
 import { getTripSyncPayload, setNativeDebugMeta, setNativeAppBackground } from './nativeTrackingEngine';
+import { recordLifecycleEvent } from './lifecycleLedger';
 
 const WEB_APP_URL = Constants.expoConfig?.extra?.webAppUrl || 'https://app.milepilot.uk/?runtime=expo';
 const BUILD_NUMBER = Constants.expoConfig?.ios?.buildNumber || '?';
@@ -102,6 +103,13 @@ export default function MilePilotWebView() {
       appStateRef.current = nextState;
       setNativeDebugMeta({ appState: nextState });
       setNativeAppBackground(nextState !== 'active');
+      if (nextState === 'active') {
+        recordLifecycleEvent('foreground', { appState: nextState });
+      } else if (nextState === 'background') {
+        recordLifecycleEvent('background', { appState: nextState });
+      } else if (nextState === 'inactive') {
+        recordLifecycleEvent('suspension', { appState: nextState });
+      }
       if (nextState === 'background' || nextState === 'inactive') {
         sendToWebView({ type: 'expo:appstate', state: nextState });
       }
@@ -133,7 +141,10 @@ export default function MilePilotWebView() {
         ref={webViewRef}
         source={{ uri: WEB_APP_URL }}
         style={[styles.webview, !ready && styles.hidden]}
-        onLoadEnd={() => setReady(true)}
+        onLoadEnd={() => {
+          setReady(true);
+          recordLifecycleEvent('bridge_ready', { webViewLoaded: true });
+        }}
         onMessage={onMessage}
         injectedJavaScriptBeforeContentLoaded={BRIDGE_BOOT_SCRIPT}
         geolocationEnabled
