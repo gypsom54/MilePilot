@@ -19,10 +19,10 @@ const lockedScreen4Html = execSync("git show main:frontend/index.html", { cwd: r
 const CURLY = "\u2019";
 const COPY = {
   eyebrow: "YOUR WORK JOURNEYS",
-  support: "I" + CURLY + "ll use this to set up the right mileage experience for you.",
+  support: "We" + CURLY + "ll tailor MilePilot around how you normally travel for work.",
   cta: "Continue",
-  headingFallback: "How do you usually travel for work?",
-  headingTemplate: "{name}, how do you usually travel for work?",
+  headingFallback: "What do you usually use for your work journeys?",
+  headingTemplate: "{name}, what do you usually use for your work journeys?",
   businessPlaceholder: "Business onboarding screen awaiting approval.",
   screen6Placeholder: "Next onboarding screen awaiting approval.",
 };
@@ -31,8 +31,8 @@ const OPTIONS = [
   { key: "car_van", title: "Car or van", support: "For driving between customers, jobs or deliveries." },
   { key: "motorcycle", title: "Motorcycle", support: "For work journeys made by motorbike or scooter." },
   { key: "bicycle", title: "Bicycle", support: "For business journeys made by bike." },
-  { key: "public_transport", title: "Public transport", support: "For work journeys made by train, bus or other public transport." },
-  { key: "none", title: "None of these", support: "I don't currently travel for work." },
+  { key: "public_transport", title: "Public transport", support: "Train, bus or tram." },
+  { key: "none", title: "None of these", support: "I don't normally travel for work." },
 ];
 
 let passed = 0;
@@ -95,6 +95,7 @@ forBoth("exact production copy", (src) => {
   assert.ok(block.includes(COPY.support), "support");
   assert.ok(block.includes(">" + COPY.cta + "<"), "cta");
   assert.ok(!block.includes("I'll"), "no straight apostrophe in support");
+  assert.ok(!block.includes("I" + CURLY + "ll use"), "old support copy removed");
 });
 
 forBoth("saved first name inserted safely via textContent", (src) => {
@@ -188,7 +189,7 @@ forBoth("radiogroup semantics and keyboard selection", (src) => {
 
 forBoth("no internal card list scrolling", (src) => {
   assert.doesNotMatch(src, /\.mp-travel-cards\{[^}]*overflow-y:auto/);
-  assert.match(src, /\.mp-travel-card\{[^}]*min-height:64px/);
+  assert.match(src, /\.mp-travel-card\{[^}]*min-height:58px/);
 });
 
 test("Screen 1 welcome byte-identical to main", () => {

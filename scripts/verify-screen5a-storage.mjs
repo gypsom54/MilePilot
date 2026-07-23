@@ -110,7 +110,7 @@ else {
 
 await openTravelMethod("mileage", "Jonathan");
 const named = await readState();
-if (named.heading === "Jonathan, how do you usually travel for work?") console.log("✓ personalised heading with saved name");
+if (named.heading === "Jonathan, what do you usually use for your work journeys?") console.log("✓ personalised heading with saved name");
 else {
   failed++;
   console.error("✗ personalised heading with saved name", named);
@@ -120,7 +120,7 @@ await openTravelMethod("mileage", "");
 await page.evaluate(() => localStorage.removeItem("mp_user_first_name"));
 await page.evaluate(() => initTravelMethod());
 const fallback = await readState();
-if (fallback.heading === "How do you usually travel for work?") console.log("✓ fallback heading without name");
+if (fallback.heading === "What do you usually use for your work journeys?") console.log("✓ fallback heading without name");
 else {
   failed++;
   console.error("✗ fallback heading without name", fallback);

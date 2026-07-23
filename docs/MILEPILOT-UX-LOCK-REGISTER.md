@@ -93,8 +93,8 @@ Once a screen has been approved and marked **LOCKED**, it may not be modified ag
 **Approved copy** (exact production — curly apostrophe `'` U+2019 in `I'll`):
 
 - Eyebrow: `YOUR WORK JOURNEYS`
-- Heading: `{name}, how do you usually travel for work?` (fallback: `How do you usually travel for work?`)
-- Supporting: `I'll use this to set up the right mileage experience for you.`
+- Heading: `{name}, what do you usually use for your work journeys?` (fallback: `What do you usually use for your work journeys?`)
+- Supporting: `We'll tailor MilePilot around how you normally travel for work.`
 - CTA: `Continue`
 
 **Options** (single selection, `mp_travel_method`):
@@ -148,4 +148,4 @@ Old name screen: `knowYou` (MP-002) — blocked, not reachable in UX lock v2 flo
 
 ---
 
-*Last updated: MP-UX-LOCK-005A — Screen 5A Travel Method (IN REVIEW)*
+*Last updated: MP-UX-LOCK-005A-REV1 — Screen 5A Travel Method visual polish (IN REVIEW)*
