@@ -5,6 +5,7 @@
  */
 import * as FileSystem from 'expo-file-system';
 import { onNativeBackgroundLocation } from './nativeAutoEnd';
+import { recordLifecycleEvent } from './lifecycleLedger';
 
 const STATE_PATH = `${FileSystem.documentDirectory}milepilot_native_trip.json`;
 const DEBUG_PATH = `${FileSystem.documentDirectory}milepilot_tracking_debug.json`;
@@ -175,6 +176,10 @@ async function persistState() {
     const body = JSON.stringify({ trip, savedAt: Date.now() });
     await FileSystem.writeAsStringAsync(STATE_PATH, body);
     trip.lastPersistAt = Date.now();
+    recordLifecycleEvent('location_point_persisted', {
+      gpsPointCount: trip.gpsPointCount,
+      tripActive: trip.active,
+    });
     await FileSystem.writeAsStringAsync(
       DEBUG_PATH,
       JSON.stringify({ trip, debugMeta, savedAt: Date.now() }, null, 2)
@@ -216,12 +221,14 @@ export function startNativeTrip({ shiftId, startedAt, vehicle, miles: seedMiles,
     gpsPointCount: seedRoute?.length || 0,
   };
   persistState();
+  recordLifecycleEvent('trip_created', { shiftId: trip.shiftId, source: 'native_engine' });
   console.log('[MilePilot NativeEngine] trip started', trip.shiftId);
   return getTripSyncPayload();
 }
 
 export function stopNativeTrip() {
   const final = getTripSyncPayload();
+  recordLifecycleEvent('trip_end_requested', { shiftId: final.shiftId, source: 'native_engine' });
   trip = emptyTrip();
   persistState();
   console.log('[MilePilot NativeEngine] trip stopped');

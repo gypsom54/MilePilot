@@ -4,6 +4,7 @@
  */
 import { onNativeBackgroundLocation } from './nativeAutoEnd';
 import { ingestNativeLocation } from './nativeTrackingEngine';
+import { recordLifecycleEvent } from './lifecycleLedger';
 import * as TaskManager from 'expo-task-manager';
 import * as Location from 'expo-location';
 
@@ -50,8 +51,14 @@ function queueSync(sync) {
 }
 
 TaskManager.defineTask(BACKGROUND_LOCATION_TASK, ({ data, error }) => {
+  recordLifecycleEvent('background_task_invoked', {
+    task: BACKGROUND_LOCATION_TASK,
+    hasError: !!error,
+    locationCount: data?.locations?.length || 0,
+  });
   if (error) {
     console.error('[MilePilot BG GPS]', error.message || error);
+    recordLifecycleEvent('background_task_error', { message: error.message || String(error) });
     return;
   }
   const locations = data?.locations;
@@ -61,16 +68,14 @@ TaskManager.defineTask(BACKGROUND_LOCATION_TASK, ({ data, error }) => {
     const payload = locationToPayload(loc);
     if (!payload) continue;
 
-    console.log(
-      '[MilePilot BG GPS] location',
-      payload.coords.latitude,
-      payload.coords.longitude,
-      'acc',
-      payload.coords.accuracy
-    );
+    recordLifecycleEvent('native_location_received', {
+      source: 'background',
+      accuracyM: payload.coords.accuracy != null ? Math.round(payload.coords.accuracy) : null,
+    });
 
     const sync = ingestNativeLocation(payload, { source: 'background' });
     if (sync) {
+      recordLifecycleEvent('native_event_queued', { kind: 'trip_sync', source: 'background' });
       queueSync(sync);
     } else {
       onNativeBackgroundLocation(payload);
@@ -101,6 +106,7 @@ export async function startBackgroundLocationUpdates() {
     },
   });
 
+  recordLifecycleEvent('background_location_started', { task: BACKGROUND_LOCATION_TASK });
   console.log('[MilePilot BG GPS] background updates started');
   return true;
 }
