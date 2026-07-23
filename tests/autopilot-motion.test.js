@@ -127,7 +127,7 @@ run('short movement does not start trip', () => {
     },
   });
   M.onGpsSample(drivingSample(1000, 8));
-  M.onGpsSample(drivingSample(30000, 7));
+  M.onGpsSample(drivingSample(5000, 7));
   assert.equal(started, false);
 });
 
