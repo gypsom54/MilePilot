@@ -10,14 +10,26 @@
   /**
    * @typedef {Object} Expense
    * @property {string} id
-   * @property {string} supplierId
+   * @property {string} businessId
+   * @property {string} createdISO
+   * @property {string} updatedISO
+   * @property {string} incurredISO
    * @property {number} amountPence
    * @property {string} currency
    * @property {string} category
+   * @property {string} supplier
+   * @property {string} supplierId
    * @property {string} description
-   * @property {string} incurredISO
-   * @property {string} [receiptId]
-   * @property {'draft'|'confirmed'} status
+   * @property {string} receiptReference
+   * @property {'unknown'|'included'|'excluded'|'mixed'} vatStatus
+   * @property {number} vatAmountPence
+   * @property {number} businessPercentage
+   * @property {string} notes
+   * @property {string[]} tags
+   * @property {'draft'|'confirmed'|'pending_receipt'} status
+   * @property {Object[]} attachments
+   * @property {boolean} archived
+   * @property {boolean} deleted
    * @property {number} schemaVersion
    */
 
@@ -72,6 +84,8 @@
 
   var STORAGE_KEYS = {
     expenses: 'mp_expenses',
+    expenseCategories: 'mp_expense_categories',
+    expenseMeta: 'mp_expense_meta',
     receipts: 'mp_receipts',
     suppliers: 'mp_suppliers',
     vatPeriods: 'mp_vat_periods',
@@ -86,14 +100,26 @@
     expenseShape: function () {
       return {
         id: '',
-        supplierId: '',
+        businessId: 'default',
+        createdISO: '',
+        updatedISO: '',
+        incurredISO: '',
         amountPence: 0,
         currency: 'GBP',
-        category: '',
+        category: 'Other',
+        supplier: '',
+        supplierId: '',
         description: '',
-        incurredISO: '',
-        receiptId: undefined,
+        receiptReference: '',
+        vatStatus: 'unknown',
+        vatAmountPence: 0,
+        businessPercentage: 100,
+        notes: '',
+        tags: [],
         status: 'draft',
+        attachments: [],
+        archived: false,
+        deleted: false,
         schemaVersion: SCHEMA_VERSION,
       };
     },

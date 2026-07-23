@@ -14,7 +14,7 @@
       icon: 'expenses',
       title: 'Expenses',
       description: 'Track and organise every business purchase.',
-      badge: 'Coming Soon',
+      badge: null,
       tagline: 'Business spending in one secure place.',
       emptyBody:
         'Keep every business expense organised in one secure place. Future versions of MilePilot will automatically scan receipts, organise purchases and prepare accountant-ready summaries.',
@@ -73,8 +73,22 @@
 
   var state = { screen: 'home', toolId: null, originToolId: null };
 
+  function isExpensesEngineReady() {
+    return !!(global.MPExpenseEngine && typeof global.MPExpenseEngine.isEngineReady === 'function' && global.MPExpenseEngine.isEngineReady());
+  }
+
   function isConnected(feature) {
+    if (feature === 'expenses') return isExpensesEngineReady();
     return false;
+  }
+
+  function getToolsForDisplay() {
+    return TOOLS.map(function (t) {
+      if (t.id === 'expenses' && isExpensesEngineReady()) {
+        return Object.assign({}, t, { badge: null });
+      }
+      return t;
+    });
   }
 
   function getTool(id) {
@@ -152,7 +166,7 @@
     var root = global.document.getElementById(HOME_ROOT_ID);
     var V = global.MPBusinessWorkspaceView;
     if (!root || !V) return;
-    root.innerHTML = V.renderHome(getTools());
+    root.innerHTML = V.renderHome(getToolsForDisplay());
     bindHomeEvents(root);
   }
 
@@ -161,7 +175,11 @@
     var V = global.MPBusinessWorkspaceView;
     var tool = getTool(id);
     if (!root || !V || !tool) return;
-    root.innerHTML = V.renderToolEmpty(tool);
+    if (id === 'expenses' && isExpensesEngineReady() && global.MPBusinessExpensesTool) {
+      global.MPBusinessExpensesTool.paint(root, tool);
+    } else {
+      root.innerHTML = V.renderToolEmpty(tool);
+    }
     bindToolEvents(root);
   }
 

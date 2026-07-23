@@ -16,7 +16,7 @@
         "gradleCommand": ":app:assembleDebug"
       },
       "env": {
-        "WEB_APP_URL": "https://app.milepilot.uk/?runtime=expo&build=development&v=8.43.69"
+        "WEB_APP_URL": "https://app.milepilot.uk/?runtime=expo&build=development&v=8.43.70"
       }
     },
     "preview": {
@@ -29,7 +29,7 @@
         "buildType": "apk"
       },
       "env": {
-        "WEB_APP_URL": "https://app.milepilot.uk/?runtime=expo&build=preview&v=8.43.69"
+        "WEB_APP_URL": "https://app.milepilot.uk/?runtime=expo&build=preview&v=8.43.70"
       }
     },
     "production": {
@@ -41,7 +41,7 @@
         "buildType": "app-bundle"
       },
       "env": {
-        "WEB_APP_URL": "https://app.milepilot.uk/?runtime=expo&build=production&v=8.43.69"
+        "WEB_APP_URL": "https://app.milepilot.uk/?runtime=expo&build=production&v=8.43.70"
       }
     }
   },
