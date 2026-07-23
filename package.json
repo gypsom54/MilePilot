@@ -39,6 +39,9 @@
     "test:ask-milepilot": "node tests/ask-milepilot-service.test.js",
     "test:ask-parity": "node scripts/mp-s5-parity-audit.js",
     "test:production-boot-syntax": "node tests/production-boot-syntax.test.js",
+    "test:onboarding-screen2": "node tests/onboarding-screen2.test.js",
+    "test:onboarding-screen3": "node tests/onboarding-screen3.test.js",
+    "test:onboarding-screen4": "node tests/onboarding-screen4.test.js",
     "test:business-workspace": "node tests/business-workspace.test.js",
     "test:ai-review": "node tests/ai-mileage-review.test.js",
     "test:vital": "npm run test:production-boot-syntax && npm run verify:tracking && npm run verify:reports && npm run test:mileage-checklist && npm run test:tracking && npm run test:native-idle && npm run test:autopilot && npm run test:reports && npm run test:summary-collect && npm run test:trips && npm run test:auto-end && npm run test:tracking-mode && npm run test:subscription && npm run test:journey-review && npm run test:tax-engine && npm run test:ask-milepilot && npm run test:business-workspace && npm run test:ai-review"
