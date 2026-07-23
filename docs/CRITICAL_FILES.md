@@ -19,8 +19,11 @@ Every file below is business-critical. Changes require explicit review, device t
 | `src/locationTask.js` | Expo background location task (locked screen) |
 | `src/expoLocationBridge.js` | Native → WebView coordinate bridge |
 | `src/MilePilotWebView.js` | TestFlight WebView shell |
+| `src/nativeAutopilot.js` | **Native closed-app AutoPilot** — arming persistence, BG motion FSM, trip auto-start without WebView (MP-HF-008) |
+| `src/nativeTrackingEngine.js` | Authoritative native mileage when WebView suspended |
+| `src/nativeAutoEnd.js` | Native 90-minute idle auto-end |
 
-**Contract:** `scripts/tracking-contract.json` · **Docs:** `docs/TRACKING_CONTRACT.md`
+**Contract:** `scripts/tracking-contract.json` · **Docs:** `docs/TRACKING_CONTRACT.md` · **Native lock:** `docs/AUTOPILOT_NATIVE_ENGINE_LOCK.md`
 
 ### Must-not-regress behaviours
 

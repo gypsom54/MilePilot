@@ -9,6 +9,10 @@
 /src/locationTask.js @gypsom54
 /src/expoLocationBridge.js @gypsom54
 /src/MilePilotWebView.js @gypsom54
+/src/nativeAutopilot.js @gypsom54
+/src/nativeTrackingEngine.js @gypsom54
+/src/nativeAutoEnd.js @gypsom54
+/index.js @gypsom54
 /scripts/tracking-contract.json @gypsom54
 /scripts/verify-tracking-contract.js @gypsom54
 /docs/TRACKING_CONTRACT.md @gypsom54
