@@ -28,11 +28,11 @@
 
   const DEFAULTS = {
     DRIVING_SPEED_MPS: 4.47, // ~10 mph
-    SUSTAINED_MS: 120000, // 2 minutes
+    SUSTAINED_MS: 10000, // ~10 seconds — fast auto-start (was 2 min)
     MAX_START_ACCURACY_M: 80,
     WALKING_MAX_MPS: 2.2,
-    MIN_CANDIDATE_SAMPLES: 4,
-    CONFIDENCE_THRESHOLD: 0.72,
+    MIN_CANDIDATE_SAMPLES: 2,
+    CONFIDENCE_THRESHOLD: 0.58,
     IDLE_MS: 90 * 60 * 1000,
     NOTIF_COOLDOWN_MS: 15 * 60 * 1000,
     MAX_LOG: 80,
@@ -43,6 +43,7 @@
   let candidateStartedAt = 0;
   let candidateSamples = 0;
   let candidateConfidence = 0;
+  let candidateRoute = [];
   let lastSample = null;
   let tripStartedAt = null;
   let tripEndedAt = null;
@@ -52,6 +53,7 @@
   let syncTimer = null;
   let motionActivity = 'unknown';
   let lastError = null;
+  let lastAutoStartBlock = null;
   let autopilotTripId = null;
 
   function log(msg, detail) {
@@ -118,6 +120,10 @@
     return DEFAULTS.IDLE_MS;
   }
 
+  function getSustainedMs() {
+    return DEFAULTS.SUSTAINED_MS;
+  }
+
   function setIdleMs(ms) {
     try {
       localStorage.setItem(STORAGE.IDLE_MS, String(ms));
@@ -181,8 +187,9 @@
     else if (speedMps >= DEFAULTS.DRIVING_SPEED_MPS * 0.85) score += 0.25;
     if (!isPoorGps(acc)) score += 0.25;
     else score -= 0.2;
-    if (sustainedMs >= DEFAULTS.SUSTAINED_MS) score += 0.25;
-    else score += (sustainedMs / DEFAULTS.SUSTAINED_MS) * 0.15;
+    const sustainedTarget = getSustainedMs();
+    if (sustainedMs >= sustainedTarget) score += 0.25;
+    else score += (sustainedMs / sustainedTarget) * 0.15;
     if (motionActivity === 'automotive' || motionActivity === 'driving') score += 0.1;
     if (isWalkingSpeed(speedMps)) score -= 0.35;
     return Math.max(0, Math.min(1, score));
@@ -192,7 +199,19 @@
     candidateStartedAt = 0;
     candidateSamples = 0;
     candidateConfidence = 0;
+    candidateRoute = [];
     if (state === STATES.MOVING_CANDIDATE) setState(STATES.ARMED, reason || 'candidate_reset');
+  }
+
+  function pushCandidateSample(sample, speedMps) {
+    if (!sample || sample.lat == null || sample.lon == null) return;
+    candidateRoute.push({
+      lat: sample.lat,
+      lon: sample.lon,
+      acc: sample.acc != null ? sample.acc : 999,
+      t: sample.t || Date.now(),
+      speedMps: speedMps != null ? speedMps : sample.speedMps,
+    });
   }
 
   function permissionsOk() {
@@ -207,7 +226,7 @@
 
   function canNotify(kind) {
     const now = Date.now();
-    if (now - lastNotifAt < DEFAULTS.NOTIF_COOLDOWN_MS && kind !== 'started' && kind !== 'report') return false;
+    if (now - lastNotifAt < DEFAULTS.NOTIF_COOLDOWN_MS && kind !== 'started') return false;
     return true;
   }
 
@@ -239,17 +258,24 @@
     }
     setState(STATES.ARMED, 'monitoring_armed');
     lastError = null;
-    if (deps && typeof deps.armNative === 'function') {
-      try {
-        await deps.armNative();
-      } catch (e) {
-        log('armNative failed', e.message || String(e));
-      }
-    }
     if (deps && typeof deps.startArmedWatch === 'function') {
       armedWatchId = deps.startArmedWatch(function (sample) {
         onGpsSample(sample);
       });
+    }
+    if (deps && typeof deps.seedArmedGps === 'function') {
+      try {
+        deps.seedArmedGps();
+      } catch (e) {}
+    }
+    if (deps && typeof deps.armNative === 'function') {
+      deps.armNative()
+        .then(function (armed) {
+          if (!armed) log('armNative returned false', 'native_gps_not_started');
+        })
+        .catch(function (e) {
+          log('armNative failed', e.message || String(e));
+        });
     }
   }
 
@@ -289,19 +315,40 @@
   }
 
   function tryAutoStart(confidence) {
-    if (isShiftActive()) return false;
-    if (!deps || typeof deps.canStartTrip !== 'function' || !deps.canStartTrip()) return false;
-    if (confidence < DEFAULTS.CONFIDENCE_THRESHOLD) return false;
-    if (deps && typeof deps.isDuplicateStart === 'function' && deps.isDuplicateStart()) return false;
+    if (isShiftActive()) {
+      lastAutoStartBlock = 'shift_already_active';
+      return false;
+    }
+    if (!deps || typeof deps.canStartTrip !== 'function' || !deps.canStartTrip()) {
+      lastAutoStartBlock = 'subscription_or_access';
+      log('Auto-start blocked', lastAutoStartBlock);
+      return false;
+    }
+    if (confidence < DEFAULTS.CONFIDENCE_THRESHOLD) {
+      lastAutoStartBlock = 'confidence_low';
+      return false;
+    }
+    if (deps && typeof deps.isDuplicateStart === 'function' && deps.isDuplicateStart()) {
+      lastAutoStartBlock = 'duplicate_start';
+      return false;
+    }
+    lastAutoStartBlock = null;
 
     setState(STATES.ENDING, 'starting_trip');
+    const startMeta = {
+      confidence: confidence,
+      sample: lastSample,
+      candidateStartedAt: candidateStartedAt,
+      candidateRoute: candidateRoute.slice(),
+    };
     candidateStartedAt = 0;
     candidateSamples = 0;
+    candidateRoute = [];
 
     let started = false;
     try {
       if (typeof deps.onAutoStart === 'function') {
-        started = !!deps.onAutoStart({ confidence: confidence, sample: lastSample });
+        started = !!deps.onAutoStart(startMeta);
       }
     } catch (e) {
       lastError = e.message || String(e);
@@ -310,10 +357,13 @@
     }
 
     if (!started) {
+      lastAutoStartBlock = 'onAutoStart_declined';
+      log('Auto-start declined', lastAutoStartBlock);
       setState(STATES.ARMED, 'start_declined');
       return false;
     }
 
+    lastAutoStartBlock = null;
     autopilotTripId = 'autopilot_' + Date.now();
     tripStartedAt = Date.now();
     tripEndedAt = null;
@@ -347,13 +397,14 @@
 
     if (state === STATES.OFF || state === STATES.COMPLETED) {
       syncLifecycle();
-      return;
     }
 
     if (state === STATES.PERMISSION_REQUIRED) {
       if (permissionsOk()) armMonitoring();
-      return;
+      else return;
     }
+
+    if (state === STATES.OFF || state === STATES.COMPLETED) return;
 
     if (state !== STATES.ARMED && state !== STATES.MOVING_CANDIDATE) return;
 
@@ -376,20 +427,23 @@
       return;
     }
 
-    const now = Date.now();
+    const now = sample.t || Date.now();
     if (!candidateStartedAt) {
       candidateStartedAt = now;
       candidateSamples = 1;
+      candidateRoute = [];
+      pushCandidateSample(lastSample, speedMps);
       setState(STATES.MOVING_CANDIDATE, 'driving_detected');
     } else {
       candidateSamples += 1;
+      pushCandidateSample(lastSample, speedMps);
     }
 
     const sustainedMs = now - candidateStartedAt;
     candidateConfidence = computeConfidence(speedMps, lastSample.acc, sustainedMs);
 
     if (
-      sustainedMs >= DEFAULTS.SUSTAINED_MS &&
+      sustainedMs >= getSustainedMs() &&
       candidateSamples >= DEFAULTS.MIN_CANDIDATE_SAMPLES &&
       candidateConfidence >= DEFAULTS.CONFIDENCE_THRESHOLD
     ) {
@@ -413,7 +467,8 @@
     tripEndedAt = Date.now();
     setState(STATES.COMPLETED, endReason || 'ended');
     if (endReason === 'auto') {
-      notify('ended', 'AutoPilot', 'Journey ended automatically after 90 minutes idle.');
+      const idleMin = Math.round(getIdleMs() / 60000);
+      notify('ended', 'AutoPilot', 'Journey ended automatically after ' + idleMin + ' minutes idle.');
     }
     setTimeout(function () {
       syncLifecycle();
@@ -456,6 +511,10 @@
       tripEndedAt: tripEndedAt,
       reportSentAt: reportSentAt,
       lastError: lastError,
+      lastAutoStartBlock: lastAutoStartBlock,
+      sustainedThresholdSec: Math.round(getSustainedMs() / 1000),
+      minCandidateSamples: DEFAULTS.MIN_CANDIDATE_SAMPLES,
+      confidenceThreshold: DEFAULTS.CONFIDENCE_THRESHOLD,
       autopilotTripId: autopilotTripId,
     };
   }
@@ -519,6 +578,7 @@
     setAutoBusiness: setAutoBusiness,
     getIdleMs: getIdleMs,
     setIdleMs: setIdleMs,
+    getSustainedMs: getSustainedMs,
     getTripStatusForSave: getTripStatusForSave,
     isDrivingSpeed: isDrivingSpeed,
     computeConfidence: computeConfidence,
