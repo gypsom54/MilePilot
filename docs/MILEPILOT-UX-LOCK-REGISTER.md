@@ -41,19 +41,45 @@ Do not change artwork, logo, animation, timing, typography, background, spacing,
 - Promise: `Less admin. More time for your business.`
 - CTA: `Let’s get started`
 
-**Flow:** Splash → Introduction → dev placeholder (`onboardAwaiting`) — **STOP** (Screen 3 not started).
+**Flow:** Splash → Introduction → dev placeholder (`onboardAwaiting`) — superseded by Screen 3 flow below.
 
 **Dev preview:** append `?preview=introduction` while `mp_onboard_complete` is not `true` to open Screen 2 directly (does not clear storage).
 
 ---
 
-## Screen 3 — Not started
+## Screen 3 — How MilePilot Can Help
+
+| Field | Value |
+|-------|-------|
+| **Name** | How MilePilot Can Help |
+| **ID** | `helpChoice` (MP-UX-LOCK-003) |
+| **Status** | **IN REVIEW** |
+| **Specification** | MP-UX-LOCK-003 |
+| **Change authority** | Explicit human approval only |
+
+**Approved copy:**
+
+- Heading: `How would you like MilePilot to help?`
+- Supporting: `Choose the experience that's right for you today.`
+- Supporting sub: `You can always change this later.`
+- Option 1: Track my mileage — Never miss another business mile.
+- Option 2: Help run my business — Spend less time on paperwork. (with feature list)
+- Option 3: Complete Business Companion — Everything MilePilot has to offer.
+- CTA: `Continue`
+
+**Flow:** Splash → Introduction → Help Choice → Screen 4 placeholder (`onboardAwaiting`) — **STOP** (Screen 4 not started).
+
+**Dev preview:** append `?preview=helpChoice` while `mp_onboard_complete` is not `true`.
+
+---
+
+## Screen 4 — Not started
 
 | Field | Value |
 |-------|-------|
 | **Status** | **NOT STARTED** |
 
-Legacy screens below remain in DOM but are unreachable in UX lock v2 flow until Screen 3+ is approved.
+Legacy screens below remain in DOM but are unreachable in UX lock v2 flow until Screen 4+ is approved.
 
 | Screen | Status |
 |--------|--------|
@@ -86,4 +112,4 @@ Old screens remain in DOM but are **blocked** for users where `mp_onboard_comple
 
 ---
 
-*Last updated: MP-UX-LOCK-002A — Screen 2 corrected and locked*
+*Last updated: MP-UX-LOCK-003 — Screen 3 How MilePilot Can Help (IN REVIEW)*
