@@ -186,31 +186,35 @@ html.mp-expo #welcome.active{padding-top:max(52px,calc(env(safe-area-inset-top,0
 @keyframes mpIntroFadeUp{from{transform:translateY(10px)}to{transform:none}}
 @media(prefers-reduced-motion:reduce){.mp-intro-eyebrow,.mp-intro-heading,.mp-intro-primary,.mp-intro-support,.mp-intro-promise,.mp-intro-cta{animation:none;transform:none}}
 @media(max-width:360px){#introduction.active,#helpChoice.active,#onboardAwaiting.active{padding-left:20px;padding-right:20px}}
-/* MP-UX-LOCK-003 — Screen 3 How MilePilot Can Help (IN REVIEW) */
+/* MP-UX-LOCK-003 / MP-UX-LOCK-003A — Screen 3 How MilePilot Can Help (IN REVIEW) */
 #helpChoice .onboard-bg{display:block}
-#helpChoice .onboard-inner.mp-help-inner{flex:1;display:flex;flex-direction:column;max-width:480px;width:100%;margin:0 auto;min-height:0;padding-top:4px}
-.mp-help-heading{margin:0 0 12px;font-size:clamp(26px,6.8vw,32px);font-weight:700;line-height:1.15;letter-spacing:-.03em;color:#fff;text-align:left;-webkit-font-smoothing:antialiased}
-.mp-help-support{margin:0 0 4px;font-size:clamp(15px,4vw,17px);font-weight:500;line-height:1.5;letter-spacing:-.01em;color:rgba(180,200,228,.92);text-align:left;-webkit-font-smoothing:antialiased}
-.mp-help-support-sub{margin:0 0 24px;font-size:clamp(14px,3.6vw,16px);font-weight:500;line-height:1.45;letter-spacing:-.01em;color:rgba(159,180,208,.82);text-align:left;-webkit-font-smoothing:antialiased}
-.mp-help-cards{display:flex;flex-direction:column;gap:14px;flex:1;min-height:0;overflow-y:auto;padding-bottom:8px;-webkit-overflow-scrolling:touch}
-.mp-help-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;text-align:left;width:100%;padding:18px 18px 16px;border:1px solid rgba(110,180,255,.16);border-radius:20px;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(13,107,255,.02));cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,.08),inset 0 1px 0 rgba(255,255,255,.04);transition:border-color .28s ease,box-shadow .28s ease,transform .28s cubic-bezier(.22,1,.36,1),background .28s ease;-webkit-tap-highlight-color:transparent;color:inherit;font:inherit}
-.mp-help-card.selected{border-color:rgba(13,107,255,.55);background:linear-gradient(180deg,rgba(13,107,255,.14),rgba(13,107,255,.05));box-shadow:0 0 0 3px rgba(13,107,255,.12),0 14px 44px rgba(13,107,255,.18),inset 0 1px 0 rgba(255,255,255,.1)}
+#helpChoice .onboard-inner.mp-help-inner{flex:1;display:flex;flex-direction:column;max-width:480px;width:100%;margin:0 auto;min-height:0;padding-top:6px}
+.mp-help-heading{margin:0 0 10px;font-size:clamp(26px,6.8vw,32px);font-weight:700;line-height:1.18;letter-spacing:-.03em;color:#fff;text-align:left;-webkit-font-smoothing:antialiased}
+.mp-help-support{margin:0;font-size:clamp(15px,4vw,17px);font-weight:500;line-height:1.48;letter-spacing:-.01em;color:rgba(180,200,228,.92);text-align:left;-webkit-font-smoothing:antialiased}
+.mp-help-support-sub{margin:0 0 22px;font-size:clamp(14px,3.6vw,16px);font-weight:500;line-height:1.45;letter-spacing:-.01em;color:rgba(159,180,208,.82);text-align:left;-webkit-font-smoothing:antialiased}
+.mp-help-cards{display:flex;flex-direction:column;gap:16px;flex:1;min-height:0;overflow-y:auto;padding-bottom:10px;-webkit-overflow-scrolling:touch}
+.mp-help-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;text-align:left;width:100%;padding:20px 20px 18px;border:1px solid rgba(110,180,255,.16);border-radius:20px;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(13,107,255,.02));cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,.08),inset 0 1px 0 rgba(255,255,255,.04);transition:border-color .32s cubic-bezier(.22,1,.36,1),box-shadow .32s cubic-bezier(.22,1,.36,1),transform .32s cubic-bezier(.22,1,.36,1),background .32s ease;-webkit-tap-highlight-color:transparent;color:inherit;font:inherit}
+.mp-help-card.selected{transform:translateY(-2px);border-color:rgba(13,107,255,.68);background:linear-gradient(180deg,rgba(13,107,255,.16),rgba(13,107,255,.06));box-shadow:0 0 0 3px rgba(13,107,255,.2),0 20px 56px rgba(13,107,255,.26),0 10px 32px rgba(0,0,0,.14),inset 0 1px 0 rgba(255,255,255,.12)}
+.mp-help-card.mp-help-card--premium{border-color:rgba(110,180,255,.24);background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(13,107,255,.05))}
+.mp-help-card.mp-help-card--premium.selected{border-color:rgba(13,107,255,.72);box-shadow:0 0 0 3px rgba(13,107,255,.22),0 24px 64px rgba(13,107,255,.3),0 12px 36px rgba(0,0,0,.16),inset 0 1px 0 rgba(255,255,255,.14)}
 .mp-help-card:focus-visible{outline:2px solid rgba(110,180,255,.95);outline-offset:3px}
 .mp-help-card:active{transform:scale(.985)}
-.mp-help-card.selected:active{transform:scale(.988)}
+.mp-help-card.selected:active{transform:translateY(-1px) scale(.988)}
 .mp-help-emoji{font-size:22px;line-height:1;margin-bottom:10px}
-.mp-help-card-label{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:none;color:rgba(126,184,255,.92);margin-bottom:6px}
-.mp-help-card-title{font-size:clamp(17px,4.4vw,19px);font-weight:700;line-height:1.3;letter-spacing:-.02em;color:#fff;margin:0 0 8px;-webkit-font-smoothing:antialiased}
-.mp-help-card-body{margin:0;font-size:clamp(14px,3.7vw,15px);font-weight:500;line-height:1.5;letter-spacing:-.01em;color:rgba(180,200,228,.9);-webkit-font-smoothing:antialiased}
-.mp-help-features{margin:10px 0 0;padding:0 0 0 18px;list-style:disc;font-size:clamp(13px,3.5vw,14px);font-weight:500;line-height:1.55;color:rgba(180,200,228,.88)}
-.mp-help-features li{margin-bottom:4px}
-.mp-help-features li:last-child{margin-bottom:0}
-.mp-help-continue{margin-top:12px;min-height:52px;height:52px;border-radius:var(--button-radius);font-size:17px;font-weight:600;letter-spacing:-.01em;width:100%;flex-shrink:0}
-#helpChoice .premium-btn:not(.is-ready){background:linear-gradient(180deg,#1a3a5c 0%,#122a45 100%);color:rgba(159,180,208,.82);cursor:not-allowed;box-shadow:none}
+.mp-help-card-label{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:none;color:rgba(126,184,255,.92);margin-bottom:8px;line-height:1.3}
+.mp-help-badge{display:inline-block;margin:0 0 8px;padding:3px 9px;border-radius:999px;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(159,180,208,.78);border:1px solid rgba(110,180,255,.18);background:rgba(255,255,255,.04);line-height:1.2;-webkit-font-smoothing:antialiased}
+.mp-help-card-title{font-size:clamp(17px,4.4vw,19px);font-weight:700;line-height:1.32;letter-spacing:-.02em;color:#fff;margin:0 0 8px;-webkit-font-smoothing:antialiased}
+.mp-help-card-body{margin:0;font-size:clamp(14px,3.7vw,15px);font-weight:500;line-height:1.52;letter-spacing:-.01em;color:rgba(180,200,228,.9);-webkit-font-smoothing:antialiased}
+.mp-help-benefits,.mp-help-outcomes{margin:10px 0 0;padding:0;list-style:none;font-size:clamp(13px,3.5vw,14px);font-weight:500;line-height:1.55;color:rgba(180,200,228,.88)}
+.mp-help-benefits li,.mp-help-outcomes li{margin-bottom:6px;padding-left:0}
+.mp-help-benefits li:last-child,.mp-help-outcomes li:last-child{margin-bottom:0}
+.mp-help-continue{margin-top:0;min-height:52px;height:52px;border-radius:var(--button-radius);font-size:17px;font-weight:600;letter-spacing:-.01em;width:100%;flex-shrink:0;opacity:0;transform:translateY(8px);max-height:0;overflow:hidden;pointer-events:none;border:0;padding:0}
+.mp-help-continue.is-visible{opacity:1;transform:none;max-height:64px;margin-top:16px;padding:0 16px;pointer-events:auto;animation:mpHelpContinueIn .4s cubic-bezier(.22,1,.36,1) both}
+@keyframes mpHelpContinueIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 #helpChoice .premium-btn.is-ready{background:linear-gradient(180deg,#1E88FF 0%,#0D6BFF 50%,#005FE8 100%);color:#fff;box-shadow:0 8px 24px rgba(13,107,255,.26),inset 0 1px 0 rgba(255,255,255,.12);cursor:pointer}
 #helpChoice .premium-btn.is-ready:focus-visible{outline:2px solid rgba(110,180,255,.95);outline-offset:3px}
-@media(min-width:768px){#helpChoice.active{align-items:center}#helpChoice .mp-help-inner{max-width:520px}.mp-help-cards{gap:16px}}
-@media(prefers-reduced-motion:reduce){.mp-help-card{transition:none}}
+@media(min-width:768px){#helpChoice.active{align-items:center}#helpChoice .mp-help-inner{max-width:520px}.mp-help-cards{gap:18px}}
+@media(prefers-reduced-motion:reduce){.mp-help-card,.mp-help-continue{transition:none!important;animation:none!important}.mp-help-card.selected{transform:none}.mp-help-continue.is-visible{opacity:1;transform:none}}
 #knowYou .onboard-inner{display:flex;flex-direction:column;min-height:0;overflow:hidden}
 #knowYou .brand-bar .wordmark,#experienceChoice .brand-bar .wordmark,#businessProfile .brand-bar .wordmark,#promise .brand-bar .wordmark,#permissions .brand-bar .wordmark,#notifications .brand-bar .wordmark{font-size:42px}
 #knowYou .brand-bar .brand-pulse,#experienceChoice .brand-bar .brand-pulse,#businessProfile .brand-bar .brand-pulse,#promise .brand-bar .brand-pulse,#permissions .brand-bar .brand-pulse,#notifications .brand-bar .brand-pulse{width:min(calc(100% + 32px),220px);margin:16px auto 0}
@@ -990,20 +994,21 @@ body.always-modal-open .nav{display:none!important}
 <button type="button" class="btn premium-btn is-ready mp-intro-cta" id="mpIntroContinue" onclick="finishIntroduction()" aria-label="Let’s get started">Let’s get started</button>
 </div>
 </section>
-<!-- MP-UX-LOCK-003 Screen 3 — How MilePilot Can Help (IN REVIEW) -->
-<section id="helpChoice" class="screen" data-mp="MP-UX-LOCK-003" aria-labelledby="mpHelpHeading">
+<!-- MP-UX-LOCK-003 / MP-UX-LOCK-003A Screen 3 — How MilePilot Can Help (IN REVIEW) -->
+<section id="helpChoice" class="screen" data-mp="MP-UX-LOCK-003" data-mp-lock="003A" aria-labelledby="mpHelpHeading">
 <div class="onboard-bg" aria-hidden="true">
 <div class="onboard-glow onboard-glow-1"></div>
 <div class="onboard-glow onboard-glow-2"></div>
 </div>
 <div class="onboard-inner mp-help-inner">
-<h1 class="mp-help-heading" id="mpHelpHeading">How would you like MilePilot to help?</h1>
-<p class="mp-help-support">Choose the experience that's right for you today.</p>
+<h1 class="mp-help-heading" id="mpHelpHeading">How can I help your business today?</h1>
+<p class="mp-help-support">Choose the experience that's right for you.</p>
 <p class="mp-help-support-sub">You can always change this later.</p>
 <div class="mp-help-cards" id="mpHelpCards" role="radiogroup" aria-labelledby="mpHelpHeading">
 <button type="button" class="mp-help-card" data-help-choice="mileage" role="radio" aria-checked="false" onclick="selectHelpChoice('mileage')">
 <span class="mp-help-emoji" aria-hidden="true">🚗</span>
 <span class="mp-help-card-label">Track my mileage</span>
+<span class="mp-help-badge">HMRC READY</span>
 <strong class="mp-help-card-title">Never miss another business mile.</strong>
 <p class="mp-help-card-body">Automatically record your journeys, calculate your claims and generate HMRC-ready mileage reports to help you stay organised and claim what you're entitled to.</p>
 </button>
@@ -1012,23 +1017,29 @@ body.always-modal-open .nav{display:none!important}
 <span class="mp-help-card-label">Help run my business</span>
 <strong class="mp-help-card-title">Spend less time on paperwork.</strong>
 <p class="mp-help-card-body">Everything you need to stay organised in one place.</p>
-<ul class="mp-help-features" aria-label="Business tools included">
-<li>AI Receipt Scanner</li>
-<li>Expense Tracking</li>
-<li>VAT Tracking</li>
-<li>Business Reports</li>
-<li>Ask MilePilot</li>
-<li>Accountant Packs</li>
+<ul class="mp-help-benefits" aria-label="What MilePilot helps you with">
+<li>📷 Scan receipts automatically</li>
+<li>💷 Track every business expense</li>
+<li>🧾 Stay on top of VAT</li>
+<li>📊 Generate business reports</li>
+<li>🤖 Ask questions about your business</li>
+<li>👨‍💼 Prepare accountant-ready summaries</li>
 </ul>
 </button>
-<button type="button" class="mp-help-card" data-help-choice="companion" role="radio" aria-checked="false" onclick="selectHelpChoice('companion')">
+<button type="button" class="mp-help-card mp-help-card--premium" data-help-choice="companion" role="radio" aria-checked="false" onclick="selectHelpChoice('companion')">
 <span class="mp-help-emoji" aria-hidden="true">⭐</span>
 <span class="mp-help-card-label">Complete Business Companion</span>
-<strong class="mp-help-card-title">Everything MilePilot has to offer.</strong>
-<p class="mp-help-card-body">Automatic mileage tracking together with powerful business tools, giving you one place to organise your business, reduce admin and save time every week.</p>
+<strong class="mp-help-card-title">Your business in one place.</strong>
+<ul class="mp-help-outcomes" aria-label="Complete experience includes">
+<li>Automatic mileage tracking.</li>
+<li>Smart business tools.</li>
+<li>AI assistance whenever you need it.</li>
+<li>HMRC-ready reports.</li>
+<li>Everything working together to save you time.</li>
+</ul>
 </button>
 </div>
-<button type="button" class="btn premium-btn mp-help-continue" id="mpHelpContinue" onclick="finishHelpChoice()" disabled aria-disabled="true">Continue</button>
+<button type="button" class="btn premium-btn mp-help-continue" id="mpHelpContinue" onclick="finishHelpChoice()" hidden aria-hidden="true" tabindex="-1">Continue →</button>
 </div>
 </section>
 <!-- MP-UX-DEV — Screen 4 placeholder (not started) -->
@@ -1684,9 +1695,10 @@ const ONBOARDING_COMPLETE=true;
 const MP_UX_LOCK_002=true;
 const MP_UX_LOCK_002A=true;
 const MP_UX_LOCK_003=true;
+const MP_UX_LOCK_003A=true;
 const MP_HELP_CHOICE_KEY='mp_help_choice';
 const MP_UX002_COPY={eyebrow:'MEET MILEPILOT',heading:'Hi, I\u2019m MilePilot.',primary:'I\u2019m here to make self-employed life simpler.',supporting:'I\u2019ll help you track your mileage, reduce your admin and stay on top of your business \u2014 so you have more time for the work that matters.',promise:'Less admin. More time for your business.',cta:'Let\u2019s get started'};
-const MP_UX003_COPY={heading:'How would you like MilePilot to help?',support:'Choose the experience that\'s right for you today.',supportSub:'You can always change this later.',cta:'Continue',options:{mileage:{emoji:'\uD83D\uDE97',label:'Track my mileage',title:'Never miss another business mile.',body:'Automatically record your journeys, calculate your claims and generate HMRC-ready mileage reports to help you stay organised and claim what you\'re entitled to.'},business:{emoji:'\uD83D\uDCBC',label:'Help run my business',title:'Spend less time on paperwork.',body:'Everything you need to stay organised in one place.',features:['AI Receipt Scanner','Expense Tracking','VAT Tracking','Business Reports','Ask MilePilot','Accountant Packs']},companion:{emoji:'\u2B50',label:'Complete Business Companion',title:'Everything MilePilot has to offer.',body:'Automatic mileage tracking together with powerful business tools, giving you one place to organise your business, reduce admin and save time every week.'}}};
+const MP_UX003_COPY={heading:'How can I help your business today?',support:'Choose the experience that\'s right for you.',supportSub:'You can always change this later.',cta:'Continue \u2192',badge:'HMRC READY',options:{mileage:{emoji:'\uD83D\uDE97',label:'Track my mileage',title:'Never miss another business mile.',body:'Automatically record your journeys, calculate your claims and generate HMRC-ready mileage reports to help you stay organised and claim what you\'re entitled to.'},business:{emoji:'\uD83D\uDCBC',label:'Help run my business',title:'Spend less time on paperwork.',body:'Everything you need to stay organised in one place.',benefits:['\uD83D\uDCF7 Scan receipts automatically','\uD83D\uDCB7 Track every business expense','\uD83E\uDDFE Stay on top of VAT','\uD83D\uDCCA Generate business reports','\uD83E\uDD16 Ask questions about your business','\uD83D\uDC68\u200D\uD83D\uDCBC Prepare accountant-ready summaries']},companion:{emoji:'\u2B50',label:'Complete Business Companion',title:'Your business in one place.',outcomes:['Automatic mileage tracking.','Smart business tools.','AI assistance whenever you need it.','HMRC-ready reports.','Everything working together to save you time.']}}};
 const UX_LOCK_V2_SCREENS=['welcome','introduction','helpChoice','onboardAwaiting'];
 const UX_LOCK_LEGACY_BLOCKED=['knowYou','trackingMode','permissions','emailSetup','onboardReady','experienceChoice','businessProfile','promise','notifications','reportSchedule','trackingModeSettings'];
 const ONBOARD_SCREENS=['welcome','introduction','helpChoice','onboardAwaiting'];
@@ -1768,7 +1780,7 @@ function initIntroduction(){/* Screen 2 copy is static in DOM — MP_UX002_COPY 
 function finishIntroduction(){localStorage.setItem('mp_onboard_step','helpChoice');initHelpChoice();showScreen('helpChoice')}
 function initHelpChoice(){selectedHelpChoice=localStorage.getItem(MP_HELP_CHOICE_KEY)||null;document.querySelectorAll('[data-help-choice]').forEach(function(c){const on=c.dataset.helpChoice===selectedHelpChoice;c.classList.toggle('selected',on);c.setAttribute('aria-checked',on?'true':'false')});syncHelpChoiceContinue()}
 function selectHelpChoice(key){if(!MP_UX003_COPY.options[key])return;selectedHelpChoice=key;localStorage.setItem(MP_HELP_CHOICE_KEY,key);document.querySelectorAll('[data-help-choice]').forEach(function(c){const on=c.dataset.helpChoice===key;c.classList.toggle('selected',on);c.setAttribute('aria-checked',on?'true':'false')});syncHelpChoiceContinue()}
-function syncHelpChoiceContinue(){const btn=q('mpHelpContinue');if(!btn)return;const ready=!!selectedHelpChoice;btn.disabled=!ready;btn.setAttribute('aria-disabled',ready?'false':'true');btn.classList.toggle('is-ready',ready)}
+function syncHelpChoiceContinue(){const btn=q('mpHelpContinue');if(!btn)return;const ready=!!selectedHelpChoice;if(ready){btn.hidden=false;btn.removeAttribute('hidden');btn.setAttribute('aria-hidden','false');btn.tabIndex=0;btn.disabled=false;btn.classList.add('is-ready','is-visible');btn.textContent=MP_UX003_COPY.cta}else{btn.hidden=true;btn.setAttribute('hidden','');btn.setAttribute('aria-hidden','true');btn.tabIndex=-1;btn.disabled=true;btn.classList.remove('is-ready','is-visible')}}
 function finishHelpChoice(){if(!selectedHelpChoice)return;localStorage.setItem('mp_onboard_step','awaiting');showScreen('onboardAwaiting')}
 function startOnboardingName(){if(isNewUserUxLockFlow()){startIntroduction();return}localStorage.setItem('mp_onboard_step','name');initOnboardName();showScreen('knowYou')}
 function bindOnboardNameInput(input){if(!input||input.dataset.mpBound==='1')return;const sync=()=>syncOnboardNameContinue();['input','change','keyup','paste','blur','focus'].forEach(ev=>input.addEventListener(ev,sync));input.addEventListener('animationstart',e=>{if(e.animationName==='onboardNameAutofillStart')sync()});input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();handleKnowYouContinueClick()}});input.dataset.mpBound='1'}

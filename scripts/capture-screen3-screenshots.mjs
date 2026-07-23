@@ -84,7 +84,17 @@ for (const vp of viewports) {
   await page.goto(base, { waitUntil: "networkidle0" });
   await openHelpChoice(page);
   await page.click('[data-help-choice="business"]');
-  await new Promise((r) => setTimeout(r, 300));
+  await new Promise((r) => setTimeout(r, 450));
+  const continueVisible = await page.evaluate(() => {
+    const btn = document.getElementById("mpHelpContinue");
+    return btn && !btn.hidden && btn.classList.contains("is-visible");
+  });
+  if (!continueVisible) throw new Error("Continue should be visible after selection");
+  await page.evaluate(() => {
+    const btn = document.getElementById("mpHelpContinue");
+    if (btn) btn.scrollIntoView({ block: "end", behavior: "instant" });
+  });
+  await new Promise((r) => setTimeout(r, 200));
   await shot(page, "screen3-help-selected-390x844.png");
   await page.close();
 }

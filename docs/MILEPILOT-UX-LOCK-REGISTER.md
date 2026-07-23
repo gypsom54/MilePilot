@@ -57,15 +57,17 @@ Do not change artwork, logo, animation, timing, typography, background, spacing,
 | **Specification** | MP-UX-LOCK-003 |
 | **Change authority** | Explicit human approval only |
 
-**Approved copy:**
+**Approved copy** (MP-UX-LOCK-003A):
 
-- Heading: `How would you like MilePilot to help?`
-- Supporting: `Choose the experience that's right for you today.`
+- Heading: `How can I help your business today?`
+- Supporting: `Choose the experience that's right for you.`
 - Supporting sub: `You can always change this later.`
-- Option 1: Track my mileage — Never miss another business mile.
-- Option 2: Help run my business — Spend less time on paperwork. (with feature list)
-- Option 3: Complete Business Companion — Everything MilePilot has to offer.
-- CTA: `Continue`
+- Option 1: Track my mileage — badge `HMRC READY` — Never miss another business mile.
+- Option 2: Help run my business — benefit-led list (scan receipts, expenses, VAT, reports, ask, accountant summaries)
+- Option 3: Complete Business Companion — Your business in one place. (outcome list)
+- CTA: `Continue →` (hidden until selection)
+
+**Specification:** MP-UX-LOCK-003 / MP-UX-LOCK-003A
 
 **Flow:** Splash → Introduction → Help Choice → Screen 4 placeholder (`onboardAwaiting`) — **STOP** (Screen 4 not started).
 
@@ -112,4 +114,4 @@ Old screens remain in DOM but are **blocked** for users where `mp_onboard_comple
 
 ---
 
-*Last updated: MP-UX-LOCK-003 — Screen 3 How MilePilot Can Help (IN REVIEW)*
+*Last updated: MP-UX-LOCK-003A — Screen 3 product positioning refinement (IN REVIEW)*
