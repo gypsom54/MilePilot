@@ -2,7 +2,7 @@
 
 **Specification ID:** MP-S6-001  
 **Branch:** `cursor/business-workspace-sprint1-19bd`  
-**Status:** **PASS** — await approval  
+**Status:** **LOCKED** — approved and merged (PR #164)  
 **Sprint 2:** Not started
 
 ---
