@@ -114,10 +114,9 @@ forBoth("heading focused on entry not input", (src) => {
   assert.match(src, /function initPersonalIntro\(\)\{[\s\S]*?heading\.focus\(\)/);
 });
 
-forBoth("routing Screen 3 to Screen 4 to Screen 5 placeholder", (src) => {
+forBoth("routing Screen 3 to Screen 4 to Screen 5", (src) => {
   assert.match(src, /function finishHelpChoice\(\)\{if\(!selectedHelpChoice\)return;localStorage\.setItem\('mp_onboard_step','personalIntro'\);initPersonalIntro\(\);showScreen\('personalIntro'\)\}/);
-  assert.match(src, /localStorage\.setItem\('mp_onboard_step','awaiting'\);showScreen\('onboardAwaiting'\)/);
-  assert.ok(src.includes(COPY.placeholderScreen5));
+  assert.match(src, /localStorage\.setItem\('mp_onboard_step','yourWork'\);initWorkCategory\(\);showScreen\('yourWork'\)/);
 });
 
 forBoth("old knowYou screen blocked", (src) => {
@@ -151,7 +150,6 @@ test("UX Lock Register Screen 4 LOCKED", () => {
   assert.match(doc, /Screen 4.*LOCKED/s);
   assert.match(doc, /MP-UX-LOCK-004/);
   assert.match(doc, /MP-UX-LOCK-004A/);
-  assert.match(doc, /Screen 5.*NOT STARTED/s);
 });
 
 test("no unauthorised ZIP or tracking artefacts in branch", () => {

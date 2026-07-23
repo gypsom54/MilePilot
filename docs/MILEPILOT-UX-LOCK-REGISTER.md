@@ -74,13 +74,48 @@ Once a screen has been approved and marked **LOCKED**, it may not be modified ag
 
 **Storage:** `mp_user_first_name` only (max 50 chars, trim whitespace, preserve capitalisation)
 
-**Flow:** Splash → Introduction → Help Choice → **Personal Introduction** → Screen 5 placeholder (`onboardAwaiting`) — **STOP**
+**Flow:** Splash → Introduction → Help Choice → **Personal Introduction** → Screen 5 Your Work
 
 **Dev preview:** append `?preview=personalIntro` while `mp_onboard_complete` is not `true`.
 
 ---
 
-## Screen 5+ — Not started
+## Screen 5 — Your Work
+
+| Field | Value |
+|-------|-------|
+| **Name** | Your Work |
+| **ID** | `yourWork` (MP-UX-LOCK-005) |
+| **Status** | **IN REVIEW** |
+| **Specification** | MP-UX-LOCK-005 |
+| **Change authority** | Explicit human approval only — requires UNLOCK SCREEN 5 to modify after lock |
+
+**Approved copy** (exact production):
+
+- Eyebrow: `TELL ME ABOUT YOUR WORK`
+- Heading: `What kind of work do you do?`
+- Supporting: `This helps me make MilePilot more useful for your business.`
+- CTA: `Continue`
+
+**Options** (single selection, `mp_business_category`):
+
+| Value | Title |
+|-------|-------|
+| `driver` | Driving & delivery |
+| `trades` | Trades & construction |
+| `freelance` | Freelance & professional |
+| `services` | Retail & personal services |
+| `other` | Something else |
+
+**Storage:** `mp_business_category` only
+
+**Flow:** Personal Introduction → **Your Work** → Screen 6 placeholder (`onboardAwaiting`) — **STOP**
+
+**Dev preview:** append `?preview=yourWork` while `mp_onboard_complete` is not `true`.
+
+---
+
+## Screen 6+ — Not started
 
 | Field | Value |
 |-------|-------|
@@ -98,4 +133,4 @@ Old name screen: `knowYou` (MP-002) — blocked, not reachable in UX lock v2 flo
 
 ---
 
-*Last updated: MP-UX-LOCK-004A — Screen 4 Personal Introduction (LOCKED)*
+*Last updated: MP-UX-LOCK-005 — Screen 5 Your Work (IN REVIEW)*
