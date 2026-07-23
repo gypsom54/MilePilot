@@ -1409,6 +1409,12 @@ body.always-modal-open .nav{display:none!important}
 </div>
 </div>
 </div>
+<div class="settings-card settings-card--compact" id="recoveryProvenanceCard" hidden>
+<h2 class="settings-card-title">Recovery Validation (MP-HF-009)</h2>
+<p class="sub" style="margin-top:0">Historical recovery build provenance — read-only. Confirm native and web identities match before field test.</p>
+<pre id="recoveryProvenanceSummary" class="debug-panel-body" style="max-height:180px;overflow:auto">Loading…</pre>
+<button type="button" class="btn outline small" onclick="MPRecoveryProvenance.open()">Open full recovery diagnostics →</button>
+</div>
 <div class="settings-card settings-card--compact">
 <h2 class="settings-card-title">Beta Feedback</h2>
 <p class="sub" style="margin:-4px 0 12px">Help shape MilePilot — your feedback becomes our roadmap.</p>
@@ -1496,6 +1502,7 @@ body.always-modal-open .nav{display:none!important}
 </div>
 <section id="trackingDebug" class="screen"><header class="brand-bar"><div class="wordmark">Mile <span class="blue">Pilot</span></div></header><h1 class="title">Tracking Debug</h1><p class="sub">Native background mileage diagnostics. Enable with <code>localStorage.setItem('mp_debug','1')</code> or <code>?debug=tracking</code>.</p><pre id="trackingDebugBody" class="debug-panel-body" style="max-height:70vh;overflow:auto">Loading…</pre><button type="button" class="btn outline" onclick="MPTrackingDebug.refresh()">Refresh</button><button type="button" class="btn" onclick="MPTrackingDebug.close()">Back</button></section>
 <section id="autopilotDebug" class="screen"><header class="brand-bar"><div class="wordmark">Mile <span class="blue">Pilot</span></div></header><h1 class="title">AutoPilot Debug</h1><p class="sub">Motion detection state machine — development only. Enable with <code>localStorage.setItem('mp_debug','1')</code> or <code>?debug=autopilot</code>.</p><pre id="autopilotDebugBody" class="debug-panel-body" style="max-height:70vh;overflow:auto">Loading…</pre><button type="button" class="btn outline" onclick="MPAutoPilotDebug.refresh()">Refresh</button><button type="button" class="btn outline" onclick="MPAutoPilotMotion.clearLog();MPAutoPilotDebug.refresh()">Clear log</button><button type="button" class="btn" onclick="MPAutoPilotDebug.close()">Back</button></section>
+<section id="recoveryProvenance" class="screen"><header class="brand-bar"><div class="wordmark">Mile <span class="blue">Pilot</span></div></header><h1 class="title">Recovery Validation</h1><p class="sub">MP-HF-009 read-only provenance. Verify commit, bundle hash, and native/web alignment before field test. Open with <code>?debug=recovery</code>.</p><pre id="recoveryProvenanceBody" class="debug-panel-body" style="max-height:70vh;overflow:auto">Loading…</pre><button type="button" class="btn outline" onclick="MPRecoveryProvenance.refresh()">Refresh</button><button type="button" class="btn" onclick="MPRecoveryProvenance.close()">Back</button></section>
 <div class="toast" id="toast"></div><div id="printReport"></div>
 <script src="js/mie-intelligence-engine.js"></script>
 <script src="js/ai-mileage-review.js"></script>
@@ -1506,6 +1513,7 @@ body.always-modal-open .nav{display:none!important}
 <script src="js/native-platform.js"></script>
 <script src="js/tracking-provider.js"></script>
 <script src="js/tracking-debug.js"></script>
+<script src="js/recovery-provenance.js"></script>
 <script src="js/trip-store.js"></script>
 <script src="js/trip-auto-end.js"></script>
 <script src="js/autopilot-motion.js"></script>

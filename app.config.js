@@ -17,7 +17,7 @@ module.exports = {
     ios: {
       supportsTablet: false,
       bundleIdentifier: 'com.zipcab.milepilot',
-      buildNumber: '15',
+      buildNumber: '16',
       infoPlist: {
         NSLocationWhenInUseUsageDescription:
           'MilePilot uses your location to record business journeys while you are working.',
@@ -83,7 +83,7 @@ module.exports = {
       },
       webAppUrl:
         process.env.WEB_APP_URL ||
-        'https://app.milepilot.uk/?runtime=expo&v=8.43.57',
+        'https://app.milepilot.uk/?runtime=expo&build=recovery-hf009&commit=9b91907&v=8.43.63',
     },
   },
 };

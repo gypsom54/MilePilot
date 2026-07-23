@@ -1,9 +1,11 @@
 #!/bin/bash
 set -e
 ROOT="$(cd "$(dirname "$0")" && pwd)"
+node "$ROOT/scripts/generate-recovery-provenance.mjs"
 VERSION=$(grep "const APP_VERSION" "$ROOT/frontend/index.html" | sed "s/.*'\(.*\)'.*/\1/")
 cp "$ROOT/frontend/index.html" "$ROOT/frontend/version.txt" "$ROOT/frontend/service-worker.js" \
    "$ROOT/frontend/manifest.json" "$ROOT/frontend/icon.svg" "$ROOT/milepilot-upload-v2/"
+cp "$ROOT/frontend/recovery-build-identity.json" "$ROOT/milepilot-upload-v2/" 2>/dev/null || true
 mkdir -p "$ROOT/milepilot-upload-v2/js"
 cp "$ROOT/frontend/js/"*.js "$ROOT/milepilot-upload-v2/js/" 2>/dev/null || true
 cp "$ROOT/frontend/js/"*.js "$ROOT/milepilot-upload-v2/js/" 2>/dev/null || true

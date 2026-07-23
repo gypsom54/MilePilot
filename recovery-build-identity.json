@@ -1,0 +1,50 @@
+{
+  "spec": "MP-HF-009",
+  "label": "Historical Recovery Build Validation",
+  "recoveryCandidate": true,
+  "frozenCommit": "9b91907fef6146d20aa905099782bac7deaed254",
+  "frozenCommitShort": "9b91907",
+  "alternateCandidate": "a84a0c4",
+  "generatedAt": "2026-07-23T17:40:57.961Z",
+  "git": {
+    "commit": "9b91907fef6146d20aa905099782bac7deaed254",
+    "commitShort": "9b91907",
+    "branch": "cursor/mp-hf-009-historical-validation-19bd",
+    "isFrozenCommit": true,
+    "containsFrozenCommit": true
+  },
+  "appVersion": "8.43.63",
+  "versionTxt": "8.43.63",
+  "iosBuildNumber": "16",
+  "easProfile": "recovery-hf009",
+  "webAppUrl": "https://app.milepilot.uk/?runtime=expo&build=recovery-hf009&commit=9b91907&v=8.43.63",
+  "bundleHash": "5a7de22514eb704509f466b785e8c0b36997e5173a6bc69bc4e51af579bfc5a9",
+  "bundleFiles": [
+    "frontend/index.html",
+    "frontend/js/tracking-debug.js",
+    "frontend/js/tracking-provider.js",
+    "frontend/js/native-platform.js",
+    "frontend/js/trip-auto-end.js",
+    "frontend/js/autopilot-motion.js",
+    "frontend/js/trip-store.js"
+  ],
+  "nativeSourceHash": "e7aaade727eb9f0f1cdca6dfabeaf0c17221a7f9be4e858f37e8c695266ea09b",
+  "nativeFiles": [
+    "index.js",
+    "src/nativeAutopilot.js",
+    "src/expoLocationBridge.js",
+    "src/locationTask.js",
+    "src/MilePilotWebView.js",
+    "src/nativeTrackingEngine.js",
+    "src/nativeAutoEnd.js",
+    "app.config.js"
+  ],
+  "fileHashes": {
+    "frontend/index.html": "7da3081f24bd48d14994bfb19d76204a9ea202472b619fd69d5564d9892d4a81",
+    "src/nativeAutopilot.js": "453bee1c43e0fbd51b3079d328e3a613076647fb81e650cc25754f6a467ae1ee",
+    "src/expoLocationBridge.js": "6f0bbdbc355ccb4ce795544d050f9ab2eab621e55446346479e9c0a44c4d71b8",
+    "src/locationTask.js": "e5ef5267167e96ff343984a7c502bff3357a9494335537e659ef91f9bbb3918b"
+  },
+  "nativeAutopilotModulePresent": true,
+  "nativeBridgePresent": true
+}
