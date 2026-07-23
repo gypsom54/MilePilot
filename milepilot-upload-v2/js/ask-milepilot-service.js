@@ -898,7 +898,7 @@
     },
     execute: async function (actionType) {
       if (executing) {
-        return { ok: false, error: 'Action already in progress.' };
+        return { ok: false, error: 'Action already in progress.', duplicate: true };
       }
       var action = pendingAction;
       if (!action || !action.payload) {
@@ -909,6 +909,7 @@
         if (actionType === 'email' || action.action === 'email') {
           if (deps && typeof deps.apiPost === 'function') {
             await deps.apiPost('/reports/send', action.payload);
+            pendingAction = null;
             return { ok: true, type: 'email' };
           }
           return { ok: false, error: 'Email delivery is not available in preview mode.' };
@@ -917,12 +918,14 @@
           if (deps && typeof deps.apiPost === 'function') {
             var res = await deps.apiPost('/reports/pdf', action.payload);
             if (res && res.blob) {
+              pendingAction = null;
               return { ok: true, type: 'export', blob: res.blob };
             }
           }
           return { ok: false, error: 'Export is not available in preview mode.' };
         }
         if (actionType === 'prepare' || action.action === 'prepare') {
+          pendingAction = null;
           return { ok: true, type: 'prepare', payload: action.payload };
         }
         return { ok: false, error: 'Unknown action.' };
@@ -1001,7 +1004,9 @@
 
   async function confirmAction(actionType) {
     var result = await ActionExecutor.execute(actionType);
-    ActionExecutor.clearPending();
+    if (!result.duplicate) {
+      ActionExecutor.clearPending();
+    }
     return ResponseFormatter.complete(actionType || result.type, result);
   }
 
