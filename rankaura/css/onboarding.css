@@ -96,8 +96,8 @@ button {
   position: absolute;
   border-radius: 50%;
   filter: blur(40px);
-  opacity: 0.55;
-  animation: raFloat 14s ease-in-out infinite;
+  opacity: 0.42;
+  animation: raFloat 22s ease-in-out infinite;
 }
 
 .ra-atmosphere__glow--a {
@@ -304,10 +304,38 @@ button {
 /* —— Typography / brand —— */
 .ra-logo {
   display: block;
-  width: min(82vw, 320px);
+  width: min(78vw, 300px);
   height: auto;
-  margin: 0 auto var(--ra-space-5);
+  margin: 0 auto var(--ra-space-6);
   animation: raBrandIn 1100ms var(--ra-ease) both;
+}
+
+.ra-demo-label {
+  margin: var(--ra-space-5) 0 0;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--ra-muted);
+}
+
+.ra-analysis__intro {
+  margin: 0 0 var(--ra-space-5);
+  text-align: center;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ra-accent);
+}
+
+.ra-analysis-fail {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.ra-analysis-fail[hidden],
+.ra-analysis[hidden] {
+  display: none !important;
 }
 
 
@@ -617,10 +645,10 @@ button {
 .ra-analysis__name {
   margin: 0;
   font-family: var(--ra-font-display);
-  font-size: clamp(28px, 7vw, 34px);
+  font-size: clamp(24px, 6.2vw, 32px);
   font-weight: 600;
   letter-spacing: -0.03em;
-  line-height: 1.15;
+  line-height: 1.18;
   color: var(--ra-ink);
   transition: opacity 320ms var(--ra-ease), transform 320ms var(--ra-ease);
 }

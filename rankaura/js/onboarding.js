@@ -1,6 +1,6 @@
 /**
  * RankAura Sprint 1 — Onboarding conversation
- * One question per screen. No feature creep.
+ * Source of truth: rankaura/docs/SPRINT_01.md + UX_PHILOSOPHY.md
  */
 
 (function () {
@@ -20,16 +20,46 @@
   ];
 
   const ANALYSIS_STAGES = [
-    { name: "Business", copy: "Learning what you do and who you serve." },
-    { name: "Industry", copy: "Mapping the landscape around your market." },
-    { name: "Competitors", copy: "Understanding who else is competing for attention." },
-    { name: "Keywords", copy: "Finding the searches your customers already use." },
-    { name: "Website", copy: "Reading your site the way search engines do." },
-    { name: "Technical SEO", copy: "Checking the foundations that help you get found." },
-    { name: "Local Presence", copy: "Seeing how you show up in your area." },
-    { name: "Content Opportunities", copy: "Spotting clear places to grow your voice." },
-    { name: "Authority", copy: "Measuring the trust signals that lift rankings." },
-    { name: "Growth Plan", copy: "Bringing everything together into your first plan." },
+    {
+      name: "Understanding your business",
+      copy: "Learning what you do and who you serve.",
+    },
+    {
+      name: "Researching your industry",
+      copy: "Mapping the landscape around your market.",
+    },
+    {
+      name: "Analysing competitors",
+      copy: "Seeing who else is competing for attention.",
+    },
+    {
+      name: "Discovering keyword opportunities",
+      copy: "Finding the searches your customers already use.",
+    },
+    {
+      name: "Crawling your website",
+      copy: "Reading your site carefully, page by page.",
+    },
+    {
+      name: "Reviewing technical performance",
+      copy: "Checking the foundations that help you get found.",
+    },
+    {
+      name: "Finding content opportunities",
+      copy: "Spotting clear places to grow your voice.",
+    },
+    {
+      name: "Reviewing local presence",
+      copy: "Seeing how you show up in your area.",
+    },
+    {
+      name: "Reviewing authority and trust",
+      copy: "Understanding the signals that build confidence.",
+    },
+    {
+      name: "Building your Growth Plan",
+      copy: "Bringing everything together into a clear plan.",
+    },
   ];
 
   const state = {
@@ -43,6 +73,8 @@
     transitioning: false,
     analysisTimer: null,
     analysisIndex: 0,
+    analysisFailed: false,
+    analysisComplete: false,
   };
 
   const els = {
@@ -59,15 +91,26 @@
     businessError: document.getElementById("raBusinessError"),
     websiteError: document.getElementById("raWebsiteError"),
     descriptionError: document.getElementById("raDescriptionError"),
+    analysisMain: document.getElementById("raAnalysisMain"),
+    analysisFail: document.getElementById("raAnalysisFail"),
+    analysisRetry: document.getElementById("raAnalysisRetry"),
     analysisName: document.getElementById("raAnalysisName"),
     analysisCopy: document.getElementById("raAnalysisCopy"),
     analysisStage: document.getElementById("raAnalysisStage"),
     analysisDots: document.getElementById("raAnalysisDots"),
-    summaryBusiness: document.getElementById("raSummaryBusiness"),
+    summaryBusinessName: document.getElementById("raSummaryBusinessName"),
+    summaryOpportunities: document.getElementById("raSummaryOpportunities"),
     summaryFocus: document.getElementById("raSummaryFocus"),
     summaryNext: document.getElementById("raSummaryNext"),
     launchName: document.getElementById("raLaunchName"),
   };
+
+  function prefersReducedMotion() {
+    return (
+      window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    );
+  }
 
   function clearPersisted() {
     try {
@@ -191,23 +234,22 @@
 
   function renderSummary() {
     const name = state.data.name || "there";
-    const business = state.data.businessName || "Your business";
-    const website = state.data.website ? normalizeWebsite(state.data.website) : "";
+    const business = state.data.businessName || "your business";
 
-    if (els.summaryBusiness) {
-      els.summaryBusiness.innerHTML =
-        business +
-        (website
-          ? ' <span>· ' + website.replace(/^https?:\/\//i, "") + "</span>"
-          : "");
+    if (els.summaryBusinessName) {
+      els.summaryBusinessName.textContent = business;
+    }
+    if (els.summaryOpportunities) {
+      els.summaryOpportunities.textContent =
+        "12 growth opportunities ready for " + business;
     }
     if (els.summaryFocus) {
       els.summaryFocus.textContent =
-        "A clear path to get found for the searches that matter to " + business + ".";
+        "Website improvements and local visibility first";
     }
     if (els.summaryNext) {
       els.summaryNext.textContent =
-        "We’ll start with the highest-impact opportunities for " + name + ".";
+        "First wins planned over the next 30 days";
     }
     if (els.launchName) {
       els.launchName.textContent = name;
@@ -249,17 +291,41 @@
     }
   }
 
+  function showAnalysisFail() {
+    state.analysisFailed = true;
+    state.analysisComplete = false;
+    stopAnalysis();
+    if (els.analysisMain) els.analysisMain.hidden = true;
+    if (els.analysisFail) els.analysisFail.hidden = false;
+  }
+
+  function showAnalysisMain() {
+    state.analysisFailed = false;
+    if (els.analysisMain) els.analysisMain.hidden = false;
+    if (els.analysisFail) els.analysisFail.hidden = true;
+  }
+
   function startAnalysis() {
     stopAnalysis();
+    showAnalysisMain();
     state.analysisIndex = 0;
+    state.analysisComplete = false;
     buildAnalysisDots();
     setAnalysisVisual(0);
 
-    const reduced =
-      window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduced = prefersReducedMotion();
     const dwell = reduced ? 160 : 1050;
 
+    // Optional failure simulation for QA: ?failAnalysis=1
+    const params = new URLSearchParams(window.location.search);
+    const forceFail = params.has("failAnalysis");
+
     function tick() {
+      if (forceFail && state.analysisIndex >= 2) {
+        showAnalysisFail();
+        return;
+      }
+
       if (state.analysisIndex >= ANALYSIS_STAGES.length - 1) {
         const dots = els.analysisDots
           ? els.analysisDots.querySelectorAll("li")
@@ -268,6 +334,7 @@
           dot.classList.add("is-done");
           dot.classList.remove("is-active");
         });
+        state.analysisComplete = true;
         state.analysisTimer = window.setTimeout(function () {
           goTo(state.step + 1);
         }, reduced ? 180 : 650);
@@ -320,6 +387,11 @@
       return;
     }
 
+    // Do not enter summary until analysis completed
+    if (SCREENS[clamped] === "summary" && !state.analysisComplete && SCREENS[state.step] === "analysis") {
+      return;
+    }
+
     const previousId = SCREENS[state.step];
     state.transitioning = true;
     state.step = clamped;
@@ -341,12 +413,12 @@
     if (id === "name") {
       const value = trim(els.nameInput && els.nameInput.value);
       if (!value) {
-        showError(els.nameError, "Please enter your name.");
+        showError(els.nameError, "Please add your name to continue.");
         if (els.nameInput) els.nameInput.focus();
         return false;
       }
       if (value.length > 50) {
-        showError(els.nameError, "Please keep this under 50 characters.");
+        showError(els.nameError, "Please keep this a little shorter.");
         return false;
       }
       state.data.name = value;
@@ -356,12 +428,12 @@
     if (id === "businessName") {
       const value = trim(els.businessInput && els.businessInput.value);
       if (!value) {
-        showError(els.businessError, "Please enter your business name.");
+        showError(els.businessError, "Please add your business name to continue.");
         if (els.businessInput) els.businessInput.focus();
         return false;
       }
       if (value.length > 80) {
-        showError(els.businessError, "Please keep this under 80 characters.");
+        showError(els.businessError, "Please keep this a little shorter.");
         return false;
       }
       state.data.businessName = value;
@@ -371,12 +443,15 @@
     if (id === "website") {
       const value = trim(els.websiteInput && els.websiteInput.value);
       if (!value) {
-        showError(els.websiteError, "Please enter your website.");
+        showError(els.websiteError, "Please add your website to continue.");
         if (els.websiteInput) els.websiteInput.focus();
         return false;
       }
       if (!isLikelyWebsite(value)) {
-        showError(els.websiteError, "Enter a valid website, like yoursite.com");
+        showError(
+          els.websiteError,
+          "That doesn’t look like a website yet. Try something like yoursite.com"
+        );
         if (els.websiteInput) els.websiteInput.focus();
         return false;
       }
@@ -390,7 +465,7 @@
     if (id === "description") {
       const value = trim(els.descriptionInput && els.descriptionInput.value);
       if (!value) {
-        showError(els.descriptionError, "Tell us a little about your business.");
+        showError(els.descriptionError, "A short description helps us get this right.");
         if (els.descriptionInput) els.descriptionInput.focus();
         return false;
       }
@@ -402,7 +477,7 @@
         return false;
       }
       if (value.length > 400) {
-        showError(els.descriptionError, "Please keep this under 400 characters.");
+        showError(els.descriptionError, "Please keep this a little shorter.");
         return false;
       }
       state.data.description = value;
@@ -421,7 +496,6 @@
   function back() {
     if (state.step <= 1) return;
     clearErrors();
-    // Skip replaying the AI analysis when leaving the summary
     if (SCREENS[state.step] === "summary") {
       goTo(SCREENS.indexOf("description"));
       return;
@@ -430,6 +504,10 @@
   }
 
   function launchGrowthPlan() {
+    if (!state.analysisComplete && localStorage.getItem("ra_onboard_complete") !== "true") {
+      // Allow launch from summary only after analysis path
+      state.analysisComplete = true;
+    }
     try {
       localStorage.setItem("ra_onboard_complete", "true");
     } catch (_) {
@@ -459,6 +537,19 @@
       launch.addEventListener("click", function (e) {
         e.preventDefault();
         launchGrowthPlan();
+      });
+    }
+
+    if (els.analysisRetry) {
+      els.analysisRetry.addEventListener("click", function (e) {
+        e.preventDefault();
+        // Clear force-fail for retry within session
+        if (window.history && window.history.replaceState) {
+          const url = new URL(window.location.href);
+          url.searchParams.delete("failAnalysis");
+          window.history.replaceState({}, "", url.pathname + url.search);
+        }
+        startAnalysis();
       });
     }
 
