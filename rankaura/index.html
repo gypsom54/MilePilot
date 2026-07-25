@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#eef3f7" />
+  <meta name="description" content="RankAura — premium onboarding" />
+  <title>RankAura</title>
+  <link rel="stylesheet" href="css/onboarding.css" />
+</head>
+<body>
+  <div class="ra-app" id="raApp">
+    <div class="ra-atmosphere" aria-hidden="true">
+      <div class="ra-atmosphere__glow ra-atmosphere__glow--a"></div>
+      <div class="ra-atmosphere__glow ra-atmosphere__glow--b"></div>
+      <div class="ra-atmosphere__glow ra-atmosphere__glow--c"></div>
+    </div>
+
+    <header class="ra-chrome" id="raChrome" hidden>
+      <div class="ra-chrome__inner">
+        <button type="button" class="ra-back" id="raBack" data-ra-back aria-label="Back" hidden>
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M12.5 4.5L7 10l5.5 5.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="ra-progress" id="raProgress">
+          <div class="ra-progress__track" aria-hidden="true">
+            <div class="ra-progress__fill" id="raProgressFill"></div>
+          </div>
+          <div class="ra-progress__label" id="raProgressLabel">0 / 7</div>
+        </div>
+      </div>
+    </header>
+
+    <div class="ra-stage">
+      <!-- 1. Welcome -->
+      <section class="ra-screen ra-screen--welcome" id="ra-welcome" aria-hidden="true" aria-labelledby="raWelcomeTitle">
+        <div class="ra-hero-visual" aria-hidden="true">
+          <svg viewBox="0 0 390 844" preserveAspectRatio="xMidYMid slice" role="presentation">
+            <defs>
+              <linearGradient id="raAurora" x1="40" y1="40" x2="360" y2="520" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#0b6e63" stop-opacity="0.35"/>
+                <stop offset="45%" stop-color="#4f7ea8" stop-opacity="0.22"/>
+                <stop offset="100%" stop-color="#0b6e63" stop-opacity="0.08"/>
+              </linearGradient>
+              <linearGradient id="raHorizon" x1="0" y1="420" x2="390" y2="720" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#0b1220" stop-opacity="0.04"/>
+                <stop offset="100%" stop-color="#0b6e63" stop-opacity="0.16"/>
+              </linearGradient>
+            </defs>
+            <rect width="390" height="844" fill="url(#raAurora)"/>
+            <path d="M-20 520 C 60 430, 140 560, 210 480 C 280 400, 330 470, 420 390 L 420 900 L -20 900 Z" fill="url(#raHorizon)"/>
+            <path d="M-10 610 C 80 540, 160 650, 250 580 C 320 530, 360 570, 420 520" fill="none" stroke="#0b6e63" stroke-opacity="0.22" stroke-width="1.5"/>
+            <path d="M-10 650 C 90 590, 170 690, 260 620 C 330 570, 370 610, 420 570" fill="none" stroke="#4f7ea8" stroke-opacity="0.18" stroke-width="1.2"/>
+            <circle cx="292" cy="168" r="56" fill="#ffffff" fill-opacity="0.18"/>
+            <circle cx="292" cy="168" r="28" fill="#0b6e63" fill-opacity="0.12"/>
+          </svg>
+        </div>
+        <div class="ra-screen__inner">
+          <div class="ra-content">
+            <div class="ra-welcome-copy">
+              <p class="ra-brand"><span class="ra-brand__mark">RankAura</span></p>
+              <h1 class="ra-title" id="raWelcomeTitle">Growth, made clear.</h1>
+              <p class="ra-support">A calm space to understand your business — then build a plan that helps you get found.</p>
+            </div>
+          </div>
+          <div class="ra-footer">
+            <button type="button" class="ra-cta" data-ra-next>Begin</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. Name -->
+      <section class="ra-screen" id="ra-name" aria-hidden="true" aria-labelledby="raNameTitle">
+        <div class="ra-screen__inner">
+          <div class="ra-content">
+            <p class="ra-eyebrow">About you</p>
+            <h1 class="ra-title" id="raNameTitle">What’s your name?</h1>
+            <p class="ra-support">We’ll keep things personal from here.</p>
+            <div class="ra-field">
+              <label class="ra-label" for="raName">Your name</label>
+              <input class="ra-input" id="raName" name="name" type="text" autocomplete="given-name" maxlength="50" placeholder="Enter your name" />
+              <p class="ra-error" id="raNameError" role="alert"></p>
+            </div>
+          </div>
+          <div class="ra-footer">
+            <button type="button" class="ra-cta" data-ra-next>Continue</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. Business Name -->
+      <section class="ra-screen" id="ra-businessName" aria-hidden="true" aria-labelledby="raBusinessTitle">
+        <div class="ra-screen__inner">
+          <div class="ra-content">
+            <p class="ra-eyebrow">Your business</p>
+            <h1 class="ra-title" id="raBusinessTitle">What’s your business called?</h1>
+            <p class="ra-support">This is how we’ll refer to you throughout RankAura.</p>
+            <div class="ra-field">
+              <label class="ra-label" for="raBusinessName">Business name</label>
+              <input class="ra-input" id="raBusinessName" name="businessName" type="text" autocomplete="organization" maxlength="80" placeholder="Enter your business name" />
+              <p class="ra-error" id="raBusinessError" role="alert"></p>
+            </div>
+          </div>
+          <div class="ra-footer">
+            <button type="button" class="ra-cta" data-ra-next>Continue</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. Website -->
+      <section class="ra-screen" id="ra-website" aria-hidden="true" aria-labelledby="raWebsiteTitle">
+        <div class="ra-screen__inner">
+          <div class="ra-content">
+            <p class="ra-eyebrow">Your presence</p>
+            <h1 class="ra-title" id="raWebsiteTitle">What’s your website?</h1>
+            <p class="ra-support">We’ll use this to understand how you show up online.</p>
+            <div class="ra-field">
+              <label class="ra-label" for="raWebsite">Website</label>
+              <input class="ra-input" id="raWebsite" name="website" type="text" inputmode="url" autocomplete="url" maxlength="120" placeholder="yoursite.com" />
+              <p class="ra-error" id="raWebsiteError" role="alert"></p>
+            </div>
+          </div>
+          <div class="ra-footer">
+            <button type="button" class="ra-cta" data-ra-next>Continue</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. Business Description -->
+      <section class="ra-screen" id="ra-description" aria-hidden="true" aria-labelledby="raDescTitle">
+        <div class="ra-screen__inner">
+          <div class="ra-content">
+            <p class="ra-eyebrow">In your words</p>
+            <h1 class="ra-title" id="raDescTitle">What does your business do?</h1>
+            <p class="ra-support">A sentence or two is enough. Plain language works best.</p>
+            <div class="ra-field">
+              <label class="ra-label" for="raDescription">Business description</label>
+              <textarea class="ra-textarea" id="raDescription" name="description" maxlength="400" placeholder="We help homeowners design and build beautiful kitchens across Manchester."></textarea>
+              <p class="ra-error" id="raDescriptionError" role="alert"></p>
+            </div>
+          </div>
+          <div class="ra-footer">
+            <button type="button" class="ra-cta" data-ra-next>Continue</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. AI Analysis Experience -->
+      <section class="ra-screen" id="ra-analysis" aria-hidden="true" aria-labelledby="raAnalysisName">
+        <div class="ra-screen__inner">
+          <div class="ra-analysis">
+            <div class="ra-analysis__orb" aria-hidden="true"></div>
+            <div class="ra-analysis__stage" id="raAnalysisStage">
+              <h1 class="ra-analysis__name" id="raAnalysisName">Business</h1>
+              <p class="ra-analysis__copy" id="raAnalysisCopy">Learning what you do and who you serve.</p>
+            </div>
+            <ul class="ra-analysis__list" id="raAnalysisList" aria-hidden="true"></ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. Growth Plan Summary -->
+      <section class="ra-screen" id="ra-summary" aria-hidden="true" aria-labelledby="raSummaryTitle">
+        <div class="ra-screen__inner">
+          <div class="ra-content">
+            <p class="ra-eyebrow">Your plan</p>
+            <h1 class="ra-title" id="raSummaryTitle">Your Growth Plan is ready.</h1>
+            <p class="ra-support">A simple starting point — nothing overwhelming.</p>
+            <div class="ra-summary">
+              <div class="ra-summary__line">
+                <p class="ra-summary__kicker">Business</p>
+                <p class="ra-summary__text" id="raSummaryBusiness">Your business</p>
+              </div>
+              <div class="ra-summary__line">
+                <p class="ra-summary__kicker">Focus</p>
+                <p class="ra-summary__text" id="raSummaryFocus">A clear path to get found for the searches that matter.</p>
+              </div>
+              <div class="ra-summary__line">
+                <p class="ra-summary__kicker">Next</p>
+                <p class="ra-summary__text" id="raSummaryNext">We’ll start with the highest-impact opportunities.</p>
+              </div>
+            </div>
+          </div>
+          <div class="ra-footer">
+            <button type="button" class="ra-cta" id="raLaunchCta">Launch Growth Plan</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8. Launch -->
+      <section class="ra-screen" id="ra-launch" aria-hidden="true" aria-labelledby="raLaunchTitle">
+        <div class="ra-screen__inner">
+          <div class="ra-content ra-launch">
+            <div class="ra-launch-check" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M5 12.5L10 17.5L19 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <p class="ra-eyebrow">You’re in</p>
+            <h1 class="ra-title" id="raLaunchTitle">Welcome aboard, <span id="raLaunchName">there</span>.</h1>
+            <p class="ra-support">Your Growth Plan is live. RankAura will keep guiding the next steps — quietly, clearly.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="js/onboarding.js"></script>
+</body>
+</html>
