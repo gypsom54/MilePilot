@@ -34,6 +34,8 @@ requiredScreens.forEach((id) => {
 });
 
 assert(html.includes("RankAura"), "brand present on welcome");
+assert(html.includes('assets/rankaura-logo.svg'), "welcome uses RankAura logo asset");
+assert(fs.existsSync(path.join(root, "assets", "rankaura-logo.svg")), "logo file exists");
 assert(html.includes("Launch Growth Plan"), "final CTA copy present");
 assert(html.includes("What’s your name?"), "name screen uses curly apostrophe");
 assert(html.includes("We’ll keep things personal"), "support copy uses curly apostrophe");
