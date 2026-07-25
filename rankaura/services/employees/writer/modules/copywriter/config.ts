@@ -1,0 +1,1 @@
+export const COPYWRITER_CONFIG = { moduleId: "copywriter", name: "Copywriter" } as const;

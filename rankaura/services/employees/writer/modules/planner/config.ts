@@ -1,0 +1,1 @@
+export const PLANNER_CONFIG = { moduleId: "planner", name: "Planner" } as const;

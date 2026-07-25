@@ -1,0 +1,42 @@
+/**
+ * RankAura design tokens
+ * Calm, premium, minimal — Your AI Growth Employee
+ */
+
+:root {
+  /* Brand palette — deeper, more premium */
+  --color-midnight: #080f1a;
+  --color-midnight-soft: #111827;
+  --color-aura: #2f6fed;
+  --color-aura-soft: #5b8ef0;
+  --color-aura-glow: rgba(47, 111, 237, 0.1);
+  --color-emerald: #2eb88a;
+  --color-emerald-soft: #5ecfaa;
+  --color-emerald-muted: rgba(46, 184, 138, 0.1);
+  --color-amber: #d4a012;
+  --color-amber-muted: rgba(212, 160, 18, 0.1);
+
+  /* Surfaces */
+  --color-background: #f6f8fb;
+  --color-surface: #ffffff;
+  --color-surface-raised: #ffffff;
+  --color-border: #dde3ec;
+  --color-border-subtle: #eaedf3;
+
+  /* Text */
+  --color-text-primary: #080f1a;
+  --color-text-secondary: #4a5568;
+  --color-text-muted: #8b95a5;
+
+  /* Layout */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+
+  --shadow-sm: 0 1px 2px rgba(8, 15, 26, 0.04);
+  --shadow-md: 0 4px 20px rgba(8, 15, 26, 0.06);
+  --shadow-lg: 0 8px 32px rgba(8, 15, 26, 0.08);
+
+  --sidebar-width: 15.5rem;
+}

@@ -1,0 +1,1 @@
+export const STRATEGIST_CONFIG = { moduleId: "strategist", name: "Strategist" } as const;
