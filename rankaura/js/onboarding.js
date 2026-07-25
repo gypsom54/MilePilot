@@ -62,15 +62,33 @@
     analysisName: document.getElementById("raAnalysisName"),
     analysisCopy: document.getElementById("raAnalysisCopy"),
     analysisStage: document.getElementById("raAnalysisStage"),
-    analysisList: document.getElementById("raAnalysisList"),
+    analysisDots: document.getElementById("raAnalysisDots"),
     summaryBusiness: document.getElementById("raSummaryBusiness"),
     summaryFocus: document.getElementById("raSummaryFocus"),
     summaryNext: document.getElementById("raSummaryNext"),
     launchName: document.getElementById("raLaunchName"),
   };
 
+  function clearPersisted() {
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem("ra_onboard_complete");
+    } catch (_) {
+      /* ignore */
+    }
+  }
+
   function loadState() {
     try {
+      const params = new URLSearchParams(window.location.search);
+      if (params.has("fresh") || params.has("reset")) {
+        clearPersisted();
+        if (window.history && window.history.replaceState) {
+          window.history.replaceState({}, "", window.location.pathname);
+        }
+        return;
+      }
+
       const raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) return;
       const saved = JSON.parse(raw);
@@ -196,21 +214,10 @@
     }
   }
 
-  function buildAnalysisList() {
-    if (!els.analysisList) return;
-    els.analysisList.innerHTML = ANALYSIS_STAGES.map(function (stage, i) {
-      return (
-        '<li class="ra-analysis__item" data-index="' +
-        i +
-        '">' +
-        '<span class="ra-analysis__dot" aria-hidden="true">' +
-        '<svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6.2L4.8 8.5L9.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
-        "</span>" +
-        "<span>" +
-        stage.name +
-        "</span>" +
-        "</li>"
-      );
+  function buildAnalysisDots() {
+    if (!els.analysisDots) return;
+    els.analysisDots.innerHTML = ANALYSIS_STAGES.map(function (_, i) {
+      return '<li data-index="' + i + '"></li>';
     }).join("");
   }
 
@@ -226,12 +233,12 @@
       els.analysisStage.classList.remove("is-swap");
     }, 220);
 
-    const items = els.analysisList
-      ? els.analysisList.querySelectorAll(".ra-analysis__item")
+    const dots = els.analysisDots
+      ? els.analysisDots.querySelectorAll("li")
       : [];
-    items.forEach(function (item, i) {
-      item.classList.toggle("is-done", i < index);
-      item.classList.toggle("is-active", i === index);
+    dots.forEach(function (dot, i) {
+      dot.classList.toggle("is-done", i < index);
+      dot.classList.toggle("is-active", i === index);
     });
   }
 
@@ -245,7 +252,7 @@
   function startAnalysis() {
     stopAnalysis();
     state.analysisIndex = 0;
-    buildAnalysisList();
+    buildAnalysisDots();
     setAnalysisVisual(0);
 
     const reduced =
@@ -254,12 +261,12 @@
 
     function tick() {
       if (state.analysisIndex >= ANALYSIS_STAGES.length - 1) {
-        const items = els.analysisList
-          ? els.analysisList.querySelectorAll(".ra-analysis__item")
+        const dots = els.analysisDots
+          ? els.analysisDots.querySelectorAll("li")
           : [];
-        items.forEach(function (item) {
-          item.classList.add("is-done");
-          item.classList.remove("is-active");
+        dots.forEach(function (dot) {
+          dot.classList.add("is-done");
+          dot.classList.remove("is-active");
         });
         state.analysisTimer = window.setTimeout(function () {
           goTo(state.step + 1);
@@ -478,7 +485,7 @@
     loadState();
     hydrateInputs();
     bind();
-    buildAnalysisList();
+    buildAnalysisDots();
     activateScreen(SCREENS[state.step], null);
   }
 

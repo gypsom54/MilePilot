@@ -59,6 +59,9 @@ assert(css.includes("--ra-accent"), "design tokens defined");
 assert(css.includes("Fraunces"), "display font defined");
 assert(css.includes("Outfit"), "body font defined");
 assert(css.includes(".ra-screen.is-active"), "screen transition styles present");
+assert(html.includes("AI Growth Team researching"), "analysis team label present");
+assert(html.includes('id="raAnalysisDots"'), "analysis progress dots present");
+assert(js.includes('params.has("fresh")'), "fresh start query supported");
 assert(!html.includes("dashboard"), "no dashboard markup in onboarding");
 assert(!js.includes("showScreen("), "does not touch MilePilot showScreen");
 

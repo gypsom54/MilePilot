@@ -156,7 +156,10 @@ button {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transform: translate3d(0, 18px, 0);
+  transform: translate3d(0, 14px, 0);
+  z-index: 1;
+  /* Opaque wash so outgoing screens never ghost through */
+  background: linear-gradient(180deg, #f7f9fb 0%, #eef3f7 48%, #e8eef4 100%);
   transition:
     opacity var(--ra-duration) var(--ra-ease),
     transform var(--ra-duration) var(--ra-ease),
@@ -168,6 +171,7 @@ button {
   visibility: visible;
   pointer-events: auto;
   transform: translate3d(0, 0, 0);
+  z-index: 3;
   transition:
     opacity var(--ra-duration) var(--ra-ease),
     transform var(--ra-duration) var(--ra-ease),
@@ -176,7 +180,17 @@ button {
 
 .ra-screen.is-exit {
   opacity: 0;
-  transform: translate3d(0, -12px, 0);
+  visibility: hidden;
+  transform: translate3d(0, -10px, 0);
+  z-index: 2;
+  transition:
+    opacity 280ms var(--ra-ease),
+    transform 280ms var(--ra-ease),
+    visibility 0s linear 280ms;
+}
+
+.ra-screen--welcome {
+  background: transparent;
 }
 
 .ra-screen__inner {
@@ -636,82 +650,43 @@ button {
   transform: translateY(8px);
 }
 
-.ra-analysis__list {
-  list-style: none;
+.ra-analysis__meta {
   margin: var(--ra-space-7) 0 0;
-  padding: 0;
-  display: grid;
-  gap: 10px;
+  text-align: center;
 }
 
-.ra-analysis__item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 14px;
+.ra-analysis__team {
+  margin: 0 0 var(--ra-space-4);
+  font-size: 13px;
   font-weight: 500;
-  color: rgba(95, 111, 128, 0.55);
-  transition: color 300ms ease, opacity 300ms ease;
+  letter-spacing: 0.04em;
+  color: var(--ra-muted);
 }
 
-.ra-analysis__item.is-active {
-  color: var(--ra-ink);
+.ra-analysis__dots {
+  display: flex;
+  justify-content: center;
+  gap: 7px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-.ra-analysis__item.is-done {
-  color: var(--ra-accent);
-}
-
-.ra-analysis__dot {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(11, 18, 32, 0.14);
-  display: grid;
-  place-items: center;
-  flex-shrink: 0;
-  transition: border-color 300ms ease, background 300ms ease;
-}
-
-.ra-analysis__item.is-active .ra-analysis__dot {
-  border-color: var(--ra-accent);
-  box-shadow: 0 0 0 4px var(--ra-accent-mist);
-}
-
-.ra-analysis__item.is-done .ra-analysis__dot {
-  border-color: var(--ra-accent);
-  background: var(--ra-accent);
-}
-
-.ra-analysis__item.is-done .ra-analysis__dot svg {
-  opacity: 1;
-}
-
-.ra-analysis__dot svg {
-  width: 10px;
-  height: 10px;
-  opacity: 0;
-  color: white;
-  transition: opacity 200ms ease;
-}
-
-.ra-analysis__item.is-active .ra-analysis__dot::after {
-  content: "";
+.ra-analysis__dots li {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--ra-accent);
-  animation: raDotBlink 1s ease-in-out infinite;
+  background: rgba(11, 18, 32, 0.12);
+  transition: background 280ms ease, transform 280ms var(--ra-ease);
 }
 
-@keyframes raDotBlink {
-  0%,
-  100% {
-    opacity: 0.35;
-  }
-  50% {
-    opacity: 1;
-  }
+.ra-analysis__dots li.is-done {
+  background: rgba(11, 110, 99, 0.35);
+}
+
+.ra-analysis__dots li.is-active {
+  background: var(--ra-accent);
+  transform: scale(1.35);
 }
 
 /* —— Growth summary —— */
@@ -787,12 +762,9 @@ button {
     padding-right: 22px;
   }
 
-  .ra-progress {
-    margin-bottom: var(--ra-space-6);
-  }
-
-  .ra-analysis__list {
-    display: none;
+  .ra-chrome {
+    padding-left: 22px;
+    padding-right: 22px;
   }
 }
 
