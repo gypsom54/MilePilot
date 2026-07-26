@@ -26,7 +26,8 @@ Place binary screenshots in this folder using these exact filenames:
 | 5 | `05-analysis-setup.png` | Analysis / setup (green ticks) |
 | 6 | `06-dashboard.png` | Dashboard (Evening Brief) |
 
-Until binaries are dropped here, the lock specs in `docs/UI_BIBLE.md` (derived from the approved screenshot set reviewed in chat) remain authoritative.
+`06-dashboard.png` is populated from the running mock-data dashboard (Northern Materials Co.).  
+Replace any placeholder with Jonathan’s original approved captures when available.
 
 ## Related documents
 
