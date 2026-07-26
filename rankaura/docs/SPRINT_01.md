@@ -1,11 +1,12 @@
 # Sprint 1 — Onboarding Lockdown
 
 ## Objective
-Refine the existing onboarding so it feels like one continuous premium conversation.
+Preserve and harden the approved onboarding so it remains one continuous premium conversation.
 
 This is not a rebuild.
 
-Use the existing repository, routes, screens and components as the starting point.
+Use the existing React/Next repository, routes, screens and components as the starting point.  
+Approved screenshots are the visual source of truth (`docs/UI_BIBLE.md`).
 
 ## Non-Negotiables
 - Do not start from scratch.
@@ -17,172 +18,62 @@ Use the existing repository, routes, screens and components as the starting poin
 - Large typography.
 - Generous whitespace.
 - Subtle motion.
-- Existing brand direction.
+- Existing brand direction from screenshots.
 - No dashboard redesign.
 - No unrelated features.
 - No SEO jargon in the main experience.
 - No feature creep.
+- No approved screen may be visually redesigned without explicit written approval from Jonathan.
 
-## Locked Flow
+## Approved flow (screenshot-backed)
 1. Welcome
-2. Name
+2. Website
 3. Business name
-4. Website
-5. Business description
-6. AI analysis experience
-7. Growth Plan summary
-8. Launch Growth Plan
+4. Business description
+5. Analysis / Setup
+6. Dashboard
 
-## Analysis Sequence
-Intro:
+## Not present in the current approved screenshot set
+(Do not treat as retired without Jonathan’s decision.)
 
-**Your Growth Team has started work.**
+- Name
+- Growth Plan Summary
+- Launch Growth Plan screen
 
-Stages:
-1. Understanding your business
-2. Researching your industry
-3. Analysing competitors
-4. Discovering keyword opportunities
-5. Crawling your website
-6. Reviewing technical performance
-7. Finding content opportunities
-8. Reviewing local presence
-9. Reviewing authority and trust
-10. Building your Growth Plan
+## Analysis / Setup
+Preserve existing component wording and green-tick progression exactly:
 
-Do not use a generic spinner.
+- Eyebrow: **Aura goes to work**
+- Title: **Setting up {businessName}**
+- Step labels: exact `ANALYSIS_STEPS` values
+- Styling: green `#2eb88a` ticks, muted incomplete states
 
-## Technical Scope Behind the Scenes
-### Market
-- Business model
-- Services
-- Target customer
-- Geography
-- Search intent
-- Competitor positioning
+Do not use a generic spinner redesign.
 
-### Keywords
-- Commercial
-- Informational
-- Local
-- Long-tail
-- Difficulty
-- Search intent
-- Content gaps
-- Competitor gaps
-- Topic clusters
+After screenshot capture, restore the original production redirect duration.  
+Do not leave temporary long delays in production.
 
-### Competitors
-- Ranking businesses
-- Service coverage
-- Content depth
-- Page structure
-- Local visibility
-- Authority signals
-- Backlink patterns
-
-### Website Crawl
-- Page inventory
-- Status codes
-- Redirects
-- Broken links
-- Duplicate/thin content
-- Orphan pages
-- Internal linking
-- Crawl depth
-
-### Technical
-- Titles
-- Descriptions
-- Headings
-- Canonicals
-- Schema
-- Sitemap
-- Robots.txt
-- HTTPS
-- Mobile usability
-- Page speed
-- Core Web Vitals
-- Images
-- Crawlability
-- Indexability
-
-### Content
-- Missing service pages
-- Weak pages
-- FAQs
-- Articles
-- Local landing pages
-- Knowledge hub
-- Trust content
-- Conversion copy
-
-### Local Presence
-- Google Business Profile
-- Bing Places
-- Apple Business Connect
-- Directories
-- Citation consistency
-- NAP consistency
-- Local pages
-- Reviews
-
-### Authority
-- Backlinks
-- Brand mentions
-- Suppliers
-- Industry organisations
-- Partnerships
-- Resource pages
-- Digital PR
-- Trust signals
-
-### Growth Plan
-- Quick wins
-- High-impact improvements
-- Automatic actions
-- Approval-required actions
-- Recommended sequence
-- Estimated impact
-- Milestones
-
-## Final Summary
-Headline:
-
-**We've finished learning about your business.**
-
-Show only a small number of meaningful results.
-
-Primary CTA:
-
-**Launch Growth Plan**
-
-Avoid:
-- Fix All
-- Fix SEO
-- Run Audit
-- Generate Report
-- Start Optimisation
+## Dashboard
+Preserve the approved dashboard screenshot (visually locked), including left navigation, company identity, greeting/daily brief, improvements, time saved, priority mission, Review Mission, Today's Mission, cards, spacing and hierarchy.
 
 ## Data Requirements
 - Preserve information between steps.
-- Support back navigation.
+- Support back navigation where already implemented.
 - Prevent duplicate submissions.
 - Handle invalid domains calmly.
-- Handle analysis failure with retry.
+- Handle analysis failure with retry if already part of product.
 - Respect reduced motion.
 - Do not claim analysis is complete until it is complete.
 - Clearly label demo data if the real engine is not connected.
 
 ## Definition of Done
 - Existing onboarding reviewed first.
-- Approved screens preserved.
-- Full flow works.
+- Approved screens preserved and documented in UI Bible / lock register.
+- Full screenshot-backed flow works.
 - Mobile and desktop work.
 - Form state retained.
-- Error states exist.
 - Analysis feels calm and premium.
-- Final CTA says Launch Growth Plan.
+- Temporary screenshot delay reverted to production timing.
 - No dashboard redesign.
 - No unrelated features.
 - Build passes.

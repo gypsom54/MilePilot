@@ -4,6 +4,15 @@ RankAura should feel like a calm conversation with an intelligent business assis
 
 The onboarding is the benchmark for the entire product.
 
+## Authority
+Approved screenshots are the visual source of truth.  
+If this document and screenshots disagree, **screenshots win** — update this document.
+
+See:
+- `docs/UI_BIBLE.md`
+- `docs/SCREEN_LOCK_STATUS.md`
+- `docs/ui-reference/`
+
 ## Locked Rules
 - One purpose per screen
 - One primary CTA
@@ -13,43 +22,50 @@ The onboarding is the benchmark for the entire product.
 - Progressive disclosure
 - Approval, not administration
 
-## Locked Onboarding Flow
+## Approved onboarding flow (screenshot-backed)
 1. Welcome
-2. Name
+2. Website
 3. Business name
-4. Website
-5. Business description
-6. AI analysis experience
-7. Growth Plan summary
-8. Launch Growth Plan
+4. Business description
+5. Analysis / Setup
+6. Dashboard
 
-## Locked Copy
-Welcome: **We Help Grow Businesses.**
+## Locked copy (screenshot-backed)
+Welcome: **We Help Grow Businesses.**  
+Support: RankAura quietly improves your online presence while you focus on running your business.  
 CTA: **Get Started**
 
-Name: **What should we call you?**
+Website: **What's your website?**  
+CTA: **Continue**
 
-Business: **What's your business called?**
+Business name: **Business name**  
+CTA: **Continue**
 
-Website: **What's your website?**
+Description: **Tell Aura about your business**  
+CTA: **Continue**
 
-Description: **Tell us about your business.**
+Analysis: **Aura goes to work** / **Setting up {businessName}**  
+(green-tick sequence — exact step labels from `ANALYSIS_STEPS`)
 
-Analysis: **Your Growth Team has started work.**
+Dashboard: Evening Brief / greeting / improvements & time saved / Priority Mission / **Review Mission** / Today's Mission
 
-Summary: **We've finished learning about your business.**
+## Not present in the current approved screenshot set
+Do not assume retired unless Jonathan explicitly decides:
 
-Final CTA: **Launch Growth Plan**
+- Name — “What should we call you?”
+- Growth Plan Summary — “We've finished learning about your business.”
+- Launch Growth Plan CTA screen
 
-## Dashboard Direction
-Simplify the homepage to:
+## Dashboard direction
+The approved dashboard screenshot is visually locked.
+
+It must remain a calm daily briefing:
 1. Greeting
-2. Today's mission
-3. Progress summary
-4. Recent activity
-5. Optional detail
+2. Today's / priority mission
+3. Progress summary (improvements, time saved)
+4. Clear primary action (Review Mission)
 
-Remove or demote dense card grids, agent panels, excessive charts, technical scores and duplicate status blocks.
+Do not densify into a traditional SEO admin dashboard.
 
 Every screen should communicate:
 

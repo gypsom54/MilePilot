@@ -54,18 +54,22 @@ Every screen should have:
 - No visual noise
 
 ## Existing UI Protection
-IMPORTANT: this repository already contains approved UI, layouts and components.
+IMPORTANT: approved screenshots and the React/Next implementation are the visual foundation.
 
-Treat the existing repository as the current implementation and visual foundation.
+**No approved screen may be visually redesigned or materially altered without explicit written approval from the product owner (Jonathan).**
 
-Do not redesign approved work from scratch.
+Treat `docs/UI_BIBLE.md` and `docs/SCREEN_LOCK_STATUS.md` as the lock register.
+
+Do not redesign approved work from scratch.  
+Do not use the standalone HTML prototype as a visual reference.
 
 Before changing a screen:
-1. Review the existing implementation.
-2. Preserve approved layouts and components where possible.
-3. Improve rather than replace.
-4. Maintain the existing visual language.
-5. Change only what the current sprint requires.
+1. Review the screenshot + UI Bible entry.
+2. Review the existing React implementation.
+3. Preserve approved layouts and components where possible.
+4. Improve implementation quality rather than replace UX.
+5. Maintain the existing visual language.
+6. Change only what the current sprint requires.
 
 ## AI Philosophy
 RankAura should feel like an experienced growth team quietly working in the background.

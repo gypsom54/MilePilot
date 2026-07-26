@@ -3,15 +3,18 @@
 ## Direction
 Premium, minimal, modern, calm, intelligent and trustworthy.
 
-Approved direction:
-- Minimal RA monogram
-- Midnight navy
-- Electric blue
-- White
+Approved direction (from locked screenshots + React implementation):
+- White / near-white grounds
+- Ink `#080f1a` for headings and primary buttons
+- Muted `#8b95a5` for secondary text
+- Soft borders `#e5e7eb`
+- Success green `#2eb88a` for analysis ticks
+- Soft blue wash for active dashboard nav
 - Generous whitespace
 - Subtle motion
 
-Use the existing project tokens and approved implementation as the source of truth. Do not replace the palette during Sprint 1.
+Use the approved screenshots and existing React/Next tokens as the source of truth.  
+Do not replace the palette. Do not adopt the HTML prototype look.
 
 ## Typography
 Use the current approved typeface.

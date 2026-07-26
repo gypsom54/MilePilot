@@ -8,35 +8,27 @@ RankAura is an AI Growth Manager that learns a business, analyses its website an
 
 It is not positioned as an SEO dashboard, keyword tracker, technical audit tool, backlink tool or reporting platform.
 
-## Ideal Journey
-1. Enter name.
-2. Enter business name.
-3. Enter website.
-4. Describe the business.
-5. Watch RankAura analyse it.
-6. Receive a Growth Plan.
-7. Approve it.
-8. Let RankAura work.
-9. Return for calm progress updates and occasional approvals.
+## Ideal Journey (screenshot-backed current product)
+1. Welcome — **We Help Grow Businesses.**
+2. Enter website.
+3. Enter business name.
+4. Describe the business (“Tell Aura about your business”).
+5. Watch Analysis / Setup (Aura goes to work — green ticks).
+6. Land on the calm Dashboard (Evening Brief / missions).
+7. Approve recommended work and let RankAura continue quietly.
+8. Return for calm progress updates and occasional approvals.
+
+Screens not present in the current approved screenshot set (not assumed retired): Name step, Growth Plan Summary, Launch Growth Plan screen.
 
 The customer should not configure technical SEO settings.
 
 ## Signature Moment
-After onboarding, show:
+After business details are submitted, show the Analysis / Setup screen:
 
-# Your Growth Team has started work.
+**Aura goes to work**  
+**Setting up {businessName}**
 
-Then show calm stages:
-- Understanding the business
-- Researching the industry
-- Analysing competitors
-- Discovering keyword opportunities
-- Crawling the website
-- Reviewing technical performance
-- Finding content opportunities
-- Reviewing local presence
-- Reviewing authority and trust
-- Building the Growth Plan
+Then the existing green-tick `ANALYSIS_STEPS` sequence (exact labels from implementation — do not invent).
 
 ## Growth Plan
 The summary should show:
