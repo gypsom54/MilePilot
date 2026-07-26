@@ -8,10 +8,13 @@ alwaysApply: true
 No approved screen may be visually redesigned or materially altered without explicit written approval from the product owner (Jonathan).
 
 ## Authority order
-1. Approved screenshots in `docs/ui-reference/`
-2. `docs/UI_BIBLE.md` and `docs/SCREEN_LOCK_STATUS.md`
-3. Existing React/Next implementation
-4. Product docs in `rankaura/docs/` (update docs to match screenshots — never the reverse)
+1. `docs/PRODUCT_GUARDRAILS.md` — final development authority
+2. Approved screenshots in `docs/ui-reference/`
+3. `docs/UI_BIBLE.md` and `docs/SCREEN_LOCK_STATUS.md`
+4. Existing React/Next implementation
+5. Product docs in `rankaura/docs/` (update docs to match screenshots — never the reverse)
+
+Follow the permanent workflow in PRODUCT_GUARDRAILS.md: Audit → single proposal → implement one feature → checks → screenshot → approval → lock → next.
 
 The `rankaura/` HTML SPA prototype is **not** a visual reference.
 
