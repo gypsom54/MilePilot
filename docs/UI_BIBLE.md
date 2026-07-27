@@ -1,9 +1,10 @@
 # RankAura UI Bible
 
-**Version:** 1.0  
-**Status:** AUTHORITATIVE VISUAL LOCK  
-**Source of truth:** Approved screenshot set (uploaded localhost RankAura React/Next UI)  
+**Version:** 1.1  
+**Status:** AUTHORITATIVE VISUAL LOCK (with superseded dashboard IA — see §6)  
+**Source of truth:** Approved screenshot set (uploaded localhost RankAura React/Next UI) + Growth Plan Phase 2 decisions  
 **Product owner:** Jonathan  
+**Growth Plan spec:** `docs/GROWTH_PLAN_SPEC.md`
 
 ---
 
@@ -15,6 +16,8 @@ Cursor / agents may improve implementation quality only (bugs, accessibility wir
 Never redesign approved UX. Never reinterpret screenshots into a generic SaaS look.
 
 If docs and screenshots disagree → **screenshots win** → update docs.
+
+**Exception (Jonathan, Phase 1 audit approved):** The old dashboard **information architecture** (Mission language, Analysis → Dashboard) is **superseded**. Visual DNA from `06-dashboard.png` remains a reference for spacing, typography, card softness, calm layout, and blue accents — not for Mission IA.
 
 ---
 
@@ -47,7 +50,7 @@ If docs and screenshots disagree → **screenshots win** → update docs.
 - Clean modern **sans-serif** (implementation typeface already in the React app — do not swap).
 - Large, bold/semibold headings (`text-3xl`–`text-5xl` range in onboarding).
 - Comfortable muted body / support copy.
-- Minimal uppercase (dashboard labels like `PRIORITY MISSION` only where already shown).
+- Minimal uppercase. Do **not** introduce Mission-style labels (`PRIORITY MISSION`, etc.) on new surfaces.
 - No dense text blocks.
 
 ### Spacing & layout
@@ -59,7 +62,8 @@ If docs and screenshots disagree → **screenshots win** → update docs.
 ### Buttons
 - One primary pill / large rounded rectangle per screen.
 - Near-black fill, white label.
-- Labels in use: **Get Started**, **Continue**, **Review Mission**.
+- Labels in use: **Get Started**, **Continue**; Growth Plan: **Continue to Workspace**.
+- Do not use **Review Mission** on new surfaces (superseded).
 - Disabled when required field empty (onboarding).
 
 ### Inputs
@@ -78,22 +82,27 @@ If docs and screenshots disagree → **screenshots win** → update docs.
 
 ---
 
-## Approved product flow (screenshot-backed)
+## Approved product flow (LOCKED — Phase 1 audit)
 
 ```
 Welcome
-→ Website
-→ Business Name
-→ Business Description
-→ Analysis / Setup
-→ Dashboard
+→ Website URL
+→ Business name
+→ Business description
+→ Business and website analysis
+→ Growth Plan OR Launch Plan
+→ Main Workspace
 ```
 
-Screens mentioned in older docs but **not present in the current approved screenshot set** (not assumed retired):
+**Hard rule:** Do not send users directly from Analysis into the old Mission dashboard.
+
+Growth Plan / Launch Plan specification: `docs/GROWTH_PLAN_SPEC.md` (Phase 2).  
+Growth Plan screenshots: pending Phase 3 implementation + Jonathan approval.
+
+Screens mentioned in older docs but **not present in the current approved screenshot set**:
 
 - Name (“What should we call you?”)
-- Growth Plan Summary
-- Launch Growth Plan CTA screen
+- Historical “Growth Plan Summary” / “Launch Growth Plan” CTA variants (superseded by the Growth Plan / Launch Plan page in `GROWTH_PLAN_SPEC.md`)
 
 Only Jonathan may permanently remove or add product screens.
 
@@ -193,50 +202,62 @@ Only Jonathan may permanently remove or add product screens.
 | **Screenshot** | `docs/ui-reference/05-analysis-setup.png` *(binary slot — capture after green ticks complete)* |
 | **Route** | `/onboarding` (step `analysis`) |
 | **Components** | `OnboardingFlow` (`AnalysisStep`), `OnboardingShell` (`showProgress={false}`), `OnboardingAnalysis`, `ANALYSIS_STEPS` from `@/types/onboarding`, `simulateAnalysis` from onboarding service |
-| **Purpose** | Final onboarding transition after business info; reassure while setup runs; then enter dashboard |
+| **Purpose** | Final onboarding transition after business info; reassure while setup runs; then enter Growth Plan / Launch Plan |
 | **Exact visible copy (component source of truth)** | Eyebrow: **Aura goes to work** · Title: **Setting up {businessName}** (fallback: “your business”) · Step labels: exact `ANALYSIS_STEPS[].label` values from types (do not invent) · Green tick character: **✓** |
 | **Layout hierarchy** | No progress bar → eyebrow → title → vertical list of steps with circular ticks |
 | **Typography** | Eyebrow small medium muted; title large semibold ink; step labels `text-lg`/`text-xl` medium |
 | **Colours** | Incomplete: grey border circle + muted label · Complete: `#2eb88a` fill + white ✓ + ink label · Upcoming further steps dimmed |
 | **Spacing** | `mt-6` title; `mt-14`/`sm:mt-16` list; `space-y-5` between rows |
-| **Button behaviour** | No CTA — automatic completion then redirect to dashboard |
-| **Navigation** | After analysis completes → `/` dashboard (`router.push("/")`) |
+| **Button behaviour** | No CTA — automatic completion then redirect to Growth Plan / Launch Plan |
+| **Navigation** | After analysis completes → Growth Plan / Launch Plan (**not** the old Mission dashboard). Implementation routing change is Phase 3+ after Growth Plan approval. |
 | **Responsive** | `text-center sm:text-left` on container |
 | **Locked elements** | Wording above, green-tick sequence, layout, styling classes/colours, no spinner redesign |
 | **Timing note** | Temporary 15s post-complete delay may exist for screenshot capture only — **must return to original production duration** after capture; not a permanent UX change |
 
 ---
 
-## 6. Dashboard
+## 6. Legacy dashboard screenshot — VISUAL REFERENCE ONLY (IA SUPERSEDED)
 
 | Field | Spec |
 |-------|------|
-| **Status** | APPROVED — VISUALLY LOCKED |
+| **Status** | **IA SUPERSEDED** · visual DNA retained as reference |
 | **Screenshot** | `docs/ui-reference/06-dashboard.png` |
-| **Route** | `/` |
-| **Components** | Dashboard shell / sidebar / brief cards *(implementation files not yet present in this MilePilot workspace overlay — lock from screenshot)* |
-| **Purpose** | Calm daily briefing — not a dense SEO admin console |
-| **Exact visible copy (from approved screenshot)** | Company: **Northern Materials Co.** · Subtitle: **Industrial Supplies** · Nav: **Dashboard**, **AI Team**, **Growth**, **Content**, **Website**, **Settings** · Greeting: **Good evening Jonathan** · Stats line: **12 improvements today · 2.8 hrs saved** · Card: **Evening Brief** · Label: **PRIORITY MISSION** · Mission title example: **Create Research Storage Conditions Guide** · CTA: **Review Mission** · Section: **Today's Mission** · Support: **The one thing that matters most today** |
-| **Layout hierarchy** | Fixed left sidebar (avatar + company + nav) → main canvas → Evening Brief card → Today's Mission card |
-| **Typography** | Large greeting; muted stats; small uppercase priority label; bold mission titles |
-| **Colours** | White sidebar/cards; light grey canvas; blue active nav; black primary CTA |
-| **Spacing** | Soft card radii (~12–16px); generous padding; clear separation between brief and mission |
-| **Button behaviour** | **Review Mission** primary action on priority mission |
-| **Navigation** | Left nav; Dashboard active state as shown |
-| **Responsive** | Preserve sidebar IA on desktop/laptop; do not invent alternate dashboard without approval |
-| **Locked elements** | Left navigation, company identity, greeting/daily brief, improvements + time saved, priority mission, Review Mission, Today's Mission, cards, spacing, hierarchy |
+| **Route (legacy)** | `/` |
+| **Authority change** | Jonathan Phase 1 audit approval — old dashboard information architecture is **no longer visually or structurally locked** |
+| **May still reference for** | Spacing · typography · card softness · layout quality · controlled blue accents · calm premium light composition |
+| **Explicitly superseded (do not preserve as product IA)** | Priority Mission · Today’s Mission · Review Mission · Mission-based language · AI employee supervision framing · Direct Analysis → Dashboard routing · Existing dashboard content hierarchy |
+| **Theme note** | Keep calm **light** workspace for Growth Plan / first Workspace rebuild. Do **not** convert the whole product to dark navy without screenshot approval. Dark navy may appear selectively in nav / brand accents / premium moments. |
+| **Replacement surfaces** | Growth Plan / Launch Plan (`docs/GROWTH_PLAN_SPEC.md`) → Main Workspace (spec after Growth Plan approval) |
+
+Historical screenshot copy (for archaeology only — not to rebuild):
+
+> Northern Materials Co. · Evening Brief · PRIORITY MISSION · Review Mission · Today’s Mission · AI Team nav, etc.
+
+---
+
+## 7. Growth Plan / Launch Plan (SPEC LOCKED — screenshots pending)
+
+| Field | Spec |
+|-------|------|
+| **Status** | **SPEC LOCKED** (Phase 2) · not yet screenshot-approved |
+| **Spec** | `docs/GROWTH_PLAN_SPEC.md` |
+| **Route (planned)** | `/growth-plan` · review: `?site=existing` \| `?site=new` |
+| **Purpose** | Most important post-analysis page; confirm understanding; one primary opportunity; relevance-ordered categories; continue to Workspace |
+| **Page hierarchy** | Header → analysis confirmation → primary opportunity → What happens next → featured categories → remaining categories → Continue to Workspace |
+| **Categories** | All 13 locked RankAura growth categories; relevance-ordered; Reddit & Community Research first-class |
+| **Visual** | Calm light workspace + premium blue/navy accents; not a dark SaaS conversion |
+| **Locked elements (structure/language)** | Hierarchy, site-state model, category system, status labels, banned Mission language — per Growth Plan spec |
+| **Not locked yet** | Final pixel design until Phase 3 screenshots are approved |
 
 ---
 
 ## Screens not in the current approved screenshot set
 
-These appear in older docs only. **Do not treat as retired** unless Jonathan explicitly says so.
-
-| Screen | Docs copy (historical) | Classification |
-|--------|------------------------|----------------|
-| Name | What should we call you? | Not present in the current approved screenshot set |
-| Growth Plan Summary | We've finished learning about your business. | Not present in the current approved screenshot set |
-| Launch Growth Plan | Launch Growth Plan | Not present in the current approved screenshot set |
+| Screen | Classification |
+|--------|----------------|
+| Name (“What should we call you?”) | Not present in the current approved screenshot set |
+| Growth Plan / Launch Plan | Spec locked; screenshots pending Phase 3 |
+| Main Workspace (rebuilt IA) | Pending after Growth Plan approval |
 
 ---
 
@@ -244,13 +265,14 @@ These appear in older docs only. **Do not treat as retired** unless Jonathan exp
 
 Allowed without new approval:
 - Fix broken logo asset on Welcome (restore correct brand mark — not a new design language)
-- Restore missing component files to match locked UI
+- Restore missing component files to match locked onboarding UI
 - Accessibility labels/focus that do not change appearance
 - Revert temporary screenshot delay to production timing
 
 Not allowed without written approval:
-- New colours, fonts, card systems, nav patterns
-- Rewriting locked copy
-- Reordering approved onboarding steps
-- Dashboard redesign or densification
+- New colours, fonts, or a full dark-theme conversion
+- Rewriting locked onboarding copy
+- Reordering approved onboarding steps (except Analysis **exit** destination → Growth Plan, once Phase 3 is approved)
+- Reintroducing Mission IA because it appears in `06-dashboard.png`
 - Replacing React/Next UI with the HTML prototype look
+- Building Growth Plan before Phase 2 spec approval (this version awaits Jonathan review)
