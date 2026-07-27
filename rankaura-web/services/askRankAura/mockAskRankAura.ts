@@ -491,7 +491,7 @@ export const mockAskRankAuraData: AskRankAuraData = {
     },
     {
       id: "q-approvals",
-      text: "Which recommendations are waiting for approval?",
+      text: "Which recommendations need my approval?",
       intent: "approvals",
     },
     {

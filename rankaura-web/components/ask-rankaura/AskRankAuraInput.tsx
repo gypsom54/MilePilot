@@ -1,7 +1,9 @@
 "use client";
 
-import { ButtonPrimary } from "@/components/ui/ButtonPrimary";
-import { Input } from "@/components/ui/Input";
+import {
+  OnboardingInput,
+  OnboardingPrimaryButton,
+} from "@/components/onboarding/OnboardingFields";
 
 interface AskRankAuraInputProps {
   value: string;
@@ -11,6 +13,10 @@ interface AskRankAuraInputProps {
   disabled?: boolean;
 }
 
+/**
+ * Ask input + CTA — copied from approved onboarding
+ * (OnboardingInput + OnboardingPrimaryButton / Continue).
+ */
 export function AskRankAuraInput({
   value,
   onChange,
@@ -22,29 +28,29 @@ export function AskRankAuraInput({
 
   return (
     <form
-      className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center"
       onSubmit={(event) => {
         event.preventDefault();
         if (!canSubmit) return;
         onSubmit();
       }}
     >
-      <label htmlFor="ask-rankaura-input" className="sr-only">
-        Ask RankAura a question about your business growth
-      </label>
-      <Input
+      <OnboardingInput
         id="ask-rankaura-input"
-        type="text"
+        label="Ask RankAura a question about your business growth"
         value={value}
-        onChange={(event) => onChange(event.target.value)}
+        onChange={onChange}
         placeholder={placeholder}
-        disabled={disabled}
         autoComplete="off"
-        className="min-w-0 flex-1"
       />
-      <ButtonPrimary type="submit" disabled={!canSubmit}>
-        Ask
-      </ButtonPrimary>
+      <OnboardingPrimaryButton
+        onClick={() => {
+          if (!canSubmit) return;
+          onSubmit();
+        }}
+        disabled={!canSubmit}
+      >
+        Ask RankAura
+      </OnboardingPrimaryButton>
     </form>
   );
 }

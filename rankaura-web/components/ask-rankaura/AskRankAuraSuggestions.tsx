@@ -1,6 +1,5 @@
 "use client";
 
-import { ButtonSecondary } from "@/components/ui/ButtonSecondary";
 import type { AskRankAuraSuggestedQuestion } from "@/types/askRankAura";
 
 interface AskRankAuraSuggestionsProps {
@@ -8,7 +7,10 @@ interface AskRankAuraSuggestionsProps {
   onSelect: (text: string) => void;
 }
 
-/** Suggested questions = ButtonSecondary only. No Ask visual overrides. */
+/**
+ * Plain text suggested questions — onboarding conversation language.
+ * No pills, no outlined buttons, no blue chrome.
+ */
 export function AskRankAuraSuggestions({
   suggestions,
   onSelect,
@@ -17,17 +19,21 @@ export function AskRankAuraSuggestions({
   if (items.length === 0) return null;
 
   return (
-    <div className="mt-4">
-      <p className="text-xs font-medium text-ra-muted">Suggested questions</p>
-      <ul className="mt-2.5 flex flex-wrap gap-2">
+    <div className="mt-10">
+      <p className="text-sm font-medium text-[#8b95a5]">Suggested questions</p>
+      <ul className="mt-4 space-y-3">
         {items.map((suggestion) => (
           <li key={suggestion.id}>
-            <ButtonSecondary
+            <button
               type="button"
               onClick={() => onSelect(suggestion.text)}
+              className="w-full text-left text-base font-normal text-[#080f1a] outline-none hover:underline"
             >
+              <span className="text-[#8b95a5]" aria-hidden="true">
+                →{" "}
+              </span>
               {suggestion.text}
-            </ButtonSecondary>
+            </button>
           </li>
         ))}
       </ul>
