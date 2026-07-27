@@ -17,7 +17,7 @@ export function SinceLastVisit({ items }: SinceLastVisitProps) {
         Since your last visit
       </h2>
       <p className="mt-2 text-sm text-[#8b95a5]">
-        Work RankAura has already completed for your business.
+        Meaningful work RankAura has already completed for your business.
       </p>
       <ul className="mt-5 space-y-4">
         {items.map((item) => (

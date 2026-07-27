@@ -33,6 +33,9 @@ export function personalizeWorkspace(
       businessName,
       greeting,
       support: "RankAura has been working on your business.",
+      monitoringLine:
+        data.welcome.monitoringLine ||
+        "RankAura is actively monitoring your business across 13 growth areas.",
     },
   };
 }

@@ -35,10 +35,21 @@ If a proposal conflicts with these guardrails, the proposal loses.
     - `docs/UI_BIBLE.md`
     - `docs/SCREEN_LOCK_STATUS.md`
     - `docs/GROWTH_PLAN_SPEC.md` (for Growth Plan / Launch Plan / category system)
+    - `docs/WORKSPACE_SPEC.md` (for Workspace)
     - `rankaura/docs/PRODUCT_VISION.md` (and `docs/` copies where present)
     - `docs/PRODUCT_GUARDRAILS.md`
 
 ---
+
+## Workspace principles (LOCKED)
+
+1. **RankAura should never make customers feel like they have more work to do. It should make them feel like less work needs to be done because RankAura is already doing it.**
+
+2. **Every time a customer opens RankAura, they should immediately feel that their business is in a better position than it was the last time they looked.**
+
+3. Growth Plan = what we discovered · Workspace = what we’ve done since last visit · Reports (future) = what impact the work had.
+
+4. Workspace homepage must remain understandable in under 30 seconds — no scores, graphs, Mission language, AI employee cards, or KPI walls.
 
 ## First-use flow (LOCKED)
 
@@ -54,7 +65,7 @@ Welcome → Name → Nice to meet you → Website URL → Business name → Busi
 ### Personalisation (LOCKED)
 
 - Capture the customer’s first name early.
-- Use it sparingly: “Nice to meet you, {name}.” · “{name}, your Growth Plan is ready.” · future Workspace greeting.
+- Use it sparingly: “Nice to meet you, {name}.” · “{name}, your Growth Plan is ready.” · Workspace greeting (“Good morning, {name}.”).
 - Prefer the **business name** for ongoing strategy identity.
 - No demo business names, example industries, or pre-filled sample text in onboarding fields.
 

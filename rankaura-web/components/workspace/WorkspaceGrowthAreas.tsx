@@ -20,7 +20,7 @@ export function WorkspaceGrowthAreas({ areas }: WorkspaceGrowthAreasProps) {
         </p>
       </div>
       <div className="space-y-3">
-        {areas.map((area) => (
+        {areas.slice(0, 4).map((area) => (
           <article
             key={area.id}
             className="rounded-2xl border border-[#dce6fb] bg-white p-5 shadow-[0_2px_8px_rgba(91,141,239,0.08)] sm:p-6"
@@ -46,7 +46,7 @@ export function WorkspaceGrowthAreas({ areas }: WorkspaceGrowthAreasProps) {
                 href={area.href}
                 className="inline-flex h-10 shrink-0 items-center justify-center self-start rounded-full border border-[#e5e7eb] bg-white px-4 text-sm font-semibold text-[#080f1a] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5b8def]"
               >
-                View details
+                {area.actionLabel}
               </Link>
             </div>
           </article>

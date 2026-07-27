@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { BiggestOpportunity } from "@/types/workspace";
+import { FEATURED_VARIANT_LABELS } from "@/types/workspace";
 
 interface BiggestOpportunityCardProps {
   opportunity: BiggestOpportunity;
@@ -17,7 +18,7 @@ export function BiggestOpportunityCard({
       className="rounded-2xl bg-white p-6 shadow-[0_1px_2px_rgba(15,23,42,0.04)] sm:p-8"
     >
       <p className="text-[11px] font-semibold tracking-[0.14em] text-[#5b8def]">
-        TODAY&apos;S BIGGEST OPPORTUNITY
+        {FEATURED_VARIANT_LABELS[opportunity.variant].toUpperCase()}
       </p>
       <h2
         id="biggest-opportunity-heading"

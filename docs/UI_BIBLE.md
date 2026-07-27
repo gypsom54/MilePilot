@@ -248,7 +248,27 @@ Historical screenshot copy (for archaeology only — not to rebuild):
 | **Categories** | All 13 locked; relevance-ordered; Reddit & Community Research first-class |
 | **Visual** | Calm light workspace + premium blue/navy accents; not a dark SaaS conversion |
 | **Screenshots** | `docs/ui-reference/growth-plan/07-*.png` … `13-*.png` |
-| **Handoff** | Continue to Workspace → `/` temporarily (future Workspace rebuild) |
+| **Handoff** | Continue to Workspace → `/workspace` |
+
+---
+
+## 8. Workspace home (IMPLEMENTED — final polish awaiting review)
+
+| Field | Spec |
+|-------|------|
+| **Status** | **FINAL POLISH** · architecture approved · awaiting Jonathan review |
+| **Spec** | `docs/WORKSPACE_SPEC.md` |
+| **Route** | `/workspace` |
+| **App** | `rankaura-web/app/workspace/page.tsx` |
+| **Purpose** | Ongoing RankAura home — “what has RankAura done since I was last here?” |
+| **Page hierarchy** | Greeting → Biggest Opportunity → Recent Wins → Since Your Last Visit → Growth Areas → Recent Progress |
+| **Visual** | Calm light workspace DNA (same family as Growth Plan); no Mission IA, KPI walls, charts, SEO scores, or AI employee cards |
+| **Screenshots** | `docs/ui-reference/workspace/01-*.png` … `07-*.png` |
+
+**Locked principles:**
+
+1. RankAura should never make customers feel like they have more work to do. It should make them feel like less work needs to be done because RankAura is already doing it.
+2. Every time a customer opens RankAura, they should immediately feel that their business is in a better position than it was the last time they looked.
 
 ---
 
@@ -256,8 +276,7 @@ Historical screenshot copy (for archaeology only — not to rebuild):
 
 | Screen | Classification |
 |--------|----------------|
-| Name (“What should we call you?”) | Not present in the current approved screenshot set |
-| Main Workspace (rebuilt IA) | Pending after Growth Plan approval |
+| Name (“What should we call you?”) | Not present in the current approved screenshot set (implemented in onboarding) |
 
 ---
 
@@ -275,5 +294,5 @@ Not allowed without written approval:
 - Reordering approved onboarding steps (except Analysis **exit** destination → Growth Plan, once approved)
 - Reintroducing Mission IA because it appears in `06-dashboard.png`
 - Replacing React/Next UI with the HTML prototype look
-- Rebuilding the main Workspace before Growth Plan visual approval
+- Redesigning the approved Workspace hierarchy or adding dashboard sections
 - Changing Growth Plan hierarchy or category system without updating the spec first

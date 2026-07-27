@@ -12,6 +12,9 @@ export function WorkspaceWelcomeSection({ welcome }: WorkspaceWelcomeProps) {
         {welcome.greeting}
       </h1>
       <p className="text-base text-[#080f1a] sm:text-lg">{welcome.support}</p>
+      <p className="max-w-2xl text-sm leading-relaxed text-[#8b95a5]">
+        {welcome.monitoringLine}
+      </p>
       <p className="max-w-2xl text-base leading-relaxed text-[#8b95a5]">
         {welcome.activitySummary}
       </p>

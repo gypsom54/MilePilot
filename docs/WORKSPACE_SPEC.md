@@ -1,21 +1,24 @@
 # RankAura Workspace — Phase 4 Specification
 
-**Status:** PHASE 4 — SPEC + STATIC PROTOTYPE  
+**Status:** PHASE 4 — FINAL POLISH (static prototype)  
 **Owner:** Jonathan  
-**Authority:** Onboarding + Growth Plan locked · Mission dashboard superseded  
+**Authority:** Onboarding + Growth Plan locked · Workspace architecture approved  
 **Related:** `docs/GROWTH_PLAN_SPEC.md` · `docs/UI_BIBLE.md` · `docs/SCREEN_LOCK_STATUS.md` · `docs/PRODUCT_GUARDRAILS.md`
 
 ---
 
 ## 0. Purpose
 
-The Workspace is the **home of RankAura** after the Growth Plan.
+The Growth Plan answers: **“What did RankAura discover?”**  
+The Workspace answers: **“What has RankAura done since I was last here?”**  
+Future reports will answer: **“What impact has RankAura’s work had?”**
 
-It answers one question:
+Every time a customer opens RankAura, they should immediately feel that their business is in a better position than it was the last time they looked.
 
-> **What does the business owner need to know right now?**
+**Locked Workspace principles:**
 
-It must feel calm, premium, and reassuring — not like an SEO dashboard.
+1. RankAura should never make customers feel like they have more work to do. It should make them feel like less work needs to be done because RankAura is already doing it.
+2. Every time a customer opens RankAura, they should immediately feel that their business is in a better position than it was the last time they looked.
 
 **Do not reuse the old Mission dashboard IA or language.**
 
@@ -25,8 +28,8 @@ It must feel calm, premium, and reassuring — not like an SEO dashboard.
 
 | The Workspace is | The Workspace is not |
 |------------------|----------------------|
-| A calm daily briefing | An SEO scorecard |
-| Proof that RankAura is working | A wall of KPIs |
+| Proof of quiet ongoing work | An SEO scorecard |
+| Momentum and reassurance | A wall of KPIs |
 | One clear next step | Many competing CTAs |
 | Opportunity-focused | Problem/error theatre |
 | Plain English | SEO jargon |
@@ -36,69 +39,81 @@ It must feel calm, premium, and reassuring — not like an SEO dashboard.
 ## 2. Required page structure (LOCKED)
 
 ```text
-1. Welcome
-2. Today’s Biggest Opportunity
-3. Since Your Last Visit
-4. Growth Areas (most relevant only)
-5. Business Feed
+1. Greeting
+2. Biggest Opportunity (typed featured item)
+3. Recent Wins (max 3 — calm, restrained)
+4. Since Your Last Visit
+5. Growth Areas (max 4 featured)
+6. Recent Progress (timeline)
 ```
 
-Do not reorder. Do not add homepage sections without approval.
+Do not add charts, scores, AI employee cards, Mission language, or KPI walls.
 
 ---
 
 ## 3. Section specifications
 
-### 3.1 Welcome
+### 3.1 Greeting
 
 | Element | Spec |
 |---------|------|
-| Greeting | Time-aware: **Good morning / Good afternoon / Good evening, {First Name}.** |
+| Greeting | Time-aware: **Good morning / afternoon / evening, {First Name}.** |
 | Support | **RankAura has been working on your business.** |
+| Monitoring line | Quiet secondary: **RankAura is actively monitoring your business across 13 growth areas.** |
 | Summary | One short sentence of meaningful activity since last visit |
-| Identity | Business name may appear calmly as secondary context |
+| Identity | Business name as calm secondary context |
 
-Name usage: first name in greeting only (matches personalisation lock). Prefer business name elsewhere.
-
-### 3.2 Today’s Biggest Opportunity
+### 3.2 Biggest Opportunity
 
 | Element | Spec |
 |---------|------|
-| Count | **Exactly one** featured recommendation |
-| Content | Plain-English title + short explanation |
-| Action | **One** primary action button |
-| Tone | Opportunity, not alarm |
+| Count | **Exactly one** featured item |
+| Variant field | `opportunity` · `review` · `approval` · `celebration` · `reminder` · `milestone` |
+| Visual | Same premium card across variants — do not invent separate card designs |
+| Tone | Opportunity-led, not corrective |
+| Title example | We found an opportunity to help more local customers discover your services. |
+| Support example | We’ve prepared a set of improvements designed around the phrases your customers are already searching for. |
+| Action | One primary CTA (e.g. **Review & Fix**) |
 
-Labels: avoid Mission / Priority Mission / Review Mission.
-
-Preferred CTA examples: Review & Fix · View Strategy · Approve · View Plan · Review
-
-### 3.3 Since Your Last Visit
+### 3.3 Recent Wins
 
 | Element | Spec |
 |---------|------|
-| Purpose | Show work RankAura has **already completed** |
-| Format | Short calm list (typically 3–5 items) |
+| Max items | **3** |
+| Tone | Celebratory but restrained — no confetti, gamification, or oversized graphics |
+| Content | Realistic completed progress only — no unsupported ranking claims |
+
+### 3.4 Since Your Last Visit
+
+| Element | Spec |
+|---------|------|
+| Purpose | Completed customer-facing work only |
+| Timestamps | Natural language (This morning · Yesterday afternoon · Last night) |
+| Forbidden | Internal AI processing logs |
 | Focus | Completed actions, not a backlog of tasks |
 | Visual | Soft ticks or quiet markers — not progress bars |
 
-### 3.4 Growth Areas
+### 3.5 Growth Areas
 
 | Element | Spec |
 |---------|------|
-| Source | Most relevant categories only (typically 3–5) |
-| Design | Reuse Growth Plan card language (name, subtitle, status, impact, View details) |
-| Link | Through to Growth Plan / category detail |
+| Max | **4** featured areas |
+| Fields | Name · short description · state · one context-specific action |
+| Actions | Prefer View Progress · Open Strategy · Review Recommendations · View Research |
+| Link | Through to Growth Plan |
 | Rule | Do not dump all 13 categories on the homepage |
 
-### 3.5 Business Feed
+### 3.6 Recent Progress
+
+Formerly “Business Feed”.
 
 | Element | Spec |
 |---------|------|
+| Supporting copy | A calm timeline of the work RankAura has completed and the opportunities it has identified. |
 | Format | Reverse-chronological timeline |
-| Item types | Competitor updates · completed research · new opportunities · content ideas · monitoring updates |
-| Density | Calm — readable sentences, not event spam |
-| Graphs | None on homepage |
+| Types | New opportunity · Work completed · Research completed · Competitor update · Recommendation prepared · Approval needed · Milestone reached |
+| Entry | Type label · natural timestamp · title · 1–2 sentences · optional action |
+| Forbidden | Noisy system events / every background check / social-media feed feel |
 
 ---
 
@@ -128,16 +143,17 @@ Do **not**:
 
 ### Prefer
 
-- Opportunity · Recommendation · Worth your attention  
-- We’ve completed · We’re monitoring · We’ve prepared  
-- Growth Areas · Business Feed · Workspace  
+- Opportunity · Recommendation · Worth reviewing · Ready for approval  
+- We’ve prepared · We’ve completed · We’ve identified · We’re monitoring  
+- Growth Areas · Recent Progress · Workspace · Progress · Next step  
 
 ### Ban
 
 - Mission · Priority Mission · Today’s Mission · Review Mission  
 - Quest · Level · XP · streak gamification  
 - AI employee supervision framing  
-- Critical errors / broken / failure theatre on the homepage  
+- Problems · Failures · Critical errors · Weak performance · Falling behind  
+- Urgent mission language on the homepage  
 
 ---
 
@@ -146,7 +162,7 @@ Do **not**:
 | Moment | Use |
 |--------|-----|
 | Welcome greeting | Customer first name |
-| Opportunity / feed / areas | Business name where identity helps |
+| Opportunity / progress / areas | Business name where identity helps |
 | Everywhere else | “your business” / RankAura voice |
 
 Sparse name use remains locked.
@@ -156,25 +172,49 @@ Sparse name use remains locked.
 ## 7. Data model (prototype)
 
 ```ts
+type FeaturedItemVariant =
+  | "opportunity"
+  | "review"
+  | "approval"
+  | "celebration"
+  | "reminder"
+  | "milestone";
+
+type ProgressItemType =
+  | "opportunity"
+  | "completed"
+  | "research"
+  | "competitor"
+  | "recommendation"
+  | "approval"
+  | "milestone";
+
 interface WorkspaceWelcome {
   firstName: string;
   businessName: string;
-  greeting: string; // Good morning, Jonathan.
-  support: string;  // RankAura has been working on your business.
+  greeting: string;
+  support: string;
+  monitoringLine: string;
   activitySummary: string;
 }
 
 interface BiggestOpportunity {
+  variant: FeaturedItemVariant;
   title: string;
   support: string;
   actionLabel: string;
   href?: string;
 }
 
+interface RecentWin {
+  id: string;
+  text: string;
+}
+
 interface CompletedActivity {
   id: string;
   text: string;
-  completedAtLabel: string; // e.g. Yesterday · This morning
+  completedAtLabel: string;
 }
 
 interface WorkspaceGrowthArea {
@@ -183,30 +223,27 @@ interface WorkspaceGrowthArea {
   subtitle: string;
   statusLabel: string;
   impact: string;
+  actionLabel: string;
   href: string;
 }
 
-type FeedItemType =
-  | "competitor"
-  | "research"
-  | "opportunity"
-  | "content"
-  | "monitoring";
-
-interface BusinessFeedItem {
+interface RecentProgressItem {
   id: string;
-  type: FeedItemType;
+  type: ProgressItemType;
   title: string;
   body: string;
   timestampLabel: string;
+  actionLabel?: string;
+  href?: string;
 }
 
 interface WorkspaceData {
   welcome: WorkspaceWelcome;
   biggestOpportunity: BiggestOpportunity;
+  recentWins: RecentWin[];
   sinceLastVisit: CompletedActivity[];
   growthAreas: WorkspaceGrowthArea[];
-  businessFeed: BusinessFeedItem[];
+  recentProgress: RecentProgressItem[];
 }
 ```
 
@@ -230,16 +267,21 @@ After approval, `/` may become the Workspace. Not in this phase without review.
 
 - Centre reading column (`max-w-3xl`), same calm stack as Growth Plan
 - One primary opportunity card with clear CTA
-- Growth areas as soft stacked cards
-- Feed as vertical timeline
+- Recent Wins compact — must not dominate
+- Growth areas as soft stacked cards (max 4)
+- Recent Progress as vertical timeline
 
 ### Mobile
 
-- Same section order
-- Full-width cards
-- Comfortable touch targets
+- Same section order (single column)
+- Greeting remains compact
+- Biggest Opportunity appears early
+- Recent Wins does not dominate the screen
+- Since Your Last Visit remains easy to scan
+- Growth Areas have comfortable touch targets
+- Recent Progress entries do not become excessively tall
 - No horizontal scrolling
-- Single primary CTA remains obvious
+- Actions remain clearly visible
 
 ---
 
@@ -259,8 +301,9 @@ Deterministic, realistic, **no demo-industry hard-coding** in identity fields.
 
 - Prefer session personalisation when present (first name + business name)
 - Fallback: generic “there” / “Your business” — never Portsmouth Hypnotherapy / Northern Materials
-- Activity, opportunity, and feed copy must sound like real work already done
-- Growth areas aligned with Growth Plan human category names
+- Activity, opportunity, wins, and progress copy must sound like real work already done
+- Growth areas aligned with Growth Plan human category names (max 4 on Workspace)
+- No unsupported ranking success claims
 
 ---
 
@@ -268,9 +311,9 @@ Deterministic, realistic, **no demo-industry hard-coding** in identity fields.
 
 ### In Phase 4 (this deliverable)
 
-- Specification document
+- Specification document (final polish)
 - Static prototype with mock data
-- Desktop + mobile screenshots
+- Desktop + mobile + section screenshots
 - Stop for review
 
 ### Out of Phase 4
@@ -280,12 +323,15 @@ Deterministic, realistic, **no demo-industry hard-coding** in identity fields.
 - Rebuilding all category detail pages
 - Dark theme conversion
 - Restoring Mission IA on `/`
+- Live reports / impact surfaces
 
 ---
 
 ## 13. Approval checklist (Jonathan)
 
-- [ ] Page structure 1–5 accepted  
+- [ ] Page structure 1–6 accepted  
+- [ ] Opportunity-led language accepted  
+- [ ] Recent Wins calm and restrained  
 - [ ] Visual DNA matches Growth Plan calm light system  
 - [ ] No Mission / score / AI-employee residue  
 - [ ] Screenshots approved  

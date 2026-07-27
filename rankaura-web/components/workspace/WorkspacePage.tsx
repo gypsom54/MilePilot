@@ -1,5 +1,6 @@
 import { BiggestOpportunityCard } from "@/components/workspace/BiggestOpportunityCard";
-import { BusinessFeed } from "@/components/workspace/BusinessFeed";
+import { RecentProgress } from "@/components/workspace/RecentProgress";
+import { RecentWins } from "@/components/workspace/RecentWins";
 import { SinceLastVisit } from "@/components/workspace/SinceLastVisit";
 import { WorkspaceGrowthAreas } from "@/components/workspace/WorkspaceGrowthAreas";
 import { WorkspaceWelcomeSection } from "@/components/workspace/WorkspaceWelcome";
@@ -10,9 +11,9 @@ interface WorkspacePageProps {
 }
 
 /**
- * Locked Workspace hierarchy:
- * Welcome → Today's Biggest Opportunity → Since Your Last Visit
- * → Growth Areas → Business Feed
+ * Locked Workspace hierarchy (final polish):
+ * Greeting → Biggest Opportunity → Recent Wins → Since Your Last Visit
+ * → Growth Areas → Recent Progress
  */
 export function WorkspacePage({ data }: WorkspacePageProps) {
   return (
@@ -21,9 +22,10 @@ export function WorkspacePage({ data }: WorkspacePageProps) {
         <div className="flex flex-col gap-6 sm:gap-7">
           <WorkspaceWelcomeSection welcome={data.welcome} />
           <BiggestOpportunityCard opportunity={data.biggestOpportunity} />
+          <RecentWins wins={data.recentWins} />
           <SinceLastVisit items={data.sinceLastVisit} />
           <WorkspaceGrowthAreas areas={data.growthAreas} />
-          <BusinessFeed items={data.businessFeed} />
+          <RecentProgress items={data.recentProgress} />
         </div>
       </main>
     </div>

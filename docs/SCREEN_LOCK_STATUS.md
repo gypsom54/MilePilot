@@ -30,14 +30,19 @@ Phase 3/4 implementation: `rankaura-web/app/growth-plan/` · `rankaura-web/app/w
 |---|--------|-------|-------------|--------|
 | 6a | Growth Plan (existing) | `/growth-plan?site=existing` | Spec + `rankaura-web` | **IMPLEMENTED — AWAITING SCREENSHOT APPROVAL** |
 | 6b | Launch Plan (new) | `/growth-plan?site=new` | Spec + `rankaura-web` | **IMPLEMENTED — AWAITING SCREENSHOT APPROVAL** |
-| 7 | Main Workspace | `/workspace` | `docs/WORKSPACE_SPEC.md` + `rankaura-web` | **PHASE 4 PROTOTYPE — AWAITING REVIEW** |
+| 7 | Main Workspace | `/workspace` | `docs/WORKSPACE_SPEC.md` + `rankaura-web` | **FINAL POLISH — AWAITING REVIEW** |
 
-### Phase 4 Workspace screenshots
+### Phase 4 Workspace screenshots (final polish)
 
 | File | Contents |
 |------|----------|
-| `docs/ui-reference/workspace/01-workspace-desktop.png` | Workspace — desktop |
-| `docs/ui-reference/workspace/02-workspace-mobile.png` | Workspace — mobile |
+| `docs/ui-reference/workspace/01-workspace-desktop.png` | Full Workspace — desktop |
+| `docs/ui-reference/workspace/02-workspace-mobile.png` | Full Workspace — mobile |
+| `docs/ui-reference/workspace/03-biggest-opportunity-viewport.png` | Refined Biggest Opportunity |
+| `docs/ui-reference/workspace/04-recent-wins-viewport.png` | Recent Wins |
+| `docs/ui-reference/workspace/05-since-last-visit-viewport.png` | Since Your Last Visit |
+| `docs/ui-reference/workspace/06-growth-areas-viewport.png` | Growth Areas |
+| `docs/ui-reference/workspace/07-recent-progress-viewport.png` | Recent Progress timeline |
 
 ### Phase 3 screenshot set
 
