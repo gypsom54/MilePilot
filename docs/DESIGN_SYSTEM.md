@@ -82,7 +82,7 @@
 | Token | Value | Usage |
 |-------|-------|--------|
 | `--ra-shadow` | `0 1px 2px rgba(11,15,25,0.05), 0 6px 18px rgba(11,15,25,0.06)` | Cards |
-| `--ra-shadow-focus` | `0 0 0 3px rgba(91,141,239,0.22)` | Soft focus glow (with ring) |
+| `--ra-shadow-focus` | `0 0 0 3px rgba(91,141,239,0.22)` | Reserved token — **not** used on inputs (inputs use a single blue border) |
 
 Inputs, badges, and chips: **no default shadow** — borders define structure.
 
@@ -107,7 +107,11 @@ Shared height (28px), padding, pill radius, medium weight, tinted fill + matchin
 
 ### TextInput / Input
 White, visible border, no default shadow, dark text, placeholder token.  
-Hover: stronger border. Focus: focus border + ring. Disabled: subtle fill + muted text.
+Hover: stronger border.  
+**Focus: ONE treatment only** — a single blue border (`--ra-focus`).  
+Never a blue glow + blue border. Never outline + border. Never two concentric strokes.  
+Implementation: shared `.ra-input` / `Input` component only.  
+Disabled: subtle fill + muted text.
 
 ### QuestionButton / QuestionChip
 **Alias of ButtonSecondary** (the outlined button). Same height, radius, border, typography, hover, focus, disabled. Layout-only helpers allowed (`w-full`, `text-left`) for multi-line suggested questions. Not a separate visual style.
@@ -122,7 +126,8 @@ Ask RankAura, Biggest Opportunity, Recent Wins, Growth Areas, and Recent Progres
 
 Every interactive control defines: default · hover · focus-visible · active/pressed · disabled.
 
-Focus-visible must be strong enough for keyboard users (2px outline + offset using `--ra-focus`).
+Buttons / links: focus-visible uses a single 2px outline + offset (`--ra-focus`).  
+Inputs: focus uses **one** treatment only — a single blue border. Never glow + border, never outline + border.
 
 ---
 

@@ -91,6 +91,51 @@ body {
     border-radius: var(--ra-radius-xl);
     box-shadow: var(--ra-shadow);
   }
+
+  /* THE shared text input — one focus treatment only (blue border, no glow/outline). */
+  .ra-input {
+    height: var(--ra-control-h);
+    width: 100%;
+    border-radius: var(--ra-radius-md);
+    border: 1px solid var(--ra-border);
+    background: var(--ra-surface);
+    padding-left: 1rem;
+    padding-right: 1rem;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.25rem;
+    color: var(--ra-ink);
+    transition:
+      border-color 150ms ease,
+      background-color 150ms ease;
+  }
+
+  .ra-input::placeholder {
+    color: var(--ra-placeholder);
+  }
+
+  .ra-input:hover:not(:disabled):not(:focus):not(:focus-visible) {
+    border-color: var(--ra-border-strong);
+  }
+
+  .ra-input:focus,
+  .ra-input:focus-visible {
+    outline: none !important;
+    outline-offset: 0 !important;
+    box-shadow: none !important;
+    border: 1px solid var(--ra-focus) !important;
+  }
+
+  .ra-input:disabled {
+    cursor: not-allowed;
+    border-color: var(--ra-border);
+    background: var(--ra-disabled-bg);
+    color: var(--ra-disabled-fg);
+  }
+
+  .ra-input:disabled::placeholder {
+    color: var(--ra-disabled-fg);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

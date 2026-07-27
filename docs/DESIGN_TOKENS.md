@@ -61,7 +61,7 @@ See `docs/DESIGN_SYSTEM.md` for full component documentation.
 | Token | Value | Usage |
 |-------|-------|--------|
 | `--ra-shadow` | subtle dual layer | Cards only |
-| `--ra-shadow-focus` | soft blue glow | Focused inputs |
+| `--ra-shadow-focus` | soft blue glow | Reserved — inputs use a single blue border instead |
 
 Inputs / badges / chips: no default shadow.
 
