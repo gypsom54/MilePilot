@@ -1,0 +1,38 @@
+import { SuccessMark } from "@/components/ui/SuccessMark";
+import { SurfaceCard } from "@/components/ui/SurfaceCard";
+import type { CompletedActivity } from "@/types/workspace";
+
+interface SinceLastVisitProps {
+  items: CompletedActivity[];
+}
+
+export function SinceLastVisit({ items }: SinceLastVisitProps) {
+  return (
+    <SurfaceCard aria-labelledby="since-last-visit-heading">
+      <h2
+        id="since-last-visit-heading"
+        className="text-lg font-semibold text-ra-ink"
+      >
+        Since your last visit
+      </h2>
+      <p className="mt-2 text-sm font-normal text-ra-muted">
+        Meaningful work RankAura has already completed for your business.
+      </p>
+      <ul className="mt-5 space-y-4">
+        {items.map((item) => (
+          <li key={item.id} className="flex gap-3">
+            <SuccessMark />
+            <div className="min-w-0">
+              <p className="text-sm font-normal leading-relaxed text-ra-ink sm:text-base">
+                {item.text}
+              </p>
+              <p className="mt-1 text-xs font-normal text-ra-muted">
+                {item.completedAtLabel}
+              </p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </SurfaceCard>
+  );
+}

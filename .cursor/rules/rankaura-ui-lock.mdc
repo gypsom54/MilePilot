@@ -1,0 +1,33 @@
+---
+description: RankAura approved UI lockdown — screenshots are source of truth
+alwaysApply: true
+---
+
+# RankAura UI Lockdown
+
+No approved screen may be visually redesigned or materially altered without explicit written approval from the product owner (Jonathan).
+
+## Authority order
+1. `docs/PRODUCT_GUARDRAILS.md` — final development authority
+2. Approved screenshots in `docs/ui-reference/`
+3. `docs/UI_BIBLE.md` and `docs/SCREEN_LOCK_STATUS.md`
+4. Existing React/Next implementation
+5. Product docs in `rankaura/docs/` (update docs to match screenshots — never the reverse)
+
+Follow the permanent workflow in PRODUCT_GUARDRAILS.md: Audit → single proposal → implement one feature → checks → screenshot → approval → lock → next.
+
+The `rankaura/` HTML SPA prototype is **not** a visual reference.
+
+## Approved onboarding flow
+Welcome → Website → Business Name → Business Description → Analysis / Setup → Dashboard
+
+## Allowed
+- Implementation quality fixes that do not change approved appearance
+- Restoring missing files to match the locked UI
+- Reverting temporary screenshot-only timing hacks to production behaviour
+
+## Forbidden without written approval
+- Redesign, restyle, or reinterpret locked screens
+- Changing locked copy, colours, typography, spacing, cards, nav, icons, or hierarchy
+- Treating absent screenshot screens as retired
+- Broad refactors across multiple approved screens

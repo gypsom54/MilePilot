@@ -1,0 +1,149 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Primary */
+  --ra-primary: #0b0f19;
+  --ra-ink: #0b0f19;
+  --ra-primary-fg: #ffffff;
+  --ra-primary-hover: #161c28;
+
+  /* Surfaces */
+  --ra-surface: #ffffff;
+  --ra-surface-subtle: #f7f8fa;
+  --ra-canvas: #f3f5f7;
+
+  /* Text */
+  --ra-ink-soft: #3d4654;
+  --ra-muted: #6b7585;
+  --ra-placeholder: #8b95a5;
+
+  /* Borders — crisp but calm */
+  --ra-border: #c5cdd8;
+  --ra-border-strong: #9aa5b5;
+
+  /* Accent / focus */
+  --ra-accent: #3b6fd4;
+  --ra-accent-soft: #eaf0ff;
+  --ra-focus: #5b8def;
+
+  /* Semantic */
+  --ra-success: #177a56;
+  --ra-success-soft: #e6f6ef;
+  --ra-success-border: #9dd4bc;
+  --ra-warning: #9a5b0a;
+  --ra-warning-soft: #fff4e5;
+  --ra-warning-border: #e2c08a;
+  --ra-info: #2f5fbe;
+  --ra-info-soft: #eaf0ff;
+  --ra-info-border: #b0c4f0;
+  --ra-neutral: #3f4a5a;
+  --ra-neutral-soft: #eef1f5;
+
+  /* Disabled — still reads as a solid button (dark grey, not washed) */
+  --ra-disabled-bg: #3d4654;
+  --ra-disabled-fg: #ffffff;
+
+  /* Radius */
+  --ra-radius-sm: 8px;
+  --ra-radius-md: 12px;
+  --ra-radius-lg: 14px;
+  --ra-radius-xl: 16px;
+  --ra-radius-full: 9999px;
+
+  /* Shadow */
+  --ra-shadow: 0 1px 2px rgba(11, 15, 25, 0.05), 0 6px 18px rgba(11, 15, 25, 0.06);
+  --ra-shadow-focus: 0 0 0 3px rgba(91, 141, 239, 0.22);
+
+  /* Control height */
+  --ra-control-h: 44px;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  color: var(--ra-ink);
+  background: var(--ra-canvas);
+}
+
+@layer components {
+  .ra-focus-ring {
+    @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2;
+    outline-color: var(--ra-focus);
+  }
+
+  .ra-card {
+    background: var(--ra-surface);
+    border: 1px solid var(--ra-border);
+    border-radius: var(--ra-radius-xl);
+    box-shadow: var(--ra-shadow);
+  }
+
+  /* THE shared text input — one focus treatment only (blue border, no glow/outline). */
+  .ra-input {
+    height: var(--ra-control-h);
+    width: 100%;
+    border-radius: var(--ra-radius-md);
+    border: 1px solid var(--ra-border);
+    background: var(--ra-surface);
+    padding-left: 1rem;
+    padding-right: 1rem;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.25rem;
+    color: var(--ra-ink);
+    transition:
+      border-color 150ms ease,
+      background-color 150ms ease;
+  }
+
+  .ra-input::placeholder {
+    color: var(--ra-placeholder);
+  }
+
+  .ra-input:hover:not(:disabled):not(:focus):not(:focus-visible) {
+    border-color: var(--ra-border-strong);
+  }
+
+  .ra-input:focus,
+  .ra-input:focus-visible {
+    outline: none !important;
+    outline-offset: 0 !important;
+    box-shadow: none !important;
+    border: 1px solid var(--ra-focus) !important;
+  }
+
+  .ra-input:disabled {
+    cursor: not-allowed;
+    border-color: var(--ra-border);
+    background: var(--ra-disabled-bg);
+    color: var(--ra-disabled-fg);
+  }
+
+  .ra-input:disabled::placeholder {
+    color: var(--ra-disabled-fg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

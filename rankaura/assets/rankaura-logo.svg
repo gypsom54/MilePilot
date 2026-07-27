@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 440" fill="none" role="img" aria-label="RankAura">
+  <defs>
+    <linearGradient id="raBlue" x1="360" y1="8" x2="560" y2="280" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#5B9BFF"/>
+      <stop offset="45%" stop-color="#2F6BFF"/>
+      <stop offset="100%" stop-color="#1546E0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- RA monogram -->
+  <g transform="translate(260 10)">
+    <path
+      fill="#0B1220"
+      d="M40 28
+         H170
+         C218 28 250 60 250 108
+         C250 146 228 174 192 184
+         L268 276
+         H202
+         L136 194
+         H100
+         V276
+         H40
+         V28
+         Z
+         M100 80
+         V142
+         H164
+         C184 142 200 126 200 108
+         C200 90 184 80 164 80
+         H100
+         Z"
+    />
+    <path
+      fill="url(#raBlue)"
+      d="M196 276
+         L294 28
+         H360
+         L238 276
+         H196
+         Z"
+    />
+    <path
+      fill="url(#raBlue)"
+      d="M0 244
+         L54 178
+         H100
+         L40 276
+         H0
+         Z"
+    />
+  </g>
+
+  <!-- Wordmark RANKAURA -->
+  <g transform="translate(26 330)" aria-hidden="true">
+    <path fill="#0B1220" d="M0 0H40C58 0 72 13 72 32C72 47 62 58 47 62L72 98H53L32 64H20V98H0V0ZM20 16V48H38C46 48 54 42 54 32C54 22 46 16 38 16H20Z"/>
+    <path fill="#0B1220" fill-rule="evenodd" d="M96 98L130 0H150L184 98H163L154 72H126L117 98H96ZM132 56H148L140 30Z"/>
+    <path fill="#0B1220" d="M204 98V0H223L268 64V0H287V98H268L223 34V98H204Z"/>
+    <path fill="#0B1220" d="M307 98V0H326V40L364 0H387L343 46L390 98H367L326 56V98H307Z"/>
+    <path fill="#2F6BFF" fill-rule="evenodd" d="M416 98L450 0H470L504 98H483L474 72H446L437 98H416ZM452 56H468L460 30Z"/>
+    <path fill="#2F6BFF" d="M524 0H543V54C543 72 555 84 574 84C593 84 605 72 605 54V0H624V56C624 82 603 100 574 100C545 100 524 82 524 56V0Z"/>
+    <path fill="#2F6BFF" d="M644 0H684C702 0 716 13 716 32C716 47 706 58 691 62L716 98H697L676 64H664V98H644V0ZM664 16V48H682C690 48 698 42 698 32C698 22 690 16 682 16H664Z"/>
+    <path fill="#2F6BFF" fill-rule="evenodd" d="M740 98L774 0H794L828 98H807L798 72H770L761 98H740ZM776 56H792L784 30Z"/>
+  </g>
+</svg>
