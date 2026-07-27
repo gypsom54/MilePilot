@@ -2,7 +2,7 @@
 
 **Status:** FINAL AUTHORITY for future development  
 **Owner:** Jonathan  
-**Related locks:** `docs/UI_BIBLE.md` · `docs/SCREEN_LOCK_STATUS.md` · `docs/GROWTH_PLAN_SPEC.md` · `docs/ui-reference/` · `rankaura/docs/PRODUCT_VISION.md`
+**Related locks:** `docs/UI_BIBLE.md` · `docs/SCREEN_LOCK_STATUS.md` · `docs/GROWTH_PLAN_SPEC.md` · `docs/WORKSPACE_SPEC.md` · `docs/ui-reference/` · `rankaura/docs/PRODUCT_VISION.md`
 
 This document governs every future RankAura change.  
 If a proposal conflicts with these guardrails, the proposal loses.
