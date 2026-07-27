@@ -82,10 +82,12 @@ If docs and screenshots disagree → **screenshots win** → update docs.
 
 ---
 
-## Approved product flow (LOCKED — Phase 1 audit)
+## Approved product flow (LOCKED)
 
 ```
 Welcome
+→ What should we call you?
+→ Nice to meet you (one-time)
 → Website URL
 → Business name
 → Business description
@@ -96,15 +98,11 @@ Welcome
 
 **Hard rule:** Do not send users directly from Analysis into the old Mission dashboard.
 
-Growth Plan / Launch Plan specification: `docs/GROWTH_PLAN_SPEC.md` (Phase 2).  
-Growth Plan screenshots: pending Phase 3 implementation + Jonathan approval.
+**Personalisation:** Customer first name only at key moments. Prefer business name elsewhere.  
+**Placeholders:** Neutral only (`Enter your business name`, `https://yourwebsite.co.uk`, `Tell us about your business...`). No demo industries or sample businesses.
 
-Screens mentioned in older docs but **not present in the current approved screenshot set**:
-
-- Name (“What should we call you?”)
-- Historical “Growth Plan Summary” / “Launch Growth Plan” CTA variants (superseded by the Growth Plan / Launch Plan page in `GROWTH_PLAN_SPEC.md`)
-
-Only Jonathan may permanently remove or add product screens.
+Growth Plan / Launch Plan specification: `docs/GROWTH_PLAN_SPEC.md`.  
+Canonical app: `rankaura-web/` (`/onboarding`, `/growth-plan`).
 
 ---
 

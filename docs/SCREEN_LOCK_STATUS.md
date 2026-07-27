@@ -14,10 +14,12 @@ Phase 3 implementation: `rankaura-web/app/growth-plan/`
 | # | Screen | Route | Primary components | Status |
 |---|--------|-------|--------------------|--------|
 | 1 | Welcome | `/onboarding` (`welcome`) | `OnboardingWelcome`, `OnboardingFlow` | **APPROVED — VISUALLY LOCKED** |
-| 2 | Website | `/onboarding` (`website`) | `OnboardingFlow`, `OnboardingShell`, `OnboardingInput`, `OnboardingPrimaryButton` | **APPROVED — VISUALLY LOCKED** |
-| 3 | Business name | `/onboarding` (`business-name`) | `OnboardingFlow`, `OnboardingShell`, `OnboardingInput`, `OnboardingPrimaryButton` | **APPROVED — VISUALLY LOCKED** |
-| 4 | Business description | `/onboarding` (`business-description`) | `OnboardingFlow`, `OnboardingShell`, `OnboardingTextarea`, `OnboardingPrimaryButton` | **APPROVED — VISUALLY LOCKED** |
-| 5 | Analysis / Setup | `/onboarding` (`analysis`) | `OnboardingFlow` (`AnalysisStep`), `OnboardingAnalysis`, `OnboardingShell` | **APPROVED — VISUALLY LOCKED** (exit route superseded — see flow) |
+| 1b | Customer name | `/onboarding` (`name`) | `OnboardingFlow`, `OnboardingShell`, `OnboardingInput` | **IMPLEMENTED — personalisation lock** |
+| 1c | Nice to meet you | `/onboarding` (`nice-to-meet-you`) | `OnboardingFlow` | **IMPLEMENTED — one-time name use** |
+| 2 | Website | `/onboarding` (`website`) | `OnboardingFlow`, `OnboardingShell`, `OnboardingInput`, `OnboardingPrimaryButton` | **APPROVED — VISUALLY LOCKED** (neutral placeholders) |
+| 3 | Business name | `/onboarding` (`business-name`) | `OnboardingFlow`, `OnboardingShell`, `OnboardingInput`, `OnboardingPrimaryButton` | **APPROVED — VISUALLY LOCKED** (neutral placeholders) |
+| 4 | Business description | `/onboarding` (`business-description`) | `OnboardingFlow`, `OnboardingShell`, `OnboardingTextarea`, `OnboardingPrimaryButton` | **APPROVED — VISUALLY LOCKED** (neutral placeholders) |
+| 5 | Analysis / Setup | `/onboarding` (`analysis`) | `OnboardingFlow` (`AnalysisStep`), `OnboardingAnalysis`, `OnboardingShell` | **APPROVED — VISUALLY LOCKED** → Growth Plan |
 
 ---
 
@@ -72,16 +74,20 @@ Phase 3 implementation: `rankaura-web/app/growth-plan/`
 ## Approved first-use flow (LOCKED)
 
 1. Welcome  
-2. Website URL  
-3. Business Name  
-4. Business Description  
-5. Business and website analysis  
-6. **Growth Plan OR Launch Plan**  
-7. Main Workspace  
+2. **What should we call you?** (customer first name — used sparingly)  
+3. Nice to meet you (one-time personalisation)  
+4. Website URL  
+5. Business Name  
+6. Business Description  
+7. Business and website analysis  
+8. **Growth Plan OR Launch Plan**  
+9. Main Workspace  
 
 **Hard rule:** No direct Analysis → legacy dashboard route.
 
-Production onboarding redirect to Growth Plan is **not** changed in Phase 3 (review via `/growth-plan` only). Connect after visual approval.
+**Personalisation rule:** Use the customer’s first name only at key moments (nice to meet you · Growth Plan ready · future Workspace greeting). Prefer **business name** elsewhere.
+
+Production onboarding lives at `/onboarding` in `rankaura-web` and hands off to `/growth-plan`.
 
 ---
 

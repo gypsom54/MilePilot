@@ -11,28 +11,23 @@ import {
 } from "@/components/onboarding/OnboardingFields";
 import { OnboardingAnalysis } from "@/components/onboarding/OnboardingAnalysis";
 import {
+  inferSiteFamily,
   markOnboardingComplete,
   saveOnboardingData,
   simulateAnalysis,
-} from "@/services/onboarding/onboardingService";
+} from "@/services/onboarding/session";
 import type { OnboardingData, OnboardingStep } from "@/types/onboarding";
+import { EMPTY_ONBOARDING_DATA } from "@/types/onboarding";
 
 /**
- * Legacy MilePilot overlay copy of RankAura onboarding.
- * Canonical implementation lives in rankaura-web/.
- * Kept in sync for import-path compatibility.
+ * Locked onboarding conversation with sparse personalisation.
+ * Flow: Welcome → Name → Nice to meet you → Website → Business name
+ * → Description → Analysis → Growth Plan
  */
-const INITIAL_DATA: OnboardingData = {
-  customerFirstName: "",
-  website: "",
-  businessName: "",
-  businessDescription: "",
-};
-
 export function OnboardingFlow() {
   const router = useRouter();
   const [step, setStep] = useState<OnboardingStep>("welcome");
-  const [data, setData] = useState<OnboardingData>(INITIAL_DATA);
+  const [data, setData] = useState<OnboardingData>(EMPTY_ONBOARDING_DATA);
 
   const update = (partial: Partial<OnboardingData>) => {
     setData((prev) => {
@@ -44,7 +39,8 @@ export function OnboardingFlow() {
 
   const goToGrowthPlan = () => {
     markOnboardingComplete(data);
-    router.push("/growth-plan?site=existing");
+    const site = inferSiteFamily(data.website);
+    router.push(`/growth-plan?site=${site}`);
     router.refresh();
   };
 
@@ -65,6 +61,8 @@ export function OnboardingFlow() {
           value={data.customerFirstName}
           onChange={(customerFirstName) => update({ customerFirstName })}
           placeholder="Enter your first name"
+          autoFocus
+          autoComplete="given-name"
         />
         <OnboardingPrimaryButton
           onClick={() => setStep("nice-to-meet-you")}
@@ -84,7 +82,8 @@ export function OnboardingFlow() {
           Nice to meet you{firstName ? `, ${firstName}` : ""}.
         </h1>
         <p className="mt-5 max-w-md text-base leading-relaxed text-[#8b95a5] sm:text-lg">
-          We&apos;re going to build a personalised growth strategy for your business.
+          We&apos;re going to build a personalised growth strategy for your
+          business.
         </p>
         <OnboardingPrimaryButton onClick={() => setStep("website")}>
           Continue
@@ -106,6 +105,8 @@ export function OnboardingFlow() {
           onChange={(website) => update({ website })}
           placeholder="https://yourwebsite.co.uk"
           type="url"
+          autoFocus
+          autoComplete="url"
         />
         <OnboardingPrimaryButton
           onClick={() => setStep("business-name")}
@@ -129,6 +130,8 @@ export function OnboardingFlow() {
           value={data.businessName}
           onChange={(businessName) => update({ businessName })}
           placeholder="Enter your business name"
+          autoFocus
+          autoComplete="organization"
         />
         <OnboardingPrimaryButton
           onClick={() => setStep("business-description")}
@@ -152,6 +155,7 @@ export function OnboardingFlow() {
           value={data.businessDescription}
           onChange={(businessDescription) => update({ businessDescription })}
           placeholder="Tell us about your business..."
+          autoFocus
         />
         <OnboardingPrimaryButton
           onClick={() => setStep("analysis")}
@@ -180,14 +184,20 @@ function AnalysisStep({
     if (hasRun.current) return;
     hasRun.current = true;
     saveOnboardingData(data);
-    simulateAnalysis((index) => setCompletedSteps(index)).then(() => {
+
+    simulateAnalysis((index) => {
+      setCompletedSteps(index);
+    }).then(() => {
       window.setTimeout(onComplete, 700);
     });
   }, [data, onComplete]);
 
   return (
     <OnboardingShell stepIndex={3} showProgress={false}>
-      <OnboardingAnalysis completedSteps={completedSteps} businessName={data.businessName} />
+      <OnboardingAnalysis
+        completedSteps={completedSteps}
+        businessName={data.businessName}
+      />
     </OnboardingShell>
   );
 }

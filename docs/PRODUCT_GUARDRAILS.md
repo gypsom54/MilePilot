@@ -43,13 +43,20 @@ If a proposal conflicts with these guardrails, the proposal loses.
 ## First-use flow (LOCKED)
 
 ```text
-Welcome → Website URL → Business name → Business description
+Welcome → Name → Nice to meet you → Website URL → Business name → Business description
   → Analysis → Growth Plan OR Launch Plan → Main Workspace
 ```
 
 - Do **not** route Analysis directly into the legacy dashboard.
 - Growth Plan / Launch Plan is the most important post-analysis page.
 - Spec: `docs/GROWTH_PLAN_SPEC.md`.
+
+### Personalisation (LOCKED)
+
+- Capture the customer’s first name early.
+- Use it sparingly: “Nice to meet you, {name}.” · “{name}, your Growth Plan is ready.” · future Workspace greeting.
+- Prefer the **business name** for ongoing strategy identity.
+- No demo business names, example industries, or pre-filled sample text in onboarding fields.
 
 ---
 

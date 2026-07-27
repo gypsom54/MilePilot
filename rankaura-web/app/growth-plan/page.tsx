@@ -1,4 +1,4 @@
-import { GrowthPlanPage } from "@/components/growth-plan/GrowthPlanPage";
+import { GrowthPlanPersonalized } from "@/components/growth-plan/GrowthPlanPersonalized";
 import { getGrowthPlan } from "@/services/growthPlan";
 import { parseSiteQuery } from "@/types/growthPlan";
 
@@ -10,9 +10,9 @@ interface GrowthPlanRouteProps {
 }
 
 /**
- * Growth Plan / Launch Plan review route.
- * Dev switches: /growth-plan?site=existing | /growth-plan?site=new
- * Optional: ?expand=reddit_community for screenshot review of expanded state.
+ * Growth Plan / Launch Plan.
+ * Personalisation (customer first name once + business name) comes from
+ * onboarding session storage when present.
  */
 export default async function GrowthPlanRoute({
   searchParams,
@@ -22,6 +22,10 @@ export default async function GrowthPlanRoute({
   const data = await getGrowthPlan(siteFamily);
 
   return (
-    <GrowthPlanPage data={data} expandCategoryId={params.expand} />
+    <GrowthPlanPersonalized
+      data={data}
+      siteFamily={siteFamily}
+      expandCategoryId={params.expand}
+    />
   );
 }

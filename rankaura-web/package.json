@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start -p 3000",
     "test:dashboard-mock": "node ../tests/rankaura-dashboard-mock.test.js",
-    "test:growth-plan-mock": "node ../tests/rankaura-growth-plan-mock.test.js"
+    "test:growth-plan-mock": "node ../tests/rankaura-growth-plan-mock.test.js",
+    "test:no-demo-data": "node ../tests/rankaura-no-demo-data.test.js"
   },
   "dependencies": {
     "next": "^15.3.3",

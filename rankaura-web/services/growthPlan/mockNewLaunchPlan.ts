@@ -17,8 +17,8 @@ const GROWTH_TEAM_CHECKLIST = [
 ];
 
 /**
- * Deterministic brand-new-site Launch Plan mock — confidence & reassurance polish.
- * Credible pre-launch local commercial business — Harbour & Oak Interiors.
+ * Brand-new-site Launch Plan mock — no demo business identity.
+ * Header business name is personalised from onboarding session when available.
  */
 export const newLaunchPlanMock: GrowthPlanData = {
   site: {
@@ -31,10 +31,10 @@ export const newLaunchPlanMock: GrowthPlanData = {
     },
   },
   header: {
-    businessName: "Harbour & Oak Interiors",
-    title: "Here's how we'll help grow your business.",
+    businessName: "Your business",
+    title: "Your Launch Plan is ready.",
     support:
-      "We've researched your market and competitors, and prepared the foundations for your online growth. Meaningful work is already underway.",
+      "We've researched your market and competitors, and prepared the foundations for your online growth.",
   },
   confirmations: [
     { id: "business", label: "Business understood", done: true },
@@ -45,11 +45,11 @@ export const newLaunchPlanMock: GrowthPlanData = {
   keyDiscoveries: [
     {
       id: "demand",
-      text: "Customers nearby are actively searching for interior design and renovation help.",
+      text: "Customers nearby are actively searching for services like yours.",
     },
     {
       id: "gaps",
-      text: "Several established studios leave gaps in clarity and local focus.",
+      text: "Several established competitors leave gaps in clarity and local focus.",
     },
     {
       id: "structure",
@@ -57,7 +57,7 @@ export const newLaunchPlanMock: GrowthPlanData = {
     },
     {
       id: "community",
-      text: "Community conversations reveal the exact questions buyers ask before hiring a designer.",
+      text: "Community conversations reveal the questions buyers ask before they get in touch.",
     },
     {
       id: "launch",
@@ -77,7 +77,7 @@ export const newLaunchPlanMock: GrowthPlanData = {
     checklist: GROWTH_TEAM_CHECKLIST,
   },
   primaryOpportunity: {
-    title: "We've found a strong opportunity around local commercial searches.",
+    title: "We've found a strong opportunity around local searches.",
     support:
       "We've used this research to prepare your website structure and initial content plan.",
     actionLabel: "View Strategy",
@@ -96,7 +96,7 @@ export const newLaunchPlanMock: GrowthPlanData = {
       whyItMatters: "Helps focus growth work on searches that bring real demand.",
       businessImpact: "Guides every page toward real local demand.",
       summary:
-        "We've prioritised launch keywords around local commercial interior design and home renovation searches.",
+        "We've prioritised launch keywords around the searches customers use when looking for businesses like yours.",
       status: "complete",
       count: 22,
       relevanceScore: 97,
@@ -104,9 +104,9 @@ export const newLaunchPlanMock: GrowthPlanData = {
       featured: true,
       applicable: true,
       discovered:
-        "We've found people nearby search for interior designers, kitchen renovation ideas, and commercial fit-out partners more than broad lifestyle terms.",
+        "We've found customers nearby search with clear service and location intent more than broad lifestyle terms.",
       completed:
-        "We've built a launch keyword map covering brand, service, and local commercial intent.",
+        "We've built a launch keyword map covering brand, service, and local intent.",
       next: "We'll assign priority keywords to each recommended page in your structure.",
       primaryAction: "View Strategy",
     },
@@ -125,7 +125,7 @@ export const newLaunchPlanMock: GrowthPlanData = {
       featured: true,
       applicable: true,
       discovered:
-        "We've identified that successful local studios launch with a simple homepage, clear services, project proof, and contact — not a large unfinished brochure.",
+        "We've identified that strong local launches start with a simple homepage, clear services, proof, and contact — not a large unfinished brochure.",
       completed:
         "We've prepared a recommended page structure and launch checklist for a calm first release.",
       next: "We'll refine page templates and readiness checks before go-live.",
@@ -147,7 +147,7 @@ export const newLaunchPlanMock: GrowthPlanData = {
       featured: true,
       applicable: true,
       discovered:
-        "We've identified that buyers want to understand your process, budget ranges, and what a first consultation includes before they enquire.",
+        "We've identified that buyers want to understand your process, pricing clarity, and what a first conversation includes before they enquire.",
       completed:
         "We've outlined the first six pages and articles that answer those questions without sounding salesy.",
       next: "We'll draft homepage and services copy based on your approved structure.",
@@ -168,7 +168,7 @@ export const newLaunchPlanMock: GrowthPlanData = {
       featured: true,
       applicable: true,
       discovered:
-        "We've found that local commercial and residential design searches reward clear location signals from day one.",
+        "We've found that local searches reward clear location signals from day one.",
       completed:
         "We've prepared a launch-day local checklist: profile setup, categories, service areas, and consistent details.",
       next: "We'll stage profile content so it can go live with your website.",
@@ -180,7 +180,7 @@ export const newLaunchPlanMock: GrowthPlanData = {
       whyItMatters: "Shows where you can stand out without copying anyone.",
       businessImpact: "Highlights gaps you can own at launch.",
       summary:
-        "We've mapped competitor opportunities where established studios leave gaps in clarity and local focus.",
+        "We've mapped competitor opportunities where established businesses leave gaps in clarity and local focus.",
       status: "complete",
       count: 5,
       relevanceScore: 88,
@@ -188,9 +188,9 @@ export const newLaunchPlanMock: GrowthPlanData = {
       featured: true,
       applicable: true,
       discovered:
-        "We've identified that several studios explain services poorly. Clear process pages and local project stories are open opportunities.",
+        "We've identified that several competitors explain services poorly. Clear process pages and local proof are open opportunities.",
       completed:
-        "We've mapped five relevant competitors and noted positioning gaps you can own at launch.",
+        "We've mapped relevant competitors and noted positioning gaps you can own at launch.",
       next: "We'll keep this map light until your site is live, then watch for meaningful moves.",
       primaryAction: "View Report",
     },
@@ -216,7 +216,7 @@ export const newLaunchPlanMock: GrowthPlanData = {
       id: "authority_building",
       name: "Growing Your Authority",
       subtitle: "Building trust and credibility over time.",
-      whyItMatters: "Helps customers and Google recognise your expertise.",
+      whyItMatters: "Helps customers recognise your expertise.",
       summary:
         "We've started preparing early authority work focused on trusted local mentions.",
       status: "planned",
@@ -225,7 +225,7 @@ export const newLaunchPlanMock: GrowthPlanData = {
       featured: false,
       applicable: true,
       discovered:
-        "We've found local design businesses gain trust faster with consistent directory presence and project showcases than with broad outreach.",
+        "We've found businesses like yours gain trust faster with consistent directory presence and clear proof than with broad outreach.",
       completed:
         "We've drafted an authority and launch preparation list prioritising quality over volume.",
       next: "We'll sequence citation and mention work for the weeks after go-live.",
@@ -236,7 +236,7 @@ export const newLaunchPlanMock: GrowthPlanData = {
       subtitle: "Learning from the conversations your customers are already having.",
       whyItMatters: "Surfaces real buying concerns and the language people use.",
       summary:
-        "We've researched how homeowners describe renovation stress, budgets, and designer selection.",
+        "We've researched how people describe their needs, concerns, and decision process before hiring a business like yours.",
       status: "complete",
       count: 9,
       relevanceScore: 80,
@@ -244,28 +244,28 @@ export const newLaunchPlanMock: GrowthPlanData = {
       featured: false,
       applicable: true,
       discovered:
-        "People ask how to choose a designer, what a consultation should include, and how to avoid surprise costs. Natural phrases include ‘interior designer near me worth it’ and ‘how much should a kitchen redesign cost’.\n\nThis research comes from public discussions and community trends. RankAura uses these insights to create original content that answers genuine customer questions. It does not copy discussions.",
+        "People ask how to choose a provider, what a first conversation should include, and how to avoid surprises.\n\nThis research comes from public discussions and community trends. RankAura uses these insights to create original content that answers genuine customer questions. It does not copy discussions.",
       completed:
         "We've gathered recurring questions, objections, FAQ opportunities, and service-page ideas from public language patterns.",
-      next: "We'll fold the strongest questions into your launch FAQs and consultation page.",
+      next: "We'll fold the strongest questions into your launch FAQs and key pages.",
       primaryAction: "View Report",
     },
     {
       id: "business_intelligence",
       name: "Business Intelligence",
       subtitle: "Helping you spot opportunities beyond traditional SEO.",
-      whyItMatters: "Ensures every recommendation fits your studio — not a generic template.",
+      whyItMatters: "Ensures every recommendation fits your business — not a generic template.",
       summary:
-        "We understand your positioning: thoughtful interior design for homes and small commercial spaces by the harbour.",
+        "We've captured your positioning so the launch plan stays personal to your business.",
       status: "complete",
       relevanceScore: 72,
       displayPriority: 9,
       featured: false,
       applicable: true,
       discovered:
-        "We've captured that your offer sits between pure residential styling and full commercial fit-out — a niche with room to speak plainly.",
-      completed:
         "We've captured audience, services, and market priorities to guide the launch plan.",
+      completed:
+        "We've built a clear picture of your business so RankAura recommendations stay aligned.",
       next: "We'll refresh this picture once your first projects are live online.",
     },
     {
@@ -274,17 +274,17 @@ export const newLaunchPlanMock: GrowthPlanData = {
       subtitle: "Helping customers feel confident choosing your business.",
       whyItMatters: "Builds trust before customers contact you.",
       summary:
-        "We've prepared a reputation plan for after your first clients — not forced before launch.",
+        "We've prepared a reputation plan for after your first customers — not forced before launch.",
       status: "planned",
       relevanceScore: 55,
       displayPriority: 10,
       featured: false,
       applicable: true,
       discovered:
-        "We've identified that new studios benefit from collecting early project feedback in a calm, consistent way.",
+        "We've identified that new businesses benefit from collecting early feedback in a calm, consistent way.",
       completed:
-        "We've outlined a post-launch review invitation approach for your first completed projects.",
-      next: "We'll activate this once you have clients ready to share feedback.",
+        "We've outlined a post-launch review invitation approach for your first completed jobs.",
+      next: "We'll activate this once you have customers ready to share feedback.",
     },
     {
       id: "ai_monitoring",
@@ -317,10 +317,10 @@ export const newLaunchPlanMock: GrowthPlanData = {
       featured: false,
       applicable: true,
       discovered:
-        "We've found local design features favour studios with finished project stories and a clear point of view.",
+        "We've found features favour businesses with finished proof and a clear point of view.",
       completed:
         "We've noted soft launch angles to revisit after your first case studies exist.",
-      next: "We'll hold PR until the site and project pages are ready.",
+      next: "We'll hold PR until the site and key pages are ready.",
     },
     {
       id: "social_media",
@@ -335,10 +335,10 @@ export const newLaunchPlanMock: GrowthPlanData = {
       featured: false,
       applicable: true,
       discovered:
-        "We've found visual work will eventually thrive on social, but search and clarity drive early enquiries.",
+        "We've found search and clarity usually drive early enquiries more than daily posting.",
       completed:
         "We've prepared a light post-launch social support outline.",
-      next: "We'll suggest project posts only after core pages are live.",
+      next: "We'll suggest posts only after core pages are live.",
     },
   ],
   finalReassurance: {

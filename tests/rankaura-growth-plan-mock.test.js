@@ -8,14 +8,12 @@ const fs = require("fs");
 
 const root = path.join(__dirname, "..", "rankaura-web", "services", "growthPlan");
 
-function loadTsAsRoughObject(filePath) {
-  // Not executing TS — validate files exist and contain locked markers.
-  const src = fs.readFileSync(filePath, "utf8");
-  return src;
+function load(filePath) {
+  return fs.readFileSync(filePath, "utf8");
 }
 
-const existingSrc = loadTsAsRoughObject(path.join(root, "mockExistingGrowthPlan.ts"));
-const newSrc = loadTsAsRoughObject(path.join(root, "mockNewLaunchPlan.ts"));
+const existingSrc = load(path.join(root, "mockExistingGrowthPlan.ts"));
+const newSrc = load(path.join(root, "mockNewLaunchPlan.ts"));
 const typesSrc = fs.readFileSync(
   path.join(__dirname, "..", "rankaura-web", "types", "growthPlan.ts"),
   "utf8",
@@ -42,15 +40,16 @@ for (const id of REQUIRED_CATEGORIES) {
   assert.ok(newSrc.includes(`id: "${id}"`), `new mock missing ${id}`);
 }
 
-assert.ok(existingSrc.includes("We've already identified opportunities"));
-assert.ok(newSrc.includes("Here's how we'll help grow your business"));
+assert.ok(existingSrc.includes("Your Growth Plan is ready."));
+assert.ok(newSrc.includes("Your Launch Plan is ready."));
+assert.ok(existingSrc.includes('businessName: "Your business"'));
+assert.ok(newSrc.includes('businessName: "Your business"'));
 assert.ok(existingSrc.includes("Review & Fix"));
 assert.ok(newSrc.includes("View Strategy"));
 assert.ok(existingSrc.includes("Website analysed"));
 assert.ok(!newSrc.includes("Website analysed"), "new site must not claim website analysed");
 assert.ok(existingSrc.includes("reddit_community"));
 assert.ok(newSrc.includes("does not copy discussions"));
-assert.ok(existingSrc.includes("keyDiscoveries") || existingSrc.includes("Customers are actively searching"));
 assert.ok(existingSrc.includes("Website Optimisation"));
 assert.ok(typesSrc.includes("existing_needs_access"));
 assert.ok(typesSrc.includes("new_pre_launch"));
@@ -61,5 +60,7 @@ assert.ok(newSrc.includes("Your Growth Team Is Ready"));
 assert.ok(newSrc.includes("You're in good hands"));
 assert.ok(typesSrc.includes("GrowthTeamReadyContent"));
 assert.ok(typesSrc.includes("FinalReassuranceContent"));
+assert.ok(!existingSrc.toLowerCase().includes("portsmouth"));
+assert.ok(!newSrc.toLowerCase().includes("harbour"));
 
 console.log("rankaura-growth-plan-mock.test.js: OK");
