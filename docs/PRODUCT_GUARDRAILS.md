@@ -52,7 +52,9 @@ If a proposal conflicts with these guardrails, the proposal loses.
 
 4. Workspace homepage must remain understandable in under 30 seconds — no scores, graphs, Mission language, AI employee cards, or KPI walls.
 
-## Ask RankAura principles (LOCKED — IN SPEC)
+## Ask RankAura principles (LOCKED)
+
+**Ask RankAura is the primary interface for interacting with RankAura. It is not a chatbot. It is the customer's trusted business growth adviser. Every future feature should be designed so it can be discovered, understood or launched through Ask RankAura using natural language. Navigation and buttons remain available, but conversation is the preferred interface whenever practical.**
 
 Ask RankAura is a **permanent core feature**, not a secondary chatbot or support bubble.
 
