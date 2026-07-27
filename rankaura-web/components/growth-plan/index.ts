@@ -1,0 +1,11 @@
+export { GrowthPlanPage } from "@/components/growth-plan/GrowthPlanPage";
+export { GrowthPlanHeader } from "@/components/growth-plan/GrowthPlanHeader";
+export { AnalysisConfirmation } from "@/components/growth-plan/AnalysisConfirmation";
+export { PrimaryOpportunityCard } from "@/components/growth-plan/PrimaryOpportunityCard";
+export { WhatHappensNext } from "@/components/growth-plan/WhatHappensNext";
+export { FeaturedCategories } from "@/components/growth-plan/FeaturedCategories";
+export { CategoryList } from "@/components/growth-plan/CategoryList";
+export { GrowthCategoryCard } from "@/components/growth-plan/GrowthCategoryCard";
+export { CategoryExpandedContent } from "@/components/growth-plan/CategoryExpandedContent";
+export { ContinueToWorkspace } from "@/components/growth-plan/ContinueToWorkspace";
+export { StatusBadge } from "@/components/growth-plan/StatusBadge";
