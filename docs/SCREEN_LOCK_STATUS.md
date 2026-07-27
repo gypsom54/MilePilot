@@ -41,7 +41,9 @@ Phase 3 implementation: `rankaura-web/app/growth-plan/`
 | `docs/ui-reference/growth-plan/11b-featured-categories-collapsed-viewport.png` | Featured categories viewport |
 | `docs/ui-reference/growth-plan/12-category-expanded-reddit.png` | Reddit & Community Research expanded |
 | `docs/ui-reference/growth-plan/12b-reddit-expanded-viewport.png` | Reddit expanded viewport |
-| `docs/ui-reference/growth-plan/13-category-expanded-your-action.png` | Website Health expanded with Your Action |
+| `docs/ui-reference/growth-plan/14-key-discoveries-viewport.png` | Key Discoveries emotional highlight |
+
+**Polish pass (2026-07-27):** Copy, Key Discoveries, human category names, status labels, and business-impact lines updated. Layout hierarchy unchanged aside from Key Discoveries after analysis confirmation.
 
 ---
 
