@@ -32,7 +32,21 @@ Phase 3/4 implementation: `rankaura-web/app/growth-plan/` · `rankaura-web/app/w
 | 6a | Growth Plan (existing) | `/growth-plan?site=existing` | Spec + `rankaura-web` | **IMPLEMENTED — AWAITING SCREENSHOT APPROVAL** |
 | 6b | Launch Plan (new) | `/growth-plan?site=new` | Spec + `rankaura-web` | **IMPLEMENTED — AWAITING SCREENSHOT APPROVAL** |
 | 7 | Main Workspace | `/workspace` | `docs/WORKSPACE_SPEC.md` + `rankaura-web` | **FINAL POLISH — AWAITING REVIEW** |
-| 8 | Ask RankAura (Workspace) | `/workspace` (planned insertion) | `docs/ASK_RANKAURA_SPEC.md` | **IN SPEC — CORE FEATURE — PENDING PROTOTYPE** |
+| 8 | Ask RankAura (Workspace) | `/workspace` | `docs/ASK_RANKAURA_SPEC.md` + `rankaura-web/components/ask-rankaura/` | **PROTOTYPE BUILT — PENDING SCREENSHOT APPROVAL** |
+
+### Phase B Ask RankAura screenshots
+
+| File | Contents |
+|------|----------|
+| `docs/ui-reference/ask-rankaura/01-workspace-desktop-compact.png` | Workspace desktop — compact Ask RankAura |
+| `docs/ui-reference/ask-rankaura/02-workspace-mobile-compact.png` | Workspace mobile — compact Ask RankAura |
+| `docs/ui-reference/ask-rankaura/03-suggested-questions.png` | Suggested questions close-up |
+| `docs/ui-reference/ask-rankaura/04-answer-opportunity.png` | Expanded — biggest opportunity |
+| `docs/ui-reference/ask-rankaura/05-answer-completed-work.png` | Expanded — completed work |
+| `docs/ui-reference/ask-rankaura/06-answer-no-urgent.png` | Expanded — nothing urgent |
+| `docs/ui-reference/ask-rankaura/07-answer-unavailable-gsc.png` | Expanded — Search Console unavailable |
+| `docs/ui-reference/ask-rankaura/08-answer-community.png` | Expanded — Reddit/community |
+| `docs/ui-reference/ask-rankaura/09-mobile-expanded.png` | Mobile expanded answer |
 
 ### Phase 4 Workspace screenshots (final polish)
 
@@ -113,7 +127,7 @@ Production onboarding lives at `/onboarding` in `rankaura-web` and hands off to 
 | Screen | Classification |
 |--------|----------------|
 | `/` | Legacy Mission dashboard — **not** the product home; do not extend |
-| Ask RankAura prototype | **IN SPEC** — Phase B after Jonathan approves `docs/ASK_RANKAURA_SPEC.md` |
+| Ask RankAura prototype | **PROTOTYPE BUILT — PENDING SCREENSHOT APPROVAL** · `/workspace` |
 
 ---
 

@@ -6,3 +6,4 @@ export { RecentWins } from "@/components/workspace/RecentWins";
 export { SinceLastVisit } from "@/components/workspace/SinceLastVisit";
 export { WorkspaceGrowthAreas } from "@/components/workspace/WorkspaceGrowthAreas";
 export { RecentProgress } from "@/components/workspace/RecentProgress";
+export { AskRankAuraCard } from "@/components/ask-rankaura/AskRankAuraCard";

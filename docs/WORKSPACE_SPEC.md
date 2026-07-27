@@ -40,14 +40,15 @@ Every time a customer opens RankAura, they should immediately feel that their bu
 
 ```text
 1. Greeting
-2. Biggest Opportunity (typed featured item)
-3. Recent Wins (max 3 — calm, restrained)
-4. Since Your Last Visit
-5. Growth Areas (max 4 featured)
-6. Recent Progress (timeline)
+2. Ask RankAura (compact adviser card — Phase B prototype)
+3. Biggest Opportunity (typed featured item)
+4. Recent Wins (max 3 — calm, restrained)
+5. Since Your Last Visit
+6. Growth Areas (max 4 featured)
+7. Recent Progress (timeline)
 ```
 
-Do not add charts, scores, AI employee cards, Mission language, or KPI walls.
+Ask RankAura insertion is specified in `docs/ASK_RANKAURA_SPEC.md`. Do not remove or redesign sections 3–7.
 
 ---
 

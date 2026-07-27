@@ -262,8 +262,8 @@ Historical screenshot copy (for archaeology only — not to rebuild):
 | **Route** | `/workspace` |
 | **App** | `rankaura-web/app/workspace/page.tsx` |
 | **Purpose** | Ongoing RankAura home — “what has RankAura done since I was last here?” |
-| **Page hierarchy** | Greeting → Biggest Opportunity → Recent Wins → Since Your Last Visit → Growth Areas → Recent Progress |
-| **Planned (Phase B)** | Ask RankAura card inserts **below Greeting** — see `docs/ASK_RANKAURA_SPEC.md` |
+| **Page hierarchy** | Greeting → Ask RankAura → Biggest Opportunity → Recent Wins → Since Your Last Visit → Growth Areas → Recent Progress |
+| **Planned (Phase B)** | Ask RankAura card — **PROTOTYPE BUILT** · see `docs/ASK_RANKAURA_SPEC.md` |
 | **Visual** | Calm light workspace DNA (same family as Growth Plan); no Mission IA, KPI walls, charts, SEO scores, or AI employee cards |
 | **Screenshots** | `docs/ui-reference/workspace/01-*.png` … `07-*.png` |
 
@@ -276,20 +276,22 @@ Historical screenshot copy (for archaeology only — not to rebuild):
 
 ---
 
-## 9. Ask RankAura (IN SPEC — CORE FEATURE — PENDING PROTOTYPE)
+## 9. Ask RankAura (PROTOTYPE BUILT — PENDING SCREENSHOT APPROVAL)
 
 | Field | Spec |
 |-------|------|
-| **Status** | **IN SPEC — CORE FEATURE — PENDING PROTOTYPE** (Phase A complete · no code until approved) |
+| **Status** | **PROTOTYPE BUILT — PENDING SCREENSHOT APPROVAL** |
 | **Spec** | `docs/ASK_RANKAURA_SPEC.md` |
+| **Route** | `/workspace` (card inserted beneath Greeting) |
+| **App** | `rankaura-web/components/ask-rankaura/` · `rankaura-web/services/askRankAura/` |
 | **Purpose** | Primary conversational interface · eventual front door to RankAura · trusted business growth adviser |
-| **Workspace position** | Directly beneath Greeting (above Biggest Opportunity) — compact card, not a chat wall |
+| **Workspace position** | Greeting → **Ask RankAura** → Biggest Opportunity → Recent Wins → Since Your Last Visit → Growth Areas → Recent Progress |
 | **Default UI** | Heading **Ask RankAura** · support **Ask anything about your business growth.** · input · max 4 suggested questions |
-| **After submit** | Expandable focused answer panel (preferred) — no long chat history on Workspace |
-| **Trust** | Answers grounded in RankAura data only; never invent rankings, traffic, reviews, or completed work |
-| **Phase B deliverables** | Card + mock provider + desktop/mobile screenshots — no live AI |
+| **After submit** | Expandable focused answer panel — one active answer; no chat history thread |
+| **Trust** | Answers grounded in RankAura mock data only; never invent rankings, traffic, reviews, or completed work |
+| **Screenshots** | `docs/ui-reference/ask-rankaura/` |
 
-**Not allowed:** floating support bubble · generic chatbot · AI avatars · voice mode · huge empty chat pane · autonomous live actions (prototype)
+**Not allowed:** floating support bubble · generic chatbot · AI avatars · voice mode · huge empty chat pane · autonomous live actions · live LLM
 
 ---
 

@@ -1,10 +1,11 @@
 # Ask RankAura — Core Feature Specification
 
-**Status:** IN SPEC — CORE FEATURE — PENDING PROTOTYPE  
-**Phase:** A (specification only — no production code until approved)  
+**Status:** PROTOTYPE BUILT — PENDING SCREENSHOT APPROVAL  
+**Phase:** B (Workspace prototype — deterministic mock only)  
 **Owner:** Jonathan  
-**Authority:** Workspace architecture approved · Growth Plan locked · onboarding personalisation locked  
-**Related:** `docs/WORKSPACE_SPEC.md` · `docs/GROWTH_PLAN_SPEC.md` · `docs/UI_BIBLE.md` · `docs/SCREEN_LOCK_STATUS.md` · `docs/PRODUCT_GUARDRAILS.md`
+**Authority:** Phase A approved · Workspace architecture approved · Growth Plan locked  
+**Related:** `docs/WORKSPACE_SPEC.md` · `docs/GROWTH_PLAN_SPEC.md` · `docs/UI_BIBLE.md` · `docs/SCREEN_LOCK_STATUS.md` · `docs/PRODUCT_GUARDRAILS.md`  
+**Implementation:** `rankaura-web/components/ask-rankaura/` · `rankaura-web/services/askRankAura/` · `rankaura-web/types/askRankAura.ts` · route `/workspace`
 
 ---
 
@@ -75,6 +76,8 @@ The **current** Workspace architecture remains approved and must **not** be remo
 Ask RankAura should feel **central but calm**. It must not dominate the Workspace or replace the approved sections.
 
 **Phase A rule:** Do not modify `rankaura-web` Workspace components until this spec is approved.
+
+**Phase B implementation (recorded):** Ask RankAura is implemented as a compact expandable card on `/workspace`, inserted beneath Greeting. Existing Workspace sections are preserved. Answers resolve through `mockAskRankAuraProvider` — no live LLM.
 
 ---
 
@@ -521,23 +524,24 @@ Before any live AI or autonomous action integration:
 
 ## 19. Phase process
 
-### Phase A — Specification (this document) ✅
+### Phase A — Specification ✅
 
-- [x] Create `docs/ASK_RANKAURA_SPEC.md`  
-- [x] Update `docs/UI_BIBLE.md`  
-- [x] Update `docs/PRODUCT_GUARDRAILS.md`  
-- [x] Update `docs/SCREEN_LOCK_STATUS.md`  
-- [ ] **Stop for Jonathan review before any code**  
+- [x] Create `docs/ASK_RANKAURA_SPEC.md`
+- [x] Update `docs/UI_BIBLE.md`
+- [x] Update `docs/PRODUCT_GUARDRAILS.md`
+- [x] Update `docs/SCREEN_LOCK_STATUS.md`
+- [x] Jonathan approved Phase A
 
-### Phase B — Prototype (after approval only)
+### Phase B — Prototype ✅ (pending screenshot approval)
 
-- [ ] Compact Workspace Ask RankAura card beneath greeting  
-- [ ] Contextual suggested questions (max 4)  
-- [ ] Expandable answer panel  
-- [ ] Deterministic mock provider + types  
-- [ ] Desktop + mobile screenshots  
-- [ ] Do **not** connect live AI or external services  
-- [ ] Do **not** remove or redesign existing Workspace sections  
+- [x] Compact Workspace Ask RankAura card beneath greeting
+- [x] Contextual suggested questions (max 4)
+- [x] Expandable answer panel
+- [x] Deterministic mock provider + types
+- [x] Desktop + mobile screenshots
+- [ ] Jonathan screenshot approval
+- [x] Do **not** connect live AI or external services
+- [x] Do **not** remove or redesign existing Workspace sections
 
 ---
 
@@ -575,14 +579,24 @@ Ask RankAura succeeds when:
 
 ## 22. Approval checklist (Jonathan)
 
-- [ ] Product purpose and philosophy accepted  
-- [ ] Workspace insertion point (below greeting) accepted  
-- [ ] Compact card + expandable answer approach accepted  
-- [ ] Question categories and intent model accepted  
-- [ ] Answer structure and tone accepted  
-- [ ] Trust / data-availability rules accepted  
-- [ ] Mock conversation set accepted  
-- [ ] Ready for Phase B prototype  
+### Phase A
+
+- [x] Product purpose and philosophy accepted
+- [x] Workspace insertion point (below greeting) accepted
+- [x] Compact card + expandable answer approach accepted
+- [x] Question categories and intent model accepted
+- [x] Answer structure and tone accepted
+- [x] Trust / data-availability rules accepted
+- [x] Mock conversation set accepted
+- [x] Ready for Phase B prototype
+
+### Phase B
+
+- [ ] Compact card screenshots accepted
+- [ ] Expanded answer screenshots accepted
+- [ ] Unavailable-data example accepted
+- [ ] Fallback behaviour accepted
+- [ ] Ready for live-provider phase (later)
 
 ---
 

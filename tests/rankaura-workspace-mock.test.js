@@ -22,8 +22,15 @@ const spec = fs.readFileSync(
 
 assert.ok(page.includes("RecentWins"));
 assert.ok(page.includes("RecentProgress"));
+assert.ok(page.includes("AskRankAuraCard"));
 assert.ok(page.includes("BiggestOpportunityCard"));
 assert.ok(page.includes("SinceLastVisit"));
+// JSX order: Welcome → Ask → Biggest Opportunity
+const welcomeUsage = page.indexOf("<WorkspaceWelcomeSection");
+const askUsage = page.indexOf("<AskRankAuraCard");
+const opportunityUsage = page.indexOf("<BiggestOpportunityCard");
+assert.ok(welcomeUsage > -1 && askUsage > welcomeUsage);
+assert.ok(opportunityUsage > askUsage);
 assert.ok(mock.includes("We found an opportunity to help more local customers"));
 assert.ok(mock.includes("recentWins"));
 assert.ok(mock.includes("recentProgress"));

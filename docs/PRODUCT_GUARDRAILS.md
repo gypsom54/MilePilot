@@ -60,7 +60,7 @@ Ask RankAura is a **permanent core feature**, not a secondary chatbot or support
 2. Answers must be grounded in the customer’s **own RankAura data** (Growth Plan, Workspace activity, connected sources). **Never invent** rankings, traffic, reviews, competitor activity, completed work, opportunities, recommendations, or results.
 3. When data is unavailable, say so clearly and explain what is missing or what RankAura will monitor once connected.
 4. Ask RankAura sits **beneath the Workspace greeting** (Phase B) — compact by default; no huge chat window; no floating bubble; no avatars or AI employee characters.
-5. Spec: `docs/ASK_RANKAURA_SPEC.md`. **Status: IN SPEC — CORE FEATURE — PENDING PROTOTYPE.** Do not code until Phase A is approved.
+5. Spec: `docs/ASK_RANKAURA_SPEC.md`. **Status: PROTOTYPE BUILT — PENDING SCREENSHOT APPROVAL.** Do not connect live AI until approved.
 
 ## First-use flow (LOCKED)
 
