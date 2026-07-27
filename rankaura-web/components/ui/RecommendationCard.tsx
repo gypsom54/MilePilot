@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import { ButtonPrimary } from "@/components/ui/ButtonPrimary";
 import { SurfaceCard } from "@/components/ui/SurfaceCard";
-import { cn } from "@/utils/cn";
 
 interface RecommendationCardProps {
   eyebrow: string;
@@ -10,11 +9,10 @@ interface RecommendationCardProps {
   actionLabel: string;
   href?: string;
   headingId?: string;
-  className?: string;
   children?: ReactNode;
 }
 
-/** Premium featured recommendation / opportunity card. */
+/** Featured recommendation content inside THE shared SurfaceCard. */
 export function RecommendationCard({
   eyebrow,
   title,
@@ -22,15 +20,9 @@ export function RecommendationCard({
   actionLabel,
   href,
   headingId = "recommendation-heading",
-  className,
 }: RecommendationCardProps) {
   return (
-    <SurfaceCard
-      as="section"
-      aria-labelledby={headingId}
-      className={cn("sm:p-8", className)}
-      padded
-    >
+    <SurfaceCard as="section" aria-labelledby={headingId}>
       <p className="text-[11px] font-semibold tracking-[0.14em] text-ra-accent">
         {eyebrow.toUpperCase()}
       </p>

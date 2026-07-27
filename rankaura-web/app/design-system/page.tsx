@@ -69,7 +69,7 @@ export default function DesignSystemPage() {
           </div>
         </SurfaceCard>
 
-        <SurfaceCard data-testid="ds-questions" accent>
+        <SurfaceCard data-testid="ds-questions">
           <h2 className="text-base font-semibold">Question controls</h2>
           <ul className="mt-4 grid gap-2 sm:grid-cols-2">
             <li>

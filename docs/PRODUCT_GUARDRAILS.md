@@ -71,11 +71,13 @@ Official tokens and reusable controls live in `docs/DESIGN_SYSTEM.md`, `docs/DES
 
 1. **Calm does not mean visually weak. RankAura components must remain restrained while still being clearly defined, interactive and intentional.**
 2. **Every button, badge, input and interactive control must come from the shared RankAura component system.**
-3. Every new screen must reuse design tokens — do not invent one-off greys, radii, shadows, or button styles.
-4. Primary actions share one solid ink button (`ButtonPrimary`) with an intentional disabled state (`--ra-disabled-bg` / `--ra-disabled-fg`). Secondary actions use bordered white (`ButtonSecondary`). Text actions use accent links (`ButtonGhost`).
-5. Badges share one anatomy; tinted fill + clearly visible matching border + stronger text.
-6. Ask RankAura input uses white surface, clear border, and placeholder **Ask about your business…**
-7. Borders must be subtle but clearly visible (`--ra-border`); interactive hover uses `--ra-border-strong`.
+3. **One Primary Button · One Secondary Button · One Badge · One Input · One Question Button · One Card.** Reuse everywhere. No Ask RankAura exceptions.
+4. Every new screen must reuse design tokens — do not invent one-off greys, radii, shadows, or button styles.
+5. Primary actions share one solid ink button (`ButtonPrimary`) with an intentional disabled state (`--ra-disabled-bg` / `--ra-disabled-fg`). Secondary actions use bordered white (`ButtonSecondary`). Text actions use accent links (`ButtonGhost`).
+6. Badges share one anatomy; tinted fill + clearly visible matching border + stronger text. Only colour changes by variant.
+7. Ask RankAura input uses the shared `Input` and placeholder **Ask about your business…**
+8. Borders must be subtle but clearly visible (`--ra-border`); interactive hover uses `--ra-border-strong`.
+9. If covering the text with your hand, you must not be able to tell which Workspace section a control came from.
 
 ## First-use flow (LOCKED)
 

@@ -20,7 +20,6 @@ module.exports = {
           "surface-subtle": "var(--ra-surface-subtle)",
           border: "var(--ra-border)",
           "border-strong": "var(--ra-border-strong)",
-          "border-accent": "var(--ra-border-accent)",
           accent: "var(--ra-accent)",
           "accent-soft": "var(--ra-accent-soft)",
           focus: "var(--ra-focus)",
@@ -54,9 +53,6 @@ module.exports = {
       },
       minHeight: {
         "ra-control": "var(--ra-control-h)",
-      },
-      minWidth: {
-        "ra-ask": "5.5rem",
       },
     },
   },

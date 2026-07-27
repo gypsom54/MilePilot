@@ -10,10 +10,7 @@ export function PrimaryOpportunityCard({
   opportunity,
 }: PrimaryOpportunityCardProps) {
   return (
-    <SurfaceCard
-      aria-labelledby="primary-opportunity-heading"
-      className="sm:p-8"
-    >
+    <SurfaceCard aria-labelledby="primary-opportunity-heading">
       <p className="text-[11px] font-semibold tracking-[0.14em] text-ra-accent">
         WHERE WE&apos;LL START
       </p>

@@ -41,7 +41,9 @@ assert.ok(tokens.includes("ButtonPrimary"));
 assert.ok(tokens.includes("Ask about your business"));
 assert.ok(globals.includes("--ra-disabled-bg"));
 assert.ok(globals.includes("--ra-border-strong"));
-assert.ok(globals.includes("--ra-border-accent"));
+assert.ok(!globals.includes("ra-card-accent"));
+assert.ok(askInput.includes("ButtonPrimary"));
+assert.ok(askInput.includes("Input"));
 assert.ok(fs.existsSync(path.join(root, "docs", "DESIGN_SYSTEM.md")));
 assert.ok(fs.existsSync(path.join(uiDir, "ButtonPrimary.tsx")));
 assert.ok(fs.existsSync(path.join(uiDir, "ButtonSecondary.tsx")));
@@ -52,8 +54,20 @@ assert.ok(fs.existsSync(path.join(uiDir, "QuestionChip.tsx")));
 assert.ok(fs.existsSync(path.join(uiDir, "TimelineItem.tsx")));
 assert.ok(fs.existsSync(path.join(uiDir, "GrowthCard.tsx")));
 assert.ok(fs.existsSync(path.join(uiDir, "RecommendationCard.tsx")));
-assert.ok(askInput.includes("ButtonPrimary"));
-assert.ok(askInput.includes("Input"));
+assert.ok(fs.existsSync(path.join(uiDir, "SuccessMark.tsx")));
+assert.ok(!askInput.includes("min-w-ra-ask"));
+assert.ok(!askInput.includes("min-w-["));
+assert.ok(!fs.readFileSync(path.join(root, "rankaura-web", "components", "ask-rankaura", "AskRankAuraCard.tsx"), "utf8").includes("accent"));
+assert.ok(fs.readFileSync(path.join(uiDir, "ButtonPrimary.tsx"), "utf8").includes("BUTTON_PRIMARY_CLASSNAME"));
+assert.ok(fs.readFileSync(path.join(uiDir, "SurfaceCard.tsx"), "utf8").includes("SURFACE_CARD_CLASSNAME"));
+assert.ok(!fs.readFileSync(path.join(uiDir, "SurfaceCard.tsx"), "utf8").includes("ra-card-accent"));
+assert.ok(!fs.readFileSync(path.join(uiDir, "SurfaceCard.tsx"), "utf8").includes("accent?:"));
+assert.ok(!globals.includes("--ra-border-accent"));
+assert.ok(
+  !fs
+    .readFileSync(path.join(root, "rankaura-web", "tailwind.config.js"), "utf8")
+    .includes("ra-ask"),
+);
 assert.ok(mock.includes("Ask about your business"));
 assert.ok(!mock.includes("What would you like to know?"));
 

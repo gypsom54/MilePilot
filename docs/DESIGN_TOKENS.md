@@ -32,7 +32,6 @@ See `docs/DESIGN_SYSTEM.md` for full component documentation.
 | `--ra-canvas` | `#F3F5F7` | Page background |
 | `--ra-border` | `#C5CDD8` | Standard border (clearly visible) |
 | `--ra-border-strong` | `#9AA5B5` | Hover / interactive border |
-| `--ra-border-accent` | `#B7C9EE` | Ask RankAura card emphasis only |
 | `--ra-ink-soft` | `#3D4654` | Secondary text |
 | `--ra-muted` | `#6B7585` | Muted labels |
 | `--ra-placeholder` | `#8B95A5` | Placeholder text |
@@ -71,7 +70,7 @@ Inputs / badges / chips: no default shadow.
 
 ## Components
 
-`ButtonPrimary` · `ButtonSecondary` · `ButtonGhost` · `Badge` · `Input` · `QuestionChip` / `QuestionButton` · `SurfaceCard` / `Card` · `TimelineItem` · `GrowthCard` · `RecommendationCard`
+`ButtonPrimary` · `ButtonSecondary` · `ButtonGhost` · `Badge` · `Input` · `QuestionChip` / `QuestionButton` · `SurfaceCard` / `Card` · `TimelineItem` · `GrowthCard` · `RecommendationCard` · `SuccessMark`
 
 Ask placeholder: **Ask about your business…**
 

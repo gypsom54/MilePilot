@@ -9,3 +9,4 @@ export { SurfaceCard, Card } from "@/components/ui/SurfaceCard";
 export { TimelineItem } from "@/components/ui/TimelineItem";
 export { GrowthCard } from "@/components/ui/GrowthCard";
 export { RecommendationCard } from "@/components/ui/RecommendationCard";
+export { SuccessMark } from "@/components/ui/SuccessMark";

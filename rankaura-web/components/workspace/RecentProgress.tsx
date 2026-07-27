@@ -7,10 +7,9 @@ interface RecentProgressProps {
   items: RecentProgressItem[];
 }
 
-/** Calm timeline of meaningful updates — not a social feed. */
 export function RecentProgress({ items }: RecentProgressProps) {
   return (
-    <SurfaceCard aria-labelledby="recent-progress-heading" className="sm:p-7">
+    <SurfaceCard aria-labelledby="recent-progress-heading">
       <h2
         id="recent-progress-heading"
         className="text-lg font-semibold text-ra-ink"

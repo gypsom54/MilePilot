@@ -2,8 +2,9 @@ import Link from "next/link";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 import { cn } from "@/utils/cn";
 
-const ghostClassName =
-  "inline-flex items-center text-sm font-semibold text-ra-accent underline-offset-2 transition-colors hover:text-[#2f5fbe] hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ra-focus";
+/** THE one text action. No pill, no border. */
+export const BUTTON_GHOST_CLASSNAME =
+  "inline-flex items-center text-sm font-semibold text-ra-accent underline-offset-2 transition-colors hover:text-ra-info hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ra-focus";
 
 interface ButtonGhostProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
@@ -20,14 +21,14 @@ export function ButtonGhost({
 }: ButtonGhostProps) {
   if (href) {
     return (
-      <Link href={href} className={cn(ghostClassName, className)}>
+      <Link href={href} className={cn(BUTTON_GHOST_CLASSNAME, className)}>
         {children}
       </Link>
     );
   }
 
   return (
-    <button type={type} className={cn(ghostClassName, className)} {...props}>
+    <button type={type} className={cn(BUTTON_GHOST_CLASSNAME, className)} {...props}>
       {children}
     </button>
   );

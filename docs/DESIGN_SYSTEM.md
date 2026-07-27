@@ -13,9 +13,12 @@
 
 2. **Every button, badge, input and interactive control must come from the shared RankAura component system.**
 
-3. Borders provide most of the structure. Shadows stay minimal.
+3. **One Primary Button. One Secondary Button. One Badge. One Input. One Question Button. One Card. Reuse them everywhere. No Ask RankAura exceptions.**
 
-4. Do not invent one-off greys, radii, or control styles inside screens.
+4. Borders provide most of the structure. Shadows stay minimal.
+
+5. Do not invent one-off greys, radii, or control styles inside screens.
+6. If two components perform the same job, they MUST use the same styling — not similar, the same component.
 
 ---
 
@@ -31,7 +34,6 @@
 | `--ra-canvas` | `#F3F5F7` | Page background |
 | `--ra-border` | `#C5CDD8` | **Standard border** — subtle but clearly visible |
 | `--ra-border-strong` | `#9AA5B5` | Hover / interactive stronger border |
-| `--ra-border-accent` | `#B7C9EE` | Intentional emphasis (Ask card only) |
 | `--ra-ink-soft` | `#3D4654` | Secondary text |
 | `--ra-muted` | `#6B7585` | Muted labels (stronger than washed grey) |
 | `--ra-placeholder` | `#8B95A5` | Placeholder text |
@@ -58,8 +60,8 @@
 - Thickness: **1px** everywhere
 - Standard (`--ra-border`) on cards, inputs, chips, secondary buttons, badges
 - Strong (`--ra-border-strong`) on hover / pressed interactive controls
-- Accent (`--ra-border-accent`) only for intentional emphasis (Ask RankAura card)
 - Avoid blue borders on every control
+- Do not invent Ask-only or screen-only border treatments
 
 ---
 
@@ -112,7 +114,8 @@ Rounded rectangle (lg), visible border, medium weight, white surface.
 Hover/pressed: stronger border + subtle fill. Comfortable touch target. Not a status pill.
 
 ### Card / SurfaceCard
-White, standard border, xl radius, shared shadow, consistent padding.
+White, standard border, xl radius, shared shadow, consistent padding (`p-5 sm:p-6`).  
+Ask RankAura, Biggest Opportunity, Recent Wins, Growth Areas, and Recent Progress all use this same card. No accent variants.
 
 ---
 

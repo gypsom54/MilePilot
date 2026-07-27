@@ -5,6 +5,7 @@ import type { GrowthCategory } from "@/types/growthPlan";
 import { CategoryExpandedContent } from "@/components/growth-plan/CategoryExpandedContent";
 import { StatusBadge } from "@/components/growth-plan/StatusBadge";
 import { ButtonSecondary } from "@/components/ui/ButtonSecondary";
+import { SurfaceCard } from "@/components/ui/SurfaceCard";
 import { cn } from "@/utils/cn";
 
 interface GrowthCategoryCardProps {
@@ -24,14 +25,12 @@ export function GrowthCategoryCard({
   const buttonId = useId();
 
   return (
-    <article
-      className={cn(
-        "overflow-hidden rounded-ra-xl border border-ra-border bg-ra-surface shadow-ra transition-[box-shadow] duration-200 motion-reduce:transition-none",
-        featured && "border-ra-border-accent",
-        !category.applicable && "opacity-70",
-      )}
+    <SurfaceCard
+      as="article"
+      padded={false}
+      className={cn(!category.applicable && "opacity-70")}
     >
-      <div className="flex flex-col gap-4 px-5 py-5 sm:flex-row sm:items-start sm:justify-between sm:px-6">
+      <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-start sm:justify-between sm:p-6">
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
             <h3 className="text-base font-semibold text-ra-ink sm:text-lg">
@@ -77,13 +76,9 @@ export function GrowthCategoryCard({
         role="region"
         aria-labelledby={buttonId}
         hidden={!expanded}
-        className={cn(
-          "motion-safe:transition-[opacity] motion-safe:duration-200",
-          expanded ? "opacity-100" : "opacity-0",
-        )}
       >
         {expanded ? <CategoryExpandedContent category={category} /> : null}
       </div>
-    </article>
+    </SurfaceCard>
   );
 }

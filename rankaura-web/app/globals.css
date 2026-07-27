@@ -22,7 +22,6 @@
   /* Borders — crisp but calm */
   --ra-border: #c5cdd8;
   --ra-border-strong: #9aa5b5;
-  --ra-border-accent: #b7c9ee;
 
   /* Accent / focus */
   --ra-accent: #3b6fd4;
@@ -91,10 +90,6 @@ body {
     border: 1px solid var(--ra-border);
     border-radius: var(--ra-radius-xl);
     box-shadow: var(--ra-shadow);
-  }
-
-  .ra-card-accent {
-    border-color: var(--ra-border-accent);
   }
 }
 

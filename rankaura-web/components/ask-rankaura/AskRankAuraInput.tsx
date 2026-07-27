@@ -42,11 +42,7 @@ export function AskRankAuraInput({
         autoComplete="off"
         className="min-w-0 flex-1"
       />
-      <ButtonPrimary
-        type="submit"
-        disabled={!canSubmit}
-        className="w-full shrink-0 sm:w-auto sm:min-w-ra-ask"
-      >
+      <ButtonPrimary type="submit" disabled={!canSubmit} className="shrink-0">
         Ask
       </ButtonPrimary>
     </form>

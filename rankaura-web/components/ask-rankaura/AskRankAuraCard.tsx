@@ -56,7 +56,6 @@ export function AskRankAuraCard({ data }: AskRankAuraCardProps) {
       aria-labelledby="ask-rankaura-heading"
       data-state={answer ? "expanded" : "compact"}
       data-testid="ask-rankaura-card"
-      accent
     >
       <h2
         id="ask-rankaura-heading"

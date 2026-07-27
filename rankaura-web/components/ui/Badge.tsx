@@ -11,9 +11,12 @@ export type BadgeVariant =
   | "info"
   | "planned";
 
+/** Shared anatomy — only colour tokens change per variant. */
+export const BADGE_BASE_CLASSNAME =
+  "inline-flex h-7 items-center rounded-full border px-2.5 text-xs font-medium leading-none";
+
 const variantClassName: Record<BadgeVariant, string> = {
-  approval:
-    "border-ra-warning-border bg-ra-warning-soft text-ra-warning",
+  approval: "border-ra-warning-border bg-ra-warning-soft text-ra-warning",
   prepared: "border-ra-info-border bg-ra-info-soft text-ra-info",
   completed: "border-ra-success-border bg-ra-success-soft text-ra-success",
   monitoring: "border-ra-border-strong bg-ra-neutral-soft text-ra-neutral",
@@ -26,7 +29,6 @@ const variantClassName: Record<BadgeVariant, string> = {
 interface BadgeProps {
   children: ReactNode;
   variant?: BadgeVariant;
-  className?: string;
 }
 
 /** Map free-form status labels to badge variants. */
@@ -52,19 +54,10 @@ export function badgeVariantFromLabel(label: string): BadgeVariant {
   return "info";
 }
 
-export function Badge({
-  children,
-  variant = "info",
-  className,
-}: BadgeProps) {
+/** THE one badge. Colour only changes by variant. */
+export function Badge({ children, variant = "info" }: BadgeProps) {
   return (
-    <span
-      className={cn(
-        "inline-flex h-7 items-center rounded-full border px-2.5 text-xs font-medium leading-none",
-        variantClassName[variant],
-        className,
-      )}
-    >
+    <span className={cn(BADGE_BASE_CLASSNAME, variantClassName[variant])}>
       {children}
     </span>
   );

@@ -2,7 +2,6 @@ import type { ReactNode } from "react";
 import { Badge, badgeVariantFromLabel } from "@/components/ui/Badge";
 import { ButtonSecondary } from "@/components/ui/ButtonSecondary";
 import { SurfaceCard } from "@/components/ui/SurfaceCard";
-import { cn } from "@/utils/cn";
 
 interface GrowthCardProps {
   name: string;
@@ -11,7 +10,6 @@ interface GrowthCardProps {
   impact: string;
   actionLabel: string;
   href: string;
-  className?: string;
   children?: ReactNode;
 }
 
@@ -22,10 +20,9 @@ export function GrowthCard({
   impact,
   actionLabel,
   href,
-  className,
 }: GrowthCardProps) {
   return (
-    <SurfaceCard as="article" className={cn(className)} padded>
+    <SurfaceCard as="article">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">

@@ -1,4 +1,5 @@
 import type { AskRankAuraAnswerSection } from "@/types/askRankAura";
+import { SuccessMark } from "@/components/ui/SuccessMark";
 
 interface AskRankAuraAnswerSectionProps {
   section: AskRankAuraAnswerSection;
@@ -22,12 +23,7 @@ export function AskRankAuraAnswerSectionView({
               key={item}
               className="flex gap-2 text-sm font-normal leading-relaxed text-ra-ink-soft"
             >
-              <span
-                className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-[#b7e6d2] bg-ra-success-soft text-[11px] font-bold text-ra-success"
-                aria-hidden="true"
-              >
-                ✓
-              </span>
+              <SuccessMark />
               <span>{item}</span>
             </li>
           ))}
