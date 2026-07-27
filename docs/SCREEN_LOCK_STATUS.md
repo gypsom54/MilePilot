@@ -4,7 +4,8 @@
 **Rule:** No approved screen may be visually redesigned or materially altered without explicit written approval from the product owner.
 
 Screenshot authority: `docs/ui-reference/` + `docs/UI_BIBLE.md`  
-Growth Plan authority: `docs/GROWTH_PLAN_SPEC.md` (Phase 2 — structure/language locked; screenshots pending)
+Growth Plan authority: `docs/GROWTH_PLAN_SPEC.md`  
+Phase 3 implementation: `rankaura-web/app/growth-plan/`
 
 ---
 
@@ -16,16 +17,31 @@ Growth Plan authority: `docs/GROWTH_PLAN_SPEC.md` (Phase 2 — structure/languag
 | 2 | Website | `/onboarding` (`website`) | `OnboardingFlow`, `OnboardingShell`, `OnboardingInput`, `OnboardingPrimaryButton` | **APPROVED — VISUALLY LOCKED** |
 | 3 | Business name | `/onboarding` (`business-name`) | `OnboardingFlow`, `OnboardingShell`, `OnboardingInput`, `OnboardingPrimaryButton` | **APPROVED — VISUALLY LOCKED** |
 | 4 | Business description | `/onboarding` (`business-description`) | `OnboardingFlow`, `OnboardingShell`, `OnboardingTextarea`, `OnboardingPrimaryButton` | **APPROVED — VISUALLY LOCKED** |
-| 5 | Analysis / Setup | `/onboarding` (`analysis`) | `OnboardingFlow` (`AnalysisStep`), `OnboardingAnalysis`, `OnboardingShell` | **APPROVED — VISUALLY LOCKED** (exit route superseded — see below) |
+| 5 | Analysis / Setup | `/onboarding` (`analysis`) | `OnboardingFlow` (`AnalysisStep`), `OnboardingAnalysis`, `OnboardingShell` | **APPROVED — VISUALLY LOCKED** (exit route superseded — see flow) |
 
 ---
 
-## Spec-locked screens (screenshots pending)
+## Growth Plan / Launch Plan (Phase 3 — awaiting visual approval)
 
-| # | Screen | Route | Spec | Status |
-|---|--------|-------|------|--------|
-| 6 | Growth Plan / Launch Plan | `/growth-plan` (`?site=existing` \| `?site=new`) | `docs/GROWTH_PLAN_SPEC.md` | **SPEC LOCKED — Phase 2** · awaiting Phase 3 build + screenshot approval |
-| 7 | Main Workspace | TBD after Growth Plan approval | Pending | **NOT LOCKED** — do not rebuild until Growth Plan approved |
+| # | Screen | Route | Spec / impl | Status |
+|---|--------|-------|-------------|--------|
+| 6a | Growth Plan (existing) | `/growth-plan?site=existing` | Spec + `rankaura-web` | **IMPLEMENTED — AWAITING SCREENSHOT APPROVAL** |
+| 6b | Launch Plan (new) | `/growth-plan?site=new` | Spec + `rankaura-web` | **IMPLEMENTED — AWAITING SCREENSHOT APPROVAL** |
+| 7 | Main Workspace | TBD | Pending | **NOT STARTED** — do not rebuild until Growth Plan approved |
+
+### Phase 3 screenshot set
+
+| File | Contents |
+|------|----------|
+| `docs/ui-reference/growth-plan/07-growth-plan-existing-desktop.png` | Existing-site Growth Plan — desktop |
+| `docs/ui-reference/growth-plan/08-launch-plan-new-desktop.png` | Brand-new-site Launch Plan — desktop |
+| `docs/ui-reference/growth-plan/09-growth-plan-existing-mobile.png` | Existing-site Growth Plan — mobile |
+| `docs/ui-reference/growth-plan/10-launch-plan-new-mobile.png` | Brand-new-site Launch Plan — mobile |
+| `docs/ui-reference/growth-plan/11-categories-collapsed.png` | Collapsed category system (full page) |
+| `docs/ui-reference/growth-plan/11b-featured-categories-collapsed-viewport.png` | Featured categories viewport |
+| `docs/ui-reference/growth-plan/12-category-expanded-reddit.png` | Reddit & Community Research expanded |
+| `docs/ui-reference/growth-plan/12b-reddit-expanded-viewport.png` | Reddit expanded viewport |
+| `docs/ui-reference/growth-plan/13-category-expanded-your-action.png` | Website Health expanded with Your Action |
 
 ---
 
@@ -47,18 +63,7 @@ Growth Plan authority: `docs/GROWTH_PLAN_SPEC.md` (Phase 2 — structure/languag
 
 ### Still valid as visual reference only
 
-- Spacing  
-- Typography  
-- Card softness  
-- Layout quality  
-- Controlled blue accents  
-- Calm premium light composition  
-
-Do **not** preserve incorrect information architecture merely because it appears in the previous approved screenshot.
-
-### Theme note (Jonathan)
-
-Do not automatically convert Growth Plan or Workspace to a full dark navy dashboard. Preserve the calm light workspace for the first Growth Plan implementation. Dark navy may remain in navigation, branded accents, and selective premium moments.
+- Spacing · typography · card softness · layout quality · controlled blue accents · calm premium light composition  
 
 ---
 
@@ -74,7 +79,7 @@ Do not automatically convert Growth Plan or Workspace to a full dark navy dashbo
 
 **Hard rule:** No direct Analysis → legacy dashboard route.
 
-Analysis screen visuals remain locked; only the **post-analysis destination** changes (to Growth Plan / Launch Plan) once Phase 3 is approved.
+Production onboarding redirect to Growth Plan is **not** changed in Phase 3 (review via `/growth-plan` only). Connect after visual approval.
 
 ---
 
@@ -83,9 +88,7 @@ Analysis screen visuals remain locked; only the **post-analysis destination** ch
 | Screen | Classification |
 |--------|----------------|
 | Name (“What should we call you?”) | Not present in the current approved screenshot set |
-| Historical Growth Plan Summary / Launch CTA variants | Superseded by Growth Plan / Launch Plan page |
-| Growth Plan / Launch Plan screenshots | Pending Phase 3 |
-| Rebuilt Workspace screenshots | Pending later phase |
+| Rebuilt Workspace | Pending after Growth Plan approval |
 
 ---
 
@@ -94,7 +97,6 @@ Analysis screen visuals remain locked; only the **post-analysis destination** ch
 | Surface | Status |
 |---------|--------|
 | `rankaura/` HTML SPA prototype | Not production · not a visual reference |
-| Agent-generated prototype captures under `/opt/cursor/artifacts/rankaura-onboarding/` | Discard for visual lock decisions |
 
 ---
 

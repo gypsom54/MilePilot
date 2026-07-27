@@ -1,9 +1,10 @@
 # RankAura Growth Plan — Phase 2 Specification
 
-**Status:** PHASE 2 — SPECIFICATION ONLY (no production code)  
+**Status:** PHASE 2 SPEC APPROVED · PHASE 3 IMPLEMENTED (mock UI)  
 **Owner:** Jonathan  
-**Authority:** Phase 1 audit approved · final decisions in this document  
-**Related:** `docs/UI_BIBLE.md` · `docs/SCREEN_LOCK_STATUS.md` · `docs/PRODUCT_GUARDRAILS.md` · `docs/DASHBOARD_REBUILD_AUDIT.md`
+**Authority:** Phase 1 audit approved · Phase 2 docs approved · Phase 3 implementation in `rankaura-web/`  
+**Related:** `docs/UI_BIBLE.md` · `docs/SCREEN_LOCK_STATUS.md` · `docs/PRODUCT_GUARDRAILS.md` · `docs/DASHBOARD_REBUILD_AUDIT.md`  
+**Implementation:** `rankaura-web/app/growth-plan/page.tsx` · `rankaura-web/components/growth-plan/` · `rankaura-web/services/growthPlan/`
 
 ---
 
@@ -11,10 +12,20 @@
 
 Define the **Growth Plan** (existing site) and **Launch Plan** (brand-new site) as the primary post-analysis surface in RankAura.
 
-This document locks structure, hierarchy, data model, language, states, and handoff into the Workspace.  
-Phase 3 may implement only after Jonathan approves this specification.
+This document locks structure, hierarchy, data model, language, states, and handoff into the Workspace.
 
-**Do not code yet.**
+### Phase 3 approved implementation decisions (record only — do not weaken the lock)
+
+| Decision | Locked value |
+|----------|--------------|
+| Existing title | **Your Growth Plan is Ready** |
+| New title | **Your Launch Plan is Ready** |
+| Existing support | We analysed your business, website, market and competitors. Here is what we discovered and what happens next. |
+| New support | We analysed your business, market and competitors. We have prepared the foundations for your online growth. |
+| Review routes | `/growth-plan?site=existing` · `/growth-plan?site=new` · optional `?expand=<categoryId>` |
+| Continue to Workspace | Temporarily links to `/` until Workspace rebuild is approved |
+| Visual system | Calm light canvas retained; no dark navy conversion |
+| Category fields | Includes `summary`, `count`, `yourAction`, `primaryAction` as implemented |
 
 ---
 
@@ -275,9 +286,9 @@ Each definition is customer-facing intent, not SEO jargon.
 
 | Element | Spec |
 |---------|------|
-| Title | **Growth Plan** or **Launch Plan** |
+| Title | **Your Growth Plan is Ready** (existing) or **Your Launch Plan is Ready** (new) |
 | Optional eyebrow | Business name (calm, secondary) |
-| Optional support | One short line that this is Aura’s plan after learning about the business — not a scorecard |
+| Support | Exact Phase 3 approved support copy (see Phase 3 decisions table) |
 | Visual | Light canvas; no dark full-bleed takeover |
 
 ### 8.2 Calm analysis confirmation
@@ -568,26 +579,24 @@ See `docs/SCREEN_LOCK_STATUS.md` for lock register updates.
 
 ## 21. Phase boundaries
 
-### Phase 2 (this document) — DONE when approved
+### Phase 2 — APPROVED
 
-- Specification and documentation only
-- No production routes, components, or theme conversion
+- Specification and documentation complete
 
-### Phase 3 (after approval) — preview only
+### Phase 3 — IMPLEMENTED (awaiting screenshot approval)
 
-- Implement Growth Plan / Launch Plan with mock data
+- Growth Plan / Launch Plan with deterministic mock data
 - Dev switches: `?site=existing` / `?site=new`
-- Screenshot desktop + mobile (existing, new, collapsed category, expanded category)
-- Stop again for approval before Workspace rebuild
+- Screenshots captured under `docs/ui-reference/growth-plan/`
+- Stop for Jonathan approval before Workspace rebuild
 
-### Explicitly out of Phase 2
+### Explicitly out of Phase 3
 
-- Modify production routes  
-- Rebuild dashboard components  
-- Implement category cards in code  
-- Change onboarding code  
-- Build the Growth Plan page  
-- Replace the visual theme  
+- Rebuild main Workspace / replace `/` Mission dashboard IA  
+- Live SEO APIs / real scanning  
+- Authentication changes  
+- Full dark-theme conversion  
+- Production onboarding redirect change (optional later; not required for review)
 
 ---
 

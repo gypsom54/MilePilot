@@ -235,19 +235,22 @@ Historical screenshot copy (for archaeology only — not to rebuild):
 
 ---
 
-## 7. Growth Plan / Launch Plan (SPEC LOCKED — screenshots pending)
+## 7. Growth Plan / Launch Plan (IMPLEMENTED — awaiting screenshot approval)
 
 | Field | Spec |
 |-------|------|
-| **Status** | **SPEC LOCKED** (Phase 2) · not yet screenshot-approved |
+| **Status** | **IMPLEMENTED** (Phase 3) · screenshots captured · awaiting Jonathan visual approval |
 | **Spec** | `docs/GROWTH_PLAN_SPEC.md` |
-| **Route (planned)** | `/growth-plan` · review: `?site=existing` \| `?site=new` |
+| **Route** | `/growth-plan` · `?site=existing` \| `?site=new` · optional `?expand=<categoryId>` |
+| **App** | `rankaura-web/app/growth-plan/page.tsx` |
+| **Components** | `GrowthPlanPage`, `GrowthPlanHeader`, `AnalysisConfirmation`, `PrimaryOpportunityCard`, `WhatHappensNext`, `FeaturedCategories`, `CategoryList`, `GrowthCategoryCard`, `CategoryExpandedContent`, `ContinueToWorkspace` |
 | **Purpose** | Most important post-analysis page; confirm understanding; one primary opportunity; relevance-ordered categories; continue to Workspace |
+| **Exact titles** | Existing: **Your Growth Plan is Ready** · New: **Your Launch Plan is Ready** |
 | **Page hierarchy** | Header → analysis confirmation → primary opportunity → What happens next → featured categories → remaining categories → Continue to Workspace |
-| **Categories** | All 13 locked RankAura growth categories; relevance-ordered; Reddit & Community Research first-class |
+| **Categories** | All 13 locked; relevance-ordered; Reddit & Community Research first-class |
 | **Visual** | Calm light workspace + premium blue/navy accents; not a dark SaaS conversion |
-| **Locked elements (structure/language)** | Hierarchy, site-state model, category system, status labels, banned Mission language — per Growth Plan spec |
-| **Not locked yet** | Final pixel design until Phase 3 screenshots are approved |
+| **Screenshots** | `docs/ui-reference/growth-plan/07-*.png` … `13-*.png` |
+| **Handoff** | Continue to Workspace → `/` temporarily (future Workspace rebuild) |
 
 ---
 
@@ -256,7 +259,6 @@ Historical screenshot copy (for archaeology only — not to rebuild):
 | Screen | Classification |
 |--------|----------------|
 | Name (“What should we call you?”) | Not present in the current approved screenshot set |
-| Growth Plan / Launch Plan | Spec locked; screenshots pending Phase 3 |
 | Main Workspace (rebuilt IA) | Pending after Growth Plan approval |
 
 ---
@@ -272,7 +274,8 @@ Allowed without new approval:
 Not allowed without written approval:
 - New colours, fonts, or a full dark-theme conversion
 - Rewriting locked onboarding copy
-- Reordering approved onboarding steps (except Analysis **exit** destination → Growth Plan, once Phase 3 is approved)
+- Reordering approved onboarding steps (except Analysis **exit** destination → Growth Plan, once approved)
 - Reintroducing Mission IA because it appears in `06-dashboard.png`
 - Replacing React/Next UI with the HTML prototype look
-- Building Growth Plan before Phase 2 spec approval (this version awaits Jonathan review)
+- Rebuilding the main Workspace before Growth Plan visual approval
+- Changing Growth Plan hierarchy or category system without updating the spec first
