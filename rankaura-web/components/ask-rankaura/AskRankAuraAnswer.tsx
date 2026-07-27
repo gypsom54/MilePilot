@@ -27,7 +27,7 @@ export function AskRankAuraAnswerPanel({
   );
 
   return (
-    <div className="mt-5 border-t border-ra-border pt-5" aria-live="polite">
+    <div className="mt-5" aria-live="polite">
       <p className="text-xs font-medium text-ra-muted">You asked</p>
       <h3
         ref={headingRef}
@@ -38,7 +38,7 @@ export function AskRankAuraAnswerPanel({
         {answer.questionText}
       </h3>
 
-      <p className="mt-4 text-base font-normal leading-relaxed text-ra-ink sm:text-lg">
+      <p className="mt-4 text-sm font-normal leading-relaxed text-ra-ink-soft sm:text-base">
         {answer.directAnswer}
       </p>
 

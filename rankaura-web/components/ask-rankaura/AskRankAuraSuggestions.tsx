@@ -1,6 +1,6 @@
 "use client";
 
-import { QuestionChip } from "@/components/ui/QuestionChip";
+import { ButtonSecondary } from "@/components/ui/ButtonSecondary";
 import type { AskRankAuraSuggestedQuestion } from "@/types/askRankAura";
 
 interface AskRankAuraSuggestionsProps {
@@ -8,6 +8,7 @@ interface AskRankAuraSuggestionsProps {
   onSelect: (text: string) => void;
 }
 
+/** Suggested questions reuse THE outlined secondary button — no Ask-only control. */
 export function AskRankAuraSuggestions({
   suggestions,
   onSelect,
@@ -21,9 +22,13 @@ export function AskRankAuraSuggestions({
       <ul className="mt-2.5 grid gap-2 sm:grid-cols-2">
         {items.map((suggestion) => (
           <li key={suggestion.id}>
-            <QuestionChip onClick={() => onSelect(suggestion.text)}>
+            <ButtonSecondary
+              type="button"
+              onClick={() => onSelect(suggestion.text)}
+              className="h-auto min-h-ra-control w-full justify-start text-left whitespace-normal"
+            >
               {suggestion.text}
-            </QuestionChip>
+            </ButtonSecondary>
           </li>
         ))}
       </ul>

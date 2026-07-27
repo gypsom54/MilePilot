@@ -59,11 +59,11 @@ export function AskRankAuraCard({ data }: AskRankAuraCardProps) {
     >
       <h2
         id="ask-rankaura-heading"
-        className="text-lg font-semibold tracking-tight text-ra-ink sm:text-xl"
+        className="text-lg font-semibold text-ra-ink"
       >
         {data.card.heading}
       </h2>
-      <p className="mt-1.5 text-sm font-normal text-ra-muted">
+      <p className="mt-2 text-sm font-normal text-ra-muted">
         {data.card.support}
       </p>
 

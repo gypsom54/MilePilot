@@ -1,9 +1,15 @@
 import type { ButtonHTMLAttributes, ReactNode } from "react";
+import {
+  ButtonSecondary,
+  BUTTON_SECONDARY_CLASSNAME,
+} from "@/components/ui/ButtonSecondary";
 import { cn } from "@/utils/cn";
 
-/** THE one question button. Not a badge. Not a pill. */
-export const QUESTION_BUTTON_CLASSNAME =
-  "min-h-[44px] w-full rounded-ra-lg border border-ra-border bg-ra-surface px-3.5 py-2.5 text-left text-sm font-medium leading-snug text-ra-ink transition-colors duration-150 hover:border-ra-border-strong hover:bg-ra-surface-subtle active:border-ra-border-strong active:bg-ra-neutral-soft focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ra-focus";
+/**
+ * Suggested-question control = THE outlined secondary button.
+ * Layout-only helpers for full-width multi-line labels. No unique chrome.
+ */
+export const QUESTION_BUTTON_CLASSNAME = BUTTON_SECONDARY_CLASSNAME;
 
 interface QuestionChipProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
@@ -17,13 +23,16 @@ export function QuestionChip({
   ...props
 }: QuestionChipProps) {
   return (
-    <button
+    <ButtonSecondary
       type={type}
-      className={cn(QUESTION_BUTTON_CLASSNAME, className)}
+      className={cn(
+        "h-auto min-h-ra-control w-full justify-start text-left whitespace-normal",
+        className,
+      )}
       {...props}
     >
       {children}
-    </button>
+    </ButtonSecondary>
   );
 }
 

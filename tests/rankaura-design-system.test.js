@@ -1,5 +1,5 @@
 /**
- * Design system contract — tokens and reusable UI components exist.
+ * Design system contract — Ask must reuse Workspace shared controls only.
  */
 const assert = require("assert");
 const fs = require("fs");
@@ -15,16 +15,19 @@ const globals = fs.readFileSync(
   "utf8",
 );
 const uiDir = path.join(root, "rankaura-web", "components", "ui");
-const askInput = fs.readFileSync(
-  path.join(
-    root,
-    "rankaura-web",
-    "components",
-    "ask-rankaura",
-    "AskRankAuraInput.tsx",
-  ),
+const askDir = path.join(root, "rankaura-web", "components", "ask-rankaura");
+const askInput = fs.readFileSync(path.join(askDir, "AskRankAuraInput.tsx"), "utf8");
+const askCard = fs.readFileSync(path.join(askDir, "AskRankAuraCard.tsx"), "utf8");
+const askSuggestions = fs.readFileSync(
+  path.join(askDir, "AskRankAuraSuggestions.tsx"),
   "utf8",
 );
+const askAnswer = fs.readFileSync(path.join(askDir, "AskRankAuraAnswer.tsx"), "utf8");
+const askSource = fs.readFileSync(
+  path.join(askDir, "AskRankAuraSourceNotice.tsx"),
+  "utf8",
+);
+const questionChip = fs.readFileSync(path.join(uiDir, "QuestionChip.tsx"), "utf8");
 const mock = fs.readFileSync(
   path.join(
     root,
@@ -57,11 +60,39 @@ assert.ok(fs.existsSync(path.join(uiDir, "RecommendationCard.tsx")));
 assert.ok(fs.existsSync(path.join(uiDir, "SuccessMark.tsx")));
 assert.ok(!askInput.includes("min-w-ra-ask"));
 assert.ok(!askInput.includes("min-w-["));
-assert.ok(!fs.readFileSync(path.join(root, "rankaura-web", "components", "ask-rankaura", "AskRankAuraCard.tsx"), "utf8").includes("accent"));
-assert.ok(fs.readFileSync(path.join(uiDir, "ButtonPrimary.tsx"), "utf8").includes("BUTTON_PRIMARY_CLASSNAME"));
-assert.ok(fs.readFileSync(path.join(uiDir, "SurfaceCard.tsx"), "utf8").includes("SURFACE_CARD_CLASSNAME"));
-assert.ok(!fs.readFileSync(path.join(uiDir, "SurfaceCard.tsx"), "utf8").includes("ra-card-accent"));
-assert.ok(!fs.readFileSync(path.join(uiDir, "SurfaceCard.tsx"), "utf8").includes("accent?:"));
+assert.ok(!askCard.includes("accent"));
+assert.ok(!askCard.includes("tracking-tight"));
+assert.ok(!askCard.includes("sm:text-xl"));
+assert.ok(askCard.includes("text-lg font-semibold text-ra-ink"));
+assert.ok(askCard.includes("SurfaceCard"));
+assert.ok(askSuggestions.includes("ButtonSecondary"));
+assert.ok(!askSuggestions.includes("QuestionChip"));
+assert.ok(!askAnswer.includes("border-t"));
+assert.ok(!askSource.includes("rounded-ra-md border"));
+assert.ok(!askSource.includes("bg-ra-neutral-soft"));
+assert.ok(questionChip.includes("ButtonSecondary"));
+assert.ok(questionChip.includes("BUTTON_SECONDARY_CLASSNAME"));
+assert.ok(!questionChip.includes("rounded-ra-lg"));
+assert.ok(
+  fs
+    .readFileSync(path.join(uiDir, "ButtonPrimary.tsx"), "utf8")
+    .includes("BUTTON_PRIMARY_CLASSNAME"),
+);
+assert.ok(
+  fs
+    .readFileSync(path.join(uiDir, "SurfaceCard.tsx"), "utf8")
+    .includes("SURFACE_CARD_CLASSNAME"),
+);
+assert.ok(
+  !fs
+    .readFileSync(path.join(uiDir, "SurfaceCard.tsx"), "utf8")
+    .includes("ra-card-accent"),
+);
+assert.ok(
+  !fs
+    .readFileSync(path.join(uiDir, "SurfaceCard.tsx"), "utf8")
+    .includes("accent?:"),
+);
 assert.ok(!globals.includes("--ra-border-accent"));
 assert.ok(
   !fs

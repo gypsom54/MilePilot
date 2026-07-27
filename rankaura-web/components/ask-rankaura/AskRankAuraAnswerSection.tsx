@@ -10,7 +10,7 @@ export function AskRankAuraAnswerSectionView({
 }: AskRankAuraAnswerSectionProps) {
   return (
     <div>
-      <h4 className="text-[11px] font-medium tracking-[0.1em] text-ra-muted">
+      <h4 className="text-[11px] font-medium tracking-[0.08em] text-ra-muted">
         {section.title.toUpperCase()}
       </h4>
       <p className="mt-1.5 text-sm font-normal leading-relaxed text-ra-ink-soft">

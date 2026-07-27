@@ -6,6 +6,7 @@ interface AskRankAuraSourceNoticeProps {
   availabilityNotice?: string;
 }
 
+/** Plain muted copy — same typography as Workspace support lines. No unique box. */
 export function AskRankAuraSourceNotice({
   sources,
   availabilityNotice,
@@ -22,15 +23,18 @@ export function AskRankAuraSourceNotice({
     : null;
 
   return (
-    <div
-      className="rounded-ra-md border border-ra-border bg-ra-neutral-soft px-3.5 py-3"
-      role="status"
-    >
+    <div role="status">
       {label ? (
         <p className="text-xs font-medium text-ra-muted">{label}</p>
       ) : null}
       {availabilityNotice ? (
-        <p className="mt-1 text-sm font-normal leading-relaxed text-ra-ink-soft">
+        <p
+          className={
+            label
+              ? "mt-1 text-sm font-normal text-ra-muted"
+              : "text-sm font-normal text-ra-muted"
+          }
+        >
           {availabilityNotice}
         </p>
       ) : null}

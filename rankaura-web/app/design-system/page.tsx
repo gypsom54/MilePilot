@@ -70,12 +70,17 @@ export default function DesignSystemPage() {
         </SurfaceCard>
 
         <SurfaceCard data-testid="ds-questions">
-          <h2 className="text-base font-semibold">Question controls</h2>
+          <h2 className="text-base font-semibold">
+            Suggested questions (= ButtonSecondary)
+          </h2>
           <ul className="mt-4 grid gap-2 sm:grid-cols-2">
             <li>
-              <QuestionChip type="button">
+              <ButtonSecondary
+                type="button"
+                className="h-auto min-h-ra-control w-full justify-start text-left whitespace-normal"
+              >
                 What is my biggest opportunity today?
-              </QuestionChip>
+              </ButtonSecondary>
             </li>
             <li>
               <QuestionChip type="button">

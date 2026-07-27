@@ -13,7 +13,7 @@
 
 2. **Every button, badge, input and interactive control must come from the shared RankAura component system.**
 
-3. **One Primary Button. One Secondary Button. One Badge. One Input. One Question Button. One Card. Reuse them everywhere. No Ask RankAura exceptions.**
+3. **One Primary Button. One Secondary (outlined) Button. One Badge. One Input. One Card. Reuse them everywhere. No Ask RankAura exceptions. Suggested questions use ButtonSecondary — not a unique pill.**
 
 4. Borders provide most of the structure. Shadows stay minimal.
 
@@ -71,7 +71,7 @@
 |-------|-------|--------|
 | `--ra-radius-sm` | `8px` | Compact badges may still use pill |
 | `--ra-radius-md` | `12px` | Buttons, inputs |
-| `--ra-radius-lg` | `14px` | Question buttons |
+| `--ra-radius-lg` | `14px` | Reserved (do not invent Ask-only uses) |
 | `--ra-radius-xl` | `16px` | Primary cards |
 | `--ra-radius-full` | `9999px` | Status badges only |
 
@@ -110,12 +110,11 @@ White, visible border, no default shadow, dark text, placeholder token.
 Hover: stronger border. Focus: focus border + ring. Disabled: subtle fill + muted text.
 
 ### QuestionButton / QuestionChip
-Rounded rectangle (lg), visible border, medium weight, white surface.  
-Hover/pressed: stronger border + subtle fill. Comfortable touch target. Not a status pill.
+**Alias of ButtonSecondary** (the outlined button). Same height, radius, border, typography, hover, focus, disabled. Layout-only helpers allowed (`w-full`, `text-left`) for multi-line suggested questions. Not a separate visual style.
 
 ### Card / SurfaceCard
 White, standard border, xl radius, shared shadow, consistent padding (`p-5 sm:p-6`).  
-Ask RankAura, Biggest Opportunity, Recent Wins, Growth Areas, and Recent Progress all use this same card. No accent variants.
+Ask RankAura, Biggest Opportunity, Recent Wins, Growth Areas, and Recent Progress all use this same card. No accent variants. No Ask-only borders, dividers, or callout boxes.
 
 ---
 
@@ -127,13 +126,17 @@ Focus-visible must be strong enough for keyboard users (2px outline + offset usi
 
 ---
 
-## Ask RankAura specifics
+## Ask RankAura compliance
 
 - Placeholder: **Ask about your business…**
-- Empty input → Ask button uses intentional **disabled** tokens
-- Valid input → Ask button switches to solid primary black immediately
+- Empty input → Ask button uses intentional **disabled** tokens (`ButtonPrimary`)
+- Valid input → Ask button switches to solid primary black immediately (`ButtonPrimary`)
+- Suggested questions → `ButtonSecondary` (same outlined button as View Progress / Open Strategy)
+- Card → shared `SurfaceCard` (same border, radius, shadow, padding as peer Workspace cards)
+- Section heading → same as Since last visit / Recent progress (`text-lg font-semibold text-ra-ink`)
 - Desktop: input + Ask side by side, equal height
 - Mobile: stacked full-width controls
+- **Zero Ask-specific visual styles** (no unique borders, callout boxes, radii, or typography)
 
 ---
 

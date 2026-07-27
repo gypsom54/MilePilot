@@ -51,7 +51,6 @@ See `docs/DESIGN_SYSTEM.md` for full component documentation.
 | Token | Value | Usage |
 |-------|-------|--------|
 | `--ra-radius-md` | `12px` | Buttons, inputs |
-| `--ra-radius-lg` | `14px` | Question buttons |
 | `--ra-radius-xl` | `16px` | Cards |
 | `--ra-radius-full` | `9999px` | Status badges only |
 
@@ -70,7 +69,7 @@ Inputs / badges / chips: no default shadow.
 
 ## Components
 
-`ButtonPrimary` · `ButtonSecondary` · `ButtonGhost` · `Badge` · `Input` · `QuestionChip` / `QuestionButton` · `SurfaceCard` / `Card` · `TimelineItem` · `GrowthCard` · `RecommendationCard` · `SuccessMark`
+`ButtonPrimary` · `ButtonSecondary` (also used for suggested questions / `QuestionChip` alias) · `ButtonGhost` · `Badge` · `Input` · `SurfaceCard` / `Card` · `TimelineItem` · `GrowthCard` · `RecommendationCard` · `SuccessMark`
 
 Ask placeholder: **Ask about your business…**
 
