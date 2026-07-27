@@ -1,3 +1,5 @@
+import { ButtonPrimary } from "@/components/ui/ButtonPrimary";
+import { SurfaceCard } from "@/components/ui/SurfaceCard";
 import type { PrimaryOpportunity } from "@/types/growthPlan";
 
 interface PrimaryOpportunityCardProps {
@@ -8,28 +10,25 @@ export function PrimaryOpportunityCard({
   opportunity,
 }: PrimaryOpportunityCardProps) {
   return (
-    <section
+    <SurfaceCard
       aria-labelledby="primary-opportunity-heading"
-      className="rounded-2xl bg-white p-6 shadow-[0_1px_2px_rgba(15,23,42,0.04)] sm:p-8"
+      className="sm:p-8"
     >
-      <p className="text-[11px] font-semibold tracking-[0.14em] text-[#5b8def]">
+      <p className="text-[11px] font-semibold tracking-[0.14em] text-ra-accent">
         WHERE WE&apos;LL START
       </p>
       <h2
         id="primary-opportunity-heading"
-        className="mt-3 text-xl font-semibold tracking-tight text-[#080f1a] sm:text-2xl"
+        className="mt-3 text-xl font-semibold tracking-tight text-ra-ink sm:text-2xl"
       >
         {opportunity.title}
       </h2>
-      <p className="mt-3 max-w-2xl text-base leading-relaxed text-[#8b95a5]">
+      <p className="mt-3 max-w-2xl text-base font-normal leading-relaxed text-ra-muted">
         {opportunity.support}
       </p>
-      <button
-        type="button"
-        className="mt-6 inline-flex h-11 items-center justify-center rounded-full bg-[#080f1a] px-6 text-sm font-semibold text-white transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5b8def]"
-      >
-        {opportunity.actionLabel}
-      </button>
-    </section>
+      <div className="mt-6">
+        <ButtonPrimary type="button">{opportunity.actionLabel}</ButtonPrimary>
+      </div>
+    </SurfaceCard>
   );
 }

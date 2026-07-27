@@ -1,3 +1,5 @@
+import { ButtonPrimary } from "@/components/ui/ButtonPrimary";
+import { ButtonSecondary } from "@/components/ui/ButtonSecondary";
 import type { GrowthCategory } from "@/types/growthPlan";
 
 interface CategoryExpandedContentProps {
@@ -57,21 +59,13 @@ export function CategoryExpandedContent({
             {category.yourAction}
           </p>
           {category.primaryAction ? (
-            <button
-              type="button"
-              className="mt-3 inline-flex h-10 items-center justify-center rounded-full bg-[#080f1a] px-5 text-sm font-semibold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5b8def]"
-            >
-              {category.primaryAction}
-            </button>
+            <div className="mt-3">
+              <ButtonPrimary type="button">{category.primaryAction}</ButtonPrimary>
+            </div>
           ) : null}
         </div>
       ) : category.primaryAction ? (
-        <button
-          type="button"
-          className="inline-flex h-10 items-center justify-center rounded-full border border-[#e5e7eb] bg-white px-5 text-sm font-semibold text-[#080f1a] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5b8def]"
-        >
-          {category.primaryAction}
-        </button>
+        <ButtonSecondary type="button">{category.primaryAction}</ButtonSecondary>
       ) : null}
     </div>
   );

@@ -39,9 +39,10 @@ const mock = fs.readFileSync(
 assert.ok(tokens.includes("--ra-ink") || tokens.includes("`#0B0F19`"));
 assert.ok(tokens.includes("ButtonPrimary"));
 assert.ok(tokens.includes("Ask about your business"));
-assert.ok(globals.includes("--ra-ink"));
-assert.ok(globals.includes("--ra-shadow"));
-assert.ok(globals.includes("--ra-border"));
+assert.ok(globals.includes("--ra-disabled-bg"));
+assert.ok(globals.includes("--ra-border-strong"));
+assert.ok(globals.includes("--ra-border-accent"));
+assert.ok(fs.existsSync(path.join(root, "docs", "DESIGN_SYSTEM.md")));
 assert.ok(fs.existsSync(path.join(uiDir, "ButtonPrimary.tsx")));
 assert.ok(fs.existsSync(path.join(uiDir, "ButtonSecondary.tsx")));
 assert.ok(fs.existsSync(path.join(uiDir, "ButtonGhost.tsx")));

@@ -1,5 +1,6 @@
 "use client";
 
+import { ButtonPrimary } from "@/components/ui/ButtonPrimary";
 import { cn } from "@/utils/cn";
 
 interface OnboardingInputProps {
@@ -91,17 +92,16 @@ export function OnboardingPrimaryButton({
   className,
 }: OnboardingPrimaryButtonProps) {
   return (
-    <button
+    <ButtonPrimary
       type="button"
       onClick={onClick}
       disabled={disabled}
       className={cn(
-        "mt-auto inline-flex h-12 w-full items-center justify-center rounded-full bg-[#080f1a] px-6 text-sm font-semibold text-white transition-opacity sm:mt-14 sm:w-auto",
-        disabled && "cursor-not-allowed opacity-40",
+        "mt-auto h-12 w-full rounded-full sm:mt-14 sm:w-auto",
         className,
       )}
     >
       {children}
-    </button>
+    </ButtonPrimary>
   );
 }

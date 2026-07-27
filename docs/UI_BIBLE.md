@@ -6,7 +6,7 @@
 **Product owner:** Jonathan  
 **Growth Plan spec:** `docs/GROWTH_PLAN_SPEC.md`  
 **Ask RankAura spec:** `docs/ASK_RANKAURA_SPEC.md`  
-**Design tokens:** `docs/DESIGN_TOKENS.md`
+**Design tokens:** `docs/DESIGN_TOKENS.md` · `docs/DESIGN_SYSTEM.md`
 
 ---
 

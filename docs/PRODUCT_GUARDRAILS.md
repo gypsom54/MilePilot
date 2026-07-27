@@ -2,7 +2,7 @@
 
 **Status:** FINAL AUTHORITY for future development  
 **Owner:** Jonathan  
-**Related locks:** `docs/UI_BIBLE.md` · `docs/SCREEN_LOCK_STATUS.md` · `docs/GROWTH_PLAN_SPEC.md` · `docs/WORKSPACE_SPEC.md` · `docs/ASK_RANKAURA_SPEC.md` · `docs/DESIGN_TOKENS.md` · `docs/ui-reference/` · `rankaura/docs/PRODUCT_VISION.md`
+**Related locks:** `docs/UI_BIBLE.md` · `docs/SCREEN_LOCK_STATUS.md` · `docs/GROWTH_PLAN_SPEC.md` · `docs/WORKSPACE_SPEC.md` · `docs/ASK_RANKAURA_SPEC.md` · `docs/DESIGN_TOKENS.md` · `docs/DESIGN_SYSTEM.md` · `docs/ui-reference/` · `rankaura/docs/PRODUCT_VISION.md`
 
 This document governs every future RankAura change.  
 If a proposal conflicts with these guardrails, the proposal loses.
@@ -67,12 +67,15 @@ Ask RankAura is a **permanent core feature**, not a secondary chatbot or support
 
 ## Design system (LOCKED)
 
-Official tokens and reusable controls live in `docs/DESIGN_TOKENS.md` and `rankaura-web/components/ui/`.
+Official tokens and reusable controls live in `docs/DESIGN_SYSTEM.md`, `docs/DESIGN_TOKENS.md`, and `rankaura-web/components/ui/`.
 
-1. Every new screen must reuse design tokens — do not invent one-off greys, radii, shadows, or button styles.
-2. Primary actions share one solid ink button (`ButtonPrimary`). Secondary actions use bordered white (`ButtonSecondary`). Text actions use accent links (`ButtonGhost`).
-3. Badges share one anatomy; only colour changes by status.
-4. Ask RankAura input uses white surface, clear border, premium shadow, and placeholder **Ask about your business…**
+1. **Calm does not mean visually weak. RankAura components must remain restrained while still being clearly defined, interactive and intentional.**
+2. **Every button, badge, input and interactive control must come from the shared RankAura component system.**
+3. Every new screen must reuse design tokens — do not invent one-off greys, radii, shadows, or button styles.
+4. Primary actions share one solid ink button (`ButtonPrimary`) with an intentional disabled state (`--ra-disabled-bg` / `--ra-disabled-fg`). Secondary actions use bordered white (`ButtonSecondary`). Text actions use accent links (`ButtonGhost`).
+5. Badges share one anatomy; tinted fill + clearly visible matching border + stronger text.
+6. Ask RankAura input uses white surface, clear border, and placeholder **Ask about your business…**
+7. Borders must be subtle but clearly visible (`--ra-border`); interactive hover uses `--ra-border-strong`.
 
 ## First-use flow (LOCKED)
 

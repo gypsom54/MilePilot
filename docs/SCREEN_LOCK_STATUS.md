@@ -7,8 +7,26 @@ Screenshot authority: `docs/ui-reference/` + `docs/UI_BIBLE.md`
 Growth Plan authority: `docs/GROWTH_PLAN_SPEC.md`  
 Workspace authority: `docs/WORKSPACE_SPEC.md`  
 Ask RankAura authority: `docs/ASK_RANKAURA_SPEC.md`  
-Design system authority: `docs/DESIGN_TOKENS.md`  
+Design system authority: `docs/DESIGN_SYSTEM.md` · `docs/DESIGN_TOKENS.md`  
 Phase 3/4 implementation: `rankaura-web/app/growth-plan/` · `rankaura-web/app/workspace/`
+
+---
+
+## Visual consistency screenshots
+
+| File | Contents |
+|------|----------|
+| `docs/ui-reference/visual-consistency/01-ask-desktop-empty-disabled.png` | Ask desktop — empty / disabled |
+| `docs/ui-reference/visual-consistency/02-ask-desktop-enabled.png` | Ask desktop — enabled primary |
+| `docs/ui-reference/visual-consistency/03-ask-mobile-enabled.png` | Ask mobile — enabled primary |
+| `docs/ui-reference/visual-consistency/04-suggested-questions-desktop.png` | Suggested questions — desktop |
+| `docs/ui-reference/visual-consistency/05-suggested-questions-mobile.png` | Suggested questions — mobile |
+| `docs/ui-reference/visual-consistency/06-badge-variants.png` | Badge variants |
+| `docs/ui-reference/visual-consistency/07-action-variants.png` | Primary / secondary / text actions |
+| `docs/ui-reference/visual-consistency/08-input-states.png` | Input states |
+| `docs/ui-reference/visual-consistency/09-growth-area-cards.png` | Growth Area cards |
+| `docs/ui-reference/visual-consistency/10-workspace-desktop.png` | Full Workspace desktop |
+| `docs/ui-reference/visual-consistency/11-workspace-mobile.png` | Full Workspace mobile |
 
 ---
 

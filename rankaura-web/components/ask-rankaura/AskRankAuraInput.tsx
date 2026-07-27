@@ -18,12 +18,14 @@ export function AskRankAuraInput({
   placeholder,
   disabled = false,
 }: AskRankAuraInputProps) {
+  const canSubmit = Boolean(value.trim()) && !disabled;
+
   return (
     <form
       className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center"
       onSubmit={(event) => {
         event.preventDefault();
-        if (!value.trim() || disabled) return;
+        if (!canSubmit) return;
         onSubmit();
       }}
     >
@@ -38,12 +40,12 @@ export function AskRankAuraInput({
         placeholder={placeholder}
         disabled={disabled}
         autoComplete="off"
-        className="flex-1"
+        className="min-w-0 flex-1"
       />
       <ButtonPrimary
         type="submit"
-        className="shrink-0"
-        aria-disabled={!value.trim() || disabled || undefined}
+        disabled={!canSubmit}
+        className="w-full shrink-0 sm:w-auto sm:min-w-ra-ask"
       >
         Ask
       </ButtonPrimary>

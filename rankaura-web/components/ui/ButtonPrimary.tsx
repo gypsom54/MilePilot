@@ -3,7 +3,7 @@ import type { ButtonHTMLAttributes, ReactNode } from "react";
 import { cn } from "@/utils/cn";
 
 const primaryClassName =
-  "inline-flex h-ra-control items-center justify-center rounded-ra-md bg-ra-ink px-5 text-sm font-semibold text-white transition-[background-color,transform,opacity] duration-150 hover:bg-[#161c28] hover:scale-[1.01] active:scale-[0.99] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ra-focus disabled:pointer-events-none disabled:opacity-40 motion-reduce:transition-none motion-reduce:hover:scale-100";
+  "inline-flex h-ra-control min-w-ra-ask items-center justify-center rounded-ra-md bg-ra-primary px-5 text-sm font-semibold text-ra-primary-fg transition-[background-color,transform,box-shadow] duration-150 hover:bg-ra-primary-hover active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ra-focus disabled:pointer-events-none disabled:bg-ra-disabled-bg disabled:text-ra-disabled-fg disabled:shadow-none motion-reduce:transition-none";
 
 interface ButtonPrimaryProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;

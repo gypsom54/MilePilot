@@ -6,6 +6,7 @@ interface QuestionChipProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
 }
 
+/** Question button — clickable control, not a status badge. */
 export function QuestionChip({
   children,
   className,
@@ -16,7 +17,7 @@ export function QuestionChip({
     <button
       type={type}
       className={cn(
-        "w-full rounded-ra-md border border-ra-border bg-ra-surface px-3.5 py-2.5 text-left text-sm font-normal leading-snug text-ra-ink shadow-ra transition-colors duration-150 hover:border-ra-border-strong hover:bg-ra-neutral-soft focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ra-focus",
+        "min-h-[44px] w-full rounded-ra-lg border border-ra-border bg-ra-surface px-3.5 py-2.5 text-left text-sm font-medium leading-snug text-ra-ink transition-colors duration-150 hover:border-ra-border-strong hover:bg-ra-surface-subtle active:border-ra-border-strong active:bg-ra-neutral-soft focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ra-focus",
         className,
       )}
       {...props}
@@ -25,3 +26,6 @@ export function QuestionChip({
     </button>
   );
 }
+
+/** Alias matching design-system naming. */
+export const QuestionButton = QuestionChip;

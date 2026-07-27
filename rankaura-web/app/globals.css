@@ -3,34 +3,59 @@
 @tailwind utilities;
 
 :root {
-  /* Colour */
+  /* Primary */
+  --ra-primary: #0b0f19;
   --ra-ink: #0b0f19;
-  --ra-ink-soft: #3d4654;
-  --ra-muted: #8b95a5;
-  --ra-canvas: #f3f5f7;
+  --ra-primary-fg: #ffffff;
+  --ra-primary-hover: #161c28;
+
+  /* Surfaces */
   --ra-surface: #ffffff;
-  --ra-border: #d8dee7;
-  --ra-border-strong: #b8c0cc;
+  --ra-surface-subtle: #f7f8fa;
+  --ra-canvas: #f3f5f7;
+
+  /* Text */
+  --ra-ink-soft: #3d4654;
+  --ra-muted: #6b7585;
+  --ra-placeholder: #8b95a5;
+
+  /* Borders — crisp but calm */
+  --ra-border: #c5cdd8;
+  --ra-border-strong: #9aa5b5;
+  --ra-border-accent: #b7c9ee;
+
+  /* Accent / focus */
   --ra-accent: #3b6fd4;
-  --ra-accent-soft: #eef3ff;
+  --ra-accent-soft: #eaf0ff;
   --ra-focus: #5b8def;
-  --ra-success: #1f8a62;
-  --ra-success-soft: #e8f8f1;
-  --ra-warning: #a16207;
-  --ra-warning-soft: #fff6e8;
-  --ra-info: #3b6fd4;
-  --ra-info-soft: #eef3ff;
-  --ra-neutral: #4b5563;
-  --ra-neutral-soft: #f1f4f8;
+
+  /* Semantic */
+  --ra-success: #177a56;
+  --ra-success-soft: #e6f6ef;
+  --ra-success-border: #9dd4bc;
+  --ra-warning: #9a5b0a;
+  --ra-warning-soft: #fff4e5;
+  --ra-warning-border: #e2c08a;
+  --ra-info: #2f5fbe;
+  --ra-info-soft: #eaf0ff;
+  --ra-info-border: #b0c4f0;
+  --ra-neutral: #3f4a5a;
+  --ra-neutral-soft: #eef1f5;
+
+  /* Disabled — intentional, not unfinished */
+  --ra-disabled-bg: #e8ecf1;
+  --ra-disabled-fg: #8b95a5;
 
   /* Radius */
   --ra-radius-sm: 8px;
   --ra-radius-md: 12px;
-  --ra-radius-lg: 16px;
+  --ra-radius-lg: 14px;
+  --ra-radius-xl: 16px;
   --ra-radius-full: 9999px;
 
-  /* Shadow — one premium elevation */
-  --ra-shadow: 0 1px 2px rgba(11, 15, 25, 0.04), 0 4px 16px rgba(11, 15, 25, 0.06);
+  /* Shadow */
+  --ra-shadow: 0 1px 2px rgba(11, 15, 25, 0.05), 0 6px 18px rgba(11, 15, 25, 0.06);
+  --ra-shadow-focus: 0 0 0 3px rgba(91, 141, 239, 0.22);
 
   /* Control height */
   --ra-control-h: 44px;
@@ -64,8 +89,12 @@ body {
   .ra-card {
     background: var(--ra-surface);
     border: 1px solid var(--ra-border);
-    border-radius: var(--ra-radius-lg);
+    border-radius: var(--ra-radius-xl);
     box-shadow: var(--ra-shadow);
+  }
+
+  .ra-card-accent {
+    border-color: var(--ra-border-accent);
   }
 }
 
