@@ -5,7 +5,8 @@
 
 Screenshot authority: `docs/ui-reference/` + `docs/UI_BIBLE.md`  
 Growth Plan authority: `docs/GROWTH_PLAN_SPEC.md`  
-Phase 3 implementation: `rankaura-web/app/growth-plan/`
+Workspace authority: `docs/WORKSPACE_SPEC.md`  
+Phase 3/4 implementation: `rankaura-web/app/growth-plan/` · `rankaura-web/app/workspace/`
 
 ---
 
@@ -29,7 +30,14 @@ Phase 3 implementation: `rankaura-web/app/growth-plan/`
 |---|--------|-------|-------------|--------|
 | 6a | Growth Plan (existing) | `/growth-plan?site=existing` | Spec + `rankaura-web` | **IMPLEMENTED — AWAITING SCREENSHOT APPROVAL** |
 | 6b | Launch Plan (new) | `/growth-plan?site=new` | Spec + `rankaura-web` | **IMPLEMENTED — AWAITING SCREENSHOT APPROVAL** |
-| 7 | Main Workspace | TBD | Pending | **NOT STARTED** — do not rebuild until Growth Plan approved |
+| 7 | Main Workspace | `/workspace` | `docs/WORKSPACE_SPEC.md` + `rankaura-web` | **PHASE 4 PROTOTYPE — AWAITING REVIEW** |
+
+### Phase 4 Workspace screenshots
+
+| File | Contents |
+|------|----------|
+| `docs/ui-reference/workspace/01-workspace-desktop.png` | Workspace — desktop |
+| `docs/ui-reference/workspace/02-workspace-mobile.png` | Workspace — mobile |
 
 ### Phase 3 screenshot set
 
@@ -95,8 +103,7 @@ Production onboarding lives at `/onboarding` in `rankaura-web` and hands off to 
 
 | Screen | Classification |
 |--------|----------------|
-| Name (“What should we call you?”) | Not present in the current approved screenshot set |
-| Rebuilt Workspace | Pending after Growth Plan approval |
+| `/` | Legacy Mission dashboard — **not** the product home; do not extend |
 
 ---
 

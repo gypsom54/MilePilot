@@ -9,7 +9,7 @@ interface ContinueToWorkspaceProps {
  * Continue to Workspace.
  * Points to current `/` temporarily — future Workspace handoff.
  */
-export function ContinueToWorkspace({ href = "/" }: ContinueToWorkspaceProps) {
+export function ContinueToWorkspace({ href = "/workspace" }: ContinueToWorkspaceProps) {
   return (
     <section
       aria-labelledby="continue-workspace-heading"
@@ -22,11 +22,8 @@ export function ContinueToWorkspace({ href = "/" }: ContinueToWorkspaceProps) {
         Continue to your Workspace
       </h2>
       <p className="mt-2 max-w-xl text-sm leading-relaxed text-[#8b95a5]">
-        Ongoing progress will live here — calm updates as RankAura keeps working for you.{" "}
-        <span className="text-[#6b7280]">
-          (Temporary handoff to the current home screen until the Workspace rebuild
-          is approved.)
-        </span>
+        Ongoing progress lives in your Workspace — a calm view of what RankAura
+        is doing for your business.
       </p>
       <Link
         href={href}
