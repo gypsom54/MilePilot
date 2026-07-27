@@ -104,14 +104,32 @@ export interface GrowthPlanHeaderContent {
   support: string;
 }
 
+export interface GrowthTeamReadyContent {
+  title: string;
+  support: string;
+  quietWork: string;
+  strategyLine: string;
+  promise: string;
+  /** Reassurance checklist labels — human names, not technical IDs */
+  checklist: string[];
+}
+
+export interface FinalReassuranceContent {
+  title: string;
+  support: string;
+  closing: string;
+}
+
 export interface GrowthPlanData {
   site: SiteContext;
   header: GrowthPlanHeaderContent;
   confirmations: AnalysisConfirmationItem[];
   keyDiscoveries: KeyDiscovery[];
+  growthTeam: GrowthTeamReadyContent;
   primaryOpportunity: PrimaryOpportunity;
   whatHappensNext: string[];
   categories: GrowthCategory[];
+  finalReassurance: FinalReassuranceContent;
 }
 
 export interface GrowthPlanDataProvider {

@@ -2,7 +2,9 @@ import { AnalysisConfirmation } from "@/components/growth-plan/AnalysisConfirmat
 import { CategoryList } from "@/components/growth-plan/CategoryList";
 import { ContinueToWorkspace } from "@/components/growth-plan/ContinueToWorkspace";
 import { FeaturedCategories } from "@/components/growth-plan/FeaturedCategories";
+import { FinalReassurance } from "@/components/growth-plan/FinalReassurance";
 import { GrowthPlanHeader } from "@/components/growth-plan/GrowthPlanHeader";
+import { GrowthTeamReady } from "@/components/growth-plan/GrowthTeamReady";
 import { KeyDiscoveries } from "@/components/growth-plan/KeyDiscoveries";
 import { PrimaryOpportunityCard } from "@/components/growth-plan/PrimaryOpportunityCard";
 import { WhatHappensNext } from "@/components/growth-plan/WhatHappensNext";
@@ -14,14 +16,13 @@ import {
 
 interface GrowthPlanPageProps {
   data: GrowthPlanData;
-  /** Review helper: expand a category by id (e.g. reddit_community) */
   expandCategoryId?: string;
 }
 
 /**
- * Page hierarchy:
- * Header → Analysis confirmation → Key discoveries → Primary opportunity
- * → What happens next → Featured categories → Remaining categories → Continue
+ * Hierarchy (confidence polish):
+ * Header → Analysis → Key discoveries → Growth Team ready → Primary opportunity
+ * → What happens next → Featured → Remaining → Final reassurance → Continue
  */
 export function GrowthPlanPage({
   data,
@@ -46,6 +47,7 @@ export function GrowthPlanPage({
           <GrowthPlanHeader header={data.header} />
           <AnalysisConfirmation items={data.confirmations} />
           <KeyDiscoveries discoveries={data.keyDiscoveries} />
+          <GrowthTeamReady content={data.growthTeam} />
           <PrimaryOpportunityCard opportunity={data.primaryOpportunity} />
           <WhatHappensNext items={data.whatHappensNext} />
           <FeaturedCategories
@@ -56,6 +58,7 @@ export function GrowthPlanPage({
             categories={remaining}
             initiallyExpandedId={remainingExpand}
           />
+          <FinalReassurance content={data.finalReassurance} />
           <ContinueToWorkspace />
         </div>
       </main>

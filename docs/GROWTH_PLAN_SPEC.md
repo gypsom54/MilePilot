@@ -25,9 +25,12 @@ This document locks structure, hierarchy, data model, language, states, and hand
 | Review routes | `/growth-plan?site=existing` · `/growth-plan?site=new` · optional `?expand=<categoryId>` |
 | Continue to Workspace | Temporarily links to `/` until Workspace rebuild is approved |
 | Visual system | Calm light canvas retained; no dark navy conversion |
+| Growth Team ready | Premium reassurance after Key Discoveries — 13-area checklist + product promise |
+| Final reassurance | “You're in good hands.” panel before Continue to Workspace |
 | Category display names | Humanised (e.g. Website Optimisation, Competitor Insights, Growing Your Authority) — ids unchanged |
 | Status labels | Research completed · Recommendations prepared · Coming next · Currently monitoring · Awaiting your approval |
 | Category fields | `subtitle`, `whyItMatters`, `businessImpact`, `summary`, `count`, `yourAction`, `primaryAction` |
+| Data extras | `growthTeam`, `finalReassurance` |
 
 ---
 

@@ -54,8 +54,12 @@ assert.ok(existingSrc.includes("keyDiscoveries") || existingSrc.includes("Custom
 assert.ok(existingSrc.includes("Website Optimisation"));
 assert.ok(typesSrc.includes("existing_needs_access"));
 assert.ok(typesSrc.includes("new_pre_launch"));
-assert.ok(typesSrc.includes("Research completed"));
-assert.ok(typesSrc.includes("whyItMatters"));
-assert.ok(typesSrc.includes("KeyDiscovery"));
+assert.ok(existingSrc.includes("Your Growth Team Is Ready"));
+assert.ok(existingSrc.includes("You don't need to become an SEO expert"));
+assert.ok(existingSrc.includes("You're in good hands"));
+assert.ok(newSrc.includes("Your Growth Team Is Ready"));
+assert.ok(newSrc.includes("You're in good hands"));
+assert.ok(typesSrc.includes("GrowthTeamReadyContent"));
+assert.ok(typesSrc.includes("FinalReassuranceContent"));
 
 console.log("rankaura-growth-plan-mock.test.js: OK");

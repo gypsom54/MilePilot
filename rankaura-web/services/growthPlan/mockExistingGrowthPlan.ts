@@ -1,7 +1,23 @@
 import type { GrowthPlanData } from "@/types/growthPlan";
 
+const GROWTH_TEAM_CHECKLIST = [
+  "Website Optimisation",
+  "Keyword Research",
+  "Competitor Insights",
+  "Local SEO",
+  "Content Strategy",
+  "Digital PR",
+  "Reddit & Community Research",
+  "Reviews & Reputation",
+  "Authority Building",
+  "Social Media",
+  "Analytics",
+  "AI Monitoring",
+  "Business Intelligence",
+];
+
 /**
- * Deterministic existing-site Growth Plan mock — polished premium copy.
+ * Deterministic existing-site Growth Plan mock — confidence & reassurance polish.
  * Local service business with a live website — Portsmouth Hypnotherapy.
  */
 export const existingGrowthPlanMock: GrowthPlanData = {
@@ -49,27 +65,39 @@ export const existingGrowthPlanMock: GrowthPlanData = {
       text: "Clear opportunities exist to improve how people find and trust you online.",
     },
   ],
-  primaryOpportunity: {
-    title: "Your service pages could better match how local customers search.",
+  growthTeam: {
+    title: "Your Growth Team Is Ready",
     support:
-      "A few calm improvements here could help more people discover your practice.",
+      "Over the last few moments, RankAura has analysed your business and started preparing a personalised growth strategy designed around your goals, your customers and your market.",
+    quietWork:
+      "We'll quietly work through these areas while keeping you informed of the things that genuinely matter.",
+    strategyLine:
+      "Your personalised growth strategy currently includes 13 active growth areas.",
+    promise:
+      "You don't need to become an SEO expert. We'll continuously monitor your website, competitors and market, quietly working through improvements while keeping you informed about the opportunities that matter most.",
+    checklist: GROWTH_TEAM_CHECKLIST,
+  },
+  primaryOpportunity: {
+    title: "We've started preparing improvements for your service pages.",
+    support:
+      "A few calm recommendations could help more local customers discover your practice.",
     actionLabel: "Review & Fix",
   },
   whatHappensNext: [
-    "Prioritising your highest-impact improvements",
-    "Preparing safe recommendations for your review",
-    "Building your first content roadmap",
-    "Monitoring competitors automatically",
+    "We've started prioritising your highest-impact improvements",
+    "We're preparing safe recommendations for your review",
+    "We're building your first content roadmap",
+    "We're already monitoring competitors automatically",
   ],
   categories: [
     {
       id: "website_health",
       name: "Website Optimisation",
-      subtitle: "Helping search engines understand your website.",
-      whyItMatters: "Could help more customers discover your website.",
-      businessImpact: "Could improve local visibility.",
+      subtitle: "Helping search engines better understand your website.",
+      whyItMatters: "Could help more customers discover your business.",
+      businessImpact: "Could help more customers discover your business.",
       summary:
-        "A few page improvements could make your services easier to find on mobile and in local search.",
+        "We've prepared a few page improvements so your services are easier to find on mobile and in local search.",
       status: "waiting_for_approval",
       count: 4,
       relevanceScore: 96,
@@ -77,9 +105,9 @@ export const existingGrowthPlanMock: GrowthPlanData = {
       featured: true,
       applicable: true,
       discovered:
-        "Your hypnotherapy and anxiety pages could use clearer Portsmouth-area language people already search for. Two pages could also feel quicker on a phone.",
+        "We've identified opportunities to use clearer Portsmouth-area language on your hypnotherapy and anxiety pages — phrases people already search for. Two pages could also feel quicker on a phone.",
       completed:
-        "We prepared a calm set of heading and copy recommendations, plus a short list of mobile improvements ready for your review.",
+        "We've prepared a calm set of heading and copy recommendations, plus a short list of mobile improvements ready for your review.",
       next: "Once you approve, we'll apply the updates and check how the site feels on mobile.",
       yourAction: "Review the recommended page improvements and approve the ones you're comfortable with.",
       primaryAction: "Review & Fix",
@@ -88,10 +116,10 @@ export const existingGrowthPlanMock: GrowthPlanData = {
       id: "local_seo",
       name: "Local SEO",
       subtitle: "Helping nearby customers discover your business.",
-      whyItMatters: "Could improve your visibility on Google Maps.",
-      businessImpact: "Could generate more Google Maps enquiries.",
+      whyItMatters: "Could increase enquiries from nearby customers.",
+      businessImpact: "Could increase enquiries from nearby customers.",
       summary:
-        "Your Google Business Profile is active — with a few refinements it could attract more nearby clients.",
+        "We've started refining your Google Business Profile so more nearby clients can find you.",
       status: "in_progress",
       count: 3,
       relevanceScore: 94,
@@ -99,9 +127,9 @@ export const existingGrowthPlanMock: GrowthPlanData = {
       featured: true,
       applicable: true,
       discovered:
-        "Nearby clinics with clearer Portsmouth and Southsea coverage appear ahead for several local therapy searches — an opportunity for you to catch up calmly.",
+        "We've identified an opportunity to catch up with nearby clinics that present clearer Portsmouth and Southsea coverage for local therapy searches.",
       completed:
-        "We mapped your service areas and drafted clearer category and description language for your profile.",
+        "We've mapped your service areas and drafted clearer category and description language for your profile.",
       next: "We'll refine local listings and keep your website contact details consistent with your profile.",
       yourAction: "Confirm your primary service areas so we can update your profile accurately.",
       primaryAction: "Review",
@@ -109,11 +137,11 @@ export const existingGrowthPlanMock: GrowthPlanData = {
     {
       id: "reviews_reputation",
       name: "Reviews & Reputation",
-      subtitle: "Helping customers choose your business.",
-      whyItMatters: "Improves confidence before customers contact you.",
-      businessImpact: "Could increase customer trust.",
+      subtitle: "Helping customers feel confident choosing your business.",
+      whyItMatters: "Builds trust before customers contact you.",
+      businessImpact: "Builds trust before customers contact you.",
       summary:
-        "Your recent reviews are strong. A gentle system for inviting new feedback could help even more.",
+        "Your recent reviews are strong. We've prepared a gentle system for inviting new feedback.",
       status: "planned",
       count: 2,
       relevanceScore: 90,
@@ -121,20 +149,20 @@ export const existingGrowthPlanMock: GrowthPlanData = {
       featured: true,
       applicable: true,
       discovered:
-        "Clients who leave reviews mention calm sessions and clear explanations — language worth reinforcing. There's room to grow review volume alongside nearby competitors.",
+        "Clients who leave reviews mention calm sessions and clear explanations — language worth reinforcing. There's a clear opportunity to grow review volume alongside nearby competitors.",
       completed:
-        "We drafted a short, respectful review invitation you can send after sessions.",
+        "We've drafted a short, respectful review invitation you can send after sessions.",
       next: "We'll set a gentle reminder rhythm and keep an eye on reputation.",
       primaryAction: "View Plan",
     },
     {
       id: "keyword_strategy",
       name: "Keyword Strategy",
-      subtitle: "Focusing on searches that matter most.",
-      whyItMatters: "Helps focus on searches that matter most.",
+      subtitle: "Focusing on the searches that matter most to your customers.",
+      whyItMatters: "Helps focus growth work on searches that bring real demand.",
       businessImpact: "Points growth work at real customer demand.",
       summary:
-        "We identified the phrases local clients use when looking for hypnotherapy and anxiety support.",
+        "We've identified the phrases local clients use when looking for hypnotherapy and anxiety support.",
       status: "complete",
       count: 18,
       relevanceScore: 88,
@@ -142,19 +170,19 @@ export const existingGrowthPlanMock: GrowthPlanData = {
       featured: true,
       applicable: true,
       discovered:
-        "People search for anxiety hypnotherapy, stop smoking hypnosis, and Portsmouth hypnotherapist more often than the broader wellness terms on your site.",
+        "We've found people search for anxiety hypnotherapy, stop smoking hypnosis, and Portsmouth hypnotherapist more often than the broader wellness terms on your site.",
       completed:
-        "We built a priority phrase list grouped by intent: find a therapist, understand treatment, and book a session.",
+        "We've built a priority phrase list grouped by intent: find a therapist, understand treatment, and book a session.",
       next: "We'll weave these phrases into your service pages and upcoming articles.",
     },
     {
       id: "content_strategy",
       name: "Content Strategy",
       subtitle: "Creating content your customers are already searching for.",
-      whyItMatters: "Answers questions customers are already asking.",
+      whyItMatters: "Answers questions your future customers are already asking online.",
       businessImpact: "Could answer 18 customer questions.",
       summary:
-        "A short content roadmap is ready, focused on the questions clients ask before booking.",
+        "We've started preparing a content roadmap focused on the questions clients ask before booking.",
       status: "in_progress",
       count: 5,
       relevanceScore: 86,
@@ -162,9 +190,9 @@ export const existingGrowthPlanMock: GrowthPlanData = {
       featured: true,
       applicable: true,
       discovered:
-        "Prospective clients want clear answers about what a first session feels like, how many sessions are typical, and whether hypnotherapy can help with sleep and confidence.",
+        "We've identified that prospective clients want clear answers about what a first session feels like, how many sessions are typical, and whether hypnotherapy can help with sleep and confidence.",
       completed:
-        "We prepared five article and FAQ outlines that match those questions.",
+        "We've prepared five article and FAQ outlines that match those questions.",
       next: "We'll draft the first two pieces for your approval before publishing.",
       yourAction: "Approve the first article topics so drafting can begin.",
       primaryAction: "Approve",
@@ -172,10 +200,10 @@ export const existingGrowthPlanMock: GrowthPlanData = {
     {
       id: "reddit_community",
       name: "Reddit & Community Research",
-      subtitle: "Learning from conversations your customers are already having.",
+      subtitle: "Learning from the conversations your customers are already having.",
       whyItMatters: "Surfaces the real language and concerns people use before they book.",
       summary:
-        "We discovered recurring customer questions and concerns that your current content doesn't answer yet.",
+        "We've discovered recurring customer questions and concerns that your current content doesn't answer yet.",
       status: "complete",
       count: 7,
       relevanceScore: 82,
@@ -185,17 +213,17 @@ export const existingGrowthPlanMock: GrowthPlanData = {
       discovered:
         "In public discussions, people often ask whether hypnotherapy feels ‘weird’, how it differs from counselling, and what to expect if they are nervous. Natural phrases include ‘does hypnotherapy work for anxiety’ and ‘what happens in a first session’.\n\nThis research comes from public discussions and community trends. RankAura uses these insights to create original content that answers genuine customer questions. It does not copy discussions.",
       completed:
-        "We captured recurring questions, common buying concerns, and content opportunities based on real language patterns.",
+        "We've captured recurring questions, common buying concerns, and content opportunities based on real language patterns.",
       next: "We'll turn the strongest questions into FAQ blocks and blog outlines that sound like your practice.",
       primaryAction: "View Report",
     },
     {
       id: "competitor_intelligence",
       name: "Competitor Insights",
-      subtitle: "Understanding how similar businesses show up online.",
+      subtitle: "Learning where your competitors are succeeding and where opportunities exist.",
       whyItMatters: "Shows where you can stand out without copying anyone.",
       summary:
-        "Three nearby practices lead local search — mainly with clearer service pages, not better care.",
+        "We're already monitoring three nearby practices — and we've found clear opportunities in how they present their services.",
       status: "monitoring",
       count: 3,
       relevanceScore: 78,
@@ -203,45 +231,45 @@ export const existingGrowthPlanMock: GrowthPlanData = {
       featured: false,
       applicable: true,
       discovered:
-        "Competitors win visibility with plain service pages, visible reviews, and consistent Portsmouth naming — opportunities you can match calmly.",
+        "We've identified that competitors win visibility with plain service pages, visible reviews, and consistent Portsmouth naming — opportunities you can match calmly.",
       completed:
-        "We documented who appears for your priority searches and where your pages can close the gap.",
-      next: "We'll watch for meaningful changes and only surface what matters to you.",
+        "We've documented who appears for your priority searches and where your pages can close the gap.",
+      next: "We're continuously watching for meaningful changes and will only surface what matters to you.",
     },
     {
       id: "analytics_tracking",
       name: "Understanding Your Performance",
-      subtitle: "Showing what's working and where opportunities exist.",
+      subtitle: "Showing what's working and where new opportunities are emerging.",
       whyItMatters: "Makes progress visible without drowning you in numbers.",
       summary:
-        "Basic analytics are in place. A few clearer booking signals would make wins easier to see.",
+        "We've started preparing clearer booking signals so wins are easier to see.",
       status: "planned",
       relevanceScore: 70,
       displayPriority: 8,
       featured: false,
       applicable: true,
       discovered:
-        "Page views are tracked, but enquiry and booking clicks are harder to see as clear outcomes.",
+        "We've identified an opportunity to make enquiry and booking clicks clearer as outcomes — beyond page views alone.",
       completed:
-        "We listed the few events that would make progress visible without creating a complex dashboard.",
+        "We've listed the few events that would make progress visible without creating a complex dashboard.",
       next: "We'll prepare a simple tracking setup for you to approve when ready.",
     },
     {
       id: "authority_building",
       name: "Growing Your Authority",
-      subtitle: "Building long-term trust online.",
-      whyItMatters: "Helps Google and customers recognise your expertise over time.",
+      subtitle: "Building trust and credibility over time.",
+      whyItMatters: "Helps customers and Google recognise your expertise over time.",
       summary:
-        "Local mentions exist already. A short plan could make them more consistent and trusted.",
+        "We've started preparing a short plan to make your local mentions more consistent and trusted.",
       status: "planned",
       relevanceScore: 64,
       displayPriority: 9,
       featured: false,
       applicable: true,
       discovered:
-        "A handful of local listings mention your practice, with room to make them clearer and more consistent.",
+        "We've found local listings that mention your practice, with clear opportunities to make them clearer and more consistent.",
       completed:
-        "We inventoried current mentions and noted which ones are worth improving first.",
+        "We've inventoried current mentions and noted which ones are worth improving first.",
       next: "We'll prepare a short authority plan focused on trusted local sources.",
     },
     {
@@ -250,22 +278,22 @@ export const existingGrowthPlanMock: GrowthPlanData = {
       subtitle: "Keeping a quiet watch so nothing important is missed.",
       whyItMatters: "Surfaces only the changes that deserve your attention.",
       summary:
-        "Ongoing watch is ready for ranking shifts, review changes, and competitor moves.",
+        "We're already watching for ranking shifts, review changes, and competitor moves.",
       status: "monitoring",
       relevanceScore: 60,
       displayPriority: 10,
       featured: false,
       applicable: true,
       discovered:
-        "Your market is steady, with occasional spikes around anxiety and sleep searches in colder months.",
+        "We've noted your market is steady, with occasional spikes around anxiety and sleep searches in colder months.",
       completed:
         "Monitoring is in place for material ranking or reputation changes.",
       next: "We'll surface only changes that deserve your attention.",
     },
     {
       id: "business_intelligence",
-      name: "Understanding Your Business",
-      subtitle: "Keeping RankAura aligned with how you actually work.",
+      name: "Business Intelligence",
+      subtitle: "Helping you spot opportunities beyond traditional SEO.",
       whyItMatters: "Ensures every recommendation fits your practice — not a generic template.",
       summary:
         "We understand your focus: calm, practical hypnotherapy for anxiety, habits, and confidence.",
@@ -275,27 +303,27 @@ export const existingGrowthPlanMock: GrowthPlanData = {
       featured: false,
       applicable: true,
       discovered:
-        "Your strongest story is a reassuring, professional Portsmouth practice — not a generic wellness brand.",
+        "We've captured that your strongest story is a reassuring, professional Portsmouth practice — not a generic wellness brand.",
       completed:
-        "We captured positioning, services, and audience priorities to guide every growth decision.",
+        "We've captured positioning, services, and audience priorities to guide every growth decision.",
       next: "We'll keep this picture updated as your services evolve.",
     },
     {
       id: "digital_pr",
       name: "Digital PR",
       subtitle: "Building recognition beyond your own website.",
-      whyItMatters: "Builds trust and authority over time.",
+      whyItMatters: "Builds awareness beyond your own website.",
       summary:
-        "Useful later for local features and expert commentary — not the first priority.",
+        "We've noted soft local angles for later — foundations come first.",
       status: "planned",
       relevanceScore: 42,
       displayPriority: 12,
       featured: false,
       applicable: true,
       discovered:
-        "Local lifestyle and wellbeing outlets occasionally feature therapists with clear, helpful angles.",
+        "We've identified that local lifestyle and wellbeing outlets occasionally feature therapists with clear, helpful angles.",
       completed:
-        "We noted two soft angles that could work once your core pages are stronger.",
+        "We've noted two soft angles that could work once your core pages are stronger.",
       next: "We'll revisit this once service-page and review foundations are in place.",
     },
     {
@@ -304,17 +332,24 @@ export const existingGrowthPlanMock: GrowthPlanData = {
       subtitle: "Supporting trust without becoming a full-time posting job.",
       whyItMatters: "Reinforces your website when it helps — never for vanity metrics.",
       summary:
-        "Social can support trust, but it isn't the main growth lever for this practice right now.",
+        "We've parked a light social support plan so it doesn't distract from higher-value work.",
       status: "planned",
       relevanceScore: 38,
       displayPriority: 13,
       featured: false,
       applicable: true,
       discovered:
-        "Your audience discovers you mainly through search and recommendations, not daily social scrolling.",
+        "We've found your audience discovers you mainly through search and recommendations, not daily social scrolling.",
       completed:
-        "We parked a light social support plan so it doesn't distract from higher-value work.",
+        "We've prepared a light social support outline for later.",
       next: "We'll suggest only occasional posts that reinforce your website content.",
     },
   ],
+  finalReassurance: {
+    title: "You're in good hands.",
+    support:
+      "Your Growth Plan will continue to evolve as your business grows. RankAura monitors your website, competitors, customer behaviour and market trends around the clock, surfacing new opportunities as they appear and quietly working through improvements behind the scenes.",
+    closing:
+      "We'll keep doing the hard work, so you can focus on running your business.",
+  },
 };
