@@ -8,7 +8,9 @@ const puppeteer = require("puppeteer-core");
 const BASE = process.env.WORKSPACE_URL || "http://127.0.0.1:3000/workspace";
 const OUT_DIRS = [
   "/opt/cursor/artifacts/ask-rankaura",
+  "/opt/cursor/artifacts/design-system",
   path.join(__dirname, "..", "docs", "ui-reference", "ask-rankaura"),
+  path.join(__dirname, "..", "docs", "ui-reference", "design-system"),
 ];
 
 const SESSION_KEY = "rankaura.onboarding.session.v1";

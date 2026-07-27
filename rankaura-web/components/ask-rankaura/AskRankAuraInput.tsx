@@ -42,8 +42,8 @@ export function AskRankAuraInput({
       />
       <ButtonPrimary
         type="submit"
-        disabled={disabled || !value.trim()}
         className="shrink-0"
+        aria-disabled={!value.trim() || disabled || undefined}
       >
         Ask
       </ButtonPrimary>
