@@ -89,7 +89,7 @@ One premium **Ask RankAura** card on the Workspace.
 |---------|------|
 | Heading | **Ask RankAura** |
 | Supporting copy | **Ask anything about your business growth.** |
-| Input placeholder | **What would you like to know?** (alt: *Ask about your website, competitors or opportunities…*) |
+| Input placeholder | **Ask about your business…** |
 | Submit | One clear submit action |
 | Default state | **Compact** — no large empty chat window on the Workspace |
 | After submit | Expand into a **focused answer panel** within the card (preferred for prototype) **or** open a dedicated Ask view only if repository architecture strongly favours it |

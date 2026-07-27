@@ -1,3 +1,4 @@
+import { SurfaceCard } from "@/components/ui/SurfaceCard";
 import type { RecentWin } from "@/types/workspace";
 
 interface RecentWinsProps {
@@ -9,13 +10,10 @@ export function RecentWins({ wins }: RecentWinsProps) {
   if (wins.length === 0) return null;
 
   return (
-    <section
-      aria-labelledby="recent-wins-heading"
-      className="rounded-2xl bg-white p-5 shadow-[0_1px_2px_rgba(15,23,42,0.04)] sm:p-6"
-    >
+    <SurfaceCard aria-labelledby="recent-wins-heading">
       <h2
         id="recent-wins-heading"
-        className="text-base font-semibold text-[#080f1a]"
+        className="text-base font-semibold text-ra-ink"
       >
         Recent wins
       </h2>
@@ -23,10 +21,10 @@ export function RecentWins({ wins }: RecentWinsProps) {
         {wins.slice(0, 3).map((win) => (
           <li
             key={win.id}
-            className="flex gap-2.5 text-sm leading-relaxed text-[#3d4654]"
+            className="flex gap-2.5 text-sm font-normal leading-relaxed text-ra-ink-soft"
           >
             <span
-              className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#e8f8f1] text-[11px] font-bold text-[#1f8a62]"
+              className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-[#b7e6d2] bg-ra-success-soft text-[11px] font-bold text-ra-success"
               aria-hidden="true"
             >
               ✓
@@ -35,6 +33,6 @@ export function RecentWins({ wins }: RecentWinsProps) {
           </li>
         ))}
       </ul>
-    </section>
+    </SurfaceCard>
   );
 }

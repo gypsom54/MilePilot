@@ -2,7 +2,7 @@
 
 **Status:** FINAL AUTHORITY for future development  
 **Owner:** Jonathan  
-**Related locks:** `docs/UI_BIBLE.md` · `docs/SCREEN_LOCK_STATUS.md` · `docs/GROWTH_PLAN_SPEC.md` · `docs/WORKSPACE_SPEC.md` · `docs/ASK_RANKAURA_SPEC.md` · `docs/ui-reference/` · `rankaura/docs/PRODUCT_VISION.md`
+**Related locks:** `docs/UI_BIBLE.md` · `docs/SCREEN_LOCK_STATUS.md` · `docs/GROWTH_PLAN_SPEC.md` · `docs/WORKSPACE_SPEC.md` · `docs/ASK_RANKAURA_SPEC.md` · `docs/DESIGN_TOKENS.md` · `docs/ui-reference/` · `rankaura/docs/PRODUCT_VISION.md`
 
 This document governs every future RankAura change.  
 If a proposal conflicts with these guardrails, the proposal loses.
@@ -37,6 +37,7 @@ If a proposal conflicts with these guardrails, the proposal loses.
     - `docs/GROWTH_PLAN_SPEC.md` (for Growth Plan / Launch Plan / category system)
     - `docs/WORKSPACE_SPEC.md` (for Workspace)
     - `docs/ASK_RANKAURA_SPEC.md` (for Ask RankAura)
+    - `docs/DESIGN_TOKENS.md` (for colours, controls, and reusable UI)
     - `rankaura/docs/PRODUCT_VISION.md` (and `docs/` copies where present)
     - `docs/PRODUCT_GUARDRAILS.md`
 
@@ -63,6 +64,15 @@ Ask RankAura is a **permanent core feature**, not a secondary chatbot or support
 3. When data is unavailable, say so clearly and explain what is missing or what RankAura will monitor once connected.
 4. Ask RankAura sits **beneath the Workspace greeting** (Phase B) — compact by default; no huge chat window; no floating bubble; no avatars or AI employee characters.
 5. Spec: `docs/ASK_RANKAURA_SPEC.md`. **Status: PROTOTYPE BUILT — PENDING SCREENSHOT APPROVAL.** Do not connect live AI until approved.
+
+## Design system (LOCKED)
+
+Official tokens and reusable controls live in `docs/DESIGN_TOKENS.md` and `rankaura-web/components/ui/`.
+
+1. Every new screen must reuse design tokens — do not invent one-off greys, radii, shadows, or button styles.
+2. Primary actions share one solid ink button (`ButtonPrimary`). Secondary actions use bordered white (`ButtonSecondary`). Text actions use accent links (`ButtonGhost`).
+3. Badges share one anatomy; only colour changes by status.
+4. Ask RankAura input uses white surface, clear border, premium shadow, and placeholder **Ask about your business…**
 
 ## First-use flow (LOCKED)
 

@@ -20,7 +20,7 @@ interface WorkspacePageProps {
  */
 export function WorkspacePage({ data, askData }: WorkspacePageProps) {
   return (
-    <div className="min-h-screen bg-[#f3f5f7] text-[#080f1a]">
+    <div className="min-h-screen bg-ra-canvas text-ra-ink">
       <main className="mx-auto max-w-3xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
         <div className="flex flex-col gap-6 sm:gap-7">
           <WorkspaceWelcomeSection welcome={data.welcome} />

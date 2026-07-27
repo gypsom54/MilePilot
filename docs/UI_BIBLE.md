@@ -5,7 +5,8 @@
 **Source of truth:** Approved screenshot set (uploaded localhost RankAura React/Next UI) + Growth Plan Phase 2 decisions  
 **Product owner:** Jonathan  
 **Growth Plan spec:** `docs/GROWTH_PLAN_SPEC.md`  
-**Ask RankAura spec:** `docs/ASK_RANKAURA_SPEC.md`
+**Ask RankAura spec:** `docs/ASK_RANKAURA_SPEC.md`  
+**Design tokens:** `docs/DESIGN_TOKENS.md`
 
 ---
 

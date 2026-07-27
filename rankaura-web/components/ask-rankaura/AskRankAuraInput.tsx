@@ -1,5 +1,8 @@
 "use client";
 
+import { ButtonPrimary } from "@/components/ui/ButtonPrimary";
+import { Input } from "@/components/ui/Input";
+
 interface AskRankAuraInputProps {
   value: string;
   onChange: (value: string) => void;
@@ -27,7 +30,7 @@ export function AskRankAuraInput({
       <label htmlFor="ask-rankaura-input" className="sr-only">
         Ask RankAura a question about your business growth
       </label>
-      <input
+      <Input
         id="ask-rankaura-input"
         type="text"
         value={value}
@@ -35,15 +38,15 @@ export function AskRankAuraInput({
         placeholder={placeholder}
         disabled={disabled}
         autoComplete="off"
-        className="h-11 w-full flex-1 rounded-full border border-[#e5e7eb] bg-[#f8fafc] px-4 text-sm text-[#080f1a] placeholder:text-[#8b95a5] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5b8def] disabled:opacity-60"
+        className="flex-1"
       />
-      <button
+      <ButtonPrimary
         type="submit"
         disabled={disabled || !value.trim()}
-        className="inline-flex h-11 shrink-0 items-center justify-center rounded-full bg-[#080f1a] px-5 text-sm font-semibold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5b8def] disabled:cursor-not-allowed disabled:opacity-40"
+        className="shrink-0"
       >
         Ask
-      </button>
+      </ButtonPrimary>
     </form>
   );
 }

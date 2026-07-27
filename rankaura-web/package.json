@@ -10,7 +10,8 @@
     "test:growth-plan-mock": "node ../tests/rankaura-growth-plan-mock.test.js",
     "test:no-demo-data": "node ../tests/rankaura-no-demo-data.test.js",
     "test:workspace-mock": "node ../tests/rankaura-workspace-mock.test.js",
-    "test:ask-rankaura-mock": "node ../tests/rankaura-ask-rankaura-mock.test.js"
+    "test:ask-rankaura-mock": "node ../tests/rankaura-ask-rankaura-mock.test.js",
+    "test:design-system": "node ../tests/rankaura-design-system.test.js"
   },
   "dependencies": {
     "next": "^15.3.3",

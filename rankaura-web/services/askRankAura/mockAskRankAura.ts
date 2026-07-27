@@ -476,7 +476,7 @@ export const mockAskRankAuraData: AskRankAuraData = {
   card: {
     heading: "Ask RankAura",
     support: "Ask anything about your business growth.",
-    placeholder: "What would you like to know?",
+    placeholder: "Ask about your business…",
   },
   suggestedQuestions: [
     {

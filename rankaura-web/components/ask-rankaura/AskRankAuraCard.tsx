@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { AskRankAuraAnswerPanel } from "@/components/ask-rankaura/AskRankAuraAnswer";
 import { AskRankAuraInput } from "@/components/ask-rankaura/AskRankAuraInput";
 import { AskRankAuraSuggestions } from "@/components/ask-rankaura/AskRankAuraSuggestions";
+import { SurfaceCard } from "@/components/ui/SurfaceCard";
 import { resolveAskRankAuraQuestion } from "@/services/askRankAura/mockAskRankAura";
 import type {
   AskRankAuraAnswer,
@@ -51,19 +52,20 @@ export function AskRankAuraCard({ data }: AskRankAuraCardProps) {
   }, [answer, resetToCompact]);
 
   return (
-    <section
+    <SurfaceCard
       aria-labelledby="ask-rankaura-heading"
-      className="rounded-2xl border border-[#dce6fb] bg-white p-5 shadow-[0_2px_8px_rgba(91,141,239,0.08)] sm:p-6"
       data-state={answer ? "expanded" : "compact"}
       data-testid="ask-rankaura-card"
     >
       <h2
         id="ask-rankaura-heading"
-        className="text-lg font-semibold tracking-tight text-[#080f1a] sm:text-xl"
+        className="text-lg font-semibold tracking-tight text-ra-ink sm:text-xl"
       >
         {data.card.heading}
       </h2>
-      <p className="mt-1.5 text-sm text-[#8b95a5]">{data.card.support}</p>
+      <p className="mt-1.5 text-sm font-normal text-ra-muted">
+        {data.card.support}
+      </p>
 
       {!answer ? (
         <>
@@ -84,6 +86,6 @@ export function AskRankAuraCard({ data }: AskRankAuraCardProps) {
           onAskAnother={resetToCompact}
         />
       )}
-    </section>
+    </SurfaceCard>
   );
 }

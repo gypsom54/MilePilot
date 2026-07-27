@@ -7,6 +7,7 @@ Screenshot authority: `docs/ui-reference/` + `docs/UI_BIBLE.md`
 Growth Plan authority: `docs/GROWTH_PLAN_SPEC.md`  
 Workspace authority: `docs/WORKSPACE_SPEC.md`  
 Ask RankAura authority: `docs/ASK_RANKAURA_SPEC.md`  
+Design system authority: `docs/DESIGN_TOKENS.md`  
 Phase 3/4 implementation: `rankaura-web/app/growth-plan/` · `rankaura-web/app/workspace/`
 
 ---
