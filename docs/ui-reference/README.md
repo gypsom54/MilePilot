@@ -24,7 +24,19 @@ The standalone HTML prototype under `rankaura/` is **not** production and must n
 | 5 | `05-analysis-setup.png` | Analysis / setup (green ticks) |
 | 6 | `06-dashboard.png` | Legacy dashboard (IA superseded — visual DNA only) |
 
-## Growth Plan Phase 3 captures (awaiting Jonathan approval)
+## Onboarding personalisation captures (final polish)
+
+Located in `docs/ui-reference/onboarding/`:
+
+| File | Contents |
+|------|----------|
+| `01-welcome-desktop.png` | Welcome — empty start |
+| `02-name-empty-desktop.png` | What should we call you? — empty field |
+| `03-nice-to-meet-you-desktop.png` | One-time name greeting |
+| `04-website-empty-desktop.png` | Website — neutral placeholder |
+| `05-business-name-empty-desktop.png` | Business name — empty |
+| `06-business-description-empty-desktop.png` | Description — empty |
+| `../growth-plan/17-growth-plan-personalised-desktop.png` | `{Name}, your Growth Plan is ready.` + business name |
 
 Located in `docs/ui-reference/growth-plan/`:
 
