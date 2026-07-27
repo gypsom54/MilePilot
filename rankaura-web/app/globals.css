@@ -41,9 +41,9 @@
   --ra-neutral: #3f4a5a;
   --ra-neutral-soft: #eef1f5;
 
-  /* Disabled — intentional, not unfinished */
-  --ra-disabled-bg: #e8ecf1;
-  --ra-disabled-fg: #8b95a5;
+  /* Disabled — still reads as a solid button (dark grey, not washed) */
+  --ra-disabled-bg: #3d4654;
+  --ra-disabled-fg: #ffffff;
 
   /* Radius */
   --ra-radius-sm: 8px;

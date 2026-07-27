@@ -20,7 +20,7 @@ export function AskRankAuraSuggestions({
 
   return (
     <div className="mt-10">
-      <p className="text-sm font-medium text-[#8b95a5]">Suggested questions</p>
+      <p className="text-sm font-medium text-[#3d4654]">Suggested questions</p>
       <ul className="mt-4 space-y-3">
         {items.map((suggestion) => (
           <li key={suggestion.id}>
@@ -29,7 +29,7 @@ export function AskRankAuraSuggestions({
               onClick={() => onSelect(suggestion.text)}
               className="w-full text-left text-base font-normal text-[#080f1a] outline-none hover:underline"
             >
-              <span className="text-[#8b95a5]" aria-hidden="true">
+              <span className="text-[#080f1a]" aria-hidden="true">
                 →{" "}
               </span>
               {suggestion.text}

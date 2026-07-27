@@ -34,6 +34,10 @@ const onboardingFields = fs.readFileSync(
   ),
   "utf8",
 );
+const globals = fs.readFileSync(
+  path.join(root, "rankaura-web", "app", "globals.css"),
+  "utf8",
+);
 
 assert.ok(askInput.includes("OnboardingInput"));
 assert.ok(askInput.includes("OnboardingPrimaryButton"));
@@ -48,8 +52,11 @@ assert.ok(!askCard.includes("accent"));
 assert.ok(askCard.includes("SurfaceCard"));
 assert.ok(askAnswer.includes("OnboardingPrimaryButton"));
 assert.ok(!askAnswer.includes("ButtonSecondary"));
-assert.ok(onboardingFields.includes("border-0 border-b border-[#e5e7eb]"));
+assert.ok(onboardingFields.includes("border-0 border-b border-[#080f1a]"));
+assert.ok(onboardingFields.includes("placeholder:text-[#3d4654]"));
 assert.ok(onboardingFields.includes("rounded-full"));
+assert.ok(globals.includes("--ra-disabled-bg: #3d4654"));
+assert.ok(globals.includes("--ra-disabled-fg: #ffffff"));
 assert.ok(mock.includes("Ask about your business"));
 assert.ok(mock.includes("Which recommendations need my approval?"));
 

@@ -37,7 +37,7 @@ export function OnboardingInput({
         autoComplete={autoComplete}
         placeholder={placeholder}
         onChange={(event) => onChange(event.target.value)}
-        className="w-full border-0 border-b border-[#e5e7eb] bg-transparent pb-3 text-xl text-[#080f1a] outline-none placeholder:text-[#8b95a5] focus:border-[#080f1a]"
+        className="w-full border-0 border-b border-[#080f1a] bg-transparent pb-3 text-xl text-[#080f1a] outline-none placeholder:text-[#3d4654] focus:border-[#080f1a]"
       />
     </div>
   );
@@ -72,7 +72,7 @@ export function OnboardingTextarea({
         placeholder={placeholder}
         rows={5}
         onChange={(event) => onChange(event.target.value)}
-        className="w-full resize-none rounded-2xl border border-[#e5e7eb] bg-white px-4 py-4 text-lg text-[#080f1a] outline-none placeholder:text-[#8b95a5] focus:border-[#080f1a]"
+        className="w-full resize-none rounded-2xl border border-[#080f1a] bg-white px-4 py-4 text-lg text-[#080f1a] outline-none placeholder:text-[#3d4654] focus:border-[#080f1a]"
       />
     </div>
   );
