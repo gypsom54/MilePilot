@@ -33,7 +33,7 @@ export function AskRankAuraAnswerPanel({
         ref={headingRef}
         tabIndex={-1}
         id="ask-rankaura-answer-heading"
-        className="mt-1 text-base font-semibold text-ra-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ra-focus"
+        className="mt-1 text-base font-semibold text-ra-ink"
       >
         {answer.questionText}
       </h3>

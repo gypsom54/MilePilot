@@ -8,7 +8,7 @@ interface AskRankAuraSuggestionsProps {
   onSelect: (text: string) => void;
 }
 
-/** Suggested questions reuse THE outlined secondary button — no Ask-only control. */
+/** Suggested questions = ButtonSecondary only. No Ask visual overrides. */
 export function AskRankAuraSuggestions({
   suggestions,
   onSelect,
@@ -19,13 +19,12 @@ export function AskRankAuraSuggestions({
   return (
     <div className="mt-4">
       <p className="text-xs font-medium text-ra-muted">Suggested questions</p>
-      <ul className="mt-2.5 grid gap-2 sm:grid-cols-2">
+      <ul className="mt-2.5 flex flex-wrap gap-2">
         {items.map((suggestion) => (
           <li key={suggestion.id}>
             <ButtonSecondary
               type="button"
               onClick={() => onSelect(suggestion.text)}
-              className="h-auto min-h-ra-control w-full justify-start text-left whitespace-normal"
             >
               {suggestion.text}
             </ButtonSecondary>

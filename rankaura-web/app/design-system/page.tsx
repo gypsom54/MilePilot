@@ -3,7 +3,6 @@ import { ButtonGhost } from "@/components/ui/ButtonGhost";
 import { ButtonPrimary } from "@/components/ui/ButtonPrimary";
 import { ButtonSecondary } from "@/components/ui/ButtonSecondary";
 import { Input } from "@/components/ui/Input";
-import { QuestionChip } from "@/components/ui/QuestionChip";
 import { SurfaceCard } from "@/components/ui/SurfaceCard";
 
 /**
@@ -73,21 +72,14 @@ export default function DesignSystemPage() {
           <h2 className="text-base font-semibold">
             Suggested questions (= ButtonSecondary)
           </h2>
-          <ul className="mt-4 grid gap-2 sm:grid-cols-2">
-            <li>
-              <ButtonSecondary
-                type="button"
-                className="h-auto min-h-ra-control w-full justify-start text-left whitespace-normal"
-              >
-                What is my biggest opportunity today?
-              </ButtonSecondary>
-            </li>
-            <li>
-              <QuestionChip type="button">
-                What has RankAura completed since my last visit?
-              </QuestionChip>
-            </li>
-          </ul>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <ButtonSecondary type="button">
+              What is my biggest opportunity today?
+            </ButtonSecondary>
+            <ButtonSecondary type="button">
+              What has RankAura completed since my last visit?
+            </ButtonSecondary>
+          </div>
         </SurfaceCard>
       </div>
     </div>
