@@ -1,0 +1,18 @@
+# SEO AutoPilot TypeScript build outputs
+apps/*/dist/
+packages/*/dist/
+services/*/dist/
+apps/*/*.tsbuildinfo
+packages/*/*.tsbuildinfo
+services/*/*.tsbuildinfo
+tsconfig.seo-autopilot.tsbuildinfo
+
+# Dependencies / env
+node_modules/
+.pnpm-store/
+.env
+.env.*
+
+# OS / editor
+.DS_Store
+*.log
