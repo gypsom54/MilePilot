@@ -4,7 +4,8 @@
 **Status:** AUTHORITATIVE VISUAL LOCK (with superseded dashboard IA — see §6)  
 **Source of truth:** Approved screenshot set (uploaded localhost RankAura React/Next UI) + Growth Plan Phase 2 decisions  
 **Product owner:** Jonathan  
-**Growth Plan spec:** `docs/GROWTH_PLAN_SPEC.md`
+**Growth Plan spec:** `docs/GROWTH_PLAN_SPEC.md`  
+**Ask RankAura spec:** `docs/ASK_RANKAURA_SPEC.md`
 
 ---
 
@@ -262,6 +263,7 @@ Historical screenshot copy (for archaeology only — not to rebuild):
 | **App** | `rankaura-web/app/workspace/page.tsx` |
 | **Purpose** | Ongoing RankAura home — “what has RankAura done since I was last here?” |
 | **Page hierarchy** | Greeting → Biggest Opportunity → Recent Wins → Since Your Last Visit → Growth Areas → Recent Progress |
+| **Planned (Phase B)** | Ask RankAura card inserts **below Greeting** — see `docs/ASK_RANKAURA_SPEC.md` |
 | **Visual** | Calm light workspace DNA (same family as Growth Plan); no Mission IA, KPI walls, charts, SEO scores, or AI employee cards |
 | **Screenshots** | `docs/ui-reference/workspace/01-*.png` … `07-*.png` |
 
@@ -269,6 +271,25 @@ Historical screenshot copy (for archaeology only — not to rebuild):
 
 1. RankAura should never make customers feel like they have more work to do. It should make them feel like less work needs to be done because RankAura is already doing it.
 2. Every time a customer opens RankAura, they should immediately feel that their business is in a better position than it was the last time they looked.
+
+2. Every time a customer opens RankAura, they should immediately feel that their business is in a better position than it was the last time they looked.
+
+---
+
+## 9. Ask RankAura (IN SPEC — CORE FEATURE — PENDING PROTOTYPE)
+
+| Field | Spec |
+|-------|------|
+| **Status** | **IN SPEC — CORE FEATURE — PENDING PROTOTYPE** (Phase A complete · no code until approved) |
+| **Spec** | `docs/ASK_RANKAURA_SPEC.md` |
+| **Purpose** | Primary conversational interface · eventual front door to RankAura · trusted business growth adviser |
+| **Workspace position** | Directly beneath Greeting (above Biggest Opportunity) — compact card, not a chat wall |
+| **Default UI** | Heading **Ask RankAura** · support **Ask anything about your business growth.** · input · max 4 suggested questions |
+| **After submit** | Expandable focused answer panel (preferred) — no long chat history on Workspace |
+| **Trust** | Answers grounded in RankAura data only; never invent rankings, traffic, reviews, or completed work |
+| **Phase B deliverables** | Card + mock provider + desktop/mobile screenshots — no live AI |
+
+**Not allowed:** floating support bubble · generic chatbot · AI avatars · voice mode · huge empty chat pane · autonomous live actions (prototype)
 
 ---
 
@@ -294,5 +315,5 @@ Not allowed without written approval:
 - Reordering approved onboarding steps (except Analysis **exit** destination → Growth Plan, once approved)
 - Reintroducing Mission IA because it appears in `06-dashboard.png`
 - Replacing React/Next UI with the HTML prototype look
-- Redesigning the approved Workspace hierarchy or adding dashboard sections
+- Redesigning the approved Workspace hierarchy or adding dashboard sections (Ask RankAura insertion requires spec approval first — see `docs/ASK_RANKAURA_SPEC.md`)
 - Changing Growth Plan hierarchy or category system without updating the spec first

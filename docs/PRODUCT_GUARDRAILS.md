@@ -2,7 +2,7 @@
 
 **Status:** FINAL AUTHORITY for future development  
 **Owner:** Jonathan  
-**Related locks:** `docs/UI_BIBLE.md` · `docs/SCREEN_LOCK_STATUS.md` · `docs/GROWTH_PLAN_SPEC.md` · `docs/WORKSPACE_SPEC.md` · `docs/ui-reference/` · `rankaura/docs/PRODUCT_VISION.md`
+**Related locks:** `docs/UI_BIBLE.md` · `docs/SCREEN_LOCK_STATUS.md` · `docs/GROWTH_PLAN_SPEC.md` · `docs/WORKSPACE_SPEC.md` · `docs/ASK_RANKAURA_SPEC.md` · `docs/ui-reference/` · `rankaura/docs/PRODUCT_VISION.md`
 
 This document governs every future RankAura change.  
 If a proposal conflicts with these guardrails, the proposal loses.
@@ -36,6 +36,7 @@ If a proposal conflicts with these guardrails, the proposal loses.
     - `docs/SCREEN_LOCK_STATUS.md`
     - `docs/GROWTH_PLAN_SPEC.md` (for Growth Plan / Launch Plan / category system)
     - `docs/WORKSPACE_SPEC.md` (for Workspace)
+    - `docs/ASK_RANKAURA_SPEC.md` (for Ask RankAura)
     - `rankaura/docs/PRODUCT_VISION.md` (and `docs/` copies where present)
     - `docs/PRODUCT_GUARDRAILS.md`
 
@@ -50,6 +51,16 @@ If a proposal conflicts with these guardrails, the proposal loses.
 3. Growth Plan = what we discovered · Workspace = what we’ve done since last visit · Reports (future) = what impact the work had.
 
 4. Workspace homepage must remain understandable in under 30 seconds — no scores, graphs, Mission language, AI employee cards, or KPI walls.
+
+## Ask RankAura principles (LOCKED — IN SPEC)
+
+Ask RankAura is a **permanent core feature**, not a secondary chatbot or support bubble.
+
+1. Ask RankAura should feel like **checking in with a trusted business growth adviser** — not opening a generic AI chatbot.
+2. Answers must be grounded in the customer’s **own RankAura data** (Growth Plan, Workspace activity, connected sources). **Never invent** rankings, traffic, reviews, competitor activity, completed work, opportunities, recommendations, or results.
+3. When data is unavailable, say so clearly and explain what is missing or what RankAura will monitor once connected.
+4. Ask RankAura sits **beneath the Workspace greeting** (Phase B) — compact by default; no huge chat window; no floating bubble; no avatars or AI employee characters.
+5. Spec: `docs/ASK_RANKAURA_SPEC.md`. **Status: IN SPEC — CORE FEATURE — PENDING PROTOTYPE.** Do not code until Phase A is approved.
 
 ## First-use flow (LOCKED)
 
@@ -73,9 +84,9 @@ Welcome → Name → Nice to meet you → Website URL → Business name → Busi
 
 ## Language (LOCKED for new surfaces)
 
-**Prefer:** Opportunity · Recommended next step · Worth your attention · Work completed · Planned next · Waiting for approval · Growth Plan / Launch Plan · Workspace  
+**Prefer:** Opportunity · Recommended next step · Worth your attention · Work completed · Planned next · Waiting for approval · Growth Plan / Launch Plan · Workspace · Ask RankAura  
 
-**Do not use:** Mission · Priority Mission · Today’s Mission · Review Mission · Quest · Level · AI employee supervision / productivity framing  
+**Do not use:** Mission · Priority Mission · Today’s Mission · Review Mission · Quest · Level · AI employee supervision / productivity framing · Generic chatbot framing (“How can I help you today?”) on Ask RankAura  
 
 ---
 
@@ -143,7 +154,7 @@ Move to the next feature
 - Features outside the current roadmap sprint
 - Modifying multiple approved screens at once
 - Creating parallel/duplicate UI systems
-- Coding Growth Plan / Workspace / theme conversion before the relevant phase is approved
+- Coding Growth Plan / Workspace / Ask RankAura / theme conversion before the relevant phase is approved
 - Reintroducing Mission IA because it appears in an older screenshot
 
 ---
@@ -155,6 +166,6 @@ Before coding:
 - [ ] Does this help a business owner grow without making them work harder?
 - [ ] Can a non-SEO owner understand it immediately?
 - [ ] Does it extend an existing component/screen instead of inventing a new area?
-- [ ] Does it conflict with UI Bible / Screen Lock / Growth Plan Spec / Vision / these Guardrails?
+- [ ] Does it conflict with UI Bible / Screen Lock / Growth Plan Spec / Workspace Spec / Ask RankAura Spec / Vision / these Guardrails?
 - [ ] Does the first-use flow still end Analysis → Growth/Launch Plan → Workspace?
 - [ ] Is this a single feature, ready for screenshot + approval + lock?

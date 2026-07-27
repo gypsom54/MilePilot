@@ -6,6 +6,7 @@
 Screenshot authority: `docs/ui-reference/` + `docs/UI_BIBLE.md`  
 Growth Plan authority: `docs/GROWTH_PLAN_SPEC.md`  
 Workspace authority: `docs/WORKSPACE_SPEC.md`  
+Ask RankAura authority: `docs/ASK_RANKAURA_SPEC.md`  
 Phase 3/4 implementation: `rankaura-web/app/growth-plan/` · `rankaura-web/app/workspace/`
 
 ---
@@ -31,6 +32,7 @@ Phase 3/4 implementation: `rankaura-web/app/growth-plan/` · `rankaura-web/app/w
 | 6a | Growth Plan (existing) | `/growth-plan?site=existing` | Spec + `rankaura-web` | **IMPLEMENTED — AWAITING SCREENSHOT APPROVAL** |
 | 6b | Launch Plan (new) | `/growth-plan?site=new` | Spec + `rankaura-web` | **IMPLEMENTED — AWAITING SCREENSHOT APPROVAL** |
 | 7 | Main Workspace | `/workspace` | `docs/WORKSPACE_SPEC.md` + `rankaura-web` | **FINAL POLISH — AWAITING REVIEW** |
+| 8 | Ask RankAura (Workspace) | `/workspace` (planned insertion) | `docs/ASK_RANKAURA_SPEC.md` | **IN SPEC — CORE FEATURE — PENDING PROTOTYPE** |
 
 ### Phase 4 Workspace screenshots (final polish)
 
@@ -43,6 +45,8 @@ Phase 3/4 implementation: `rankaura-web/app/growth-plan/` · `rankaura-web/app/w
 | `docs/ui-reference/workspace/05-since-last-visit-viewport.png` | Since Your Last Visit |
 | `docs/ui-reference/workspace/06-growth-areas-viewport.png` | Growth Areas |
 | `docs/ui-reference/workspace/07-recent-progress-viewport.png` | Recent Progress timeline |
+
+**Note:** Ask RankAura will insert beneath Greeting on Workspace after Phase B approval. Existing Workspace screenshots remain valid until Ask RankAura prototype is captured.
 
 ### Phase 3 screenshot set
 
@@ -109,6 +113,7 @@ Production onboarding lives at `/onboarding` in `rankaura-web` and hands off to 
 | Screen | Classification |
 |--------|----------------|
 | `/` | Legacy Mission dashboard — **not** the product home; do not extend |
+| Ask RankAura prototype | **IN SPEC** — Phase B after Jonathan approves `docs/ASK_RANKAURA_SPEC.md` |
 
 ---
 
@@ -127,3 +132,4 @@ Production onboarding lives at `/onboarding` in `rankaura-web` and hands off to 
 3. Update `UI_BIBLE.md` + this register in the same change.  
 4. Never “quietly” restyle locked screens.  
 5. Growth Plan structure changes require updating `docs/GROWTH_PLAN_SPEC.md` before code.
+6. Ask RankAura changes require updating `docs/ASK_RANKAURA_SPEC.md` before code.
