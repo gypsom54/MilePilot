@@ -30,7 +30,7 @@ export function FeaturedCategories({
           Most relevant for you
         </h2>
         <p className="mt-1 text-sm text-[#8b95a5]">
-          These areas matter most for your business right now.
+          These areas matter most for growing your business right now.
         </p>
       </div>
       <div className="space-y-3">

@@ -3,6 +3,7 @@ import { CategoryList } from "@/components/growth-plan/CategoryList";
 import { ContinueToWorkspace } from "@/components/growth-plan/ContinueToWorkspace";
 import { FeaturedCategories } from "@/components/growth-plan/FeaturedCategories";
 import { GrowthPlanHeader } from "@/components/growth-plan/GrowthPlanHeader";
+import { KeyDiscoveries } from "@/components/growth-plan/KeyDiscoveries";
 import { PrimaryOpportunityCard } from "@/components/growth-plan/PrimaryOpportunityCard";
 import { WhatHappensNext } from "@/components/growth-plan/WhatHappensNext";
 import type { GrowthPlanData } from "@/types/growthPlan";
@@ -18,9 +19,9 @@ interface GrowthPlanPageProps {
 }
 
 /**
- * Locked page hierarchy:
- * Header → Analysis confirmation → Primary opportunity → What happens next
- * → Featured categories → Remaining categories → Continue to Workspace
+ * Page hierarchy:
+ * Header → Analysis confirmation → Key discoveries → Primary opportunity
+ * → What happens next → Featured categories → Remaining categories → Continue
  */
 export function GrowthPlanPage({
   data,
@@ -44,6 +45,7 @@ export function GrowthPlanPage({
         <div className="flex flex-col gap-6 sm:gap-7">
           <GrowthPlanHeader header={data.header} />
           <AnalysisConfirmation items={data.confirmations} />
+          <KeyDiscoveries discoveries={data.keyDiscoveries} />
           <PrimaryOpportunityCard opportunity={data.primaryOpportunity} />
           <WhatHappensNext items={data.whatHappensNext} />
           <FeaturedCategories

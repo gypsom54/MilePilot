@@ -19,10 +19,10 @@ export function ContinueToWorkspace({ href = "/" }: ContinueToWorkspaceProps) {
         id="continue-workspace-heading"
         className="text-lg font-semibold text-[#080f1a]"
       >
-        Continue to Workspace
+        Continue to your Workspace
       </h2>
       <p className="mt-2 max-w-xl text-sm leading-relaxed text-[#8b95a5]">
-        Your ongoing progress will live in the Workspace.{" "}
+        Ongoing progress will live here — calm updates as RankAura keeps working for you.{" "}
         <span className="text-[#6b7280]">
           (Temporary handoff to the current home screen until the Workspace rebuild
           is approved.)

@@ -42,15 +42,20 @@ for (const id of REQUIRED_CATEGORIES) {
   assert.ok(newSrc.includes(`id: "${id}"`), `new mock missing ${id}`);
 }
 
-assert.ok(existingSrc.includes("Your Growth Plan is Ready"));
-assert.ok(newSrc.includes("Your Launch Plan is Ready"));
+assert.ok(existingSrc.includes("We've already identified opportunities"));
+assert.ok(newSrc.includes("Here's how we'll help grow your business"));
 assert.ok(existingSrc.includes("Review & Fix"));
 assert.ok(newSrc.includes("View Strategy"));
 assert.ok(existingSrc.includes("Website analysed"));
 assert.ok(!newSrc.includes("Website analysed"), "new site must not claim website analysed");
 assert.ok(existingSrc.includes("reddit_community"));
-assert.ok(newSrc.includes("original research"));
+assert.ok(newSrc.includes("does not copy discussions"));
+assert.ok(existingSrc.includes("keyDiscoveries") || existingSrc.includes("Customers are actively searching"));
+assert.ok(existingSrc.includes("Website Optimisation"));
 assert.ok(typesSrc.includes("existing_needs_access"));
 assert.ok(typesSrc.includes("new_pre_launch"));
+assert.ok(typesSrc.includes("Research completed"));
+assert.ok(typesSrc.includes("whyItMatters"));
+assert.ok(typesSrc.includes("KeyDiscovery"));
 
 console.log("rankaura-growth-plan-mock.test.js: OK");

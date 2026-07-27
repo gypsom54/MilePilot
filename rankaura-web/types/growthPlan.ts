@@ -45,17 +45,24 @@ export type CategoryId =
   | "ai_monitoring"
   | "business_intelligence";
 
+/** Customer-facing status labels — richer than generic software wording. */
 export const CATEGORY_STATUS_LABELS: Record<CategoryStatus, string> = {
-  complete: "Complete",
-  in_progress: "In Progress",
-  planned: "Planned",
-  monitoring: "Monitoring",
-  waiting_for_approval: "Waiting for Approval",
+  complete: "Research completed",
+  in_progress: "Recommendations prepared",
+  planned: "Coming next",
+  monitoring: "Currently monitoring",
+  waiting_for_approval: "Awaiting your approval",
 };
 
 export interface GrowthCategory {
   id: CategoryId;
   name: string;
+  /** Subtle purpose line under the name */
+  subtitle: string;
+  /** Why this matters for the business */
+  whyItMatters: string;
+  /** Featured cards: one calm business outcome */
+  businessImpact?: string;
   /** One short plain-English summary for collapsed card */
   summary: string;
   status: CategoryStatus;
@@ -80,6 +87,11 @@ export interface AnalysisConfirmationItem {
   done: boolean;
 }
 
+export interface KeyDiscovery {
+  id: string;
+  text: string;
+}
+
 export interface PrimaryOpportunity {
   title: string;
   support: string;
@@ -96,6 +108,7 @@ export interface GrowthPlanData {
   site: SiteContext;
   header: GrowthPlanHeaderContent;
   confirmations: AnalysisConfirmationItem[];
+  keyDiscoveries: KeyDiscovery[];
   primaryOpportunity: PrimaryOpportunity;
   whatHappensNext: string[];
   categories: GrowthCategory[];

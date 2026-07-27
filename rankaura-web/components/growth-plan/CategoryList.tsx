@@ -28,10 +28,10 @@ export function CategoryList({
           id="remaining-categories-heading"
           className="text-lg font-semibold text-[#080f1a]"
         >
-          More growth areas
+          More ways we can help
         </h2>
         <p className="mt-1 text-sm text-[#8b95a5]">
-          Everything RankAura can work on remains available below.
+          Everything RankAura can work on remains available — quietly, when it helps.
         </p>
       </div>
       <div className="space-y-3">

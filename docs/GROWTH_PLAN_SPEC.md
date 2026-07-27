@@ -18,14 +18,16 @@ This document locks structure, hierarchy, data model, language, states, and hand
 
 | Decision | Locked value |
 |----------|--------------|
-| Existing title | **Your Growth Plan is Ready** |
-| New title | **Your Launch Plan is Ready** |
-| Existing support | We analysed your business, website, market and competitors. Here is what we discovered and what happens next. |
-| New support | We analysed your business, market and competitors. We have prepared the foundations for your online growth. |
+| Existing title (polish) | **We've already identified opportunities to help your business grow.** |
+| New title (polish) | **Here's how we'll help grow your business.** |
+| Existing support | We've analysed your website, competitors and market to understand where your biggest opportunities are. Here's what we discovered. |
+| Key discoveries | Premium section immediately after analysis confirmation |
 | Review routes | `/growth-plan?site=existing` · `/growth-plan?site=new` · optional `?expand=<categoryId>` |
 | Continue to Workspace | Temporarily links to `/` until Workspace rebuild is approved |
 | Visual system | Calm light canvas retained; no dark navy conversion |
-| Category fields | Includes `summary`, `count`, `yourAction`, `primaryAction` as implemented |
+| Category display names | Humanised (e.g. Website Optimisation, Competitor Insights, Growing Your Authority) — ids unchanged |
+| Status labels | Research completed · Recommendations prepared · Coming next · Currently monitoring · Awaiting your approval |
+| Category fields | `subtitle`, `whyItMatters`, `businessImpact`, `summary`, `count`, `yourAction`, `primaryAction` |
 
 ---
 
@@ -602,14 +604,18 @@ See `docs/SCREEN_LOCK_STATUS.md` for lock register updates.
 
 ## 22. Approval checklist (Jonathan)
 
-- [ ] Flow lock: Analysis → Growth/Launch Plan → Workspace  
-- [ ] Site-state model extensible; UI only `existing` / `new`  
-- [ ] Light visual system preserved for first implementation  
-- [ ] 13 categories locked; relevance ordering required  
-- [ ] Page hierarchy sections 1–7 accepted  
-- [ ] Status + banned language accepted  
-- [ ] Ready for Phase 3 mock implementation  
+### Phase 2 (complete)
+- [x] Flow lock: Analysis → Growth/Launch Plan → Workspace  
+- [x] Site-state model extensible; UI only `existing` / `new`  
+- [x] Light visual system preserved for first implementation  
+- [x] 13 categories locked; relevance ordering required  
+- [x] Page hierarchy sections 1–7 accepted  
+- [x] Status + banned language accepted  
+
+### Phase 3 (awaiting visual approval)
+- [ ] Growth Plan / Launch Plan screenshots approved  
+- [ ] Ready for Workspace rebuild phase  
 
 ---
 
-**End of Phase 2 Growth Plan specification.**
+**End of Growth Plan specification.**

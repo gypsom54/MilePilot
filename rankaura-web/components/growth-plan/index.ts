@@ -1,6 +1,7 @@
 export { GrowthPlanPage } from "@/components/growth-plan/GrowthPlanPage";
 export { GrowthPlanHeader } from "@/components/growth-plan/GrowthPlanHeader";
 export { AnalysisConfirmation } from "@/components/growth-plan/AnalysisConfirmation";
+export { KeyDiscoveries } from "@/components/growth-plan/KeyDiscoveries";
 export { PrimaryOpportunityCard } from "@/components/growth-plan/PrimaryOpportunityCard";
 export { WhatHappensNext } from "@/components/growth-plan/WhatHappensNext";
 export { FeaturedCategories } from "@/components/growth-plan/FeaturedCategories";

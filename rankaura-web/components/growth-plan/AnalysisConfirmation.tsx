@@ -14,7 +14,7 @@ export function AnalysisConfirmation({ items }: AnalysisConfirmationProps) {
         id="analysis-confirmation-heading"
         className="text-sm font-semibold text-[#080f1a]"
       >
-        Analysis confirmation
+        Analysis complete
       </h2>
       <ul className="mt-4 flex flex-wrap gap-2.5">
         {items.map((item) => (

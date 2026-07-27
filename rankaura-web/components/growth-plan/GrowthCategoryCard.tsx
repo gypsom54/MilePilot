@@ -42,13 +42,23 @@ export function GrowthCategoryCard({
             {typeof category.count === "number" ? (
               <span className="text-xs font-medium text-[#8b95a5]">
                 {category.count}{" "}
-                {category.count === 1 ? "item" : "items"}
+                {category.count === 1 ? "insight" : "insights"}
               </span>
             ) : null}
           </div>
-          <p className="mt-2 text-sm leading-relaxed text-[#8b95a5]">
+          <p className="mt-1 text-xs leading-relaxed text-[#8b95a5]">
+            {category.subtitle}
+          </p>
+          <p className="mt-2.5 text-sm leading-relaxed text-[#3d4654]">
             {category.summary}
           </p>
+          {featured && category.businessImpact ? (
+            <p className="mt-2 text-sm font-medium text-[#3b6fd4]">
+              {category.businessImpact}
+            </p>
+          ) : (
+            <p className="mt-2 text-sm text-[#8b95a5]">{category.whyItMatters}</p>
+          )}
         </div>
         <button
           id={buttonId}

@@ -13,7 +13,7 @@ export function PrimaryOpportunityCard({
       className="rounded-2xl bg-white p-6 shadow-[0_1px_2px_rgba(15,23,42,0.04)] sm:p-8"
     >
       <p className="text-[11px] font-semibold tracking-[0.14em] text-[#5b8def]">
-        PRIMARY OPPORTUNITY
+        WHERE WE&apos;LL START
       </p>
       <h2
         id="primary-opportunity-heading"
