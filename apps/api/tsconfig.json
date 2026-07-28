@@ -8,6 +8,7 @@
   "references": [
     { "path": "../../packages/shared" },
     { "path": "../../packages/engine-sdk" },
-    { "path": "../../services/business-discovery" }
+    { "path": "../../services/business-discovery" },
+    { "path": "../../services/market-intelligence" }
   ]
 }

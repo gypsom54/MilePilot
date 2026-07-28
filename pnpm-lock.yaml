@@ -69,6 +69,9 @@ importers:
       '@seo-autopilot/engine-sdk':
         specifier: workspace:*
         version: link:../../packages/engine-sdk
+      '@seo-autopilot/market-intelligence':
+        specifier: workspace:*
+        version: link:../../services/market-intelligence
       '@seo-autopilot/shared':
         specifier: workspace:*
         version: link:../../packages/shared
@@ -178,12 +181,15 @@ importers:
 
   services/market-intelligence:
     dependencies:
-      '@seo-autopilot/ai':
+      '@seo-autopilot/database':
         specifier: workspace:*
-        version: link:../../packages/ai
+        version: link:../../packages/database
       '@seo-autopilot/engine-sdk':
         specifier: workspace:*
         version: link:../../packages/engine-sdk
+      '@seo-autopilot/knowledge-graph':
+        specifier: workspace:*
+        version: link:../../packages/knowledge-graph
       '@seo-autopilot/shared':
         specifier: workspace:*
         version: link:../../packages/shared

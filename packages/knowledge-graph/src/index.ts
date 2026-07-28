@@ -26,3 +26,10 @@ export {
   businessEntityId,
   childEntityId,
 } from "./business-discovery-mappings.js";
+
+export {
+  MarketIntelligenceEntityType,
+  MarketIntelligenceRelationshipType,
+  marketEntityId,
+  marketChildEntityId,
+} from "./market-intelligence-mappings.js";

@@ -1,57 +1,51 @@
-import {
-  BaseIntelligenceEngine,
-  type EngineContext,
-  type EngineRegistration,
-  type IntelligenceEngine,
-} from "@seo-autopilot/engine-sdk";
-import {
-  createDefaultEngineConfig,
-  type EngineConfig,
-} from "@seo-autopilot/shared";
+export type {
+  MarketProfile,
+  CreateMarketInput,
+  EvidenceMeta,
+  MarketCategory,
+  CustomerProblem,
+  DesiredOutcome,
+  DemandSignal,
+  DemandTheme,
+  CompetitorCandidate,
+  OfferObservation,
+  MarketGap,
+  Trend,
+  SeasonalityPattern,
+  MarketSource,
+  GeographicScope,
+} from "./domain/types.js";
 
-/**
- * Market Intelligence Engine
- *
- * Sprint 0: scaffold only. No business/SEO logic.
- * Implements IntelligenceEngine via BaseIntelligenceEngine.
- */
-export class MarketIntelligenceEngine extends BaseIntelligenceEngine {
-  readonly name = "market-intelligence";
-  readonly purpose =
-    "Observe market signals relevant to the business.";
-  readonly version = "0.1.0";
-  readonly inputs: string[] = [];
-  readonly outputs: string[] = [];
-  readonly events: string[] = ["CompetitorUpdated"];
-  readonly dependencies: string[] = [];
+export {
+  createEvidenceMeta,
+  computeFreshness,
+  effectiveConfidence,
+  buildIdempotencyKey,
+} from "./domain/evidence.js";
 
-  constructor(context: EngineContext) {
-    super(context);
-  }
-}
+export {
+  validateCreateMarketInput,
+  validateEvidenceInput,
+  validateGapEvidence,
+  validateTrendObservations,
+} from "./validation/validate.js";
 
-export function createMarketIntelligenceEngineConfig(): EngineConfig {
-  return createDefaultEngineConfig({
-    name: "market-intelligence",
-    version: "0.1.0",
-    description: "Market Intelligence Engine",
-    dependencies: [],
-  });
-}
-
-export function createMarketIntelligenceEngineRegistration(
-  context: EngineContext,
-): EngineRegistration {
-  const engine: IntelligenceEngine = new MarketIntelligenceEngine(context);
-  const config = createMarketIntelligenceEngineConfig();
-  return {
-    name: engine.name,
-    version: engine.version,
-    description: config.description,
-    dependencies: [...engine.dependencies],
-    events: [...engine.events],
-    status: config.status,
-    engine,
-    config,
-  };
-}
+export { MarketProfileRepository } from "./repository/market-profile-repository.js";
+export { MarketIntelligenceService } from "./service.js";
+export {
+  MarketIntelligenceEngine,
+  createMarketIntelligenceEngineConfig,
+  createMarketIntelligenceEngineRegistration,
+} from "./engine.js";
+export { MARKET_INTELLIGENCE_CAPABILITY_MANIFEST } from "./capability-manifest.js";
+export {
+  MarketIntelligenceApi,
+  type ApiRequest,
+  type ApiResponse,
+} from "./api/handlers.js";
+export {
+  createMarketIntelligenceRuntime,
+  registerMarketIntelligence,
+  type MarketIntelligenceRuntime,
+} from "./composition.js";
+export { syncMarketProfileToKnowledgeGraph } from "./knowledge-graph/sync.js";

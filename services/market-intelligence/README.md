@@ -1,8 +1,15 @@
 # @seo-autopilot/market-intelligence
 
-Sprint 0 scaffold for **Market Intelligence Engine**.
+Market Intelligence Engine — Volume 5 / Sprint 2.
 
-- Implements `IntelligenceEngine` (unimplemented analyse/recommend/automate)
-- Owns `prompts/prompt.md`
-- Registers via Engine Registry helpers
-- No business logic in this sprint
+Owns external market observations. Does not overwrite Business Discovery, recommend strategy, crawl, score SEO, or generate content.
+
+## Explicitly excluded
+
+- Website crawling
+- SEO scoring / rankings
+- Content generation
+- Ask orchestration
+- Dashboards
+- Opportunity prioritisation
+- Live external data providers

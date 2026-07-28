@@ -3,6 +3,7 @@
  * Engines communicate through these events only — never via direct coupling.
  */
 export const PlatformEventName = {
+  // Business Discovery (Volume 4)
   BusinessCreated: "BusinessCreated",
   BusinessUpdated: "BusinessUpdated",
   WebsiteConnected: "WebsiteConnected",
@@ -13,6 +14,29 @@ export const PlatformEventName = {
   CompetitorSeedAdded: "CompetitorSeedAdded",
   ConstraintUpdated: "ConstraintUpdated",
   BrandProfileUpdated: "BrandProfileUpdated",
+
+  // Market Intelligence (Volume 5)
+  MarketDefined: "MarketDefined",
+  MarketScopeUpdated: "MarketScopeUpdated",
+  MarketCategoryCandidateCreated: "MarketCategoryCandidateCreated",
+  MarketCategoryConfirmed: "MarketCategoryConfirmed",
+  DemandSignalObserved: "DemandSignalObserved",
+  DemandThemeCreated: "DemandThemeCreated",
+  CustomerProblemObserved: "CustomerProblemObserved",
+  CompetitorCandidateDiscovered: "CompetitorCandidateDiscovered",
+  CompetitorCandidateConfirmed: "CompetitorCandidateConfirmed",
+  CompetitorCandidateDismissed: "CompetitorCandidateDismissed",
+  OfferObserved: "OfferObserved",
+  MarketGapDetected: "MarketGapDetected",
+  MarketGapValidated: "MarketGapValidated",
+  MarketTrendObserved: "MarketTrendObserved",
+  SeasonalityPatternObserved: "SeasonalityPatternObserved",
+  MarketEvidenceExpired: "MarketEvidenceExpired",
+  MarketResearchCompleted: "MarketResearchCompleted",
+  MarketResearchPartiallyCompleted: "MarketResearchPartiallyCompleted",
+  MarketResearchFailed: "MarketResearchFailed",
+
+  // Platform (later engines)
   PageCrawled: "PageCrawled",
   PerformanceChanged: "PerformanceChanged",
   ReviewReceived: "ReviewReceived",

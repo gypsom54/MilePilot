@@ -20,6 +20,25 @@ Engines never call each other. They publish and subscribe to events.
 | `CompetitorSeedAdded` | A competitor seed was recorded |
 | `ConstraintUpdated` | Constraints changed |
 | `BrandProfileUpdated` | Brand profile changed |
+| `MarketDefined` | Market definition created |
+| `MarketScopeUpdated` | Market scope/definition updated |
+| `MarketCategoryCandidateCreated` | Market category candidate added |
+| `MarketCategoryConfirmed` | Market category confirmed |
+| `DemandSignalObserved` | Demand signal recorded |
+| `DemandThemeCreated` | Demand theme created |
+| `CustomerProblemObserved` | Customer problem observed |
+| `CompetitorCandidateDiscovered` | Competitor candidate discovered |
+| `CompetitorCandidateConfirmed` | Competitor candidate confirmed |
+| `CompetitorCandidateDismissed` | Competitor candidate dismissed |
+| `OfferObserved` | Market offer observation recorded |
+| `MarketGapDetected` | Market gap candidate detected |
+| `MarketGapValidated` | Market gap validated |
+| `MarketTrendObserved` | Market trend observed |
+| `SeasonalityPatternObserved` | Seasonality pattern observed |
+| `MarketEvidenceExpired` | Market evidence expired |
+| `MarketResearchCompleted` | Market research completed |
+| `MarketResearchPartiallyCompleted` | Market research partially completed |
+| `MarketResearchFailed` | Market research failed |
 | `PageCrawled` | A page was crawled |
 | `PerformanceChanged` | Performance signals changed |
 | `ReviewReceived` | A review was received |
