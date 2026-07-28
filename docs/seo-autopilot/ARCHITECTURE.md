@@ -96,6 +96,7 @@ Forthcoming engines from Volume 3 (not implemented until their specification vol
 8. **Every engine owns its own `prompt.md`** — independent, versioned, replaceable.
 9. **Every engine is configured** (limits, timeouts, flags, version, health, dependencies).
 10. **Every engine is testable** via the shared test structure.
+11. **Baseline architecture review** ([PLATFORM_ARCHITECTURE_AUDIT.md](./PLATFORM_ARCHITECTURE_AUDIT.md)) is the Engineering Bible checkpoint after Sprint 5 — verify future engines against it; do not use it to justify foundation redesign sprints.
 
 ## Runtime composition (Sprint 0)
 
