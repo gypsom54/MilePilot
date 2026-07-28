@@ -1,5 +1,13 @@
-# @seo-autopilot/knowledge-graph
+# Knowledge Graph SDK + Canonical Memory
 
-Knowledge Graph **SDK interfaces only** (Sprint 0).
+Package: `@seo-autopilot/knowledge-graph`
 
-No graph storage. No SEO logic. No business rules.
+- Sprint 0: SDK interfaces
+- Sprint 1–4: Domain projection mappings + `InMemoryKnowledgeGraph`
+- Sprint 5: Canonical entity/relationship memory (Volume 8) — identity, aliases, evidence, provenance, confidence/version history, temporal validity, duplicate detection, merge proposals
+
+**No SEO logic.**
+
+Canonical writes are owned by the Knowledge Graph Engine (`@seo-autopilot/knowledge-graph-engine`). Domain engines may propose; they must not mutate another engine's canonical entities.
+
+See `docs/seo-autopilot/VOLUME_8_KNOWLEDGE_GRAPH.md`.

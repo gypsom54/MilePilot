@@ -18,6 +18,8 @@ Architecture foundation documentation for Sprint 0, plus locked Engineering Bibl
 | [SPRINT_3.md](./SPRINT_3.md) | Sprint 3 Website Intelligence implementation plan |
 | [VOLUME_7_CRAWL_INTELLIGENCE.md](./VOLUME_7_CRAWL_INTELLIGENCE.md) | **Engineering Bible Vol. 7 — Crawl Intelligence** |
 | [SPRINT_4.md](./SPRINT_4.md) | Sprint 4 Crawl Intelligence implementation plan |
+| [VOLUME_8_KNOWLEDGE_GRAPH.md](./VOLUME_8_KNOWLEDGE_GRAPH.md) | **Engineering Bible Vol. 8 — Knowledge Graph Engine** |
+| [SPRINT_5.md](./SPRINT_5.md) | Sprint 5 Knowledge Graph Engine implementation plan |
 | [CREATING_AN_ENGINE.md](./CREATING_AN_ENGINE.md) | How to create an Intelligence Engine |
 | [EVENTS.md](./EVENTS.md) | Event Bus communication |
 | [KNOWLEDGE_GRAPH.md](./KNOWLEDGE_GRAPH.md) | Knowledge Graph SDK |

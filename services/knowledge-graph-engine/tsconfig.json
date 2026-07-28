@@ -8,10 +8,6 @@
   "references": [
     { "path": "../../packages/shared" },
     { "path": "../../packages/engine-sdk" },
-    { "path": "../../services/business-discovery" },
-    { "path": "../../services/market-intelligence" },
-    { "path": "../../services/website-intelligence" },
-    { "path": "../../services/crawl" },
-    { "path": "../../services/knowledge-graph-engine" }
+    { "path": "../../packages/knowledge-graph" }
   ]
 }

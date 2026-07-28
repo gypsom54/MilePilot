@@ -72,6 +72,9 @@ importers:
       '@seo-autopilot/engine-sdk':
         specifier: workspace:*
         version: link:../../packages/engine-sdk
+      '@seo-autopilot/knowledge-graph-engine':
+        specifier: workspace:*
+        version: link:../../services/knowledge-graph-engine
       '@seo-autopilot/market-intelligence':
         specifier: workspace:*
         version: link:../../services/market-intelligence
@@ -178,6 +181,18 @@ importers:
       '@seo-autopilot/database':
         specifier: workspace:*
         version: link:../../packages/database
+      '@seo-autopilot/engine-sdk':
+        specifier: workspace:*
+        version: link:../../packages/engine-sdk
+      '@seo-autopilot/knowledge-graph':
+        specifier: workspace:*
+        version: link:../../packages/knowledge-graph
+      '@seo-autopilot/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
+
+  services/knowledge-graph-engine:
+    dependencies:
       '@seo-autopilot/engine-sdk':
         specifier: workspace:*
         version: link:../../packages/engine-sdk

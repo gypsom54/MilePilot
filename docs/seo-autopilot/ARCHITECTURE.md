@@ -9,9 +9,11 @@ See [NORTH_STAR.md](./NORTH_STAR.md).
 | Volume | Document | Status |
 | --- | --- | --- |
 | 3 | [VOLUME_3_ASK_SEO_AUTOPILOT.md](./VOLUME_3_ASK_SEO_AUTOPILOT.md) | Spec locked — **do not implement yet** |
-| 4 | [VOLUME_4_BUSINESS_DISCOVERY.md](./VOLUME_4_BUSINESS_DISCOVERY.md) | Spec locked — Sprint 1 implementation |
-| 5 | [VOLUME_5_MARKET_INTELLIGENCE.md](./VOLUME_5_MARKET_INTELLIGENCE.md) | Spec locked — Sprint 2 implementation |
-| 6 | [VOLUME_6_WEBSITE_INTELLIGENCE.md](./VOLUME_6_WEBSITE_INTELLIGENCE.md) | Spec locked — Sprint 3 implementation |
+| 4 | [VOLUME_4_BUSINESS_DISCOVERY.md](./VOLUME_4_BUSINESS_DISCOVERY.md) | Implemented (Sprint 1) |
+| 5 | [VOLUME_5_MARKET_INTELLIGENCE.md](./VOLUME_5_MARKET_INTELLIGENCE.md) | Implemented (Sprint 2) |
+| 6 | [VOLUME_6_WEBSITE_INTELLIGENCE.md](./VOLUME_6_WEBSITE_INTELLIGENCE.md) | Implemented (Sprint 3) |
+| 7 | [VOLUME_7_CRAWL_INTELLIGENCE.md](./VOLUME_7_CRAWL_INTELLIGENCE.md) | Implemented (Sprint 4) |
+| 8 | [VOLUME_8_KNOWLEDGE_GRAPH.md](./VOLUME_8_KNOWLEDGE_GRAPH.md) | Implemented (Sprint 5) |
 
 ## AI-visibility product loop
 
@@ -64,6 +66,7 @@ Ask SEO AutoPilot is the orchestration layer over this mesh. It does not replace
   market-intelligence     # Sprint 2 — external market observations
   website-intelligence    # Sprint 3 — structural/semantic website model
   crawl                   # Sprint 4 — crawl observation domain
+  knowledge-graph-engine  # Sprint 5 — canonical semantic memory
   performance
   authority
   reviews
