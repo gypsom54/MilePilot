@@ -17,3 +17,12 @@ export type {
   FindSupportingEvidence,
   FindBusinessContext,
 } from "./sdk.js";
+
+export { InMemoryKnowledgeGraph } from "./in-memory.js";
+
+export {
+  BusinessDiscoveryEntityType,
+  BusinessDiscoveryRelationshipType,
+  businessEntityId,
+  childEntityId,
+} from "./business-discovery-mappings.js";

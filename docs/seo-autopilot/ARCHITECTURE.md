@@ -9,7 +9,7 @@ See [NORTH_STAR.md](./NORTH_STAR.md).
 | Volume | Document | Status |
 | --- | --- | --- |
 | 3 | [VOLUME_3_ASK_SEO_AUTOPILOT.md](./VOLUME_3_ASK_SEO_AUTOPILOT.md) | Spec locked — **do not implement yet** |
-| 4 | Business Discovery Engine | Awaiting complete specification — see [readiness note](./VOLUME_4_BUSINESS_DISCOVERY_READINESS.md) |
+| 4 | [VOLUME_4_BUSINESS_DISCOVERY.md](./VOLUME_4_BUSINESS_DISCOVERY.md) | Spec locked — Sprint 1 implementation |
 
 ## AI-visibility product loop
 

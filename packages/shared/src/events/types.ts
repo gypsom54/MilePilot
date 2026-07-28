@@ -4,7 +4,15 @@
  */
 export const PlatformEventName = {
   BusinessCreated: "BusinessCreated",
+  BusinessUpdated: "BusinessUpdated",
   WebsiteConnected: "WebsiteConnected",
+  ServiceAdded: "ServiceAdded",
+  AudienceChanged: "AudienceChanged",
+  GoalAdded: "GoalAdded",
+  GoalCompleted: "GoalCompleted",
+  CompetitorSeedAdded: "CompetitorSeedAdded",
+  ConstraintUpdated: "ConstraintUpdated",
+  BrandProfileUpdated: "BrandProfileUpdated",
   PageCrawled: "PageCrawled",
   PerformanceChanged: "PerformanceChanged",
   ReviewReceived: "ReviewReceived",

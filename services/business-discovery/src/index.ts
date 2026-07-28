@@ -1,57 +1,37 @@
-import {
-  BaseIntelligenceEngine,
-  type EngineContext,
-  type EngineRegistration,
-  type IntelligenceEngine,
-} from "@seo-autopilot/engine-sdk";
-import {
-  createDefaultEngineConfig,
-  type EngineConfig,
-} from "@seo-autopilot/shared";
+export type {
+  BusinessProfile,
+  CreateBusinessInput,
+  IdentityProfile,
+  BrandProfile,
+  AudienceProfile,
+  GoalEntity,
+  ExpertiseNode,
+  TrustSignal,
+  DigitalAsset,
+  CompetitorSeed,
+  CustomerQuestion,
+  ConstraintEntity,
+  PreferenceRegistry,
+  EnrichmentSuggestion,
+} from "./domain/types.js";
 
-/**
- * Business Discovery Intelligence Engine
- *
- * Sprint 0: scaffold only. No business/SEO logic.
- * Implements IntelligenceEngine via BaseIntelligenceEngine.
- */
-export class BusinessDiscoveryEngine extends BaseIntelligenceEngine {
-  readonly name = "business-discovery";
-  readonly purpose =
-    "Discover and structure business context for the platform.";
-  readonly version = "0.1.0";
-  readonly inputs: string[] = [];
-  readonly outputs: string[] = [];
-  readonly events: string[] = ["BusinessCreated", "WebsiteConnected"];
-  readonly dependencies: string[] = [];
-
-  constructor(context: EngineContext) {
-    super(context);
-  }
-}
-
-export function createBusinessDiscoveryEngineConfig(): EngineConfig {
-  return createDefaultEngineConfig({
-    name: "business-discovery",
-    version: "0.1.0",
-    description: "Business Discovery Intelligence Engine",
-    dependencies: [],
-  });
-}
-
-export function createBusinessDiscoveryEngineRegistration(
-  context: EngineContext,
-): EngineRegistration {
-  const engine: IntelligenceEngine = new BusinessDiscoveryEngine(context);
-  const config = createBusinessDiscoveryEngineConfig();
-  return {
-    name: engine.name,
-    version: engine.version,
-    description: config.description,
-    dependencies: [...engine.dependencies],
-    events: [...engine.events],
-    status: config.status,
-    engine,
-    config,
-  };
-}
+export { createBusinessProfileFromInput } from "./domain/factory.js";
+export {
+  validateCreateBusinessInput,
+  validateNonEmptyName,
+} from "./validation/validate.js";
+export { BusinessProfileRepository } from "./repository/business-profile-repository.js";
+export { BusinessDiscoveryService } from "./service.js";
+export {
+  BusinessDiscoveryEngine,
+  createBusinessDiscoveryEngineConfig,
+  createBusinessDiscoveryEngineRegistration,
+} from "./engine.js";
+export { BUSINESS_DISCOVERY_CAPABILITY_MANIFEST } from "./capability-manifest.js";
+export { BusinessDiscoveryApi, type ApiRequest, type ApiResponse } from "./api/handlers.js";
+export {
+  createBusinessDiscoveryRuntime,
+  registerBusinessDiscovery,
+  type BusinessDiscoveryRuntime,
+} from "./composition.js";
+export { syncBusinessProfileToKnowledgeGraph } from "./knowledge-graph/sync.js";

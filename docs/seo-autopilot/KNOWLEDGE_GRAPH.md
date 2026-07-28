@@ -1,10 +1,13 @@
 # Knowledge Graph SDK
 
-## Scope (Sprint 0)
-
-Interfaces only. **No graph implementation. No SEO logic.**
+## Scope
 
 Package: `@seo-autopilot/knowledge-graph`
+
+- Sprint 0: SDK interfaces
+- Sprint 1: `InMemoryKnowledgeGraph` + Business Discovery entity/relationship mappings
+
+**No SEO logic.**
 
 ## Functions
 

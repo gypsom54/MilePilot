@@ -32,3 +32,13 @@ export {
 
 export type { EngineResult, EngineError } from "./result.js";
 export { ok, err } from "./result.js";
+
+export type {
+  ProvenanceSource,
+  ChangeHistoryEntry,
+  ProvenancedValue,
+} from "./provenance.js";
+export {
+  createProvenancedValue,
+  updateProvenancedValue,
+} from "./provenance.js";

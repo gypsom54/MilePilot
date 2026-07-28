@@ -18,3 +18,8 @@ export {
   PlatformEventName,
   type PlatformEvent,
 } from "@seo-autopilot/shared";
+
+export type {
+  CapabilityManifest,
+  CapabilityManifestEngine,
+} from "./capability-manifest.js";

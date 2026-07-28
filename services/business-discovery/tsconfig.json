@@ -4,18 +4,11 @@
     "rootDir": "src",
     "outDir": "dist"
   },
-  "include": [
-    "src/**/*"
-  ],
+  "include": ["src/**/*"],
   "references": [
-    {
-      "path": "../../packages/shared"
-    },
-    {
-      "path": "../../packages/engine-sdk"
-    },
-    {
-      "path": "../../packages/ai"
-    }
+    { "path": "../../packages/shared" },
+    { "path": "../../packages/engine-sdk" },
+    { "path": "../../packages/database" },
+    { "path": "../../packages/knowledge-graph" }
   ]
 }

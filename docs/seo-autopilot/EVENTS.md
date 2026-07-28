@@ -6,12 +6,20 @@
 
 Engines never call each other. They publish and subscribe to events.
 
-## Platform events (Sprint 0)
+## Platform events
 
 | Event | Intent |
 | --- | --- |
 | `BusinessCreated` | A business entity entered the platform |
+| `BusinessUpdated` | Canonical business profile changed |
 | `WebsiteConnected` | A website was connected to a business |
+| `ServiceAdded` | A service entity was added |
+| `AudienceChanged` | Audience profile changed |
+| `GoalAdded` | A structured goal was added |
+| `GoalCompleted` | A goal was marked completed |
+| `CompetitorSeedAdded` | A competitor seed was recorded |
+| `ConstraintUpdated` | Constraints changed |
+| `BrandProfileUpdated` | Brand profile changed |
 | `PageCrawled` | A page was crawled |
 | `PerformanceChanged` | Performance signals changed |
 | `ReviewReceived` | A review was received |

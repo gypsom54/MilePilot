@@ -1,14 +1,25 @@
 /**
  * @seo-autopilot/database
  *
- * Sprint 0: interface placeholder only.
- * No schemas, migrations, or SEO/business persistence logic.
- * Database Bible will define the real contract.
+ * Sprint 1: Business Discovery schema + in-memory store.
+ * No SEO persistence. No auth UI.
  */
 
+export {
+  BUSINESS_DISCOVERY_TABLES,
+  BUSINESS_DISCOVERY_DDL,
+  type BusinessDiscoveryTable,
+  type BusinessRow,
+  type ProfileVersionRow,
+} from "./business-discovery/schema.js";
+
+export {
+  type BusinessDiscoveryStore,
+  InMemoryBusinessDiscoveryStore,
+} from "./business-discovery/store.js";
+
 export interface DatabaseClient {
-  /** Connectivity check — no domain operations in Sprint 0 */
   ping(): Promise<{ ok: boolean }>;
 }
 
-export const DATABASE_PACKAGE_STATUS = "scaffold-only" as const;
+export const DATABASE_PACKAGE_STATUS = "business-discovery-sprint1" as const;

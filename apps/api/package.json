@@ -16,6 +16,7 @@
     "clean": "rm -rf dist *.tsbuildinfo"
   },
   "dependencies": {
+    "@seo-autopilot/business-discovery": "workspace:*",
     "@seo-autopilot/engine-sdk": "workspace:*",
     "@seo-autopilot/shared": "workspace:*"
   },

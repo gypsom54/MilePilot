@@ -1,6 +1,7 @@
 # @seo-autopilot/api
 
-Sprint 0 scaffold. **No business endpoints.**
+Sprint 1 composition root.
 
-Provides a composition-root helper for Engine Registry + Event Bus wiring.
-HTTP API surface arrives with the API Bible.
+- Engine Registry + Event Bus
+- Business Discovery API via `handleApiRequest`
+- No dashboards, SEO tools, or Ask orchestration

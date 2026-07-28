@@ -1,33 +1,21 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
+import { InMemoryEngineRegistry } from "../../../packages/engine-sdk/dist/index.js";
 import {
-  InMemoryEngineRegistry,
-} from "../../../packages/engine-sdk/dist/index.js";
-import {
-  InMemoryEventBus,
-  StructuredEngineLogger,
-  createDefaultEngineConfig,
-} from "../../../packages/shared/dist/index.js";
-import {
-  createBusinessDiscoveryEngineRegistration,
+  createBusinessDiscoveryRuntime,
+  registerBusinessDiscovery,
 } from "../../../services/business-discovery/dist/index.js";
 
 const REQUIRED_METHODS = ["analyse", "recommend", "automate", "health"];
 
 describe("IntelligenceEngine contract", () => {
   it("registers Business Discovery with required surface", async () => {
-    const events = new InMemoryEventBus();
-    const config = createDefaultEngineConfig({
-      name: "business-discovery",
-      version: "0.1.0",
-      description: "Business Discovery Intelligence Engine",
-    });
-    const logger = new StructuredEngineLogger(config.name, () => {});
-    const registration = createBusinessDiscoveryEngineRegistration({
-      config,
-      events,
-      logger,
-    });
+    const runtime = createBusinessDiscoveryRuntime();
+    const registry = new InMemoryEngineRegistry();
+    registerBusinessDiscovery(runtime, registry);
+
+    const registration = registry.get("business-discovery");
+    assert.ok(registration);
 
     for (const method of REQUIRED_METHODS) {
       assert.equal(typeof registration.engine[method], "function");
@@ -41,16 +29,13 @@ describe("IntelligenceEngine contract", () => {
     assert.ok(Array.isArray(registration.engine.events));
     assert.ok(Array.isArray(registration.engine.dependencies));
 
-    const registry = new InMemoryEngineRegistry();
-    registry.register(registration);
-
     const health = await registry.healthCheck("business-discovery");
     assert.equal(health?.status, "healthy");
 
-    const analyse = await registration.engine.analyse({});
-    assert.equal(analyse.ok, false);
-    if (!analyse.ok) {
-      assert.equal(analyse.error.code, "ENGINE_NOT_IMPLEMENTED");
+    const recommend = await registration.engine.recommend({});
+    assert.equal(recommend.ok, false);
+    if (!recommend.ok) {
+      assert.equal(recommend.error.code, "ENGINE_DOES_NOT_RECOMMEND");
     }
   });
 });
