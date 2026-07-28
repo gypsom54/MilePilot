@@ -4,6 +4,43 @@
 
 See [NORTH_STAR.md](./NORTH_STAR.md).
 
+## Bible volumes (authority)
+
+| Volume | Document | Status |
+| --- | --- | --- |
+| 3 | [VOLUME_3_ASK_SEO_AUTOPILOT.md](./VOLUME_3_ASK_SEO_AUTOPILOT.md) | Spec locked — **do not implement yet** |
+| 4 | Business Discovery Engine | Awaiting complete specification — see [readiness note](./VOLUME_4_BUSINESS_DISCOVERY_READINESS.md) |
+
+## AI-visibility product loop
+
+Defined in Volume 3. Two closely connected capabilities feed the Knowledge Asset Builder:
+
+1. **AI Discovery & Recommendation Engine** — measures whether businesses are understood, cited, mentioned and recommended by AI platforms.
+2. **Answer Opportunity Intelligence Engine** — discovers customer questions and where the business can become the strongest available answer.
+3. **Knowledge Asset Builder** — creates complete authority assets rather than generic blog posts.
+
+```text
+Discover questions
+        ↓
+Cluster intent and topics
+        ↓
+Detect knowledge gaps
+        ↓
+Score opportunities
+        ↓
+Build the knowledge asset
+        ↓
+Strengthen evidence and authority
+        ↓
+Publish and connect it
+        ↓
+Monitor search and AI visibility
+        ↓
+Improve and expand it
+```
+
+Ask SEO AutoPilot is the orchestration layer over this mesh. It does not replace specialist engines.
+
 ## Topology
 
 ```text
@@ -30,8 +67,14 @@ See [NORTH_STAR.md](./NORTH_STAR.md).
   community
   competitor
   opportunity
-  ask-autopilot       # orchestration engine shell
+  ask-autopilot       # orchestration engine shell (unimplemented)
 ```
+
+Forthcoming engines from Volume 3 (not scaffolded until their specification volumes / approved sprints):
+
+- AI Discovery & Recommendation
+- Answer Opportunity Intelligence
+- Knowledge Asset Builder
 
 ## Core principles
 
@@ -39,10 +82,12 @@ See [NORTH_STAR.md](./NORTH_STAR.md).
 2. **Engines communicate only through the Event Bus** — no direct coupling.
 3. **Knowledge Graph access is via SDK interfaces** — no ad-hoc graph access.
 4. **Every engine registers in the Engine Registry** — plugin architecture.
-5. **Every engine logs through the shared logging framework.**
-6. **Every engine owns its own `prompt.md`** — independent, versioned, replaceable.
-7. **Every engine is configured** (limits, timeouts, flags, version, health, dependencies).
-8. **Every engine is testable** via the shared test structure.
+5. **Every engine publishes a Capability Manifest** — Ask discovers capabilities; no hard-coded engine list.
+6. **Every engine response follows the Evidence contract** — no unexplained recommendations.
+7. **Every engine logs through the shared logging framework.**
+8. **Every engine owns its own `prompt.md`** — independent, versioned, replaceable.
+9. **Every engine is configured** (limits, timeouts, flags, version, health, dependencies).
+10. **Every engine is testable** via the shared test structure.
 
 ## Runtime composition (Sprint 0)
 
