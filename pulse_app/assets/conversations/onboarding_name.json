@@ -1,0 +1,26 @@
+{
+  "id": "onboarding_name",
+  "steps": [
+    {
+      "type": "typing",
+      "charDelayMs": 44,
+      "charDelayVariance": 0.18,
+      "lines": [
+        { "text": "Hello...", "pauseAfterMs": 920 },
+        { "text": "Welcome to Pulse.", "pauseAfterMs": 780 },
+        { "text": "It's lovely to meet you.", "pauseAfterMs": 840 },
+        { "text": "Who are we talking to today?", "pauseAfterMs": 400 }
+      ]
+    },
+    {
+      "type": "input",
+      "inputKey": "firstName",
+      "placeholder": "Your first name"
+    },
+    {
+      "type": "button",
+      "label": "Continue",
+      "action": "navigate:welcome"
+    }
+  ]
+}
