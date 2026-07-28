@@ -15,6 +15,8 @@ See [NORTH_STAR.md](./NORTH_STAR.md).
 | 7 | [VOLUME_7_CRAWL_INTELLIGENCE.md](./VOLUME_7_CRAWL_INTELLIGENCE.md) | Implemented (Sprint 4) |
 | 8 | [VOLUME_8_KNOWLEDGE_GRAPH.md](./VOLUME_8_KNOWLEDGE_GRAPH.md) | Implemented (Sprint 5) |
 
+**Baseline architecture review:** [PLATFORM_ARCHITECTURE_AUDIT.md](./PLATFORM_ARCHITECTURE_AUDIT.md) — Engineering Bible checkpoint (post–Sprint 5). **Proceed with new intelligence; do not open a foundation refactor sprint.** Revisit after additional engines to verify architectural law — not to redesign.
+
 ## AI-visibility product loop
 
 Defined in Volume 3. Two closely connected capabilities feed the Knowledge Asset Builder:
