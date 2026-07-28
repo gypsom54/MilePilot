@@ -57,6 +57,10 @@ registry.register(createMyEngineRegistration(context));
 
 Registration includes: name, version, dependencies, health, events, status, description.
 
+Every engine must also publish a **Capability Manifest** (Volume 3) so Ask SEO AutoPilot can discover capabilities without a hard-coded engine list. Manifest fields include capabilities, consumes, produces, confidence, risk, and approval requirements.
+
+Engine responses must follow the shared **Evidence contract** (`EngineEvidence`) — no unexplained recommendations.
+
 ## 6. Publish/subscribe events only
 
 Use `EventBus.publish` / `EventBus.subscribe`.
