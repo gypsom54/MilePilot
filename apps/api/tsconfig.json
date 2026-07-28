@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig.seo-autopilot.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist"
+  },
+  "include": ["src/**/*"],
+  "references": [
+    { "path": "../../packages/shared" },
+    { "path": "../../packages/engine-sdk" },
+    { "path": "../../services/business-discovery" },
+    { "path": "../../services/market-intelligence" },
+    { "path": "../../services/website-intelligence" },
+    { "path": "../../services/crawl" }
+  ]
+}

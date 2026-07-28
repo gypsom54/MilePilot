@@ -1,0 +1,27 @@
+{
+  "name": "@seo-autopilot/api",
+  "version": "0.4.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "rm -rf dist *.tsbuildinfo"
+  },
+  "dependencies": {
+    "@seo-autopilot/business-discovery": "workspace:*",
+    "@seo-autopilot/crawl": "workspace:*",
+    "@seo-autopilot/engine-sdk": "workspace:*",
+    "@seo-autopilot/market-intelligence": "workspace:*",
+    "@seo-autopilot/shared": "workspace:*",
+    "@seo-autopilot/website-intelligence": "workspace:*"
+  },
+  "files": ["dist"]
+}

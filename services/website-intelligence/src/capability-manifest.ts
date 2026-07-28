@@ -1,0 +1,61 @@
+import type { CapabilityManifest } from "@seo-autopilot/engine-sdk";
+
+export const WEBSITE_INTELLIGENCE_CAPABILITY_MANIFEST: CapabilityManifest = {
+  engine: {
+    id: "website-intelligence",
+    name: "Website Intelligence Engine",
+    version: "1.0.0",
+  },
+  capabilities: [
+    "define_website",
+    "manage_website_properties",
+    "observe_pages",
+    "normalise_urls",
+    "classify_page_type",
+    "classify_page_purpose",
+    "manage_site_hierarchy",
+    "manage_navigation",
+    "observe_page_sections",
+    "manage_page_templates",
+    "map_business_entities",
+    "map_market_entities",
+    "associate_topics",
+    "associate_questions",
+    "observe_conversion_actions",
+    "observe_forms",
+    "observe_trust_elements",
+    "observe_website_assets",
+    "track_publication_states",
+    "create_website_snapshots",
+    "import_website_observations",
+  ],
+  consumes: [
+    "tenant_context",
+    "business_id_reference",
+    "market_entity_reference",
+    "fixture_observations",
+    "injected_observations",
+  ],
+  produces: [
+    "website_profile",
+    "website_property",
+    "page",
+    "navigation",
+    "page_section",
+    "page_template",
+    "conversion_action",
+    "form",
+    "trust_element",
+    "website_asset",
+    "website_snapshot",
+  ],
+  confidence: {
+    minimum_actionable: 0.65,
+  },
+  risk: {
+    default: "low",
+  },
+  approval: {
+    required_for_execution: true,
+  },
+};

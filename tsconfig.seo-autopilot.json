@@ -1,0 +1,65 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "packages/shared"
+    },
+    {
+      "path": "packages/engine-sdk"
+    },
+    {
+      "path": "packages/knowledge-graph"
+    },
+    {
+      "path": "packages/ai"
+    },
+    {
+      "path": "packages/database"
+    },
+    {
+      "path": "packages/auth"
+    },
+    {
+      "path": "packages/ui"
+    },
+    {
+      "path": "apps/api"
+    },
+    {
+      "path": "apps/web"
+    },
+    {
+      "path": "services/business-discovery"
+    },
+    {
+      "path": "services/market-intelligence"
+    },
+    {
+      "path": "services/performance"
+    },
+    {
+      "path": "services/crawl"
+    },
+    {
+      "path": "services/authority"
+    },
+    {
+      "path": "services/reviews"
+    },
+    {
+      "path": "services/community"
+    },
+    {
+      "path": "services/competitor"
+    },
+    {
+      "path": "services/opportunity"
+    },
+    {
+      "path": "services/ask-autopilot"
+    },
+    {
+      "path": "services/website-intelligence"
+    }
+  ]
+}

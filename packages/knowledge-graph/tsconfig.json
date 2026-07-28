@@ -1,0 +1,9 @@
+{
+  "extends": "../../tsconfig.seo-autopilot.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist"
+  },
+  "include": ["src/**/*"],
+  "references": [{ "path": "../shared" }]
+}

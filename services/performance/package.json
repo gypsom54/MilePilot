@@ -1,0 +1,27 @@
+{
+  "name": "@seo-autopilot/performance",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "rm -rf dist *.tsbuildinfo"
+  },
+  "dependencies": {
+    "@seo-autopilot/engine-sdk": "workspace:*",
+    "@seo-autopilot/shared": "workspace:*",
+    "@seo-autopilot/ai": "workspace:*"
+  },
+  "files": [
+    "dist",
+    "prompts"
+  ]
+}
