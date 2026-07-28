@@ -63,7 +63,19 @@ Engines never call each other. They publish and subscribe to events.
 | `WebsiteImportStarted` | Website import started |
 | `WebsiteImportCompleted` | Website import completed |
 | `WebsiteImportFailed` | Website import failed |
-| `PageCrawled` | A page was crawled |
+| `CrawlJobCreated` | Crawl job created |
+| `CrawlJobStarted` | Crawl job started |
+| `CrawlJobCompleted` | Crawl job completed |
+| `CrawlJobFailed` | Crawl job failed |
+| `CrawlScopeValidated` | Crawl scope validated |
+| `CrawlObservationRecorded` | Crawl observation recorded |
+| `CrawlFetchAttempted` | Fetch attempt recorded |
+| `CrawlResponseObserved` | HTTP response observed |
+| `CrawlRedirectObserved` | Redirect chain observed |
+| `CrawlFailureObserved` | Crawl failure observed |
+| `CrawlSnapshotCreated` | Immutable crawl snapshot created |
+| `CrawlSnapshotCompared` | Factual crawl snapshot comparison created |
+| `PageCrawled` | Document observation recorded (compatibility alias) |
 | `PerformanceChanged` | Performance signals changed |
 | `ReviewReceived` | A review was received |
 | `CompetitorUpdated` | Competitor data changed |

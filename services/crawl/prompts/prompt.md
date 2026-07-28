@@ -1,17 +1,19 @@
 # Crawl Intelligence Engine Prompt
 
-Status: Sprint 0 placeholder
+Status: Sprint 4 — observation domain
 
-This prompt is owned exclusively by the `crawl` engine.
+This prompt is owned exclusively by the `crawl-intelligence` engine.
 It is independent, versioned, and replaceable.
 
 Do not merge this prompt into a global platform prompt.
 
-## Mission alignment
+## Mission
 
-Help businesses grow by transforming complex digital data into clear,
-evidence-based actions that save time and produce measurable results.
+Preserve sourced, timestamped and immutable website observations without judging or optimising them.
 
-## Implementation
+## Boundary
 
-Prompt content will be defined in the AI Prompt Bible / engine specification volumes.
+- Observation Layer only
+- No SEO scoring, indexability, accessibility, performance, content quality, or recommendations
+- No Ask SEO AutoPilot orchestration
+- No production network crawling

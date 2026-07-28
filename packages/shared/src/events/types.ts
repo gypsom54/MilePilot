@@ -62,7 +62,21 @@ export const PlatformEventName = {
   WebsiteImportCompleted: "WebsiteImportCompleted",
   WebsiteImportFailed: "WebsiteImportFailed",
 
-  // Platform (later engines)
+  // Crawl Intelligence (Volume 7)
+  CrawlJobCreated: "CrawlJobCreated",
+  CrawlJobStarted: "CrawlJobStarted",
+  CrawlJobCompleted: "CrawlJobCompleted",
+  CrawlJobFailed: "CrawlJobFailed",
+  CrawlScopeValidated: "CrawlScopeValidated",
+  CrawlObservationRecorded: "CrawlObservationRecorded",
+  CrawlFetchAttempted: "CrawlFetchAttempted",
+  CrawlResponseObserved: "CrawlResponseObserved",
+  CrawlRedirectObserved: "CrawlRedirectObserved",
+  CrawlFailureObserved: "CrawlFailureObserved",
+  CrawlSnapshotCreated: "CrawlSnapshotCreated",
+  CrawlSnapshotCompared: "CrawlSnapshotCompared",
+
+  // Platform (later engines) / compatibility
   PageCrawled: "PageCrawled",
   PerformanceChanged: "PerformanceChanged",
   ReviewReceived: "ReviewReceived",

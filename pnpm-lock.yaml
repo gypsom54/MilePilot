@@ -66,6 +66,9 @@ importers:
       '@seo-autopilot/business-discovery':
         specifier: workspace:*
         version: link:../../services/business-discovery
+      '@seo-autopilot/crawl':
+        specifier: workspace:*
+        version: link:../../services/crawl
       '@seo-autopilot/engine-sdk':
         specifier: workspace:*
         version: link:../../packages/engine-sdk
@@ -172,12 +175,15 @@ importers:
 
   services/crawl:
     dependencies:
-      '@seo-autopilot/ai':
+      '@seo-autopilot/database':
         specifier: workspace:*
-        version: link:../../packages/ai
+        version: link:../../packages/database
       '@seo-autopilot/engine-sdk':
         specifier: workspace:*
         version: link:../../packages/engine-sdk
+      '@seo-autopilot/knowledge-graph':
+        specifier: workspace:*
+        version: link:../../packages/knowledge-graph
       '@seo-autopilot/shared':
         specifier: workspace:*
         version: link:../../packages/shared

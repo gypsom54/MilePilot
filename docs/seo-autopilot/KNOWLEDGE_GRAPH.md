@@ -8,10 +8,11 @@ Package: `@seo-autopilot/knowledge-graph`
 - Sprint 1: `InMemoryKnowledgeGraph` + Business Discovery entity/relationship mappings
 - Sprint 2: Market Intelligence entity/relationship mappings (idempotent sync)
 - Sprint 3: Website Intelligence entity/relationship mappings (idempotent sync)
+- Sprint 4: Crawl Intelligence observation entity/relationship mappings (idempotent sync; does not overwrite Website Intelligence)
 
 **No SEO logic.**
 
-See Volume 5 for Market mappings and Volume 6 for Website / Page / Navigation mappings.
+See Volume 5 for Market mappings, Volume 6 for Website / Page / Navigation mappings, and Volume 7 for Crawl observation mappings.
 
 ## Functions
 

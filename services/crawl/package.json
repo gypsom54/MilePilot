@@ -1,6 +1,6 @@
 {
   "name": "@seo-autopilot/crawl",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "main": "./dist/index.js",
@@ -16,12 +16,10 @@
     "clean": "rm -rf dist *.tsbuildinfo"
   },
   "dependencies": {
+    "@seo-autopilot/database": "workspace:*",
     "@seo-autopilot/engine-sdk": "workspace:*",
-    "@seo-autopilot/shared": "workspace:*",
-    "@seo-autopilot/ai": "workspace:*"
+    "@seo-autopilot/knowledge-graph": "workspace:*",
+    "@seo-autopilot/shared": "workspace:*"
   },
-  "files": [
-    "dist",
-    "prompts"
-  ]
+  "files": ["dist", "prompts"]
 }

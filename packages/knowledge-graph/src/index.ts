@@ -40,3 +40,10 @@ export {
   websiteEntityId,
   websiteChildEntityId,
 } from "./website-intelligence-mappings.js";
+
+export {
+  CrawlIntelligenceEntityType,
+  CrawlIntelligenceRelationshipType,
+  crawlJobEntityId,
+  crawlChildEntityId,
+} from "./crawl-intelligence-mappings.js";

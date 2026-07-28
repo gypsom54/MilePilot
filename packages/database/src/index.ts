@@ -44,8 +44,21 @@ export {
   InMemoryWebsiteIntelligenceStore,
 } from "./website-intelligence/store.js";
 
+export {
+  CRAWL_INTELLIGENCE_TABLES,
+  CRAWL_INTELLIGENCE_DDL,
+  type CrawlIntelligenceTable,
+  type CrawlJobRow,
+  type CrawlJobVersionRow,
+} from "./crawl-intelligence/schema.js";
+
+export {
+  type CrawlIntelligenceStore,
+  InMemoryCrawlIntelligenceStore,
+} from "./crawl-intelligence/store.js";
+
 export interface DatabaseClient {
   ping(): Promise<{ ok: boolean }>;
 }
 
-export const DATABASE_PACKAGE_STATUS = "website-intelligence-sprint3" as const;
+export const DATABASE_PACKAGE_STATUS = "crawl-intelligence-sprint4" as const;

@@ -1,6 +1,6 @@
 {
   "name": "@seo-autopilot/api",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "type": "module",
   "main": "./dist/index.js",
@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@seo-autopilot/business-discovery": "workspace:*",
+    "@seo-autopilot/crawl": "workspace:*",
     "@seo-autopilot/engine-sdk": "workspace:*",
     "@seo-autopilot/market-intelligence": "workspace:*",
     "@seo-autopilot/shared": "workspace:*",

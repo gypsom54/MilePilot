@@ -63,8 +63,8 @@ Ask SEO AutoPilot is the orchestration layer over this mesh. It does not replace
   business-discovery      # Sprint 1 — canonical business understanding
   market-intelligence     # Sprint 2 — external market observations
   website-intelligence    # Sprint 3 — structural/semantic website model
+  crawl                   # Sprint 4 — crawl observation domain
   performance
-  crawl
   authority
   reviews
   community

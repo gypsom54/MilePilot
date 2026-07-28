@@ -10,6 +10,7 @@
     { "path": "../../packages/engine-sdk" },
     { "path": "../../services/business-discovery" },
     { "path": "../../services/market-intelligence" },
-    { "path": "../../services/website-intelligence" }
+    { "path": "../../services/website-intelligence" },
+    { "path": "../../services/crawl" }
   ]
 }
