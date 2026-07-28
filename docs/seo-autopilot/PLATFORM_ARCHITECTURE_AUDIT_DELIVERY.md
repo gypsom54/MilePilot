@@ -1,26 +1,21 @@
-# Platform Architecture Audit — Delivery Note
+# Baseline Architecture Review — Delivery
 
-## 1. Objective
+## Objective
 
-Produce a Platform Architecture Audit of SEO AutoPilot after Sprint 5, instead of immediately writing Sprint 7.
+Merge the post–Sprint 5 Platform Architecture Audit into the Engineering Bible as the **baseline checkpoint**, with the board decision to proceed with new intelligence rather than foundation refactoring.
 
-## 2. Files
+## Files
 
-- `docs/seo-autopilot/PLATFORM_ARCHITECTURE_AUDIT.md` (primary deliverable)
-- Index updates: `README.md`, `ARCHITECTURE.md`
+- `docs/seo-autopilot/PLATFORM_ARCHITECTURE_AUDIT.md` — baseline review (authoritative checkpoint)
+- `docs/seo-autopilot/ARCHITECTURE.md` — index + posture
+- `docs/seo-autopilot/README.md` — doc index
 
-## 3. Protected
+## Decision recorded
 
-- No engine behaviour changes
-- No Sprint 7 / Volume implementation
-- Volumes 3–8 content unchanged except index references
+- No dedicated platform refactor sprint
+- Architecture mature enough to move forward
+- Revisit checkpoint after more engines — verify laws, do not redesign
 
-## 4. Acceptance
+## Rollback
 
-- [x] Engine boundaries, ownership, events, KG, deps, cycles, shared usage, tests, repos, API, events, manifests, naming, folders, duplication audited
-- [x] Severity-tagged findings + remediation order
-- [x] Explicitly defers Sprint 7
-
-## 5. Rollback
-
-Revert/close `cursor/seo-autopilot-platform-architecture-audit-6d57`.
+Revert the commit/PR that introduced this baseline checkpoint framing.

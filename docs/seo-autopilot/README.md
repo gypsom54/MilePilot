@@ -20,7 +20,7 @@ Architecture foundation documentation for Sprint 0, plus locked Engineering Bibl
 | [SPRINT_4.md](./SPRINT_4.md) | Sprint 4 Crawl Intelligence implementation plan |
 | [VOLUME_8_KNOWLEDGE_GRAPH.md](./VOLUME_8_KNOWLEDGE_GRAPH.md) | **Engineering Bible Vol. 8 — Knowledge Graph Engine** |
 | [SPRINT_5.md](./SPRINT_5.md) | Sprint 5 Knowledge Graph Engine implementation plan |
-| [PLATFORM_ARCHITECTURE_AUDIT.md](./PLATFORM_ARCHITECTURE_AUDIT.md) | **Post–Sprint 5 platform architecture audit** (before Sprint 7) |
+| [PLATFORM_ARCHITECTURE_AUDIT.md](./PLATFORM_ARCHITECTURE_AUDIT.md) | **Baseline architecture review** (Engineering Bible checkpoint — proceed with new intelligence) |
 | [CREATING_AN_ENGINE.md](./CREATING_AN_ENGINE.md) | How to create an Intelligence Engine |
 | [EVENTS.md](./EVENTS.md) | Event Bus communication |
 | [KNOWLEDGE_GRAPH.md](./KNOWLEDGE_GRAPH.md) | Knowledge Graph SDK |
