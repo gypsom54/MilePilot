@@ -39,6 +39,30 @@ Engines never call each other. They publish and subscribe to events.
 | `MarketResearchCompleted` | Market research completed |
 | `MarketResearchPartiallyCompleted` | Market research partially completed |
 | `MarketResearchFailed` | Market research failed |
+| `WebsiteDefined` | Website defined |
+| `WebsitePropertyAdded` | Website property added |
+| `PageObserved` | Page observation recorded |
+| `PageTypeCandidateCreated` | Page type candidate created |
+| `PageTypeConfirmed` | Page type confirmed |
+| `PagePurposeCandidateCreated` | Page purpose candidate created |
+| `PagePurposeConfirmed` | Page purpose confirmed |
+| `PageHierarchyUpdated` | Page hierarchy updated |
+| `NavigationStructureUpdated` | Navigation structure updated |
+| `PageSectionObserved` | Page section observed |
+| `PageTemplateAssociated` | Page template associated |
+| `BusinessEntityMapped` | Business entity mapped (read-only ref) |
+| `MarketEntityMapped` | Market entity mapped (read-only ref) |
+| `TopicAssociated` | Topic associated to page |
+| `QuestionAssociated` | Question associated to page |
+| `ConversionActionObserved` | Conversion action observed |
+| `FormObserved` | Form observed |
+| `TrustElementObserved` | Trust element observed |
+| `WebsiteAssetObserved` | Website asset observed |
+| `PagePublicationStateChanged` | Page publication state changed |
+| `WebsiteSnapshotCreated` | Website snapshot created |
+| `WebsiteImportStarted` | Website import started |
+| `WebsiteImportCompleted` | Website import completed |
+| `WebsiteImportFailed` | Website import failed |
 | `PageCrawled` | A page was crawled |
 | `PerformanceChanged` | Performance signals changed |
 | `ReviewReceived` | A review was received |

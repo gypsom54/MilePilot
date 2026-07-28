@@ -31,8 +31,21 @@ export {
   InMemoryMarketIntelligenceStore,
 } from "./market-intelligence/store.js";
 
+export {
+  WEBSITE_INTELLIGENCE_TABLES,
+  WEBSITE_INTELLIGENCE_DDL,
+  type WebsiteIntelligenceTable,
+  type WebsiteRow,
+  type WebsiteVersionRow,
+} from "./website-intelligence/schema.js";
+
+export {
+  type WebsiteIntelligenceStore,
+  InMemoryWebsiteIntelligenceStore,
+} from "./website-intelligence/store.js";
+
 export interface DatabaseClient {
   ping(): Promise<{ ok: boolean }>;
 }
 
-export const DATABASE_PACKAGE_STATUS = "market-intelligence-sprint2" as const;
+export const DATABASE_PACKAGE_STATUS = "website-intelligence-sprint3" as const;

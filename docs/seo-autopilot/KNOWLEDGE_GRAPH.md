@@ -7,10 +7,11 @@ Package: `@seo-autopilot/knowledge-graph`
 - Sprint 0: SDK interfaces
 - Sprint 1: `InMemoryKnowledgeGraph` + Business Discovery entity/relationship mappings
 - Sprint 2: Market Intelligence entity/relationship mappings (idempotent sync)
+- Sprint 3: Website Intelligence entity/relationship mappings (idempotent sync)
 
 **No SEO logic.**
 
-See Volume 5 for Market / Category / Demand / Competitor / Gap / Trend mappings.
+See Volume 5 for Market mappings and Volume 6 for Website / Page / Navigation mappings.
 
 ## Functions
 

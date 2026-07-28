@@ -1,8 +1,8 @@
 /**
  * @seo-autopilot/api
  *
- * Sprint 2: composition root + Business Discovery + Market Intelligence APIs.
- * No dashboards. No SEO tools. No Ask orchestration.
+ * Sprint 3: Business Discovery + Market Intelligence + Website Intelligence.
+ * No dashboards. No SEO tools. No Ask orchestration. No crawling.
  */
 import {
   InMemoryEngineRegistry,
@@ -18,6 +18,11 @@ import {
   registerMarketIntelligence,
   type MarketIntelligenceRuntime,
 } from "@seo-autopilot/market-intelligence";
+import {
+  createWebsiteIntelligenceRuntime,
+  registerWebsiteIntelligence,
+  type WebsiteIntelligenceRuntime,
+} from "@seo-autopilot/website-intelligence";
 import { InMemoryEventBus, type EventBus } from "@seo-autopilot/shared";
 
 export interface ApiRequest {
@@ -38,6 +43,7 @@ export interface PlatformRuntime {
   events: EventBus;
   businessDiscovery: BusinessDiscoveryRuntime;
   marketIntelligence: MarketIntelligenceRuntime;
+  websiteIntelligence: WebsiteIntelligenceRuntime;
 }
 
 export function createPlatformRuntime(): PlatformRuntime {
@@ -46,18 +52,24 @@ export function createPlatformRuntime(): PlatformRuntime {
   const businessDiscovery = createBusinessDiscoveryRuntime(events);
   registerBusinessDiscovery(businessDiscovery, registry);
 
-  // Share the same graph instance so both domains can coexist without BD overwrite.
   const marketIntelligence = createMarketIntelligenceRuntime(
     events,
     businessDiscovery.graph,
   );
   registerMarketIntelligence(marketIntelligence, registry);
 
+  const websiteIntelligence = createWebsiteIntelligenceRuntime(
+    events,
+    businessDiscovery.graph,
+  );
+  registerWebsiteIntelligence(websiteIntelligence, registry);
+
   return {
     registry,
     events,
     businessDiscovery,
     marketIntelligence,
+    websiteIntelligence,
   };
 }
 
@@ -71,6 +83,9 @@ export async function handleApiRequest(
   if (request.path.startsWith("/market-intelligence")) {
     return runtime.marketIntelligence.api.handle(request);
   }
+  if (request.path.startsWith("/website-intelligence")) {
+    return runtime.websiteIntelligence.api.handle(request);
+  }
 
   return {
     status: 404,
@@ -83,4 +98,4 @@ export async function handleApiRequest(
   };
 }
 
-export const API_APP_STATUS = "market-intelligence-sprint2" as const;
+export const API_APP_STATUS = "website-intelligence-sprint3" as const;

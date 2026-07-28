@@ -14,6 +14,8 @@ Architecture foundation documentation for Sprint 0, plus locked Engineering Bibl
 | [VOLUME_4_BUSINESS_DISCOVERY_READINESS.md](./VOLUME_4_BUSINESS_DISCOVERY_READINESS.md) | Volume 4 pointer / Sprint 1 entry |
 | [VOLUME_5_MARKET_INTELLIGENCE.md](./VOLUME_5_MARKET_INTELLIGENCE.md) | **Engineering Bible Vol. 5 — Market Intelligence** |
 | [SPRINT_2.md](./SPRINT_2.md) | Sprint 2 Market Intelligence implementation plan |
+| [VOLUME_6_WEBSITE_INTELLIGENCE.md](./VOLUME_6_WEBSITE_INTELLIGENCE.md) | **Engineering Bible Vol. 6 — Website Intelligence** |
+| [SPRINT_3.md](./SPRINT_3.md) | Sprint 3 Website Intelligence implementation plan |
 | [CREATING_AN_ENGINE.md](./CREATING_AN_ENGINE.md) | How to create an Intelligence Engine |
 | [EVENTS.md](./EVENTS.md) | Event Bus communication |
 | [KNOWLEDGE_GRAPH.md](./KNOWLEDGE_GRAPH.md) | Knowledge Graph SDK |

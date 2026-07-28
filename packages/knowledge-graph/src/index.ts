@@ -33,3 +33,10 @@ export {
   marketEntityId,
   marketChildEntityId,
 } from "./market-intelligence-mappings.js";
+
+export {
+  WebsiteIntelligenceEntityType,
+  WebsiteIntelligenceRelationshipType,
+  websiteEntityId,
+  websiteChildEntityId,
+} from "./website-intelligence-mappings.js";
