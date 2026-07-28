@@ -60,6 +60,9 @@
     },
     {
       "path": "services/website-intelligence"
+    },
+    {
+      "path": "services/knowledge-graph-engine"
     }
   ]
 }

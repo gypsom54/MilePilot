@@ -76,6 +76,20 @@ export const PlatformEventName = {
   CrawlSnapshotCreated: "CrawlSnapshotCreated",
   CrawlSnapshotCompared: "CrawlSnapshotCompared",
 
+  // Knowledge Graph Engine (Volume 8)
+  KnowledgeEntityProposed: "KnowledgeEntityProposed",
+  KnowledgeEntityCreated: "KnowledgeEntityCreated",
+  KnowledgeEntityUpdated: "KnowledgeEntityUpdated",
+  KnowledgeRelationshipCreated: "KnowledgeRelationshipCreated",
+  KnowledgeRelationshipUpdated: "KnowledgeRelationshipUpdated",
+  KnowledgeAliasAdded: "KnowledgeAliasAdded",
+  KnowledgeEvidenceAttached: "KnowledgeEvidenceAttached",
+  KnowledgeDuplicateDetected: "KnowledgeDuplicateDetected",
+  KnowledgeMergeProposed: "KnowledgeMergeProposed",
+  KnowledgeMergeConfirmed: "KnowledgeMergeConfirmed",
+  KnowledgeMergeRejected: "KnowledgeMergeRejected",
+  KnowledgeVersionRecorded: "KnowledgeVersionRecorded",
+
   // Platform (later engines) / compatibility
   PageCrawled: "PageCrawled",
   PerformanceChanged: "PerformanceChanged",

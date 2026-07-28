@@ -75,6 +75,18 @@ Engines never call each other. They publish and subscribe to events.
 | `CrawlFailureObserved` | Crawl failure observed |
 | `CrawlSnapshotCreated` | Immutable crawl snapshot created |
 | `CrawlSnapshotCompared` | Factual crawl snapshot comparison created |
+| `KnowledgeEntityProposed` | Canonical entity proposed |
+| `KnowledgeEntityCreated` | Canonical entity created |
+| `KnowledgeEntityUpdated` | Canonical entity updated |
+| `KnowledgeRelationshipCreated` | Canonical relationship created |
+| `KnowledgeRelationshipUpdated` | Canonical relationship updated |
+| `KnowledgeAliasAdded` | Entity alias added |
+| `KnowledgeEvidenceAttached` | Evidence attached |
+| `KnowledgeDuplicateDetected` | Duplicate candidates detected |
+| `KnowledgeMergeProposed` | Merge proposal created |
+| `KnowledgeMergeConfirmed` | Merge confirmed and applied |
+| `KnowledgeMergeRejected` | Merge proposal rejected |
+| `KnowledgeVersionRecorded` | Immutable version snapshot recorded |
 | `PageCrawled` | Document observation recorded (compatibility alias) |
 | `PerformanceChanged` | Performance signals changed |
 | `ReviewReceived` | A review was received |

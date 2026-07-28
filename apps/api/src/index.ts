@@ -1,7 +1,7 @@
 /**
  * @seo-autopilot/api
  *
- * Sprint 4: Business Discovery + Market Intelligence + Website Intelligence + Crawl Intelligence.
+ * Sprint 5: Business Discovery + Market + Website + Crawl + Knowledge Graph Engine.
  * No dashboards. No SEO tools. No Ask orchestration. No production network crawling.
  */
 import {
@@ -28,6 +28,11 @@ import {
   registerCrawlIntelligence,
   type CrawlIntelligenceRuntime,
 } from "@seo-autopilot/crawl";
+import {
+  createKnowledgeGraphRuntime,
+  registerKnowledgeGraphEngine,
+  type KnowledgeGraphRuntime,
+} from "@seo-autopilot/knowledge-graph-engine";
 import { InMemoryEventBus, type EventBus } from "@seo-autopilot/shared";
 
 export interface ApiRequest {
@@ -50,6 +55,7 @@ export interface PlatformRuntime {
   marketIntelligence: MarketIntelligenceRuntime;
   websiteIntelligence: WebsiteIntelligenceRuntime;
   crawlIntelligence: CrawlIntelligenceRuntime;
+  knowledgeGraph: KnowledgeGraphRuntime;
 }
 
 export function createPlatformRuntime(): PlatformRuntime {
@@ -76,6 +82,9 @@ export function createPlatformRuntime(): PlatformRuntime {
   );
   registerCrawlIntelligence(crawlIntelligence, registry);
 
+  const knowledgeGraph = createKnowledgeGraphRuntime(events);
+  registerKnowledgeGraphEngine(knowledgeGraph, registry);
+
   return {
     registry,
     events,
@@ -83,6 +92,7 @@ export function createPlatformRuntime(): PlatformRuntime {
     marketIntelligence,
     websiteIntelligence,
     crawlIntelligence,
+    knowledgeGraph,
   };
 }
 
@@ -102,6 +112,9 @@ export async function handleApiRequest(
   if (request.path.startsWith("/crawl-intelligence")) {
     return runtime.crawlIntelligence.api.handle(request);
   }
+  if (request.path.startsWith("/knowledge-graph")) {
+    return runtime.knowledgeGraph.api.handle(request);
+  }
 
   return {
     status: 404,
@@ -114,4 +127,4 @@ export async function handleApiRequest(
   };
 }
 
-export const API_APP_STATUS = "crawl-intelligence-sprint4" as const;
+export const API_APP_STATUS = "knowledge-graph-sprint5" as const;
