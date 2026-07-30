@@ -57,7 +57,8 @@ Reusable-ish modules under `frontend/js/` (Ask MilePilot, business workspace, tr
 ### SEO AutoPilot customer UI
 
 **Sprint D1 delivered** in `apps/web`: calm AppShell, Home (`/`), Learning Centre (`/learn`), FAQ articles (`/learn/:slug`).  
-**Sprint D3 delivered:** Website Discovery (`/discover`, `/discover/summary`) and initial Workspace shell (`/workspace`). No auth, Ask, Google connections, or SEO scores. `packages/ui` remains scaffold-only.
+**Sprint D3 delivered:** Website Discovery (`/discover`, `/discover/summary`) and Workspace shell (`/workspace`).  
+**Sprint D4 delivered:** Personal Workspace daily briefing on `/workspace` (Today’s Priority, Recent Progress, Contextual Learning) while retaining D3 sections. No auth, Ask, Google connections, or SEO scores. `packages/ui` remains scaffold-only.
 
 ### RankAura (untracked build)
 

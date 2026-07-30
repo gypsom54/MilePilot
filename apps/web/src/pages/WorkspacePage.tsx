@@ -1,9 +1,13 @@
 import { Link } from "react-router-dom";
+import { ContextualLearning } from "../components/ContextualLearning";
+import { DailyBriefingHero } from "../components/DailyBriefingHero";
 import { PageContainer } from "../components/PageContainer";
-import { PageIntro } from "../components/PageIntro";
 import { PlainLanguageNote } from "../components/PlainLanguageNote";
+import { RecentProgress } from "../components/RecentProgress";
+import { TodaysPriorityCard } from "../components/TodaysPriorityCard";
 import { WorkspaceSection } from "../components/WorkspaceSection";
 import { useDiscovery } from "../discovery/DiscoveryContext";
+import { useDailyBriefing } from "../discovery/useDailyBriefing";
 import "./WorkspacePage.css";
 
 const SECTION_LINKS = [
@@ -15,22 +19,22 @@ const SECTION_LINKS = [
 
 export function WorkspacePage() {
   const { profile, summary, runStatus } = useDiscovery();
+  const briefing = useDailyBriefing();
   const hasSummary = runStatus === "complete" && summary !== null;
   const recommendations = summary?.recommendations.slice(0, 3) ?? [];
 
   return (
     <PageContainer>
-      <PageIntro
-        eyebrow="Your workspace"
-        title="A clear place to understand your next steps."
-        description={
-          <p>
-            This is your first personalised workspace shell. It keeps business context,
-            website notes and a few priorities in one calm place — without scores or
-            dashboards.
-          </p>
-        }
+      <DailyBriefingHero
+        greeting={briefing.greeting}
+        statusLines={briefing.statusLines}
       />
+
+      <TodaysPriorityCard priority={briefing.priority} />
+
+      <RecentProgress events={briefing.recentProgress} />
+
+      <ContextualLearning guide={briefing.contextualGuide} />
 
       <nav className="workspace-nav" aria-label="Workspace sections">
         {SECTION_LINKS.map((link) => (

@@ -7,8 +7,9 @@ Customer-facing SEO AutoPilot interface (React + Vite + TypeScript).
 | Sprint | Status |
 | --- | --- |
 | D1 — Shell + Learning Centre | DONE / LOCKED |
-| D2 — Onboarding + Business Growth Profile | LOCKED (do not modify here) |
-| D3 — Website Discovery | DONE |
+| D2 — Onboarding + Business Growth Profile | LOCKED |
+| D3 — Website Discovery | DONE / LOCKED |
+| D4 — Personal Workspace (daily briefing) | DONE |
 
 ## Routes
 
@@ -16,14 +17,16 @@ Customer-facing SEO AutoPilot interface (React + Vite + TypeScript).
 - `/learn`, `/learn/:slug` — Learning Centre
 - `/discover` — Analysis progress (honest checklist)
 - `/discover/summary` — Discovery summary (max three recommendations)
-- `/workspace` — Initial workspace shell
+- `/workspace` — Personal daily briefing + workspace sections
 
 ## Notes
 
 - No authentication, Ask SEO AutoPilot, Google integrations, or SEO scores
 - FAQ content: `src/content/faq.ts`
-- Discovery mock content + types: `src/content/discovery.ts`
-- Discovery session state: `src/discovery/DiscoveryContext.tsx` (in-memory React context)
+- Discovery mock content: `src/content/discovery.ts`
+- Daily briefing mock content: `src/content/briefing.ts`
+- Discovery session state: `src/discovery/DiscoveryContext.tsx`
+- Briefing resolver: `src/discovery/useDailyBriefing.ts`
 
 ## Commands
 

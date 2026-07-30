@@ -9,10 +9,11 @@ Relative effort only — no calendar dates.
 
 | Sprint | Name | Status |
 | --- | --- | --- |
-| **D1** | Calm product shell + Learning Centre seed | **DONE / LOCKED** (2026-07-30) — `docs/SPRINT_D1_DELIVERY_REPORT.md` |
-| **D2** | Calm onboarding + Business Growth Profile | **LOCKED** — do not modify in later sprints without explicit unlock |
-| **D3** | Website Discovery (analysis → summary → workspace shell) | **DONE** (2026-07-30) — `docs/SPRINT_D3_DELIVERY_REPORT.md` |
-| D4 | (not started) | Not started |
+| **D1** | Calm product shell + Learning Centre seed | **DONE / LOCKED** — `docs/SPRINT_D1_DELIVERY_REPORT.md` |
+| **D2** | Calm onboarding + Business Growth Profile | **LOCKED** — do not modify without explicit unlock |
+| **D3** | Website Discovery (analysis → summary → workspace shell) | **DONE / LOCKED** — `docs/SPRINT_D3_DELIVERY_REPORT.md` |
+| **D4** | Personal Workspace (daily briefing) | **DONE** (2026-07-30) — `docs/SPRINT_D4_DELIVERY_REPORT.md` |
+| D5 | (not started) | Not started |
 
 ---
 
@@ -75,7 +76,7 @@ Relative effort only — no calendar dates.
 
 | Field | Content |
 | --- | --- |
-| **Status** | **Sprint D3 Website Discovery delivered** (analysis → summary → workspace shell). Ask remains locked. |
+| **Status** | **Sprint D3 LOCKED** (discovery + workspace shell). **Sprint D4 Personal Workspace daily briefing delivered** on `/workspace`. Ask remains locked. |
 | **Objective** | Complete Minimal Home; prepare Ask **only when Volume 3 is unlocked** |
 | **Customer outcome** | Clear “where I am / what next”; later, conversational front door |
 | **Deliverables** | Home with profile + pillars + next steps; Ask UI shell **gated** behind unlock decision |
