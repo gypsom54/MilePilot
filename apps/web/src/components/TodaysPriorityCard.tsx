@@ -3,10 +3,29 @@ import type { TodaysPriority } from "../content/briefing";
 import "./TodaysPriorityCard.css";
 
 type TodaysPriorityCardProps = {
-  priority: TodaysPriority;
+  priority: TodaysPriority | null;
+  allClearMessage: string;
 };
 
-export function TodaysPriorityCard({ priority }: TodaysPriorityCardProps) {
+export function TodaysPriorityCard({
+  priority,
+  allClearMessage,
+}: TodaysPriorityCardProps) {
+  if (!priority) {
+    return (
+      <section
+        className="todays-priority todays-priority--clear"
+        aria-labelledby="todays-priority-heading"
+      >
+        <p className="todays-priority__eyebrow">Today’s priority</p>
+        <h2 className="todays-priority__title" id="todays-priority-heading">
+          Everything looks good today
+        </h2>
+        <p className="todays-priority__clear-message">{allClearMessage}</p>
+      </section>
+    );
+  }
+
   return (
     <section className="todays-priority" aria-labelledby="todays-priority-heading">
       <p className="todays-priority__eyebrow">Today’s priority</p>

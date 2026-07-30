@@ -13,7 +13,8 @@ export function DailyBriefingHero({ greeting, statusLines }: DailyBriefingHeroPr
         {greeting}
       </h1>
       <p className="daily-briefing-hero__lead">
-        Here’s a calm view of what matters for your business right now.
+        Here’s what has happened since your last visit, and what deserves your attention
+        today.
       </p>
       <ul className="daily-briefing-hero__status" aria-label="Today’s status">
         {statusLines.map((line) => (

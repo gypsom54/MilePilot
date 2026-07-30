@@ -64,3 +64,10 @@
   background: var(--color-accent-hover);
   color: #fff;
 }
+
+.todays-priority__clear-message {
+  margin: 0;
+  max-width: 36rem;
+  color: var(--color-ink-muted);
+  font-size: 1.0625rem;
+}

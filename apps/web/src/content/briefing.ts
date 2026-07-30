@@ -1,7 +1,7 @@
 /**
  * Sprint D4 — Personal Workspace daily briefing mock models.
  *
- * Typed placeholders for a calm “what should I do today?” experience.
+ * Typed placeholders for a calm Business Briefing experience.
  * Not live engine output. No SEO scores or technical metrics.
  */
 
@@ -36,75 +36,116 @@ export interface ContextualGuide {
 }
 
 export interface DailyBriefing {
+  /** Spec heading for Sprint D4 mock: "Good morning." */
   greeting: string;
   statusLines: DailyStatusLine[];
-  priority: TodaysPriority;
+  /**
+   * Exactly one featured recommendation, or null when nothing needs attention.
+   * Never an array of primary actions.
+   */
+  priority: TodaysPriority | null;
+  /** Shown when priority is null. */
+  allClearMessage: string;
   recentProgress: ProgressEvent[];
-  contextualGuide: ContextualGuide;
+  /** Present only when there is a priority to learn about. */
+  contextualGuide: ContextualGuide | null;
 }
 
+const SHARED_PROGRESS: ProgressEvent[] = [
+  {
+    id: "analysed",
+    label: "Website analysed",
+    whenLabel: "This morning",
+  },
+  {
+    id: "sitemap",
+    label: "Sitemap discovered",
+    whenLabel: "This morning",
+  },
+  {
+    id: "contact",
+    label: "Contact information verified",
+    whenLabel: "Yesterday",
+  },
+  {
+    id: "service-pages",
+    label: "Service pages identified",
+    whenLabel: "Yesterday",
+  },
+  {
+    id: "opportunities",
+    label: "Opportunities prepared",
+    whenLabel: "Yesterday",
+  },
+];
+
 /**
- * Personalised daily briefing for Harbour View Plumbing (mock).
+ * Default personalised briefing (one opportunity).
  * Swap for live briefing adapters when opportunity / analysis engines are ready.
  */
 export const MOCK_DAILY_BRIEFING: DailyBriefing = {
   greeting: "Good morning.",
   statusLines: [
-    { id: "opportunity", text: "One new opportunity found" },
-    { id: "analysis", text: "Analysis completed" },
-    { id: "health", text: "Website looks healthy" },
-    { id: "monitoring", text: "Monitoring continues" },
+    {
+      id: "analysis",
+      text: "We've finished analysing your website.",
+    },
+    {
+      id: "opportunity",
+      text: "We've identified one new opportunity.",
+    },
+    {
+      id: "health",
+      text: "Everything is looking healthy today.",
+    },
+    {
+      id: "monitoring",
+      text: "We're continuing to monitor your website.",
+    },
   ],
   priority: {
     id: "priority-faq-pages",
     title: "Add clear answers to common customer questions",
     whyItMatters:
-      "People often search with questions before they choose a plumber. When your website answers those questions in plain English, visitors feel understood — and are more likely to get in touch.",
+      "People often search with questions before they choose who to call. When your website answers those questions in plain English, visitors feel understood — and are more likely to get in touch.",
     estimatedEffort: "About 30–45 minutes",
     potentialImpact: "Helps the right people find and trust you sooner",
     ctaLabel: "Show me how",
     href: "/learn/what-is-seo",
   },
-  recentProgress: [
-    {
-      id: "analysed",
-      label: "Website analysed",
-      whenLabel: "This morning",
-    },
-    {
-      id: "sitemap",
-      label: "Sitemap discovered",
-      whenLabel: "This morning",
-    },
-    {
-      id: "contact",
-      label: "Contact details verified",
-      whenLabel: "Yesterday",
-    },
-    {
-      id: "opportunities",
-      label: "Opportunities prepared",
-      whenLabel: "Yesterday",
-    },
-  ],
+  allClearMessage:
+    "Everything looks good today. We'll continue monitoring your website and let you know if anything important changes.",
+  recentProgress: SHARED_PROGRESS,
   contextualGuide: {
     id: "guide-faq-visibility",
     reason:
-      "Because we noticed your website doesn’t currently answer common customer questions, here’s a short guide explaining how clearer pages improve visibility.",
-    title: "What is SEO?",
+      "Because your website doesn't currently answer common customer questions, we've selected this short guide explaining how clearer question-and-answer pages improve visibility.",
+    title: "How clear answers help customers find you",
     explanation:
-      "A plain-English starting point for how search visibility works — useful before you add question-and-answer content.",
+      "A calm introduction to how search visibility works — useful before you add FAQ-style content to your site.",
     href: "/learn/what-is-seo",
   },
 };
 
-/** Time-aware greeting; keeps “Good morning.” as the default daytime welcome. */
-export function greetingForHour(hour: number): string {
-  if (hour >= 5 && hour < 12) {
-    return "Good morning.";
-  }
-  if (hour >= 12 && hour < 17) {
-    return "Good afternoon.";
-  }
-  return "Good evening.";
-}
+/**
+ * Alternate mock: quiet day with no primary recommendation.
+ * Available for future adapters / demos; not the default Workspace view.
+ */
+export const MOCK_DAILY_BRIEFING_ALL_CLEAR: DailyBriefing = {
+  greeting: "Good morning.",
+  statusLines: [
+    {
+      id: "health",
+      text: "Everything is looking healthy today.",
+    },
+    {
+      id: "monitoring",
+      text: "We're continuing to monitor your website.",
+    },
+  ],
+  priority: null,
+  allClearMessage:
+    "Everything looks good today. We'll continue monitoring your website and let you know if anything important changes.",
+  recentProgress: SHARED_PROGRESS,
+  contextualGuide: null,
+};

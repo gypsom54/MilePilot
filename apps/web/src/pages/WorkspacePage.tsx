@@ -30,11 +30,16 @@ export function WorkspacePage() {
         statusLines={briefing.statusLines}
       />
 
-      <TodaysPriorityCard priority={briefing.priority} />
+      <TodaysPriorityCard
+        priority={briefing.priority}
+        allClearMessage={briefing.allClearMessage}
+      />
 
       <RecentProgress events={briefing.recentProgress} />
 
-      <ContextualLearning guide={briefing.contextualGuide} />
+      {briefing.contextualGuide ? (
+        <ContextualLearning guide={briefing.contextualGuide} />
+      ) : null}
 
       <nav className="workspace-nav" aria-label="Workspace sections">
         {SECTION_LINKS.map((link) => (
