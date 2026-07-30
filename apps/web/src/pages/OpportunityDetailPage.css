@@ -1,0 +1,27 @@
+.opportunity-detail-page__crumb {
+  margin-bottom: var(--space-5);
+  font-size: 0.9375rem;
+  color: var(--color-ink-subtle);
+}
+
+.opportunity-detail-page__crumb a {
+  color: var(--color-ink-muted);
+  text-decoration: none;
+}
+
+.opportunity-detail-page__crumb a:hover {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+
+.opportunity-detail-page__missing {
+  max-width: 32rem;
+}
+
+.opportunity-detail-page__missing p {
+  color: var(--color-ink-muted);
+}
+
+.opportunity-detail-page__missing a {
+  font-weight: 600;
+}

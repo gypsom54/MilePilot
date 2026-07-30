@@ -8,6 +8,7 @@ import { TodaysPriorityCard } from "../components/TodaysPriorityCard";
 import { WorkspaceSection } from "../components/WorkspaceSection";
 import { useDiscovery } from "../discovery/DiscoveryContext";
 import { useDailyBriefing } from "../discovery/useDailyBriefing";
+import { useOpportunities } from "../opportunities/useOpportunities";
 import "./WorkspacePage.css";
 
 const SECTION_LINKS = [
@@ -20,8 +21,8 @@ const SECTION_LINKS = [
 export function WorkspacePage() {
   const { profile, summary, runStatus } = useDiscovery();
   const briefing = useDailyBriefing();
+  const { top: topOpportunities, firstPriority } = useOpportunities();
   const hasSummary = runStatus === "complete" && summary !== null;
-  const recommendations = summary?.recommendations.slice(0, 3) ?? [];
 
   return (
     <PageContainer>
@@ -119,19 +120,34 @@ export function WorkspacePage() {
         title="Your Opportunities"
         description="A short list of calm first steps — never an overwhelming issue dump."
       >
-        {recommendations.length > 0 ? (
-          <ul className="workspace-opportunity-list">
-            {recommendations.map((item) => (
-              <li key={item.id} className="workspace-fact">
-                <p className="workspace-fact__value">{item.title}</p>
-                <p className="workspace-page__muted">{item.explanation}</p>
-              </li>
-            ))}
-          </ul>
+        {topOpportunities.length > 0 ? (
+          <>
+            {firstPriority ? (
+              <p className="workspace-page__muted">
+                Start with:{" "}
+                <Link to={`/opportunities/${firstPriority.slug}`}>
+                  {firstPriority.title}
+                </Link>{" "}
+                ({firstPriority.priorityLabel}).
+              </p>
+            ) : null}
+            <ul className="workspace-opportunity-list">
+              {topOpportunities.map((item) => (
+                <li key={item.id} className="workspace-fact">
+                  <p className="workspace-fact__value">
+                    <Link to={`/opportunities/${item.slug}`}>{item.title}</Link>
+                  </p>
+                  <p className="workspace-page__muted">{item.whyThisMatters}</p>
+                </li>
+              ))}
+            </ul>
+            <p className="workspace-page__action">
+              <Link to="/opportunities">View all opportunities</Link>
+            </p>
+          </>
         ) : (
           <p className="workspace-page__muted">
-            Opportunities will appear here after discovery prepares your first three
-            priorities.
+            Opportunities will appear here after discovery prepares your first priorities.
           </p>
         )}
       </WorkspaceSection>

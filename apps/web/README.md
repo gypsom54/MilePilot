@@ -10,7 +10,8 @@ Customer-facing SEO AutoPilot interface (React + Vite + TypeScript).
 | D2 — Onboarding + Business Growth Profile | LOCKED |
 | D3 — Website Discovery | DONE / LOCKED |
 | D4 — Personal Workspace (daily briefing) | DONE / LOCKED |
-| D5 — Ask SEO AutoPilot (mock UI) | DONE |
+| D5 — Ask SEO AutoPilot (mock UI) | DONE / LOCKED |
+| D6 — Opportunity Engine | DONE |
 
 ## Routes
 
@@ -20,17 +21,21 @@ Customer-facing SEO AutoPilot interface (React + Vite + TypeScript).
 - `/discover/summary` — Discovery summary (max three recommendations)
 - `/workspace` — Personal daily briefing + workspace sections
 - `/ask` — Ask SEO AutoPilot (mock session conversation)
+- `/opportunities`, `/opportunities/:slug` — Opportunity Engine
 
 ## Notes
 
 - No authentication, Google integrations, or SEO scores
 - Ask is **mock-only** — no LLM and no Volume 3 orchestration engine
+- Opportunities are **mock-only** business decisions with qualitative prioritisation
 - FAQ content: `src/content/faq.ts`
 - Discovery mock content: `src/content/discovery.ts`
 - Daily briefing mock content: `src/content/briefing.ts`
 - Ask mock content: `src/content/ask.ts`
+- Opportunity mock content: `src/content/opportunities.ts`
 - Discovery session state: `src/discovery/DiscoveryContext.tsx`
 - Ask session state: `src/ask/AskContext.tsx`
+- Opportunities helper: `src/opportunities/useOpportunities.ts`
 
 ## Commands
 

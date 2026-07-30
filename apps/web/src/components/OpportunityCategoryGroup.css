@@ -1,0 +1,14 @@
+.opportunity-category {
+  margin-top: var(--space-8);
+  scroll-margin-top: calc(var(--header-height) + var(--space-4));
+  max-width: 42rem;
+}
+
+.opportunity-category__intro {
+  margin-bottom: var(--space-4);
+}
+
+.opportunity-category__intro p {
+  margin: 0;
+  color: var(--color-ink-muted);
+}

@@ -13,8 +13,9 @@ Relative effort only — no calendar dates.
 | **D2** | Calm onboarding + Business Growth Profile | **LOCKED** — do not modify without explicit unlock |
 | **D3** | Website Discovery (analysis → summary → workspace shell) | **DONE / LOCKED** — `docs/SPRINT_D3_DELIVERY_REPORT.md` |
 | **D4** | Personal Workspace (daily briefing) | **DONE / LOCKED** — `docs/SPRINT_D4_DELIVERY_REPORT.md` |
-| **D5** | Ask SEO AutoPilot (mock conversational UI) | **DONE** (2026-07-30) — `docs/SPRINT_D5_DELIVERY_REPORT.md` |
-| D6 | (not started) | Not started |
+| **D5** | Ask SEO AutoPilot (mock conversational UI) | **DONE / LOCKED** — `docs/SPRINT_D5_DELIVERY_REPORT.md` |
+| **D6** | Opportunity Engine (structured prioritisation) | **DONE** (2026-07-30) — `docs/SPRINT_D6_DELIVERY_REPORT.md` |
+| D7 | (not started) | Not started |
 
 ---
 
