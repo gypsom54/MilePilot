@@ -7,6 +7,8 @@
 
 ## Decision 1 — Where does the SEO AutoPilot customer UI live?
 
+**Status:** **DECIDED** — Option A (`apps/web`). Implemented in Sprint D1 (**DONE**).
+
 **Why it matters:** There is no SEO AutoPilot customer app today. `apps/web` is scaffold-only; MilePilot `frontend/` is a different product; `rankaura-web/` is an untracked Next build without source.
 
 **Options:**
@@ -30,6 +32,8 @@
 ---
 
 ## Decision 2 — UI framework for SEO AutoPilot customer app
+
+**Status:** **DECIDED** — Option A (React + Vite). Implemented in Sprint D1 (**DONE**).
 
 **Why it matters:** MilePilot UI is vanilla HTML/JS; RankAura remnant suggests Next/React; `apps/web` has no UI framework dependency today.
 
@@ -55,6 +59,8 @@
 
 ## Decision 3 — When may Ask SEO AutoPilot be implemented?
 
+**Status:** **DECIDED** — Option A (keep Volume 3 lock). Ask remains deferred after Sprint D1.
+
 **Why it matters:** Product planning wants Ask as the front door; Engineering Bible Volume 3 **locks** implementation.
 
 **Options:**
@@ -79,6 +85,8 @@
 
 ## Decision 4 — Branding posture while names coexist
 
+**Status:** **DECIDED** — Option A (customer UI labels **SEO AutoPilot**; MilePilot untouched; RankAura ignored).
+
 **Why it matters:** Repository contains MilePilot (shipped), SEO AutoPilot (engines/docs), RankAura (untracked build).
 
 **Options:**
@@ -96,6 +104,8 @@
 ---
 
 ## Decision 5 — Persistence for Version One demos
+
+**Status:** **DECIDED for Sprint D1 only** — Option A (in-memory acceptable for visual foundation). Not approved as production persistence architecture.
 
 **Why it matters:** Engines are in-memory; profiles will reset on process restart.
 

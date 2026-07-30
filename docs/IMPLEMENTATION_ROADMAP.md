@@ -5,12 +5,20 @@
 
 Relative effort only — no calendar dates.
 
+## Delivery sprint status
+
+| Sprint | Name | Status |
+| --- | --- | --- |
+| **D1** | Calm product shell + Learning Centre seed | **DONE** (2026-07-30) — `docs/SPRINT_D1_DELIVERY_REPORT.md` |
+| D2 | Calm onboarding + Business Growth Profile | Not started |
+
 ---
 
 ## Phase 0 — Stabilise and understand the repository
 
 | Field | Content |
 | --- | --- |
+| **Status** | **DONE** — delivery planning pack delivered |
 | **Objective** | Lock shared understanding of MilePilot vs SEO AutoPilot vs RankAura; protect production MilePilot; confirm SEO engine health |
 | **Customer outcome** | None directly — prevents wrong-surface delivery |
 | **Deliverables** | Current state audit; delivery guardrails; decision list; roadmap (this pack) |
@@ -28,7 +36,7 @@ Relative effort only — no calendar dates.
 
 | Field | Content |
 | --- | --- |
-| **Status** | **Sprint D1 complete** (2026-07-30) — see `docs/SPRINT_D1_DELIVERY_REPORT.md` |
+| **Status** | **DONE** — Sprint D1 complete (2026-07-30) — see `docs/SPRINT_D1_DELIVERY_REPORT.md` |
 | **Objective** | Create a calm, premium SEO AutoPilot customer shell with routing, layout, and shared language components |
 | **Customer outcome** | A coherent place that feels like a trusted adviser product (not MilePilot, not a technical dashboard) |
 | **Deliverables** | App shell; Home; Learning Centre seed + FAQ; design tokens; shared plain-language components; navigation limited to Home + Learning (+ labelled future workspace) |
