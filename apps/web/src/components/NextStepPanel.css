@@ -1,0 +1,16 @@
+.next-step-panel {
+  margin-top: var(--space-7);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--color-border);
+}
+
+.next-step-panel__label {
+  margin: 0 0 var(--space-2);
+  font-size: 0.875rem;
+  color: var(--color-ink-subtle);
+}
+
+.next-step-panel__link {
+  font-weight: 600;
+  font-size: 1.0625rem;
+}

@@ -47,7 +47,10 @@
     "test:vital": "npm run test:production-boot-syntax && npm run verify:tracking && npm run verify:reports && npm run test:mileage-checklist && npm run test:tracking && npm run test:native-idle && npm run test:autopilot && npm run test:reports && npm run test:summary-collect && npm run test:trips && npm run test:auto-end && npm run test:tracking-mode && npm run test:subscription && npm run test:journey-review && npm run test:tax-engine && npm run test:ask-milepilot && npm run test:business-workspace && npm run test:ai-review",
     "build:seo-autopilot": "tsc -b tsconfig.seo-autopilot.json",
     "clean:seo-autopilot": "rm -rf apps/*/dist packages/*/dist services/*/dist apps/*/*.tsbuildinfo packages/*/*.tsbuildinfo services/*/*.tsbuildinfo tsconfig.seo-autopilot.tsbuildinfo",
-    "test:seo-autopilot": "pnpm run build:seo-autopilot && node --test tests/seo-autopilot/unit/*.test.mjs tests/seo-autopilot/integration/*.test.mjs tests/seo-autopilot/contract/*.test.mjs"
+    "test:seo-autopilot": "pnpm run build:seo-autopilot && node --test tests/seo-autopilot/unit/*.test.mjs tests/seo-autopilot/integration/*.test.mjs tests/seo-autopilot/contract/*.test.mjs",
+    "dev:seo-web": "pnpm --filter @seo-autopilot/web dev",
+    "build:seo-web": "pnpm --filter @seo-autopilot/web build",
+    "typecheck:seo-web": "pnpm --filter @seo-autopilot/web typecheck"
   },
   "dependencies": {
     "expo": "~56.0.12",
@@ -72,5 +75,10 @@
   },
   "engines": {
     "node": ">=18"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   }
 }
