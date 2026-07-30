@@ -35,15 +35,14 @@ export function HomePage() {
         <p className="home-hero__brand" id="home-brand">
           SEO AutoPilot
         </p>
-        <h1 className="home-hero__headline">A trusted growth adviser for your business.</h1>
+        <h1 className="home-hero__headline">Grow your business with confidence.</h1>
         <p className="home-hero__support">
-          SEO AutoPilot helps make online growth easier to understand. It explains what
-          matters in plain English and helps business owners make confident decisions
-          without needing to become marketing experts.
+          SEO AutoPilot quietly monitors your online presence, explains what matters in
+          plain English and helps you make confident decisions to grow your business.
         </p>
         <div className="home-hero__actions">
           <Link className="home-hero__cta" to="/learn">
-            Explore the Learning Centre
+            Start Learning
           </Link>
         </div>
         <p className="home-hero__note">

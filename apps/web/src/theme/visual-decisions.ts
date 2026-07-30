@@ -22,8 +22,8 @@ export const visualNotes = {
     surface: "#FFFFFF",
   },
   layout: {
-    contentWidth: "42rem",
-    pageWidth: "68rem",
+    contentWidth: "48rem",
+    pageWidth: "76rem",
     generousWhitespace: true,
   },
 } as const;
