@@ -18,13 +18,12 @@ export function Header({ menuOpen, onToggleMenu }: HeaderProps) {
           <NavLink className={navClass} to="/" end>
             Home
           </NavLink>
+          <NavLink className={navClass} to="/workspace">
+            Workspace
+          </NavLink>
           <NavLink className={navClass} to="/learn">
             Learning Centre
           </NavLink>
-          <span className="app-header__future" title="Available in a later phase">
-            Business workspace
-            <span className="app-header__future-tag">Coming later</span>
-          </span>
         </nav>
 
         <button

@@ -2,13 +2,28 @@
 
 Customer-facing SEO AutoPilot interface (React + Vite + TypeScript).
 
-## Sprint D1
+## Sprint status
 
-Calm product shell, Home introduction, and Learning Centre with seeded FAQ content.
+| Sprint | Status |
+| --- | --- |
+| D1 — Shell + Learning Centre | DONE / LOCKED |
+| D2 — Onboarding + Business Growth Profile | LOCKED (do not modify here) |
+| D3 — Website Discovery | DONE |
 
-- Routes: `/`, `/learn`, `/learn/:slug`
-- No authentication, Ask SEO AutoPilot, Google integrations, or fabricated business data
-- FAQ content lives in `src/content/faq.ts` (typed data, not a CMS)
+## Routes
+
+- `/` — Home
+- `/learn`, `/learn/:slug` — Learning Centre
+- `/discover` — Analysis progress (honest checklist)
+- `/discover/summary` — Discovery summary (max three recommendations)
+- `/workspace` — Initial workspace shell
+
+## Notes
+
+- No authentication, Ask SEO AutoPilot, Google integrations, or SEO scores
+- FAQ content: `src/content/faq.ts`
+- Discovery mock content + types: `src/content/discovery.ts`
+- Discovery session state: `src/discovery/DiscoveryContext.tsx` (in-memory React context)
 
 ## Commands
 
@@ -17,14 +32,6 @@ pnpm --filter @seo-autopilot/web dev
 pnpm --filter @seo-autopilot/web build
 pnpm --filter @seo-autopilot/web typecheck
 pnpm --filter @seo-autopilot/web preview
-```
-
-Or from this package:
-
-```bash
-pnpm dev
-pnpm build
-pnpm typecheck
 ```
 
 ## Visual notes

@@ -9,8 +9,10 @@ Relative effort only — no calendar dates.
 
 | Sprint | Name | Status |
 | --- | --- | --- |
-| **D1** | Calm product shell + Learning Centre seed | **DONE** (2026-07-30) — `docs/SPRINT_D1_DELIVERY_REPORT.md` |
-| D2 | Calm onboarding + Business Growth Profile | Not started |
+| **D1** | Calm product shell + Learning Centre seed | **DONE / LOCKED** (2026-07-30) — `docs/SPRINT_D1_DELIVERY_REPORT.md` |
+| **D2** | Calm onboarding + Business Growth Profile | **LOCKED** — do not modify in later sprints without explicit unlock |
+| **D3** | Website Discovery (analysis → summary → workspace shell) | **DONE** (2026-07-30) — `docs/SPRINT_D3_DELIVERY_REPORT.md` |
+| D4 | (not started) | Not started |
 
 ---
 
@@ -55,6 +57,7 @@ Relative effort only — no calendar dates.
 
 | Field | Content |
 | --- | --- |
+| **Status** | **LOCKED** — Sprint D2 is locked; do not modify without explicit unlock |
 | **Objective** | Calm onboarding that creates a real Business Discovery profile |
 | **Customer outcome** | “You understand my business” without jargon |
 | **Deliverables** | Multi-step onboarding; profile summary; wire to Business Discovery APIs via composition/API boundary |
@@ -72,6 +75,7 @@ Relative effort only — no calendar dates.
 
 | Field | Content |
 | --- | --- |
+| **Status** | **Sprint D3 Website Discovery delivered** (analysis → summary → workspace shell). Ask remains locked. |
 | **Objective** | Complete Minimal Home; prepare Ask **only when Volume 3 is unlocked** |
 | **Customer outcome** | Clear “where I am / what next”; later, conversational front door |
 | **Deliverables** | Home with profile + pillars + next steps; Ask UI shell **gated** behind unlock decision |

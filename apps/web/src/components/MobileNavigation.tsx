@@ -39,13 +39,12 @@ export function MobileNavigation({ open, onClose }: MobileNavigationProps) {
         <NavLink className={navClass} to="/" end onClick={onClose}>
           Home
         </NavLink>
+        <NavLink className={navClass} to="/workspace" onClick={onClose}>
+          Workspace
+        </NavLink>
         <NavLink className={navClass} to="/learn" onClick={onClose}>
           Learning Centre
         </NavLink>
-        <span className="mobile-nav__future">
-          Business workspace
-          <span>Coming later</span>
-        </span>
       </nav>
     </div>
   );

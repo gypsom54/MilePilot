@@ -2,7 +2,7 @@
 
 **Date:** 2026-07-30  
 **Branch:** `cursor/seo-autopilot-sprint-d1-shell-6d57`  
-**Status:** **DONE** — Sprint D1 complete; Sprint D2 not started
+**Status:** **DONE / LOCKED** — Sprint D1 complete; Sprint D2 not started from this report
 
 ---
 

@@ -46,8 +46,10 @@ export function HomePage() {
           </Link>
         </div>
         <p className="home-hero__note">
-          Personalised business guidance will become available after your business
-          workspace is connected in a later phase. That workspace is not operational yet.
+          After you share your business details, website discovery prepares a calm first
+          workspace. You can{" "}
+          <Link to="/discover">preview discovery</Link> or open your{" "}
+          <Link to="/workspace">workspace</Link> anytime.
         </p>
       </section>
 
