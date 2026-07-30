@@ -1,0 +1,26 @@
+.page-intro {
+  margin-bottom: var(--space-7);
+  max-width: 40rem;
+}
+
+.page-intro__eyebrow {
+  margin: 0 0 var(--space-3);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-ink-subtle);
+}
+
+.page-intro__title {
+  margin-bottom: var(--space-4);
+}
+
+.page-intro__description {
+  color: var(--color-ink-muted);
+  font-size: 1.125rem;
+}
+
+.page-intro__description p + p {
+  margin-top: var(--space-3);
+}
