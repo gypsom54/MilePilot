@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useSearchParams } from "react-router-dom";
 import { AskComposer } from "../components/AskComposer";
 import { ConversationThread } from "../components/ConversationThread";
 import { PageContainer } from "../components/PageContainer";
@@ -11,6 +12,8 @@ import "./AskPage.css";
 
 export function AskPage() {
   const { suggestedQuestions, turns, askQuestion, clearConversation } = useAsk();
+  const [searchParams] = useSearchParams();
+  const suggestedFromPlan = searchParams.get("q")?.trim() ?? "";
   const endRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -46,7 +49,11 @@ export function AskPage() {
 
       <SuggestedQuestions questions={suggestedQuestions} onSelect={handleSuggested} />
 
-      <AskComposer onSubmit={(question) => askQuestion(question)} />
+      <AskComposer
+        key={suggestedFromPlan || "ask-composer"}
+        initialValue={suggestedFromPlan}
+        onSubmit={(question) => askQuestion(question)}
+      />
 
       <div className="ask-page__history-header">
         <h2 className="ask-page__history-title">Conversation</h2>

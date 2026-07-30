@@ -3,10 +3,11 @@ import "./AskComposer.css";
 
 type AskComposerProps = {
   onSubmit: (question: string) => void;
+  initialValue?: string;
 };
 
-export function AskComposer({ onSubmit }: AskComposerProps) {
-  const [value, setValue] = useState("");
+export function AskComposer({ onSubmit, initialValue = "" }: AskComposerProps) {
+  const [value, setValue] = useState(initialValue);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();

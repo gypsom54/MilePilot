@@ -15,7 +15,8 @@ Relative effort only — no calendar dates.
 | **D4** | Personal Workspace (daily briefing) | **DONE / LOCKED** — `docs/SPRINT_D4_DELIVERY_REPORT.md` |
 | **D5** | Ask SEO AutoPilot (mock conversational UI) | **DONE / LOCKED** — `docs/SPRINT_D5_DELIVERY_REPORT.md` |
 | **D6** | Opportunity Engine (structured prioritisation) | **DONE / LOCKED** — `docs/SPRINT_D6_DELIVERY_REPORT.md` |
-| D7 | (not started) | Not started |
+| **D7** | Guided Action Plans | **DONE** (2026-07-30) — `docs/SPRINT_D7_DELIVERY_REPORT.md` |
+| D8 | (not started) | Not started |
 
 ---
 

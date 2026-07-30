@@ -12,6 +12,7 @@ Customer-facing SEO AutoPilot interface (React + Vite + TypeScript).
 | D4 — Personal Workspace (daily briefing) | DONE / LOCKED |
 | D5 — Ask SEO AutoPilot (mock UI) | DONE / LOCKED |
 | D6 — Opportunity Engine | DONE / LOCKED |
+| D7 — Guided Action Plans | DONE |
 
 ## Routes
 
@@ -22,20 +23,24 @@ Customer-facing SEO AutoPilot interface (React + Vite + TypeScript).
 - `/workspace` — Personal daily briefing + workspace sections
 - `/ask` — Ask SEO AutoPilot (mock session conversation)
 - `/opportunities`, `/opportunities/:slug` — Opportunity Engine
+- `/opportunities/:slug/plan` — Guided action plan
 
 ## Notes
 
 - No authentication, Google integrations, or SEO scores
 - Ask is **mock-only** — no LLM and no Volume 3 orchestration engine
 - Opportunities are **mock-only** business decisions with qualitative prioritisation
+- Action plans are **mock-only** guided implementation with session completion
 - FAQ content: `src/content/faq.ts`
 - Discovery mock content: `src/content/discovery.ts`
 - Daily briefing mock content: `src/content/briefing.ts`
 - Ask mock content: `src/content/ask.ts`
 - Opportunity mock content: `src/content/opportunities.ts`
+- Action plan mock content: `src/content/actionPlans.ts`
 - Discovery session state: `src/discovery/DiscoveryContext.tsx`
 - Ask session state: `src/ask/AskContext.tsx`
 - Opportunities helper: `src/opportunities/useOpportunities.ts`
+- Action plan state: `src/actionPlans/ActionPlanContext.tsx`
 
 ## Commands
 

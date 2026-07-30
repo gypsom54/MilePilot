@@ -66,7 +66,7 @@ export function OpportunityDetailView({ opportunity }: OpportunityDetailProps) {
       </section>
 
       <div className="opportunity-detail__actions">
-        <Link className="opportunity-detail__cta" to={opportunity.showMeHowHref}>
+        <Link className="opportunity-detail__cta" to={`/opportunities/${opportunity.slug}/plan`}>
           Show me how
         </Link>
         <Link className="opportunity-detail__secondary" to="/opportunities">

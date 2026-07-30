@@ -5,7 +5,7 @@ evidence-based actions that save time and produce measurable results.
 
 This repository now includes the SEO AutoPilot monorepo foundation:
 
-- `apps/` — `apps/web` customer shell (**D1–D6 LOCKED**); `apps/api` composition shell
+- `apps/` — `apps/web` customer shell (**D1–D6 LOCKED**; **Sprint D7 Guided Action Plans DONE**); `apps/api` composition shell
 - `packages/` — engine-sdk, knowledge-graph SDK, ai prompt framework, shared, placeholders
 - `services/` — Intelligence Engine scaffolds (no business/SEO logic)
 - `docs/seo-autopilot/` — developer documentation
@@ -21,7 +21,7 @@ pnpm run build:seo-web
 pnpm run dev:seo-web
 ```
 
-Delivery docs also include [`docs/SPRINT_D1_DELIVERY_REPORT.md`](./docs/SPRINT_D1_DELIVERY_REPORT.md), [`docs/SPRINT_D3_DELIVERY_REPORT.md`](./docs/SPRINT_D3_DELIVERY_REPORT.md), [`docs/SPRINT_D4_DELIVERY_REPORT.md`](./docs/SPRINT_D4_DELIVERY_REPORT.md), [`docs/SPRINT_D5_DELIVERY_REPORT.md`](./docs/SPRINT_D5_DELIVERY_REPORT.md) and [`docs/SPRINT_D6_DELIVERY_REPORT.md`](./docs/SPRINT_D6_DELIVERY_REPORT.md).
+Delivery docs also include [`docs/SPRINT_D1_DELIVERY_REPORT.md`](./docs/SPRINT_D1_DELIVERY_REPORT.md), [`docs/SPRINT_D3_DELIVERY_REPORT.md`](./docs/SPRINT_D3_DELIVERY_REPORT.md), [`docs/SPRINT_D4_DELIVERY_REPORT.md`](./docs/SPRINT_D4_DELIVERY_REPORT.md), [`docs/SPRINT_D5_DELIVERY_REPORT.md`](./docs/SPRINT_D5_DELIVERY_REPORT.md), [`docs/SPRINT_D6_DELIVERY_REPORT.md`](./docs/SPRINT_D6_DELIVERY_REPORT.md) and [`docs/SPRINT_D7_DELIVERY_REPORT.md`](./docs/SPRINT_D7_DELIVERY_REPORT.md).
 
 See `docs/seo-autopilot/README.md` for architecture guides.
 

@@ -1,6 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
+import { ActionPlanProvider } from "./actionPlans/ActionPlanContext";
 import { App } from "./App";
 import { AskProvider } from "./ask/AskContext";
 import { DiscoveryProvider } from "./discovery/DiscoveryContext";
@@ -17,7 +18,9 @@ createRoot(rootElement).render(
     <BrowserRouter>
       <DiscoveryProvider>
         <AskProvider>
-          <App />
+          <ActionPlanProvider>
+            <App />
+          </ActionPlanProvider>
         </AskProvider>
       </DiscoveryProvider>
     </BrowserRouter>
