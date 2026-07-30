@@ -21,6 +21,9 @@ export function Header({ menuOpen, onToggleMenu }: HeaderProps) {
           <NavLink className={navClass} to="/workspace">
             Workspace
           </NavLink>
+          <NavLink className={navClass} to="/ask">
+            Ask
+          </NavLink>
           <NavLink className={navClass} to="/learn">
             Learning Centre
           </NavLink>

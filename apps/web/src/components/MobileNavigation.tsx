@@ -42,6 +42,9 @@ export function MobileNavigation({ open, onClose }: MobileNavigationProps) {
         <NavLink className={navClass} to="/workspace" onClick={onClose}>
           Workspace
         </NavLink>
+        <NavLink className={navClass} to="/ask" onClick={onClose}>
+          Ask
+        </NavLink>
         <NavLink className={navClass} to="/learn" onClick={onClose}>
           Learning Centre
         </NavLink>

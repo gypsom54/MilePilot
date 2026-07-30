@@ -9,7 +9,8 @@ Customer-facing SEO AutoPilot interface (React + Vite + TypeScript).
 | D1 — Shell + Learning Centre | DONE / LOCKED |
 | D2 — Onboarding + Business Growth Profile | LOCKED |
 | D3 — Website Discovery | DONE / LOCKED |
-| D4 — Personal Workspace (daily briefing) | DONE |
+| D4 — Personal Workspace (daily briefing) | DONE / LOCKED |
+| D5 — Ask SEO AutoPilot (mock UI) | DONE |
 
 ## Routes
 
@@ -18,15 +19,18 @@ Customer-facing SEO AutoPilot interface (React + Vite + TypeScript).
 - `/discover` — Analysis progress (honest checklist)
 - `/discover/summary` — Discovery summary (max three recommendations)
 - `/workspace` — Personal daily briefing + workspace sections
+- `/ask` — Ask SEO AutoPilot (mock session conversation)
 
 ## Notes
 
-- No authentication, Ask SEO AutoPilot, Google integrations, or SEO scores
+- No authentication, Google integrations, or SEO scores
+- Ask is **mock-only** — no LLM and no Volume 3 orchestration engine
 - FAQ content: `src/content/faq.ts`
 - Discovery mock content: `src/content/discovery.ts`
 - Daily briefing mock content: `src/content/briefing.ts`
+- Ask mock content: `src/content/ask.ts`
 - Discovery session state: `src/discovery/DiscoveryContext.tsx`
-- Briefing resolver: `src/discovery/useDailyBriefing.ts`
+- Ask session state: `src/ask/AskContext.tsx`
 
 ## Commands
 

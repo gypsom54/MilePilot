@@ -12,8 +12,9 @@ Relative effort only — no calendar dates.
 | **D1** | Calm product shell + Learning Centre seed | **DONE / LOCKED** — `docs/SPRINT_D1_DELIVERY_REPORT.md` |
 | **D2** | Calm onboarding + Business Growth Profile | **LOCKED** — do not modify without explicit unlock |
 | **D3** | Website Discovery (analysis → summary → workspace shell) | **DONE / LOCKED** — `docs/SPRINT_D3_DELIVERY_REPORT.md` |
-| **D4** | Personal Workspace (daily briefing) | **DONE** (2026-07-30) — `docs/SPRINT_D4_DELIVERY_REPORT.md` |
-| D5 | (not started) | Not started |
+| **D4** | Personal Workspace (daily briefing) | **DONE / LOCKED** — `docs/SPRINT_D4_DELIVERY_REPORT.md` |
+| **D5** | Ask SEO AutoPilot (mock conversational UI) | **DONE** (2026-07-30) — `docs/SPRINT_D5_DELIVERY_REPORT.md` |
+| D6 | (not started) | Not started |
 
 ---
 
@@ -76,7 +77,7 @@ Relative effort only — no calendar dates.
 
 | Field | Content |
 | --- | --- |
-| **Status** | **Sprint D3 LOCKED** (discovery + workspace shell). **Sprint D4 Personal Workspace daily briefing delivered** on `/workspace`. Ask remains locked. |
+| **Status** | **Sprint D3–D4 LOCKED**. **Sprint D5 Ask mock UI delivered** on `/ask`. Volume 3 live orchestration remains deferred. |
 | **Objective** | Complete Minimal Home; prepare Ask **only when Volume 3 is unlocked** |
 | **Customer outcome** | Clear “where I am / what next”; later, conversational front door |
 | **Deliverables** | Home with profile + pillars + next steps; Ask UI shell **gated** behind unlock decision |

@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { AppShell } from "./components/AppShell";
 import { AnalysisProgressPage } from "./pages/AnalysisProgressPage";
+import { AskPage } from "./pages/AskPage";
 import { DiscoverySummaryPage } from "./pages/DiscoverySummaryPage";
 import { FaqArticlePage } from "./pages/FaqArticlePage";
 import { HomePage } from "./pages/HomePage";
@@ -17,6 +18,7 @@ export function App() {
         <Route path="discover" element={<AnalysisProgressPage />} />
         <Route path="discover/summary" element={<DiscoverySummaryPage />} />
         <Route path="workspace" element={<WorkspacePage />} />
+        <Route path="ask" element={<AskPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>
