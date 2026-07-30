@@ -60,7 +60,7 @@ Reusable-ish modules under `frontend/js/` (Ask MilePilot, business workspace, tr
 **Sprint D3 delivered:** Website Discovery (`/discover`, `/discover/summary`) and Workspace shell (`/workspace`).  
 **Sprint D4 delivered:** Personal Workspace daily briefing on `/workspace`.  
 **Sprint D5 delivered:** Ask SEO AutoPilot mock conversational UI on `/ask`.  
-**Sprint D6 delivered:** Opportunity Engine mock prioritisation on `/opportunities` (+ detail routes), wired into Workspace opportunities section. No auth, Google connections, or SEO scores. `packages/ui` remains scaffold-only.
+**Sprint D6 delivered and LOCKED:** Opportunity Engine mock prioritisation on `/opportunities` (+ detail routes), wired into Workspace opportunities section. No auth, Google connections, or SEO scores. `packages/ui` remains scaffold-only.
 
 ### RankAura (untracked build)
 

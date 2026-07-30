@@ -2,7 +2,7 @@
 
 **Date:** 2026-07-30  
 **Branch:** `cursor/seo-autopilot-sprint-d5-ask-seo-autopilot-6d57`  
-**Status:** Complete — Sprint D6 not started  
+**Status:** **DONE / LOCKED** — Sprint D5 complete; Sprint D6 later delivered and locked separately  
 **Locked predecessors:** Sprint D1–D4 — not redesigned
 
 ---

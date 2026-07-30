@@ -2,7 +2,7 @@
 
 **Date:** 2026-07-30  
 **Branch:** `cursor/seo-autopilot-sprint-d6-opportunity-engine-6d57`  
-**Status:** Complete — Sprint D7 not started  
+**Status:** **DONE / LOCKED** — Sprint D6 approved and locked; Sprint D7 not started  
 **Locked predecessors:** Sprint D1–D5 — not redesigned
 
 ---

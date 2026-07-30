@@ -11,7 +11,7 @@ Customer-facing SEO AutoPilot interface (React + Vite + TypeScript).
 | D3 — Website Discovery | DONE / LOCKED |
 | D4 — Personal Workspace (daily briefing) | DONE / LOCKED |
 | D5 — Ask SEO AutoPilot (mock UI) | DONE / LOCKED |
-| D6 — Opportunity Engine | DONE |
+| D6 — Opportunity Engine | DONE / LOCKED |
 
 ## Routes
 

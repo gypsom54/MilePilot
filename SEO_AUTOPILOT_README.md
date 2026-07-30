@@ -5,7 +5,7 @@ evidence-based actions that save time and produce measurable results.
 
 This repository now includes the SEO AutoPilot monorepo foundation:
 
-- `apps/` — `apps/web` customer shell (**D1–D5 LOCKED**; **Sprint D6 Opportunity Engine DONE**); `apps/api` composition shell
+- `apps/` — `apps/web` customer shell (**D1–D6 LOCKED**); `apps/api` composition shell
 - `packages/` — engine-sdk, knowledge-graph SDK, ai prompt framework, shared, placeholders
 - `services/` — Intelligence Engine scaffolds (no business/SEO logic)
 - `docs/seo-autopilot/` — developer documentation
