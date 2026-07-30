@@ -1,0 +1,23 @@
+.workspace-page__action {
+  margin: var(--space-4) 0 0;
+}
+
+.workspace-page__action a {
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.workspace-page__action a:hover {
+  text-decoration: underline;
+}
+
+.workspace-page__muted {
+  margin: var(--space-2) 0 0;
+  color: var(--color-ink-muted);
+}
+
+.workspace-opportunity-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}

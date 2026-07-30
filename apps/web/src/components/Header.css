@@ -1,0 +1,108 @@
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  height: var(--header-height);
+  border-bottom: 1px solid var(--color-border);
+  background: rgba(247, 245, 241, 0.92);
+  backdrop-filter: blur(10px);
+}
+
+.app-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  width: min(100% - 2.5rem, var(--page-width));
+  height: 100%;
+  margin-inline: auto;
+}
+
+.app-header__brand {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-ink);
+  text-decoration: none;
+  letter-spacing: -0.02em;
+}
+
+.app-header__brand:hover {
+  color: var(--color-accent);
+}
+
+.app-header__nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+}
+
+.app-header__link {
+  color: var(--color-ink-muted);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.975rem;
+  padding-block: var(--space-1);
+  border-bottom: 2px solid transparent;
+  transition: color var(--transition), border-color var(--transition);
+}
+
+.app-header__link:hover {
+  color: var(--color-ink);
+}
+
+.app-header__link--active {
+  color: var(--color-ink);
+  border-bottom-color: var(--color-accent);
+}
+
+.app-header__future {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-disabled);
+  font-size: 0.975rem;
+  font-weight: 500;
+  cursor: default;
+}
+
+.app-header__future-tag {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-ink-subtle);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  padding: 0.15rem 0.4rem;
+}
+
+.app-header__menu-button {
+  display: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-elevated);
+}
+
+.app-header__menu-icon {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+@media (max-width: 860px) {
+  .app-header__nav {
+    display: none;
+  }
+
+  .app-header__menu-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .app-header__inner {
+    width: min(100% - 1.5rem, var(--page-width));
+  }
+}
