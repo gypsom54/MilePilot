@@ -1,0 +1,32 @@
+.prioritisation-legend {
+  max-width: 40rem;
+  margin: var(--space-5) 0 var(--space-6);
+  padding: var(--space-4) var(--space-5);
+  border-left: 3px solid var(--color-accent);
+  background: var(--color-accent-soft);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.prioritisation-legend h2 {
+  margin: 0 0 var(--space-2);
+  font-size: 1.1rem;
+}
+
+.prioritisation-legend p {
+  margin: 0 0 var(--space-3);
+  color: var(--color-ink);
+}
+
+.prioritisation-legend__list {
+  margin: 0;
+  padding-left: 1.15rem;
+  color: var(--color-ink-muted);
+}
+
+.prioritisation-legend__list li {
+  margin-bottom: var(--space-1);
+}
+
+.prioritisation-legend__list li:last-child {
+  margin-bottom: 0;
+}

@@ -1,0 +1,11 @@
+.faq-not-found {
+  max-width: 32rem;
+}
+
+.faq-not-found p {
+  color: var(--color-ink-muted);
+}
+
+.faq-not-found a {
+  font-weight: 600;
+}

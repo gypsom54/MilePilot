@@ -1,0 +1,34 @@
+.discovery-summary-section {
+  margin-top: var(--space-7);
+  max-width: 40rem;
+}
+
+.discovery-summary-section__intro {
+  margin-bottom: var(--space-4);
+}
+
+.discovery-summary-section__intro p {
+  margin: 0;
+  color: var(--color-ink-muted);
+}
+
+.discovery-summary-item {
+  padding: var(--space-4) 0;
+  border-top: 1px solid var(--color-border);
+}
+
+.discovery-summary-item:last-child {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.discovery-summary-item__title {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.discovery-summary-item__text {
+  margin: 0;
+  color: var(--color-ink-muted);
+}
