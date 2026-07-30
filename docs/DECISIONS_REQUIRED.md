@@ -131,6 +131,8 @@
 
 ## Decision 6 — Google connector timeline
 
+**Status:** **DECIDED** — Option A (defer Google connections). Confirmed for Sprint D1.
+
 **Why it matters:** GSC/GA/GBP/Ads are in the vision but have **zero** OAuth/API implementation.
 
 **Options:**
