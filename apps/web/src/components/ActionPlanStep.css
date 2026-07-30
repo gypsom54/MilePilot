@@ -1,0 +1,89 @@
+.action-plan-step {
+  max-width: 40rem;
+  margin-bottom: var(--space-7);
+  padding: var(--space-5) 0;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.action-plan-step__eyebrow {
+  margin: 0 0 var(--space-2);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.action-plan-step__title {
+  margin: 0 0 var(--space-5);
+  font-size: clamp(1.35rem, 2.2vw, 1.65rem);
+}
+
+.action-plan-step__block {
+  margin-bottom: var(--space-4);
+}
+
+.action-plan-step__block h3 {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-ink-subtle);
+}
+
+.action-plan-step__block p {
+  margin: 0;
+  color: var(--color-ink);
+}
+
+.action-plan-step__block a {
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.action-plan-step__block a:hover {
+  text-decoration: underline;
+}
+
+.action-plan-step__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: var(--space-5);
+}
+
+.action-plan-step__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.85rem 1.35rem;
+  border-radius: var(--radius-md);
+  background: var(--color-accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+.action-plan-step__cta:hover {
+  background: var(--color-accent-hover);
+}
+
+.action-plan-step__done-note {
+  margin: 0;
+  color: var(--color-ink-muted);
+  font-weight: 500;
+}
+
+.action-plan-step__ask {
+  font-weight: 600;
+  color: var(--color-ink-muted);
+  text-decoration: none;
+}
+
+.action-plan-step__ask:hover {
+  color: var(--color-accent);
+  text-decoration: underline;
+}

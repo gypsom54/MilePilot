@@ -26,9 +26,6 @@
       "path": "apps/api"
     },
     {
-      "path": "apps/web"
-    },
-    {
       "path": "services/business-discovery"
     },
     {

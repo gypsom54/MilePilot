@@ -1,0 +1,59 @@
+.opportunities-page__first {
+  max-width: 40rem;
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-5);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.opportunities-page__first-label {
+  margin: 0 0 var(--space-2);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.opportunities-page__first-title {
+  margin: 0 0 var(--space-3);
+  font-size: clamp(1.35rem, 2.2vw, 1.65rem);
+}
+
+.opportunities-page__first-title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.opportunities-page__first-title a:hover {
+  color: var(--color-accent);
+}
+
+.opportunities-page__first-copy {
+  margin: 0 0 var(--space-2);
+  color: var(--color-ink-muted);
+}
+
+.opportunities-page__first-band {
+  margin: 0;
+  font-size: 0.9375rem;
+  color: var(--color-ink-subtle);
+}
+
+.opportunities-page__nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-4);
+  max-width: 42rem;
+}
+
+.opportunities-page__nav a {
+  color: var(--color-ink-muted);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.975rem;
+}
+
+.opportunities-page__nav a:hover {
+  color: var(--color-accent);
+}

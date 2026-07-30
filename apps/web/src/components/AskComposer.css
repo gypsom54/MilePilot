@@ -1,0 +1,47 @@
+.ask-composer {
+  max-width: 42rem;
+  margin-bottom: var(--space-7);
+}
+
+.ask-composer__label {
+  display: block;
+  margin-bottom: var(--space-2);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-ink-muted);
+}
+
+.ask-composer__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.ask-composer__input {
+  flex: 1 1 16rem;
+  min-width: 0;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-elevated);
+  color: var(--color-ink);
+  font: inherit;
+}
+
+.ask-composer__input:focus {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.ask-composer__submit {
+  padding: 0.85rem 1.35rem;
+  border-radius: var(--radius-md);
+  background: var(--color-accent);
+  color: #fff;
+  font-weight: 600;
+  transition: background-color var(--transition);
+}
+
+.ask-composer__submit:hover {
+  background: var(--color-accent-hover);
+}
