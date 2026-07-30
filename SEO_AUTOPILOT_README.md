@@ -20,3 +20,14 @@ pnpm run test:seo-autopilot
 ```
 
 See `docs/seo-autopilot/README.md` for architecture guides.
+
+## Product delivery planning (post-planning phase)
+
+Customer-product delivery docs (MVP, roadmap, guardrails):
+
+- [`docs/CURRENT_STATE_AUDIT.md`](./docs/CURRENT_STATE_AUDIT.md)
+- [`docs/MVP_PRODUCT_SCOPE.md`](./docs/MVP_PRODUCT_SCOPE.md)
+- [`docs/IMPLEMENTATION_ROADMAP.md`](./docs/IMPLEMENTATION_ROADMAP.md)
+- [`docs/ENGINEERING_GUARDRAILS.md`](./docs/ENGINEERING_GUARDRAILS.md)
+- [`docs/DECISIONS_REQUIRED.md`](./docs/DECISIONS_REQUIRED.md)
+- [`docs/FIRST_SPRINT_RECOMMENDATION.md`](./docs/FIRST_SPRINT_RECOMMENDATION.md)
