@@ -1,0 +1,24 @@
+.learn-nav {
+  max-width: 40rem;
+  margin-bottom: var(--space-6);
+}
+
+.learn-nav__label {
+  margin: 0 0 var(--space-3);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-ink-subtle);
+}
+
+.learn-nav__list {
+  display: flex;
+  flex-direction: column;
+}
+
+.learn-count {
+  margin: 0 0 var(--space-4);
+  font-size: 0.9375rem;
+  color: var(--color-ink-subtle);
+}

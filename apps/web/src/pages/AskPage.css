@@ -1,0 +1,26 @@
+.ask-page__history-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  max-width: 42rem;
+  margin-bottom: var(--space-3);
+}
+
+.ask-page__history-title {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.ask-page__clear {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--color-ink-muted);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.ask-page__clear:hover {
+  color: var(--color-accent);
+}
