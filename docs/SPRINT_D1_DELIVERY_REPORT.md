@@ -92,16 +92,18 @@ Root: no new runtime deps; `pnpm.onlyBuiltDependencies: ["esbuild"]` so Vite’s
 
 ## Manual checks
 
-Documented in the PR / agent run after preview smoke:
+Verified against Vite preview (`pnpm --filter @seo-autopilot/web preview`) plus headless Chrome interaction checks:
 
-- `/` Home — brand, hero, pillars, CTA to Learning Centre; no fabricated metrics
-- `/learn` — categories + FAQ lists
-- At least three FAQ routes (e.g. `/learn/what-is-seo`, `/learn/how-long-does-seo-normally-take`, `/learn/what-is-the-difference-between-seo-and-google-ads`)
-- Desktop layout and mobile layout (nav menu)
-- Keyboard focus / Escape closes mobile menu
-- No intentional console errors from app code
-- No broken internal Learning Centre links in seed set
-- No MilePilot (`frontend/`, `backend/`) or engine package behaviour changes
+- `/` Home — brand, hero, pillars, CTA to Learning Centre; no fabricated metrics — **pass**
+- `/learn` — categories + FAQ lists — **pass**
+- FAQ routes `/learn/what-is-seo`, `/learn/how-long-does-seo-normally-take`, `/learn/what-is-the-difference-between-seo-and-google-ads` — **pass**
+- Desktop layout — **pass**
+- Mobile layout + hamburger menu open/close — **pass**
+- Keyboard: visible focus; Escape closes mobile menu — **pass**
+- Client-side nav clicks (header + FAQ list + mobile menu) — **pass**
+- Console: no app JS errors after favicon added (earlier only favicon.ico 404)
+- No fabricated business dashboard data — **pass**
+- No MilePilot (`frontend/`, `backend/`) or engine package behaviour changes — **pass**
 
 ---
 
