@@ -1,0 +1,16 @@
+---
+description: MilePilot product philosophy and development order. Read before any change.
+alwaysApply: true
+---
+
+Before changing anything in this repository, read and follow `MILEPILOT_MANIFESTO.md`.
+
+That file defines:
+
+- Why MilePilot exists and who it serves
+- Mission, design, and development philosophy
+- Product principles and tone of voice
+- The golden rule for every release
+- The required development order for all work
+
+Apply the manifesto to every decision: features, UI, copy, architecture, and commits.
